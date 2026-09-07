@@ -7,6 +7,7 @@ import { Markers } from './markers.ts';
 import { bookName, bookOf } from './books.ts';
 import { precisionOf, precisionStyle } from './theme.ts';
 import { Route, type Journey } from './routes.ts';
+import { RouteLabels } from './labels.ts';
 import type { GeoJson, Place, PlacesBundle } from './types.ts';
 
 type Locale = 'zh' | 'en';
@@ -184,6 +185,7 @@ function renderPanel() {
 let route: Route | null = null;
 let routePlaying = false;
 let routeT = 0;
+const routeLabels = new RouteLabels(document.body);
 
 const rlist = $('rlist');
 const rplay = $('rplay');
@@ -199,6 +201,7 @@ rlist.innerHTML = journeyData.journeys.map((jr) => `
 function clearRoute() {
   if (route) { globe.remove(route.group); route.dispose(); route = null; }
   routePlaying = false; routeT = 0;
+  routeLabels.clear();
   rplay.hidden = true;
   rBasis.textContent = '';
   rToggle.textContent = '▶';
@@ -214,6 +217,7 @@ function openRoute(id: string) {
   route = new Route(jr);
   route.setProgress(0);
   globe.add(route.group);
+  routeLabels.build(route.markerObjects, locale);
   // The place field would otherwise sit under the route as visual noise.
   markers.mesh.visible = false;
   closePanel();
@@ -263,10 +267,13 @@ function advanceRoute(dt: number) {
   updateRouteReadout();
   if (routeT >= 1) { routePlaying = false; rToggle.textContent = '▶'; }
 
-  const m = route.markerAt(routeT);
-  if (m && m.lat !== null && m.lon !== null && !userDriving) {
-    followTarget.copy(lonLatToVec3(m.lon, m.lat, camera.position.length() - GLOBE_RADIUS));
-    camera.position.lerp(followTarget, Math.min(1, dt * 0.9));
+  // Follow the travelling head rather than the last marker reached: the head
+  // moves continuously and a marker jumps, and a camera that jumps every few
+  // seconds is unwatchable.
+  if (!userDriving) {
+    const alt = camera.position.length() - GLOBE_RADIUS;
+    followTarget.copy(route.headPosition).normalize().multiplyScalar(GLOBE_RADIUS + alt);
+    camera.position.lerp(followTarget, Math.min(1, dt * 0.55));
   }
 }
 
@@ -361,6 +368,7 @@ $('lang').addEventListener('click', () => {
   document.documentElement.lang = locale === 'zh' ? 'zh-CN' : 'en';
   renderLegend();
   applyCursor();
+  if (route) routeLabels.build(route.markerObjects, locale);
   if (selected) renderPanel();
 });
 
@@ -383,7 +391,10 @@ renderer.setAnimationLoop(() => {
   advance(dt);
   follow(dt);
   advanceRoute(dt);
-  route?.faceCamera(camera.position.length(), GLOBE_RADIUS);
+  if (route) {
+    route.faceCamera(camera.position.length(), GLOBE_RADIUS);
+    routeLabels.update(camera, globe, route.reachedIndex(routeT), innerWidth, innerHeight);
+  }
   controls.update();
   // The selection ring breathes so the eye can find it again after orbiting.
   if (selectionRing.visible) selectionRing.scale.setScalar(1 + Math.sin(t * 2.4) * 0.12);
@@ -417,6 +428,15 @@ if (import.meta.env.DEV) {
     advance, follow, advanceRoute, openRoute, clearRoute,
     get playing() { return playing; },
     get route() { return route; },
+    /** Drives one frame of the whole route layer — path, marker sizing and
+     *  labels — for inspection where rAF is parked. */
+    tickRoute() {
+      if (!route) return;
+      controls.update(); camera.updateMatrixWorld(true); globe.updateMatrixWorld(true);
+      route.faceCamera(camera.position.length(), GLOBE_RADIUS);
+      routeLabels.update(camera, globe, route.reachedIndex(routeT), innerWidth, innerHeight);
+      renderer.render(scene, camera);
+    },
     get routeT() { return routeT; },
     /** Renders one frame at an arbitrary size, for inspection where the page
      *  is not being painted. */

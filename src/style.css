@@ -182,3 +182,29 @@ body {
   #r-basis { max-height: 4.5rem; }
   #rlist { grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr)); gap: .3rem; }
 }
+
+/* ── route labels ────────────────────────────────────────────────────── */
+.route-labels { position: fixed; inset: 0; pointer-events: none; z-index: 6; }
+.rlab {
+  position: absolute; top: 0; left: 0; white-space: nowrap;
+  display: flex; align-items: center; gap: .3rem;
+  font-size: .68rem; letter-spacing: .04em; line-height: 1;
+  padding: .18rem .4rem; border-radius: 2px;
+  background: #060d16b0; border: 1px solid #c9a2273d;
+  color: var(--parchment); backdrop-filter: blur(3px);
+  transition: opacity .18s;
+}
+.rlab b {
+  font-family: var(--serif-en); font-size: .62rem; font-weight: 600;
+  color: var(--gold); font-variant-numeric: tabular-nums;
+}
+/* A marker standing for several camps is dashed, so the label itself carries
+   the same reservation the marker does. */
+.rlab.many { border-style: dashed; color: #b3bcc7; }
+.rlab.many b { color: #9a7d2e; }
+.rlab.now {
+  border-color: var(--gold-bright); background: #14243aee; color: #fff2c4;
+  box-shadow: 0 0 0 1px #e8c55a55, 0 2px 12px #0008;
+}
+.rlab.now b { color: var(--gold-bright); }
+@media (max-width: 640px) { .rlab { font-size: .6rem; padding: .14rem .32rem; } }
