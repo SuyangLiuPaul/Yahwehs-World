@@ -1,9 +1,16 @@
 {
   "meta": {
-    "generated": "2026-09-07T23:07:35.894Z",
+    "generated": "2026-09-07T23:17:28.893Z",
     "count": 105,
     "provenance": "事件、年份、定年依据与 approximate 标记，全部取自 SeekSparks 的 assets/bible_timeline.json，未作改动。该年表以所罗门登基（Thiele）为锚点，按经文自述的年数上溯，来源与审计见 SeekSparks 的 docs/WHEEL-PROVENANCE.md。地点关联由本脚本依 refs 的经文范围，从 OpenBible.info 逐节索引算出（CC BY 4.0）。",
-    "anchor": "此图各年皆自一个定点上溯而得：所罗门登基之年。该年取自锡尔（Thiele），本应用一律采用。王上 6:1 记圣殿建于所罗门在位第四年，并谓该年在出埃及后 480 年；其前各年，皆按经文自述的年数逐段上溯，每项事件亦各自列出所据的经文。"
+    "anchor": "此图各年皆自一个定点上溯而得：所罗门登基之年。该年取自锡尔（Thiele），本应用一律采用。王上 6:1 记圣殿建于所罗门在位第四年，并谓该年在出埃及后 480 年；其前各年，皆按经文自述的年数逐段上溯，每项事件亦各自列出所据的经文。",
+    "review": {
+      "adopted": "2026-09-07T23:17:29.030Z",
+      "approvedDirectly": 86,
+      "repairedThenApproved": 19,
+      "gentilicLinksRemoved": 22,
+      "note": "族称过滤依 BSB 原文逐节核对：地名原词未在该节出现者判为人物籍贯，予以移除，被移除者留在 gentilic 字段可查。范围为整卷/时段者标 scope，不钉单点。无经文可定位者的地点为人工指定，记于 manualPlace 并附理由。"
+    }
   },
   "events": [
     {
@@ -90,11 +97,12 @@
         "2:14",
         "2:14"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，8 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "eden",
@@ -147,11 +155,12 @@
         "2:14",
         "2:14"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，8 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "fall",
@@ -190,11 +199,12 @@
       "placeAt": [
         "3:23, 3:24"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，1 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "cain_abel",
@@ -226,11 +236,12 @@
       "placeAt": [
         "4:16"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，1 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "seth_born",
@@ -289,11 +300,12 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "0 处地点是正确的——所引经文确实没有指名任何可定位的地名。（如登山变像，太 17:1 只说「高山」，未指名；他泊山、黑门山皆为传统认定，非经文所载。）",
-      "finding": "zero-correct"
+      "finding": "zero-correct",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "enosh_born",
@@ -352,11 +364,12 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "0 处地点是正确的——所引经文确实没有指名任何可定位的地名。（如登山变像，太 17:1 只说「高山」，未指名；他泊山、黑门山皆为传统认定，非经文所载。）",
-      "finding": "zero-correct"
+      "finding": "zero-correct",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "kenan_born",
@@ -408,11 +421,12 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "0 处地点是正确的——所引经文确实没有指名任何可定位的地名。（如登山变像，太 17:1 只说「高山」，未指名；他泊山、黑门山皆为传统认定，非经文所载。）",
-      "finding": "zero-correct"
+      "finding": "zero-correct",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "mahalalel_born",
@@ -464,11 +478,12 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "0 处地点是正确的——所引经文确实没有指名任何可定位的地名。（如登山变像，太 17:1 只说「高山」，未指名；他泊山、黑门山皆为传统认定，非经文所载。）",
-      "finding": "zero-correct"
+      "finding": "zero-correct",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "jared_born",
@@ -520,11 +535,12 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "0 处地点是正确的——所引经文确实没有指名任何可定位的地名。（如登山变像，太 17:1 只说「高山」，未指名；他泊山、黑门山皆为传统认定，非经文所载。）",
-      "finding": "zero-correct"
+      "finding": "zero-correct",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "methuselah_born",
@@ -576,11 +592,12 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "0 处地点是正确的——所引经文确实没有指名任何可定位的地名。（如登山变像，太 17:1 只说「高山」，未指名；他泊山、黑门山皆为传统认定，非经文所载。）",
-      "finding": "zero-correct"
+      "finding": "zero-correct",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "lamech_born",
@@ -632,11 +649,12 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "0 处地点是正确的——所引经文确实没有指名任何可定位的地名。（如登山变像，太 17:1 只说「高山」，未指名；他泊山、黑门山皆为传统认定，非经文所载。）",
-      "finding": "zero-correct"
+      "finding": "zero-correct",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "enoch_walks",
@@ -696,11 +714,12 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "0 处地点是正确的——所引经文确实没有指名任何可定位的地名。（如登山变像，太 17:1 只说「高山」，未指名；他泊山、黑门山皆为传统认定，非经文所载。）",
-      "finding": "zero-correct"
+      "finding": "zero-correct",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "flood",
@@ -758,11 +777,12 @@
       "placeAt": [
         "8:4"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 4 章，1 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "shelah_born",
@@ -821,11 +841,12 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "0 处地点是正确的——所引经文确实没有指名任何可定位的地名。（如登山变像，太 17:1 只说「高山」，未指名；他泊山、黑门山皆为传统认定，非经文所载。）",
-      "finding": "zero-correct"
+      "finding": "zero-correct",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "babel",
@@ -860,11 +881,12 @@
         "11:2",
         "11:9"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，2 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "abram_called",
@@ -921,11 +943,12 @@
         "12:8",
         "12:9"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，7 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "lot_separates",
@@ -984,11 +1007,12 @@
         "13:12",
         "13:18"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，10 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "abrahamic_covenant",
@@ -1042,11 +1066,12 @@
         "15:18",
         "17:8"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，6 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "ishmael_born",
@@ -1097,11 +1122,12 @@
         "16:14",
         "16:14"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，5 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "sodom_destroyed",
@@ -1136,28 +1162,33 @@
         "a0aa664",
         "aa54aa4",
         "aacfcda",
-        "aa572e2",
-        "a6046fa"
+        "aa572e2"
       ],
       "placeNames": [
         "Sodom",
         "Jordan Valley",
         "Zoar",
-        "Gomorrah",
-        "Ammon"
+        "Gomorrah"
       ],
       "placeAt": [
         "19:1, 19:4, 19:24",
         "19:17, 19:25, 19:28",
         "19:22, 19:23, 19:30",
-        "19:24, 19:28",
-        "19:38"
+        "19:24, 19:28"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，5 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "gentilic": [
+        {
+          "name": "Ammon",
+          "at": "19:38",
+          "demonym": "Ammonites"
+        }
+      ],
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "isaac_born",
@@ -1188,11 +1219,12 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "0 处地点是正确的——所引经文确实没有指名任何可定位的地名。（如登山变像，太 17:1 只说「高山」，未指名；他泊山、黑门山皆为传统认定，非经文所载。）",
-      "finding": "zero-correct"
+      "finding": "zero-correct",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "isaac_offered",
@@ -1230,11 +1262,12 @@
         "22:14",
         "22:19"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，3 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "rebekah_marries",
@@ -1281,11 +1314,12 @@
         "24:62",
         "24:62"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，4 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "jacob_esau_born",
@@ -1315,11 +1349,12 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "0 处地点是正确的——所引经文确实没有指名任何可定位的地名。（如登山变像，太 17:1 只说「高山」，未指名；他泊山、黑门山皆为传统认定，非经文所载。）",
-      "finding": "zero-correct"
+      "finding": "zero-correct",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "job_trial",
@@ -1373,26 +1408,31 @@
       "placeIds": [
         "a324c4d",
         "ab0b2dd",
-        "a32a4f8",
-        "ac6b210"
+        "a32a4f8"
       ],
       "placeNames": [
         "Uz",
         "East",
-        "Chaldea",
-        "Naamah 2"
+        "Chaldea"
       ],
       "placeAt": [
         "1:1",
         "1:3",
-        "1:17",
-        "2:11, 42:9"
+        "1:17"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 5 章，4 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "gentilic": [
+        {
+          "name": "Naamah 2",
+          "at": "2:11",
+          "demonym": "Naamathite"
+        }
+      ],
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "jacob_blessing",
@@ -1424,11 +1464,12 @@
       "placeAt": [
         "27:43"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，1 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "jacobs_ladder",
@@ -1469,11 +1510,12 @@
         "28:19",
         "28:19"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，4 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "jacob_marries",
@@ -1508,11 +1550,12 @@
         "29:1",
         "29:4"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，2 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "joseph_sold",
@@ -1559,11 +1602,12 @@
         "37:25, 37:28, 37:36",
         "37:25"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，6 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "joseph_rises",
@@ -1607,11 +1651,12 @@
         "41:8, 41:19, 41:29",
         "41:45, 41:50"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，3 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "israel_egypt",
@@ -1671,11 +1716,12 @@
         "46:28, 46:29, 46:34",
         "47:11"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 3 章，7 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "israel_oppressed",
@@ -1723,11 +1769,12 @@
         "1:11",
         "1:22"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，4 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "moses_born",
@@ -1762,11 +1809,12 @@
       "placeAt": [
         "2:3, 2:5"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，1 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "burning_bush",
@@ -1807,11 +1855,12 @@
         "3:7, 3:8, 3:10",
         "4:9"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，4 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "plagues",
@@ -1858,11 +1907,12 @@
         "12:37",
         "12:37"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 6 章，6 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "exodus",
@@ -1908,11 +1958,12 @@
         "13:18",
         "13:20"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，5 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "red_sea",
@@ -1953,11 +2004,12 @@
         "14:2, 14:9",
         "14:5, 14:7, 14:8"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，4 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "manna",
@@ -2004,11 +2056,12 @@
         "16:1",
         "16:35"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，5 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "sinai",
@@ -2059,11 +2112,12 @@
         "19:2, 19:11, 19:18",
         "19:2"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 3 章，4 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "tabernacle",
@@ -2117,11 +2171,12 @@
         "7:38",
         "14:34, 18:3, 25:38"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 43 章，5 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "wilderness_40",
@@ -2167,7 +2222,6 @@
         "ac31fee",
         "a38ecff",
         "ac2cef0",
-        "ab95484",
         "aa805fb",
         "ae686c9",
         "a55c970",
@@ -2185,7 +2239,6 @@
         "Zoan",
         "Valley of Eshcol",
         "Kadesh-barnea",
-        "Amalek",
         "Great Sea",
         "Jordan",
         "Way of the Red Sea",
@@ -2205,15 +2258,23 @@
         "13:26",
         "13:29",
         "13:29",
-        "13:29",
         "14:25",
         "14:45"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "范围跨 3 章，算出 16 处地点，其中多半不属于本事件本身——跨章范围会连带收进人物的籍贯（如「书念的童女」带出书念、「基列人巴西莱」带出基列）与前后相邻的段落。每处地点后已标出所在经节，建议逐一核对保留哪些。",
-      "finding": "range-wide"
+      "finding": "range-wide",
+      "gentilic": [
+        {
+          "name": "Amalek",
+          "at": "13:29",
+          "demonym": "Amalekites"
+        }
+      ],
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "moses_dies",
@@ -2285,11 +2346,12 @@
         "34:6",
         "34:11"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，13 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "jordan_crossed",
@@ -2346,11 +2408,12 @@
         "4:19, 4:20",
         "4:23"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，8 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "jericho",
@@ -2388,11 +2451,12 @@
       "placeAt": [
         "6:1, 6:2, 6:17"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，1 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "land_divided",
@@ -2427,7 +2491,6 @@
         "a8c3105",
         "a98e4d7",
         "ae12e43",
-        "a9a2541",
         "a730058",
         "a5eb047",
         "a341fe8",
@@ -2437,12 +2500,10 @@
         "a0d784a",
         "af4f21c",
         "af4c2cd",
-        "a6046fa",
         "abf2fc1",
         "aa7a40a",
         "af6c325",
         "ae73b90",
-        "acae7cb",
         "ac3bc41",
         "a6fea11",
         "aaa6f7a",
@@ -2826,7 +2887,6 @@
         "Mearah",
         "Sidon",
         "Baal-gad",
-        "Gebal 1",
         "Lebanon",
         "Lebo-hamath",
         "Mount Hermon",
@@ -2836,12 +2896,10 @@
         "Dibon 1",
         "Medeba",
         "Valley of the Arnon",
-        "Ammon",
         "Heshbon",
         "Bashan",
         "Geshur",
         "Gilead 1",
-        "Maacah",
         "Salecah",
         "Ashtaroth",
         "Edrei 1",
@@ -3225,7 +3283,6 @@
         "13:4",
         "13:4, 19:28",
         "13:5",
-        "13:5",
         "13:5, 13:6",
         "13:5",
         "13:5, 13:11",
@@ -3235,12 +3292,10 @@
         "13:9, 13:17",
         "13:9, 13:16",
         "13:9, 13:16",
-        "13:10, 13:25",
         "13:10, 13:17, 13:21",
         "13:11, 13:12, 13:30",
         "13:11, 13:13",
         "13:11, 13:25, 13:31",
-        "13:11, 13:13",
         "13:11",
         "13:12, 13:31",
         "13:12, 13:31",
@@ -3612,11 +3667,32 @@
         "21:35",
         "22:17"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "范围是整卷或近整卷（10 章），算出 397 处地点。这不是一个「有地点的事件」，而是一个时段/范围。建议单独标为 period/book 类，不在地图上按单点显示。",
-      "finding": "scope"
+      "finding": "scope",
+      "gentilic": [
+        {
+          "name": "Gebal 1",
+          "at": "13:5",
+          "demonym": "Gebalites"
+        },
+        {
+          "name": "Ammon",
+          "at": "13:10",
+          "demonym": "Ammonites"
+        },
+        {
+          "name": "Maacah",
+          "at": "13:11",
+          "demonym": "Maacathites"
+        }
+      ],
+      "scope": "book",
+      "scopeNote": "范围为整卷或近整卷，所列地名是该卷提到的全部地点，不是单一事件的发生地。地图上按范围呈现，不钉单点。",
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "judges_period",
@@ -3694,7 +3770,6 @@
         "a43f60f",
         "aa0b1d6",
         "ab95484",
-        "a6046fa",
         "a529e92",
         "ae686c9",
         "a1aff30",
@@ -3746,7 +3821,6 @@
         "a804aeb",
         "ac71e65",
         "a159fa4",
-        "a6845b1",
         "a0f8af9",
         "aaff3e1",
         "a4cc324",
@@ -3845,7 +3919,6 @@
         "Mesopotamia",
         "Moab 1",
         "Amalek",
-        "Ammon",
         "City of Palms 1",
         "Jordan",
         "Seirah",
@@ -3897,7 +3970,6 @@
         "Kamon",
         "Philistia",
         "Syria 1",
-        "Maon",
         "Mizpah 1",
         "Tob",
         "Arnon",
@@ -3996,7 +4068,6 @@
         "3:8, 3:10",
         "3:12, 3:14, 3:15",
         "3:13, 5:14, 6:3",
-        "3:13, 10:6, 10:7",
         "3:13",
         "3:26, 3:28, 5:17",
         "3:26, 3:27",
@@ -4048,7 +4119,6 @@
         "10:5",
         "10:6",
         "10:6",
-        "10:12",
         "10:17, 11:11, 11:29",
         "11:3, 11:5",
         "11:13, 11:18, 11:22",
@@ -4092,11 +4162,27 @@
         "21:8, 21:9, 21:10",
         "21:19"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "范围是整卷或近整卷（21 章），算出 149 处地点。这不是一个「有地点的事件」，而是一个时段/范围。建议单独标为 period/book 类，不在地图上按单点显示。",
-      "finding": "scope"
+      "finding": "scope",
+      "gentilic": [
+        {
+          "name": "Ammon",
+          "at": "3:13",
+          "demonym": "Ammonites"
+        },
+        {
+          "name": "Maon",
+          "at": "10:12",
+          "demonym": "Maonites"
+        }
+      ],
+      "scope": "period",
+      "scopeNote": "这是一个时段，不是一个有地点的事件。地图上不钉单点。",
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "deborah",
@@ -4182,11 +4268,12 @@
         "5:19",
         "5:23"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，19 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "gideon",
@@ -4211,7 +4298,6 @@
       ],
       "placeIds": [
         "acc6d8e",
-        "ab95484",
         "ab0b2dd",
         "aa8edd2",
         "af301ca",
@@ -4238,7 +4324,6 @@
       ],
       "placeNames": [
         "Midian",
-        "Amalek",
         "East",
         "Gaza",
         "Egypt",
@@ -4266,7 +4351,6 @@
       "placeAt": [
         "6:1, 6:2, 6:3",
         "6:3, 6:33, 7:12",
-        "6:3, 6:33, 7:12",
         "6:4",
         "6:8, 6:9, 6:13",
         "6:11, 6:24, 8:27",
@@ -4290,11 +4374,20 @@
         "8:18",
         "8:31"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "范围跨 3 章，算出 25 处地点，其中多半不属于本事件本身——跨章范围会连带收进人物的籍贯（如「书念的童女」带出书念、「基列人巴西莱」带出基列）与前后相邻的段落。每处地点后已标出所在经节，建议逐一核对保留哪些。",
-      "finding": "range-wide"
+      "finding": "range-wide",
+      "gentilic": [
+        {
+          "name": "Amalek",
+          "at": "6:3",
+          "demonym": "Amalekites"
+        }
+      ],
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "samson",
@@ -4359,11 +4452,13 @@
         "16:3",
         "16:4"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "范围跨 4 章，算出 12 处地点，其中多半不属于本事件本身——跨章范围会连带收进人物的籍贯（如「书念的童女」带出书念、「基列人巴西莱」带出基列）与前后相邻的段落。每处地点后已标出所在经节，建议逐一核对保留哪些。",
-      "finding": "range-wide"
+      "finding": "range-wide",
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "ruth",
@@ -4401,11 +4496,12 @@
         "1:1, 1:2, 1:4",
         "4:11"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 4 章，3 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "samuel_called",
@@ -4443,11 +4539,12 @@
         "3:20",
         "3:21"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，3 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "saul_anointed",
@@ -4515,11 +4612,12 @@
         "10:27",
         "10:27"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，13 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "david_anointed",
@@ -4554,11 +4652,12 @@
         "16:1, 16:4, 16:18",
         "16:13"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，2 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "david_goliath",
@@ -4614,11 +4713,12 @@
         "17:52",
         "17:54"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，9 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "david_king",
@@ -4677,11 +4777,12 @@
         "5:25",
         "5:25"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，10 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "jerusalem_captured",
@@ -4722,11 +4823,12 @@
         "5:7",
         "5:9"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，4 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "davidic_covenant",
@@ -4758,11 +4860,12 @@
       "placeAt": [
         "7:6, 7:23"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，1 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "solomon_king",
@@ -4786,12 +4889,10 @@
         }
       ],
       "placeIds": [
-        "ac86af5",
         "af9cfc9",
         "a8bb3d8",
         "a2a303c",
         "a15257a",
-        "ae73b90",
         "a9ed5a4",
         "ae686c9",
         "ae5bfe9",
@@ -4805,12 +4906,10 @@
         "aede336"
       ],
       "placeNames": [
-        "Shunem",
         "En-rogel",
         "Serpent’s Stone",
         "Gihon 2",
         "Jerusalem",
-        "Gilead 1",
         "Bahurim",
         "Jordan",
         "Mahanaim",
@@ -4824,12 +4923,10 @@
         "Gibeon"
       ],
       "placeAt": [
-        "1:3, 2:17, 2:21",
         "1:9",
         "1:9",
         "1:33, 1:38, 1:44",
         "1:40, 2:11, 2:36",
-        "2:7",
         "2:8",
         "2:8",
         "2:8",
@@ -4842,11 +4939,25 @@
         "3:1",
         "3:4, 3:5"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "范围跨 3 章，算出 17 处地点，其中多半不属于本事件本身——跨章范围会连带收进人物的籍贯（如「书念的童女」带出书念、「基列人巴西莱」带出基列）与前后相邻的段落。每处地点后已标出所在经节，建议逐一核对保留哪些。",
-      "finding": "range-wide"
+      "finding": "range-wide",
+      "gentilic": [
+        {
+          "name": "Shunem",
+          "at": "1:3",
+          "demonym": "Shunammite"
+        },
+        {
+          "name": "Gilead 1",
+          "at": "2:7",
+          "demonym": "Gileadite"
+        }
+      ],
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "temple_built",
@@ -4911,11 +5022,13 @@
         "4:17",
         "4:17"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "范围跨 3 章，算出 9 处地点，其中多半不属于本事件本身——跨章范围会连带收进人物的籍贯（如「书念的童女」带出书念、「基列人巴西莱」带出基列）与前后相邻的段落。每处地点后已标出所在经节，建议逐一核对保留哪些。",
-      "finding": "range-wide"
+      "finding": "range-wide",
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "kingdom_divided",
@@ -4941,7 +5054,6 @@
       "placeIds": [
         "adf74d4",
         "af301ca",
-        "aa4680a",
         "a15257a",
         "a8a9ff9",
         "a64f355",
@@ -4950,7 +5062,6 @@
       "placeNames": [
         "Shechem",
         "Egypt",
-        "Shiloh",
         "Jerusalem",
         "Penuel",
         "Bethel 1",
@@ -4959,17 +5070,24 @@
       "placeAt": [
         "12:1, 12:25",
         "12:2, 12:20, 12:28",
-        "12:15",
         "12:18, 12:21, 12:27",
         "12:25",
         "12:29, 12:30, 12:32",
         "12:29, 12:30"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，7 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "gentilic": [
+        {
+          "name": "Shiloh",
+          "at": "12:15",
+          "demonym": "Shilonite"
+        }
+      ],
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "elijah_carmel",
@@ -5010,11 +5128,12 @@
         "18:40",
         "18:45, 18:46"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，4 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "elisha_succeeds",
@@ -5061,11 +5180,12 @@
         "2:25",
         "2:25"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，6 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "jonah",
@@ -5103,11 +5223,12 @@
         "1:3",
         "1:3, 4:2"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 4 章，3 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "israel_falls",
@@ -5172,11 +5293,12 @@
         "17:24, 17:31",
         "17:28"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，12 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "hezekiah_reform",
@@ -5326,11 +5448,13 @@
         "32:5",
         "32:30"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "范围跨 7 章，算出 38 处地点，其中多半不属于本事件本身——跨章范围会连带收进人物的籍贯（如「书念的童女」带出书念、「基列人巴西莱」带出基列）与前后相邻的段落。每处地点后已标出所在经节，建议逐一核对保留哪些。",
-      "finding": "range-wide"
+      "finding": "range-wide",
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "isaiah",
@@ -5399,7 +5523,6 @@
         "aa805fb",
         "aab30ec",
         "af725b1",
-        "a6046fa",
         "a2735ff",
         "aa0b1d6",
         "a702ab6",
@@ -5442,7 +5565,6 @@
         "a0a6365",
         "ae981db",
         "a59f6f5",
-        "a3a2a75",
         "acd48d6",
         "a68d1a9",
         "ab92800",
@@ -5537,7 +5659,6 @@
         "Great Sea",
         "Pathros",
         "Shinar",
-        "Ammon",
         "Edom",
         "Moab 1",
         "Sea of Egypt",
@@ -5580,7 +5701,6 @@
         "Dumah 2",
         "Mount Seir 1",
         "Arabia 1",
-        "Dedan",
         "Tema",
         "Kedar",
         "Kir 1",
@@ -5675,7 +5795,6 @@
         "11:11",
         "11:11",
         "11:11",
-        "11:14",
         "11:14, 34:5, 34:6",
         "11:14, 15:1, 15:2",
         "11:15",
@@ -5717,7 +5836,6 @@
         "21:2",
         "21:11",
         "21:11",
-        "21:13",
         "21:13",
         "21:14",
         "21:16, 21:17, 42:11",
@@ -5767,11 +5885,27 @@
         "66:19",
         "66:19"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "范围是整卷或近整卷（66 章），算出 136 处地点。这不是一个「有地点的事件」，而是一个时段/范围。建议单独标为 period/book 类，不在地图上按单点显示。",
-      "finding": "scope"
+      "finding": "scope",
+      "gentilic": [
+        {
+          "name": "Ammon",
+          "at": "11:14",
+          "demonym": "Ammonites"
+        },
+        {
+          "name": "Dedan",
+          "at": "21:13",
+          "demonym": "Dedanites"
+        }
+      ],
+      "scope": "book",
+      "scopeNote": "范围为整卷或近整卷，所列地名是该卷提到的全部地点，不是单一事件的发生地。地图上按范围呈现，不钉单点。",
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "josiah_reform",
@@ -5804,8 +5938,6 @@
         "a33cfcc",
         "ad81b79",
         "a37c8e6",
-        "a6046fa",
-        "aa0b1d6",
         "ac2c4c5",
         "a041bb3",
         "a3d1321",
@@ -5827,8 +5959,6 @@
         "Geba 3",
         "Topheth",
         "Valley of Hinnom",
-        "Ammon",
-        "Moab 1",
         "Mount of Olives",
         "Samaria 1",
         "Assyria",
@@ -5851,8 +5981,6 @@
         "23:10",
         "23:10",
         "23:13",
-        "23:13",
-        "23:13",
         "23:18, 23:19",
         "23:29",
         "23:29, 23:34",
@@ -5863,11 +5991,24 @@
         "23:33",
         "23:36"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，21 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "gentilic": [
+        {
+          "name": "Ammon",
+          "at": "23:13",
+          "demonym": "Ammonites"
+        },
+        {
+          "name": "Moab 1",
+          "at": "23:13",
+          "demonym": "Moabites"
+        }
+      ],
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "jeremiah",
@@ -5952,7 +6093,6 @@
         "abd9596",
         "a9bba61",
         "aede336",
-        "a071cb2",
         "a6d57ed",
         "a68aa8f",
         "af58391",
@@ -6091,7 +6231,6 @@
         "Mount Zion",
         "Kiriath-jearim",
         "Gibeon",
-        "Nehelam",
         "Ramah 1",
         "Corner Gate",
         "Tower of Hananel",
@@ -6230,7 +6369,6 @@
         "26:18",
         "26:20",
         "28:1, 41:12, 41:16",
-        "29:24, 29:31, 29:32",
         "31:15, 40:1",
         "31:38",
         "31:38",
@@ -6307,11 +6445,22 @@
         "51:27",
         "52:1"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "范围是整卷或近整卷（52 章），算出 137 处地点。这不是一个「有地点的事件」，而是一个时段/范围。建议单独标为 period/book 类，不在地图上按单点显示。",
-      "finding": "scope"
+      "finding": "scope",
+      "gentilic": [
+        {
+          "name": "Nehelam",
+          "at": "29:24",
+          "demonym": "Nehelamite"
+        }
+      ],
+      "scope": "book",
+      "scopeNote": "范围为整卷或近整卷，所列地名是该卷提到的全部地点，不是单一事件的发生地。地图上按范围呈现，不钉单点。",
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "judah_falls",
@@ -6387,11 +6536,13 @@
         "36:20, 36:22, 36:23",
         "52:1"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "范围跨 3 章，算出 11 处地点，其中多半不属于本事件本身——跨章范围会连带收进人物的籍贯（如「书念的童女」带出书念、「基列人巴西莱」带出基列）与前后相邻的段落。每处地点后已标出所在经节，建议逐一核对保留哪些。",
-      "finding": "range-wide"
+      "finding": "range-wide",
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "daniel_lions",
@@ -6423,11 +6574,12 @@
       "placeAt": [
         "6:10"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，1 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "return_zerubbabel",
@@ -6480,8 +6632,7 @@
         "ab3ad14",
         "ae4d198",
         "a0c97c0",
-        "a2b5ee9",
-        "ae73b90"
+        "a2b5ee9"
       ],
       "placeNames": [
         "Persia",
@@ -6513,8 +6664,7 @@
         "Cherub",
         "Immer",
         "Tel-harsha",
-        "Tel-melah",
-        "Gilead 1"
+        "Tel-melah"
       ],
       "placeAt": [
         "1:1, 1:2, 1:8",
@@ -6546,14 +6696,21 @@
         "2:59",
         "2:59",
         "2:59",
-        "2:59",
-        "2:61"
+        "2:59"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，31 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "gentilic": [
+        {
+          "name": "Gilead 1",
+          "at": "2:61",
+          "demonym": "Gileadite"
+        }
+      ],
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "temple_rebuilt",
@@ -6609,11 +6766,12 @@
         "6:14",
         "6:22"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，9 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "esther",
@@ -6663,11 +6821,12 @@
         "2:6",
         "2:6"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 10 章，7 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "ezra_returns",
@@ -6726,11 +6885,13 @@
         "10:31",
         "10:43"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "范围跨 4 章，算出 10 处地点，其中多半不属于本事件本身——跨章范围会连带收进人物的籍贯（如「书念的童女」带出书念、「基列人巴西莱」带出基列）与前后相邻的段落。每处地点后已标出所在经节，建议逐一核对保留哪些。",
-      "finding": "range-wide"
+      "finding": "range-wide",
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "nehemiah_walls",
@@ -6769,10 +6930,8 @@
         "a231f80",
         "a6057f5",
         "ac5ba1a",
-        "a2e3aa0",
         "a2fa712",
         "aede336",
-        "a662bda",
         "a736f6c",
         "ab0d85b",
         "addc3e7",
@@ -6789,7 +6948,6 @@
         "a4e8401",
         "aa9e65f",
         "a041bb3",
-        "a30c937",
         "a607415",
         "ae6bfe2"
       ],
@@ -6809,10 +6967,8 @@
         "Jericho 1",
         "Fish Gate",
         "Senaah",
-        "Tekoa",
         "Gate of Yeshanah",
         "Gibeon",
-        "Meronoth",
         "Mizpah 3",
         "Broad Wall",
         "Harim",
@@ -6829,7 +6985,6 @@
         "East Gate",
         "Muster Gate",
         "Samaria 1",
-        "Ashdod",
         "Hakkephirim",
         "Ono"
       ],
@@ -6849,9 +7004,7 @@
         "3:2",
         "3:3",
         "3:3",
-        "3:5, 3:27",
         "3:6",
-        "3:7",
         "3:7",
         "3:7, 3:15, 3:19",
         "3:8",
@@ -6869,15 +7022,33 @@
         "3:29",
         "3:31",
         "4:2",
-        "4:7",
         "6:2",
         "6:2"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "范围跨 6 章，算出 38 处地点，其中多半不属于本事件本身——跨章范围会连带收进人物的籍贯（如「书念的童女」带出书念、「基列人巴西莱」带出基列）与前后相邻的段落。每处地点后已标出所在经节，建议逐一核对保留哪些。",
-      "finding": "range-wide"
+      "finding": "range-wide",
+      "gentilic": [
+        {
+          "name": "Tekoa",
+          "at": "3:5",
+          "demonym": "Tekoites"
+        },
+        {
+          "name": "Meronoth",
+          "at": "3:7",
+          "demonym": "Meronothite"
+        },
+        {
+          "name": "Ashdod",
+          "at": "4:7",
+          "demonym": "Ashdodites"
+        }
+      ],
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "malachi",
@@ -6915,11 +7086,12 @@
         "2:11, 3:4",
         "4:4"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 4 章，3 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "intertestamental",
@@ -6936,11 +7108,15 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "两约之间事件，没有圣经引用，因此索引永远算不出地点。建议人工判断是否需要地点。",
-      "finding": "no-refs"
+      "finding": "no-refs",
+      "scope": "period",
+      "scopeNote": "这是一个时段，不是一个有地点的事件。地图上不钉单点。",
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "greek_period",
@@ -6957,11 +7133,21 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "两约之间事件，没有圣经引用，因此索引永远算不出地点。其摘要中已点明地名：亚历山大、波斯——建议人工补上坐标。",
-      "finding": "no-refs"
+      "finding": "no-refs",
+      "manualPlace": {
+        "id": "ab9696f",
+        "name": "Persia",
+        "zh": "波斯",
+        "lat": 34.8065,
+        "lon": 48.516247,
+        "why": "摘要明载所征服者为波斯帝国；此处标的是被征服的帝国，不是某一场战役。"
+      },
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "septuagint",
@@ -6978,11 +7164,21 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "两约之间事件，没有圣经引用，因此索引永远算不出地点。其摘要中已点明地名：亚历山大——建议人工补上坐标。",
-      "finding": "no-refs"
+      "finding": "no-refs",
+      "manualPlace": {
+        "id": "aee7248",
+        "name": "Alexandria",
+        "zh": "亚力山大",
+        "lat": 31.1825,
+        "lon": 29.8965,
+        "why": "摘要明载「在亚历山大被译为希腊文」。"
+      },
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "maccabees",
@@ -6999,11 +7195,21 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "两约之间事件，没有圣经引用，因此索引永远算不出地点。建议人工判断是否需要地点。",
-      "finding": "no-refs"
+      "finding": "no-refs",
+      "manualPlace": {
+        "id": "a15257a",
+        "name": "Jerusalem",
+        "zh": "耶路撒冷",
+        "lat": 31.776667,
+        "lon": 35.234167,
+        "why": "摘要明载「重新洁净圣殿」，圣殿在耶路撒冷。"
+      },
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "rome_judea",
@@ -7020,11 +7226,21 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "两约之间事件，没有圣经引用，因此索引永远算不出地点。其摘要中已点明地名：耶路撒冷、罗马——建议人工补上坐标。",
-      "finding": "no-refs"
+      "finding": "no-refs",
+      "manualPlace": {
+        "id": "a15257a",
+        "name": "Jerusalem",
+        "zh": "耶路撒冷",
+        "lat": 31.776667,
+        "lon": 35.234167,
+        "why": "摘要明载「庞培攻陷耶路撒冷」。"
+      },
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "john_baptist_born",
@@ -7065,11 +7281,12 @@
         "1:5, 1:65",
         "1:9, 1:21, 1:22"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，2 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "jesus_born",
@@ -7120,11 +7337,12 @@
         "2:4",
         "2:4"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，5 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "magi",
@@ -7165,11 +7383,12 @@
         "2:1, 2:3",
         "2:1, 2:5"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，4 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "flight_egypt",
@@ -7216,11 +7435,12 @@
         "2:22",
         "2:23"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，6 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "jesus_temple_12",
@@ -7255,11 +7475,12 @@
         "2:41, 2:42, 2:43",
         "2:43, 2:51"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，2 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "jesus_baptized",
@@ -7323,11 +7544,12 @@
         "3:1",
         "3:1"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 3 章，7 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "temptation",
@@ -7369,11 +7591,12 @@
         "4:5, 4:9",
         "4:1"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，2 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "disciples_called",
@@ -7419,11 +7642,12 @@
       "placeAt": [
         "4:18"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 3 章，1 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "sermon_mount",
@@ -7455,11 +7679,12 @@
       "placeAt": [
         "5:35"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 3 章，1 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "5000_fed",
@@ -7498,11 +7723,12 @@
       "placeAt": [
         "6:1"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，1 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "transfiguration",
@@ -7528,11 +7754,12 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "0 处地点是正确的——所引经文确实没有指名任何可定位的地名。（如登山变像，太 17:1 只说「高山」，未指名；他泊山、黑门山皆为传统认定，非经文所载。）",
-      "finding": "zero-correct"
+      "finding": "zero-correct",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "triumphal_entry",
@@ -7579,11 +7806,12 @@
         "21:11",
         "21:11"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，6 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "last_supper",
@@ -7632,11 +7860,12 @@
         "26:30",
         "22:10"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 3 章，2 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "crucifixion",
@@ -7696,11 +7925,12 @@
         "19:13",
         "19:19"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，8 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "resurrection",
@@ -7755,11 +7985,12 @@
         "21:2",
         "15:32"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 4 章，4 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "ascension",
@@ -7791,11 +8022,12 @@
       "placeAt": [
         "1:11"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，1 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "pentecost",
@@ -7866,11 +8098,12 @@
         "2:10",
         "2:22"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，14 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "stephen_martyred",
@@ -7899,7 +8132,6 @@
         "aee7248",
         "a197f19",
         "ad63819",
-        "a81cdb5",
         "af5884f",
         "a6d9af3",
         "a43f60f",
@@ -7919,7 +8151,6 @@
         "Alexandria",
         "Asia",
         "Cilicia",
-        "Cyrene",
         "Nazareth",
         "Haran",
         "Mesopotamia",
@@ -7939,7 +8170,6 @@
         "6:9",
         "6:9",
         "6:9",
-        "6:9",
         "6:14",
         "7:2, 7:4",
         "7:2",
@@ -7953,11 +8183,19 @@
         "7:36",
         "7:43"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，18 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "gentilic": [
+        {
+          "name": "Cyrene",
+          "at": "6:9",
+          "demonym": "Cyrenians"
+        }
+      ],
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "paul_converted",
@@ -8019,11 +8257,12 @@
         "9:35",
         "9:36, 9:38, 9:42"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，11 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "paul_journeys",
@@ -8109,11 +8348,12 @@
         "14:6, 14:8, 14:21",
         "14:25, 14:26"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 2 章，19 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "jerusalem_council",
@@ -8169,11 +8409,12 @@
         "15:38",
         "15:39"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，9 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "paul_rome",
@@ -8232,11 +8473,12 @@
         "28:17",
         "28:21"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，10 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     },
     {
       "id": "temple_destroyed",
@@ -8269,11 +8511,26 @@
       "placeIds": [],
       "placeNames": [],
       "placeAt": [],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "edited",
       "why": "所引经文（Matthew 24:1-2、Mark 13:1-2）是耶稣的预言，不是事件本身；事件发生在约 70 年，所引经文却在其约四十年前。因此算出 0 处地点。建议或改引记载事件的经文，或人工指定地点（耶路撒冷）。",
-      "finding": "ref-mismatch"
+      "finding": "ref-mismatch",
+      "manualPlace": {
+        "id": "a15257a",
+        "name": "Jerusalem",
+        "zh": "耶路撒冷",
+        "lat": 31.776667,
+        "lon": 35.234167,
+        "why": "所引经文（太 24:1-2、可 13:1-2）是耶稣的预言，早于事件约四十年，无法据以定位。事件本身发生在耶路撒冷。"
+      },
+      "propheticRefs": [
+        "Matthew 24:1-2",
+        "Mark 13:1-2"
+      ],
+      "refsNote": "所引经文是预言，不是事件的记载。地点为人工指定。",
+      "reviewedBy": "first pass adopted by owner",
+      "repaired": true
     },
     {
       "id": "john_patmos",
@@ -8305,11 +8562,12 @@
       "placeAt": [
         "1:9"
       ],
-      "status": "imported",
+      "status": "approved",
       "notes": "",
       "recommend": "approved",
       "why": "范围 1 章，1 处地点，规模与事件相称，未见异常。",
-      "finding": "ok"
+      "finding": "ok",
+      "reviewedBy": "first pass adopted by owner"
     }
   ]
 }
