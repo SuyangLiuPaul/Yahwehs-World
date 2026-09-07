@@ -71,6 +71,29 @@ for (const a of ancient) {
 
 places.sort((a, b) => (a.first ?? 9e9) - (b.first ?? 9e9));
 
+// ── the event index ───────────────────────────────────────────────────────
+// A place drawn once, at its first mention, throws away almost everything the
+// dataset knows: Jerusalem is named 955 times and Joshua 10 alone moves through
+// a dozen towns. So the timeline runs on verses, not places. Every verse that
+// names at least one place becomes one step, carrying the places it names, and
+// playing the index start to finish walks the whole biblical world in order.
+const placeIndex = new Map(places.map((p, i) => [p.id, i]));
+const byVerse = new Map();
+
+for (const a of ancient) {
+  const pi = placeIndex.get(a.id);
+  if (pi === undefined) continue;           // unlocated places cannot be drawn
+  for (const v of a.verses ?? []) {
+    const sort = Number(v.sort);
+    if (!Number.isFinite(sort)) continue;
+    let e = byVerse.get(sort);
+    if (!e) byVerse.set(sort, (e = { sort, osis: v.osis, readable: v.readable, p: [] }));
+    if (!e.p.includes(pi)) e.p.push(pi);
+  }
+}
+
+const events = [...byVerse.values()].sort((a, b) => a.sort - b.sort);
+
 const out = {
   meta: {
     source: 'OpenBible.info Bible Geocoding',
@@ -80,8 +103,11 @@ const out = {
     generated: new Date().toISOString(),
     located: places.length,
     unlocated: unlocated.length,
+    events: events.length,
+    instances: events.reduce((n, e) => n + e.p.length, 0),
   },
   places,
+  events,
   unlocated,
 };
 
@@ -97,4 +123,5 @@ for (const p of places) byPrec[p.precision] = (byPrec[p.precision] ?? 0) + 1;
 console.log('定位精度分布      ', byPrec);
 const disputed = places.filter((p) => p.rivals > 1).length;
 console.log(`有多个竞争考据的  ${disputed}  (${pct(disputed)})`);
+console.log(`事件（含地名的经文）${events.length}  共 ${events.reduce((n, e) => n + e.p.length, 0)} 个地点实例`);
 console.log(`输出              public/data/places.json`);

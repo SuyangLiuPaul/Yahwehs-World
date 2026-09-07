@@ -22,12 +22,24 @@ export interface Place {
   rivals: number;
 }
 
+/** One verse that names at least one locatable place. `p` indexes into
+ *  `PlacesBundle.places`. These are the timeline's steps. */
+export interface BibleEvent {
+  /** Canonical position, bbbcccvvv. */
+  sort: number;
+  osis: string;
+  readable: string;
+  p: number[];
+}
+
 export interface PlacesBundle {
   meta: {
     source: string; license: string; licenseUrl: string; sourceUrl: string;
     generated: string; located: number; unlocated: number;
+    events: number; instances: number;
   };
   places: Place[];
+  events: BibleEvent[];
   unlocated: Omit<Place, 'lon' | 'lat' | 'confidence' | 'precision' | 'precisionNote' | 'modern' | 'modernId' | 'rivals'>[];
 }
 

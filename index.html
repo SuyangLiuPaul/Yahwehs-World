@@ -33,10 +33,14 @@
 
   <footer id="timeline">
     <div class="readout">
-      <span id="t-book"></span>
+      <div class="reading">
+        <button id="t-play" type="button" aria-label="play">▶</button>
+        <span id="t-ref"></span>
+        <span id="t-here"></span>
+      </div>
       <span id="t-count"></span>
     </div>
-    <input id="t-range" type="range" min="1" max="66" value="66" step="1">
+    <input id="t-range" type="range" min="0" max="1" value="1" step="1">
     <div class="legend" id="legend"></div>
     <p class="credit">
       地名数据 <a href="https://www.openbible.info/geo/" target="_blank" rel="noopener">OpenBible.info</a> · CC BY 4.0 ·

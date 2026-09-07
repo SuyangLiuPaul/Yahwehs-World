@@ -96,9 +96,22 @@ body {
 }
 .readout {
   display: flex; align-items: baseline; justify-content: space-between;
-  margin-bottom: .5rem; font-size: .8rem;
+  gap: 1rem; margin-bottom: .5rem; font-size: .8rem;
 }
-#t-book { font-size: 1rem; font-weight: 600; letter-spacing: .1em; }
+.reading { display: flex; align-items: baseline; gap: .7rem; min-width: 0; }
+#t-play {
+  background: transparent; color: var(--gold); border: 1px solid #c9a22755;
+  border-radius: 50%; width: 1.9rem; height: 1.9rem; flex: none;
+  font-size: .7rem; cursor: pointer; line-height: 1; padding: 0;
+  transition: background .2s, color .2s;
+}
+#t-play:hover { background: #c9a2271a; color: var(--gold-bright); }
+#t-play.playing { color: var(--gold-bright); border-color: #e8c55a88; }
+#t-ref { font-size: 1rem; font-weight: 600; letter-spacing: .08em; flex: none; }
+#t-here {
+  color: #93a1b1; font-size: .78rem; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+}
 #t-count { color: var(--gold); font-family: var(--serif-en); letter-spacing: .1em; font-size: .78rem; }
 #t-range {
   width: 100%; appearance: none; height: 2px; background: #ffffff1f;

@@ -57,10 +57,19 @@ Of 1,342 ancient places, **1,332 resolve to coordinates** and 10 do not — the
 Bible names ten places nobody can locate today. They are kept in the bundle
 under `unlocated` rather than dropped.
 
-## Timeline: canonical order, not chronology
+## Timeline: every verse that names a place
 
-The slider moves through the 66 books in canonical order, not through calendar
-years. This is a deliberate v1 choice: biblical chronology is genuinely
+The slider does not step through books — it steps through **5,582 verses**, one
+per verse that names at least one locatable place, carrying **8,702 place
+instances** in canonical order. Playing it start to finish walks the entire
+biblical world: the first step is Genesis 2:8 at Eden, the last is Revelation
+21:10 at Jerusalem. Places stay lit once reached, so the map accumulates from
+one place to 1,275.
+
+`scripts/build-inventory.mjs` emits `public/data/inventory.json`, a complete
+book → chapter → verse audit of that coverage (61 books, 852 chapters).
+
+It is canonical order, not calendar years. This is a deliberate v1 choice: biblical chronology is genuinely
 contested (Exodus at ~1446 BC or ~1270 BC, a 176-year gap), and OpenBible
 carries no dates at all. Canonical order is objective and needs no position on
 those debates.
@@ -70,7 +79,9 @@ event, rendered as a band rather than a point wherever scholars disagree.
 
 ## Roadmap
 
-- [ ] Curated event layer with dated year-ranges and route animations (Exodus first)
+- [x] Every place-event in Scripture on a verse-level timeline with playback
+- [ ] Dated year-ranges (`yearEarly` / `yearLate` / `confidence`) over the verse index
+- [ ] Named-event layer (the Exodus as one arc, not 397 separate verses)
 - [ ] Levant terrain patch — DEM heightfield under the globe at close zoom
 - [ ] `place` field in the yswords-data news pipeline → the modern layer
 - [ ] `bible-evidence` archaeology pins

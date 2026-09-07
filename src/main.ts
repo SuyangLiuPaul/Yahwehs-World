@@ -4,7 +4,7 @@ import './style.css';
 import { paintBasemap } from './basemap.ts';
 import { createGlobe, createLighting, GLOBE_RADIUS, lonLatToVec3 } from './globe.ts';
 import { Markers } from './markers.ts';
-import { bookName, endOfBook, bookOf } from './books.ts';
+import { bookName, bookOf } from './books.ts';
 import { precisionOf, precisionStyle } from './theme.ts';
 import type { GeoJson, Place, PlacesBundle } from './types.ts';
 
@@ -17,6 +17,7 @@ const T = {
   loading:   { zh: '正在绘制世界…', en: 'Drawing the world…' },
   places:    { zh: (n: number) => `${n} 处地名`, en: (n: number) => `${n} places` },
   through:   { zh: '读到', en: 'Through' },
+  atRest:    { zh: '全书 · 拖动或播放', en: 'Whole canon · scrub or play' },
   firstIn:   { zh: '首次出现', en: 'First named in' },
   modernName:{ zh: '今名', en: 'Modern' },
   precision: { zh: '定位依据', en: 'Located by' },
@@ -79,7 +80,7 @@ createLighting(scene);
 const globe = createGlobe(paintBasemap({ land, coastline, lakes, rivers }));
 scene.add(globe);
 
-const markers = new Markers(bundle.places);
+const markers = new Markers(bundle.places, bundle.events);
 globe.add(markers.mesh);
 
 // A ring that snaps to the selected place — cheaper and clearer than
@@ -167,16 +168,81 @@ function renderPanel() {
 }
 
 // ── timeline ──────────────────────────────────────────────────────────────
+// One step per verse that names a place: 5,582 of them, in canonical order.
+// Playing it start to finish walks the entire biblical world.
 const range = $<HTMLInputElement>('t-range');
+range.max = String(bundle.events.length - 1);
+range.value = range.max;
 
 function applyCursor() {
-  const book = Number(range.value);
-  markers.setCursor(endOfBook(book));
-  $('t-book').textContent = `${T.through[locale]} ${bookName(book, locale)}`;
+  const i = Number(range.value);
+  markers.setCursor(i);
+  const ev = bundle.events[i];
+  if (ev) {
+    const book = bookName(bookOf(ev.sort), locale);
+    const cv = ev.readable.replace(/^.*?(\d+:\d+.*)$/, '$1');
+    $('t-ref').textContent = locale === 'zh' ? `${book} ${cv}` : ev.readable;
+    $('t-here').textContent = markers.activeIndices
+      .map((n) => bundle.places[n]!.name).join(' · ');
+  } else {
+    $('t-ref').textContent = T.atRest[locale];
+    $('t-here').textContent = '';
+  }
   $('t-count').textContent = T.places[locale](markers.visibleCount);
-  if (selected && selected.first !== null && bookOf(selected.first) > book) closePanel();
+  if (selected && !markers.isVisible(bundle.places.indexOf(selected))) closePanel();
 }
-range.addEventListener('input', applyCursor);
+range.addEventListener('input', () => { stop(); applyCursor(); });
+
+// ── playback ──────────────────────────────────────────────────────────────
+const VERSES_PER_SECOND = 7;
+let playing = false;
+let carry = 0;
+const playBtn = $('t-play');
+
+function play() {
+  // Restarting from the end would show nothing move, so rewind first.
+  if (Number(range.value) >= bundle.events.length - 1) { range.value = '0'; applyCursor(); }
+  playing = true; carry = 0;
+  playBtn.textContent = '❚❚';
+  playBtn.classList.add('playing');
+}
+function stop() {
+  playing = false;
+  playBtn.textContent = '▶';
+  playBtn.classList.remove('playing');
+}
+playBtn.addEventListener('click', () => (playing ? stop() : play()));
+
+function advance(dt: number) {
+  if (!playing) return;
+  carry += dt * VERSES_PER_SECOND;
+  const steps = Math.floor(carry);
+  if (steps < 1) return;
+  carry -= steps;
+  const next = Number(range.value) + steps;
+  if (next >= bundle.events.length - 1) { range.value = String(bundle.events.length - 1); stop(); }
+  else range.value = String(next);
+  applyCursor();
+}
+
+// The canon ranges from Tarshish to Persia, so without this half of the
+// playback would happen on the far side of the globe. The camera eases toward
+// whatever is being read, and yields the moment the user grabs the globe.
+let userDriving = false;
+controls.addEventListener('start', () => { userDriving = true; });
+controls.addEventListener('end', () => { userDriving = false; });
+
+const followTarget = new THREE.Vector3();
+function follow(dt: number) {
+  if (!playing || userDriving || markers.activeIndices.length === 0) return;
+  let lon = 0, lat = 0;
+  for (const n of markers.activeIndices) {
+    lon += bundle.places[n]!.lon; lat += bundle.places[n]!.lat;
+  }
+  lon /= markers.activeIndices.length; lat /= markers.activeIndices.length;
+  followTarget.copy(lonLatToVec3(lon, lat, camera.position.length() - GLOBE_RADIUS));
+  camera.position.lerp(followTarget, Math.min(1, dt * 1.1));
+}
 
 // ── legend & i18n ─────────────────────────────────────────────────────────
 function renderLegend() {
@@ -209,7 +275,10 @@ new ResizeObserver(fitToViewport).observe(document.body);
 
 const clock = new THREE.Clock();
 renderer.setAnimationLoop(() => {
+  const dt = Math.min(clock.getDelta(), 0.1);
   const t = clock.getElapsedTime();
+  advance(dt);
+  follow(dt);
   controls.update();
   // The selection ring breathes so the eye can find it again after orbiting.
   if (selectionRing.visible) selectionRing.scale.setScalar(1 + Math.sin(t * 2.4) * 0.12);
@@ -238,5 +307,9 @@ if (import.meta.env.DEV) {
     },
     select,
     get selected() { return selected; },
+    // The render loop is parked whenever the page is hidden, so playback has
+    // to be drivable without rAF to be testable at all.
+    advance, follow,
+    get playing() { return playing; },
   };
 }
