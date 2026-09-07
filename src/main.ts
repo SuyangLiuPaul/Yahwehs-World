@@ -13,6 +13,11 @@ let locale: Locale = 'zh';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
+/** A place's name in the reader's language. The English name is kept alongside
+ *  rather than replaced: it is what every other Bible atlas and every English
+ *  commentary calls the place, and a reader cross-referencing needs both. */
+const placeName = (p: Place) => (locale === 'zh' && p.zh) ? p.zh : p.name;
+
 const T = {
   loading:   { zh: '正在绘制世界…', en: 'Drawing the world…' },
   places:    { zh: (n: number) => `${n} 处地名`, en: (n: number) => `${n} places` },
@@ -143,9 +148,12 @@ function renderPanel() {
   const p = selected;
   if (!p) return;
   $('panel').hidden = false;
-  $('p-name').textContent = p.name;
-  $('p-modern').textContent = p.modern && p.modern !== p.name
-    ? `${T.modernName[locale]} · ${p.modern}` : '';
+  $('p-name').textContent = placeName(p);
+  // When a Chinese name is shown, the English one moves to the line below so
+  // the reader can still find the place in an English reference.
+  const alt = locale === 'zh' && p.zh ? p.name : '';
+  const modern = p.modern && p.modern !== p.name ? `${T.modernName[locale]} · ${p.modern}` : '';
+  $('p-modern').textContent = [alt, modern].filter(Boolean).join('　·　');
 
   const prec = precisionOf(p.precision);
   const badges = [`<span class="badge" style="color:${prec.color}">${locale === 'zh' ? prec.labelZh : prec.label}</span>`];
@@ -183,7 +191,7 @@ function applyCursor() {
     const cv = ev.readable.replace(/^.*?(\d+:\d+.*)$/, '$1');
     $('t-ref').textContent = locale === 'zh' ? `${book} ${cv}` : ev.readable;
     $('t-here').textContent = markers.activeIndices
-      .map((n) => bundle.places[n]!.name).join(' · ');
+      .map((n) => placeName(bundle.places[n]!)).join(' · ');
   } else {
     $('t-ref').textContent = T.atRest[locale];
     $('t-here').textContent = '';

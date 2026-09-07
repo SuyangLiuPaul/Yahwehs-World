@@ -17,6 +17,13 @@ export interface Place {
   precisionNote: string;
   modern: string;
   modernId: string;
+  /** 简体 / 繁體 name from the SeekSparks gazetteer, where one was found. */
+  zh?: string;
+  zhHant?: string;
+  /** How the Chinese name was matched: by name, by name minus OpenBible's
+   *  disambiguating ordinal, or by proximity. A proximity match is a weaker
+   *  claim and the UI can decline to use it. */
+  zhMatch?: 'name' | 'bare-name' | 'coord';
   /** Number of rival identifications that scored above zero. >1 means the
    *  location is genuinely disputed, and the UI says so. */
   rivals: number;
