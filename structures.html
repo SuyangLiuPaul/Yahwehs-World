@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>照着经文的尺寸 · 雅伟之界</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <canvas id="stage"></canvas>
+  <div id="feed"></div>
+  <div id="cubit">
+    <label for="c-range">一肘 = <b id="c-val"></b></label>
+    <input id="c-range" type="range" min="0" max="2" step="1" value="0">
+    <p id="c-note"></p>
+  </div>
+  <script type="module" src="/src/structures/main.ts"></script>
+</body>
+</html>
