@@ -42,6 +42,13 @@ const VIEW = 9;
 const stage = new THREE.Group();
 scene.add(stage);
 
+/** Bounds of whatever is currently staged, refreshed on every build. Framing
+ *  reads from this instead of assuming a shape, so a 134 m barge and a 1.5 m
+ *  lampstand both sit correctly in frame. */
+const bounds = new THREE.Box3();
+const boundsCentre = new THREE.Vector3();
+const boundsSize = new THREE.Vector3();
+
 let current = -1;
 const variantChoice = new Map<string, string>();
 
@@ -59,18 +66,26 @@ function show(index: number, cubitM: number) {
 
   // The figure is always present, even where it becomes invisible — a person
   // vanishing next to the object is the honest reading of that object's size.
+  // The figure stands BESIDE the object on the same ground line, not in front
+  // of it — put it nearer the camera and perspective alone makes a 1.7 m person
+  // tower over a 1.5 m lampstand, which is exactly the wrong reading.
+  const modelBox = new THREE.Box3().setFromObject(model);
   const person = humanFigure();
   person.scale.setScalar(k);
-  const halfLength = metres(s.dims.find((d) => d.key === 'length')?.cubits ?? 0, s, cubitM) / 2;
-  person.position.set((halfLength + 1.2 / k) * k, 0, (span * 0.55) * k);
+  person.position.set(modelBox.max.x + 1.7 * k * 0.75, 0, 0);
   stage.add(person);
 
-  const grid = new THREE.GridHelper(VIEW * 2.4, 24, 0x24354a, 0x16222f);
+  const grid = new THREE.GridHelper(VIEW * 2.6, 26, 0x24354a, 0x16222f);
   (grid.material as THREE.Material).transparent = true;
-  (grid.material as THREE.Material).opacity = 0.35;
+  (grid.material as THREE.Material).opacity = 0.3;
   stage.add(grid);
 
+  bounds.setFromObject(model).expandByPoint(person.position);
+  bounds.getCenter(boundsCentre);
+  bounds.getSize(boundsSize);
+
   current = index;
+  frameCamera();
 }
 
 // ── the feed ──────────────────────────────────────────────────────────────
@@ -177,30 +192,62 @@ new ResizeObserver(fit).observe(document.body);
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clock = new THREE.Clock();
+// Framing is state, not a side effect of the render loop. Computing it inside
+// the loop meant anything running without rAF — an offscreen snapshot, a page
+// that loads in a background tab — saw the camera at its construction default,
+// sitting inside the model.
+//
+// Wide screens put the panel on the left and push the model into the free
+// half; narrow screens stack it above the sheet instead. Either way the camera
+// stands back far enough that VIEW plus the sideways offset stay in the cone.
+function frameCamera(aspectW = innerWidth, aspectH = innerHeight) {
+  if (bounds.isEmpty()) return;
+  const wide = aspectW >= 900;
+  const aspect = Math.max(0.3, (aspectW || 1) / (aspectH || 1));
+
+  // Distance that fits the bounds both ways, then a margin. On wide screens the
+  // panel eats the left half, so the model is offset right and framed as if the
+  // viewport were narrower than it is.
+  const usable = wide ? 0.52 : 0.92;
+  const vFov = (camera.fov * Math.PI) / 180;
+  const fitH = (boundsSize.y * 0.5) / Math.tan(vFov / 2);
+  const fitW = (boundsSize.x * 0.5) / (Math.tan(vFov / 2) * aspect * usable);
+  const dist = Math.max(fitH, fitW) * 1.12 + boundsSize.z * 0.5;
+
+  const lookX = boundsCentre.x + (wide ? boundsSize.x * 0.35 : 0);
+  const lookY = boundsCentre.y;
+  camera.position.set(lookX - boundsSize.x * (wide ? 0.12 : 0), lookY + dist * 0.22, dist);
+  camera.lookAt(lookX, lookY, 0);
+}
+
 renderer.setAnimationLoop(() => {
   const t = clock.getElapsedTime();
   if (!reduced) stage.rotation.y = t * 0.16;
-
-  // Wide screens put the panel on the left, so the model is pushed right into
-  // the free half; narrow screens stack it above the sheet instead.
-  // Framed so the whole structure clears the panel and still fits the frame:
-  // the object spans VIEW units, so the camera has to stand back far enough
-  // that VIEW plus the sideways offset both stay inside the view cone.
-  const wide = innerWidth >= 900;
-  const dist = VIEW * (wide ? 1.75 : 1.95);
-  const lookX = wide ? VIEW * 0.22 : 0;
-  camera.position.set(lookX - VIEW * (wide ? 0.10 : 0), VIEW * (wide ? 0.5 : 0.62), dist);
-  camera.lookAt(lookX, VIEW * (wide ? 0.1 : 0.3), 0);
+  frameCamera();
   renderer.render(scene, camera);
 });
 
 fit();
+frameCamera();
 applyCubit();
 show(0, CUBITS[0]!.m);
 
 if (import.meta.env.DEV) {
   (globalThis as unknown as Record<string, unknown>).__structures = {
-    scene, camera, stage, STRUCTURES, CUBITS, show,
+    scene, camera, stage, renderer, STRUCTURES, CUBITS, show,
     get current() { return current; },
+    /** Forces one frame and returns it, so the render can be inspected even
+     *  where the page is not being painted (a hidden pane parks rAF). */
+    snapshot(w = 1400, h = 900) {
+      const prev = { w: renderer.domElement.width, h: renderer.domElement.height };
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      frameCamera(w, h);
+      renderer.render(scene, camera);
+      const url = renderer.domElement.toDataURL('image/png');
+      renderer.setSize(prev.w, prev.h, false);
+      return url;
+    },
   };
 }
