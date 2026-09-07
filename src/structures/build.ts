@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { metres, type Structure } from './specs.ts';
+import { buildMenorah, type BranchForm } from './menorah.ts';
 
 // Geometry is generated from the stated dimensions, never modelled by hand.
 // The consequence that matters: move the cubit slider and every structure
@@ -31,7 +32,7 @@ export function humanFigure(): THREE.Group {
   return g;
 }
 
-export function buildStructure(s: Structure, cubitM: number): THREE.Group {
+export function buildStructure(s: Structure, cubitM: number, form: BranchForm = 'arch'): THREE.Group {
   const g = new THREE.Group();
   const d = (key: string) => {
     const dim = s.dims.find((x) => x.key === key);
@@ -131,6 +132,13 @@ export function buildStructure(s: Structure, cubitM: number): THREE.Group {
       g.add(cube, edges);
       break;
     }
+    case 'menorah': {
+      // No dimension in the passage, so the height is the card's assumption and
+      // is labelled as one. Everything else is counted from the text.
+      const { group } = buildMenorah(s.assumedHeight ?? 1.5, form);
+      g.add(group);
+      break;
+    }
     default: {
       const m = box(L || 1, H || 1, W || 1, mat(0x888888));
       m.position.y = (H || 1) / 2;
@@ -142,6 +150,7 @@ export function buildStructure(s: Structure, cubitM: number): THREE.Group {
 
 /** Longest horizontal extent, used to frame the camera. */
 export const footprint = (s: Structure, cubitM: number) => {
+  if (s.dims.length === 0) return s.assumedHeight ?? 1.5;
   const of = (k: string) => {
     const dim = s.dims.find((x) => x.key === k);
     return dim ? metres(dim.cubits, s, cubitM) : 0;

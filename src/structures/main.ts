@@ -1,7 +1,9 @@
 import * as THREE from 'three';
 import './style.css';
 import { CUBITS, STRUCTURES, metres, type Structure } from './specs.ts';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { buildStructure, footprint, humanFigure } from './build.ts';
+import type { BranchForm } from './menorah.ts';
 
 // One WebGL context behind a scroll-snapped feed. Each card owns a structure;
 // scrolling swaps what the single scene holds, which keeps one context no
@@ -11,10 +13,18 @@ const canvas = document.getElementById('stage') as HTMLCanvasElement;
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
+// Metal is defined by what it reflects. Without an environment the gold of the
+// lampstand renders as flat brown, so the scene generates one procedurally —
+// no HDRI file, nothing to license, nothing to download.
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
 
 const viewport = () => ({ w: Math.max(1, innerWidth), h: Math.max(1, innerHeight) });
 
 const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
 const camera = new THREE.PerspectiveCamera(38, viewport().w / viewport().h, 0.05, 500);
 
 scene.add(new THREE.AmbientLight(0xffffff, 1.15));
@@ -33,6 +43,7 @@ const stage = new THREE.Group();
 scene.add(stage);
 
 let current = -1;
+const variantChoice = new Map<string, string>();
 
 function show(index: number, cubitM: number) {
   const s = STRUCTURES[index];
@@ -42,7 +53,7 @@ function show(index: number, cubitM: number) {
   const span = footprint(s, cubitM);
   const k = VIEW / span;
 
-  const model = buildStructure(s, cubitM);
+  const model = buildStructure(s, cubitM, (variantChoice.get(s.id) ?? 'arch') as BranchForm);
   model.scale.setScalar(k);
   stage.add(model);
 
@@ -87,12 +98,23 @@ function cardHtml(s: Structure, cubitM: number) {
       <span class="label">${r.zh}<span class="track"><i style="width:${(r.m / max * 100).toFixed(1)}%"></i></span></span>
       <span class="v">${fmt(r.m)}</span></div>`).join('');
 
+  const countRows = (s.counts ?? []).map((c) => `<tr>
+    <th>${c.zh}</th><td class="n">${c.n}</td><td class="m">经文明记</td><td class="r">${c.ref}</td></tr>`).join('');
+
+  const chosen = variantChoice.get(s.id) ?? s.variants?.options[0]?.id ?? '';
+  const variant = s.variants ? `<div class="variant" data-id="${s.id}">
+      <p class="vlabel">${s.variants.zh} —— 经文没有说，两种依据都在</p>
+      ${s.variants.options.map((o) => `<button type="button" class="vbtn${o.id === chosen ? ' on' : ''}" data-v="${o.id}">
+        <b>${o.zh}</b><span>${o.note}</span></button>`).join('')}
+    </div>` : '';
+
   return `<section class="card" data-i="${STRUCTURES.indexOf(s)}"><div class="inner">
     <p class="eyebrow">照着经文的尺寸</p>
     <h1>${s.zh}</h1>
     <p class="en">${s.en}</p>
     <blockquote>${s.textZh}<cite>${s.refZh}　·　${s.ref}</cite></blockquote>
-    <table><tbody>${dimRows}</tbody></table>
+    <table><tbody>${dimRows}${countRows}</tbody></table>
+    ${variant}
     <p class="punch">${s.punchZh.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</p>
     <div class="compare">${compare}</div>
     <details class="unstated"><summary>经文没有给的部分（${s.unstated.length}）</summary>
@@ -130,6 +152,18 @@ function applyCubit() {
   if (keep >= 0) show(keep, c.m);
 }
 cubitRange.addEventListener('input', applyCubit);
+
+// Switching reconstruction rebuilds the model in place — the counts and the
+// verses do not change, only the shape the text left open.
+feed.addEventListener('click', (e) => {
+  const btn = (e.target as HTMLElement).closest('.vbtn') as HTMLElement | null;
+  if (!btn) return;
+  const holder = btn.closest('.variant') as HTMLElement;
+  variantChoice.set(holder.dataset.id!, btn.dataset.v!);
+  holder.querySelectorAll('.vbtn').forEach((b) => b.classList.toggle('on', b === btn));
+  const i = STRUCTURES.findIndex((s) => s.id === holder.dataset.id);
+  if (i >= 0) show(i, CUBITS[Number(cubitRange.value)]!.m);
+});
 
 // ── loop ──────────────────────────────────────────────────────────────────
 function fit() {

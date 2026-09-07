@@ -101,3 +101,20 @@ details.unstated li { margin-bottom: .4rem; }
   .inner { padding: 1.1rem 1.1rem 1.3rem; }
   h1 { font-size: 1.5rem; }
 }
+
+/* Where two reconstructions are both defensible, the switch is part of the
+   content, not a setting — so it reads as a pair of cited readings. */
+.variant { margin: 0 0 1.1rem; display: grid; gap: .4rem; }
+.vlabel { margin: 0 0 .1rem; font-size: .7rem; color: var(--muted); letter-spacing: .04em; }
+.vbtn {
+  display: grid; gap: .15rem; text-align: left; cursor: pointer;
+  background: transparent; border: 1px solid var(--line); border-radius: 2px;
+  padding: .5rem .7rem; color: var(--muted); font-family: var(--body);
+  transition: border-color .18s, color .18s, background .18s;
+}
+.vbtn b { font-size: .8rem; font-weight: 600; color: var(--ink); }
+.vbtn span { font-size: .68rem; color: var(--faint); line-height: 1.5; }
+.vbtn:hover { border-color: #c9a22766; }
+.vbtn.on { border-color: var(--gold); background: #c9a2271a; }
+.vbtn.on b { color: var(--gold-bright); }
+.vbtn:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }

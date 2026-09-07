@@ -30,7 +30,20 @@ export interface Structure {
   textZh: string; textEn: string;
   dims: Dim[];
   /** Rendered geometry kind — each has a builder in build.ts. */
-  kind: 'ark' | 'chest' | 'court' | 'cube' | 'basin' | 'figure';
+  kind: 'ark' | 'chest' | 'court' | 'cube' | 'menorah';
+  /** Some things Scripture specifies by COUNT rather than by measurement. The
+   *  lampstand is the extreme case: every ornament is numbered and no
+   *  dimension is given anywhere. */
+  counts?: { zh: string; n: number; ref: string }[];
+  /** Height in metres for objects the text does not measure. Traditional, not
+   *  scriptural — the card has to say so. */
+  assumedHeight?: number;
+  /** Where two defensible reconstructions exist, both ship and the reader
+   *  chooses. The renderer does not get to settle what the text leaves open. */
+  variants?: {
+    key: string; zh: string;
+    options: { id: string; zh: string; note: string }[];
+  };
   /** Facts the text does not give. Naming them keeps the model honest. */
   unstated: string[];
   /** The line that should land once the thing is standing there at scale. */
@@ -104,6 +117,42 @@ export const STRUCTURES: Structure[] = [
     compare: [
       { zh: '网球场（长）', m: 23.77 },
       { zh: '篮球场（长）', m: 28 },
+    ],
+  },
+  {
+    id: 'menorah',
+    zh: '金灯台', en: 'The Lampstand',
+    ref: 'Exodus 25:31-40', refZh: '出埃及记 25:31-40',
+    textZh: '要用精金做一个灯台。灯台的座和干与杯、球、花，都要接连一块锤出来。灯台两旁要杈出六个枝子：这旁三个，那旁三个。这旁每枝上有三个杯，形状像杏花，有球有花……',
+    textEn: 'Make a lampstand of pure gold. Hammer out its base and shaft, and its flowerlike cups, buds and blossoms shall be of one piece with it. Six branches are to extend from the sides of the lampstand — three on one side and three on the other.',
+    dims: [],
+    counts: [
+      { zh: '枝子', n: 6, ref: '出 25:32' },
+      { zh: '每枝上的杏花杯', n: 3, ref: '出 25:33' },
+      { zh: '干上的杏花杯', n: 4, ref: '出 25:34' },
+      { zh: '枝子接处的球', n: 3, ref: '出 25:35' },
+      { zh: '灯盏', n: 7, ref: '出 25:37' },
+    ],
+    kind: 'menorah',
+    assumedHeight: 1.5,
+    unstated: [
+      '**灯台有多高，经文从头到尾没有说。** 出埃及记 25 章把每一个装饰的数量都数清楚了，却一个尺寸都没给。这里用的 1.5 米来自提图斯凯旋门浮雕的比例和犹太传统，不是经文。',
+      '**枝子是弧形还是直线，两千年来没有定论。** 提图斯凯旋门浮雕（公元 1 世纪，圣殿被毁后一代人之内所刻）是弧形，也是现存最早的图像；迈蒙尼德在牛津藏本《密西拿注释》中亲笔画的是直线斜出，其子亚伯拉罕作证那是有意的。上面的开关两种都能看。',
+      '**底座形状有争议。** 凯旋门浮雕上是分层的六角底座，与犹太传统记载的三足底座不符——这正是「浮雕是否忠实于圣殿原物」争论的核心证据。这里做的是接近浮雕的形式。',
+      '杏花杯的具体轮廓。经文说「形状像杏花，有球有花」，给了三段结构，没有给造型曲线。',
+    ],
+    variants: {
+      key: 'branchForm',
+      zh: '枝子形状',
+      options: [
+        { id: 'arch', zh: '弧形 · 提图斯凯旋门', note: '公元 1 世纪罗马浮雕，现存最早的图像。' },
+        { id: 'straight', zh: '直线 · 迈蒙尼德', note: '12 世纪，迈蒙尼德亲笔手稿；哈巴德沿用至今。' },
+      ],
+    },
+    punchZh: '**二十二个杏花杯、三个接处的球、七个灯盏** —— 这些不是装饰性的猜测，是出埃及记 25 章一个一个数出来的。全部用一他连得纯金（约 34 公斤）锤成一整块，不是拼接的。这是全圣经描述最繁复的一件器物，而它的高度经文一个字都没提。',
+    compare: [
+      { zh: '一个成年人（身高）', m: 1.7 },
+      { zh: '一扇标准门（高）', m: 2.0 },
     ],
   },
   {
