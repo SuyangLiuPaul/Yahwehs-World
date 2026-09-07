@@ -11,6 +11,7 @@ const slim = {
   meta: inv.meta,
   books: inv.books.map((b) => ({
     n: b.n, en: b.en, zh: b.zh, e: b.events, p: b.places,
+    tc: b.totalChapters, cc: b.coveredChapters,
     c: b.chapters.map((c) => ({ n: c.n, pl: c.places, v: c.verses.map((x) => [x.v, x.places]) })),
   })),
   none: inv.booksWithoutPlaces,
@@ -85,6 +86,8 @@ h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 600; letter-spacing: .04em
 
 /* ── controls ─────────────────────────────────────────────── */
 .controls { display: flex; gap: .8rem; align-items: center; margin: 1.6rem 0 .5rem; flex-wrap: wrap; }
+.only { display: inline-flex; align-items: center; gap: .4rem; font-size: .76rem; color: var(--muted); cursor: pointer; white-space: nowrap; }
+.only input { accent-color: var(--gold); cursor: pointer; }
 #q {
   flex: 1 1 16rem; min-width: 0; padding: .5rem .75rem; background: var(--surface);
   border: 1px solid var(--line); border-radius: 2px; color: var(--ink);
@@ -99,9 +102,12 @@ h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 600; letter-spacing: .04em
 /* ── ledger ───────────────────────────────────────────────── */
 .book { border-bottom: 1px solid var(--line); }
 .book > summary {
-  display: grid; grid-template-columns: 2.2rem 1fr auto auto; gap: .9rem;
+  display: grid; grid-template-columns: 2.2rem minmax(0, 1fr) 4.5rem auto auto; gap: .9rem;
   align-items: baseline; padding: .7rem .3rem; cursor: pointer; list-style: none;
 }
+/* How much of each book the map actually reaches, at a glance. */
+.bcov { height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; align-self: center; }
+.bcov i { display: block; height: 100%; background: var(--gold); }
 .book > summary::-webkit-details-marker { display: none; }
 .book > summary:hover { background: var(--gold-soft); }
 .book > summary:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
@@ -115,6 +121,9 @@ h1 { margin: 0 0 .4rem; font-size: 2rem; font-weight: 600; letter-spacing: .04em
 .chapters { padding: .2rem 0 1rem 2.2rem; display: grid; gap: 1px; }
 .ch { display: grid; grid-template-columns: 1.2rem 3.4rem 1fr; gap: .7rem; padding: .45rem .5rem; align-items: start; border-radius: 2px; }
 .ch:hover { background: var(--gold-soft); }
+/* A chapter naming no place is still a chapter — dimmed, never dropped. */
+.ch.empty-ch .cnum { color: var(--faint); }
+.cplaces .none { color: var(--faint); font-size: .76rem; letter-spacing: .06em; }
 .ch input { margin: .35rem 0 0; accent-color: var(--done); cursor: pointer; }
 .ch input:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
 .cnum { font-family: var(--mono); font-size: .76rem; color: var(--gold); font-variant-numeric: tabular-nums; padding-top: .12rem; }
@@ -140,8 +149,8 @@ footer a { color: var(--muted); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 @media (max-width: 640px) {
   .wrap { padding: 1.5rem 1rem 4rem; }
-  .book > summary { grid-template-columns: 1.8rem 1fr auto; gap: .5rem; }
-  .bdone { display: none; }
+  .book > summary { grid-template-columns: 1.8rem minmax(0, 1fr) auto; gap: .5rem; }
+  .bdone, .bcov { display: none; }
   .chapters { padding-left: .6rem; }
 }
 </style>
@@ -158,7 +167,9 @@ footer a { color: var(--muted); }
   <div class="totals">
     <div><b>${inv.meta.totalEvents.toLocaleString()}</b><span>含地名的经文</span></div>
     <div><b>${inv.meta.totalInstances.toLocaleString()}</b><span>地点实例</span></div>
-    <div><b>${inv.books.reduce((n, b) => n + b.chapters.length, 0).toLocaleString()}</b><span>涉及章数</span></div>
+    <div><b>${inv.meta.chaptersTotal.toLocaleString()}</b><span>全部章数</span></div>
+    <div><b>${inv.books.reduce((n, b) => n + b.coveredChapters, 0).toLocaleString()}</b><span>有地名的章</span></div>
+    <div><b>${(inv.meta.chaptersTotal - inv.books.reduce((n, b) => n + b.coveredChapters, 0)).toLocaleString()}</b><span>无地名的章</span></div>
     <div><b>${inv.meta.booksCovered}/66</b><span>涉及书卷</span></div>
     <div><b>${inv.meta.totalPlaces.toLocaleString()}</b><span>可定位地点</span></div>
   </div>
@@ -166,6 +177,7 @@ footer a { color: var(--muted); }
 
 <div class="controls">
   <input id="q" type="search" placeholder="搜索书卷或地名，例如 迦南 / Hebron / 使徒行传" autocomplete="off">
+  <label class="only"><input id="only" type="checkbox"> 只看有地名的章</label>
   <div class="progress"><span id="ptext">0 / 0 章已审</span><span class="bar"><i id="pbar"></i></span></div>
 </div>
 <p class="note" id="synced"></p>
@@ -202,30 +214,38 @@ function esc(s) {
 
 function render(filter) {
   const f = (filter || '').trim().toLowerCase();
+  const onlyPlaces = document.getElementById('only').checked;
   ledger.innerHTML = DATA.books.map((b) => {
-    const chapters = f
-      ? b.c.filter((c) => c.pl.some((p) => p.toLowerCase().includes(f)))
-      : b.c;
+    let chapters = onlyPlaces ? b.c.filter((c) => c.v.length > 0) : b.c;
+    if (f) chapters = chapters.filter((c) => c.pl.some((p) => p.toLowerCase().includes(f)));
     const bookHit = !f || b.zh.includes(f) || b.en.toLowerCase().includes(f);
     if (f && !bookHit && chapters.length === 0) return '';
-    const shown = (f && bookHit && chapters.length === 0) ? b.c : chapters;
+    const base = onlyPlaces ? b.c.filter((c) => c.v.length > 0) : b.c;
+    const shown = (f && bookHit && chapters.length === 0) ? base : chapters;
+    if (shown.length === 0 && !bookHit) return '';
     const done = b.c.filter((c) => checked.has(key(b.n, c.n))).length;
+    const pct = b.tc ? (b.cc / b.tc * 100).toFixed(0) : 0;
     return \`<details class="book" data-b="\${b.n}" data-complete="\${done === b.c.length ? 1 : 0}"\${f ? ' open' : ''}>
       <summary>
         <span class="bnum">\${String(b.n).padStart(2, '0')}</span>
         <span class="bname">\${esc(b.zh)}<em>\${esc(b.en)}</em></span>
-        <span class="bstat">\${b.e} 节 · \${b.p} 地</span>
+        <span class="bcov" title="\${b.cc} / \${b.tc} 章含地名"><i style="width:\${pct}%"></i></span>
+        <span class="bstat">\${b.cc}/\${b.tc} 章 · \${b.e} 节 · \${b.p} 地</span>
         <span class="bdone">\${done}/\${b.c.length}</span>
       </summary>
-      <div class="chapters">\${shown.map((c) => \`
-        <div class="ch" data-b="\${b.n}" data-c="\${c.n}">
+      <div class="chapters">\${shown.map((c) => {
+        const empty = c.v.length === 0;
+        return \`
+        <div class="ch\${empty ? ' empty-ch' : ''}" data-b="\${b.n}" data-c="\${c.n}">
           <input type="checkbox" \${checked.has(key(b.n, c.n)) ? 'checked' : ''} aria-label="第 \${c.n} 章已审">
           <span class="cnum">\${c.n} 章</span>
           <div class="cbody">
-            <div class="cplaces"><b>\${c.pl.map(esc).join(' · ')}</b><span class="ccount">\${c.v.length} 节</span><button class="vtoggle" type="button">经节</button></div>
-            <div class="verses">\${c.v.map((v) => \`\${c.n}:\${v[0]} <i>\${v[1].map(esc).join('、')}</i>\`).join('　')}</div>
+            <div class="cplaces">\${empty
+              ? '<span class="none">无地名</span>'
+              : \`<b>\${c.pl.map(esc).join(' · ')}</b><span class="ccount">\${c.v.length} 节</span><button class="vtoggle" type="button">经节</button>\`}</div>
+            \${empty ? '' : \`<div class="verses">\${c.v.map((v) => \`\${c.n}:\${v[0]} <i>\${v[1].map(esc).join('、')}</i>\`).join('　')}</div>\`}
           </div>
-        </div>\`).join('')}</div>
+        </div>\`; }).join('')}</div>
     </details>\`;
   }).join('');
   updateProgress();
@@ -284,6 +304,7 @@ try {
 render('');
 
 document.getElementById('q').addEventListener('input', (e) => render(e.target.value));
+document.getElementById('only').addEventListener('change', () => render(document.getElementById('q').value));
 
 (async () => {
   const db = window.claude && (await window.claude.use('db'));
