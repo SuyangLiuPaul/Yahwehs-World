@@ -1,0 +1,60 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   The design system. Every surface imports this and nothing redefines it.
+   Copying these values into three stylesheets is exactly how the last set
+   drifted into eighteen font sizes and eleven tracking values.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  /* ── palette ─────────────────────────────────────────────────────── */
+  --sea:          #0b1a2b;
+  --navy:         #0d1b2a;
+  --ground:       #060d16;
+  --surface:      #0e1d2e;
+  --surface-hi:   #14243a;
+
+  --gold:         #c9a227;
+  --gold-bright:  #e8c55a;
+  --gold-dim:     #9a7d2e;
+
+  --ink:          #ece2cd;   /* primary text */
+  --ink-2:        #a8b4c2;   /* secondary text */
+  --ink-3:        #74808e;   /* tertiary, captions */
+  --ink-4:        #4d5865;   /* disabled, hairlines on dark */
+
+  --line:         #22334a;
+  --line-gold:    #c9a2273d;
+
+  /* ── type scale — 1.18 ratio, in px so the steps are exact ───────── */
+  --fs-100: 11px;   /* micro: legend, credits, ordinals */
+  --fs-200: 12px;   /* meta, captions */
+  --fs-300: 13px;   /* interface default */
+  --fs-400: 14px;   /* body */
+  --fs-500: 16px;   /* emphasis, readout */
+  --fs-600: 21px;   /* section title */
+  --fs-700: 28px;   /* page title */
+
+  --lh-tight:  1.25;
+  --lh-snug:   1.45;
+  --lh-normal: 1.7;
+
+  /* Tracking has three jobs and therefore three values. CJK interface text
+     wants a hair; uppercase Latin micro-labels want a lot; nothing else
+     wants any. */
+  --tr-cjk:  .03em;
+  --tr-caps: .16em;
+  --tr-mark: .26em;
+
+  /* ── space — 4px base ────────────────────────────────────────────── */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px;
+
+  --radius: 2px;
+  --shadow: 0 12px 40px #00000073;
+
+  --ui:      'Noto Sans SC', 'PingFang SC', system-ui, -apple-system, sans-serif;
+  --display: 'Noto Serif SC', 'Songti SC', Georgia, serif;
+  --latin:   'Spectral', Georgia, serif;
+  --mono:    'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+
+  color-scheme: dark;
+}
+

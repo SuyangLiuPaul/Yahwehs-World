@@ -1,13 +1,7 @@
-:root {
-  --ink: #ece2cd; --muted: #93a1b1; --faint: #66717e;
-  --gold: #c9a227; --gold-bright: #e8c55a; --line: #24354a;
-  --body: 'Noto Serif SC', 'Songti SC', serif;
-  --display: 'Cormorant Garamond', Georgia, serif;
-  --mono: 'IBM Plex Mono', ui-monospace, monospace;
-  color-scheme: dark;
-}
+@import '../tokens.css';
+
 * { box-sizing: border-box; }
-body { margin: 0; background: #060d16; color: var(--ink); font-family: var(--body); overflow: hidden; }
+body { margin: 0; background: #060d16; color: var(--ink); font-family: var(--ui); overflow: hidden; }
 #stage { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; cursor: pointer; }
 
 #gate {
@@ -17,23 +11,23 @@ body { margin: 0; background: #060d16; color: var(--ink); font-family: var(--bod
   backdrop-filter: blur(3px);
 }
 #gate.hidden { display: none; }
-.eyebrow { margin: 0 0 .6rem; font-family: var(--mono); font-size: .66rem; letter-spacing: .26em; color: var(--gold); text-transform: uppercase; }
+.eyebrow { margin: 0 0 .6rem; font-family: var(--mono); font-size: var(--fs-100); letter-spacing: .26em; color: var(--gold); text-transform: uppercase; }
 #gate h1 { margin: 0 0 .8rem; font-size: clamp(2rem, 5vw, 3rem); font-weight: 600; letter-spacing: .06em; }
-.lede { margin: 0 0 1.4rem; max-width: 30rem; color: var(--muted); font-size: .92rem; line-height: 1.8; }
+.lede { margin: 0 0 1.4rem; max-width: 30rem; color: var(--ink-2); font-size: var(--fs-400); line-height: 1.8; }
 .tally { list-style: none; margin: 0 0 1.8rem; padding: 0; display: grid; gap: .3rem; max-width: 30rem; }
-.tally li { display: grid; grid-template-columns: 3.2rem 1fr auto; gap: .8rem; align-items: baseline; font-size: .82rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem; }
-.tally b { font-family: var(--mono); font-size: 1rem; font-weight: 500; color: var(--gold-bright); font-variant-numeric: tabular-nums; text-align: right; }
-.tally span { color: var(--muted); }
-.tally i { font-style: normal; font-family: var(--mono); font-size: .66rem; color: var(--faint); }
+.tally li { display: grid; grid-template-columns: 3.2rem 1fr auto; gap: .8rem; align-items: baseline; font-size: var(--fs-300); border-bottom: 1px solid var(--line); padding-bottom: .3rem; }
+.tally b { font-family: var(--mono); font-size: var(--fs-500); font-weight: 500; color: var(--gold-bright); font-variant-numeric: tabular-nums; text-align: right; }
+.tally span { color: var(--ink-2); }
+.tally i { font-style: normal; font-family: var(--mono); font-size: var(--fs-100); color: var(--ink-3); }
 #enter {
   background: transparent; border: 1px solid var(--gold); color: var(--gold-bright);
-  padding: .7rem 1.6rem; border-radius: 2px; font-family: var(--body); font-size: .9rem;
+  padding: .7rem 1.6rem; border-radius: var(--radius); font-family: var(--ui); font-size: var(--fs-400);
   letter-spacing: .12em; cursor: pointer; transition: background .2s;
 }
 #enter:hover { background: #c9a2271f; }
 #enter:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-.keys { margin: 1rem 0 0; font-size: .72rem; color: var(--faint); letter-spacing: .04em; }
-.keys b { color: var(--muted); font-family: var(--mono); font-weight: 500; }
+.keys { margin: 1rem 0 0; font-size: var(--fs-200); color: var(--ink-3); letter-spacing: .04em; }
+.keys b { color: var(--ink-2); font-family: var(--mono); font-weight: 500; }
 
 #hud {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; pointer-events: none;
@@ -42,8 +36,8 @@ body { margin: 0; background: #060d16; color: var(--ink); font-family: var(--bod
   display: grid; gap: .25rem;
 }
 #hud[hidden] { display: none; }
-#where { font-size: 1.05rem; font-weight: 600; letter-spacing: .1em; }
-#verse { font-family: var(--mono); font-size: .72rem; color: var(--gold); letter-spacing: .1em; }
+#where { font-size: var(--fs-500); font-weight: 600; letter-spacing: .1em; }
+#verse { font-family: var(--mono); font-size: var(--fs-200); color: var(--gold); letter-spacing: .1em; }
 /* A crosshair, so the centre of the view is findable inside a linen court. */
 #hud::after {
   content: ''; position: fixed; left: 50%; top: 50%; width: 3px; height: 3px;
