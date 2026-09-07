@@ -4,7 +4,8 @@
     "zh": "创世记",
     "en": "Genesis",
     "generated": "2026-09-07T22:49:02.827Z",
-    "provenance": "候选由 Claude 依经文段落边界提出，未经审阅。名称与范围是提案，地点由脚本从 OpenBible 逐节索引算出，不是提案。"
+    "provenance": "候选由 Claude 依经文段落边界提出，未经审阅。名称与范围是提案，地点由脚本从 OpenBible 逐节索引算出，不是提案。",
+    "dating": "年代不另立体系：与 SeekSparks 年表重叠的取年表之年；年表未收但经文自述年数的，按经文所述年数自年表锚点推算，并列出算式与所据经文；其余按年表中前后两个已定年事件夹逼为区间。每条都带 dateSource，注明是哪一类以及所据何处。"
   },
   "events": [
     {
@@ -17,14 +18,20 @@
       "ref": "Genesis 1:1–2:3",
       "refZh": "创世记 1:1–2:3",
       "summaryZh": "神在六日中创造天地万物，第七日安息。",
-      "yearEarly": null,
-      "yearLate": null,
-      "dateBasis": "创世记 1—11 章没有可与外部年表对应的锚点。厄谢尔等传统年表由家谱推算，其前提（家谱无断代、寿数按字面）本身有争议，这里不采用任何一种。",
-      "dateConfidence": "none",
+      "yearEarly": -4114,
+      "yearLate": -4114,
+      "dateBasis": "与 SeekSparks 年表重叠（创造），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [],
       "placeNames": [],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "creation"
+        ]
+      }
     },
     {
       "id": "genesis-eden",
@@ -36,10 +43,10 @@
       "ref": "Genesis 2:4–2:25",
       "refZh": "创世记 2:4–2:25",
       "summaryZh": "神把人安置在伊甸的园子里，为他造配偶。",
-      "yearEarly": null,
-      "yearLate": null,
-      "dateBasis": "创世记 1—11 章没有可与外部年表对应的锚点。厄谢尔等传统年表由家谱推算，其前提（家谱无断代、寿数按字面）本身有争议，这里不采用任何一种。",
-      "dateConfidence": "none",
+      "yearEarly": -4114,
+      "yearLate": -4114,
+      "dateBasis": "与 SeekSparks 年表重叠（创造、亚当夏娃在伊甸园），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "af3daeb",
         "ad7e819",
@@ -61,7 +68,14 @@
         "Tigris"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "creation",
+          "eden"
+        ]
+      }
     },
     {
       "id": "genesis-fall",
@@ -73,10 +87,10 @@
       "ref": "Genesis 3:1–3:24",
       "refZh": "创世记 3:1–3:24",
       "summaryZh": "人违背神的吩咐，被逐出伊甸园。",
-      "yearEarly": null,
-      "yearLate": null,
-      "dateBasis": "创世记 1—11 章没有可与外部年表对应的锚点。厄谢尔等传统年表由家谱推算，其前提（家谱无断代、寿数按字面）本身有争议，这里不采用任何一种。",
-      "dateConfidence": "none",
+      "yearEarly": -4104,
+      "yearLate": -4104,
+      "dateBasis": "与 SeekSparks 年表重叠（人类堕落），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "af3daeb"
       ],
@@ -84,7 +98,13 @@
         "Eden 1"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "fall"
+        ]
+      }
     },
     {
       "id": "genesis-cain-abel",
@@ -96,10 +116,10 @@
       "ref": "Genesis 4:1–4:16",
       "refZh": "创世记 4:1–4:16",
       "summaryZh": "该隐在田间杀了他兄弟亚伯，被逐去流离飘荡。",
-      "yearEarly": null,
-      "yearLate": null,
-      "dateBasis": "创世记 1—11 章没有可与外部年表对应的锚点。厄谢尔等传统年表由家谱推算，其前提（家谱无断代、寿数按字面）本身有争议，这里不采用任何一种。",
-      "dateConfidence": "none",
+      "yearEarly": -4064,
+      "yearLate": -4064,
+      "dateBasis": "与 SeekSparks 年表重叠（该隐杀亚伯），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "af3daeb"
       ],
@@ -107,7 +127,13 @@
         "Eden 1"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "cain_abel"
+        ]
+      }
     },
     {
       "id": "genesis-flood",
@@ -119,10 +145,10 @@
       "ref": "Genesis 6:9–9:17",
       "refZh": "创世记 6:9–9:17",
       "summaryZh": "挪亚造方舟，洪水淹没全地，神与他立虹为记的约。",
-      "yearEarly": null,
-      "yearLate": null,
-      "dateBasis": "创世记 1—11 章没有可与外部年表对应的锚点。厄谢尔等传统年表由家谱推算，其前提（家谱无断代、寿数按字面）本身有争议，这里不采用任何一种。",
-      "dateConfidence": "none",
+      "yearEarly": -2458,
+      "yearLate": -2458,
+      "dateBasis": "与 SeekSparks 年表重叠（挪亚洪水），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "ab89be9"
       ],
@@ -130,7 +156,13 @@
         "Ararat"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "flood"
+        ]
+      }
     },
     {
       "id": "genesis-babel",
@@ -142,10 +174,10 @@
       "ref": "Genesis 11:1–11:9",
       "refZh": "创世记 11:1–11:9",
       "summaryZh": "人在示拿地建城和塔，神变乱他们的口音，把他们分散。",
-      "yearEarly": null,
-      "yearLate": null,
-      "dateBasis": "创世记 1—11 章没有可与外部年表对应的锚点。厄谢尔等传统年表由家谱推算，其前提（家谱无断代、寿数按字面）本身有争议，这里不采用任何一种。",
-      "dateConfidence": "none",
+      "yearEarly": -2314,
+      "yearLate": -2314,
+      "dateBasis": "与 SeekSparks 年表重叠（巴别塔），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "af725b1",
         "ab8fdbc"
@@ -155,7 +187,13 @@
         "Babel"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "babel"
+        ]
+      }
     },
     {
       "id": "genesis-abram-call",
@@ -167,10 +205,10 @@
       "ref": "Genesis 12:1–12:9",
       "refZh": "创世记 12:1–12:9",
       "summaryZh": "亚伯兰离开哈兰往迦南地去，神应许使他成为大国。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -2091,
+      "yearLate": -2091,
+      "dateBasis": "与 SeekSparks 年表重叠（亚伯兰蒙召），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "a6d9af3",
         "a581f0c",
@@ -190,7 +228,13 @@
         "Negeb"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "abram_called"
+        ]
+      }
     },
     {
       "id": "genesis-abram-egypt",
@@ -202,10 +246,10 @@
       "ref": "Genesis 12:10–12:20",
       "refZh": "创世记 12:10–12:20",
       "summaryZh": "因迦南地饥荒，亚伯兰下埃及寄居，称撒莱为妹子。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -2091,
+      "yearLate": -2086,
+      "dateBasis": "未直接定年。本段经文位于年表中「亚伯兰蒙召」（-2091）与「亚伯兰与罗得分开」（-2086）之间，故取此区间为界。区间宽 5 年。",
+      "dateConfidence": "inferred",
       "placeIds": [
         "a581f0c",
         "af301ca"
@@ -215,7 +259,15 @@
         "Egypt"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "spine-bounded",
+        "between": [
+          "亚伯兰蒙召",
+          "亚伯兰与罗得分开"
+        ],
+        "source": "SeekSparks bible_timeline.json"
+      }
     },
     {
       "id": "genesis-abram-lot-part",
@@ -227,10 +279,10 @@
       "ref": "Genesis 13:1–13:18",
       "refZh": "创世记 13:1–13:18",
       "summaryZh": "因牧人相争，罗得选了约旦河的全平原，亚伯兰住在迦南地。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -2086,
+      "yearLate": -2086,
+      "dateBasis": "与 SeekSparks 年表重叠（亚伯兰与罗得分开），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "af301ca",
         "a1cb244",
@@ -256,7 +308,13 @@
         "Hebron"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "lot_separates"
+        ]
+      }
     },
     {
       "id": "genesis-war-kings",
@@ -268,10 +326,10 @@
       "ref": "Genesis 14:1–14:16",
       "refZh": "创世记 14:1–14:16",
       "summaryZh": "四王掳走罗得，亚伯兰率壮丁追到但，把人和财物夺回。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -2086,
+      "yearLate": -2080,
+      "dateBasis": "未直接定年。本段经文位于年表中「亚伯兰与罗得分开」（-2086）与「与亚伯拉罕立约」（-2080）之间，故取此区间为界。区间宽 6 年。",
+      "dateConfidence": "inferred",
       "placeIds": [
         "a7e3a59",
         "a6f4a6d",
@@ -319,7 +377,15 @@
         "Hobah"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "spine-bounded",
+        "between": [
+          "亚伯兰与罗得分开",
+          "与亚伯拉罕立约"
+        ],
+        "source": "SeekSparks bible_timeline.json"
+      }
     },
     {
       "id": "genesis-melchizedek",
@@ -331,10 +397,10 @@
       "ref": "Genesis 14:17–14:24",
       "refZh": "创世记 14:17–14:24",
       "summaryZh": "撒冷王麦基洗德带饼和酒出来迎接亚伯兰并为他祝福。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -2086,
+      "yearLate": -2080,
+      "dateBasis": "未直接定年。本段经文位于年表中「亚伯兰与罗得分开」（-2086）与「与亚伯拉罕立约」（-2080）之间，故取此区间为界。区间宽 6 年。",
+      "dateConfidence": "inferred",
       "placeIds": [
         "ac9f98d",
         "a0aa664",
@@ -348,7 +414,15 @@
         "Salem"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "spine-bounded",
+        "between": [
+          "亚伯兰与罗得分开",
+          "与亚伯拉罕立约"
+        ],
+        "source": "SeekSparks bible_timeline.json"
+      }
     },
     {
       "id": "genesis-abram-covenant",
@@ -360,10 +434,10 @@
       "ref": "Genesis 15:1–15:21",
       "refZh": "创世记 15:1–15:21",
       "summaryZh": "神以火炬经过分开的牲畜，与亚伯兰立约应许那地。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -2080,
+      "yearLate": -2080,
+      "dateBasis": "与 SeekSparks 年表重叠（与亚伯拉罕立约、以色列在埃及受苦），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "a69c1d4",
         "a32a4f8",
@@ -379,7 +453,14 @@
         "Euphrates"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "abrahamic_covenant",
+          "israel_oppressed"
+        ]
+      }
     },
     {
       "id": "genesis-hagar-ishmael",
@@ -391,10 +472,10 @@
       "ref": "Genesis 16:1–16:16",
       "refZh": "创世记 16:1–16:16",
       "summaryZh": "夏甲从撒莱面前逃走，在旷野水泉旁遇见耶和华的使者。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -2080,
+      "yearLate": -2080,
+      "dateBasis": "与 SeekSparks 年表重叠（以实玛利出生），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "a581f0c",
         "acdbce0",
@@ -410,7 +491,13 @@
         "Kadesh-barnea"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "ishmael_born"
+        ]
+      }
     },
     {
       "id": "genesis-circumcision",
@@ -422,10 +509,10 @@
       "ref": "Genesis 17:1–17:27",
       "refZh": "创世记 17:1–17:27",
       "summaryZh": "神改亚伯兰的名为亚伯拉罕，立割礼为约的记号。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -2080,
+      "yearLate": -2080,
+      "dateBasis": "与 SeekSparks 年表重叠（与亚伯拉罕立约），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "a581f0c"
       ],
@@ -433,7 +520,13 @@
         "Canaan"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "abrahamic_covenant"
+        ]
+      }
     },
     {
       "id": "genesis-sodom",
@@ -445,10 +538,10 @@
       "ref": "Genesis 18:1–19:38",
       "refZh": "创世记 18:1–19:38",
       "summaryZh": "亚伯拉罕为所多玛代求，两城被硫磺与火所毁，罗得得救。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -2067,
+      "yearLate": -2067,
+      "dateBasis": "与 SeekSparks 年表重叠（所多玛蛾摩拉被毁），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "a0aa664",
         "aa572e2",
@@ -464,7 +557,13 @@
         "Ammon"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "sodom_destroyed"
+        ]
+      }
     },
     {
       "id": "genesis-isaac-born",
@@ -476,14 +575,20 @@
       "ref": "Genesis 21:1–21:7",
       "refZh": "创世记 21:1–21:7",
       "summaryZh": "撒拉照神所应许的日期给亚伯拉罕生了以撒。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -2066,
+      "yearLate": -2066,
+      "dateBasis": "与 SeekSparks 年表重叠（以撒出生），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [],
       "placeNames": [],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "isaac_born"
+        ]
+      }
     },
     {
       "id": "genesis-akedah",
@@ -495,10 +600,10 @@
       "ref": "Genesis 22:1–22:19",
       "refZh": "创世记 22:1–22:19",
       "summaryZh": "亚伯拉罕带以撒往摩利亚地的山上，神以公羊代替。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -2055,
+      "yearLate": -2055,
+      "dateBasis": "与 SeekSparks 年表重叠（献以撒），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "adaf385",
         "a559399",
@@ -510,7 +615,13 @@
         "Beersheba 2"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "isaac_offered"
+        ]
+      }
     },
     {
       "id": "genesis-machpelah",
@@ -522,10 +633,10 @@
       "ref": "Genesis 23:1–23:20",
       "refZh": "创世记 23:1–23:20",
       "summaryZh": "亚伯拉罕向赫人买下麦比拉洞作坟地，葬撒拉在那里。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -2029,
+      "yearLate": -2029,
+      "dateBasis": "以撒出生 -2066（SeekSparks 年表）＋ 撒拉死时 127 岁（创 23:1）− 生以撒时 90 岁（创 17:17）＝ -2029",
+      "dateConfidence": "inferred",
       "placeIds": [
         "a581f0c",
         "a85151a",
@@ -539,7 +650,15 @@
         "Mamre"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "scripture-interval",
+        "refs": [
+          "创 17:17",
+          "创 23:1"
+        ],
+        "anchoredOn": "SeekSparks bible_timeline.json"
+      }
     },
     {
       "id": "genesis-rebekah",
@@ -551,10 +670,10 @@
       "ref": "Genesis 24:1–24:67",
       "refZh": "创世记 24:1–24:67",
       "summaryZh": "老仆人往米所波大米拿鹤的城，在井旁遇见利百加。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -2026,
+      "yearLate": -2026,
+      "dateBasis": "与 SeekSparks 年表重叠（利百加嫁以撒），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "a43f60f",
         "aff43ac",
@@ -568,7 +687,13 @@
         "Negeb"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "rebekah_marries"
+        ]
+      }
     },
     {
       "id": "genesis-jacob-esau-birth",
@@ -580,10 +705,10 @@
       "ref": "Genesis 25:19–25:34",
       "refZh": "创世记 25:19–25:34",
       "summaryZh": "双子在利百加腹中相争，以扫为一碗红豆汤卖了长子的名分。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -2006,
+      "yearLate": -2006,
+      "dateBasis": "与 SeekSparks 年表重叠（雅各以扫出生），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "a8ec7ba"
       ],
@@ -591,7 +716,13 @@
         "Paddan-aram"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "jacob_esau_born"
+        ]
+      }
     },
     {
       "id": "genesis-isaac-gerar",
@@ -603,10 +734,10 @@
       "ref": "Genesis 26:1–26:33",
       "refZh": "创世记 26:1–26:33",
       "summaryZh": "以撒因饥荒住在基拉耳，重挖他父亲的井，与亚比米勒立约。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -2006,
+      "yearLate": -1929,
+      "dateBasis": "未直接定年。本段经文位于年表中「雅各以扫出生」（-2006）与「雅各夺以扫祝福」（-1929）之间，故取此区间为界。区间宽 77 年。",
+      "dateConfidence": "inferred",
       "placeIds": [
         "a3f5814",
         "af301ca",
@@ -626,7 +757,15 @@
         "Beersheba 2"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "spine-bounded",
+        "between": [
+          "雅各以扫出生",
+          "雅各夺以扫祝福"
+        ],
+        "source": "SeekSparks bible_timeline.json"
+      }
     },
     {
       "id": "genesis-stolen-blessing",
@@ -638,10 +777,10 @@
       "ref": "Genesis 27:1–27:45",
       "refZh": "创世记 27:1–27:45",
       "summaryZh": "雅各假冒以扫，从眼目昏花的以撒手中得了祝福。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -1929,
+      "yearLate": -1929,
+      "dateBasis": "与 SeekSparks 年表重叠（雅各夺以扫祝福），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "a6d9af3"
       ],
@@ -649,7 +788,13 @@
         "Haran"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "jacob_blessing"
+        ]
+      }
     },
     {
       "id": "genesis-bethel-ladder",
@@ -661,10 +806,10 @@
       "ref": "Genesis 28:10–28:22",
       "refZh": "创世记 28:10–28:22",
       "summaryZh": "雅各在路斯梦见梯子立在地上，醒来称那地方为伯特利。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -1929,
+      "yearLate": -1929,
+      "dateBasis": "与 SeekSparks 年表重叠（雅各天梯），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "a075d61",
         "a6d9af3",
@@ -678,7 +823,13 @@
         "Luz 1"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "jacobs_ladder"
+        ]
+      }
     },
     {
       "id": "genesis-jacob-haran",
@@ -690,10 +841,10 @@
       "ref": "Genesis 29:1–31:55",
       "refZh": "创世记 29:1–31:55",
       "summaryZh": "雅各为利亚和拉结服事拉班二十年，带着妻子儿女和羊群离开。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -1922,
+      "yearLate": -1922,
+      "dateBasis": "与 SeekSparks 年表重叠（雅各娶利亚拉结），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "ab0b2dd",
         "a6d9af3",
@@ -715,7 +866,13 @@
         "Mizpah 4"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "jacob_marries"
+        ]
+      }
     },
     {
       "id": "genesis-peniel",
@@ -727,10 +884,10 @@
       "ref": "Genesis 32:22–32:32",
       "refZh": "创世记 32:22–32:32",
       "summaryZh": "雅各在雅博渡口与人摔跤直到黎明，名被改为以色列。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -1922,
+      "yearLate": -1898,
+      "dateBasis": "未直接定年。本段经文位于年表中「雅各娶利亚拉结」（-1922）与「约瑟被卖到埃及」（-1898）之间，故取此区间为界。区间宽 24 年。",
+      "dateConfidence": "inferred",
       "placeIds": [
         "aca7bd9",
         "a8a9ff9"
@@ -740,7 +897,15 @@
         "Penuel"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "spine-bounded",
+        "between": [
+          "雅各娶利亚拉结",
+          "约瑟被卖到埃及"
+        ],
+        "source": "SeekSparks bible_timeline.json"
+      }
     },
     {
       "id": "genesis-jacob-esau-meet",
@@ -752,10 +917,10 @@
       "ref": "Genesis 33:1–33:20",
       "refZh": "创世记 33:1–33:20",
       "summaryZh": "以扫跑来抱住雅各，雅各到了迦南地的示剑城支搭帐棚。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -1922,
+      "yearLate": -1898,
+      "dateBasis": "未直接定年。本段经文位于年表中「雅各娶利亚拉结」（-1922）与「约瑟被卖到埃及」（-1898）之间，故取此区间为界。区间宽 24 年。",
+      "dateConfidence": "inferred",
       "placeIds": [
         "ae981db",
         "a0905b5",
@@ -771,7 +936,15 @@
         "Shechem"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "spine-bounded",
+        "between": [
+          "雅各娶利亚拉结",
+          "约瑟被卖到埃及"
+        ],
+        "source": "SeekSparks bible_timeline.json"
+      }
     },
     {
       "id": "genesis-dinah-shechem",
@@ -783,14 +956,22 @@
       "ref": "Genesis 34:1–34:31",
       "refZh": "创世记 34:1–34:31",
       "summaryZh": "示剑玷污底拿，西缅和利未用刀杀了那城的男丁。",
-      "yearEarly": -2100,
-      "yearLate": -1700,
-      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。",
-      "dateConfidence": "disputed",
+      "yearEarly": -1922,
+      "yearLate": -1898,
+      "dateBasis": "未直接定年。本段经文位于年表中「雅各娶利亚拉结」（-1922）与「约瑟被卖到埃及」（-1898）之间，故取此区间为界。区间宽 24 年。",
+      "dateConfidence": "inferred",
       "placeIds": [],
       "placeNames": [],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "spine-bounded",
+        "between": [
+          "雅各娶利亚拉结",
+          "约瑟被卖到埃及"
+        ],
+        "source": "SeekSparks bible_timeline.json"
+      }
     },
     {
       "id": "genesis-joseph-sold",
@@ -802,10 +983,10 @@
       "ref": "Genesis 37:1–37:36",
       "refZh": "创世记 37:1–37:36",
       "summaryZh": "约瑟的哥哥们在多坍把他卖给以实玛利人，带下埃及去。",
-      "yearEarly": -1900,
-      "yearLate": -1550,
-      "dateBasis": "约瑟在埃及的时代通常被放在中王国晚期至第二中间期（约公元前 1900—1550 年），常与喜克索斯时期联系。埃及文献中没有约瑟的直接记载，此区间为推定。",
-      "dateConfidence": "disputed",
+      "yearEarly": -1898,
+      "yearLate": -1898,
+      "dateBasis": "与 SeekSparks 年表重叠（约瑟被卖到埃及），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "a581f0c",
         "adf74d4",
@@ -823,7 +1004,13 @@
         "Gilead 1"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "joseph_sold"
+        ]
+      }
     },
     {
       "id": "genesis-judah-tamar",
@@ -835,10 +1022,10 @@
       "ref": "Genesis 38:1–38:30",
       "refZh": "创世记 38:1–38:30",
       "summaryZh": "他玛在往亭拿的路旁坐着，向犹大讨回她应得的。",
-      "yearEarly": -1900,
-      "yearLate": -1550,
-      "dateBasis": "约瑟在埃及的时代通常被放在中王国晚期至第二中间期（约公元前 1900—1550 年），常与喜克索斯时期联系。埃及文献中没有约瑟的直接记载，此区间为推定。",
-      "dateConfidence": "disputed",
+      "yearEarly": -1898,
+      "yearLate": -1885,
+      "dateBasis": "未直接定年。本段经文位于年表中「约瑟被卖到埃及」（-1898）与「约瑟升为宰相」（-1885）之间，故取此区间为界。区间宽 13 年。",
+      "dateConfidence": "inferred",
       "placeIds": [
         "af82614",
         "ab41e6b",
@@ -852,7 +1039,15 @@
         "Enaim"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "spine-bounded",
+        "between": [
+          "约瑟被卖到埃及",
+          "约瑟升为宰相"
+        ],
+        "source": "SeekSparks bible_timeline.json"
+      }
     },
     {
       "id": "genesis-potiphar",
@@ -864,10 +1059,10 @@
       "ref": "Genesis 39:1–39:23",
       "refZh": "创世记 39:1–39:23",
       "summaryZh": "约瑟在护卫长家中蒙福，因主母诬告下在监里。",
-      "yearEarly": -1900,
-      "yearLate": -1550,
-      "dateBasis": "约瑟在埃及的时代通常被放在中王国晚期至第二中间期（约公元前 1900—1550 年），常与喜克索斯时期联系。埃及文献中没有约瑟的直接记载，此区间为推定。",
-      "dateConfidence": "disputed",
+      "yearEarly": -1898,
+      "yearLate": -1885,
+      "dateBasis": "未直接定年。本段经文位于年表中「约瑟被卖到埃及」（-1898）与「约瑟升为宰相」（-1885）之间，故取此区间为界。区间宽 13 年。",
+      "dateConfidence": "inferred",
       "placeIds": [
         "af301ca"
       ],
@@ -875,7 +1070,15 @@
         "Egypt"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "spine-bounded",
+        "between": [
+          "约瑟被卖到埃及",
+          "约瑟升为宰相"
+        ],
+        "source": "SeekSparks bible_timeline.json"
+      }
     },
     {
       "id": "genesis-dreams-interpreted",
@@ -887,10 +1090,10 @@
       "ref": "Genesis 40:1–41:57",
       "refZh": "创世记 40:1–41:57",
       "summaryZh": "约瑟为酒政膳长和法老解梦，被立为治理埃及全地的宰相。",
-      "yearEarly": -1900,
-      "yearLate": -1550,
-      "dateBasis": "约瑟在埃及的时代通常被放在中王国晚期至第二中间期（约公元前 1900—1550 年），常与喜克索斯时期联系。埃及文献中没有约瑟的直接记载，此区间为推定。",
-      "dateConfidence": "disputed",
+      "yearEarly": -1885,
+      "yearLate": -1885,
+      "dateBasis": "与 SeekSparks 年表重叠（约瑟升为宰相），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "af301ca",
         "a012705",
@@ -902,7 +1105,13 @@
         "Heliopolis"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "joseph_rises"
+        ]
+      }
     },
     {
       "id": "genesis-brothers-egypt",
@@ -914,10 +1123,10 @@
       "ref": "Genesis 42:1–45:28",
       "refZh": "创世记 42:1–45:28",
       "summaryZh": "众兄弟因饥荒两次下埃及籴粮，约瑟最终与他们相认。",
-      "yearEarly": -1900,
-      "yearLate": -1550,
-      "dateBasis": "约瑟在埃及的时代通常被放在中王国晚期至第二中间期（约公元前 1900—1550 年），常与喜克索斯时期联系。埃及文献中没有约瑟的直接记载，此区间为推定。",
-      "dateConfidence": "disputed",
+      "yearEarly": -1885,
+      "yearLate": -1876,
+      "dateBasis": "未直接定年。本段经文位于年表中「约瑟升为宰相」（-1885）与「雅各全家下埃及」（-1876）之间，故取此区间为界。区间宽 9 年。",
+      "dateConfidence": "inferred",
       "placeIds": [
         "af301ca",
         "a581f0c",
@@ -929,7 +1138,15 @@
         "Goshen 1"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "spine-bounded",
+        "between": [
+          "约瑟升为宰相",
+          "雅各全家下埃及"
+        ],
+        "source": "SeekSparks bible_timeline.json"
+      }
     },
     {
       "id": "genesis-jacob-egypt",
@@ -941,10 +1158,10 @@
       "ref": "Genesis 46:1–47:31",
       "refZh": "创世记 46:1–47:31",
       "summaryZh": "雅各全家七十人下埃及，住在歌珊地。",
-      "yearEarly": -1900,
-      "yearLate": -1550,
-      "dateBasis": "约瑟在埃及的时代通常被放在中王国晚期至第二中间期（约公元前 1900—1550 年），常与喜克索斯时期联系。埃及文献中没有约瑟的直接记载，此区间为推定。",
-      "dateConfidence": "disputed",
+      "yearEarly": -1876,
+      "yearLate": -1876,
+      "dateBasis": "与 SeekSparks 年表重叠（雅各全家下埃及），年代以年表为准",
+      "dateConfidence": "inferred",
       "placeIds": [
         "a075d61",
         "af301ca",
@@ -964,7 +1181,13 @@
         "Rameses"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "duplicate",
+        "of": [
+          "israel_egypt"
+        ]
+      }
     },
     {
       "id": "genesis-jacob-blessing",
@@ -976,10 +1199,10 @@
       "ref": "Genesis 48:1–49:33",
       "refZh": "创世记 48:1–49:33",
       "summaryZh": "雅各为约瑟的两个儿子和自己的十二个儿子祝福，然后气绝。",
-      "yearEarly": -1900,
-      "yearLate": -1550,
-      "dateBasis": "约瑟在埃及的时代通常被放在中王国晚期至第二中间期（约公元前 1900—1550 年），常与喜克索斯时期联系。埃及文献中没有约瑟的直接记载，此区间为推定。",
-      "dateConfidence": "disputed",
+      "yearEarly": -1859,
+      "yearLate": -1859,
+      "dateBasis": "雅各全家下埃及 -1876（SeekSparks 年表）＋ 雅各住埃及 17 年（创 47:28）＝ -1859，即创 49:33 雅各气绝之年",
+      "dateConfidence": "inferred",
       "placeIds": [
         "a581f0c",
         "a397042",
@@ -1005,7 +1228,15 @@
         "Mamre"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "scripture-interval",
+        "refs": [
+          "创 47:28",
+          "创 49:33"
+        ],
+        "anchoredOn": "SeekSparks bible_timeline.json"
+      }
     },
     {
       "id": "genesis-jacob-burial",
@@ -1017,10 +1248,10 @@
       "ref": "Genesis 50:1–50:26",
       "refZh": "创世记 50:1–50:26",
       "summaryZh": "雅各被葬在麦比拉洞，约瑟死在埃及，嘱咐把骸骨带上去。",
-      "yearEarly": -1900,
-      "yearLate": -1550,
-      "dateBasis": "约瑟在埃及的时代通常被放在中王国晚期至第二中间期（约公元前 1900—1550 年），常与喜克索斯时期联系。埃及文献中没有约瑟的直接记载，此区间为推定。",
-      "dateConfidence": "disputed",
+      "yearEarly": -1859,
+      "yearLate": -1805,
+      "dateBasis": "约瑟站在法老面前时 30 岁（创 41:46），据年表该年为 -1885，故约瑟生于 -1915；死时 110 岁（创 50:26）＝ -1805。本段起于雅各安葬（-1859），止于约瑟之死",
+      "dateConfidence": "inferred",
       "placeIds": [
         "a581f0c",
         "af301ca",
@@ -1042,7 +1273,16 @@
         "Mamre"
       ],
       "status": "candidate",
-      "notes": ""
+      "notes": "",
+      "dateSource": {
+        "kind": "scripture-interval",
+        "refs": [
+          "创 41:46",
+          "创 50:26",
+          "创 47:28"
+        ],
+        "anchoredOn": "SeekSparks bible_timeline.json"
+      }
     }
   ]
 }

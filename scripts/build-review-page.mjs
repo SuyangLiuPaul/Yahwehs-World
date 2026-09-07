@@ -40,7 +40,9 @@ const candRows = candBooks.flatMap((b) => b.events.map((e) => {
     kind: 'candidate',
     id: e.id, zh: e.zh, en: e.en, summaryZh: e.summaryZh,
     refZh: e.refZh, era: null,
+    yearEarly: e.yearEarly, yearLate: e.yearLate,
     year: null, basis: null, approximate: null, datingRefs: 0,
+    dateBasis: e.dateBasis, dateSource: e.dateSource ?? null,
     placeNames: e.placeNames, status: e.status,
     dup: hits.map((h) => h.zh),
   };
@@ -139,8 +141,10 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);font-si
 <header>
   <p class="eyebrow">雅伟之界 · 事件层</p>
   <h1>圣经事件审阅台</h1>
-  <p class="lede">两组来源，请分开看。前 105 条是 SeekSparks 年表——年份、依据、约略标记原样取用，未作改动；这里要审的只有<b>新算出来的地点关联</b>。末尾 35 条是在找到该年表之前提出的创世记补充候选，<b>名称和范围都是提案</b>。</p>
-  <p class="warn"><b>年份不在这里重新议。</b>SeekSparks 以所罗门登基（Thiele）为锚点，按经文自述的年数上溯，来源与审计见该仓库的 <code>docs/WHEEL-PROVENANCE.md</code>。这是已经做过的裁决，本页原样沿用。地点关联由脚本从 OpenBible 逐节索引算出，不是提案；<b>补充候选的名称与经文范围才是提案</b>，其中与年表重叠的已标红。</p>
+  <p class="lede">两组来源，请分开看。前 105 条是 SeekSparks 年表——年份、依据、约略标记原样取用，未作改动；这里要审的只有<b>新算出来的地点关联</b>。末尾 35 条是在找到该年表之前提出的创世记补充候选，<b>名称和范围都是提案</b>，年代不另立体系。</p>
+  <p class="warn"><b>年份不在这里重新议。</b>SeekSparks 以所罗门登基（Thiele）为锚点，按经文自述的年数上溯，来源与审计见该仓库的 <code>docs/WHEEL-PROVENANCE.md</code>。这是已经做过的裁决，本页原样沿用。地点关联由脚本从 OpenBible 逐节索引算出，不是提案；<b>补充候选的名称与经文范围才是提案</b>，其中与年表重叠的已标红。
+    补充候选的年代分三类，每条都写明是哪一类：与年表重叠的取年表之年；经文自述年数的按算式推算并列出所据经文；
+    其余按年表中前后两个已定年事件夹逼为区间。<b>没有一条需要引外部学者</b>——三条经文推算的结果都已与夹逼区间交叉校验，落在区间之外会直接构建失败。</p>
 </header>
 
 <div class="bar">
@@ -173,6 +177,20 @@ let cursor = 0;
 const esc = (s) => String(s).replace(/[&<>"]/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 const $ = (id) => document.getElementById(id);
 
+const SRC = {
+  'duplicate': '年代以年表为准',
+  'scripture-interval': '经文自述年数推算',
+  'spine-bounded': '年表前后夹逼',
+};
+
+/** A candidate's own date: a point where scripture states the interval, a band
+ *  where only the surrounding timeline constrains it. */
+function candYear(e) {
+  if (e.yearEarly === null) return '未定年';
+  const f = (y) => y < 0 ? Math.abs(y) + ' BC' : y + ' AD';
+  return e.yearEarly === e.yearLate ? f(e.yearEarly) : f(e.yearEarly) + ' – ' + f(e.yearLate);
+}
+
 function yearLabel(e) {
   if (e.year === null) return '未定年';
   const y = e.year < 0 ? Math.abs(e.year) + ' BC' : e.year + ' AD';
@@ -200,9 +218,11 @@ function render() {
         \${e.kind === 'spine'
           ? \`<span class="chip yr" style="color:\${conf[1]}">\${yearLabel(e)} · \${conf[0]}</span>
               \${e.datingRefs ? \`<span class="chip src">推算链 \${e.datingRefs} 节经文</span>\` : ''}\`
-          : '<span class="chip yr" style="color:#8a7f9c">补充候选 · 未定年</span>'}
+          : \`<span class="chip yr" style="color:#8a9bb0">\${candYear(e)}</span>
+             <span class="chip src">\${SRC[e.dateSource?.kind] || '未标依据'}</span>\`}
         \${e.dup.length ? \`<span class="chip dup">年表已有：\${e.dup.map(esc).join('、')}</span>\` : ''}
       </div>
+      \${e.kind === 'candidate' && e.dateBasis ? \`<p class="basis">\${esc(e.dateBasis)}</p>\` : ''}
       \${e.placeNames.length ? \`<p class="places"><span class="lbl">经文中的地点 \${e.placeNames.length}</span><b>\${e.placeNames.map(esc).join(' · ')}</b></p>\` :
         '<p class="places"><span class="lbl">经文中的地点</span>这段经文没有提到任何可定位的地名</p>'}
 
