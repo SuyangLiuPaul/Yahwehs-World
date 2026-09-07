@@ -137,3 +137,48 @@ body {
   #timeline { padding: .8rem 1rem 1rem; }
   .legend { gap: .35rem .7rem; }
 }
+
+/* ── routes ──────────────────────────────────────────────────────────── */
+#routes {
+  position: fixed; top: 4.6rem; left: 1.4rem; z-index: 20;
+  width: min(19rem, calc(100vw - 2.8rem));
+  display: grid; gap: .5rem;
+}
+.rlabel {
+  margin: 0; font-family: var(--serif-en); font-size: .62rem; letter-spacing: .28em;
+  text-transform: uppercase; color: var(--gold);
+}
+#rlist { display: grid; gap: 1px; }
+.rbtn {
+  text-align: left; background: #0d1a28cc; border: 1px solid #24354a;
+  border-radius: 2px; color: #93a1b1; padding: .38rem .6rem; cursor: pointer;
+  font-family: var(--serif-zh); font-size: .76rem; letter-spacing: .04em;
+  backdrop-filter: blur(10px); transition: color .16s, border-color .16s, background .16s;
+  display: flex; justify-content: space-between; gap: .6rem; align-items: baseline;
+}
+.rbtn i { font-style: normal; font-family: var(--serif-en); font-size: .64rem; color: #66717e; }
+.rbtn:hover { color: var(--parchment); border-color: #c9a22766; }
+.rbtn.on { color: var(--gold-bright); border-color: var(--gold); background: #c9a2271f; }
+.rbtn:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+
+#rplay { display: flex; align-items: center; gap: .6rem; padding-top: .2rem; }
+#rplay[hidden] { display: none; }
+#r-toggle, #r-clear {
+  background: transparent; border: 1px solid #c9a22755; color: var(--gold);
+  border-radius: 2px; padding: .2rem .55rem; font-family: var(--serif-zh);
+  font-size: .7rem; cursor: pointer;
+}
+#r-toggle { border-radius: 50%; width: 1.6rem; height: 1.6rem; padding: 0; flex: none; font-size: .62rem; }
+#r-toggle:hover, #r-clear:hover { color: var(--gold-bright); background: #c9a2271a; }
+#r-stop { flex: 1; min-width: 0; font-size: .74rem; color: var(--parchment); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#r-basis {
+  margin: 0; font-size: .66rem; line-height: 1.7; color: #66717e;
+  max-height: 9rem; overflow-y: auto; padding-right: .3rem;
+}
+#r-basis:empty { display: none; }
+
+@media (max-width: 640px) {
+  #routes { top: auto; bottom: 12.5rem; left: .8rem; right: .8rem; width: auto; }
+  #r-basis { max-height: 4.5rem; }
+  #rlist { grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr)); gap: .3rem; }
+}

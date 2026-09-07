@@ -6,6 +6,7 @@ import { createGlobe, createLighting, GLOBE_RADIUS, lonLatToVec3 } from './globe
 import { Markers } from './markers.ts';
 import { bookName, bookOf } from './books.ts';
 import { precisionOf, precisionStyle } from './theme.ts';
+import { Route, type Journey } from './routes.ts';
 import type { GeoJson, Place, PlacesBundle } from './types.ts';
 
 type Locale = 'zh' | 'en';
@@ -41,8 +42,9 @@ const j = <T,>(u: string) => fetch(u).then((r) => {
   return r.json() as Promise<T>;
 });
 
-const [bundle, land, coastline, lakes, rivers] = await Promise.all([
+const [bundle, journeyData, land, coastline, lakes, rivers] = await Promise.all([
   j<PlacesBundle>('/data/places.json'),
+  j<{ journeys: Journey[] }>('/data/journeys.json'),
   j<GeoJson>('/data/ne_50m_land.geojson'),
   j<GeoJson>('/data/ne_50m_coastline.geojson'),
   j<GeoJson>('/data/ne_50m_lakes.geojson'),
@@ -175,6 +177,99 @@ function renderPanel() {
   $('p-refs').textContent = shown.join(' · ') + (rest > 0 ? `  ${T.andMore[locale](rest)}` : '');
 }
 
+// ── routes ────────────────────────────────────────────────────────────────
+// A route takes over from the verse timeline while it runs: the two answer
+// different questions, and showing both at once would put a wandering camp and
+// a whole canon's worth of places on screen together.
+let route: Route | null = null;
+let routePlaying = false;
+let routeT = 0;
+
+const rlist = $('rlist');
+const rplay = $('rplay');
+const rToggle = $('r-toggle');
+const rStop = $('r-stop');
+const rBasis = $('r-basis');
+
+rlist.innerHTML = journeyData.journeys.map((jr) => `
+  <button class="rbtn" type="button" data-id="${jr.id}">
+    <span>${jr.zh}</span><i>${jr.stopCount} 站</i>
+  </button>`).join('');
+
+function clearRoute() {
+  if (route) { globe.remove(route.group); route.dispose(); route = null; }
+  routePlaying = false; routeT = 0;
+  rplay.hidden = true;
+  rBasis.textContent = '';
+  rToggle.textContent = '▶';
+  rlist.querySelectorAll('.rbtn').forEach((b) => b.classList.remove('on'));
+  markers.mesh.visible = true;
+  applyCursor();
+}
+
+function openRoute(id: string) {
+  clearRoute();
+  const jr = journeyData.journeys.find((x) => x.id === id);
+  if (!jr) return;
+  route = new Route(jr);
+  route.setProgress(0);
+  globe.add(route.group);
+  // The place field would otherwise sit under the route as visual noise.
+  markers.mesh.visible = false;
+  closePanel();
+  rplay.hidden = false;
+  rBasis.textContent = jr.basis;
+  rlist.querySelector(`[data-id="${id}"]`)?.classList.add('on');
+  routeT = 0; routePlaying = true;
+  rToggle.textContent = '❚❚';
+  updateRouteReadout();
+}
+
+function updateRouteReadout() {
+  if (!route) return;
+  const m = route.markerAt(routeT);
+  if (!m) { rStop.textContent = ''; return; }
+  const label = m.stops.length > 1
+    // A merged marker says so outright: these camps share one coordinate
+    // because nobody knows where they were.
+    ? `第 ${m.stops[0]}–${m.stops[m.stops.length - 1]} 站（${m.stops.length} 站共用一个坐标）`
+    : `第 ${m.n} 站 · ${locale === 'zh' ? m.zh : m.place}`;
+  rStop.textContent = label;
+  $('t-ref').textContent = m.refs?.[0] ?? m.ref;
+  $('t-here').textContent = m.zhAll?.length ? m.zhAll.join(' · ') : m.zh;
+  $('t-count').textContent = `${route.journey.stopCount} 站 · 合并为 ${route.journey.markers.length} 个标记`;
+}
+
+rlist.addEventListener('click', (e) => {
+  const btn = (e.target as HTMLElement).closest('.rbtn') as HTMLElement | null;
+  if (!btn) return;
+  const id = btn.dataset.id!;
+  if (route?.journey.id === id) clearRoute(); else openRoute(id);
+});
+rToggle.addEventListener('click', () => {
+  if (!route) return;
+  if (routeT >= 1) routeT = 0;
+  routePlaying = !routePlaying;
+  rToggle.textContent = routePlaying ? '❚❚' : '▶';
+});
+$('r-clear').addEventListener('click', clearRoute);
+
+/** Walks the route and eases the camera along with it. */
+function advanceRoute(dt: number) {
+  if (!route || !routePlaying) return;
+  // Slow enough to read each stop; the wilderness is forty years, not a lap.
+  routeT = Math.min(1, routeT + dt * 0.055);
+  route.setProgress(routeT);
+  updateRouteReadout();
+  if (routeT >= 1) { routePlaying = false; rToggle.textContent = '▶'; }
+
+  const m = route.markerAt(routeT);
+  if (m && m.lat !== null && m.lon !== null && !userDriving) {
+    followTarget.copy(lonLatToVec3(m.lon, m.lat, camera.position.length() - GLOBE_RADIUS));
+    camera.position.lerp(followTarget, Math.min(1, dt * 0.9));
+  }
+}
+
 // ── timeline ──────────────────────────────────────────────────────────────
 // One step per verse that names a place: 5,582 of them, in canonical order.
 // Playing it start to finish walks the entire biblical world.
@@ -287,6 +382,8 @@ renderer.setAnimationLoop(() => {
   const t = clock.getElapsedTime();
   advance(dt);
   follow(dt);
+  advanceRoute(dt);
+  route?.faceCamera(camera.position.length(), GLOBE_RADIUS);
   controls.update();
   // The selection ring breathes so the eye can find it again after orbiting.
   if (selectionRing.visible) selectionRing.scale.setScalar(1 + Math.sin(t * 2.4) * 0.12);
@@ -317,7 +414,24 @@ if (import.meta.env.DEV) {
     get selected() { return selected; },
     // The render loop is parked whenever the page is hidden, so playback has
     // to be drivable without rAF to be testable at all.
-    advance, follow,
+    advance, follow, advanceRoute, openRoute, clearRoute,
     get playing() { return playing; },
+    get route() { return route; },
+    get routeT() { return routeT; },
+    /** Renders one frame at an arbitrary size, for inspection where the page
+     *  is not being painted. */
+    snapshot(w = 1400, h = 900) {
+      const prev = { w: renderer.domElement.width, h: renderer.domElement.height };
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h; camera.updateProjectionMatrix();
+      controls.update(); camera.updateMatrixWorld(true); globe.updateMatrixWorld(true);
+      route?.faceCamera(camera.position.length(), GLOBE_RADIUS);
+      renderer.render(scene, camera);
+      const url = renderer.domElement.toDataURL('image/png');
+      renderer.setSize(prev.w, prev.h, false);
+      camera.aspect = Math.max(1, innerWidth) / Math.max(1, innerHeight);
+      camera.updateProjectionMatrix();
+      return url;
+    },
   };
 }
