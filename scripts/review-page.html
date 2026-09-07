@@ -1,0 +1,238 @@
+<title>圣经事件审阅台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+SC:wght@400;600&display=swap">
+<style>
+:root {
+  --ground:#f2ece0; --surface:#fbf7ef; --ink:#16212e; --muted:#6b7684; --faint:#9aa4b0;
+  --line:#ddd3c2; --gold:#9d7c1a; --ok:#4f7a55; --no:#9c5b4e; --edit:#8a6a2a;
+  --display:'Cormorant Garamond',Georgia,serif; --body:'Noto Serif SC','Songti SC',serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0b1420; --surface:#111d2b; --ink:#ece2cd; --muted:#8d99a8; --faint:#66717e;
+  --line:#24354a; --gold:#d9b444; --ok:#7f9c7a; --no:#c08877; --edit:#d9b444;
+}}
+:root[data-theme="dark"]{
+  --ground:#0b1420; --surface:#111d2b; --ink:#ece2cd; --muted:#8d99a8; --faint:#66717e;
+  --line:#24354a; --gold:#d9b444; --ok:#7f9c7a; --no:#c08877; --edit:#d9b444;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:58rem;margin:0 auto;padding:2.2rem 1.5rem 6rem}
+header{border-bottom:1px solid var(--line);padding-bottom:1.3rem;margin-bottom:1.3rem}
+.eyebrow{margin:0 0 .5rem;font-family:var(--mono);font-size:.66rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold)}
+h1{margin:0 0 .4rem;font-size:1.9rem;font-weight:600;letter-spacing:.04em}
+.lede{margin:0;color:var(--muted);font-size:.88rem;max-width:44rem}
+.warn{margin:.9rem 0 0;padding:.7rem .9rem;border-left:2px solid var(--edit);background:#d9b4441a;font-size:.82rem;color:var(--muted)}
+.warn b{color:var(--ink)}
+
+.bar{position:sticky;top:0;z-index:5;background:var(--ground);border-bottom:1px solid var(--line);
+  padding:.7rem 0;margin:1.3rem 0 1rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap;font-size:.78rem}
+.tallies{display:flex;gap:.9rem;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tallies span{color:var(--muted)} .tallies b{font-weight:500}
+.t-ok b{color:var(--ok)} .t-no b{color:var(--no)} .t-left b{color:var(--gold)}
+.track{flex:1;min-width:6rem;height:3px;background:var(--line);border-radius:2px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--ok);width:0;transition:width .25s}
+.hint{font-family:var(--mono);font-size:.66rem;color:var(--faint)}
+.hint kbd{border:1px solid var(--line);border-radius:2px;padding:0 .28rem;font-family:var(--mono)}
+
+.ev{border:1px solid var(--line);border-radius:3px;background:var(--surface);padding:1rem 1.1rem;margin-bottom:.7rem;scroll-margin-top:4.5rem}
+.ev[data-status="approved"]{border-left:3px solid var(--ok)}
+.ev[data-status="rejected"]{border-left:3px solid var(--no);opacity:.55}
+.ev[data-status="edited"]{border-left:3px solid var(--edit)}
+.ev.cursor{outline:2px solid var(--gold);outline-offset:2px}
+.ev h2{margin:0 0 .1rem;font-size:1.12rem;font-weight:600;letter-spacing:.03em}
+.ev .en{margin:0 0 .5rem;font-family:var(--display);font-size:.85rem;color:var(--muted)}
+.ev .sum{margin:0 0 .7rem;font-size:.88rem}
+.meta{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.7rem;font-size:.68rem}
+.chip{border:1px solid currentColor;border-radius:2px;padding:.16rem .45rem;letter-spacing:.06em}
+.chip.ref{color:var(--gold);font-family:var(--mono)}
+.chip.yr{font-family:var(--mono)}
+.places{margin:0 0 .8rem;font-size:.76rem;color:var(--muted);line-height:1.7}
+.places b{color:var(--ink);font-weight:400}
+.places .lbl{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;color:var(--faint);text-transform:uppercase;margin-right:.4rem}
+.basis{margin:0 0 .8rem;font-size:.74rem;color:var(--faint);line-height:1.65;border-left:1px solid var(--line);padding-left:.7rem}
+.acts{display:flex;gap:.4rem;flex-wrap:wrap}
+button.act{background:transparent;border:1px solid var(--line);border-radius:2px;padding:.34rem .8rem;
+  color:var(--muted);font-family:var(--body);font-size:.78rem;cursor:pointer;transition:all .16s}
+button.act:hover{border-color:currentColor}
+button.act.ok:hover,.ev[data-status="approved"] .act.ok{color:var(--ok);border-color:var(--ok)}
+button.act.no:hover,.ev[data-status="rejected"] .act.no{color:var(--no);border-color:var(--no)}
+button.act.ed:hover,.ev[data-status="edited"] .act.ed{color:var(--edit);border-color:var(--edit)}
+button.act:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+textarea{width:100%;margin-top:.6rem;background:var(--ground);border:1px solid var(--line);border-radius:2px;
+  color:var(--ink);font-family:var(--body);font-size:.82rem;padding:.5rem .6rem;resize:vertical;min-height:3.4rem}
+textarea:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.bookhead{margin:1.8rem 0 .7rem;font-family:var(--mono);font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);font-size:.72rem;color:var(--faint)}
+#export{background:transparent;border:1px solid var(--gold);color:var(--gold);border-radius:2px;padding:.4rem .9rem;font-family:var(--body);font-size:.76rem;cursor:pointer}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<header>
+  <p class="eyebrow">雅伟之界 · 事件层</p>
+  <h1>圣经事件审阅台</h1>
+  <p class="lede">每一条都是待审候选。名称和经文范围是提案，需要你判断；地点是从 OpenBible 逐节索引算出来的，不是提案。</p>
+  <p class="warn"><b>这些不是已确认的内容。</b>候选由模型依段落边界提出，没有经过任何人审核。在你逐条通过之前，它们不会进入地球或时间轴。年代一律是区间加依据，不给单一年份。</p>
+</header>
+
+<div class="bar">
+  <div class="tallies">
+    <span class="t-ok">通过 <b id="n-ok">0</b></span>
+    <span class="t-no">否决 <b id="n-no">0</b></span>
+    <span class="t-left">待审 <b id="n-left">0</b></span>
+  </div>
+  <span class="track"><i id="prog"></i></span>
+  <span class="hint"><kbd>J</kbd>/<kbd>K</kbd> 上下　<kbd>A</kbd> 通过　<kbd>X</kbd> 否决　<kbd>E</kbd> 待改</span>
+  <button id="export" type="button">导出结果</button>
+</div>
+
+<div id="list"></div>
+
+<footer>
+  地点数据 OpenBible.info · CC BY 4.0。候选事件由模型提出，通过与否以本页记录为准。
+</footer>
+</div>
+
+<script>
+const BOOKS = [{"zh":"创世记","en":"Genesis","n":1}];
+const EVENTS = [{"id":"genesis-creation","zh":"创造","en":"The Creation","book":1,"start":1001001,"end":1002003,"ref":"Genesis 1:1–2:3","refZh":"创世记 1:1–2:3","summaryZh":"神在六日中创造天地万物，第七日安息。","yearEarly":null,"yearLate":null,"dateBasis":"创世记 1—11 章没有可与外部年表对应的锚点。厄谢尔等传统年表由家谱推算，其前提（家谱无断代、寿数按字面）本身有争议，这里不采用任何一种。","dateConfidence":"none","placeIds":[],"placeNames":[],"status":"candidate","notes":""},{"id":"genesis-eden","zh":"伊甸园","en":"The Garden of Eden","book":1,"start":1002004,"end":1002025,"ref":"Genesis 2:4–2:25","refZh":"创世记 2:4–2:25","summaryZh":"神把人安置在伊甸的园子里，为他造配偶。","yearEarly":null,"yearLate":null,"dateBasis":"创世记 1—11 章没有可与外部年表对应的锚点。厄谢尔等传统年表由家谱推算，其前提（家谱无断代、寿数按字面）本身有争议，这里不采用任何一种。","dateConfidence":"none","placeIds":["af3daeb","ad7e819","a19b076","a74ee0d","a71d79b","a3d1321","a62dec4","a38ebfd"],"placeNames":["Eden 1","Havilah 1","Pishon","Cush 2","Gihon 1","Assyria","Euphrates","Tigris"],"status":"candidate","notes":""},{"id":"genesis-fall","zh":"堕落","en":"The Fall","book":1,"start":1003001,"end":1003024,"ref":"Genesis 3:1–3:24","refZh":"创世记 3:1–3:24","summaryZh":"人违背神的吩咐，被逐出伊甸园。","yearEarly":null,"yearLate":null,"dateBasis":"创世记 1—11 章没有可与外部年表对应的锚点。厄谢尔等传统年表由家谱推算，其前提（家谱无断代、寿数按字面）本身有争议，这里不采用任何一种。","dateConfidence":"none","placeIds":["af3daeb"],"placeNames":["Eden 1"],"status":"candidate","notes":""},{"id":"genesis-cain-abel","zh":"该隐与亚伯","en":"Cain and Abel","book":1,"start":1004001,"end":1004016,"ref":"Genesis 4:1–4:16","refZh":"创世记 4:1–4:16","summaryZh":"该隐在田间杀了他兄弟亚伯，被逐去流离飘荡。","yearEarly":null,"yearLate":null,"dateBasis":"创世记 1—11 章没有可与外部年表对应的锚点。厄谢尔等传统年表由家谱推算，其前提（家谱无断代、寿数按字面）本身有争议，这里不采用任何一种。","dateConfidence":"none","placeIds":["af3daeb"],"placeNames":["Eden 1"],"status":"candidate","notes":""},{"id":"genesis-flood","zh":"洪水","en":"The Flood","book":1,"start":1006009,"end":1009017,"ref":"Genesis 6:9–9:17","refZh":"创世记 6:9–9:17","summaryZh":"挪亚造方舟，洪水淹没全地，神与他立虹为记的约。","yearEarly":null,"yearLate":null,"dateBasis":"创世记 1—11 章没有可与外部年表对应的锚点。厄谢尔等传统年表由家谱推算，其前提（家谱无断代、寿数按字面）本身有争议，这里不采用任何一种。","dateConfidence":"none","placeIds":["ab89be9"],"placeNames":["Ararat"],"status":"candidate","notes":""},{"id":"genesis-babel","zh":"巴别塔","en":"The Tower of Babel","book":1,"start":1011001,"end":1011009,"ref":"Genesis 11:1–11:9","refZh":"创世记 11:1–11:9","summaryZh":"人在示拿地建城和塔，神变乱他们的口音，把他们分散。","yearEarly":null,"yearLate":null,"dateBasis":"创世记 1—11 章没有可与外部年表对应的锚点。厄谢尔等传统年表由家谱推算，其前提（家谱无断代、寿数按字面）本身有争议，这里不采用任何一种。","dateConfidence":"none","placeIds":["af725b1","ab8fdbc"],"placeNames":["Shinar","Babel"],"status":"candidate","notes":""},{"id":"genesis-abram-call","zh":"亚伯兰蒙召","en":"The Call of Abram","book":1,"start":1012001,"end":1012009,"ref":"Genesis 12:1–12:9","refZh":"创世记 12:1–12:9","summaryZh":"亚伯兰离开哈兰往迦南地去，神应许使他成为大国。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["a6d9af3","a581f0c","a38ad9f","adf74d4","a7e13e1","a64f355","a1cb244"],"placeNames":["Haran","Canaan","Moreh 1","Shechem","Ai 1","Bethel 1","Negeb"],"status":"candidate","notes":""},{"id":"genesis-abram-egypt","zh":"亚伯兰下埃及","en":"Abram in Egypt","book":1,"start":1012010,"end":1012020,"ref":"Genesis 12:10–12:20","refZh":"创世记 12:10–12:20","summaryZh":"因迦南地饥荒，亚伯兰下埃及寄居，称撒莱为妹子。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["a581f0c","af301ca"],"placeNames":["Canaan","Egypt"],"status":"candidate","notes":""},{"id":"genesis-abram-lot-part","zh":"亚伯兰与罗得分开","en":"Abram and Lot Separate","book":1,"start":1013001,"end":1013018,"ref":"Genesis 13:1–13:18","refZh":"创世记 13:1–13:18","summaryZh":"因牧人相争，罗得选了约旦河的全平原，亚伯兰住在迦南地。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["af301ca","a1cb244","a7e13e1","a64f355","aa572e2","aa54aa4","a0aa664","aacfcda","a581f0c","a85151a"],"placeNames":["Egypt","Negeb","Ai 1","Bethel 1","Gomorrah","Jordan Valley","Sodom","Zoar","Canaan","Hebron"],"status":"candidate","notes":""},{"id":"genesis-war-kings","zh":"四王与五王之战","en":"The War of the Kings","book":1,"start":1014001,"end":1014016,"ref":"Genesis 14:1–14:16","refZh":"创世记 14:1–14:16","summaryZh":"四王掳走罗得，亚伯兰率壮丁追到但，把人和财物夺回。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["a7e3a59","a6f4a6d","a9796ee","af725b1","a41a054","aa572e2","a0aa664","abfbfb9","aacfcda","abed304","a4a5cce","afe4be0","a7a5f29","a86d49f","a738bf1","ae981db","a4d6a38","ac2cef0","a513646","a69c1d4","a6779cd"],"placeNames":["Elam","Ellasar","Goiim 1","Shinar","Admah","Gomorrah","Sodom","Zeboiim","Zoar","Salt Sea","Valley of Siddim","Ashteroth-karnaim","Ham 1","Shaveh-kiriathaim","El-paran","Mount Seir 1","Hazazon-tamar 1","Kadesh-barnea","Dan","Damascus","Hobah"],"status":"candidate","notes":""},{"id":"genesis-melchizedek","zh":"麦基洗德","en":"Melchizedek","book":1,"start":1014017,"end":1014024,"ref":"Genesis 14:17–14:24","refZh":"创世记 14:17–14:24","summaryZh":"撒冷王麦基洗德带饼和酒出来迎接亚伯兰并为他祝福。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["ac9f98d","a0aa664","a402ee4","aad7e4e"],"placeNames":["King’s Valley","Sodom","Valley of Shaveh","Salem"],"status":"candidate","notes":""},{"id":"genesis-abram-covenant","zh":"与亚伯兰立约","en":"The Covenant with Abram","book":1,"start":1015001,"end":1015021,"ref":"Genesis 15:1–15:21","refZh":"创世记 15:1–15:21","summaryZh":"神以火炬经过分开的牲畜，与亚伯兰立约应许那地。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["a69c1d4","a32a4f8","a6cf75c","af301ca","a62dec4"],"placeNames":["Damascus","Chaldea","Ur 1","Egypt","Euphrates"],"status":"candidate","notes":""},{"id":"genesis-hagar-ishmael","zh":"夏甲与以实玛利","en":"Hagar and Ishmael","book":1,"start":1016001,"end":1016016,"ref":"Genesis 16:1–16:16","refZh":"创世记 16:1–16:16","summaryZh":"夏甲从撒莱面前逃走，在旷野水泉旁遇见耶和华的使者。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["a581f0c","acdbce0","a70e842","aa3ff18","ac2cef0"],"placeNames":["Canaan","Shur","Beer-lahai-roi","Bered","Kadesh-barnea"],"status":"candidate","notes":""},{"id":"genesis-circumcision","zh":"割礼之约","en":"The Covenant of Circumcision","book":1,"start":1017001,"end":1017027,"ref":"Genesis 17:1–17:27","refZh":"创世记 17:1–17:27","summaryZh":"神改亚伯兰的名为亚伯拉罕，立割礼为约的记号。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["a581f0c"],"placeNames":["Canaan"],"status":"candidate","notes":""},{"id":"genesis-sodom","zh":"所多玛与蛾摩拉","en":"Sodom and Gomorrah","book":1,"start":1018001,"end":1019038,"ref":"Genesis 18:1–19:38","refZh":"创世记 18:1–19:38","summaryZh":"亚伯拉罕为所多玛代求，两城被硫磺与火所毁，罗得得救。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["a0aa664","aa572e2","aa54aa4","aacfcda","a6046fa"],"placeNames":["Sodom","Gomorrah","Jordan Valley","Zoar","Ammon"],"status":"candidate","notes":""},{"id":"genesis-isaac-born","zh":"以撒出生","en":"The Birth of Isaac","book":1,"start":1021001,"end":1021007,"ref":"Genesis 21:1–21:7","refZh":"创世记 21:1–21:7","summaryZh":"撒拉照神所应许的日期给亚伯拉罕生了以撒。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":[],"placeNames":[],"status":"candidate","notes":""},{"id":"genesis-akedah","zh":"献以撒","en":"The Binding of Isaac","book":1,"start":1022001,"end":1022019,"ref":"Genesis 22:1–22:19","refZh":"创世记 22:1–22:19","summaryZh":"亚伯拉罕带以撒往摩利亚地的山上，神以公羊代替。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["adaf385","a559399","a075d61"],"placeNames":["Moriah","The Lord Will Provide","Beersheba 2"],"status":"candidate","notes":""},{"id":"genesis-machpelah","zh":"撒拉之死与麦比拉洞","en":"Sarah's Death and Machpelah","book":1,"start":1023001,"end":1023020,"ref":"Genesis 23:1–23:20","refZh":"创世记 23:1–23:20","summaryZh":"亚伯拉罕向赫人买下麦比拉洞作坟地，葬撒拉在那里。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["a581f0c","a85151a","ae00861","aeb9e97"],"placeNames":["Canaan","Hebron","Machpelah","Mamre"],"status":"candidate","notes":""},{"id":"genesis-rebekah","zh":"为以撒娶妻","en":"A Wife for Isaac","book":1,"start":1024001,"end":1024067,"ref":"Genesis 24:1–24:67","refZh":"创世记 24:1–24:67","summaryZh":"老仆人往米所波大米拿鹤的城，在井旁遇见利百加。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["a43f60f","aff43ac","a70e842","a1cb244"],"placeNames":["Mesopotamia","Nahor","Beer-lahai-roi","Negeb"],"status":"candidate","notes":""},{"id":"genesis-jacob-esau-birth","zh":"雅各与以扫","en":"Jacob and Esau","book":1,"start":1025019,"end":1025034,"ref":"Genesis 25:19–25:34","refZh":"创世记 25:19–25:34","summaryZh":"双子在利百加腹中相争，以扫为一碗红豆汤卖了长子的名分。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["a8ec7ba"],"placeNames":["Paddan-aram"],"status":"candidate","notes":""},{"id":"genesis-isaac-gerar","zh":"以撒在基拉耳","en":"Isaac in Gerar","book":1,"start":1026001,"end":1026033,"ref":"Genesis 26:1–26:33","refZh":"创世记 26:1–26:33","summaryZh":"以撒因饥荒住在基拉耳，重挖他父亲的井，与亚比米勒立约。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["a3f5814","af301ca","a816ed9","a43608b","aa454f7","ab1d954","a075d61"],"placeNames":["Gerar","Egypt","Valley of Gerar","Esek","Sitnah","Rehoboth 1","Beersheba 2"],"status":"candidate","notes":""},{"id":"genesis-stolen-blessing","zh":"雅各骗取祝福","en":"The Stolen Blessing","book":1,"start":1027001,"end":1027045,"ref":"Genesis 27:1–27:45","refZh":"创世记 27:1–27:45","summaryZh":"雅各假冒以扫，从眼目昏花的以撒手中得了祝福。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["a6d9af3"],"placeNames":["Haran"],"status":"candidate","notes":""},{"id":"genesis-bethel-ladder","zh":"伯特利的梦","en":"Jacob's Ladder at Bethel","book":1,"start":1028010,"end":1028022,"ref":"Genesis 28:10–28:22","refZh":"创世记 28:10–28:22","summaryZh":"雅各在路斯梦见梯子立在地上，醒来称那地方为伯特利。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["a075d61","a6d9af3","a64f355","a397042"],"placeNames":["Beersheba 2","Haran","Bethel 1","Luz 1"],"status":"candidate","notes":""},{"id":"genesis-jacob-haran","zh":"雅各在哈兰","en":"Jacob in Haran","book":1,"start":1029001,"end":1031055,"ref":"Genesis 29:1–31:55","refZh":"创世记 29:1–31:55","summaryZh":"雅各为利亚和拉结服事拉班二十年，带着妻子儿女和羊群离开。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["ab0b2dd","a6d9af3","a64f355","a581f0c","a8ec7ba","a62dec4","ae73b90","a694ea2"],"placeNames":["East","Haran","Bethel 1","Canaan","Paddan-aram","Euphrates","Gilead 1","Mizpah 4"],"status":"candidate","notes":""},{"id":"genesis-peniel","zh":"雅各与神摔跤","en":"Wrestling at Peniel","book":1,"start":1032022,"end":1032032,"ref":"Genesis 32:22–32:32","refZh":"创世记 32:22–32:32","summaryZh":"雅各在雅博渡口与人摔跤直到黎明，名被改为以色列。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["aca7bd9","a8a9ff9"],"placeNames":["Jabbok","Penuel"],"status":"candidate","notes":""},{"id":"genesis-jacob-esau-meet","zh":"雅各与以扫和好","en":"Jacob Meets Esau","book":1,"start":1033001,"end":1033020,"ref":"Genesis 33:1–33:20","refZh":"创世记 33:1–33:20","summaryZh":"以扫跑来抱住雅各，雅各到了迦南地的示剑城支搭帐棚。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":["ae981db","a0905b5","a581f0c","a8ec7ba","adf74d4"],"placeNames":["Mount Seir 1","Succoth 1","Canaan","Paddan-aram","Shechem"],"status":"candidate","notes":""},{"id":"genesis-dinah-shechem","zh":"底拿与示剑","en":"Dinah and Shechem","book":1,"start":1034001,"end":1034031,"ref":"Genesis 34:1–34:31","refZh":"创世记 34:1–34:31","summaryZh":"示剑玷污底拿，西缅和利未用刀杀了那城的男丁。","yearEarly":-2100,"yearLate":-1700,"dateBasis":"族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。","dateConfidence":"disputed","placeIds":[],"placeNames":[],"status":"candidate","notes":""},{"id":"genesis-joseph-sold","zh":"约瑟被卖","en":"Joseph Sold into Egypt","book":1,"start":1037001,"end":1037036,"ref":"Genesis 37:1–37:36","refZh":"创世记 37:1–37:36","summaryZh":"约瑟的哥哥们在多坍把他卖给以实玛利人，带下埃及去。","yearEarly":-1900,"yearLate":-1550,"dateBasis":"约瑟在埃及的时代通常被放在中王国晚期至第二中间期（约公元前 1900—1550 年），常与喜克索斯时期联系。埃及文献中没有约瑟的直接记载，此区间为推定。","dateConfidence":"disputed","placeIds":["a581f0c","adf74d4","a375f5a","ab635e4","af301ca","ae73b90"],"placeNames":["Canaan","Shechem","Valley of Hebron","Dothan","Egypt","Gilead 1"],"status":"candidate","notes":""},{"id":"genesis-judah-tamar","zh":"犹大与他玛","en":"Judah and Tamar","book":1,"start":1038001,"end":1038030,"ref":"Genesis 38:1–38:30","refZh":"创世记 38:1–38:30","summaryZh":"他玛在往亭拿的路旁坐着，向犹大讨回她应得的。","yearEarly":-1900,"yearLate":-1550,"dateBasis":"约瑟在埃及的时代通常被放在中王国晚期至第二中间期（约公元前 1900—1550 年），常与喜克索斯时期联系。埃及文献中没有约瑟的直接记载，此区间为推定。","dateConfidence":"disputed","placeIds":["af82614","ab41e6b","a17c178","a59fdf2"],"placeNames":["Adullam","Chezib","Timnah 3","Enaim"],"status":"candidate","notes":""},{"id":"genesis-potiphar","zh":"约瑟在波提乏家","en":"Joseph in Potiphar's House","book":1,"start":1039001,"end":1039023,"ref":"Genesis 39:1–39:23","refZh":"创世记 39:1–39:23","summaryZh":"约瑟在护卫长家中蒙福，因主母诬告下在监里。","yearEarly":-1900,"yearLate":-1550,"dateBasis":"约瑟在埃及的时代通常被放在中王国晚期至第二中间期（约公元前 1900—1550 年），常与喜克索斯时期联系。埃及文献中没有约瑟的直接记载，此区间为推定。","dateConfidence":"disputed","placeIds":["af301ca"],"placeNames":["Egypt"],"status":"candidate","notes":""},{"id":"genesis-dreams-interpreted","zh":"约瑟解梦","en":"Joseph Interprets Dreams","book":1,"start":1040001,"end":1041057,"ref":"Genesis 40:1–41:57","refZh":"创世记 40:1–41:57","summaryZh":"约瑟为酒政膳长和法老解梦，被立为治理埃及全地的宰相。","yearEarly":-1900,"yearLate":-1550,"dateBasis":"约瑟在埃及的时代通常被放在中王国晚期至第二中间期（约公元前 1900—1550 年），常与喜克索斯时期联系。埃及文献中没有约瑟的直接记载，此区间为推定。","dateConfidence":"disputed","placeIds":["af301ca","a012705","acd9137"],"placeNames":["Egypt","Nile","Heliopolis"],"status":"candidate","notes":""},{"id":"genesis-brothers-egypt","zh":"兄弟们下埃及","en":"The Brothers Come to Egypt","book":1,"start":1042001,"end":1045028,"ref":"Genesis 42:1–45:28","refZh":"创世记 42:1–45:28","summaryZh":"众兄弟因饥荒两次下埃及籴粮，约瑟最终与他们相认。","yearEarly":-1900,"yearLate":-1550,"dateBasis":"约瑟在埃及的时代通常被放在中王国晚期至第二中间期（约公元前 1900—1550 年），常与喜克索斯时期联系。埃及文献中没有约瑟的直接记载，此区间为推定。","dateConfidence":"disputed","placeIds":["af301ca","a581f0c","a60f092"],"placeNames":["Egypt","Canaan","Goshen 1"],"status":"candidate","notes":""},{"id":"genesis-jacob-egypt","zh":"雅各下埃及","en":"Jacob Goes Down to Egypt","book":1,"start":1046001,"end":1047031,"ref":"Genesis 46:1–47:31","refZh":"创世记 46:1–47:31","summaryZh":"雅各全家七十人下埃及，住在歌珊地。","yearEarly":-1900,"yearLate":-1550,"dateBasis":"约瑟在埃及的时代通常被放在中王国晚期至第二中间期（约公元前 1900—1550 年），常与喜克索斯时期联系。埃及文献中没有约瑟的直接记载，此区间为推定。","dateConfidence":"disputed","placeIds":["a075d61","af301ca","a581f0c","a8ec7ba","acd9137","a60f092","a079b21"],"placeNames":["Beersheba 2","Egypt","Canaan","Paddan-aram","Heliopolis","Goshen 1","Rameses"],"status":"candidate","notes":""},{"id":"genesis-jacob-blessing","zh":"雅各的祝福","en":"Jacob Blesses His Sons","book":1,"start":1048001,"end":1049033,"ref":"Genesis 48:1–49:33","refZh":"创世记 48:1–49:33","summaryZh":"雅各为约瑟的两个儿子和自己的十二个儿子祝福，然后气绝。","yearEarly":-1900,"yearLate":-1550,"dateBasis":"约瑟在埃及的时代通常被放在中王国晚期至第二中间期（约公元前 1900—1550 年），常与喜克索斯时期联系。埃及文献中没有约瑟的直接记载，此区间为推定。","dateConfidence":"disputed","placeIds":["a581f0c","a397042","af301ca","a112427","af4e985","a8ec7ba","aa4680a","a98e4d7","ae00861","aeb9e97"],"placeNames":["Canaan","Luz 1","Egypt","Bethlehem 1","Ephrath","Paddan-aram","Shiloh","Sidon","Machpelah","Mamre"],"status":"candidate","notes":""},{"id":"genesis-jacob-burial","zh":"雅各安葬与约瑟之死","en":"Jacob's Burial and Joseph's Death","book":1,"start":1050001,"end":1050026,"ref":"Genesis 50:1–50:26","refZh":"创世记 50:1–50:26","summaryZh":"雅各被葬在麦比拉洞，约瑟死在埃及，嘱咐把骸骨带上去。","yearEarly":-1900,"yearLate":-1550,"dateBasis":"约瑟在埃及的时代通常被放在中王国晚期至第二中间期（约公元前 1900—1550 年），常与喜克索斯时期联系。埃及文献中没有约瑟的直接记载，此区间为推定。","dateConfidence":"disputed","placeIds":["a581f0c","af301ca","a60f092","a2f186d","ae686c9","a70ac98","ae00861","aeb9e97"],"placeNames":["Canaan","Egypt","Goshen 1","Atad","Jordan","Abel-mizraim","Machpelah","Mamre"],"status":"candidate","notes":""}];
+const CONF = {"anchored":["有外部锚点","#7f9c7a"],"inferred":["由内部年表推算","#8a9bb0"],"disputed":["学界有分歧","#c99a5a"],"none":["经文不支持定年","#8a7f9c"]};
+
+let state = {};      // id -> {status, notes}
+let store = null;
+let cursor = 0;
+
+const esc = (s) => String(s).replace(/[&<>"]/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const $ = (id) => document.getElementById(id);
+
+function yearLabel(e) {
+  if (e.yearEarly === null) return '经文不支持定年';
+  const f = (y) => y < 0 ? Math.abs(y) + ' BC' : y + ' AD';
+  return f(e.yearEarly) + ' – ' + f(e.yearLate);
+}
+
+function render() {
+  let html = '', lastBook = null;
+  EVENTS.forEach((e, i) => {
+    if (e.book !== lastBook) {
+      lastBook = e.book;
+      const b = BOOKS.find((x) => x.n === e.book);
+      html += `<h2 class="bookhead">${esc(b.zh)}　${esc(b.en)}</h2>`;
+    }
+    const st = state[e.id] || { status: 'candidate', notes: '' };
+    const conf = CONF[e.dateConfidence];
+    html += `<article class="ev${i === cursor ? ' cursor' : ''}" data-status="${st.status}" data-i="${i}" id="ev${i}">
+      <h2>${esc(e.zh)}</h2>
+      <p class="en">${esc(e.en)}</p>
+      <p class="sum">${esc(e.summaryZh)}</p>
+      <div class="meta">
+        <span class="chip ref">${esc(e.refZh)}</span>
+        <span class="chip yr" style="color:${conf[1]}">${yearLabel(e)} · ${conf[0]}</span>
+      </div>
+      ${e.placeNames.length ? `<p class="places"><span class="lbl">经文中的地点 ${e.placeNames.length}</span><b>${e.placeNames.map(esc).join(' · ')}</b></p>` :
+        '<p class="places"><span class="lbl">经文中的地点</span>这段经文没有提到任何可定位的地名</p>'}
+      <p class="basis">${esc(e.dateBasis)}</p>
+      <div class="acts">
+        <button class="act ok" data-a="approved">通过</button>
+        <button class="act no" data-a="rejected">否决</button>
+        <button class="act ed" data-a="edited">待改</button>
+      </div>
+      <textarea placeholder="批注：范围要改？名称不妥？年代依据有问题？" data-n="${e.id}">${esc(st.notes)}</textarea>
+    </article>`;
+  });
+  $('list').innerHTML = html;
+  tally();
+}
+
+function tally() {
+  const vals = EVENTS.map((e) => (state[e.id] || {}).status || 'candidate');
+  const ok = vals.filter((v) => v === 'approved').length;
+  const no = vals.filter((v) => v === 'rejected').length;
+  const left = vals.filter((v) => v === 'candidate').length;
+  $('n-ok').textContent = ok; $('n-no').textContent = no; $('n-left').textContent = left;
+  $('prog').style.width = ((EVENTS.length - left) / EVENTS.length * 100).toFixed(1) + '%';
+}
+
+function set(i, status) {
+  const e = EVENTS[i];
+  const cur = state[e.id] || { status: 'candidate', notes: '' };
+  state[e.id] = { ...cur, status: cur.status === status ? 'candidate' : status };
+  const el = $('ev' + i);
+  el.dataset.status = state[e.id].status;
+  tally(); save();
+}
+
+$('list').addEventListener('click', (ev) => {
+  const btn = ev.target.closest('.act');
+  if (!btn) return;
+  set(Number(btn.closest('.ev').dataset.i), btn.dataset.a);
+});
+$('list').addEventListener('input', (ev) => {
+  if (ev.target.tagName !== 'TEXTAREA') return;
+  const id = ev.target.dataset.n;
+  state[id] = { ...(state[id] || { status: 'candidate' }), notes: ev.target.value };
+  save();
+});
+
+function moveCursor(d) {
+  document.querySelectorAll('.ev').forEach((el) => el.classList.remove('cursor'));
+  cursor = Math.max(0, Math.min(EVENTS.length - 1, cursor + d));
+  const el = $('ev' + cursor);
+  el.classList.add('cursor');
+  el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+}
+
+addEventListener('keydown', (ev) => {
+  if (ev.target.tagName === 'TEXTAREA' || ev.metaKey || ev.ctrlKey) return;
+  const k = ev.key.toLowerCase();
+  if (k === 'j') { moveCursor(1); ev.preventDefault(); }
+  else if (k === 'k') { moveCursor(-1); ev.preventDefault(); }
+  else if (k === 'a') { set(cursor, 'approved'); moveCursor(1); ev.preventDefault(); }
+  else if (k === 'x') { set(cursor, 'rejected'); moveCursor(1); ev.preventDefault(); }
+  else if (k === 'e') { set(cursor, 'edited'); ev.preventDefault(); }
+});
+
+$('export').addEventListener('click', () => {
+  const rows = EVENTS.map((e) => {
+    const st = state[e.id] || { status: 'candidate', notes: '' };
+    return { id: e.id, zh: e.zh, ref: e.refZh, status: st.status, notes: st.notes };
+  });
+  const text = JSON.stringify(rows, null, 2);
+  navigator.clipboard?.writeText(text).then(
+    () => { $('export').textContent = '已复制到剪贴板'; setTimeout(() => ($('export').textContent = '导出结果'), 2000); },
+    () => { $('export').textContent = '复制失败'; },
+  );
+});
+
+let timer;
+function save() {
+  clearTimeout(timer);
+  timer = setTimeout(async () => {
+    try { localStorage.setItem('events.review', JSON.stringify(state)); } catch {}
+    if (store) { try { await store.doc('review/events').set({ state, at: Date.now() }); } catch {} }
+  }, 400);
+}
+
+try {
+  const local = JSON.parse(localStorage.getItem('events.review') || '{}');
+  if (local && typeof local === 'object') state = local;
+} catch {}
+
+render();
+
+(async () => {
+  const db = window.claude && (await window.claude.use('db'));
+  if (!db) return;
+  store = db;
+  try {
+    const doc = await db.doc('review/events').get();
+    if (doc && doc.state && Object.keys(doc.state).length >= Object.keys(state).length) {
+      state = doc.state;
+      render();
+    }
+  } catch {}
+})();
+</script>

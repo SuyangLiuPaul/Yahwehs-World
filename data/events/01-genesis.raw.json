@@ -1,0 +1,55 @@
+{
+  "book": 1,
+  "provenance": "候选由 Claude 依经文段落边界提出，未经审阅。名称与范围是提案，地点由脚本从 OpenBible 逐节索引算出，不是提案。",
+  "dating": {
+    "primordial": {
+      "yearEarly": null, "yearLate": null, "dateConfidence": "none",
+      "dateBasis": "创世记 1—11 章没有可与外部年表对应的锚点。厄谢尔等传统年表由家谱推算，其前提（家谱无断代、寿数按字面）本身有争议，这里不采用任何一种。"
+    },
+    "patriarch": {
+      "yearEarly": -2100, "yearLate": -1700, "dateConfidence": "disputed",
+      "dateBasis": "族长时期常被放在中青铜时代（约公元前 2100—1700 年），依据是叙事中的风俗、地名与人名与该时期的对应。这是一个宽区间而非年份，且部分学者认为族长叙事无法作历史定年。"
+    },
+    "joseph": {
+      "yearEarly": -1900, "yearLate": -1550, "dateConfidence": "disputed",
+      "dateBasis": "约瑟在埃及的时代通常被放在中王国晚期至第二中间期（约公元前 1900—1550 年），常与喜克索斯时期联系。埃及文献中没有约瑟的直接记载，此区间为推定。"
+    }
+  },
+  "events": [
+    ["creation", "创造", "The Creation", "1:1", "2:3", "神在六日中创造天地万物，第七日安息。", "primordial"],
+    ["eden", "伊甸园", "The Garden of Eden", "2:4", "2:25", "神把人安置在伊甸的园子里，为他造配偶。", "primordial"],
+    ["fall", "堕落", "The Fall", "3:1", "3:24", "人违背神的吩咐，被逐出伊甸园。", "primordial"],
+    ["cain-abel", "该隐与亚伯", "Cain and Abel", "4:1", "4:16", "该隐在田间杀了他兄弟亚伯，被逐去流离飘荡。", "primordial"],
+    ["flood", "洪水", "The Flood", "6:9", "9:17", "挪亚造方舟，洪水淹没全地，神与他立虹为记的约。", "primordial"],
+    ["babel", "巴别塔", "The Tower of Babel", "11:1", "11:9", "人在示拿地建城和塔，神变乱他们的口音，把他们分散。", "primordial"],
+    ["abram-call", "亚伯兰蒙召", "The Call of Abram", "12:1", "12:9", "亚伯兰离开哈兰往迦南地去，神应许使他成为大国。", "patriarch"],
+    ["abram-egypt", "亚伯兰下埃及", "Abram in Egypt", "12:10", "12:20", "因迦南地饥荒，亚伯兰下埃及寄居，称撒莱为妹子。", "patriarch"],
+    ["abram-lot-part", "亚伯兰与罗得分开", "Abram and Lot Separate", "13:1", "13:18", "因牧人相争，罗得选了约旦河的全平原，亚伯兰住在迦南地。", "patriarch"],
+    ["war-kings", "四王与五王之战", "The War of the Kings", "14:1", "14:16", "四王掳走罗得，亚伯兰率壮丁追到但，把人和财物夺回。", "patriarch"],
+    ["melchizedek", "麦基洗德", "Melchizedek", "14:17", "14:24", "撒冷王麦基洗德带饼和酒出来迎接亚伯兰并为他祝福。", "patriarch"],
+    ["abram-covenant", "与亚伯兰立约", "The Covenant with Abram", "15:1", "15:21", "神以火炬经过分开的牲畜，与亚伯兰立约应许那地。", "patriarch"],
+    ["hagar-ishmael", "夏甲与以实玛利", "Hagar and Ishmael", "16:1", "16:16", "夏甲从撒莱面前逃走，在旷野水泉旁遇见耶和华的使者。", "patriarch"],
+    ["circumcision", "割礼之约", "The Covenant of Circumcision", "17:1", "17:27", "神改亚伯兰的名为亚伯拉罕，立割礼为约的记号。", "patriarch"],
+    ["sodom", "所多玛与蛾摩拉", "Sodom and Gomorrah", "18:1", "19:38", "亚伯拉罕为所多玛代求，两城被硫磺与火所毁，罗得得救。", "patriarch"],
+    ["isaac-born", "以撒出生", "The Birth of Isaac", "21:1", "21:7", "撒拉照神所应许的日期给亚伯拉罕生了以撒。", "patriarch"],
+    ["akedah", "献以撒", "The Binding of Isaac", "22:1", "22:19", "亚伯拉罕带以撒往摩利亚地的山上，神以公羊代替。", "patriarch"],
+    ["machpelah", "撒拉之死与麦比拉洞", "Sarah's Death and Machpelah", "23:1", "23:20", "亚伯拉罕向赫人买下麦比拉洞作坟地，葬撒拉在那里。", "patriarch"],
+    ["rebekah", "为以撒娶妻", "A Wife for Isaac", "24:1", "24:67", "老仆人往米所波大米拿鹤的城，在井旁遇见利百加。", "patriarch"],
+    ["jacob-esau-birth", "雅各与以扫", "Jacob and Esau", "25:19", "25:34", "双子在利百加腹中相争，以扫为一碗红豆汤卖了长子的名分。", "patriarch"],
+    ["isaac-gerar", "以撒在基拉耳", "Isaac in Gerar", "26:1", "26:33", "以撒因饥荒住在基拉耳，重挖他父亲的井，与亚比米勒立约。", "patriarch"],
+    ["stolen-blessing", "雅各骗取祝福", "The Stolen Blessing", "27:1", "27:45", "雅各假冒以扫，从眼目昏花的以撒手中得了祝福。", "patriarch"],
+    ["bethel-ladder", "伯特利的梦", "Jacob's Ladder at Bethel", "28:10", "28:22", "雅各在路斯梦见梯子立在地上，醒来称那地方为伯特利。", "patriarch"],
+    ["jacob-haran", "雅各在哈兰", "Jacob in Haran", "29:1", "31:55", "雅各为利亚和拉结服事拉班二十年，带着妻子儿女和羊群离开。", "patriarch"],
+    ["peniel", "雅各与神摔跤", "Wrestling at Peniel", "32:22", "32:32", "雅各在雅博渡口与人摔跤直到黎明，名被改为以色列。", "patriarch"],
+    ["jacob-esau-meet", "雅各与以扫和好", "Jacob Meets Esau", "33:1", "33:20", "以扫跑来抱住雅各，雅各到了迦南地的示剑城支搭帐棚。", "patriarch"],
+    ["dinah-shechem", "底拿与示剑", "Dinah and Shechem", "34:1", "34:31", "示剑玷污底拿，西缅和利未用刀杀了那城的男丁。", "patriarch"],
+    ["joseph-sold", "约瑟被卖", "Joseph Sold into Egypt", "37:1", "37:36", "约瑟的哥哥们在多坍把他卖给以实玛利人，带下埃及去。", "joseph"],
+    ["judah-tamar", "犹大与他玛", "Judah and Tamar", "38:1", "38:30", "他玛在往亭拿的路旁坐着，向犹大讨回她应得的。", "joseph"],
+    ["potiphar", "约瑟在波提乏家", "Joseph in Potiphar's House", "39:1", "39:23", "约瑟在护卫长家中蒙福，因主母诬告下在监里。", "joseph"],
+    ["dreams-interpreted", "约瑟解梦", "Joseph Interprets Dreams", "40:1", "41:57", "约瑟为酒政膳长和法老解梦，被立为治理埃及全地的宰相。", "joseph"],
+    ["brothers-egypt", "兄弟们下埃及", "The Brothers Come to Egypt", "42:1", "45:28", "众兄弟因饥荒两次下埃及籴粮，约瑟最终与他们相认。", "joseph"],
+    ["jacob-egypt", "雅各下埃及", "Jacob Goes Down to Egypt", "46:1", "47:31", "雅各全家七十人下埃及，住在歌珊地。", "joseph"],
+    ["jacob-blessing", "雅各的祝福", "Jacob Blesses His Sons", "48:1", "49:33", "雅各为约瑟的两个儿子和自己的十二个儿子祝福，然后气绝。", "joseph"],
+    ["jacob-burial", "雅各安葬与约瑟之死", "Jacob's Burial and Joseph's Death", "50:1", "50:26", "雅各被葬在麦比拉洞，约瑟死在埃及，嘱咐把骸骨带上去。", "joseph"]
+  ]
+}
