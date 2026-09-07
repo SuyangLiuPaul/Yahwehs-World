@@ -98,10 +98,23 @@ const events = timeline.events.map((e) => {
     return p;
   });
 
+  // Which verse each place came from. A multi-chapter range inevitably pulls
+  // in gentilics — Shunem enters 1 Kings 1-3 only because Abishag is "the
+  // Shunammite" — and adjacent episodes that are not the event. No automatic
+  // rule separates those from the event's own geography, so the next best
+  // thing is to show the verse beside the place and let a reviewer judge it in
+  // two seconds instead of opening a Bible.
   const seen = [];
+  const from = new Map();
   for (const [sort, idxs] of versePlaces) {
     if (!ranges.some((r) => sort >= r.start && sort <= r.end)) continue;
-    for (const i of idxs) if (!seen.includes(i)) seen.push(i);
+    for (const i of idxs) {
+      if (!seen.includes(i)) { seen.push(i); from.set(i, []); }
+      if (from.get(i).length < 3) {
+        const c = Math.floor((sort % 1_000_000) / 1000), v = sort % 1000;
+        from.get(i).push(`${c}:${v}`);
+      }
+    }
   }
 
   return {
@@ -119,6 +132,8 @@ const events = timeline.events.map((e) => {
     // Derived here from the geocoding data.
     placeIds: seen.map((i) => bundle.places[i].id),
     placeNames: seen.map((i) => bundle.places[i].name),
+    /** Where in the passage each place is named, same order as placeNames. */
+    placeAt: seen.map((i) => from.get(i).join(', ')),
     // The dates are already audited upstream; what is new and unreviewed is
     // the place linkage, so that is what the review tool asks about.
     status: 'imported',

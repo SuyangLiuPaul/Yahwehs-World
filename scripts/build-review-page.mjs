@@ -31,7 +31,9 @@ const spineRows = spine.events.map((e) => ({
   refZh: e.refs.join('、'), era: e.era,
   year: e.year, basis: e.basis, approximate: e.approximate,
   datingRefs: e.datingRefs.length,
-  placeNames: e.placeNames, status: e.status, dup: [],
+  placeNames: e.placeNames, placeAt: e.placeAt ?? [],
+  recommend: e.recommend ?? null, why: e.why ?? '', finding: e.finding ?? '',
+  status: e.status, dup: [],
 }));
 
 const candRows = candBooks.flatMap((b) => b.events.map((e) => {
@@ -43,7 +45,9 @@ const candRows = candBooks.flatMap((b) => b.events.map((e) => {
     yearEarly: e.yearEarly, yearLate: e.yearLate,
     year: null, basis: null, approximate: null, datingRefs: 0,
     dateBasis: e.dateBasis, dateSource: e.dateSource ?? null,
-    placeNames: e.placeNames, status: e.status,
+    placeNames: e.placeNames, placeAt: [],
+    recommend: null, why: '', finding: '',
+    status: e.status,
     dup: hits.map((h) => h.zh),
   };
 }));
@@ -118,7 +122,14 @@ h1{margin:0 0 .4rem;font-size:1.9rem;font-weight:600;letter-spacing:.04em}
 .bookhead.alt{color:var(--edit);margin-top:2.4rem;border-top:1px solid var(--line);padding-top:1.4rem}
 .places{margin:0 0 .8rem;font-size:.76rem;color:var(--muted);line-height:1.7}
 .places b{color:var(--ink);font-weight:400}
-.places .lbl{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;color:var(--faint);text-transform:uppercase;margin-right:.4rem}
+.places .lbl,.rec .lbl{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;color:var(--faint);text-transform:uppercase;margin-right:.4rem;display:inline-block}
+.places .at{font-style:normal;font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-left:.16rem}
+.places .sep{color:var(--line);margin:0 .3rem}
+.rec{margin:0 0 .8rem;font-size:.76rem;line-height:1.7;padding:.55rem .7rem;border-radius:2px}
+.rec-approved{background:#4f7a5514;color:var(--muted)}
+.rec-edited{background:#d9b44418;color:var(--muted)}
+.rec-edited .lbl{color:var(--edit)}
+.rec-approved .lbl{color:var(--ok)}
 .basis{margin:0 0 .8rem;font-size:.74rem;color:var(--faint);line-height:1.65;border-left:1px solid var(--line);padding-left:.7rem}
 .acts{display:flex;gap:.4rem;flex-wrap:wrap}
 button.act{background:transparent;border:1px solid var(--line);border-radius:2px;padding:.34rem .8rem;
@@ -152,6 +163,7 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);font-si
     <span class="t-ok">通过 <b id="n-ok">0</b></span>
     <span class="t-no">否决 <b id="n-no">0</b></span>
     <span class="t-left">待审 <b id="n-left">0</b></span>
+    <button id="accept" class="act ok" type="button" style="padding:.24rem .7rem">采纳全部初审建议</button>
   </div>
   <span class="track"><i id="prog"></i></span>
   <span class="hint"><kbd>J</kbd>/<kbd>K</kbd> 上下　<kbd>A</kbd> 通过　<kbd>X</kbd> 否决　<kbd>E</kbd> 待改</span>
@@ -223,8 +235,13 @@ function render() {
         \${e.dup.length ? \`<span class="chip dup">年表已有：\${e.dup.map(esc).join('、')}</span>\` : ''}
       </div>
       \${e.kind === 'candidate' && e.dateBasis ? \`<p class="basis">\${esc(e.dateBasis)}</p>\` : ''}
-      \${e.placeNames.length ? \`<p class="places"><span class="lbl">经文中的地点 \${e.placeNames.length}</span><b>\${e.placeNames.map(esc).join(' · ')}</b></p>\` :
-        '<p class="places"><span class="lbl">经文中的地点</span>这段经文没有提到任何可定位的地名</p>'}
+      \${e.placeNames.length
+        ? \`<p class="places"><span class="lbl">经文中的地点 \${e.placeNames.length}</span>\${
+            e.placeAt.length
+              ? e.placeNames.map((n, i) => \`<b>\${esc(n)}</b><i class="at">\${esc(e.placeAt[i] || '')}</i>\`).join('<span class="sep">·</span>')
+              : \`<b>\${e.placeNames.map(esc).join(' · ')}</b>\`}</p>\`
+        : '<p class="places"><span class="lbl">经文中的地点</span>这段经文没有提到任何可定位的地名</p>'}
+      \${e.why ? \`<p class="rec rec-\${e.recommend}"><span class="lbl">初审建议 · \${e.recommend === 'approved' ? '通过' : '待改'}</span>\${esc(e.why)}</p>\` : ''}
 
       <div class="acts">
         <button class="act ok" data-a="approved">通过</button>
@@ -284,6 +301,18 @@ addEventListener('keydown', (ev) => {
   else if (k === 'a') { set(cursor, 'approved'); moveCursor(1); ev.preventDefault(); }
   else if (k === 'x') { set(cursor, 'rejected'); moveCursor(1); ev.preventDefault(); }
   else if (k === 'e') { set(cursor, 'edited'); ev.preventDefault(); }
+});
+
+// One click to take the whole first pass, because 105 confirmations of
+// "looks fine" is how a review stops happening. The 19 flagged records are
+// left as 'edited' so they still need a decision.
+$('accept').addEventListener('click', () => {
+  for (const e of EVENTS) {
+    if (!e.recommend) continue;
+    const cur = state[e.id] || { notes: '' };
+    state[e.id] = { ...cur, status: e.recommend };
+  }
+  render(); save();
 });
 
 $('export').addEventListener('click', () => {
