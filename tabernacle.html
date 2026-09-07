@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>走进会幕 · 雅伟之界</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <canvas id="stage"></canvas>
+
+  <div id="gate">
+    <p class="eyebrow">出埃及记 26–27 章</p>
+    <h1>走进会幕</h1>
+    <p class="lede">
+      院子、帷子、柱子、竖板、卯座、闩、幔子——全部按经文给的数量生成，没有一件是摆出来好看的。
+    </p>
+    <ul class="tally" id="tally"></ul>
+    <button id="enter" type="button">点击进入</button>
+    <p class="keys"><b>W A S D</b> 走动　<b>Shift</b> 快走　<b>鼠标</b> 转头　<b>Esc</b> 退出</p>
+  </div>
+
+  <div id="hud" hidden>
+    <div id="where"></div>
+    <div id="verse"></div>
+  </div>
+
+  <script type="module" src="/src/walk/main.ts"></script>
+</body>
+</html>

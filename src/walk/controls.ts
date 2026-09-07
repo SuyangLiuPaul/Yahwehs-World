@@ -1,0 +1,97 @@
+import * as THREE from 'three';
+
+// First-person walking. Pointer lock for the look, WASD for the move, and
+// swept-box collision against the structure's colliders so the walls are walls.
+//
+// The controls are deliberately unremarkable — this is the cheap part of a
+// walkable scene, and pretending otherwise is how projects mistake where their
+// real cost sits. What makes the tabernacle worth walking is that its geometry
+// came out of Exodus, not that the camera moves well.
+
+const SPEED = 3.2;          // m/s — an unhurried walk, this is not a shooter
+const SPRINT = 6.0;
+const EYE = 1.65;           // eye height of a person of average build
+const RADIUS = 0.32;        // the walker's own girth, for collision
+const ACCEL = 12;
+const DAMP = 9;
+
+export class Walker {
+  readonly yaw = new THREE.Object3D();
+  readonly pitch = new THREE.Object3D();
+  private readonly velocity = new THREE.Vector3();
+  private readonly keys = new Set<string>();
+  private locked = false;
+  private readonly box = new THREE.Box3();
+  private readonly size = new THREE.Vector3(RADIUS * 2, EYE * 1.2, RADIUS * 2);
+
+  constructor(
+    camera: THREE.PerspectiveCamera,
+    dom: HTMLElement,
+    private colliders: THREE.Box3[],
+  ) {
+    this.yaw.add(this.pitch);
+    this.pitch.add(camera);
+    camera.position.set(0, 0, 0);
+    this.yaw.position.set(0, EYE, 0);
+
+    dom.addEventListener('click', () => { if (!this.locked) dom.requestPointerLock(); });
+    document.addEventListener('pointerlockchange', () => {
+      this.locked = document.pointerLockElement === dom;
+      this.onLockChange?.(this.locked);
+    });
+    document.addEventListener('mousemove', (e) => {
+      if (!this.locked) return;
+      this.yaw.rotation.y -= e.movementX * 0.0022;
+      this.pitch.rotation.x = THREE.MathUtils.clamp(
+        this.pitch.rotation.x - e.movementY * 0.0022, -Math.PI / 2.1, Math.PI / 2.1);
+    });
+    addEventListener('keydown', (e) => {
+      this.keys.add(e.code);
+      // Space would otherwise scroll the page out from under the canvas.
+      if (e.code === 'Space') e.preventDefault();
+    });
+    addEventListener('keyup', (e) => this.keys.delete(e.code));
+    addEventListener('blur', () => this.keys.clear());
+  }
+
+  onLockChange?: (locked: boolean) => void;
+
+  setColliders(c: THREE.Box3[]) { this.colliders = c; }
+
+  moveTo(x: number, z: number, facing = 0) {
+    this.yaw.position.set(x, EYE, z);
+    this.yaw.rotation.y = facing;
+    this.pitch.rotation.x = 0;
+    this.velocity.set(0, 0, 0);
+  }
+
+  /** True while the walker's box at (x, z) overlaps anything solid. */
+  private blocked(x: number, z: number): boolean {
+    this.box.setFromCenterAndSize(new THREE.Vector3(x, EYE * 0.6, z), this.size);
+    return this.colliders.some((c) => c.intersectsBox(this.box));
+  }
+
+  update(dt: number) {
+    const fwd = (this.keys.has('KeyW') ? 1 : 0) - (this.keys.has('KeyS') ? 1 : 0);
+    const side = (this.keys.has('KeyD') ? 1 : 0) - (this.keys.has('KeyA') ? 1 : 0);
+    const speed = this.keys.has('ShiftLeft') || this.keys.has('ShiftRight') ? SPRINT : SPEED;
+
+    const wish = new THREE.Vector3(side, 0, -fwd);
+    if (wish.lengthSq() > 0) {
+      wish.normalize().applyAxisAngle(new THREE.Vector3(0, 1, 0), this.yaw.rotation.y);
+      this.velocity.addScaledVector(wish, ACCEL * speed * dt);
+      if (this.velocity.length() > speed) this.velocity.setLength(speed);
+    }
+    this.velocity.multiplyScalar(Math.max(0, 1 - DAMP * dt));
+
+    // Axis-separated so sliding along a wall works instead of stopping dead.
+    const p = this.yaw.position;
+    const nx = p.x + this.velocity.x * dt;
+    if (!this.blocked(nx, p.z)) p.x = nx; else this.velocity.x = 0;
+    const nz = p.z + this.velocity.z * dt;
+    if (!this.blocked(p.x, nz)) p.z = nz; else this.velocity.z = 0;
+  }
+
+  get position() { return this.yaw.position; }
+  get isLocked() { return this.locked; }
+}

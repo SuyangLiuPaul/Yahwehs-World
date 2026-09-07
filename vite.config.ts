@@ -7,6 +7,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         structures: resolve(__dirname, 'structures.html'),
+        tabernacle: resolve(__dirname, 'tabernacle.html'),
       },
     },
   },
