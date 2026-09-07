@@ -1,0 +1,6363 @@
+{
+  "meta": {
+    "generated": "2026-09-07T22:58:18.411Z",
+    "count": 105,
+    "provenance": "事件、年份、定年依据与 approximate 标记，全部取自 SeekSparks 的 assets/bible_timeline.json，未作改动。该年表以所罗门登基（Thiele）为锚点，按经文自述的年数上溯，来源与审计见 SeekSparks 的 docs/WHEEL-PROVENANCE.md。地点关联由本脚本依 refs 的经文范围，从 OpenBible.info 逐节索引算出（CC BY 4.0）。",
+    "anchor": "此图各年皆自一个定点上溯而得：所罗门登基之年。该年取自锡尔（Thiele），本应用一律采用。王上 6:1 记圣殿建于所罗门在位第四年，并谓该年在出埃及后 480 年；其前各年，皆按经文自述的年数逐段上溯，每项事件亦各自列出所据的经文。"
+  },
+  "events": [
+    {
+      "id": "creation",
+      "zh": "创造",
+      "en": "The Creation",
+      "summaryZh": "神在六天内创造天地万物；第七日歇息。",
+      "era": "antediluvian",
+      "year": -4114,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 21:5",
+        "Genesis 12:4",
+        "Genesis 25:26",
+        "Genesis 47:9",
+        "Exodus 12:40",
+        "1 Kings 6:1",
+        "Genesis 11:26",
+        "Genesis 11:24",
+        "Genesis 11:22",
+        "Genesis 11:20",
+        "Genesis 11:18",
+        "Genesis 11:16",
+        "Genesis 11:14",
+        "Genesis 11:12",
+        "Genesis 11:10",
+        "Genesis 7:6",
+        "Genesis 5:28",
+        "Genesis 5:25",
+        "Genesis 5:21",
+        "Genesis 5:18",
+        "Genesis 5:15",
+        "Genesis 5:12",
+        "Genesis 5:9",
+        "Genesis 5:6",
+        "Genesis 5:3"
+      ],
+      "refs": [
+        "Genesis 1",
+        "Genesis 2"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 1,
+          "start": 1001001,
+          "end": 1001999
+        },
+        {
+          "book": 1,
+          "chapter": 2,
+          "start": 1002001,
+          "end": 1002999
+        }
+      ],
+      "placeIds": [
+        "af3daeb",
+        "ad7e819",
+        "a19b076",
+        "a74ee0d",
+        "a71d79b",
+        "a3d1321",
+        "a62dec4",
+        "a38ebfd"
+      ],
+      "placeNames": [
+        "Eden 1",
+        "Havilah 1",
+        "Pishon",
+        "Cush 2",
+        "Gihon 1",
+        "Assyria",
+        "Euphrates",
+        "Tigris"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "eden",
+      "zh": "亚当夏娃在伊甸园",
+      "en": "Adam & Eve in Eden",
+      "summaryZh": "神将亚当置于伊甸园，并以他的肋骨造夏娃。",
+      "era": "antediluvian",
+      "year": -4114,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Genesis 2:8-25"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 2,
+          "start": 1002008,
+          "end": 1002025
+        }
+      ],
+      "placeIds": [
+        "af3daeb",
+        "ad7e819",
+        "a19b076",
+        "a74ee0d",
+        "a71d79b",
+        "a3d1321",
+        "a62dec4",
+        "a38ebfd"
+      ],
+      "placeNames": [
+        "Eden 1",
+        "Havilah 1",
+        "Pishon",
+        "Cush 2",
+        "Gihon 1",
+        "Assyria",
+        "Euphrates",
+        "Tigris"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "fall",
+      "zh": "人类堕落",
+      "en": "The Fall",
+      "summaryZh": "亚当夏娃违背神命；被逐出伊甸园；罪进入世界。",
+      "era": "antediluvian",
+      "year": -4104,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Genesis 3",
+        "Romans 5:12"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 3,
+          "start": 1003001,
+          "end": 1003999
+        },
+        {
+          "book": 45,
+          "chapter": 5,
+          "start": 45005012,
+          "end": 45005012
+        }
+      ],
+      "placeIds": [
+        "af3daeb"
+      ],
+      "placeNames": [
+        "Eden 1"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "cain_abel",
+      "zh": "该隐杀亚伯",
+      "en": "Cain Murders Abel",
+      "summaryZh": "该隐因嫉妒杀害弟弟亚伯；圣经记载的第一桩谋杀。",
+      "era": "antediluvian",
+      "year": -4064,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Genesis 4:1-16"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 4,
+          "start": 1004001,
+          "end": 1004016
+        }
+      ],
+      "placeIds": [
+        "af3daeb"
+      ],
+      "placeNames": [
+        "Eden 1"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "seth_born",
+      "zh": "塞特出生",
+      "en": "Birth of Seth",
+      "summaryZh": "亚当之子塞特出生；敬虔的余民由其家系延续。",
+      "era": "antediluvian",
+      "year": -3984,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 21:5",
+        "Genesis 12:4",
+        "Genesis 25:26",
+        "Genesis 47:9",
+        "Exodus 12:40",
+        "1 Kings 6:1",
+        "Genesis 11:26",
+        "Genesis 11:24",
+        "Genesis 11:22",
+        "Genesis 11:20",
+        "Genesis 11:18",
+        "Genesis 11:16",
+        "Genesis 11:14",
+        "Genesis 11:12",
+        "Genesis 11:10",
+        "Genesis 7:6",
+        "Genesis 5:28",
+        "Genesis 5:25",
+        "Genesis 5:21",
+        "Genesis 5:18",
+        "Genesis 5:15",
+        "Genesis 5:12",
+        "Genesis 5:9",
+        "Genesis 5:6",
+        "Genesis 5:3"
+      ],
+      "refs": [
+        "Genesis 4:25-26",
+        "Genesis 5:3"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 4,
+          "start": 1004025,
+          "end": 1004026
+        },
+        {
+          "book": 1,
+          "chapter": 5,
+          "start": 1005003,
+          "end": 1005003
+        }
+      ],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "enosh_born",
+      "zh": "以挪士出生",
+      "en": "Birth of Enosh",
+      "summaryZh": "塞特之子以挪士出生，为亚当以下第三代；那时人开始求告神的名。",
+      "era": "antediluvian",
+      "year": -3879,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 21:5",
+        "Genesis 12:4",
+        "Genesis 25:26",
+        "Genesis 47:9",
+        "Exodus 12:40",
+        "1 Kings 6:1",
+        "Genesis 11:26",
+        "Genesis 11:24",
+        "Genesis 11:22",
+        "Genesis 11:20",
+        "Genesis 11:18",
+        "Genesis 11:16",
+        "Genesis 11:14",
+        "Genesis 11:12",
+        "Genesis 11:10",
+        "Genesis 7:6",
+        "Genesis 5:28",
+        "Genesis 5:25",
+        "Genesis 5:21",
+        "Genesis 5:18",
+        "Genesis 5:15",
+        "Genesis 5:12",
+        "Genesis 5:9",
+        "Genesis 5:6",
+        "Genesis 5:3"
+      ],
+      "refs": [
+        "Genesis 4:26",
+        "Genesis 5:6-11"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 4,
+          "start": 1004026,
+          "end": 1004026
+        },
+        {
+          "book": 1,
+          "chapter": 5,
+          "start": 1005006,
+          "end": 1005011
+        }
+      ],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "kenan_born",
+      "zh": "该南出生",
+      "en": "Birth of Kenan",
+      "summaryZh": "以挪士之子该南出生，为塞特家系中亚当以下第四代。",
+      "era": "antediluvian",
+      "year": -3789,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 21:5",
+        "Genesis 12:4",
+        "Genesis 25:26",
+        "Genesis 47:9",
+        "Exodus 12:40",
+        "1 Kings 6:1",
+        "Genesis 11:26",
+        "Genesis 11:24",
+        "Genesis 11:22",
+        "Genesis 11:20",
+        "Genesis 11:18",
+        "Genesis 11:16",
+        "Genesis 11:14",
+        "Genesis 11:12",
+        "Genesis 11:10",
+        "Genesis 7:6",
+        "Genesis 5:28",
+        "Genesis 5:25",
+        "Genesis 5:21",
+        "Genesis 5:18",
+        "Genesis 5:15",
+        "Genesis 5:12",
+        "Genesis 5:9",
+        "Genesis 5:6",
+        "Genesis 5:3"
+      ],
+      "refs": [
+        "Genesis 5:9-14"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 5,
+          "start": 1005009,
+          "end": 1005014
+        }
+      ],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "mahalalel_born",
+      "zh": "玛勒列出生",
+      "en": "Birth of Mahalalel",
+      "summaryZh": "该南之子玛勒列出生，为塞特家系中亚当以下第五代。",
+      "era": "antediluvian",
+      "year": -3719,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 21:5",
+        "Genesis 12:4",
+        "Genesis 25:26",
+        "Genesis 47:9",
+        "Exodus 12:40",
+        "1 Kings 6:1",
+        "Genesis 11:26",
+        "Genesis 11:24",
+        "Genesis 11:22",
+        "Genesis 11:20",
+        "Genesis 11:18",
+        "Genesis 11:16",
+        "Genesis 11:14",
+        "Genesis 11:12",
+        "Genesis 11:10",
+        "Genesis 7:6",
+        "Genesis 5:28",
+        "Genesis 5:25",
+        "Genesis 5:21",
+        "Genesis 5:18",
+        "Genesis 5:15",
+        "Genesis 5:12",
+        "Genesis 5:9",
+        "Genesis 5:6",
+        "Genesis 5:3"
+      ],
+      "refs": [
+        "Genesis 5:12-17"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 5,
+          "start": 1005012,
+          "end": 1005017
+        }
+      ],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "jared_born",
+      "zh": "雅列出生",
+      "en": "Birth of Jared",
+      "summaryZh": "玛勒列之子雅列出生，为亚当以下第六代，是以诺的父亲。",
+      "era": "antediluvian",
+      "year": -3654,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 21:5",
+        "Genesis 12:4",
+        "Genesis 25:26",
+        "Genesis 47:9",
+        "Exodus 12:40",
+        "1 Kings 6:1",
+        "Genesis 11:26",
+        "Genesis 11:24",
+        "Genesis 11:22",
+        "Genesis 11:20",
+        "Genesis 11:18",
+        "Genesis 11:16",
+        "Genesis 11:14",
+        "Genesis 11:12",
+        "Genesis 11:10",
+        "Genesis 7:6",
+        "Genesis 5:28",
+        "Genesis 5:25",
+        "Genesis 5:21",
+        "Genesis 5:18",
+        "Genesis 5:15",
+        "Genesis 5:12",
+        "Genesis 5:9",
+        "Genesis 5:6",
+        "Genesis 5:3"
+      ],
+      "refs": [
+        "Genesis 5:15-20"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 5,
+          "start": 1005015,
+          "end": 1005020
+        }
+      ],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "methuselah_born",
+      "zh": "玛土撒拉出生",
+      "en": "Birth of Methuselah",
+      "summaryZh": "以诺之子玛土撒拉出生；创世记所载的寿数，无人长过他。",
+      "era": "antediluvian",
+      "year": -3427,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 21:5",
+        "Genesis 12:4",
+        "Genesis 25:26",
+        "Genesis 47:9",
+        "Exodus 12:40",
+        "1 Kings 6:1",
+        "Genesis 11:26",
+        "Genesis 11:24",
+        "Genesis 11:22",
+        "Genesis 11:20",
+        "Genesis 11:18",
+        "Genesis 11:16",
+        "Genesis 11:14",
+        "Genesis 11:12",
+        "Genesis 11:10",
+        "Genesis 7:6",
+        "Genesis 5:28",
+        "Genesis 5:25",
+        "Genesis 5:21",
+        "Genesis 5:18",
+        "Genesis 5:15",
+        "Genesis 5:12",
+        "Genesis 5:9",
+        "Genesis 5:6",
+        "Genesis 5:3"
+      ],
+      "refs": [
+        "Genesis 5:21-27"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 5,
+          "start": 1005021,
+          "end": 1005027
+        }
+      ],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "lamech_born",
+      "zh": "拉麦出生（挪亚之父）",
+      "en": "Birth of Lamech, Noah's Father",
+      "summaryZh": "玛土撒拉之子拉麦出生；他给儿子起名挪亚，指望在受咒诅之地的劳苦中得安慰。",
+      "era": "antediluvian",
+      "year": -3240,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 21:5",
+        "Genesis 12:4",
+        "Genesis 25:26",
+        "Genesis 47:9",
+        "Exodus 12:40",
+        "1 Kings 6:1",
+        "Genesis 11:26",
+        "Genesis 11:24",
+        "Genesis 11:22",
+        "Genesis 11:20",
+        "Genesis 11:18",
+        "Genesis 11:16",
+        "Genesis 11:14",
+        "Genesis 11:12",
+        "Genesis 11:10",
+        "Genesis 7:6",
+        "Genesis 5:28",
+        "Genesis 5:25",
+        "Genesis 5:21",
+        "Genesis 5:18",
+        "Genesis 5:15",
+        "Genesis 5:12",
+        "Genesis 5:9",
+        "Genesis 5:6",
+        "Genesis 5:3"
+      ],
+      "refs": [
+        "Genesis 5:25-31"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 5,
+          "start": 1005025,
+          "end": 1005031
+        }
+      ],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "enoch_walks",
+      "zh": "以诺与神同行",
+      "en": "Enoch Walks with God",
+      "summaryZh": "以诺与神同行三百年；神将他取去，未经死亡。",
+      "era": "antediluvian",
+      "year": -3127,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 21:5",
+        "Genesis 12:4",
+        "Genesis 25:26",
+        "Genesis 47:9",
+        "Exodus 12:40",
+        "1 Kings 6:1",
+        "Genesis 11:26",
+        "Genesis 11:24",
+        "Genesis 11:22",
+        "Genesis 11:20",
+        "Genesis 11:18",
+        "Genesis 11:16",
+        "Genesis 11:14",
+        "Genesis 11:12",
+        "Genesis 11:10",
+        "Genesis 7:6",
+        "Genesis 5:28",
+        "Genesis 5:25",
+        "Genesis 5:21",
+        "Genesis 5:18",
+        "Genesis 5:15",
+        "Genesis 5:12",
+        "Genesis 5:9",
+        "Genesis 5:6",
+        "Genesis 5:3",
+        "Genesis 5:23"
+      ],
+      "refs": [
+        "Genesis 5:21-24",
+        "Hebrews 11:5"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 5,
+          "start": 1005021,
+          "end": 1005024
+        },
+        {
+          "book": 58,
+          "chapter": 11,
+          "start": 58011005,
+          "end": 58011005
+        }
+      ],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "flood",
+      "zh": "挪亚洪水",
+      "en": "Noah's Flood",
+      "summaryZh": "神以洪水审判全地；挪亚一家与各样动物在方舟中得救。",
+      "era": "antediluvian",
+      "year": -2458,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 21:5",
+        "Genesis 12:4",
+        "Genesis 25:26",
+        "Genesis 47:9",
+        "Exodus 12:40",
+        "1 Kings 6:1",
+        "Genesis 11:26",
+        "Genesis 11:24",
+        "Genesis 11:22",
+        "Genesis 11:20",
+        "Genesis 11:18",
+        "Genesis 11:16",
+        "Genesis 11:14",
+        "Genesis 11:12",
+        "Genesis 11:10",
+        "Genesis 7:6",
+        "Genesis 5:28",
+        "Genesis 5:25",
+        "Genesis 5:21",
+        "Genesis 5:18",
+        "Genesis 5:15",
+        "Genesis 5:12",
+        "Genesis 5:9",
+        "Genesis 5:6",
+        "Genesis 5:3"
+      ],
+      "refs": [
+        "Genesis 6-9"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 6,
+          "start": 1006001,
+          "end": 1009999
+        }
+      ],
+      "placeIds": [
+        "ab89be9"
+      ],
+      "placeNames": [
+        "Ararat"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "shelah_born",
+      "zh": "沙拉出生",
+      "en": "Birth of Shelah",
+      "summaryZh": "亚法撒之子沙拉出生，是洪水之后头一代生于水后、而非得救于水中的人；英王钦定本作「Salah」。",
+      "era": "antediluvian",
+      "year": -2421,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 21:5",
+        "Genesis 12:4",
+        "Genesis 25:26",
+        "Genesis 47:9",
+        "Exodus 12:40",
+        "1 Kings 6:1",
+        "Genesis 11:26",
+        "Genesis 11:24",
+        "Genesis 11:22",
+        "Genesis 11:20",
+        "Genesis 11:18",
+        "Genesis 11:16",
+        "Genesis 11:14",
+        "Genesis 11:12",
+        "Genesis 11:10",
+        "Genesis 7:6",
+        "Genesis 5:28",
+        "Genesis 5:25",
+        "Genesis 5:21",
+        "Genesis 5:18",
+        "Genesis 5:15",
+        "Genesis 5:12",
+        "Genesis 5:9",
+        "Genesis 5:6",
+        "Genesis 5:3"
+      ],
+      "refs": [
+        "Genesis 10:24",
+        "Genesis 11:12-15"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 10,
+          "start": 1010024,
+          "end": 1010024
+        },
+        {
+          "book": 1,
+          "chapter": 11,
+          "start": 1011012,
+          "end": 1011015
+        }
+      ],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "babel",
+      "zh": "巴别塔",
+      "en": "Tower of Babel",
+      "summaryZh": "人类建塔以扬名；神变乱口音并使其分散。",
+      "era": "antediluvian",
+      "year": -2314,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Genesis 11:1-9"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 11,
+          "start": 1011001,
+          "end": 1011009
+        }
+      ],
+      "placeIds": [
+        "af725b1",
+        "ab8fdbc"
+      ],
+      "placeNames": [
+        "Shinar",
+        "Babel"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "abram_called",
+      "zh": "亚伯兰蒙召",
+      "en": "Call of Abram",
+      "summaryZh": "神召亚伯兰离开吾珥；应许使他成为大国。",
+      "era": "patriarchs",
+      "year": -2091,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 21:5",
+        "Genesis 12:4",
+        "Genesis 25:26",
+        "Genesis 47:9",
+        "Exodus 12:40",
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "Genesis 12:1-9"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 12,
+          "start": 1012001,
+          "end": 1012009
+        }
+      ],
+      "placeIds": [
+        "a6d9af3",
+        "a581f0c",
+        "a38ad9f",
+        "adf74d4",
+        "a7e13e1",
+        "a64f355",
+        "a1cb244"
+      ],
+      "placeNames": [
+        "Haran",
+        "Canaan",
+        "Moreh 1",
+        "Shechem",
+        "Ai 1",
+        "Bethel 1",
+        "Negeb"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "lot_separates",
+      "zh": "亚伯兰与罗得分开",
+      "en": "Abram and Lot Separate",
+      "summaryZh": "亚伯兰与罗得分手；罗得选择所多玛平原。",
+      "era": "patriarchs",
+      "year": -2086,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Genesis 13"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 13,
+          "start": 1013001,
+          "end": 1013999
+        }
+      ],
+      "placeIds": [
+        "af301ca",
+        "a1cb244",
+        "a7e13e1",
+        "a64f355",
+        "aa572e2",
+        "aa54aa4",
+        "a0aa664",
+        "aacfcda",
+        "a581f0c",
+        "a85151a"
+      ],
+      "placeNames": [
+        "Egypt",
+        "Negeb",
+        "Ai 1",
+        "Bethel 1",
+        "Gomorrah",
+        "Jordan Valley",
+        "Sodom",
+        "Zoar",
+        "Canaan",
+        "Hebron"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "abrahamic_covenant",
+      "zh": "与亚伯拉罕立约",
+      "en": "Abrahamic Covenant",
+      "summaryZh": "神与亚伯兰正式立约；应许后裔如天上的星。",
+      "era": "patriarchs",
+      "year": -2080,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Genesis 15",
+        "Genesis 17"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 15,
+          "start": 1015001,
+          "end": 1015999
+        },
+        {
+          "book": 1,
+          "chapter": 17,
+          "start": 1017001,
+          "end": 1017999
+        }
+      ],
+      "placeIds": [
+        "a69c1d4",
+        "a32a4f8",
+        "a6cf75c",
+        "af301ca",
+        "a62dec4",
+        "a581f0c"
+      ],
+      "placeNames": [
+        "Damascus",
+        "Chaldea",
+        "Ur 1",
+        "Egypt",
+        "Euphrates",
+        "Canaan"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "ishmael_born",
+      "zh": "以实玛利出生",
+      "en": "Birth of Ishmael",
+      "summaryZh": "夏甲为亚伯兰生以实玛利；阿拉伯民族的祖先。",
+      "era": "patriarchs",
+      "year": -2080,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 21:5",
+        "Genesis 16:16",
+        "Genesis 25:26",
+        "Genesis 47:9",
+        "Exodus 12:40",
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "Genesis 16"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 16,
+          "start": 1016001,
+          "end": 1016999
+        }
+      ],
+      "placeIds": [
+        "a581f0c",
+        "acdbce0",
+        "a70e842",
+        "aa3ff18",
+        "ac2cef0"
+      ],
+      "placeNames": [
+        "Canaan",
+        "Shur",
+        "Beer-lahai-roi",
+        "Bered",
+        "Kadesh-barnea"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "sodom_destroyed",
+      "zh": "所多玛蛾摩拉被毁",
+      "en": "Destruction of Sodom & Gomorrah",
+      "summaryZh": "神因所多玛蛾摩拉的罪恶将其毁灭；救出罗得。",
+      "era": "patriarchs",
+      "year": -2067,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 17:21",
+        "Genesis 18:10",
+        "Genesis 19:1",
+        "Genesis 25:26",
+        "Genesis 47:9",
+        "Exodus 12:40",
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "Genesis 19"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 19,
+          "start": 1019001,
+          "end": 1019999
+        }
+      ],
+      "placeIds": [
+        "a0aa664",
+        "aa54aa4",
+        "aacfcda",
+        "aa572e2",
+        "a6046fa"
+      ],
+      "placeNames": [
+        "Sodom",
+        "Jordan Valley",
+        "Zoar",
+        "Gomorrah",
+        "Ammon"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "isaac_born",
+      "zh": "以撒出生",
+      "en": "Birth of Isaac",
+      "summaryZh": "撒拉为亚伯拉罕生以撒；应许之子。",
+      "era": "patriarchs",
+      "year": -2066,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 25:26",
+        "Genesis 47:9",
+        "Exodus 12:40",
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "Genesis 21:1-7"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 21,
+          "start": 1021001,
+          "end": 1021007
+        }
+      ],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "isaac_offered",
+      "zh": "献以撒",
+      "en": "Sacrifice of Isaac",
+      "summaryZh": "亚伯拉罕顺从神献上以撒；神以一只公羊代替。",
+      "era": "patriarchs",
+      "year": -2055,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Genesis 22"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 22,
+          "start": 1022001,
+          "end": 1022999
+        }
+      ],
+      "placeIds": [
+        "adaf385",
+        "a559399",
+        "a075d61"
+      ],
+      "placeNames": [
+        "Moriah",
+        "The Lord Will Provide",
+        "Beersheba 2"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "rebekah_marries",
+      "zh": "利百加嫁以撒",
+      "en": "Rebekah Marries Isaac",
+      "summaryZh": "亚伯拉罕的仆人从哈兰把利百加带来给以撒为妻。",
+      "era": "patriarchs",
+      "year": -2026,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 25:20",
+        "Genesis 25:26",
+        "Genesis 47:9",
+        "Exodus 12:40",
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "Genesis 24"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 24,
+          "start": 1024001,
+          "end": 1024999
+        }
+      ],
+      "placeIds": [
+        "a43f60f",
+        "aff43ac",
+        "a70e842",
+        "a1cb244"
+      ],
+      "placeNames": [
+        "Mesopotamia",
+        "Nahor",
+        "Beer-lahai-roi",
+        "Negeb"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "jacob_esau_born",
+      "zh": "雅各以扫出生",
+      "en": "Jacob & Esau Born",
+      "summaryZh": "以撒和利百加生孪生子雅各与以扫。",
+      "era": "patriarchs",
+      "year": -2006,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 47:9",
+        "Exodus 12:40",
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "Genesis 25:21-26"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 25,
+          "start": 1025021,
+          "end": 1025026
+        }
+      ],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "job_trial",
+      "zh": "约伯的信心受试炼",
+      "en": "Job's Trial of Faith",
+      "summaryZh": "乌斯地的义人在一日之间失去儿女、财产与健康，又被三位朋友用偏颇的因果报应神学指责。神从旋风中应答，约伯最终得复兴。本书归在族长时期——约伯如亚伯拉罕一样，以家长身份献祭（约伯记1:5），书中未涉及摩西律法、会幕或利未祭司制度；以西结书14:14将他与挪亚、但以理并列为三位大义人。",
+      "era": "patriarchs",
+      "year": -2000,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Job 1",
+        "Job 2",
+        "Job 38",
+        "Job 42",
+        "Ezekiel 14:14"
+      ],
+      "ranges": [
+        {
+          "book": 18,
+          "chapter": 1,
+          "start": 18001001,
+          "end": 18001999
+        },
+        {
+          "book": 18,
+          "chapter": 2,
+          "start": 18002001,
+          "end": 18002999
+        },
+        {
+          "book": 18,
+          "chapter": 38,
+          "start": 18038001,
+          "end": 18038999
+        },
+        {
+          "book": 18,
+          "chapter": 42,
+          "start": 18042001,
+          "end": 18042999
+        },
+        {
+          "book": 26,
+          "chapter": 14,
+          "start": 26014014,
+          "end": 26014014
+        }
+      ],
+      "placeIds": [
+        "a324c4d",
+        "ab0b2dd",
+        "a32a4f8",
+        "ac6b210"
+      ],
+      "placeNames": [
+        "Uz",
+        "East",
+        "Chaldea",
+        "Naamah 2"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "jacob_blessing",
+      "zh": "雅各夺以扫祝福",
+      "en": "Jacob Steals Esau's Blessing",
+      "summaryZh": "雅各欺骗以撒得以扫的祝福；逃往哈兰。",
+      "era": "patriarchs",
+      "year": -1929,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Genesis 27"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 27,
+          "start": 1027001,
+          "end": 1027999
+        }
+      ],
+      "placeIds": [
+        "a6d9af3"
+      ],
+      "placeNames": [
+        "Haran"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "jacobs_ladder",
+      "zh": "雅各天梯",
+      "en": "Jacob's Ladder",
+      "summaryZh": "雅各在伯特利梦见通天的梯子；神重申应许。",
+      "era": "patriarchs",
+      "year": -1929,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Genesis 28:10-22"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 28,
+          "start": 1028010,
+          "end": 1028022
+        }
+      ],
+      "placeIds": [
+        "a075d61",
+        "a6d9af3",
+        "a64f355",
+        "a397042"
+      ],
+      "placeNames": [
+        "Beersheba 2",
+        "Haran",
+        "Bethel 1",
+        "Luz 1"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "jacob_marries",
+      "zh": "雅各娶利亚拉结",
+      "en": "Jacob Marries Leah & Rachel",
+      "summaryZh": "雅各为拉班作工十四年；娶利亚和拉结为妻。",
+      "era": "patriarchs",
+      "year": -1922,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Genesis 29"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 29,
+          "start": 1029001,
+          "end": 1029999
+        }
+      ],
+      "placeIds": [
+        "ab0b2dd",
+        "a6d9af3"
+      ],
+      "placeNames": [
+        "East",
+        "Haran"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "joseph_sold",
+      "zh": "约瑟被卖到埃及",
+      "en": "Joseph Sold to Egypt",
+      "summaryZh": "约瑟被兄弟卖为奴；最终被带到埃及。",
+      "era": "patriarchs",
+      "year": -1898,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Genesis 37"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 37,
+          "start": 1037001,
+          "end": 1037999
+        }
+      ],
+      "placeIds": [
+        "a581f0c",
+        "adf74d4",
+        "a375f5a",
+        "ab635e4",
+        "af301ca",
+        "ae73b90"
+      ],
+      "placeNames": [
+        "Canaan",
+        "Shechem",
+        "Valley of Hebron",
+        "Dothan",
+        "Egypt",
+        "Gilead 1"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "joseph_rises",
+      "zh": "约瑟升为宰相",
+      "en": "Joseph Rises in Egypt",
+      "summaryZh": "约瑟为法老解梦；升为埃及宰相。",
+      "era": "patriarchs",
+      "year": -1885,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Genesis 41:46",
+        "Genesis 41:53",
+        "Genesis 45:6",
+        "Exodus 12:40",
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "Genesis 41"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 41,
+          "start": 1041001,
+          "end": 1041999
+        }
+      ],
+      "placeIds": [
+        "a012705",
+        "af301ca",
+        "acd9137"
+      ],
+      "placeNames": [
+        "Nile",
+        "Egypt",
+        "Heliopolis"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "israel_egypt",
+      "zh": "雅各全家下埃及",
+      "en": "Jacob's Family Enters Egypt",
+      "summaryZh": "约瑟在饥荒中把父家七十人接到埃及。",
+      "era": "patriarchs",
+      "year": -1876,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Exodus 12:40",
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "Genesis 46-47",
+        "Exodus 1:1-7"
+      ],
+      "ranges": [
+        {
+          "book": 1,
+          "chapter": 46,
+          "start": 1046001,
+          "end": 1047999
+        },
+        {
+          "book": 2,
+          "chapter": 1,
+          "start": 2001001,
+          "end": 2001007
+        }
+      ],
+      "placeIds": [
+        "a075d61",
+        "af301ca",
+        "a581f0c",
+        "a8ec7ba",
+        "acd9137",
+        "a60f092",
+        "a079b21"
+      ],
+      "placeNames": [
+        "Beersheba 2",
+        "Egypt",
+        "Canaan",
+        "Paddan-aram",
+        "Heliopolis",
+        "Goshen 1",
+        "Rameses"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "israel_oppressed",
+      "zh": "以色列在埃及受苦",
+      "en": "Israel Oppressed in Egypt",
+      "summaryZh": "埃及人奴役不断增多的以色列人约四百年。",
+      "era": "mosaic",
+      "year": -1700,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Exodus 1",
+        "Genesis 15:13"
+      ],
+      "ranges": [
+        {
+          "book": 2,
+          "chapter": 1,
+          "start": 2001001,
+          "end": 2001999
+        },
+        {
+          "book": 1,
+          "chapter": 15,
+          "start": 1015013,
+          "end": 1015013
+        }
+      ],
+      "placeIds": [
+        "af301ca",
+        "a3870fe",
+        "a079b21",
+        "a012705"
+      ],
+      "placeNames": [
+        "Egypt",
+        "Pithom",
+        "Rameses",
+        "Nile"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "moses_born",
+      "zh": "摩西出生",
+      "en": "Moses Born",
+      "summaryZh": "希伯来男婴摩西被法老女儿从尼罗河救起。",
+      "era": "mosaic",
+      "year": -1526,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Exodus 7:7",
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "Exodus 2:1-10"
+      ],
+      "ranges": [
+        {
+          "book": 2,
+          "chapter": 2,
+          "start": 2002001,
+          "end": 2002010
+        }
+      ],
+      "placeIds": [
+        "a012705"
+      ],
+      "placeNames": [
+        "Nile"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "burning_bush",
+      "zh": "荆棘焚烧",
+      "en": "Burning Bush",
+      "summaryZh": "神在燃烧的荆棘中向摩西显现；差遣他拯救以色列。",
+      "era": "mosaic",
+      "year": -1446,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Exodus 3-4"
+      ],
+      "ranges": [
+        {
+          "book": 2,
+          "chapter": 3,
+          "start": 2003001,
+          "end": 2004999
+        }
+      ],
+      "placeIds": [
+        "acc6d8e",
+        "a9bb03e",
+        "af301ca",
+        "a012705"
+      ],
+      "placeNames": [
+        "Midian",
+        "Mount Horeb",
+        "Egypt",
+        "Nile"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "plagues",
+      "zh": "埃及十灾",
+      "en": "Ten Plagues of Egypt",
+      "summaryZh": "神以十灾打击埃及；法老心硬直到长子被杀。",
+      "era": "mosaic",
+      "year": -1446,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Exodus 7-12"
+      ],
+      "ranges": [
+        {
+          "book": 2,
+          "chapter": 7,
+          "start": 2007001,
+          "end": 2012999
+        }
+      ],
+      "placeIds": [
+        "af301ca",
+        "a012705",
+        "a60f092",
+        "a3ba698",
+        "a079b21",
+        "aa28709"
+      ],
+      "placeNames": [
+        "Egypt",
+        "Nile",
+        "Goshen 1",
+        "Red Sea 3",
+        "Rameses",
+        "Succoth 2"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "exodus",
+      "zh": "出埃及",
+      "en": "The Exodus",
+      "summaryZh": "以色列在摩西带领下离开埃及；设立逾越节羊羔。",
+      "era": "mosaic",
+      "year": -1446,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "Exodus 12-13"
+      ],
+      "ranges": [
+        {
+          "book": 2,
+          "chapter": 12,
+          "start": 2012001,
+          "end": 2013999
+        }
+      ],
+      "placeIds": [
+        "af301ca",
+        "a079b21",
+        "aa28709",
+        "a3d18b2",
+        "a27d0e0"
+      ],
+      "placeNames": [
+        "Egypt",
+        "Rameses",
+        "Succoth 2",
+        "Red Sea 1",
+        "Etham"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "red_sea",
+      "zh": "过红海",
+      "en": "Crossing the Red Sea",
+      "summaryZh": "神分开红海；以色列走干地过去；法老军兵被海淹没。",
+      "era": "mosaic",
+      "year": -1446,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Exodus 14"
+      ],
+      "ranges": [
+        {
+          "book": 2,
+          "chapter": 14,
+          "start": 2014001,
+          "end": 2014999
+        }
+      ],
+      "placeIds": [
+        "a22663b",
+        "a411283",
+        "ababfd2",
+        "af301ca"
+      ],
+      "placeNames": [
+        "Baal-zephon",
+        "Migdol 1",
+        "Pi-hahiroth",
+        "Egypt"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "manna",
+      "zh": "天降吗哪",
+      "en": "Manna from Heaven",
+      "summaryZh": "神在旷野为以色列降下吗哪和鹌鹑达四十年。",
+      "era": "mosaic",
+      "year": -1446,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Exodus 16:1",
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "Exodus 16"
+      ],
+      "ranges": [
+        {
+          "book": 2,
+          "chapter": 16,
+          "start": 2016001,
+          "end": 2016999
+        }
+      ],
+      "placeIds": [
+        "af301ca",
+        "a2410c1",
+        "abfba2a",
+        "a0f54e4",
+        "a581f0c"
+      ],
+      "placeNames": [
+        "Egypt",
+        "Elim",
+        "Mount Sinai",
+        "Sin",
+        "Canaan"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "sinai",
+      "zh": "西奈山十诫",
+      "en": "Ten Commandments at Sinai",
+      "summaryZh": "神在西奈山赐摩西十诫与律法。",
+      "era": "mosaic",
+      "year": -1446,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Exodus 19:1",
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "Exodus 19-20",
+        "Exodus 24"
+      ],
+      "ranges": [
+        {
+          "book": 2,
+          "chapter": 19,
+          "start": 2019001,
+          "end": 2020999
+        },
+        {
+          "book": 2,
+          "chapter": 24,
+          "start": 2024001,
+          "end": 2024999
+        }
+      ],
+      "placeIds": [
+        "af301ca",
+        "ae50cf1",
+        "abfba2a",
+        "a05ebb7"
+      ],
+      "placeNames": [
+        "Egypt",
+        "Wilderness of Sinai",
+        "Mount Sinai",
+        "Rephidim"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "tabernacle",
+      "zh": "建造会幕",
+      "en": "Tabernacle Built",
+      "summaryZh": "以色列建造会幕，作为神在他们中间的居所。",
+      "era": "mosaic",
+      "year": -1445,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Exodus 40:17",
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "Exodus 25-40",
+        "Leviticus"
+      ],
+      "ranges": [
+        {
+          "book": 2,
+          "chapter": 25,
+          "start": 2025001,
+          "end": 2040999
+        },
+        {
+          "book": 3,
+          "chapter": 1,
+          "start": 3001001,
+          "end": 3027999
+        }
+      ],
+      "placeIds": [
+        "af301ca",
+        "abfba2a",
+        "a9bb03e",
+        "ae50cf1",
+        "a581f0c"
+      ],
+      "placeNames": [
+        "Egypt",
+        "Mount Sinai",
+        "Mount Horeb",
+        "Wilderness of Sinai",
+        "Canaan"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "wilderness_40",
+      "zh": "旷野四十年",
+      "en": "40 Years in the Wilderness",
+      "summaryZh": "以色列因不信在旷野漂流四十年；老一代倒毙旷野。",
+      "era": "mosaic",
+      "year": -1406,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Numbers 32:13",
+        "Joshua 5:6",
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "Numbers 13-14",
+        "Numbers 32:13"
+      ],
+      "ranges": [
+        {
+          "book": 4,
+          "chapter": 13,
+          "start": 4013001,
+          "end": 4014999
+        },
+        {
+          "book": 4,
+          "chapter": 32,
+          "start": 4032013,
+          "end": 4032013
+        }
+      ],
+      "placeIds": [
+        "a581f0c",
+        "aa6b19b",
+        "a1cb244",
+        "a5eb047",
+        "ae4cd38",
+        "a0b5c50",
+        "af301ca",
+        "a85151a",
+        "ac31fee",
+        "a38ecff",
+        "ac2cef0",
+        "ab95484",
+        "aa805fb",
+        "ae686c9",
+        "a55c970",
+        "ada25df"
+      ],
+      "placeNames": [
+        "Canaan",
+        "Paran",
+        "Negeb",
+        "Lebo-hamath",
+        "Rehob 1",
+        "Zin 1",
+        "Egypt",
+        "Hebron",
+        "Zoan",
+        "Valley of Eshcol",
+        "Kadesh-barnea",
+        "Amalek",
+        "Great Sea",
+        "Jordan",
+        "Way of the Red Sea",
+        "Hormah"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "moses_dies",
+      "zh": "摩西之死",
+      "en": "Death of Moses",
+      "summaryZh": "摩西在尼波山去世，享寿一百二十岁；约书亚接任。",
+      "era": "mosaic",
+      "year": -1406,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Deuteronomy 34:7",
+        "Exodus 7:7",
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "Deuteronomy 34"
+      ],
+      "ranges": [
+        {
+          "book": 5,
+          "chapter": 34,
+          "start": 5034001,
+          "end": 5034999
+        }
+      ],
+      "placeIds": [
+        "ae73b90",
+        "a231f80",
+        "aca767b",
+        "aefaa2d",
+        "afd9259",
+        "aa805fb",
+        "a529e92",
+        "a1cb244",
+        "ac9a77c",
+        "aacfcda",
+        "aa0b1d6",
+        "af3ce34",
+        "af301ca"
+      ],
+      "placeNames": [
+        "Gilead 1",
+        "Jericho 1",
+        "Moab 2",
+        "Mount Nebo",
+        "Pisgah",
+        "Great Sea",
+        "City of Palms 1",
+        "Negeb",
+        "Valley of Jericho",
+        "Zoar",
+        "Moab 1",
+        "Beth-peor",
+        "Egypt"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "jordan_crossed",
+      "zh": "过约旦河",
+      "en": "Israel Crosses Jordan",
+      "summaryZh": "约书亚带领以色列进迦南；神分开约旦河。",
+      "era": "conquest",
+      "year": -1406,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Deuteronomy 1:3",
+        "Joshua 5:6",
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "Joshua 3-4"
+      ],
+      "ranges": [
+        {
+          "book": 6,
+          "chapter": 3,
+          "start": 6003001,
+          "end": 6004999
+        }
+      ],
+      "placeIds": [
+        "ae686c9",
+        "af64fb3",
+        "adc31c7",
+        "a231f80",
+        "abed304",
+        "afa84ca",
+        "ab94aea",
+        "a3d18b2"
+      ],
+      "placeNames": [
+        "Jordan",
+        "Shittim",
+        "Adam",
+        "Jericho 1",
+        "Salt Sea",
+        "Zarethan",
+        "Gilgal 1",
+        "Red Sea 1"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "jericho",
+      "zh": "耶利哥城陷",
+      "en": "Fall of Jericho",
+      "summaryZh": "以色列绕城七日，耶利哥城墙倒塌。",
+      "era": "conquest",
+      "year": -1406,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "Joshua 4:19",
+        "Joshua 6:15",
+        "Deuteronomy 1:3",
+        "Joshua 5:6",
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "Joshua 6"
+      ],
+      "ranges": [
+        {
+          "book": 6,
+          "chapter": 6,
+          "start": 6006001,
+          "end": 6006999
+        }
+      ],
+      "placeIds": [
+        "a231f80"
+      ],
+      "placeNames": [
+        "Jericho 1"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "land_divided",
+      "zh": "分地给十二支派",
+      "en": "Land Divided to Tribes",
+      "summaryZh": "约书亚以拈阄方式将应许之地分给十二支派。",
+      "era": "conquest",
+      "year": -1399,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Joshua 13-22"
+      ],
+      "ranges": [
+        {
+          "book": 6,
+          "chapter": 13,
+          "start": 6013001,
+          "end": 6022999
+        }
+      ],
+      "placeIds": [
+        "a30c937",
+        "ac87d4c",
+        "af301ca",
+        "a3fc47a",
+        "a18873f",
+        "aa8edd2",
+        "a305f43",
+        "a4cf129",
+        "a8c3105",
+        "a98e4d7",
+        "ae12e43",
+        "a9a2541",
+        "a730058",
+        "a5eb047",
+        "a341fe8",
+        "a5bf0bd",
+        "ae686c9",
+        "ae46f2e",
+        "a0d784a",
+        "af4f21c",
+        "af4c2cd",
+        "a6046fa",
+        "abf2fc1",
+        "aa7a40a",
+        "af6c325",
+        "ae73b90",
+        "acae7cb",
+        "ac3bc41",
+        "a6fea11",
+        "aaa6f7a",
+        "a76f7b7",
+        "a577c27",
+        "ad9b1cd",
+        "a416b43",
+        "a97cb23",
+        "ad54201",
+        "aa10f27",
+        "a31a510",
+        "a30f37b",
+        "af3ce34",
+        "afd9259",
+        "acc6d8e",
+        "af74969",
+        "a095b6e",
+        "ae067b5",
+        "a079478",
+        "ac6416d",
+        "ae5bfe9",
+        "a63c954",
+        "a4590cd",
+        "af66b89",
+        "a562fcc",
+        "a0905b5",
+        "ab49753",
+        "a26c8f2",
+        "a231f80",
+        "aca767b",
+        "a581f0c",
+        "ab94aea",
+        "ac2cef0",
+        "a85151a",
+        "a2735ff",
+        "a1cb244",
+        "a0b5c50",
+        "abed304",
+        "aaee94d",
+        "a39267b",
+        "ad5c4a1",
+        "a438f5e",
+        "a190097",
+        "a8f6a28",
+        "a7a59b4",
+        "aa805fb",
+        "a3f8916",
+        "aabd0ba",
+        "acf8790",
+        "ad334c4",
+        "af9cfc9",
+        "a34e870",
+        "aed8df9",
+        "a31492f",
+        "a403c45",
+        "a15257a",
+        "a37c8e6",
+        "a7559e6",
+        "ac2f5ea",
+        "a9bba61",
+        "a75aff4",
+        "ac1fef1",
+        "a3b5b53",
+        "a42c452",
+        "a3587ba",
+        "a36c283",
+        "a21f909",
+        "a7adb01",
+        "ac2b4ef",
+        "afd2396",
+        "ad2048e",
+        "aaa3eca",
+        "aacc081",
+        "a380434",
+        "a1b30e1",
+        "a907232",
+        "a2715db",
+        "abf4481",
+        "ac17675",
+        "ae8f9cf",
+        "ae5657c",
+        "ac333a2",
+        "a4fa255",
+        "a14325e",
+        "a6ef6a9",
+        "aab3ff0",
+        "a4d3e40",
+        "acce8c8",
+        "af66926",
+        "a3e2b20",
+        "a03a5d0",
+        "a55136c",
+        "ac4b767",
+        "a7672d8",
+        "ad2d29f",
+        "ad2f6c2",
+        "a89005a",
+        "a289254",
+        "a573b95",
+        "ad161d1",
+        "acf2fac",
+        "a5709da",
+        "ada25df",
+        "a8661e2",
+        "aeedde4",
+        "a0ed7ff",
+        "afb265c",
+        "ac3ac4e",
+        "a8da370",
+        "a8fe47a",
+        "a1e3eff",
+        "a355b6e",
+        "af084cf",
+        "a08174b",
+        "a26921e",
+        "abe5f95",
+        "a2e9e40",
+        "a28f432",
+        "af82614",
+        "af2ca0c",
+        "a539e01",
+        "a39a6b9",
+        "a845493",
+        "a12012d",
+        "ac36af4",
+        "a28da66",
+        "a785680",
+        "a571ca0",
+        "a5e1150",
+        "aecc492",
+        "a45dd20",
+        "a67990c",
+        "a58252b",
+        "a244d8f",
+        "a3cc590",
+        "a7ed00e",
+        "a0ff819",
+        "a62aa3a",
+        "a561af4",
+        "a728f1b",
+        "abf8e4e",
+        "ae7bd8b",
+        "ab5175f",
+        "a82f7b4",
+        "a97b595",
+        "a9a57b7",
+        "a67bd13",
+        "aafe3bd",
+        "a2270e4",
+        "ad9df93",
+        "a5cda86",
+        "ad6eb0b",
+        "a846a2a",
+        "ac9c090",
+        "a65c305",
+        "a234727",
+        "ac22b90",
+        "ad68510",
+        "a6df20a",
+        "a81a10a",
+        "a8819e0",
+        "adbc03e",
+        "a75d2ab",
+        "acd9498",
+        "ae46bcd",
+        "adac973",
+        "a175f4b",
+        "a5a846f",
+        "ac2907d",
+        "a053f15",
+        "acc7184",
+        "a6845b1",
+        "a9b852f",
+        "ad94cc9",
+        "a56cad5",
+        "afe28fe",
+        "a2f0f05",
+        "a765bd8",
+        "ae3f164",
+        "addba2a",
+        "af054ba",
+        "afca9ce",
+        "aa2fea1",
+        "a26cd81",
+        "ae60c0c",
+        "a28d652",
+        "aec139c",
+        "af74b9f",
+        "acc1702",
+        "a51df0e",
+        "ad96dd4",
+        "a64f355",
+        "a70e38b",
+        "a919ab0",
+        "a397042",
+        "aed6538",
+        "a094036",
+        "a2bf0f8",
+        "ab682e6",
+        "a0bcd48",
+        "a2f0a70",
+        "a5d37f9",
+        "aaf998e",
+        "a179865",
+        "a373106",
+        "a03be2e",
+        "ad6b2b7",
+        "adf74d4",
+        "a2a8df0",
+        "a70c56b",
+        "aca444b",
+        "a878d66",
+        "a8554e3",
+        "ad05040",
+        "a6f05f6",
+        "aa516c2",
+        "aa4680a",
+        "a03cb21",
+        "a75b45e",
+        "a9a6f72",
+        "a0c9a06",
+        "a2bb5ef",
+        "a774e50",
+        "a811a10",
+        "a6d7a41",
+        "a53b82d",
+        "a2ec6b7",
+        "a2cb16b",
+        "ae14b1d",
+        "a1f2174",
+        "a046454",
+        "aede336",
+        "a6d57ed",
+        "a2e5054",
+        "afc2466",
+        "af35635",
+        "a21b934",
+        "a1b5486",
+        "acfcf28",
+        "ac25f34",
+        "ae1d208",
+        "a597dd0",
+        "ae44746",
+        "a8ac29f",
+        "a92de65",
+        "a87f8f5",
+        "ab270f6",
+        "a289a5b",
+        "a887d36",
+        "a16596e",
+        "a03cc2d",
+        "aaa4c6e",
+        "ab5b542",
+        "a411151",
+        "a5c92e1",
+        "ad04336",
+        "a898f06",
+        "a6a5e97",
+        "ab15bb3",
+        "a2ca712",
+        "ac51cec",
+        "a2a77d2",
+        "a813f22",
+        "a412c43",
+        "a3e0180",
+        "a308715",
+        "ae8fac6",
+        "a6536c9",
+        "ac69561",
+        "a072bae",
+        "ac3d92d",
+        "ae0bf4a",
+        "ac86af5",
+        "ac07206",
+        "a6309c7",
+        "a03f6cf",
+        "acd9b19",
+        "a20364a",
+        "a13ffd4",
+        "ac814fb",
+        "a8eae19",
+        "a009e7d",
+        "ae259d9",
+        "a3bb26d",
+        "acd63ee",
+        "a5b01f4",
+        "a8ce5c4",
+        "aafc721",
+        "a79d6a5",
+        "a1d1918",
+        "a84cafa",
+        "a2f1fa1",
+        "a93f8b6",
+        "a3e21c6",
+        "ac6b338",
+        "a0cc925",
+        "a587ea0",
+        "a978a24",
+        "ab571de",
+        "a728e07",
+        "a9d4f8e",
+        "ac3233c",
+        "aaf5fef",
+        "ad0d82f",
+        "a2feddf",
+        "ac6f1a8",
+        "a664d03",
+        "a160272",
+        "ac4f712",
+        "ab71288",
+        "afa792e",
+        "a2c780b",
+        "a00de1e",
+        "a8687ff",
+        "abff89f",
+        "abe5dde",
+        "a0c4f5e",
+        "a9fd165",
+        "a901903",
+        "a2bb265",
+        "a2d6bfc",
+        "a204528",
+        "a061538",
+        "a8248e0",
+        "afe1143",
+        "a6f33c5",
+        "a010244",
+        "a85eb38",
+        "a156070",
+        "a662eed",
+        "ae6cef8",
+        "a85cbab",
+        "a9cdd53",
+        "a5f0bc3",
+        "a78b87e",
+        "ad6cc26",
+        "a1c600b",
+        "abf8060",
+        "ae89331",
+        "ae180d8",
+        "abc1b7c",
+        "a3c4559",
+        "a6f048c",
+        "ae83378",
+        "a046c70",
+        "aa0ef78",
+        "ae023a9",
+        "a7d1972",
+        "aa3e5ae",
+        "a513646",
+        "a6e6528",
+        "a9cf1e8",
+        "a0cd098",
+        "abb5c1e",
+        "a95147f",
+        "adbc931",
+        "a264254",
+        "ada3369",
+        "ab34789",
+        "a5187a4",
+        "ab33b54",
+        "a293fbf",
+        "a1eb300",
+        "a72a1ff",
+        "a7d3e84",
+        "a4959d5",
+        "a321cb8",
+        "ac0f6e7",
+        "a971a54",
+        "a9ef72b"
+      ],
+      "placeNames": [
+        "Ashdod",
+        "Ashkelon",
+        "Egypt",
+        "Ekron",
+        "Gath 1",
+        "Gaza",
+        "Shihor 1",
+        "Aphek 4",
+        "Mearah",
+        "Sidon",
+        "Baal-gad",
+        "Gebal 1",
+        "Lebanon",
+        "Lebo-hamath",
+        "Mount Hermon",
+        "Misrephoth-maim",
+        "Jordan",
+        "Aroer 1",
+        "Dibon 1",
+        "Medeba",
+        "Valley of the Arnon",
+        "Ammon",
+        "Heshbon",
+        "Bashan",
+        "Geshur",
+        "Gilead 1",
+        "Maacah",
+        "Salecah",
+        "Ashtaroth",
+        "Edrei 1",
+        "Baal-meon",
+        "Bamoth-baal",
+        "Jahaz",
+        "Kedemoth",
+        "Mephaath",
+        "Kiriathaim 1",
+        "Sibmah",
+        "Zereth-shahar",
+        "Beth-jeshimoth",
+        "Beth-peor",
+        "Pisgah",
+        "Midian",
+        "Aroer 2",
+        "Jazer",
+        "Rabbah 1",
+        "Betonim",
+        "Debir 3",
+        "Mahanaim",
+        "Ramath-mizpeh",
+        "Beth-haram",
+        "Beth-nimrah",
+        "Sea of Galilee",
+        "Succoth 1",
+        "Zaphon 1",
+        "Havvoth-jair",
+        "Jericho 1",
+        "Moab 2",
+        "Canaan",
+        "Gilgal 1",
+        "Kadesh-barnea",
+        "Hebron",
+        "Edom",
+        "Negeb",
+        "Zin 1",
+        "Salt Sea",
+        "Addar",
+        "Akrabbim",
+        "Hezron",
+        "Karka",
+        "Zin 2",
+        "Azmon",
+        "Brook of Egypt",
+        "Great Sea",
+        "Beth-arabah",
+        "Beth-hoglah",
+        "Adummim",
+        "Debir 2",
+        "En-rogel",
+        "En-shemesh",
+        "Gilgal 3",
+        "Valley of Achor",
+        "Jebus",
+        "Jerusalem",
+        "Valley of Hinnom",
+        "Valley of Rephaim",
+        "Baalah 2",
+        "Kiriath-jearim",
+        "Mount Ephron",
+        "Nephtoah",
+        "Beth-shemesh 1",
+        "Chesalon",
+        "Mount Jearim",
+        "Mount Seir 2",
+        "Timnah 1",
+        "Jabneel 1",
+        "Mount Baalah",
+        "Shikkeron",
+        "Debir 1",
+        "Gulloth-mayim",
+        "Lower Gulloth",
+        "Upper Gulloth",
+        "Eder 2",
+        "Jagur",
+        "Kabzeel",
+        "Adadah",
+        "Dimonah",
+        "Kinah",
+        "Hazor 2",
+        "Ithnan",
+        "Kedesh 2",
+        "Bealoth 1",
+        "Telem",
+        "Ziph 2",
+        "Hazor 3",
+        "Hazor-hadattah",
+        "Kerioth-hezron",
+        "Amam",
+        "Moladah",
+        "Shema",
+        "Beth-pelet",
+        "Hazar-gaddah",
+        "Heshmon",
+        "Beersheba 1",
+        "Hazar-shual",
+        "Baalah 1",
+        "Ezem",
+        "Iim",
+        "Chesil",
+        "Eltolad",
+        "Hormah",
+        "Madmannah",
+        "Sansannah",
+        "Ziklag",
+        "Ain 2",
+        "Lebaoth",
+        "Rimmon 2",
+        "Shilhim",
+        "Ashnah 1",
+        "Eshtaol",
+        "Shephelah",
+        "Zorah",
+        "Enam",
+        "En-gannim 1",
+        "Tappuah 2",
+        "Zanoah 1",
+        "Adullam",
+        "Azekah",
+        "Jarmuth 1",
+        "Socoh 1",
+        "Adithaim",
+        "Gederah 1",
+        "Gederothaim",
+        "Shaaraim 1",
+        "Hadashah",
+        "Migdal-gad",
+        "Zenan",
+        "Dilean",
+        "Joktheel 1",
+        "Mizpeh 2",
+        "Bozkath",
+        "Eglon",
+        "Lachish",
+        "Cabbon",
+        "Chitlish",
+        "Lahmam",
+        "Beth-dagon 1",
+        "Gederoth",
+        "Makkedah",
+        "Naamah 1",
+        "Ashan",
+        "Ether 1",
+        "Libnah 1",
+        "Ashnah 2",
+        "Iphtah",
+        "Nezib",
+        "Achzib 1",
+        "Keilah",
+        "Mareshah",
+        "Jattir",
+        "Shamir 1",
+        "Socoh 2",
+        "Dannah",
+        "Anab",
+        "Anim",
+        "Eshtemoa",
+        "Giloh",
+        "Goshen 3",
+        "Holon 1",
+        "Arab",
+        "Dumah 1",
+        "Eshan",
+        "Aphekah",
+        "Beth-tappuah",
+        "Janim",
+        "Humtah",
+        "Zior",
+        "Carmel 1",
+        "Juttah",
+        "Maon",
+        "Ziph 1",
+        "Jezreel 1",
+        "Jokdeam",
+        "Zanoah 2",
+        "Gibeah 2",
+        "Kain",
+        "Timnah 2",
+        "Beth-zur",
+        "Gedor 1",
+        "Halhul",
+        "Beth-anoth",
+        "Eltekon",
+        "Maarath",
+        "Rabbah 2",
+        "Middin",
+        "Secacah",
+        "City of Salt",
+        "Engedi",
+        "Nibshan",
+        "Bethel 1",
+        "Waters of Jericho",
+        "Ataroth 2",
+        "Luz 1",
+        "Gezer",
+        "Lower Beth-horon",
+        "Ataroth-addar",
+        "Upper Beth-horon",
+        "Janoah 1",
+        "Michmethath",
+        "Taanath-shiloh",
+        "Ataroth 3",
+        "Naarah",
+        "Kanah 1",
+        "Tappuah 1",
+        "En-tappuah",
+        "Shechem",
+        "Beth-shan",
+        "Dor",
+        "En-dor",
+        "Ibleam",
+        "Megiddo",
+        "Naphoth-dor",
+        "Taanach",
+        "Valley of Jezreel",
+        "Shiloh",
+        "Beth-aven 1",
+        "Beth-horon",
+        "Ephron 1",
+        "Geliloth",
+        "Arabah",
+        "Emek-keziz",
+        "Zemaraim",
+        "Avvim",
+        "Ophrah 1",
+        "Parah",
+        "Chephar-ammoni",
+        "Geba 4",
+        "Ophni",
+        "Beeroth",
+        "Gibeon",
+        "Ramah 1",
+        "Chephirah",
+        "Mizpeh 1",
+        "Mozah",
+        "Irpeel",
+        "Rekem",
+        "Taralah",
+        "Gibeah 4",
+        "Haeleph",
+        "Zela",
+        "Sheba 2",
+        "Balah",
+        "Bethul",
+        "Beth-marcaboth",
+        "Hazar-susah",
+        "Beth-lebaoth",
+        "Sharuhen",
+        "Ether 2",
+        "Baalath-beer",
+        "Ramah 6",
+        "Sarid",
+        "Dabbesheth",
+        "Jokneam",
+        "Mareal",
+        "Chisloth-tabor",
+        "Daberath",
+        "Japhia",
+        "Eth-kazin",
+        "Gath-hepher",
+        "Neah",
+        "Rimmon 3",
+        "Hannathon",
+        "Valley of Iphtahel",
+        "Bethlehem 2",
+        "Idalah",
+        "Kattath",
+        "Nahalal",
+        "Shimron",
+        "Chesulloth",
+        "Jezreel 2",
+        "Shunem",
+        "Anaharath",
+        "Hapharaim",
+        "Shion",
+        "Ebez",
+        "Kishion",
+        "Rabbith",
+        "Beth-pazzez",
+        "En-gannim 2",
+        "En-haddah",
+        "Remeth",
+        "Beth-shemesh 2",
+        "Mount Tabor",
+        "Shahazumah",
+        "Achshaph",
+        "Beten",
+        "Hali",
+        "Helkath",
+        "Allammelech",
+        "Amad",
+        "Mishal",
+        "Mount Carmel",
+        "Shihor-libnath",
+        "Beth-dagon 2",
+        "Beth-emek",
+        "Cabul 1",
+        "Neiel",
+        "Ebron",
+        "Hammon 1",
+        "Kanah 2",
+        "Rehob 2",
+        "Achzib 2",
+        "Hosah",
+        "Mahalab",
+        "Ramah 2",
+        "Tyre",
+        "Aphek 1",
+        "Rehob 3",
+        "Ummah",
+        "Adami-nekeb",
+        "Allon",
+        "Heleph",
+        "Jabneel 2",
+        "Lakkum",
+        "Zaanannim",
+        "Aznoth-tabor",
+        "Hukkok",
+        "Chinnereth",
+        "Hammath 1",
+        "Rakkath",
+        "Zer",
+        "Ziddim",
+        "Adamah",
+        "Hazor 1",
+        "Ramah 3",
+        "Edrei 2",
+        "En-hazor",
+        "Kedesh 5",
+        "Beth-anath",
+        "Beth-shemesh 3",
+        "Horem",
+        "Migdal-el",
+        "Yiron",
+        "Ir-shemesh",
+        "Aijalon 1",
+        "Ithlah",
+        "Shaalbim",
+        "Elon",
+        "Baalath 1",
+        "Eltekeh",
+        "Gibbethon",
+        "Bene-berak",
+        "Gath-rimmon 1",
+        "Jehud",
+        "Joppa",
+        "Me-jarkon",
+        "Rakkon",
+        "Dan",
+        "Timnath-heres",
+        "Galilee 1",
+        "Bezer",
+        "Golan",
+        "Ramoth 3",
+        "Ain 3",
+        "Geba 1",
+        "Almon",
+        "Anathoth",
+        "Kibzaim",
+        "Gath-rimmon 2",
+        "Beeshterah",
+        "Jarmuth 2",
+        "Abdon",
+        "Hammoth-dor",
+        "Kartan",
+        "Kedesh 1",
+        "Kartah",
+        "Dimnah",
+        "Peor"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "judges_period",
+      "zh": "士师时代",
+      "en": "Period of the Judges",
+      "summaryZh": "约三百五十年：犯罪 → 受压迫 → 呼求 → 由士师拯救的循环。",
+      "era": "conquest",
+      "year": -1380,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Judges 1-21"
+      ],
+      "ranges": [
+        {
+          "book": 7,
+          "chapter": 1,
+          "start": 7001001,
+          "end": 7021999
+        }
+      ],
+      "placeIds": [
+        "af48fdd",
+        "a15257a",
+        "a1cb244",
+        "af084cf",
+        "a85151a",
+        "ad2048e",
+        "aaa3eca",
+        "aacc081",
+        "a380434",
+        "a4cea2a",
+        "ac4ff01",
+        "a231f80",
+        "ada25df",
+        "a6163e0",
+        "ac87d4c",
+        "a3fc47a",
+        "aa8edd2",
+        "a64f355",
+        "a397042",
+        "a422a1f",
+        "a2a8df0",
+        "a70c56b",
+        "a878d66",
+        "a8554e3",
+        "a6f05f6",
+        "aed6538",
+        "ae5cc46",
+        "ac69561",
+        "a5f4dfc",
+        "ad0d82f",
+        "a36348c",
+        "a012133",
+        "a3cb036",
+        "ab71288",
+        "a98e4d7",
+        "ae6cef8",
+        "a85cbab",
+        "a1c600b",
+        "aeea26d",
+        "ae89331",
+        "a39267b",
+        "a98b02e",
+        "a859268",
+        "af301ca",
+        "ab94aea",
+        "ab05a42",
+        "a6e6528",
+        "a581f0c",
+        "a5eb047",
+        "ac8955e",
+        "ac54760",
+        "a43f60f",
+        "aa0b1d6",
+        "ab95484",
+        "a6046fa",
+        "a529e92",
+        "ae686c9",
+        "a1aff30",
+        "a49c017",
+        "a6f33c5",
+        "a6d57ed",
+        "a48191b",
+        "acd63ee",
+        "a5a6458",
+        "ad74690",
+        "a0c4f5e",
+        "a2735ff",
+        "ae981db",
+        "abfba2a",
+        "ae73b90",
+        "a8bc4e3",
+        "acc6d8e",
+        "ab0b2dd",
+        "abd637f",
+        "aa516c2",
+        "ae3cace",
+        "a772880",
+        "a954735",
+        "a5a1bdd",
+        "a83d789",
+        "ab5c435",
+        "a0bccbd",
+        "a0d1977",
+        "a549c0f",
+        "a0905b5",
+        "a8a9ff9",
+        "a0415e8",
+        "acf6e00",
+        "a9bf50d",
+        "a2466e4",
+        "adf74d4",
+        "a53f299",
+        "a30e967",
+        "a730058",
+        "a520374",
+        "af536fb",
+        "a0dc90b",
+        "a5948b2",
+        "a939939",
+        "a884255",
+        "a5d1690",
+        "af6476f",
+        "a26c8f2",
+        "a804aeb",
+        "ac71e65",
+        "a159fa4",
+        "a6845b1",
+        "a0f8af9",
+        "aaff3e1",
+        "a4cc324",
+        "aca7bd9",
+        "ac2cef0",
+        "ad64d75",
+        "abf2fc1",
+        "ad9b1cd",
+        "ae46f2e",
+        "a957c5b",
+        "af74969",
+        "a222545",
+        "ab49753",
+        "ab1a343",
+        "a2e7975",
+        "a40647c",
+        "a08174b",
+        "a355b6e",
+        "ab3fd96",
+        "a21f909",
+        "ae05348",
+        "aeeaca0",
+        "a601121",
+        "a0e33a3",
+        "a339971",
+        "a112427",
+        "a3e66cd",
+        "a513646",
+        "a9bba61",
+        "a67325d",
+        "ad44b24",
+        "aa4680a",
+        "a403c45",
+        "ac24f5f",
+        "ad2f6c2",
+        "a736f6c",
+        "a66136c",
+        "a5e9c87",
+        "ae87a54",
+        "a45acc3",
+        "af92088",
+        "ab6bb68"
+      ],
+      "placeNames": [
+        "Bezek 1",
+        "Jerusalem",
+        "Negeb",
+        "Shephelah",
+        "Hebron",
+        "Debir 1",
+        "Gulloth-mayim",
+        "Lower Gulloth",
+        "Upper Gulloth",
+        "Arad 2",
+        "City of Palms 2",
+        "Jericho 1",
+        "Hormah",
+        "Zephath",
+        "Ashkelon",
+        "Ekron",
+        "Gaza",
+        "Bethel 1",
+        "Luz 1",
+        "Luz 2",
+        "Beth-shan",
+        "Dor",
+        "Ibleam",
+        "Megiddo",
+        "Taanach",
+        "Gezer",
+        "Kitron",
+        "Nahalal",
+        "Acco",
+        "Achzib 2",
+        "Ahlab",
+        "Aphik",
+        "Helbah",
+        "Rehob 3",
+        "Sidon",
+        "Beth-anath",
+        "Beth-shemesh 3",
+        "Aijalon 1",
+        "Mount Heres",
+        "Shaalbim",
+        "Akrabbim",
+        "Sela 1",
+        "Bochim",
+        "Egypt",
+        "Gilgal 1",
+        "Gaash",
+        "Timnath-heres",
+        "Canaan",
+        "Lebo-hamath",
+        "Mount Baal-hermon",
+        "Mount Lebanon",
+        "Mesopotamia",
+        "Moab 1",
+        "Amalek",
+        "Ammon",
+        "City of Palms 1",
+        "Jordan",
+        "Seirah",
+        "Harosheth-hagoyim",
+        "Hazor 1",
+        "Ramah 1",
+        "Kedesh-naphtali",
+        "Mount Tabor",
+        "Kishon",
+        "Kedesh 4",
+        "Zaanannim",
+        "Edom",
+        "Mount Seir 1",
+        "Mount Sinai",
+        "Gilead 1",
+        "Meroz",
+        "Midian",
+        "East",
+        "Ophrah 2",
+        "Valley of Jezreel",
+        "Harod 1",
+        "Moreh 2",
+        "Mount Gilead",
+        "Abel-meholah",
+        "Beth-shittah",
+        "Tabbath",
+        "Zererah",
+        "Beth-barah",
+        "Abiezer",
+        "Succoth 1",
+        "Penuel",
+        "Karkor",
+        "Jogbehah",
+        "Nobah 2",
+        "Heres",
+        "Shechem",
+        "Beth-millo",
+        "Mount Gerizim",
+        "Lebanon",
+        "Beer 2",
+        "Arumah",
+        "Diviners’ Oak",
+        "Tabbur-erez",
+        "Tower of Shechem",
+        "Mount Zalmon",
+        "Thebez",
+        "Shamir 2",
+        "Havvoth-jair",
+        "Kamon",
+        "Philistia",
+        "Syria 1",
+        "Maon",
+        "Mizpah 1",
+        "Tob",
+        "Arnon",
+        "Jabbok",
+        "Kadesh-barnea",
+        "Red Sea 2",
+        "Heshbon",
+        "Jahaz",
+        "Aroer 1",
+        "Abel-keramim",
+        "Aroer 2",
+        "Minnith",
+        "Zaphon 1",
+        "Bethlehem 3",
+        "Aijalon 2",
+        "Pirathon",
+        "Zorah",
+        "Eshtaol",
+        "Mahaneh-dan 1",
+        "Timnah 1",
+        "Etam 1",
+        "Lehi",
+        "Ramath-lehi",
+        "En-hakkore",
+        "Valley of Sorek",
+        "Bethlehem 1",
+        "Aram",
+        "Dan",
+        "Kiriath-jearim",
+        "Mahaneh-dan 2",
+        "Beth-rehob",
+        "Shiloh",
+        "Jebus",
+        "Gibeah 1",
+        "Beersheba 1",
+        "Mizpah 3",
+        "Baal-tamar",
+        "Maareh-geba",
+        "Gidom",
+        "Rimmon 1",
+        "Jabesh-gilead",
+        "Lebonah"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "deborah",
+      "zh": "底波拉与巴拉胜西西拉",
+      "en": "Deborah & Barak Defeat Sisera",
+      "summaryZh": "女先知底波拉带领以色列战胜迦南王耶宾。",
+      "era": "conquest",
+      "year": -1240,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Judges 4-5"
+      ],
+      "ranges": [
+        {
+          "book": 7,
+          "chapter": 4,
+          "start": 7004001,
+          "end": 7005999
+        }
+      ],
+      "placeIds": [
+        "a581f0c",
+        "a49c017",
+        "a6f33c5",
+        "a64f355",
+        "a6d57ed",
+        "a48191b",
+        "acd63ee",
+        "a5a6458",
+        "ad74690",
+        "a0c4f5e",
+        "a2735ff",
+        "ae981db",
+        "abfba2a",
+        "ab95484",
+        "ae73b90",
+        "ae686c9",
+        "a8554e3",
+        "a6f05f6",
+        "a8bc4e3"
+      ],
+      "placeNames": [
+        "Canaan",
+        "Harosheth-hagoyim",
+        "Hazor 1",
+        "Bethel 1",
+        "Ramah 1",
+        "Kedesh-naphtali",
+        "Mount Tabor",
+        "Kishon",
+        "Kedesh 4",
+        "Zaanannim",
+        "Edom",
+        "Mount Seir 1",
+        "Mount Sinai",
+        "Amalek",
+        "Gilead 1",
+        "Jordan",
+        "Megiddo",
+        "Taanach",
+        "Meroz"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "gideon",
+      "zh": "基甸三百勇士",
+      "en": "Gideon's 300",
+      "summaryZh": "基甸仅以三百勇士击败米甸人。",
+      "era": "conquest",
+      "year": -1191,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Judges 6-8"
+      ],
+      "ranges": [
+        {
+          "book": 7,
+          "chapter": 6,
+          "start": 7006001,
+          "end": 7008999
+        }
+      ],
+      "placeIds": [
+        "acc6d8e",
+        "ab95484",
+        "ab0b2dd",
+        "aa8edd2",
+        "af301ca",
+        "abd637f",
+        "ae686c9",
+        "aa516c2",
+        "ae3cace",
+        "a772880",
+        "a954735",
+        "a5a1bdd",
+        "a83d789",
+        "ab5c435",
+        "a0bccbd",
+        "a0d1977",
+        "a549c0f",
+        "a0905b5",
+        "a8a9ff9",
+        "a0415e8",
+        "acf6e00",
+        "a9bf50d",
+        "a2466e4",
+        "acd63ee",
+        "adf74d4"
+      ],
+      "placeNames": [
+        "Midian",
+        "Amalek",
+        "East",
+        "Gaza",
+        "Egypt",
+        "Ophrah 2",
+        "Jordan",
+        "Valley of Jezreel",
+        "Harod 1",
+        "Moreh 2",
+        "Mount Gilead",
+        "Abel-meholah",
+        "Beth-shittah",
+        "Tabbath",
+        "Zererah",
+        "Beth-barah",
+        "Abiezer",
+        "Succoth 1",
+        "Penuel",
+        "Karkor",
+        "Jogbehah",
+        "Nobah 2",
+        "Heres",
+        "Mount Tabor",
+        "Shechem"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "samson",
+      "zh": "参孙战非利士",
+      "en": "Samson vs Philistines",
+      "summaryZh": "末代士师参孙与非利士人征战，最终死在大衮庙。",
+      "era": "conquest",
+      "year": -1100,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Judges 13-16"
+      ],
+      "ranges": [
+        {
+          "book": 7,
+          "chapter": 13,
+          "start": 7013001,
+          "end": 7016999
+        }
+      ],
+      "placeIds": [
+        "a08174b",
+        "a355b6e",
+        "ab3fd96",
+        "a21f909",
+        "ac87d4c",
+        "ae05348",
+        "aeeaca0",
+        "a601121",
+        "a0e33a3",
+        "aa8edd2",
+        "a85151a",
+        "a339971"
+      ],
+      "placeNames": [
+        "Zorah",
+        "Eshtaol",
+        "Mahaneh-dan 1",
+        "Timnah 1",
+        "Ashkelon",
+        "Etam 1",
+        "Lehi",
+        "Ramath-lehi",
+        "En-hakkore",
+        "Gaza",
+        "Hebron",
+        "Valley of Sorek"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "ruth",
+      "zh": "路得记",
+      "en": "Story of Ruth",
+      "summaryZh": "摩押女子路得嫁给波阿斯；大卫王的曾祖母。",
+      "era": "conquest",
+      "year": -1100,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Ruth 1-4"
+      ],
+      "ranges": [
+        {
+          "book": 8,
+          "chapter": 1,
+          "start": 8001001,
+          "end": 8004999
+        }
+      ],
+      "placeIds": [
+        "a112427",
+        "aa0b1d6",
+        "af6c09e"
+      ],
+      "placeNames": [
+        "Bethlehem 1",
+        "Moab 1",
+        "Ephrathah"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "samuel_called",
+      "zh": "撒母耳蒙召",
+      "en": "Samuel Called by God",
+      "summaryZh": "童子撒母耳在会幕中听见神的声音；成为以色列末代士师。",
+      "era": "conquest",
+      "year": -1080,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "1 Samuel 3"
+      ],
+      "ranges": [
+        {
+          "book": 9,
+          "chapter": 3,
+          "start": 9003001,
+          "end": 9003999
+        }
+      ],
+      "placeIds": [
+        "ad2f6c2",
+        "a513646",
+        "aa4680a"
+      ],
+      "placeNames": [
+        "Beersheba 1",
+        "Dan",
+        "Shiloh"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "saul_anointed",
+      "zh": "扫罗膏立为王",
+      "en": "Saul Anointed First King",
+      "summaryZh": "撒母耳膏立扫罗；以色列王朝开始。",
+      "era": "monarchy",
+      "year": -1050,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "1 Samuel 9-10"
+      ],
+      "ranges": [
+        {
+          "book": 9,
+          "chapter": 9,
+          "start": 9009001,
+          "end": 9010999
+        }
+      ],
+      "placeIds": [
+        "ab6f1f0",
+        "a25f8e2",
+        "a4d0250",
+        "a44c89d",
+        "a64f355",
+        "a8530e9",
+        "a45b692",
+        "ab94aea",
+        "ac24f5f",
+        "a736f6c",
+        "af301ca",
+        "af92088",
+        "ae686c9"
+      ],
+      "placeNames": [
+        "Shaalim",
+        "Shalishah",
+        "Zuph",
+        "Zelzah",
+        "Bethel 1",
+        "Tabor 3",
+        "Gibeath-elohim",
+        "Gilgal 1",
+        "Gibeah 1",
+        "Mizpah 3",
+        "Egypt",
+        "Jabesh-gilead",
+        "Jordan"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "david_anointed",
+      "zh": "大卫被膏",
+      "en": "David Anointed",
+      "summaryZh": "撒母耳秘密膏立少年大卫为未来的王。",
+      "era": "monarchy",
+      "year": -1025,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "1 Samuel 16"
+      ],
+      "ranges": [
+        {
+          "book": 9,
+          "chapter": 16,
+          "start": 9016001,
+          "end": 9016999
+        }
+      ],
+      "placeIds": [
+        "a112427",
+        "a90f6e1"
+      ],
+      "placeNames": [
+        "Bethlehem 1",
+        "Ramah 4"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "david_goliath",
+      "zh": "大卫战歌利亚",
+      "en": "David vs Goliath",
+      "summaryZh": "少年牧羊人大卫以投石索击毙非利士巨人歌利亚。",
+      "era": "monarchy",
+      "year": -1024,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "1 Samuel 17"
+      ],
+      "ranges": [
+        {
+          "book": 9,
+          "chapter": 17,
+          "start": 9017001,
+          "end": 9017999
+        }
+      ],
+      "placeIds": [
+        "af2ca0c",
+        "aafd7c4",
+        "a39a6b9",
+        "ab183f8",
+        "a18873f",
+        "a112427",
+        "a3fc47a",
+        "a28da66",
+        "a15257a"
+      ],
+      "placeNames": [
+        "Azekah",
+        "Ephes-dammim",
+        "Socoh 1",
+        "Valley of Elah",
+        "Gath 1",
+        "Bethlehem 1",
+        "Ekron",
+        "Shaaraim 1",
+        "Jerusalem"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "david_king",
+      "zh": "大卫登基",
+      "en": "David Becomes King",
+      "summaryZh": "扫罗死后，大卫被膏立为以色列全国的王。",
+      "era": "monarchy",
+      "year": -1010,
+      "basis": "thiele",
+      "approximate": false,
+      "datingRefs": [],
+      "refs": [
+        "2 Samuel 5"
+      ],
+      "ranges": [
+        {
+          "book": 10,
+          "chapter": 5,
+          "start": 10005001,
+          "end": 10005999
+        }
+      ],
+      "placeIds": [
+        "a85151a",
+        "a15257a",
+        "a84f426",
+        "af20c46",
+        "a734b66",
+        "a160272",
+        "a7559e6",
+        "a6bf059",
+        "a2d3ca1",
+        "aed6538"
+      ],
+      "placeNames": [
+        "Hebron",
+        "Jerusalem",
+        "City of David",
+        "Zion",
+        "Millo",
+        "Tyre",
+        "Valley of Rephaim",
+        "Baal-perazim",
+        "Geba 2",
+        "Gezer"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "jerusalem_captured",
+      "zh": "攻取耶路撒冷",
+      "en": "Jerusalem Captured",
+      "summaryZh": "大卫从耶布斯人手中夺取耶路撒冷；定为以色列首都。",
+      "era": "monarchy",
+      "year": -1003,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "2 Samuel 5:6-9"
+      ],
+      "ranges": [
+        {
+          "book": 10,
+          "chapter": 5,
+          "start": 10005006,
+          "end": 10005009
+        }
+      ],
+      "placeIds": [
+        "a15257a",
+        "a84f426",
+        "af20c46",
+        "a734b66"
+      ],
+      "placeNames": [
+        "Jerusalem",
+        "City of David",
+        "Zion",
+        "Millo"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "davidic_covenant",
+      "zh": "与大卫立约",
+      "en": "Davidic Covenant",
+      "summaryZh": "神应许大卫的后裔国位永远坚立。",
+      "era": "monarchy",
+      "year": -1000,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "2 Samuel 7"
+      ],
+      "ranges": [
+        {
+          "book": 10,
+          "chapter": 7,
+          "start": 10007001,
+          "end": 10007999
+        }
+      ],
+      "placeIds": [
+        "af301ca"
+      ],
+      "placeNames": [
+        "Egypt"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "solomon_king",
+      "zh": "所罗门登基",
+      "en": "Solomon Becomes King",
+      "summaryZh": "所罗门继承大卫为王；神赐他超凡智慧。",
+      "era": "monarchy",
+      "year": -970,
+      "basis": "thiele",
+      "approximate": false,
+      "datingRefs": [],
+      "refs": [
+        "1 Kings 1-3"
+      ],
+      "ranges": [
+        {
+          "book": 11,
+          "chapter": 1,
+          "start": 11001001,
+          "end": 11003999
+        }
+      ],
+      "placeIds": [
+        "ac86af5",
+        "af9cfc9",
+        "a8bb3d8",
+        "a2a303c",
+        "a15257a",
+        "ae73b90",
+        "a9ed5a4",
+        "ae686c9",
+        "ae5bfe9",
+        "a84f426",
+        "a85151a",
+        "ab34789",
+        "aa4680a",
+        "a553110",
+        "a18873f",
+        "af301ca",
+        "aede336"
+      ],
+      "placeNames": [
+        "Shunem",
+        "En-rogel",
+        "Serpent’s Stone",
+        "Gihon 2",
+        "Jerusalem",
+        "Gilead 1",
+        "Bahurim",
+        "Jordan",
+        "Mahanaim",
+        "City of David",
+        "Hebron",
+        "Anathoth",
+        "Shiloh",
+        "Kidron",
+        "Gath 1",
+        "Egypt",
+        "Gibeon"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "temple_built",
+      "zh": "所罗门建圣殿",
+      "en": "Solomon's Temple Built",
+      "summaryZh": "所罗门在耶路撒冷建造第一圣殿（用时七年）。",
+      "era": "monarchy",
+      "year": -966,
+      "basis": "scripture+thiele",
+      "approximate": false,
+      "datingRefs": [
+        "1 Kings 6:1"
+      ],
+      "refs": [
+        "1 Kings 6",
+        "2 Chronicles 3-4"
+      ],
+      "ranges": [
+        {
+          "book": 11,
+          "chapter": 6,
+          "start": 11006001,
+          "end": 11006999
+        },
+        {
+          "book": 14,
+          "chapter": 3,
+          "start": 14003001,
+          "end": 14004999
+        }
+      ],
+      "placeIds": [
+        "af301ca",
+        "ab60a74",
+        "a9acaaf",
+        "a15257a",
+        "aac1fcf",
+        "a938779",
+        "ae686c9",
+        "a0905b5",
+        "a6dc035"
+      ],
+      "placeNames": [
+        "Egypt",
+        "Holy Place 2",
+        "Most Holy Place 2",
+        "Jerusalem",
+        "Mount Moriah",
+        "Parvaim",
+        "Jordan",
+        "Succoth 1",
+        "Zeredah 2"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "kingdom_divided",
+      "zh": "王国分裂",
+      "en": "Kingdom Divided",
+      "summaryZh": "所罗门死后王国分裂：北国以色列由耶罗波安统治，南国犹大由罗波安统治。",
+      "era": "monarchy",
+      "year": -931,
+      "basis": "thiele",
+      "approximate": false,
+      "datingRefs": [],
+      "refs": [
+        "1 Kings 12"
+      ],
+      "ranges": [
+        {
+          "book": 11,
+          "chapter": 12,
+          "start": 11012001,
+          "end": 11012999
+        }
+      ],
+      "placeIds": [
+        "adf74d4",
+        "af301ca",
+        "aa4680a",
+        "a15257a",
+        "a8a9ff9",
+        "a64f355",
+        "a513646"
+      ],
+      "placeNames": [
+        "Shechem",
+        "Egypt",
+        "Shiloh",
+        "Jerusalem",
+        "Penuel",
+        "Bethel 1",
+        "Dan"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "elijah_carmel",
+      "zh": "以利亚在迦密山",
+      "en": "Elijah on Mount Carmel",
+      "summaryZh": "以利亚挑战巴力四百五十先知；神降火显能。",
+      "era": "monarchy",
+      "year": -860,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "1 Kings 18"
+      ],
+      "ranges": [
+        {
+          "book": 11,
+          "chapter": 18,
+          "start": 11018001,
+          "end": 11018999
+        }
+      ],
+      "placeIds": [
+        "a041bb3",
+        "a3e21c6",
+        "a5a6458",
+        "ae0bf4a"
+      ],
+      "placeNames": [
+        "Samaria 1",
+        "Mount Carmel",
+        "Kishon",
+        "Jezreel 2"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "elisha_succeeds",
+      "zh": "以利亚被接升天；以利沙继任",
+      "en": "Elijah Taken Up; Elisha Succeeds",
+      "summaryZh": "以利亚乘旋风被接升天；以利沙得加倍灵感。",
+      "era": "monarchy",
+      "year": -848,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "2 Kings 2"
+      ],
+      "ranges": [
+        {
+          "book": 12,
+          "chapter": 2,
+          "start": 12002001,
+          "end": 12002999
+        }
+      ],
+      "placeIds": [
+        "a6399b3",
+        "a64f355",
+        "a231f80",
+        "ae686c9",
+        "a3e21c6",
+        "a041bb3"
+      ],
+      "placeNames": [
+        "Gilgal 2",
+        "Bethel 1",
+        "Jericho 1",
+        "Jordan",
+        "Mount Carmel",
+        "Samaria 1"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "jonah",
+      "zh": "约拿在尼尼微传道",
+      "en": "Jonah Preaches at Nineveh",
+      "summaryZh": "约拿被大鱼吞下后，前往尼尼微传道，全城悔改。",
+      "era": "monarchy",
+      "year": -780,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Jonah 1-4"
+      ],
+      "ranges": [
+        {
+          "book": 32,
+          "chapter": 1,
+          "start": 32001001,
+          "end": 32004999
+        }
+      ],
+      "placeIds": [
+        "a70fd5d",
+        "ae023a9",
+        "a5f43dd"
+      ],
+      "placeNames": [
+        "Nineveh",
+        "Joppa",
+        "Tarshish 1"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "israel_falls",
+      "zh": "北国以色列亡于亚述",
+      "en": "Northern Kingdom Falls to Assyria",
+      "summaryZh": "亚述灭北国以色列；十支派被掳。",
+      "era": "monarchy",
+      "year": -722,
+      "basis": "thiele",
+      "approximate": false,
+      "datingRefs": [],
+      "refs": [
+        "2 Kings 17"
+      ],
+      "ranges": [
+        {
+          "book": 12,
+          "chapter": 17,
+          "start": 12017001,
+          "end": 12017999
+        }
+      ],
+      "placeIds": [
+        "a041bb3",
+        "a3d1321",
+        "af301ca",
+        "a924b16",
+        "af19252",
+        "abf176f",
+        "a4b500d",
+        "a217d18",
+        "a538831",
+        "aa9c505",
+        "a282c15",
+        "a64f355"
+      ],
+      "placeNames": [
+        "Samaria 1",
+        "Assyria",
+        "Egypt",
+        "Gozan",
+        "Habor",
+        "Halah",
+        "Avva",
+        "Babylon 1",
+        "Cuth",
+        "Hamath 2",
+        "Sepharvaim",
+        "Bethel 1"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "hezekiah_reform",
+      "zh": "希西家的改革",
+      "en": "Hezekiah's Reform",
+      "summaryZh": "犹大王希西家除去偶像；恢复圣殿敬拜。",
+      "era": "monarchy",
+      "year": -715,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "2 Kings 18-20",
+        "2 Chronicles 29-32"
+      ],
+      "ranges": [
+        {
+          "book": 12,
+          "chapter": 18,
+          "start": 12018001,
+          "end": 12020999
+        },
+        {
+          "book": 14,
+          "chapter": 29,
+          "start": 14029001,
+          "end": 14032999
+        }
+      ],
+      "placeIds": [
+        "a15257a",
+        "a3d1321",
+        "aa8edd2",
+        "a041bb3",
+        "a924b16",
+        "af19252",
+        "abf176f",
+        "a3cc590",
+        "a532b99",
+        "a84c559",
+        "af301ca",
+        "a173c40",
+        "ac62cbc",
+        "aab9a5e",
+        "a9ac5f9",
+        "a282c15",
+        "a97b595",
+        "ac5a1ec",
+        "a7409b9",
+        "a6d9af3",
+        "aefdac1",
+        "a0e11c1",
+        "af20c46",
+        "a730058",
+        "a3e21c6",
+        "abd9596",
+        "a70fd5d",
+        "ab89be9",
+        "a217d18",
+        "a6bb890",
+        "ab60a74",
+        "a553110",
+        "ad2f6c2",
+        "a513646",
+        "a4e8401",
+        "a84f426",
+        "a734b66",
+        "a2a303c"
+      ],
+      "placeNames": [
+        "Jerusalem",
+        "Assyria",
+        "Gaza",
+        "Samaria 1",
+        "Gozan",
+        "Habor",
+        "Halah",
+        "Lachish",
+        "Upper Pool",
+        "Washer’s Field",
+        "Egypt",
+        "Arpad",
+        "Hamath 1",
+        "Hena",
+        "Ivvah",
+        "Sepharvaim",
+        "Libnah 1",
+        "Cush 1",
+        "Eden 2",
+        "Haran",
+        "Rezeph",
+        "Telassar",
+        "Zion",
+        "Lebanon",
+        "Mount Carmel",
+        "Mount Zion",
+        "Nineveh",
+        "Ararat",
+        "Babylon 1",
+        "East Square",
+        "Holy Place 2",
+        "Kidron",
+        "Beersheba 1",
+        "Dan",
+        "East Gate",
+        "City of David",
+        "Millo",
+        "Gihon 2"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "isaiah",
+      "zh": "以赛亚预言",
+      "en": "Isaiah Prophesies",
+      "summaryZh": "先知以赛亚在公元前约 740-680 年事奉；预言受苦仆人。",
+      "era": "monarchy",
+      "year": -700,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Isaiah 1-66"
+      ],
+      "ranges": [
+        {
+          "book": 23,
+          "chapter": 1,
+          "start": 23001001,
+          "end": 23066999
+        }
+      ],
+      "placeIds": [
+        "a15257a",
+        "af20c46",
+        "aa572e2",
+        "a0aa664",
+        "ab0b2dd",
+        "aa7a40a",
+        "a730058",
+        "af79c1d",
+        "abd9596",
+        "a159fa4",
+        "a532b99",
+        "a84c559",
+        "a69c1d4",
+        "a041bb3",
+        "a3d1321",
+        "af301ca",
+        "a012705",
+        "a62dec4",
+        "ae71673",
+        "a9cf1e8",
+        "ae686c9",
+        "acc6d8e",
+        "ac71e65",
+        "a173c40",
+        "a7be664",
+        "af6c730",
+        "ac62cbc",
+        "a45acc3",
+        "ad053dd",
+        "adea06c",
+        "ade6a96",
+        "a264254",
+        "ac24f5f",
+        "a6d57ed",
+        "ab34789",
+        "ac10bcf",
+        "a7e39d2",
+        "a58df35",
+        "a67297a",
+        "afdda14",
+        "ac5a1ec",
+        "a7e3a59",
+        "aa805fb",
+        "aab30ec",
+        "af725b1",
+        "a6046fa",
+        "a2735ff",
+        "aa0b1d6",
+        "a702ab6",
+        "a217d18",
+        "a104820",
+        "a32a4f8",
+        "a78e845",
+        "a38ad07",
+        "a1a57d0",
+        "a0d784a",
+        "af4f21c",
+        "ab5bd29",
+        "a5ccd34",
+        "abf2fc1",
+        "ad9b1cd",
+        "af7eb92",
+        "a9dd823",
+        "a91d516",
+        "aacfcda",
+        "ace3edc",
+        "a0f88fb",
+        "ac401ea",
+        "aacbcf0",
+        "ae8badb",
+        "a6343cc",
+        "a4cc324",
+        "ab55371",
+        "a095b6e",
+        "abed304",
+        "aa10f27",
+        "ae46f2e",
+        "a7559e6",
+        "ac31fee",
+        "a8ec269",
+        "a581f0c",
+        "adca4b1",
+        "a30c937",
+        "a1cb244",
+        "ad2fadf",
+        "a0a6365",
+        "ae981db",
+        "a59f6f5",
+        "a3a2a75",
+        "acd48d6",
+        "a68d1a9",
+        "ab92800",
+        "a966bdf",
+        "a84f426",
+        "a1ae20f",
+        "a51e3b0",
+        "a2e7601",
+        "a5f43dd",
+        "a160272",
+        "a98e4d7",
+        "a475518",
+        "a7a59b4",
+        "a991067",
+        "a8c579d",
+        "a8754c4",
+        "abf97ba",
+        "ad81b79",
+        "a2bb5ef",
+        "a3e21c6",
+        "a83fd43",
+        "a871210",
+        "a207807",
+        "a3cc590",
+        "a282c15",
+        "a97b595",
+        "a7409b9",
+        "a924b16",
+        "a6d9af3",
+        "aefdac1",
+        "a0e11c1",
+        "aab9a5e",
+        "a9ac5f9",
+        "a70fd5d",
+        "ab89be9",
+        "af8ce6a",
+        "a81ab85",
+        "a8a6a5b",
+        "af3daeb",
+        "ac25afc",
+        "a3d18b2",
+        "a31492f",
+        "a116c5c",
+        "a38776a",
+        "a5f9092",
+        "ad0520f",
+        "aaaaead"
+      ],
+      "placeNames": [
+        "Jerusalem",
+        "Zion",
+        "Gomorrah",
+        "Sodom",
+        "East",
+        "Bashan",
+        "Lebanon",
+        "Tarshish 2",
+        "Mount Zion",
+        "Syria 1",
+        "Upper Pool",
+        "Washer’s Field",
+        "Damascus",
+        "Samaria 1",
+        "Assyria",
+        "Egypt",
+        "Nile",
+        "Euphrates",
+        "Shiloah",
+        "Galilee 1",
+        "Jordan",
+        "Midian",
+        "Philistia",
+        "Arpad",
+        "Calneh 2",
+        "Carchemish",
+        "Hamath 1",
+        "Rimmon 1",
+        "Aiath",
+        "Michmash",
+        "Migron 2",
+        "Geba 1",
+        "Gibeah 1",
+        "Ramah 1",
+        "Anathoth",
+        "Gallim",
+        "Laishah",
+        "Gebim",
+        "Madmenah",
+        "Nob",
+        "Cush 1",
+        "Elam",
+        "Great Sea",
+        "Pathros",
+        "Shinar",
+        "Ammon",
+        "Edom",
+        "Moab 1",
+        "Sea of Egypt",
+        "Babylon 1",
+        "Ophir",
+        "Chaldea",
+        "Zaphon 2",
+        "Ar",
+        "Kir 2",
+        "Dibon 1",
+        "Medeba",
+        "Nebo 1",
+        "Elealeh",
+        "Heshbon",
+        "Jahaz",
+        "Eglath-shelishiyah",
+        "Horonaim 1",
+        "Luhith",
+        "Zoar",
+        "Nimrim",
+        "Brook of the Willows",
+        "Beer-elim",
+        "Eglaim",
+        "Dibon 3",
+        "Sela 3",
+        "Arnon",
+        "Kir-hareseth",
+        "Jazer",
+        "Salt Sea",
+        "Sibmah",
+        "Aroer 1",
+        "Valley of Rephaim",
+        "Zoan",
+        "Memphis",
+        "Canaan",
+        "City of Destruction",
+        "Ashdod",
+        "Negeb",
+        "Media",
+        "Dumah 2",
+        "Mount Seir 1",
+        "Arabia 1",
+        "Dedan",
+        "Tema",
+        "Kedar",
+        "Kir 1",
+        "House of the Forest of Lebanon",
+        "City of David",
+        "Lower Pool",
+        "Old Pool",
+        "Cyprus",
+        "Tarshish 1",
+        "Tyre",
+        "Sidon",
+        "Shihor 2",
+        "Brook of Egypt",
+        "Mount Perazim",
+        "Valley of Gibeon",
+        "Ariel",
+        "Hanes",
+        "Topheth",
+        "Arabah",
+        "Mount Carmel",
+        "Sharon 1",
+        "Bozrah 1",
+        "Way of Holiness",
+        "Lachish",
+        "Sepharvaim",
+        "Libnah 1",
+        "Eden 2",
+        "Gozan",
+        "Haran",
+        "Rezeph",
+        "Telassar",
+        "Hena",
+        "Ivvah",
+        "Nineveh",
+        "Ararat",
+        "Sela 2",
+        "Sheba 1",
+        "Syene",
+        "Eden 1",
+        "Ephah",
+        "Red Sea 1",
+        "Valley of Achor",
+        "Javan",
+        "Lud 1",
+        "Meshech",
+        "Put",
+        "Tubal"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "josiah_reform",
+      "zh": "约西亚发现律法书",
+      "en": "Josiah Finds the Law",
+      "summaryZh": "希勒家修殿时发现律法书；约西亚带领全面改革。",
+      "era": "monarchy",
+      "year": -622,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "2 Kings 22-23"
+      ],
+      "ranges": [
+        {
+          "book": 12,
+          "chapter": 22,
+          "start": 12022001,
+          "end": 12023999
+        }
+      ],
+      "placeIds": [
+        "a58252b",
+        "a15257a",
+        "a5ab519",
+        "a64f355",
+        "a553110",
+        "ad2f6c2",
+        "a33cfcc",
+        "ad81b79",
+        "a37c8e6",
+        "a6046fa",
+        "aa0b1d6",
+        "ac2c4c5",
+        "a041bb3",
+        "a3d1321",
+        "af301ca",
+        "a62dec4",
+        "a8554e3",
+        "a97b595",
+        "ac62cbc",
+        "ab2bde8",
+        "a0009b3"
+      ],
+      "placeNames": [
+        "Bozkath",
+        "Jerusalem",
+        "Second Quarter",
+        "Bethel 1",
+        "Kidron",
+        "Beersheba 1",
+        "Geba 3",
+        "Topheth",
+        "Valley of Hinnom",
+        "Ammon",
+        "Moab 1",
+        "Mount of Olives",
+        "Samaria 1",
+        "Assyria",
+        "Egypt",
+        "Euphrates",
+        "Megiddo",
+        "Libnah 1",
+        "Hamath 1",
+        "Riblah 1",
+        "Rumah"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "jeremiah",
+      "zh": "耶利米预言",
+      "en": "Jeremiah Prophesies",
+      "summaryZh": "哀哭先知耶利米警告犹大将临的被掳之事（公元前约 627-580 年）。",
+      "era": "monarchy",
+      "year": -627,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Jeremiah 1-52"
+      ],
+      "ranges": [
+        {
+          "book": 24,
+          "chapter": 1,
+          "start": 24001001,
+          "end": 24052999
+        }
+      ],
+      "placeIds": [
+        "ab34789",
+        "a15257a",
+        "af301ca",
+        "a2e7601",
+        "a68d1a9",
+        "a8ec269",
+        "adb008c",
+        "a3d1321",
+        "a62dec4",
+        "a012705",
+        "a37c8e6",
+        "af20c46",
+        "a513646",
+        "ac0d1a5",
+        "a30f9a0",
+        "a2e3aa0",
+        "a81ab85",
+        "aa4680a",
+        "ad81b79",
+        "ae73b90",
+        "a6046fa",
+        "a2735ff",
+        "aa0b1d6",
+        "a5f43dd",
+        "af55829",
+        "ae686c9",
+        "a1cb244",
+        "a2bb5ef",
+        "a6f94a6",
+        "af084cf",
+        "a730058",
+        "a341fe8",
+        "a70e895",
+        "ae04aa8",
+        "a217d18",
+        "a32a4f8",
+        "aa8275b",
+        "aa7a40a",
+        "a041bb3",
+        "aa572e2",
+        "a0aa664",
+        "a30c937",
+        "ac87d4c",
+        "a3fc47a",
+        "aa8edd2",
+        "a324c4d",
+        "a98e4d7",
+        "a160272",
+        "a087a14",
+        "a3a2a75",
+        "acd48d6",
+        "a59f6f5",
+        "a7e3a59",
+        "ad2fadf",
+        "a5bbf9c",
+        "ab58876",
+        "aa85961",
+        "a6ac675",
+        "abd9596",
+        "a9bba61",
+        "aede336",
+        "a071cb2",
+        "a6d57ed",
+        "a68aa8f",
+        "af58391",
+        "ad4607c",
+        "a5627a3",
+        "af8b51e",
+        "a553110",
+        "af2ca0c",
+        "a3cc590",
+        "abee1b4",
+        "ac62cbc",
+        "a231f80",
+        "ab2bde8",
+        "a736f6c",
+        "adf74d4",
+        "a112427",
+        "a1c28f1",
+        "acd9137",
+        "aa6d1bd",
+        "aab30ec",
+        "af6c730",
+        "ac5a1ec",
+        "a359997",
+        "ad0520f",
+        "a3e21c6",
+        "acd63ee",
+        "a9674fc",
+        "a329990",
+        "aa805fb",
+        "ac71e65",
+        "ad54201",
+        "a7719f8",
+        "ab5bd29",
+        "abf2fc1",
+        "a73a74f",
+        "a9dd823",
+        "a91d516",
+        "abcc0cf",
+        "a0d784a",
+        "ae46f2e",
+        "a4cc324",
+        "a2a444a",
+        "ad9b1cd",
+        "a97cb23",
+        "ac99af3",
+        "a367677",
+        "a78580c",
+        "a8adc43",
+        "a2d84de",
+        "ab55371",
+        "a095b6e",
+        "abed304",
+        "ad259d1",
+        "aa10f27",
+        "af7eb92",
+        "a5ccd34",
+        "ace3edc",
+        "aacfcda",
+        "ae067b5",
+        "a2526f8",
+        "a831506",
+        "a871210",
+        "ad64d75",
+        "a173c40",
+        "a69c1d4",
+        "ab0b2dd",
+        "a3088c2",
+        "a8394b8",
+        "a8eaad5",
+        "a4b9865",
+        "a9de8b7",
+        "ab89be9",
+        "aec9225",
+        "ae1054e",
+        "a97b595"
+      ],
+      "placeNames": [
+        "Anathoth",
+        "Jerusalem",
+        "Egypt",
+        "Cyprus",
+        "Kedar",
+        "Memphis",
+        "Tahpanhes",
+        "Assyria",
+        "Euphrates",
+        "Nile",
+        "Valley of Hinnom",
+        "Zion",
+        "Dan",
+        "Mount Ephraim",
+        "Beth-haccherem",
+        "Tekoa",
+        "Sheba 1",
+        "Shiloh",
+        "Topheth",
+        "Gilead 1",
+        "Ammon",
+        "Edom",
+        "Moab 1",
+        "Tarshish 1",
+        "Uphaz",
+        "Jordan",
+        "Negeb",
+        "Arabah",
+        "People’s Gate",
+        "Shephelah",
+        "Lebanon",
+        "Mount Hermon",
+        "Potsherd Gate",
+        "Benjamin Gate",
+        "Babylon 1",
+        "Chaldea",
+        "Abarim",
+        "Bashan",
+        "Samaria 1",
+        "Gomorrah",
+        "Sodom",
+        "Ashdod",
+        "Ashkelon",
+        "Ekron",
+        "Gaza",
+        "Uz",
+        "Sidon",
+        "Tyre",
+        "Buz",
+        "Dedan",
+        "Tema",
+        "Arabia 1",
+        "Elam",
+        "Media",
+        "Zimri",
+        "Sheshach",
+        "New Gate",
+        "Moresheth-gath",
+        "Mount Zion",
+        "Kiriath-jearim",
+        "Gibeon",
+        "Nehelam",
+        "Ramah 1",
+        "Corner Gate",
+        "Tower of Hananel",
+        "Gareb",
+        "Goah",
+        "Horse Gate",
+        "Kidron",
+        "Azekah",
+        "Lachish",
+        "Middle Gate",
+        "Hamath 1",
+        "Jericho 1",
+        "Riblah 1",
+        "Mizpah 3",
+        "Shechem",
+        "Bethlehem 1",
+        "Geruth Chimham",
+        "Heliopolis",
+        "Migdol 2",
+        "Pathros",
+        "Carchemish",
+        "Cush 1",
+        "Lud 2",
+        "Put",
+        "Mount Carmel",
+        "Mount Tabor",
+        "Thebes",
+        "Caphtor",
+        "Great Sea",
+        "Philistia",
+        "Kiriathaim 1",
+        "Misgab",
+        "Nebo 1",
+        "Heshbon",
+        "Madmen",
+        "Horonaim 1",
+        "Luhith",
+        "Bethel 3",
+        "Dibon 1",
+        "Aroer 1",
+        "Arnon",
+        "Holon 2",
+        "Jahaz",
+        "Mephaath",
+        "Beth-diblathaim",
+        "Beth-gamul",
+        "Beth-meon",
+        "Bozrah 2",
+        "Kerioth",
+        "Kir-hareseth",
+        "Jazer",
+        "Salt Sea",
+        "Sea of Jazer",
+        "Sibmah",
+        "Eglath-shelishiyah",
+        "Elealeh",
+        "Nimrim",
+        "Zoar",
+        "Rabbah 1",
+        "Ai 2",
+        "Teman",
+        "Bozrah 1",
+        "Red Sea 2",
+        "Arpad",
+        "Damascus",
+        "East",
+        "Hazor 5",
+        "Babylonia",
+        "Merathaim",
+        "Pekod",
+        "Leb-kamai",
+        "Ararat",
+        "Ashkenaz",
+        "Minni",
+        "Libnah 1"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "judah_falls",
+      "zh": "犹大亡国；圣殿被毁",
+      "en": "Judah Falls; Temple Destroyed",
+      "summaryZh": "巴比伦尼布甲尼撒攻陷耶路撒冷，圣殿被毁；犹大被掳。",
+      "era": "exile",
+      "year": -586,
+      "basis": "thiele",
+      "approximate": false,
+      "datingRefs": [],
+      "refs": [
+        "2 Kings 25",
+        "2 Chronicles 36",
+        "Jeremiah 52"
+      ],
+      "ranges": [
+        {
+          "book": 12,
+          "chapter": 25,
+          "start": 12025001,
+          "end": 12025999
+        },
+        {
+          "book": 14,
+          "chapter": 36,
+          "start": 14036001,
+          "end": 14036999
+        },
+        {
+          "book": 24,
+          "chapter": 52,
+          "start": 24052001,
+          "end": 24052999
+        }
+      ],
+      "placeIds": [
+        "a217d18",
+        "a15257a",
+        "a2bb5ef",
+        "a32a4f8",
+        "a231f80",
+        "ab2bde8",
+        "ac62cbc",
+        "a736f6c",
+        "af301ca",
+        "ab9696f",
+        "a97b595"
+      ],
+      "placeNames": [
+        "Babylon 1",
+        "Jerusalem",
+        "Arabah",
+        "Chaldea",
+        "Jericho 1",
+        "Riblah 1",
+        "Hamath 1",
+        "Mizpah 3",
+        "Egypt",
+        "Persia",
+        "Libnah 1"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "daniel_lions",
+      "zh": "但以理与狮子",
+      "en": "Daniel in the Lions' Den",
+      "summaryZh": "但以理在狮子坑中蒙保守；神封住狮子的口。",
+      "era": "exile",
+      "year": -540,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Daniel 6"
+      ],
+      "ranges": [
+        {
+          "book": 27,
+          "chapter": 6,
+          "start": 27006001,
+          "end": 27006999
+        }
+      ],
+      "placeIds": [
+        "a15257a"
+      ],
+      "placeNames": [
+        "Jerusalem"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "return_zerubbabel",
+      "zh": "所罗巴伯第一次回归",
+      "en": "First Return under Zerubbabel",
+      "summaryZh": "古列下诏归回；约五万犹太人在所罗巴伯带领下回归。",
+      "era": "exile",
+      "year": -538,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Ezra 1-2"
+      ],
+      "ranges": [
+        {
+          "book": 15,
+          "chapter": 1,
+          "start": 15001001,
+          "end": 15002999
+        }
+      ],
+      "placeIds": [
+        "ab9696f",
+        "a15257a",
+        "a8394b8",
+        "a217d18",
+        "af0ee3a",
+        "a112427",
+        "a9ad5ae",
+        "ab34789",
+        "a3d7871",
+        "a046454",
+        "a2e5054",
+        "a9bba61",
+        "a264254",
+        "a6d57ed",
+        "adea06c",
+        "a63c70b",
+        "a64f355",
+        "accdd09",
+        "ac041e2",
+        "addc3e7",
+        "a044272",
+        "a2c5cc7",
+        "ae6bfe2",
+        "a231f80",
+        "ac5ba1a",
+        "a95b373",
+        "ab3ad14",
+        "ae4d198",
+        "a0c97c0",
+        "a2b5ee9",
+        "ae73b90"
+      ],
+      "placeNames": [
+        "Persia",
+        "Jerusalem",
+        "Babylonia",
+        "Babylon 1",
+        "Gibbar",
+        "Bethlehem 1",
+        "Netophah",
+        "Anathoth",
+        "Azmaveth",
+        "Beeroth",
+        "Chephirah",
+        "Kiriath-jearim",
+        "Geba 1",
+        "Ramah 1",
+        "Michmash",
+        "Ai 3",
+        "Bethel 1",
+        "Nebo 2",
+        "Magbish",
+        "Harim",
+        "Hadid",
+        "Lod",
+        "Ono",
+        "Jericho 1",
+        "Senaah",
+        "Addon",
+        "Cherub",
+        "Immer",
+        "Tel-harsha",
+        "Tel-melah",
+        "Gilead 1"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "temple_rebuilt",
+      "zh": "重建第二圣殿",
+      "en": "Second Temple Rebuilt",
+      "summaryZh": "虽遭反对，第二圣殿建成并献殿。",
+      "era": "exile",
+      "year": -516,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Ezra 6"
+      ],
+      "ranges": [
+        {
+          "book": 15,
+          "chapter": 6,
+          "start": 15006001,
+          "end": 15006999
+        }
+      ],
+      "placeIds": [
+        "a8394b8",
+        "a212ef7",
+        "ad2fadf",
+        "a15257a",
+        "a217d18",
+        "a88310a",
+        "a62dec4",
+        "ab9696f",
+        "a3d1321"
+      ],
+      "placeNames": [
+        "Babylonia",
+        "Ecbatana",
+        "Media",
+        "Jerusalem",
+        "Babylon 1",
+        "Beyond the River",
+        "Euphrates",
+        "Persia",
+        "Assyria"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "esther",
+      "zh": "以斯帖救犹太人",
+      "en": "Esther Saves the Jews",
+      "summaryZh": "以斯帖成为波斯王后；挫败哈曼灭绝犹太人的阴谋。",
+      "era": "exile",
+      "year": -478,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Esther 1-10"
+      ],
+      "ranges": [
+        {
+          "book": 17,
+          "chapter": 1,
+          "start": 17001001,
+          "end": 17010999
+        }
+      ],
+      "placeIds": [
+        "ab45bd3",
+        "a878481",
+        "a033b84",
+        "ad2fadf",
+        "ab9696f",
+        "a217d18",
+        "a15257a"
+      ],
+      "placeNames": [
+        "Ethiopia",
+        "India",
+        "Susa",
+        "Media",
+        "Persia",
+        "Babylon 1",
+        "Jerusalem"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "ezra_returns",
+      "zh": "以斯拉回归",
+      "en": "Ezra's Return",
+      "summaryZh": "以斯拉带领第二次回归；教导律法并改革通婚之弊。",
+      "era": "exile",
+      "year": -458,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Ezra 7-10"
+      ],
+      "ranges": [
+        {
+          "book": 15,
+          "chapter": 7,
+          "start": 15007001,
+          "end": 15010999
+        }
+      ],
+      "placeIds": [
+        "a217d18",
+        "a15257a",
+        "ab9696f",
+        "a8394b8",
+        "a88310a",
+        "a6c3859",
+        "addb84c",
+        "ab86a69",
+        "addc3e7",
+        "ac51ba3"
+      ],
+      "placeNames": [
+        "Babylon 1",
+        "Jerusalem",
+        "Persia",
+        "Babylonia",
+        "Beyond the River",
+        "Ahava",
+        "Casiphia",
+        "Judea 2",
+        "Harim",
+        "Nebo 3"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "nehemiah_walls",
+      "zh": "尼希米重建城墙",
+      "en": "Nehemiah Rebuilds the Walls",
+      "summaryZh": "尼希米带领五十二天内重建耶路撒冷城墙。",
+      "era": "exile",
+      "year": -445,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Nehemiah 1-6"
+      ],
+      "ranges": [
+        {
+          "book": 16,
+          "chapter": 1,
+          "start": 16001001,
+          "end": 16006999
+        }
+      ],
+      "placeIds": [
+        "a033b84",
+        "a15257a",
+        "a88310a",
+        "ab9580e",
+        "a1611b6",
+        "a81b7b1",
+        "a2fc4c4",
+        "a294859",
+        "a553110",
+        "aa3d425",
+        "af58391",
+        "a50eea4",
+        "a231f80",
+        "a6057f5",
+        "ac5ba1a",
+        "a2e3aa0",
+        "a2fa712",
+        "aede336",
+        "a662bda",
+        "a736f6c",
+        "ab0d85b",
+        "addc3e7",
+        "a721f7f",
+        "a28f432",
+        "a30f9a0",
+        "a84f426",
+        "addba2a",
+        "ad9df93",
+        "aac6cda",
+        "af96edd",
+        "a0293ff",
+        "af8b51e",
+        "a4e8401",
+        "aa9e65f",
+        "a041bb3",
+        "a30c937",
+        "a607415",
+        "ae6bfe2"
+      ],
+      "placeNames": [
+        "Susa",
+        "Jerusalem",
+        "Beyond the River",
+        "Dragon Spring",
+        "Dung Gate",
+        "Valley Gate",
+        "Fountain Gate",
+        "Siloam",
+        "Kidron",
+        "Sheep Gate",
+        "Tower of Hananel",
+        "Tower of the Hundred",
+        "Jericho 1",
+        "Fish Gate",
+        "Senaah",
+        "Tekoa",
+        "Gate of Yeshanah",
+        "Gibeon",
+        "Meronoth",
+        "Mizpah 3",
+        "Broad Wall",
+        "Harim",
+        "Tower of the Ovens",
+        "Zanoah 1",
+        "Beth-haccherem",
+        "City of David",
+        "Beth-zur",
+        "Keilah",
+        "Angle",
+        "Ophel",
+        "Water Gate",
+        "Horse Gate",
+        "East Gate",
+        "Muster Gate",
+        "Samaria 1",
+        "Ashdod",
+        "Hakkephirim",
+        "Ono"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "malachi",
+      "zh": "玛拉基：旧约最后先知",
+      "en": "Malachi: Last OT Prophet",
+      "summaryZh": "玛拉基关闭旧约；预言弥赛亚先有使者来。",
+      "era": "exile",
+      "year": -430,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Malachi 1-4"
+      ],
+      "ranges": [
+        {
+          "book": 39,
+          "chapter": 1,
+          "start": 39001001,
+          "end": 39004999
+        }
+      ],
+      "placeIds": [
+        "a2735ff",
+        "a15257a",
+        "a9bb03e"
+      ],
+      "placeNames": [
+        "Edom",
+        "Jerusalem",
+        "Mount Horeb"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "intertestamental",
+      "zh": "四百年沉默期",
+      "en": "400 Silent Years",
+      "summaryZh": "玛拉基与施洗约翰之间约四百年没有圣经先知。",
+      "era": "intertestamental",
+      "year": -400,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [],
+      "ranges": [],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "greek_period",
+      "zh": "亚历山大征服波斯",
+      "en": "Alexander the Great Conquers Persia",
+      "summaryZh": "亚历山大征服波斯帝国，推广希腊文化（希腊化）。",
+      "era": "intertestamental",
+      "year": -333,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [],
+      "ranges": [],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "septuagint",
+      "zh": "七十士译本开始翻译",
+      "en": "Septuagint Translation Begins",
+      "summaryZh": "希伯来圣经在亚历山大被译为希腊文（七十士译本）。",
+      "era": "intertestamental",
+      "year": -250,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [],
+      "ranges": [],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "maccabees",
+      "zh": "马加比起义",
+      "en": "Maccabean Revolt",
+      "summaryZh": "犹大·马加比领导反抗希腊塞琉古王朝的起义；重新洁净圣殿。",
+      "era": "intertestamental",
+      "year": -167,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [],
+      "ranges": [],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "rome_judea",
+      "zh": "罗马征服犹太",
+      "en": "Rome Conquers Judea",
+      "summaryZh": "庞培攻陷耶路撒冷；犹太成为罗马行省。",
+      "era": "intertestamental",
+      "year": -63,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [],
+      "ranges": [],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "john_baptist_born",
+      "zh": "施洗约翰出生",
+      "en": "Birth of John the Baptist",
+      "summaryZh": "施洗约翰由年长的撒迦利亚和伊利莎白所生；弥赛亚的先锋。",
+      "era": "nt",
+      "year": -6,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Luke 1:5-25, 57-80"
+      ],
+      "ranges": [
+        {
+          "book": 42,
+          "chapter": 1,
+          "start": 42001005,
+          "end": 42001025
+        },
+        {
+          "book": 42,
+          "chapter": 1,
+          "start": 42001057,
+          "end": 42001080
+        }
+      ],
+      "placeIds": [
+        "a149f13",
+        "ab60a74"
+      ],
+      "placeNames": [
+        "Judea 1",
+        "Holy Place 2"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "jesus_born",
+      "zh": "耶稣基督降生",
+      "en": "Birth of Jesus Christ",
+      "summaryZh": "耶稣在伯利恒降生；天使向牧人报佳音。",
+      "era": "nt",
+      "year": -5,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Luke 2:1-20",
+        "Matthew 1:18-25"
+      ],
+      "ranges": [
+        {
+          "book": 42,
+          "chapter": 2,
+          "start": 42002001,
+          "end": 42002020
+        },
+        {
+          "book": 40,
+          "chapter": 1,
+          "start": 40001018,
+          "end": 40001025
+        }
+      ],
+      "placeIds": [
+        "a890adf",
+        "a112427",
+        "a9cf1e8",
+        "a149f13",
+        "af5884f"
+      ],
+      "placeNames": [
+        "Syria 2",
+        "Bethlehem 1",
+        "Galilee 1",
+        "Judea 1",
+        "Nazareth"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "magi",
+      "zh": "博士来朝",
+      "en": "Magi Visit Jesus",
+      "summaryZh": "东方博士跟随星朝拜婴孩耶稣。",
+      "era": "nt",
+      "year": -4,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Matthew 2:1-12"
+      ],
+      "ranges": [
+        {
+          "book": 40,
+          "chapter": 2,
+          "start": 40002001,
+          "end": 40002012
+        }
+      ],
+      "placeIds": [
+        "a112427",
+        "ab0b2dd",
+        "a15257a",
+        "a149f13"
+      ],
+      "placeNames": [
+        "Bethlehem 1",
+        "East",
+        "Jerusalem",
+        "Judea 1"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "flight_egypt",
+      "zh": "逃往埃及",
+      "en": "Flight to Egypt",
+      "summaryZh": "约瑟带马利亚和耶稣逃往埃及，躲避希律屠杀。",
+      "era": "nt",
+      "year": -4,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Matthew 2:13-23"
+      ],
+      "ranges": [
+        {
+          "book": 40,
+          "chapter": 2,
+          "start": 40002013,
+          "end": 40002023
+        }
+      ],
+      "placeIds": [
+        "af301ca",
+        "a112427",
+        "a6d57ed",
+        "a9cf1e8",
+        "a149f13",
+        "af5884f"
+      ],
+      "placeNames": [
+        "Egypt",
+        "Bethlehem 1",
+        "Ramah 1",
+        "Galilee 1",
+        "Judea 1",
+        "Nazareth"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "jesus_temple_12",
+      "zh": "耶稣十二岁在圣殿",
+      "en": "Jesus in the Temple at 12",
+      "summaryZh": "十二岁的耶稣在圣殿令教师们惊奇。",
+      "era": "nt",
+      "year": 8,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Luke 2:41-52"
+      ],
+      "ranges": [
+        {
+          "book": 42,
+          "chapter": 2,
+          "start": 42002041,
+          "end": 42002052
+        }
+      ],
+      "placeIds": [
+        "a15257a",
+        "af5884f"
+      ],
+      "placeNames": [
+        "Jerusalem",
+        "Nazareth"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "jesus_baptized",
+      "zh": "耶稣受洗",
+      "en": "Baptism of Jesus",
+      "summaryZh": "约翰在约旦河为耶稣施洗；父神发声，圣灵降临。此年份取路加福音 3:1 所容许的最早一年——该节记本丢彼拉多作巡抚，而彼拉多到任在公元26年；而同一节的「提比留在位第十五年」若自其公元14年登基起算，则应得公元28或29年。此节是把这段事奉夹在一个区间内，而非定出某一年，本图取的是区间前端。",
+      "era": "nt",
+      "year": 26,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Matthew 3:13-17",
+        "Mark 1:9-11",
+        "Luke 3:1"
+      ],
+      "ranges": [
+        {
+          "book": 40,
+          "chapter": 3,
+          "start": 40003013,
+          "end": 40003017
+        },
+        {
+          "book": 41,
+          "chapter": 1,
+          "start": 41001009,
+          "end": 41001011
+        },
+        {
+          "book": 42,
+          "chapter": 3,
+          "start": 42003001,
+          "end": 42003001
+        }
+      ],
+      "placeIds": [
+        "a9cf1e8",
+        "ae686c9",
+        "af5884f",
+        "a498faa",
+        "aa9e265",
+        "a149f13",
+        "a85a60a"
+      ],
+      "placeNames": [
+        "Galilee 1",
+        "Jordan",
+        "Nazareth",
+        "Abilene",
+        "Ituraea",
+        "Judea 1",
+        "Trachonitis"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "temptation",
+      "zh": "旷野受试探",
+      "en": "Wilderness Temptation",
+      "summaryZh": "耶稣在旷野禁食四十天；抵挡撒但三次试探。",
+      "era": "nt",
+      "year": 26,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Matthew 4:1-11",
+        "Luke 4:1-13"
+      ],
+      "ranges": [
+        {
+          "book": 40,
+          "chapter": 4,
+          "start": 40004001,
+          "end": 40004011
+        },
+        {
+          "book": 42,
+          "chapter": 4,
+          "start": 42004001,
+          "end": 42004013
+        }
+      ],
+      "placeIds": [
+        "a15257a",
+        "ae686c9"
+      ],
+      "placeNames": [
+        "Jerusalem",
+        "Jordan"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "disciples_called",
+      "zh": "呼召十二门徒",
+      "en": "Calling of the Twelve",
+      "summaryZh": "耶稣呼召十二门徒跟从他。",
+      "era": "nt",
+      "year": 27,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Matthew 4:18-22",
+        "Mark 3:13-19",
+        "Luke 6:12-16"
+      ],
+      "ranges": [
+        {
+          "book": 40,
+          "chapter": 4,
+          "start": 40004018,
+          "end": 40004022
+        },
+        {
+          "book": 41,
+          "chapter": 3,
+          "start": 41003013,
+          "end": 41003019
+        },
+        {
+          "book": 42,
+          "chapter": 6,
+          "start": 42006012,
+          "end": 42006016
+        }
+      ],
+      "placeIds": [
+        "a562fcc"
+      ],
+      "placeNames": [
+        "Sea of Galilee"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "sermon_mount",
+      "zh": "登山宝训",
+      "en": "Sermon on the Mount",
+      "summaryZh": "耶稣讲述八福，并阐明律法的真义。",
+      "era": "nt",
+      "year": 28,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Matthew 5-7"
+      ],
+      "ranges": [
+        {
+          "book": 40,
+          "chapter": 5,
+          "start": 40005001,
+          "end": 40007999
+        }
+      ],
+      "placeIds": [
+        "a15257a"
+      ],
+      "placeNames": [
+        "Jerusalem"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "5000_fed",
+      "zh": "五饼二鱼",
+      "en": "Feeding the 5000",
+      "summaryZh": "耶稣以五饼二鱼喂饱五千人。",
+      "era": "nt",
+      "year": 29,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Matthew 14:13-21",
+        "John 6:1-14"
+      ],
+      "ranges": [
+        {
+          "book": 40,
+          "chapter": 14,
+          "start": 40014013,
+          "end": 40014021
+        },
+        {
+          "book": 43,
+          "chapter": 6,
+          "start": 43006001,
+          "end": 43006014
+        }
+      ],
+      "placeIds": [
+        "a562fcc"
+      ],
+      "placeNames": [
+        "Sea of Galilee"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "transfiguration",
+      "zh": "登山变像",
+      "en": "Transfiguration",
+      "summaryZh": "耶稣在彼得、雅各、约翰面前改变形象；摩西和以利亚显现。",
+      "era": "nt",
+      "year": 30,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Matthew 17:1-13"
+      ],
+      "ranges": [
+        {
+          "book": 40,
+          "chapter": 17,
+          "start": 40017001,
+          "end": 40017013
+        }
+      ],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "triumphal_entry",
+      "zh": "荣进圣城",
+      "en": "Triumphal Entry",
+      "summaryZh": "耶稣骑驴进入耶路撒冷；众人高呼“和散那”。",
+      "era": "nt",
+      "year": 33,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Matthew 21:1-11"
+      ],
+      "ranges": [
+        {
+          "book": 40,
+          "chapter": 21,
+          "start": 40021001,
+          "end": 40021011
+        }
+      ],
+      "placeIds": [
+        "abff59d",
+        "a15257a",
+        "ac2c4c5",
+        "af20c46",
+        "a9cf1e8",
+        "af5884f"
+      ],
+      "placeNames": [
+        "Bethphage",
+        "Jerusalem",
+        "Mount of Olives",
+        "Zion",
+        "Galilee 1",
+        "Nazareth"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "last_supper",
+      "zh": "最后的晚餐",
+      "en": "Last Supper",
+      "summaryZh": "耶稣在逾越节与门徒共进最后晚餐，设立圣餐。",
+      "era": "nt",
+      "year": 33,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Matthew 26:17-30",
+        "Luke 22:7-23",
+        "1 Corinthians 11:23-26"
+      ],
+      "ranges": [
+        {
+          "book": 40,
+          "chapter": 26,
+          "start": 40026017,
+          "end": 40026030
+        },
+        {
+          "book": 42,
+          "chapter": 22,
+          "start": 42022007,
+          "end": 42022023
+        },
+        {
+          "book": 46,
+          "chapter": 11,
+          "start": 46011023,
+          "end": 46011026
+        }
+      ],
+      "placeIds": [
+        "ac2c4c5",
+        "a15257a"
+      ],
+      "placeNames": [
+        "Mount of Olives",
+        "Jerusalem"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "crucifixion",
+      "zh": "耶稣被钉十字架",
+      "en": "Crucifixion of Jesus",
+      "summaryZh": "耶稣被钉十字架于各各他；担当世人罪孽。",
+      "era": "nt",
+      "year": 33,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Matthew 27",
+        "John 19"
+      ],
+      "ranges": [
+        {
+          "book": 40,
+          "chapter": 27,
+          "start": 40027001,
+          "end": 40027999
+        },
+        {
+          "book": 43,
+          "chapter": 19,
+          "start": 43019001,
+          "end": 43019999
+        }
+      ],
+      "placeIds": [
+        "a040ba5",
+        "a81cdb5",
+        "a631d35",
+        "a15257a",
+        "a9cf1e8",
+        "af3d9fc",
+        "aec23b1",
+        "af5884f"
+      ],
+      "placeNames": [
+        "Akeldama",
+        "Cyrene",
+        "Golgotha",
+        "Jerusalem",
+        "Galilee 1",
+        "Arimathea",
+        "Gabbatha",
+        "Nazareth"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "resurrection",
+      "zh": "耶稣复活",
+      "en": "Resurrection",
+      "summaryZh": "耶稣第三日从死里复活；向马利亚、门徒和五百多人显现。",
+      "era": "nt",
+      "year": 33,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Matthew 28",
+        "John 20-21",
+        "1 Corinthians 15"
+      ],
+      "ranges": [
+        {
+          "book": 40,
+          "chapter": 28,
+          "start": 40028001,
+          "end": 40028999
+        },
+        {
+          "book": 43,
+          "chapter": 20,
+          "start": 43020001,
+          "end": 43021999
+        },
+        {
+          "book": 46,
+          "chapter": 15,
+          "start": 46015001,
+          "end": 46015999
+        }
+      ],
+      "placeIds": [
+        "a9cf1e8",
+        "a562fcc",
+        "a031bda",
+        "a5feb15"
+      ],
+      "placeNames": [
+        "Galilee 1",
+        "Sea of Galilee",
+        "Cana",
+        "Ephesus"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "ascension",
+      "zh": "耶稣升天",
+      "en": "Ascension",
+      "summaryZh": "耶稣复活四十日后从橄榄山升天。",
+      "era": "nt",
+      "year": 33,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Acts 1:9-11"
+      ],
+      "ranges": [
+        {
+          "book": 44,
+          "chapter": 1,
+          "start": 44001009,
+          "end": 44001011
+        }
+      ],
+      "placeIds": [
+        "a9cf1e8"
+      ],
+      "placeNames": [
+        "Galilee 1"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "pentecost",
+      "zh": "五旬节圣灵降临",
+      "en": "Pentecost: Holy Spirit Poured Out",
+      "summaryZh": "圣灵降在门徒身上；教会诞生；三千人悔改归主。",
+      "era": "nt",
+      "year": 33,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Acts 2"
+      ],
+      "ranges": [
+        {
+          "book": 44,
+          "chapter": 2,
+          "start": 44002001,
+          "end": 44002999
+        }
+      ],
+      "placeIds": [
+        "a15257a",
+        "a9cf1e8",
+        "a197f19",
+        "a33fbde",
+        "a149f13",
+        "a43f60f",
+        "a83a43e",
+        "a81cdb5",
+        "af301ca",
+        "ac12af9",
+        "aa95188",
+        "ab8ae56",
+        "afc8e7a",
+        "af5884f"
+      ],
+      "placeNames": [
+        "Jerusalem",
+        "Galilee 1",
+        "Asia",
+        "Cappadocia",
+        "Judea 1",
+        "Mesopotamia",
+        "Pontus",
+        "Cyrene",
+        "Egypt",
+        "Libya",
+        "Pamphylia",
+        "Phrygia",
+        "Rome",
+        "Nazareth"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "stephen_martyred",
+      "zh": "司提反殉道",
+      "en": "Stephen Martyred",
+      "summaryZh": "司提反成为首位基督徒殉道者；扫罗赞同。",
+      "era": "nt",
+      "year": 35,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Acts 6-7"
+      ],
+      "ranges": [
+        {
+          "book": 44,
+          "chapter": 6,
+          "start": 44006001,
+          "end": 44007999
+        }
+      ],
+      "placeIds": [
+        "ae41ab4",
+        "a15257a",
+        "aee7248",
+        "a197f19",
+        "ad63819",
+        "a81cdb5",
+        "af5884f",
+        "a6d9af3",
+        "a43f60f",
+        "a32a4f8",
+        "af301ca",
+        "a581f0c",
+        "adf74d4",
+        "a012705",
+        "acc6d8e",
+        "abfba2a",
+        "a3d18b2",
+        "a217d18"
+      ],
+      "placeNames": [
+        "Antioch 1",
+        "Jerusalem",
+        "Alexandria",
+        "Asia",
+        "Cilicia",
+        "Cyrene",
+        "Nazareth",
+        "Haran",
+        "Mesopotamia",
+        "Chaldea",
+        "Egypt",
+        "Canaan",
+        "Shechem",
+        "Nile",
+        "Midian",
+        "Mount Sinai",
+        "Red Sea 1",
+        "Babylon 1"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "paul_converted",
+      "zh": "保罗大马色路上悔改",
+      "en": "Paul's Conversion on Damascus Road",
+      "summaryZh": "复活的基督在前往大马色的路上向扫罗显现；他悔改归主。",
+      "era": "nt",
+      "year": 35,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Acts 9"
+      ],
+      "ranges": [
+        {
+          "book": 44,
+          "chapter": 9,
+          "start": 44009001,
+          "end": 44009999
+        }
+      ],
+      "placeIds": [
+        "a69c1d4",
+        "a15257a",
+        "af23dbb",
+        "a666ea0",
+        "a58735e",
+        "a9cf1e8",
+        "a149f13",
+        "a282dce",
+        "a2c5cc7",
+        "a83fd43",
+        "ae023a9"
+      ],
+      "placeNames": [
+        "Damascus",
+        "Jerusalem",
+        "Straight Street",
+        "Tarsus",
+        "Caesarea",
+        "Galilee 1",
+        "Judea 1",
+        "Samaria 2",
+        "Lod",
+        "Sharon 1",
+        "Joppa"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "paul_journeys",
+      "zh": "保罗第一次宣教旅行",
+      "en": "Paul's First Missionary Journey",
+      "summaryZh": "保罗与巴拿巴在塞浦路斯和小亚细亚传福音（约公元 47-48 年）。",
+      "era": "nt",
+      "year": 47,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Acts 13-14"
+      ],
+      "ranges": [
+        {
+          "book": 44,
+          "chapter": 13,
+          "start": 44013001,
+          "end": 44014999
+        }
+      ],
+      "placeIds": [
+        "ae41ab4",
+        "a81cdb5",
+        "a2e7601",
+        "a6d306d",
+        "afa863b",
+        "a314765",
+        "a15257a",
+        "aa95188",
+        "aff04b8",
+        "a6c704a",
+        "a55aded",
+        "af301ca",
+        "a581f0c",
+        "a9cf1e8",
+        "ae425aa",
+        "aa401a9",
+        "a3668b6",
+        "af0719d",
+        "ac744c1"
+      ],
+      "placeNames": [
+        "Antioch 1",
+        "Cyrene",
+        "Cyprus",
+        "Seleucia",
+        "Salamis",
+        "Paphos",
+        "Jerusalem",
+        "Pamphylia",
+        "Perga",
+        "Antioch 2",
+        "Pisidia",
+        "Egypt",
+        "Canaan",
+        "Galilee 1",
+        "Iconium",
+        "Derbe",
+        "Lycaonia",
+        "Lystra",
+        "Attalia"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "jerusalem_council",
+      "zh": "耶路撒冷会议",
+      "en": "Jerusalem Council",
+      "summaryZh": "使徒确认外邦人不必守摩西律法即可得救。",
+      "era": "nt",
+      "year": 49,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Acts 15"
+      ],
+      "ranges": [
+        {
+          "book": 44,
+          "chapter": 15,
+          "start": 44015001,
+          "end": 44015999
+        }
+      ],
+      "placeIds": [
+        "ae41ab4",
+        "a149f13",
+        "a15257a",
+        "a33d53e",
+        "a282dce",
+        "ad63819",
+        "a890adf",
+        "aa95188",
+        "a2e7601"
+      ],
+      "placeNames": [
+        "Antioch 1",
+        "Judea 1",
+        "Jerusalem",
+        "Phoenicia",
+        "Samaria 2",
+        "Cilicia",
+        "Syria 2",
+        "Pamphylia",
+        "Cyprus"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "paul_rome",
+      "zh": "保罗在罗马",
+      "en": "Paul in Rome",
+      "summaryZh": "保罗在罗马受软禁，仍自由传道。",
+      "era": "nt",
+      "year": 60,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Acts 28"
+      ],
+      "ranges": [
+        {
+          "book": 44,
+          "chapter": 28,
+          "start": 44028001,
+          "end": 44028999
+        }
+      ],
+      "placeIds": [
+        "a57835d",
+        "aee7248",
+        "a1e3697",
+        "a4488e9",
+        "a63bb26",
+        "afc8e7a",
+        "a121d5e",
+        "afef438",
+        "a15257a",
+        "a149f13"
+      ],
+      "placeNames": [
+        "Malta",
+        "Alexandria",
+        "Syracuse",
+        "Puteoli",
+        "Rhegium",
+        "Rome",
+        "Forum of Appius",
+        "Three Taverns",
+        "Jerusalem",
+        "Judea 1"
+      ],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "temple_destroyed",
+      "zh": "圣殿被毁",
+      "en": "Destruction of the Temple",
+      "summaryZh": "罗马将军提多攻陷耶路撒冷，毁掉第二圣殿，应验耶稣预言。",
+      "era": "nt",
+      "year": 70,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Matthew 24:1-2",
+        "Mark 13:1-2"
+      ],
+      "ranges": [
+        {
+          "book": 40,
+          "chapter": 24,
+          "start": 40024001,
+          "end": 40024002
+        },
+        {
+          "book": 41,
+          "chapter": 13,
+          "start": 41013001,
+          "end": 41013002
+        }
+      ],
+      "placeIds": [],
+      "placeNames": [],
+      "status": "imported",
+      "notes": ""
+    },
+    {
+      "id": "john_patmos",
+      "zh": "约翰被流放拔摩；写启示录",
+      "en": "John Exiled to Patmos; Revelation Written",
+      "summaryZh": "使徒约翰被流放拔摩岛，领受耶稣基督的启示。",
+      "era": "nt",
+      "year": 95,
+      "basis": "conventional",
+      "approximate": true,
+      "datingRefs": [],
+      "refs": [
+        "Revelation 1:9"
+      ],
+      "ranges": [
+        {
+          "book": 66,
+          "chapter": 1,
+          "start": 66001009,
+          "end": 66001009
+        }
+      ],
+      "placeIds": [
+        "a8f60f3"
+      ],
+      "placeNames": [
+        "Patmos"
+      ],
+      "status": "imported",
+      "notes": ""
+    }
+  ]
+}
