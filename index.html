@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>雅伟之界 · 圣经世界 | Yahweh's World — The Biblical Globe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <canvas id="stage"></canvas>
+
+  <div id="loading"><div class="mark">✦</div><p id="loading-text">正在绘制世界…</p></div>
+
+  <header id="masthead">
+    <div class="title">
+      <span class="zh">雅伟之界</span>
+      <span class="en">THE BIBLICAL GLOBE</span>
+    </div>
+    <button id="lang" type="button">EN</button>
+  </header>
+
+  <aside id="panel" hidden>
+    <button id="panel-close" type="button" aria-label="close">×</button>
+    <h2 id="p-name"></h2>
+    <p id="p-modern"></p>
+    <div id="p-badges"></div>
+    <dl id="p-meta"></dl>
+    <h3 id="p-refs-title"></h3>
+    <p id="p-refs"></p>
+  </aside>
+
+  <footer id="timeline">
+    <div class="readout">
+      <span id="t-book"></span>
+      <span id="t-count"></span>
+    </div>
+    <input id="t-range" type="range" min="1" max="66" value="66" step="1">
+    <div class="legend" id="legend"></div>
+    <p class="credit">
+      地名数据 <a href="https://www.openbible.info/geo/" target="_blank" rel="noopener">OpenBible.info</a> · CC BY 4.0 ·
+      底图 Natural Earth（公有领域）
+    </p>
+  </footer>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "yahwehs-globe",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A 3D globe of the biblical world — every place Scripture names, placed as honestly as the evidence allows.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "data": "node scripts/build-places.mjs"
+  },
+  "dependencies": {
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "@types/three": "^0.185.4",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.5"
+  }
+}
