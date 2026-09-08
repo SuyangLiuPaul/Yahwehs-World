@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { desertSky } from './textures.ts';
 import './style.css';
 import { buildTabernacle } from './tabernacle.ts';
 import { Walker } from './controls.ts';
@@ -13,33 +13,61 @@ const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.05;
+renderer.toneMappingExposure = 0.92;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x9db4c8);
-scene.fog = new THREE.Fog(0x9db4c8, 40, 190);
 
+// The scene was lit by RoomEnvironment — an indoor studio — which is why the
+// gold read as showroom metal under softboxes rather than as beaten plate in
+// desert sun, and why the sky was a flat fill. A generated desert sky does
+// both jobs: it is the background AND the light that bounces off everything.
+const sky = desertSky();
+scene.background = sky;
 const pmrem = new THREE.PMREMGenerator(renderer);
-scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.05).texture;
+scene.environment = pmrem.fromEquirectangular(sky).texture;
+// The sky is bright, and at full strength it washed the sand to concrete and
+// flattened every form: ambient light from all directions is exactly the light
+// that removes shading. It fills; the sun models.
+scene.environmentIntensity = 0.42;
+// Haze thickens toward the horizon so distance reads as distance.
+// Far enough out that the court itself stays crisp; haze belongs to the
+// desert beyond it, not to a wall forty metres away.
+scene.fog = new THREE.Fog(0xc8cec6, 150, 460);
 
 const camera = new THREE.PerspectiveCamera(
   72, Math.max(1, innerWidth) / Math.max(1, innerHeight), 0.05, 400);
 
-// Desert noon: one hard sun, a warm bounce off the sand, a cool sky fill.
-const sun = new THREE.DirectionalLight(0xfff0d8, 2.6);
-sun.position.set(38, 52, 18);
+// Mid-morning rather than noon: a sun overhead casts no shadows worth having,
+// and shadow is most of what makes a shape read as solid.
+const sun = new THREE.DirectionalLight(0xfff2d6, 3.4);
+sun.position.set(50, 30, 22);
 sun.castShadow = true;
-sun.shadow.mapSize.set(2048, 2048);
-sun.shadow.camera.left = -40; sun.shadow.camera.right = 40;
-sun.shadow.camera.top = 40; sun.shadow.camera.bottom = -40;
-sun.shadow.camera.far = 160;
+sun.shadow.mapSize.set(4096, 4096);
+// Sized to the built area rather than the terrain: the court is 100x50 cubits,
+// so a frustum any wider spends its resolution on empty sand.
+sun.shadow.camera.left = -30; sun.shadow.camera.right = 30;
+sun.shadow.camera.top = 30; sun.shadow.camera.bottom = -30;
+sun.shadow.camera.near = 20;
+sun.shadow.camera.far = 130;
+// Without a bias, a shadow map at this scale stripes every lit surface.
+sun.shadow.bias = -0.0004;
+sun.shadow.normalBias = 0.02;
+sun.shadow.radius = 3;
 scene.add(sun);
-scene.add(new THREE.HemisphereLight(0xbcd4e8, 0xc8b590, 1.1));
+// Sky above, sand below — the bounce off a desert floor is warm and strong,
+// and it is what keeps the shaded sides of the boards from going black.
+// The environment already supplies sky and bounce, so the hemisphere is only
+// a floor under the shadows to keep them from going black.
+scene.add(new THREE.HemisphereLight(0x9fc2e0, 0xb9a377, 0.25));
 
 const { group, colliders, counts } = buildTabernacle(CUBIT);
-group.traverse((o) => { if ((o as THREE.Mesh).isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+group.traverse((o) => {
+  if (!(o as THREE.Mesh).isMesh) return;
+  o.receiveShadow = true;
+  o.castShadow = o.userData.noCast !== true;
+});
 scene.add(group);
 
 const walker = new Walker(camera, canvas, colliders);

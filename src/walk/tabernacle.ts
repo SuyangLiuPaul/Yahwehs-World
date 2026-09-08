@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { buildMenorah } from '../structures/menorah.ts';
+import { beatenGold, bronze as bronzeTex, linen as linenTex, sand as sandTex, veilCloth } from './textures.ts';
 
 // The tabernacle of Exodus 26-27, generated from the counts the text states.
 //
@@ -40,15 +41,52 @@ export interface Tabernacle {
   counts: TabernacleCounts;
 }
 
+// Textures are generated once and shared: a hundred boards carrying a hundred
+// copies of the same canvas would cost a hundred uploads to the GPU.
+const TEX = {
+  gold: beatenGold(), linen: linenTex(), veil: veilCloth(),
+  bronze: bronzeTex(), sand: sandTex(),
+};
+
 const M = {
-  linen:  () => new THREE.MeshStandardMaterial({ color: 0xf6f1e4, roughness: 0.88, side: THREE.DoubleSide }),
-  goat:   () => new THREE.MeshStandardMaterial({ color: 0x6b5a48, roughness: 0.95, side: THREE.DoubleSide }),
+  // Linen is thin, and sunlight goes through it. Without that the shaded face
+  // of a hanging goes dead grey and the court reads as concrete panels; a warm
+  // emissive stands in for the light bleeding through, which is what the eye
+  // is actually reading when it calls a fabric a fabric.
+  linen: () => new THREE.MeshStandardMaterial({
+    color: 0xf7f2e6, roughness: 0.96, side: THREE.DoubleSide,
+    map: TEX.linen.map, normalMap: TEX.linen.normalMap,
+    normalScale: new THREE.Vector2(0.55, 0.55),
+    emissive: 0x6b6250, emissiveIntensity: 0.42,
+  }),
+  goat: () => new THREE.MeshStandardMaterial({
+    color: 0x6b5a48, roughness: 0.96, side: THREE.DoubleSide,
+    map: TEX.linen.map, normalMap: TEX.linen.normalMap,
+  }),
   acacia: () => new THREE.MeshStandardMaterial({ color: 0x6a4c28, roughness: 0.8 }),
-  gold:   () => new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 1, roughness: 0.28 }),
-  silver: () => new THREE.MeshStandardMaterial({ color: 0xc9ccd1, metalness: 1, roughness: 0.34 }),
-  bronze: () => new THREE.MeshStandardMaterial({ color: 0x8c6a3a, metalness: 0.9, roughness: 0.45 }),
-  veil:   () => new THREE.MeshStandardMaterial({ color: 0x4a3b6e, roughness: 0.88, side: THREE.DoubleSide }),
-  ground: () => new THREE.MeshStandardMaterial({ color: 0xa8977a, roughness: 1 }),
+  gold: () => new THREE.MeshStandardMaterial({
+    color: 0xd4af37, metalness: 1, roughness: 0.34,
+    map: TEX.gold.map, normalMap: TEX.gold.normalMap,
+    normalScale: new THREE.Vector2(0.6, 0.6),
+  }),
+  silver: () => new THREE.MeshStandardMaterial({
+    color: 0xc9ccd1, metalness: 1, roughness: 0.38,
+    normalMap: TEX.gold.normalMap, normalScale: new THREE.Vector2(0.35, 0.35),
+  }),
+  bronze: () => new THREE.MeshStandardMaterial({
+    color: 0x8c6a3a, metalness: 0.85, roughness: 0.55,
+    map: TEX.bronze.map, normalMap: TEX.bronze.normalMap,
+  }),
+  veil: () => new THREE.MeshStandardMaterial({
+    color: 0xffffff, roughness: 0.9, side: THREE.DoubleSide,
+    map: TEX.veil.map, normalMap: TEX.veil.normalMap,
+    emissive: 0x241c3a, emissiveIntensity: 0.5,
+  }),
+  ground: () => new THREE.MeshStandardMaterial({
+    color: 0xcbb894, roughness: 1,
+    map: TEX.sand.map, normalMap: TEX.sand.normalMap,
+    normalScale: new THREE.Vector2(0.8, 0.8),
+  }),
 };
 
 export function buildTabernacle(cubit: number): Tabernacle {
@@ -68,9 +106,28 @@ export function buildTabernacle(cubit: number): Tabernacle {
   // ── the court, Exodus 27:9-18 ──────────────────────────────────────────
   const courtL = C(100), courtW = C(50), hangH = C(5);
 
-  const sand = new THREE.Mesh(new THREE.PlaneGeometry(courtL * 14, courtL * 14), M.ground());
-  sand.rotation.x = -Math.PI / 2;
-  g.add(sand);
+  // A displaced floor. A perfectly flat plane reads as a table the building was
+  // set on; the desert has drift in it, and the horizon needs something to
+  // catch the light unevenly.
+  const groundGeo = new THREE.PlaneGeometry(courtL * 14, courtL * 14, 96, 96);
+  const gp = groundGeo.attributes.position as THREE.BufferAttribute;
+  for (let i = 0; i < gp.count; i++) {
+    const x = gp.getX(i), y = gp.getY(i);
+    const d = Math.hypot(x, y);
+    // Flat where the tabernacle stands; the ground was levelled for it.
+    const away = Math.min(1, Math.max(0, (d - courtL * 0.75) / (courtL * 2)));
+    const h = (Math.sin(x * 0.012) * Math.cos(y * 0.009) + Math.sin(x * 0.031 + y * 0.027) * 0.4);
+    gp.setZ(i, h * cubit * 1.8 * away);
+  }
+  groundGeo.computeVertexNormals();
+  const sandMesh = new THREE.Mesh(groundGeo, M.ground());
+  sandMesh.rotation.x = -Math.PI / 2;
+  sandMesh.receiveShadow = true;
+  // The floor must NOT cast. A 623-unit plane in the shadow map sets the depth
+  // range for everything in it, and a two-metre pillar then has no precision
+  // left to write a shadow with — which is why the court had none at all.
+  sandMesh.userData.noCast = true;
+  g.add(sandMesh);
 
   const linen = M.linen();
   const bronze = M.bronze();
