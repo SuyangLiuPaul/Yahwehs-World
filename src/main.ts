@@ -248,9 +248,40 @@ function openRoute(id: string) {
       `<div${caveat ? ' class="caveat"' : ''}><b>${n}</b><span>${label}</span></div>`)
     .join('');
 
+  frameRoute(jr);
   routeT = 0; routePlaying = true;
   rToggle.textContent = '❚❚';
   updateRouteReadout();
+}
+
+/** Moves the camera to hold the whole route.
+ *
+ *  Without this, opening a short journey shows nothing at all: Jesus' itinerary
+ *  in Mark spans half a degree of longitude and the ark's spans six tenths, so
+ *  at whatever zoom the reader happened to leave the globe on, both are a
+ *  single dot. The altitude comes from the route's own angular extent. */
+function frameRoute(jr: Journey) {
+  const pts = jr.markers
+    .filter((m) => m.lat !== null && m.lon !== null)
+    .map((m) => lonLatToVec3(m.lon!, m.lat!, 0).normalize());
+  if (!pts.length) return;
+
+  const centre = pts
+    .reduce((a, v) => a.add(v), new THREE.Vector3())
+    .normalize();
+  // Widest angle any stop sits from the centre — the route's own radius.
+  const spread = Math.max(...pts.map((v) => v.angleTo(centre)));
+
+  // Enough altitude that the spread fits the vertical field, with a margin,
+  // and never so close that the globe fills the frame or so far that a
+  // continent-spanning voyage runs off it.
+  const vFov = (camera.fov * Math.PI) / 180;
+  const need = Math.max(0.035, spread * 1.9);
+  const alt = GLOBE_RADIUS * (Math.sin(need) / Math.tan(vFov / 2) + 1 - Math.cos(need));
+  const dist = THREE.MathUtils.clamp(GLOBE_RADIUS + alt, GLOBE_RADIUS * 1.09, GLOBE_RADIUS * 3.4);
+
+  camera.position.copy(centre.multiplyScalar(dist));
+  controls.update();
 }
 
 function updateRouteReadout() {

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { buildMenorah } from '../structures/menorah.ts';
 
 // The tabernacle of Exodus 26-27, generated from the counts the text states.
 //
@@ -238,6 +239,50 @@ export function buildTabernacle(cubit: number): Tabernacle {
     p.position.set(doorX, boardH / 2, -tentW / 2 + (tentW / 4) * i);
     g.add(p);
   }
+
+  // ── the holy place furnishings, Exodus 25, 30 ─────────────────────────
+  // Walking into an empty gold box teaches nothing. These three are what stood
+  // in the holy place, and the passage measures every one of them, so they can
+  // be built the same way the building was — from the numbers.
+  const holyMidX = (veilX + doorX) / 2;
+
+  // "Put the table outside the veil on the north side of the tabernacle, and
+  // the lampstand opposite it on the south side" — Exodus 26:35.
+  const { group: lamp } = buildMenorah(1.5);
+  lamp.position.set(holyMidX, 0, -tentW * 0.3);
+  g.add(lamp);
+  addCollider(lamp);
+
+  // The table of the Presence: two cubits by one, a cubit and a half high —
+  // Exodus 25:23, overlaid with gold and crowned with a moulding.
+  const table = new THREE.Group();
+  const top = new THREE.Mesh(new THREE.BoxGeometry(C(2), C(0.12), C(1)), gold);
+  top.position.y = C(1.5);
+  table.add(top);
+  for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]] as const) {
+    const legMesh = new THREE.Mesh(
+      new THREE.CylinderGeometry(cubit * 0.07, cubit * 0.07, C(1.5), 10), gold);
+    legMesh.position.set(sx * C(0.88), C(0.75), sz * C(0.38));
+    table.add(legMesh);
+  }
+  table.position.set(holyMidX, 0, tentW * 0.3);
+  g.add(table);
+  addCollider(table);
+
+  // The altar of incense: a cubit square and two cubits high, with horns —
+  // Exodus 30:1-3. It stands before the veil, 30:6.
+  const incense = new THREE.Group();
+  const body = new THREE.Mesh(new THREE.BoxGeometry(C(1), C(2), C(1)), gold);
+  body.position.y = C(1);
+  incense.add(body);
+  for (const [hx, hz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]] as const) {
+    const horn = new THREE.Mesh(new THREE.ConeGeometry(cubit * 0.09, C(0.3), 8), gold);
+    horn.position.set(hx * C(0.42), C(2.15), hz * C(0.42));
+    incense.add(horn);
+  }
+  incense.position.set(veilX + C(2.2), 0, 0);
+  g.add(incense);
+  addCollider(incense);
 
   return { group: g, colliders, counts };
 }

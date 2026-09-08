@@ -52,7 +52,7 @@ walker.moveTo(CUBIT * 62, 0, Math.PI / 2);
 const ZONES: { test: (x: number, z: number) => boolean; zh: string; ref: string }[] = [
   { zh: '至圣所', ref: '出 26:33–34',
     test: (x) => x < CUBIT * -20 },
-  { zh: '圣所', ref: '出 26:33',
+  { zh: '圣所 · 灯台 · 陈设饼桌 · 香坛', ref: '出 25:23–40、26:35、30:1–6',
     test: (x) => x < CUBIT * 0 },
   { zh: '会幕内', ref: '出 26:15',
     test: (x) => x < CUBIT * 10 },
