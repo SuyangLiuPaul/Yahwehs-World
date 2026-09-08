@@ -208,6 +208,8 @@ function setRoutesState(state: 'closed' | 'open' | 'active') {
 
 function clearRoute() {
   if (route) { globe.remove(route.group); route.dispose(); route = null; }
+  // Leaving a route restores the world's own up, or the globe stays tilted.
+  camera.up.set(0, 1, 0);
   routePlaying = false; routeT = 0;
   routeLabels.clear();
   rCard.hidden = true;
@@ -338,12 +340,36 @@ function advanceRoute(dt: number) {
   if (routeT >= 1) { routePlaying = false; rToggle.textContent = '▶'; }
 
   // Follow the travelling head rather than the last marker reached: the head
-  // moves continuously and a marker jumps, and a camera that jumps every few
-  // seconds is unwatchable.
+  // moves continuously and a marker jumps.
+  //
+  // The chase moves ALONG the sphere, not through it. Lerping two positions in
+  // three dimensions cuts a chord under the surface, so the camera dipped
+  // toward the centre and was pushed back out each frame — which is what made
+  // the motion read as sliding the map around rather than flying a route. Only
+  // the direction is interpolated; the altitude is held.
   if (!userDriving) {
     const alt = camera.position.length() - GLOBE_RADIUS;
-    followTarget.copy(route.headPosition).normalize().multiplyScalar(GLOBE_RADIUS + alt);
-    camera.position.lerp(followTarget, Math.min(1, dt * 0.55));
+    // Frame-rate independent easing: the same fraction of the remaining gap
+    // per second whatever the frame time.
+    const k = 1 - Math.exp(-dt * 2.4);
+    const dir = camera.position.clone().normalize()
+      .lerp(route.headPosition.clone().normalize(), k)
+      .normalize();
+    camera.position.copy(dir.multiplyScalar(GLOBE_RADIUS + alt));
+
+    // Roll so the direction of travel runs up the screen — without it the
+    // camera keeps whatever bearing it started with and a journey turning west
+    // feels like the map being dragged sideways underneath it.
+    //
+    // Slowly, and capped. Paul's second journey doubles back on itself, and a
+    // roll that tracked every turn would spin the whole world at a hairpin,
+    // which trades one kind of disorientation for another. A degree every few
+    // frames reads as the view settling; a degree every frame reads as a spin.
+    const want = route.heading.clone().projectOnPlane(dir).normalize();
+    if (want.lengthSq() > 0.5) {
+      const step = Math.min(1 - Math.exp(-dt * 0.5), 0.02);
+      camera.up.lerp(want, step).normalize();
+    }
   }
 }
 

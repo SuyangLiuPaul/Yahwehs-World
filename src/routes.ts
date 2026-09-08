@@ -71,6 +71,8 @@ export class Route {
   /** Points along the whole path, for placing the head. */
   private readonly spine: THREE.Vector3[] = [];
   private readonly head: THREE.Mesh;
+  /** Unit vector along travel at the head. */
+  readonly heading = new THREE.Vector3(1, 0, 0);
   private progress = 0;
 
   constructor(readonly journey: Journey) {
@@ -215,11 +217,23 @@ export class Route {
       (a.material as THREE.MeshBasicMaterial).opacity = t <= this.progress ? 0.7 : 0.24;
     }
 
-    if (this.spine.length) {
-      const i = Math.min(this.spine.length - 1,
-                         Math.floor(this.progress * (this.spine.length - 1)));
-      this.head.position.copy(this.spine[i]!);
+    if (this.spine.length > 1) {
+      // Interpolate between spine points instead of snapping to one. A route
+      // has a few hundred vertices and takes eighteen seconds, so snapping
+      // advances the head about ten times a second — which is exactly the
+      // stepping that makes a flight read as a slide.
+      const f = this.progress * (this.spine.length - 1);
+      const i = Math.min(this.spine.length - 2, Math.floor(f));
+      this.head.position.lerpVectors(this.spine[i]!, this.spine[i + 1]!, f - i);
       this.head.visible = this.progress > 0.001 && this.progress < 0.999;
+    }
+
+    // Direction of travel at the head, for orienting the camera along the route
+    // rather than at whatever bearing it happened to start on.
+    if (this.spine.length > 1) {
+      const f = this.progress * (this.spine.length - 1);
+      const i = Math.min(this.spine.length - 2, Math.floor(f));
+      this.heading.copy(this.spine[i + 1]!).sub(this.spine[i]!).normalize();
     }
   }
 
