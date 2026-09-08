@@ -47,4 +47,10 @@
   .sitenav ol::-webkit-scrollbar { display: none; }
   .sitenav a.tab { padding: 2px var(--sp-2); font-size: var(--fs-100); white-space: nowrap; }
   .sitenav .spacer { display: none; }
+  /* On a phone the nav lies directly over the map, where pale land makes the
+     labels unreadable. Desktop has the dark limb to sit against; this does not. */
+  .sitenav {
+    background: linear-gradient(180deg, #060d16f0 0%, #060d16c4 62%, transparent 100%);
+    padding-bottom: var(--sp-4);
+  }
 }

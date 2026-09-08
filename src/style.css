@@ -319,8 +319,18 @@ body {
   .legend { display: none; }
   .credit { font-size: 10px; }
   #routes {
-    top: auto; bottom: 188px; left: var(--sp-3); right: var(--sp-3); width: auto;
+    top: auto; bottom: 76px; left: var(--sp-3); right: var(--sp-3); width: auto;
   }
+  /* The card was a block in the middle of the screen sitting on top of the
+     route it describes. On a phone it becomes one line at the bottom edge. */
+  #r-card { padding: var(--sp-2) var(--sp-3); gap: var(--sp-2); }
+  #r-name { font-size: var(--fs-300); }
+  #r-range { display: none; }
+  #r-stats { gap: var(--sp-3); }
+  #r-stats b { font-size: var(--fs-300); }
+  #r-why { display: none; }
+  /* The stop is already named in the card; the strip below need not repeat it. */
+  #t-here, #t-count { display: none; }
   #rlist { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: var(--sp-1); }
   #r-basis { max-height: 64px; }
   #panel {

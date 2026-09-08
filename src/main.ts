@@ -282,7 +282,11 @@ function frameRoute(jr: Journey) {
   const hHalf = Math.atan(Math.tan(vHalf) * camera.aspect);
   const half = Math.max(0.12, Math.min(vHalf, hHalf));
 
-  const need = Math.max(0.035, spread * 1.25);
+  // On a phone the route card occupies the lower quarter of the screen, so the
+  // usable field is smaller than the viewport suggests and a route framed to
+  // the full height puts its southern stops under the panel.
+  const occluded = innerWidth < 900 ? 1.3 : 1.0;
+  const need = Math.max(0.035, spread * 1.25 * occluded);
   const alt = GLOBE_RADIUS * (Math.sin(need) / Math.tan(half) + 1 - Math.cos(need));
   const dist = THREE.MathUtils.clamp(GLOBE_RADIUS + alt, GLOBE_RADIUS * 1.09, GLOBE_RADIUS * 4.2);
 
