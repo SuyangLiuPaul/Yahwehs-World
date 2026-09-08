@@ -204,7 +204,7 @@ export class Route {
         leg.colors[i * 3 + 1] = c.g;
         leg.colors[i * 3 + 2] = c.b;
       });
-      if (changed) leg.geo.setColors(Array.from(leg.colors));
+      leg.geo.setColors(Array.from(leg.colors));
     }
     const reached = Math.round(this.progress * this.markerMeshes.length);
     this.markerMeshes.forEach((m, i) => { m.visible = i < reached; });
