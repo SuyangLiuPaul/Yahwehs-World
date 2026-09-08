@@ -45,15 +45,36 @@ body { margin: 0; background: #060d16; color: var(--ink); font-family: var(--ui)
   color: var(--ink-4); letter-spacing: 0;
 }
 
-.gate-go { display: grid; gap: var(--sp-3); justify-items: start; }
-#enter {
-  background: transparent; border: 1px solid var(--gold); color: var(--gold-bright);
-  padding: var(--sp-3) var(--sp-5); border-radius: var(--radius);
-  font-family: var(--ui); font-size: var(--fs-300); letter-spacing: .1em;
-  cursor: pointer; transition: background .2s;
+.gate-go { display: flex; gap: var(--sp-2); align-items: center; flex-wrap: wrap; }
+.gate-go + .keys { margin-top: var(--sp-3); }
+#enter, #tour {
+  background: transparent; border: 1px solid var(--line); color: var(--ink-2);
+  padding: var(--sp-3) var(--sp-4); border-radius: var(--radius);
+  font-family: var(--ui); font-size: var(--fs-300); letter-spacing: .06em;
+  cursor: pointer; transition: background .2s, color .2s, border-color .2s;
 }
-#enter:hover { background: #c9a2271f; }
-#enter:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+/* The guided walk is the recommended way in, so it carries the emphasis and
+   driving yourself sits beside it as the alternative. */
+#tour.primary { border-color: var(--gold); color: var(--gold-bright); }
+#enter:hover, #tour:hover { background: #c9a2271f; color: var(--gold-bright); border-color: var(--gold); }
+#enter:focus-visible, #tour:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* A thin progress rule across the top of the HUD — how far through the walk. */
+#tour-bar {
+  position: absolute; left: 0; right: 0; top: 0; height: 2px; background: #ffffff14;
+}
+#tour-bar[hidden] { display: none; }
+#tour-bar i { display: block; height: 100%; width: 0; background: var(--gold); transition: width .4s linear; }
+
+.hud-side { display: grid; gap: var(--sp-1); justify-items: end; align-self: end; }
+#tour-toggle {
+  pointer-events: auto; background: transparent; border: 1px solid var(--line-gold);
+  color: var(--gold); border-radius: 50%; width: 30px; height: 30px; padding: 0;
+  font-size: var(--fs-100); cursor: pointer; display: grid; place-content: center;
+}
+#tour-toggle[hidden] { display: none; }
+#tour-toggle:hover { color: var(--gold-bright); background: #c9a2271a; }
+#tour-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .keys, .hud-keys {
   margin: 0; display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap;
   font-size: var(--fs-100); color: var(--ink-3); letter-spacing: var(--tr-cjk);

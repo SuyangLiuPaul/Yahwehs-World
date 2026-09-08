@@ -4,6 +4,7 @@ import { CUBITS, STRUCTURES, metres, type Structure } from './specs.ts';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { buildStructure, footprint, humanFigure } from './build.ts';
 import type { BranchForm } from './menorah.ts';
+import { applyStatic, bindSwitch, onLocale } from '../locale.ts';
 
 // One WebGL context behind a scroll-snapped feed. Each card owns a structure;
 // scrolling swaps what the single scene holds, which keeps one context no
@@ -249,6 +250,15 @@ renderer.setAnimationLoop(() => {
   frameCamera();
   renderer.render(scene, camera);
 });
+
+// The card bodies are still Chinese — translating five passages, their punch
+// lines and their unstated notes is authoring rather than wiring, and a
+// half-translated card would be worse than an honest monolingual one. The
+// chrome and the switch work, so a reader's choice carries to the pages that
+// are bilingual.
+bindSwitch(document.querySelector('.lang-switch') as HTMLElement);
+applyStatic();
+onLocale(() => applyStatic());
 
 fit();
 frameCamera();

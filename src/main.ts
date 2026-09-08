@@ -8,10 +8,11 @@ import { bookName, bookOf } from './books.ts';
 import { precisionOf, precisionStyle } from './theme.ts';
 import { Route, type Journey } from './routes.ts';
 import { RouteLabels } from './labels.ts';
+import { applyStatic, bindSwitch, locale as currentLocale, onLocale } from './locale.ts';
 import type { GeoJson, Place, PlacesBundle } from './types.ts';
 
 type Locale = 'zh' | 'en';
-let locale: Locale = 'zh';
+let locale: Locale = currentLocale();
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -492,10 +493,10 @@ function renderLegend() {
     .join('');
 }
 
-$('lang').addEventListener('click', () => {
-  locale = locale === 'zh' ? 'en' : 'zh';
-  $('lang').textContent = locale === 'zh' ? 'EN' : '中文';
-  document.documentElement.lang = locale === 'zh' ? 'zh-CN' : 'en';
+bindSwitch(document.querySelector('.lang-switch') as HTMLElement);
+onLocale((l) => {
+  locale = l;
+  applyStatic();
   renderLegend();
   applyCursor();
   if (route) routeLabels.build(route.markerObjects, locale);
@@ -538,6 +539,7 @@ renderer.setAnimationLoop(() => {
 });
 
 fitToViewport();
+applyStatic();
 renderLegend();
 applyCursor();
 $('loading').classList.add('done');

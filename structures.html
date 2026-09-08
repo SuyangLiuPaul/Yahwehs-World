@@ -17,15 +17,16 @@
       <span class="en">The Biblical Globe</span>
     </a>
     <ol>
-      <li><a class="tab" href="/">圣经世界</a></li>
-      <li><a class="tab" href="/structures.html" aria-current="page">照着经文的尺寸</a></li>
-      <li><a class="tab" href="/tabernacle.html">走进会幕</a></li>
+      <li><a class="tab" href="/" data-en="The Globe" data-zh="圣经世界">The Globe</a></li>
+      <li><a class="tab" href="/structures.html" aria-current="page" data-en="By the Measure" data-zh="照着经文的尺寸">By the Measure</a></li>
+      <li><a class="tab" href="/tabernacle.html" data-en="The Tabernacle" data-zh="走进会幕">The Tabernacle</a></li>
     </ol>
     <span class="spacer"></span>
+    <button class="lang-switch" type="button">中文</button>
   </nav>
   <div id="feed"></div>
   <div id="cubit">
-    <label for="c-range">一肘 = <b id="c-val"></b></label>
+    <label for="c-range"><span data-en="One cubit =" data-zh="一肘 =">One cubit =</span> <b id="c-val"></b></label>
     <input id="c-range" type="range" min="0" max="2" step="1" value="0">
     <p id="c-note"></p>
   </div>

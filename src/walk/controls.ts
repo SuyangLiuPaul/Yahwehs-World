@@ -44,11 +44,13 @@ export class Walker {
     });
     document.addEventListener('mousemove', (e) => {
       if (!this.locked) return;
+      if (e.movementX || e.movementY) this.onManualInput?.();
       this.yaw.rotation.y -= e.movementX * 0.0022;
       this.pitch.rotation.x = THREE.MathUtils.clamp(
         this.pitch.rotation.x - e.movementY * 0.0022, -Math.PI / 2.1, Math.PI / 2.1);
     });
     addEventListener('keydown', (e) => {
+      if (['KeyW','KeyA','KeyS','KeyD'].includes(e.code)) this.onManualInput?.();
       this.keys.add(e.code);
       // Space would otherwise scroll the page out from under the canvas.
       if (e.code === 'Space') e.preventDefault();
@@ -80,6 +82,7 @@ export class Walker {
         else look.set(t.identifier, { x: t.clientX, y: t.clientY });
       }
       this.touching = true;
+      this.onManualInput?.();
       e.preventDefault();
     }, { passive: false });
 
@@ -127,6 +130,27 @@ export class Walker {
     this.pitch.rotation.x = 0;
     this.velocity.set(0, 0, 0);
   }
+
+  /** Where the walker stands and looks, for a tour to resume from. */
+  get pose() {
+    return {
+      x: this.yaw.position.x, z: this.yaw.position.z,
+      yaw: this.yaw.rotation.y, pitch: this.pitch.rotation.x,
+    };
+  }
+
+  /** Places the walker exactly. Used only by the tour, which owns the camera
+   *  while it runs. */
+  setPose(p: { x: number; z: number; yaw: number; pitch: number }) {
+    this.yaw.position.set(p.x, EYE, p.z);
+    this.yaw.rotation.y = p.yaw;
+    this.pitch.rotation.x = p.pitch;
+    this.velocity.set(0, 0, 0);
+  }
+
+  /** Fires whenever the visitor moves, looks or taps — a tour hands control
+   *  back the moment anyone reaches for it. */
+  onManualInput?: () => void;
 
   /** True while the walker's box at (x, z) overlaps anything solid. */
   private blocked(x: number, z: number): boolean {

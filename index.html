@@ -11,7 +11,7 @@
 <body>
   <canvas id="stage"></canvas>
 
-  <div id="loading"><div class="mark">✦</div><p id="loading-text">正在绘制世界…</p></div>
+  <div id="loading"><div class="mark">✦</div><p id="loading-text" data-en="Drawing the world…" data-zh="正在绘制世界…">Drawing the world…</p></div>
 
   <nav class="sitenav">
     <a class="brand" href="/">
@@ -19,12 +19,12 @@
       <span class="en">The Biblical Globe</span>
     </a>
     <ol>
-      <li><a class="tab" href="/" aria-current="page">圣经世界</a></li>
-      <li><a class="tab" href="/structures.html">照着经文的尺寸</a></li>
-      <li><a class="tab" href="/tabernacle.html">走进会幕</a></li>
+      <li><a class="tab" href="/" aria-current="page" data-en="The Globe" data-zh="圣经世界">The Globe</a></li>
+      <li><a class="tab" href="/structures.html" data-en="By the Measure" data-zh="照着经文的尺寸">By the Measure</a></li>
+      <li><a class="tab" href="/tabernacle.html" data-en="The Tabernacle" data-zh="走进会幕">The Tabernacle</a></li>
     </ol>
     <span class="spacer"></span>
-    <button id="lang" type="button">EN</button>
+    <button class="lang-switch" type="button">中文</button>
   </nav>
 
   <aside id="panel" hidden>
@@ -39,8 +39,8 @@
 
   <nav id="routes" data-state="closed">
     <button id="r-open" type="button" aria-expanded="false">
-      <span class="rlabel">路线</span>
-      <span class="r-open-name">选一条走过的路</span>
+      <span class="rlabel" data-en="Routes" data-zh="路线">Routes</span>
+      <span class="r-open-name" data-en="Choose a journey" data-zh="选一条走过的路">Choose a journey</span>
       <span class="r-chev" aria-hidden="true">▾</span>
     </button>
 
@@ -58,7 +58,7 @@
         <span id="r-stop"></span>
       </div>
       <details id="r-why">
-        <summary>依据</summary>
+        <summary data-en="Basis" data-zh="依据">Basis</summary>
         <p id="r-basis"></p>
       </details>
     </article>
@@ -76,8 +76,9 @@
     <input id="t-range" type="range" min="0" max="1" value="1" step="1">
     <div class="legend" id="legend"></div>
     <p class="credit">
-      地名数据 <a href="https://www.openbible.info/geo/" target="_blank" rel="noopener">OpenBible.info</a> · CC BY 4.0 ·
-      底图 Natural Earth（公有领域）
+      <span data-en="Place data" data-zh="地名数据">Place data</span>
+      <a href="https://www.openbible.info/geo/" target="_blank" rel="noopener">OpenBible.info</a> · CC BY 4.0 ·
+      <span data-en="basemap Natural Earth (public domain)" data-zh="底图 Natural Earth（公有领域）">basemap Natural Earth (public domain)</span>
     </p>
   </footer>
 
