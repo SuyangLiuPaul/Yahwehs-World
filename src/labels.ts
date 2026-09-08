@@ -24,15 +24,20 @@ export class RouteLabels {
 
   build(markers: THREE.Object3D[], locale: 'zh' | 'en') {
     this.root.innerHTML = '';
-    this.items = markers.map((mesh) => {
+    const last = markers.length - 1;
+    this.items = markers.map((mesh, i) => {
       const m = mesh.userData.marker as RouteMarker;
+      // Four ranks, because they are four different things to a reader: where
+      // it began, where it ended, where the company is now, and the rest.
+      const rank = i === 0 ? ' start' : i === last ? ' end' : '';
       const el = document.createElement('div');
-      el.className = 'rlab' + (m.stops.length > 1 ? ' many' : '');
+      el.className = 'rlab' + rank + (m.stops.length > 1 ? ' many' : '');
       const ord = m.stops.length > 1
         ? `${m.stops[0]}–${m.stops[m.stops.length - 1]}`
         : String(m.n);
       const name = locale === 'zh' ? m.zh : m.place;
-      el.innerHTML = `<b>${ord}</b><span>${name}</span>`;
+      const tag = i === 0 ? '<u>起</u>' : i === last ? '<u>终</u>' : '';
+      el.innerHTML = `<b>${ord}</b><span>${name}</span>${tag}`;
       // A merged marker says outright that it is a guess, on the label itself
       // rather than only in a panel the reader may never open.
       if (m.stops.length > 1) el.title = `${m.stops.length} 站共用一个坐标——这些营站的位置从未考定`;
@@ -76,7 +81,11 @@ export class RouteLabels {
         // Fade near the limb, where a label sits over the globe's silhouette
         // and reads as floating in space.
         op: Math.min(1, (facing - 0.12) / 0.22),
-        rank: i === reached ? 0 : (it.marker.stops.length > 1 ? 2 : 1),
+        // Endpoints outrank ordinary stops for space: losing the start of a
+        // journey to a collision is worse than losing its ninth camp.
+        rank: i === reached ? 0
+            : (i === 0 || i === this.items.length - 1) ? 1
+            : (it.marker.stops.length > 1 ? 3 : 2),
       });
     });
 

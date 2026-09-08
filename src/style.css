@@ -256,6 +256,16 @@ body {
 }
 .rlab.now b { color: var(--gold-bright); }
 
+/* Where it began and where it ended are the two stops a reader looks for
+   first, so they carry a mark instead of relying on the ordinal. */
+.rlab.start, .rlab.end { border-color: var(--gold); }
+.rlab u {
+  text-decoration: none; font-family: var(--display); font-size: var(--fs-100);
+  font-weight: 600; color: var(--ground); background: var(--gold);
+  border-radius: 1px; padding: 1px 3px; line-height: 1; margin-left: 1px;
+}
+.rlab.end u { background: var(--gold-bright); }
+
 /* ── timeline ────────────────────────────────────────────────────────── */
 #timeline {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;

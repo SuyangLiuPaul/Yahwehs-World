@@ -1,4 +1,7 @@
 import * as THREE from 'three';
+import { Line2 } from 'three/examples/jsm/lines/Line2.js';
+import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js';
+import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
 import { lonLatToVec3 } from './globe.ts';
 
 // Routes are drawn ON the sphere, not through it: every leg is subdivided along
@@ -38,46 +41,33 @@ function arc(a: THREE.Vector3, b: THREE.Vector3, steps: number): THREE.Vector3[]
   return out;
 }
 
-// The path is one mesh whose colour is decided per-fragment from how far along
-// it sits. That is what makes travelled and untravelled read as one continuous
-// journey rather than two objects: the road ahead is already there, waiting,
-// and the light moves along it.
-const PATH_VERT = `
-  varying vec2 vUv;
-  void main() {
-    vUv = uv;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-  }`;
+// The path is a screen-space line, not a tube. A TubeGeometry has a world
+// radius, so it reads as a pipe laid over the ground and swells or vanishes
+// with the zoom; a Line2 holds a constant width in pixels, which is what a
+// drawn route is. Its colour comes from per-vertex colours updated as the
+// journey advances, so travelled and untravelled are one continuous line
+// rather than two objects, and the road ahead is present but recessive.
 
-const PATH_FRAG = `
-  uniform float uProgress;
-  uniform float uDash;      // 0 = solid land leg, >0 = dashes per unit for sea
-  uniform vec3 uAhead;
-  uniform vec3 uBehind;
-  uniform vec3 uHead;
-  varying vec2 vUv;
-  void main() {
-    float t = vUv.x;
-    // A sea leg is dashed, because the text's sailing verbs describe a crossing
-    // and not a road; a land leg is solid.
-    if (uDash > 0.0 && fract(t * uDash) > 0.55) discard;
-    if (t > uProgress) {
-      // Not yet reached: visible but recessive, so the shape of the whole
-      // journey is legible before it has been walked.
-      gl_FragColor = vec4(uAhead, 0.30);
-      return;
-    }
-    // A short bright run just behind the head reads as motion.
-    float heat = smoothstep(0.055, 0.0, uProgress - t);
-    gl_FragColor = vec4(mix(uBehind, uHead, heat), 0.72 + heat * 0.28);
-  }`;
+const C_AHEAD = new THREE.Color('#66788a');
+const C_BEHIND = new THREE.Color('#c9a227');
+const C_HEAD = new THREE.Color('#fff2c4');
 
-interface Leg { mesh: THREE.Mesh; from: number; to: number }
+interface Leg {
+  line: Line2; geo: LineGeometry; mat: LineMaterial;
+  /** Fraction of the whole journey this leg spans. */
+  from: number; to: number;
+  /** One t per vertex, for colouring against progress. */
+  ts: number[];
+  colors: Float32Array;
+}
 
 export class Route {
   readonly group = new THREE.Group();
   private readonly legs: Leg[] = [];
   private readonly markerMeshes: THREE.Object3D[] = [];
+  /** Chevrons along the path. A route that only shows its direction while it
+   *  animates has no direction at rest, and at rest is how it is mostly seen. */
+  private readonly arrows: THREE.Mesh[] = [];
   /** Points along the whole path, for placing the head. */
   private readonly spine: THREE.Vector3[] = [];
   private readonly head: THREE.Mesh;
@@ -113,23 +103,36 @@ export class Route {
       walked += len;
       const to = walked / total;
 
-      const geo = new THREE.TubeGeometry(
-        new THREE.CatmullRomCurve3(pts), Math.max(10, pts.length), 0.17, 8, false);
-      const mat = new THREE.ShaderMaterial({
-        vertexShader: PATH_VERT, fragmentShader: PATH_FRAG,
-        transparent: true, depthWrite: false,
-        uniforms: {
-          uProgress: { value: 0 },
-          uDash: { value: sea ? Math.max(6, len * 260) : 0 },
-          uAhead: { value: new THREE.Color('#6c7a8a') },
-          uBehind: { value: new THREE.Color('#c9a227') },
-          uHead: { value: new THREE.Color('#fff2c4') },
-        },
+      const flat: number[] = [];
+      const ts: number[] = [];
+      pts.forEach((v, i) => {
+        flat.push(v.x, v.y, v.z);
+        ts.push(from + (to - from) * (i / Math.max(1, pts.length - 1)));
       });
-      const mesh = new THREE.Mesh(geo, mat);
-      mesh.renderOrder = 2;
-      this.legs.push({ mesh, from, to });
-      this.group.add(mesh);
+      const colors = new Float32Array(pts.length * 3);
+
+      const geo = new LineGeometry();
+      geo.setPositions(flat);
+      geo.setColors(Array.from(colors));
+
+      const mat = new LineMaterial({
+        linewidth: 3.2,          // pixels, held constant across zoom
+        vertexColors: true,
+        transparent: true,
+        // A sailing verb in the text gives a dashed leg; a verb of going gives
+        // a solid one. The distinction is the journey's, not decoration.
+        dashed: sea,
+        dashSize: 2.2, gapSize: 2.0,
+        depthTest: true, depthWrite: false,
+      });
+      mat.resolution.set(1, 1);
+      if (sea) mat.defines.USE_DASH = '';
+
+      const line = new Line2(geo, mat);
+      line.computeLineDistances();
+      line.renderOrder = 2;
+      this.legs.push({ line, geo, mat, from, to, ts, colors });
+      this.group.add(line);
     }
 
     const single = new THREE.SphereGeometry(1, 14, 12);
@@ -152,6 +155,26 @@ export class Route {
       this.group.add(mesh);
     }
 
+    // Chevrons every so often along the spine, pointed the way of travel.
+    const chevGeo = new THREE.ConeGeometry(0.5, 1.25, 4);
+    const chevMat = new THREE.MeshBasicMaterial({
+      color: 0xc9a227, transparent: true, opacity: 0.55, depthWrite: false,
+    });
+    const EVERY = 26;
+    for (let i = EVERY; i < this.spine.length - 2; i += EVERY) {
+      const here = this.spine[i]!;
+      const next = this.spine[i + 1]!;
+      const chev = new THREE.Mesh(chevGeo, chevMat);
+      chev.position.copy(here);
+      // Point along travel, lying on the surface rather than standing up from it.
+      chev.quaternion.setFromUnitVectors(
+        new THREE.Vector3(0, 1, 0), next.clone().sub(here).normalize());
+      chev.renderOrder = 3;
+      chev.userData.t = i / (this.spine.length - 1);
+      this.arrows.push(chev);
+      this.group.add(chev);
+    }
+
     // The travelling head — where the company is right now.
     this.head = new THREE.Mesh(
       new THREE.SphereGeometry(1, 16, 14),
@@ -168,13 +191,29 @@ export class Route {
 
   setProgress(t: number) {
     this.progress = Math.max(0, Math.min(1, t));
-    for (const { mesh, from, to } of this.legs) {
-      const local = (this.progress - from) / Math.max(1e-6, to - from);
-      (mesh.material as THREE.ShaderMaterial).uniforms.uProgress!.value =
-        Math.max(0, Math.min(1, local));
+    const c = new THREE.Color();
+    for (const leg of this.legs) {
+      leg.ts.forEach((vt, i) => {
+        if (vt > this.progress) c.copy(C_AHEAD);
+        else {
+          // A short bright run just behind the head reads as motion.
+          const heat = Math.max(0, 1 - (this.progress - vt) / 0.05);
+          c.copy(C_BEHIND).lerp(C_HEAD, heat);
+        }
+        leg.colors[i * 3] = c.r;
+        leg.colors[i * 3 + 1] = c.g;
+        leg.colors[i * 3 + 2] = c.b;
+      });
+      if (changed) leg.geo.setColors(Array.from(leg.colors));
     }
     const reached = Math.round(this.progress * this.markerMeshes.length);
     this.markerMeshes.forEach((m, i) => { m.visible = i < reached; });
+    // Chevrons ahead of the head stay, dimmer: the direction of the road not
+    // yet walked is exactly what a reader wants to know at rest.
+    for (const a of this.arrows) {
+      const t = a.userData.t as number;
+      (a.material as THREE.MeshBasicMaterial).opacity = t <= this.progress ? 0.7 : 0.24;
+    }
 
     if (this.spine.length) {
       const i = Math.min(this.spine.length - 1,
@@ -203,6 +242,12 @@ export class Route {
     const k = Math.max(0.14, (cameraDistance - globeRadius) / 300);
     for (const m of this.markerMeshes) m.scale.setScalar(k * (m.userData.sizeFactor as number));
     this.head.scale.setScalar(k * 1.25);
+    for (const a of this.arrows) a.scale.setScalar(k * 0.9);
+  }
+
+  /** Line width is in pixels, so the material has to know the drawing size. */
+  setResolution(w: number, h: number) {
+    for (const leg of this.legs) leg.mat.resolution.set(w, h);
   }
 
   dispose() {

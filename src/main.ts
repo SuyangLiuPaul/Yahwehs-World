@@ -422,6 +422,7 @@ renderer.setAnimationLoop(() => {
   advanceRoute(dt);
   if (route) {
     route.faceCamera(camera.position.length(), GLOBE_RADIUS);
+    route.setResolution(renderer.domElement.width, renderer.domElement.height);
     routeLabels.update(camera, globe, route.reachedIndex(routeT), innerWidth, innerHeight);
   }
   controls.update();
@@ -463,6 +464,7 @@ if (import.meta.env.DEV) {
       if (!route) return;
       controls.update(); camera.updateMatrixWorld(true); globe.updateMatrixWorld(true);
       route.faceCamera(camera.position.length(), GLOBE_RADIUS);
+      route.setResolution(renderer.domElement.width, renderer.domElement.height);
       routeLabels.update(camera, globe, route.reachedIndex(routeT), innerWidth, innerHeight);
       renderer.render(scene, camera);
     },
@@ -475,6 +477,7 @@ if (import.meta.env.DEV) {
       camera.aspect = w / h; camera.updateProjectionMatrix();
       controls.update(); camera.updateMatrixWorld(true); globe.updateMatrixWorld(true);
       route?.faceCamera(camera.position.length(), GLOBE_RADIUS);
+      route?.setResolution(renderer.domElement.width, renderer.domElement.height);
       renderer.render(scene, camera);
       const url = renderer.domElement.toDataURL('image/png');
       renderer.setSize(prev.w, prev.h, false);
