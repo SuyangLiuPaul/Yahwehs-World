@@ -339,38 +339,12 @@ function advanceRoute(dt: number) {
   updateRouteReadout();
   if (routeT >= 1) { routePlaying = false; rToggle.textContent = '▶'; }
 
-  // Follow the travelling head rather than the last marker reached: the head
-  // moves continuously and a marker jumps.
-  //
-  // The chase moves ALONG the sphere, not through it. Lerping two positions in
-  // three dimensions cuts a chord under the surface, so the camera dipped
-  // toward the centre and was pushed back out each frame — which is what made
-  // the motion read as sliding the map around rather than flying a route. Only
-  // the direction is interpolated; the altitude is held.
-  if (!userDriving) {
-    const alt = camera.position.length() - GLOBE_RADIUS;
-    // Frame-rate independent easing: the same fraction of the remaining gap
-    // per second whatever the frame time.
-    const k = 1 - Math.exp(-dt * 2.4);
-    const dir = camera.position.clone().normalize()
-      .lerp(route.headPosition.clone().normalize(), k)
-      .normalize();
-    camera.position.copy(dir.multiplyScalar(GLOBE_RADIUS + alt));
-
-    // Roll so the direction of travel runs up the screen — without it the
-    // camera keeps whatever bearing it started with and a journey turning west
-    // feels like the map being dragged sideways underneath it.
-    //
-    // Slowly, and capped. Paul's second journey doubles back on itself, and a
-    // roll that tracked every turn would spin the whole world at a hairpin,
-    // which trades one kind of disorientation for another. A degree every few
-    // frames reads as the view settling; a degree every frame reads as a spin.
-    const want = route.heading.clone().projectOnPlane(dir).normalize();
-    if (want.lengthSq() > 0.5) {
-      const step = Math.min(1 - Math.exp(-dt * 0.5), 0.02);
-      camera.up.lerp(want, step).normalize();
-    }
-  }
+  // The camera deliberately does NOT follow. It frames the whole route once
+  // when the route opens and then stays put: a camera that chases the head
+  // swings the world under the reader for the length of the journey, which is
+  // motion sickness rather than travel. The entire path is on screen from the
+  // first frame, the light moves along it, and panning and zooming belong to
+  // whoever is looking.
 }
 
 // ── timeline ──────────────────────────────────────────────────────────────
@@ -493,7 +467,7 @@ renderer.setAnimationLoop(() => {
   follow(dt);
   advanceRoute(dt);
   if (route) {
-    route.faceCamera(camera.position.length(), GLOBE_RADIUS);
+    route.faceCamera(camera.position.length(), GLOBE_RADIUS, innerHeight, camera.fov);
     route.setResolution(renderer.domElement.width, renderer.domElement.height);
     routeLabels.update(camera, globe, route.reachedIndex(routeT), innerWidth, innerHeight);
   }
@@ -535,7 +509,7 @@ if (import.meta.env.DEV) {
     tickRoute() {
       if (!route) return;
       controls.update(); camera.updateMatrixWorld(true); globe.updateMatrixWorld(true);
-      route.faceCamera(camera.position.length(), GLOBE_RADIUS);
+      route.faceCamera(camera.position.length(), GLOBE_RADIUS, innerHeight, camera.fov);
       route.setResolution(renderer.domElement.width, renderer.domElement.height);
       routeLabels.update(camera, globe, route.reachedIndex(routeT), innerWidth, innerHeight);
       renderer.render(scene, camera);
@@ -548,7 +522,7 @@ if (import.meta.env.DEV) {
       renderer.setSize(w, h, false);
       camera.aspect = w / h; camera.updateProjectionMatrix();
       controls.update(); camera.updateMatrixWorld(true); globe.updateMatrixWorld(true);
-      route?.faceCamera(camera.position.length(), GLOBE_RADIUS);
+      route?.faceCamera(camera.position.length(), GLOBE_RADIUS, h, camera.fov);
       route?.setResolution(renderer.domElement.width, renderer.domElement.height);
       renderer.render(scene, camera);
       const url = renderer.domElement.toDataURL('image/png');

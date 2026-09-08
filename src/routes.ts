@@ -123,6 +123,11 @@ export class Route {
         transparent: true,
         // A sailing verb in the text gives a dashed leg; a verb of going gives
         // a solid one. The distinction is the journey's, not decoration.
+        //
+        // The dash lengths are set per frame from the camera distance, not
+        // fixed here. LineMaterial measures them in world units, and 2.2 units
+        // is 140 km — which zoomed out is a dash and zoomed in is a gap longer
+        // than the leg, so a sea crossing simply vanished.
         dashed: sea,
         dashSize: 2.2, gapSize: 2.0,
         depthTest: true, depthWrite: false,
@@ -252,11 +257,23 @@ export class Route {
   /** Keeps markers a constant apparent size as the camera moves in and out.
    *  Fixed-radius spheres are unusable up close: at route zoom they overlap
    *  into one mass and bury the line they are supposed to annotate. */
-  faceCamera(cameraDistance: number, globeRadius: number) {
+  faceCamera(cameraDistance: number, globeRadius: number, screenHeight = 800, vFovDeg = 42) {
     const k = Math.max(0.14, (cameraDistance - globeRadius) / 300);
     for (const m of this.markerMeshes) m.scale.setScalar(k * (m.userData.sizeFactor as number));
     this.head.scale.setScalar(k * 1.25);
     for (const a of this.arrows) a.scale.setScalar(k * 0.9);
+
+    // Hold the dash pattern at a constant size on screen. World-unit dashes
+    // scale with the zoom, so a pattern tuned for the whole Mediterranean
+    // leaves one gap covering an entire crossing once the reader moves in.
+    const alt = Math.max(1, cameraDistance - globeRadius);
+    const worldPerPx = (2 * alt * Math.tan((vFovDeg * Math.PI) / 360)) / Math.max(1, screenHeight);
+    for (const leg of this.legs) {
+      if (!leg.mat.dashed) continue;
+      leg.mat.dashSize = worldPerPx * 9;
+      leg.mat.gapSize = worldPerPx * 6;
+      leg.mat.needsUpdate = true;
+    }
   }
 
   /** Line width is in pixels, so the material has to know the drawing size. */
