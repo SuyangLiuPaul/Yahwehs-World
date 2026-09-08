@@ -21,6 +21,9 @@ export class Walker {
   private readonly velocity = new THREE.Vector3();
   private readonly keys = new Set<string>();
   private locked = false;
+  /** Virtual stick deflection, -1..1 on each axis. */
+  private readonly stick = new THREE.Vector2();
+  private touching = false;
   private readonly box = new THREE.Box3();
   private readonly size = new THREE.Vector3(RADIUS * 2, EYE * 1.2, RADIUS * 2);
 
@@ -52,6 +55,66 @@ export class Walker {
     });
     addEventListener('keyup', (e) => this.keys.delete(e.code));
     addEventListener('blur', () => this.keys.clear());
+
+    this.bindTouch(dom);
+  }
+
+  /** True where pointer lock and a keyboard are not both available — which is
+   *  every phone and tablet. Without this the gate's enter button asks for a
+   *  lock the browser will not grant and the visitor never gets inside. */
+  static get touchOnly() {
+    return !('requestPointerLock' in HTMLElement.prototype) ||
+      (matchMedia('(pointer: coarse)').matches && !matchMedia('(pointer: fine)').matches);
+  }
+
+  /** The standard two-thumb layout: a touch that starts on the left half walks,
+   *  one that starts on the right half looks. It is what every phone player
+   *  already knows, and it needs no on-screen furniture over a small screen. */
+  private bindTouch(dom: HTMLElement) {
+    const move = new Map<number, { x0: number; y0: number }>();
+    const look = new Map<number, { x: number; y: number }>();
+
+    dom.addEventListener('touchstart', (e) => {
+      for (const t of Array.from(e.changedTouches)) {
+        if (t.clientX < innerWidth / 2) move.set(t.identifier, { x0: t.clientX, y0: t.clientY });
+        else look.set(t.identifier, { x: t.clientX, y: t.clientY });
+      }
+      this.touching = true;
+      e.preventDefault();
+    }, { passive: false });
+
+    dom.addEventListener('touchmove', (e) => {
+      for (const t of Array.from(e.changedTouches)) {
+        const m = move.get(t.identifier);
+        if (m) {
+          // Distance from where the thumb landed is the stick deflection.
+          const R = 62;
+          this.stick.set(
+            THREE.MathUtils.clamp((t.clientX - m.x0) / R, -1, 1),
+            THREE.MathUtils.clamp((t.clientY - m.y0) / R, -1, 1),
+          );
+          continue;
+        }
+        const l = look.get(t.identifier);
+        if (l) {
+          this.yaw.rotation.y -= (t.clientX - l.x) * 0.005;
+          this.pitch.rotation.x = THREE.MathUtils.clamp(
+            this.pitch.rotation.x - (t.clientY - l.y) * 0.005, -Math.PI / 2.1, Math.PI / 2.1);
+          l.x = t.clientX; l.y = t.clientY;
+        }
+      }
+      e.preventDefault();
+    }, { passive: false });
+
+    const end = (e: TouchEvent) => {
+      for (const t of Array.from(e.changedTouches)) {
+        if (move.delete(t.identifier)) this.stick.set(0, 0);
+        look.delete(t.identifier);
+      }
+      this.touching = move.size > 0 || look.size > 0;
+    };
+    dom.addEventListener('touchend', end);
+    dom.addEventListener('touchcancel', end);
   }
 
   onLockChange?: (locked: boolean) => void;
@@ -72,8 +135,8 @@ export class Walker {
   }
 
   update(dt: number) {
-    const fwd = (this.keys.has('KeyW') ? 1 : 0) - (this.keys.has('KeyS') ? 1 : 0);
-    const side = (this.keys.has('KeyD') ? 1 : 0) - (this.keys.has('KeyA') ? 1 : 0);
+    const fwd = (this.keys.has('KeyW') ? 1 : 0) - (this.keys.has('KeyS') ? 1 : 0) - this.stick.y;
+    const side = (this.keys.has('KeyD') ? 1 : 0) - (this.keys.has('KeyA') ? 1 : 0) + this.stick.x;
     const speed = this.keys.has('ShiftLeft') || this.keys.has('ShiftRight') ? SPRINT : SPEED;
 
     const wish = new THREE.Vector3(side, 0, -fwd);
@@ -94,4 +157,7 @@ export class Walker {
 
   get position() { return this.yaw.position; }
   get isLocked() { return this.locked; }
+  get isTouching() { return this.touching; }
+  /** Entered by either route — a pointer lock, or a touch device let straight in. */
+  enterTouch() { this.onLockChange?.(true); }
 }

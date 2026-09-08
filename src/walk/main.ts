@@ -77,7 +77,18 @@ document.getElementById('tally')!.innerHTML = ([
 ] as [number, string, string][])
   .map(([n, zh, ref]) => `<div><b>${n}</b><span>${zh}</span><i>${ref}</i></div>`).join('');
 
-document.getElementById('enter')!.addEventListener('click', () => canvas.click());
+// A phone has neither pointer lock nor a keyboard, so the enter button cannot
+// ask for a lock — it would fail silently and leave the visitor at the gate for
+// good. On touch the gate simply opens and the two-thumb controls take over.
+const touchOnly = Walker.touchOnly;
+if (touchOnly) {
+  document.getElementById('enter')!.textContent = '进入会幕';
+  document.querySelector('.keys')!.innerHTML =
+    '<span>左半屏拖动走路</span><span>右半屏拖动转头</span>';
+}
+document.getElementById('enter')!.addEventListener('click', () => {
+  if (touchOnly) walker.enterTouch(); else canvas.click();
+});
 walker.onLockChange = (locked) => {
   gateEl.classList.toggle('hidden', locked);
   hud.hidden = !locked;
