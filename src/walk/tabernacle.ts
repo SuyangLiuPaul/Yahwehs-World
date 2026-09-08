@@ -288,8 +288,18 @@ export function buildTabernacle(cubit: number): Tabernacle {
     p.position.set(veilX, boardH / 2, -tentW / 2 + (tentW / 3) * i);
     g.add(p);
   }
-  // The screen at the door on five pillars — 26:36-37.
+  // The screen at the door — 26:36: "a curtain for the entrance to the tent,
+  // of blue, purple and scarlet yarn and finely twisted linen, the work of an
+  // embroiderer", on five pillars — 26:37. The pillars were here and the
+  // curtain was not, so the tent simply had no door.
   const doorX = tentX + tentL / 2;
+  const doorScreen = new THREE.Mesh(
+    new THREE.PlaneGeometry(tentW, boardH * 0.96), M.veil());
+  doorScreen.rotation.y = -Math.PI / 2;
+  doorScreen.position.set(doorX + cubit * 0.16, boardH * 0.48, 0);
+  g.add(doorScreen);
+  // No collider: this is the way in. The veil keeps its own, because the one
+  // barrier in this building that means something is the one at 26:33.
   for (let i = 0; i < 5; i++) {
     const p = new THREE.Mesh(
       new THREE.CylinderGeometry(cubit * 0.13, cubit * 0.13, boardH, 12), gold);

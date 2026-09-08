@@ -11,40 +11,80 @@ import * as THREE from 'three';
 export interface Stop {
   /** Position in cubits, so the numbers read against the passage. */
   x: number; z: number;
-  /** Facing, radians. +PI/2 looks west, along the building's axis. */
-  yaw: number;
-  pitch: number;
+  /** What to look at, also in cubits. Facing is derived from it rather than
+   *  written by hand: hand-written yaw offsets put three of the eight stops
+   *  face-first into a wall, because the sign and the magnitude both have to
+   *  be right and neither is obvious from reading the number. */
+  at: { x: number; z: number };
+  /** Eye height of the thing being looked at, in cubits, for the pitch. */
+  atY?: number;
+  /** Fixed inclination, for stops that look at nothing in particular. */
+  pitch?: number;
   /** Seconds to travel here, then seconds to stand still. */
   travel: number; dwell: number;
   zh: string; en: string; ref: string;
 }
 
+// The furnishings, in cubits, matching where tabernacle.ts places them: the
+// tent runs x −35..−5, the veil stands at −15, the lampstand sits south of the
+// centre line and the table opposite it (26:35), the incense altar before the
+// veil (30:6).
+const ALTAR = { x: 28, z: 0 };
+const DOOR = { x: -5, z: 0 };
+const LAMP = { x: -10, z: -3 };
+const TABLE = { x: -10, z: 3 };
+const INCENSE = { x: -12.8, z: 0 };
+const VEIL = { x: -15, z: 0 };
+
+// Stand back far enough to see the thing WITH the room around it. Standing on
+// top of an object fills a phone screen with one texture, which is how a
+// guided walk turns into a tour of walls.
 export const TOUR: Stop[] = [
-  { x: 72, z: 0, yaw: Math.PI / 2, pitch: 0.02, travel: 0, dwell: 3.5,
+  { x: 74, z: 0, at: { x: 50, z: 0 }, pitch: 0.02, travel: 0, dwell: 3.5,
     zh: '院门之外', en: 'Outside the gate',
     ref: '出 27:16 · Ex 27:16' },
-  { x: 44, z: 0, yaw: Math.PI / 2, pitch: 0.0, travel: 5, dwell: 3,
+  { x: 42, z: 0, at: { x: -5, z: 0 }, pitch: 0.0, travel: 5, dwell: 3,
     zh: '进了门帘，院内', en: 'Through the screen, into the court',
     ref: '出 27:18 · Ex 27:18' },
-  { x: 33, z: 7.5, yaw: Math.PI / 2 + 0.75, pitch: -0.05, travel: 4.5, dwell: 4,
+  { x: 40, z: 11, at: ALTAR, atY: 1.6, travel: 4.5, dwell: 4,
     zh: '铜坛 · 五肘见方，四角有角', en: 'The bronze altar — five cubits square, horned',
     ref: '出 27:1–2 · Ex 27:1–2' },
-  { x: 6, z: 0, yaw: Math.PI / 2, pitch: 0.06, travel: 5.5, dwell: 3.5,
-    zh: '帐幕门口 · 五根柱子', en: 'The door of the tent — five pillars',
+  // Far enough back that the tent reads as a building rather than as a
+  // rectangle of cloth: at seven metres a four-metre screen fills a portrait
+  // phone completely, which is a tour of a wall.
+  { x: 24, z: 3, at: DOOR, atY: 6, travel: 5.5, dwell: 4,
+    zh: '帐幕门口 · 五根柱子与门帘', en: 'The door of the tent — five pillars and its screen',
     ref: '出 26:36–37 · Ex 26:36–37' },
-  { x: -6, z: -1.2, yaw: Math.PI / 2 - 1.15, pitch: -0.02, travel: 5, dwell: 4.5,
+  { x: -6.5, z: 2.6, at: LAMP, atY: 1.7, travel: 5, dwell: 4.5,
     zh: '圣所南面 · 金灯台', en: 'The south side — the lampstand',
     ref: '出 25:31、26:35 · Ex 25:31, 26:35' },
-  { x: -6, z: 1.2, yaw: Math.PI / 2 + 1.15, pitch: -0.02, travel: 3.5, dwell: 4,
+  { x: -6.5, z: -2.6, at: TABLE, atY: 1.5, travel: 3.5, dwell: 4,
     zh: '圣所北面 · 陈设饼的桌子', en: 'The north side — the table of the Presence',
     ref: '出 25:23、26:35 · Ex 25:23, 26:35' },
-  { x: -11, z: 0, yaw: Math.PI / 2, pitch: 0.0, travel: 3.5, dwell: 4,
+  { x: -7, z: 2.8, at: INCENSE, atY: 2, travel: 3.5, dwell: 4,
     zh: '香坛 · 一肘见方，高二肘', en: 'The altar of incense — a cubit square, two high',
     ref: '出 30:1–6 · Ex 30:1–6' },
-  { x: -14, z: 0, yaw: Math.PI / 2, pitch: 0.03, travel: 3, dwell: 5,
+  { x: -9, z: 0, at: VEIL, atY: 5, travel: 3, dwell: 5,
     zh: '幔子之前 · 里面是至圣所', en: 'Before the veil — beyond it, the most holy place',
     ref: '出 26:31–33 · Ex 26:31–33' },
 ];
+
+/** Yaw that points the camera from a stop toward what it is meant to see.
+ *  Rotating the camera's own −Z by θ about Y gives (−sinθ, 0, −cosθ), so the
+ *  bearing is atan2 of the difference — derived, never guessed. */
+function facing(s: Stop): number {
+  return Math.atan2(-(s.at.x - s.x), -(s.at.z - s.z));
+}
+
+/** Downward angle to the thing's own height, so a low object is looked at
+ *  rather than over. */
+function inclination(s: Stop, cubit: number): number {
+  if (s.atY === undefined) return s.pitch ?? 0;
+  const EYE = 1.65;
+  const dist = Math.hypot(s.at.x - s.x, s.at.z - s.z) * cubit;
+  if (dist < 0.1) return 0;
+  return Math.atan2(s.atY * cubit - EYE, dist);
+}
 
 const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
 /** Shortest way round for an angle, so a turn never takes the long path. */
@@ -79,7 +119,10 @@ export class Tour {
     const s = TOUR[this.index];
     if (!s) { this.running = false; this.onEnd?.(); return null; }
 
-    const target = { x: s.x * this.cubit, z: s.z * this.cubit, yaw: s.yaw, pitch: s.pitch };
+    const target = {
+      x: s.x * this.cubit, z: s.z * this.cubit,
+      yaw: facing(s), pitch: inclination(s, this.cubit),
+    };
     this.t += dt;
 
     if (this.phase === 'travel') {

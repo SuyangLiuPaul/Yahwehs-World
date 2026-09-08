@@ -171,7 +171,10 @@ function startTour() {
   tourToggle.hidden = false;
   tourToggle.textContent = '❚❚';
   const first = TOUR[0]!;
-  walker.moveTo(first.x * CUBIT, first.z * CUBIT, first.yaw);
+  // Start already facing the first stop's subject, so the tour does not open
+  // by swinging the whole world around.
+  walker.moveTo(first.x * CUBIT, first.z * CUBIT,
+                Math.atan2(-(first.at.x - first.x), -(first.at.z - first.z)));
   tour.start(walker.pose);
 }
 function endTour() {
