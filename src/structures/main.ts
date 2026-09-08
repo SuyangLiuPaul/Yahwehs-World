@@ -237,7 +237,7 @@ function frameCamera(aspectW = innerWidth, aspectH = innerHeight) {
   // phone showed an empty black band above a card and no structure at all.
   // Aiming below the object lifts it into the free space over the sheet.
   const visibleH = 2 * dist * Math.tan(vFov / 2);
-  const lookY = boundsCentre.y - (wide ? 0 : visibleH * 0.22);
+  const lookY = boundsCentre.y - (wide ? 0 : visibleH * 0.32);
 
   camera.position.set(lookX - boundsSize.x * (wide ? 0.12 : 0), lookY + dist * 0.22, dist);
   camera.lookAt(lookX, lookY, 0);

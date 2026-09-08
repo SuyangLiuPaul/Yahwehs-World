@@ -83,7 +83,7 @@ details.unstated li { margin-bottom: var(--sp-1); }
    standing in the space above it, rather than covering it. */
 @media (max-width: 899px) {
   .card { align-items: end; }
-  .inner { max-height: 52svh; overflow-y: auto; }
+  .inner { max-height: 46svh; overflow-y: auto; }
 }
 @media (max-width: 640px) {
   .card { padding: var(--sp-5) var(--sp-4) 8.5rem; }
