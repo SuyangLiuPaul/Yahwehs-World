@@ -1,0 +1,42 @@
+/* One nav across all three surfaces. Without it they are three URLs a visitor
+   has no way to discover from one another, which is the difference between
+   three pages and a product. */
+.sitenav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+  display: flex; align-items: center; gap: var(--sp-4);
+  padding: var(--sp-3) var(--sp-5);
+  pointer-events: none;
+}
+.sitenav .brand {
+  display: grid; gap: 1px; pointer-events: auto; text-decoration: none; flex: none;
+}
+.sitenav .brand .zh {
+  font-family: var(--display); font-size: var(--fs-500); font-weight: 600;
+  letter-spacing: .14em; line-height: 1.15; color: var(--ink);
+}
+.sitenav .brand .en {
+  font-family: var(--latin); font-size: 10px; font-weight: 500;
+  letter-spacing: var(--tr-mark); text-transform: uppercase; color: var(--gold);
+}
+.sitenav ol {
+  list-style: none; display: flex; gap: 1px; margin: 0; padding: 0;
+  pointer-events: auto; flex-wrap: wrap;
+}
+.sitenav a.tab {
+  display: block; text-decoration: none; padding: var(--sp-1) var(--sp-3);
+  border: 1px solid transparent; border-radius: var(--radius);
+  font-size: var(--fs-200); letter-spacing: var(--tr-cjk); color: var(--ink-3);
+  transition: color .16s, border-color .16s, background .16s;
+}
+.sitenav a.tab:hover { color: var(--ink); border-color: var(--line); background: #0d1a2899; }
+.sitenav a.tab[aria-current="page"] {
+  color: var(--gold-bright); border-color: var(--line-gold); background: #c9a2271a;
+}
+.sitenav a.tab:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+.sitenav .spacer { flex: 1; }
+@media (max-width: 760px) {
+  .sitenav { padding: var(--sp-2) var(--sp-3); gap: var(--sp-2); }
+  .sitenav .brand .zh { font-size: var(--fs-300); }
+  .sitenav .brand .en { display: none; }
+  .sitenav a.tab { padding: 2px var(--sp-2); font-size: var(--fs-100); }
+}

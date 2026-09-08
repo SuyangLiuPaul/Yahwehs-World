@@ -1,4 +1,5 @@
 @import '../tokens.css';
+@import '../nav.css';
 
 * { box-sizing: border-box; }
 body { margin: 0; background: #060d16; color: var(--ink); font-family: var(--ui); overflow: hidden; }

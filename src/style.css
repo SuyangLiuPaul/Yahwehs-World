@@ -1,4 +1,5 @@
 @import './tokens.css';
+@import './nav.css';
 
 * { box-sizing: border-box; }
 
@@ -44,28 +45,13 @@ body {
 }
 @keyframes pulse { 0%,100% { opacity: .3 } 50% { opacity: 1 } }
 
-/* ── masthead ────────────────────────────────────────────────────────── */
-#masthead {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 20;
-  padding: var(--sp-4) var(--sp-5);
-  display: flex; align-items: flex-start; justify-content: space-between;
-  pointer-events: none;
-}
-#masthead .title { display: grid; gap: 3px; }
-#masthead .zh {
-  font-family: var(--display); font-size: var(--fs-600); font-weight: 600;
-  letter-spacing: .14em; line-height: var(--lh-tight); color: var(--ink);
-}
-#masthead .en {
-  font-family: var(--latin); font-size: var(--fs-100); font-weight: 500;
-  letter-spacing: var(--tr-mark); text-transform: uppercase; color: var(--gold);
-}
+/* The language switch rides in the shared nav. */
 #lang {
   pointer-events: auto; background: transparent; color: var(--gold);
   border: 1px solid var(--line-gold); border-radius: var(--radius);
   padding: var(--sp-1) var(--sp-3);
   font-family: var(--mono); font-size: var(--fs-100); font-weight: 500;
-  letter-spacing: var(--tr-caps); cursor: pointer;
+  letter-spacing: var(--tr-caps); cursor: pointer; flex: none;
   transition: background .18s, color .18s, border-color .18s;
 }
 #lang:hover { background: #c9a2271a; color: var(--gold-bright); border-color: var(--gold); }
@@ -73,7 +59,7 @@ body {
 
 /* ── place panel ─────────────────────────────────────────────────────── */
 #panel {
-  position: fixed; top: 76px; right: var(--sp-5); z-index: 30;
+  position: fixed; top: 66px; right: var(--sp-5); z-index: 30;
   width: min(360px, calc(100vw - var(--sp-5) * 2));
   max-height: calc(100vh - 250px); overflow-y: auto;
   background: linear-gradient(180deg, #0e1d2ef7, #0a1622fa);
@@ -122,7 +108,7 @@ body {
    Closed it is one control; open it is the list; with a route running it is a
    card about that route and the list steps back. */
 #routes {
-  position: fixed; top: 76px; left: var(--sp-5); z-index: 20;
+  position: fixed; top: 66px; left: var(--sp-5); z-index: 20;
   width: min(268px, calc(100vw - var(--sp-5) * 2));
   display: grid; gap: var(--sp-2);
 }
