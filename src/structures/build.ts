@@ -60,33 +60,105 @@ export function buildStructure(s: Structure, cubitM: number, form: BranchForm = 
       break;
     }
     case 'chest': {
-      const chest = box(L, H, W, mat(GOLD, { metalness: 0.85, roughness: 0.28 }));
+      // The chest itself, overlaid within and without — Exodus 25:11.
+      const shell = mat(GOLD, { metalness: 0.88, roughness: 0.26 });
+      const bright = mat(GOLD, { metalness: 0.95, roughness: 0.18 });
+      const chest = box(L, H, W, shell);
       chest.position.y = H / 2;
       g.add(chest);
-      // The mercy seat, its own slab on top — Exodus 25:17.
-      const seat = box(L * 1.03, H * 0.06, W * 1.03, mat(GOLD, { metalness: 0.9, roughness: 0.2 }));
-      seat.position.y = H * 1.02;
-      g.add(seat);
-      // Two cherubim facing each other, wings overshadowing — Exodus 25:18-20.
-      // Only the stated posture is rendered; the text describes no form.
-      for (const sx of [-1, 1]) {
-        const wing = new THREE.Mesh(
-          new THREE.SphereGeometry(H * 0.2, 12, 10, 0, Math.PI),
-          mat(GOLD, { metalness: 0.9, roughness: 0.25, side: THREE.DoubleSide }),
-        );
-        wing.position.set(sx * L * 0.3, H * 1.16, 0);
-        wing.rotation.set(Math.PI / 2, 0, sx * -0.5);
-        g.add(wing);
+      // "A gold moulding around it" (25:11): a raised rim at the lip and a
+      // second at the foot, so the box has an edge the eye can find. A plain
+      // gold cuboid at nine cubits reads as a slab; the rims are what make
+      // it read as a chest.
+      const rim = (y: number, t: number) => {
+        const frame = new THREE.Group();
+        const d = t;
+        for (const [w, dd, x, z] of [
+          [L + 2 * d, d, 0, W / 2 + d / 2], [L + 2 * d, d, 0, -(W / 2 + d / 2)],
+          [d, W, L / 2 + d / 2, 0], [d, W, -(L / 2 + d / 2), 0],
+        ] as [number, number, number, number][]) {
+          const m = box(w, t, dd, bright); m.position.set(x, y, z); frame.add(m);
+        }
+        return frame;
+      };
+      g.add(rim(H - H * 0.03, H * 0.06));
+      g.add(rim(H * 0.09, H * 0.05));
+      // Four feet with four rings (25:12), the poles through the rings on the
+      // two long sides (25:13-14) — low, under the lip, where the text puts
+      // them, and never taken out (25:15).
+      const ringR = H * 0.09;
+      for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
+        const foot = box(H * 0.14, H * 0.12, H * 0.14, bright);
+        foot.position.set(sx * (L / 2 - H * 0.07), H * 0.06, sz * (W / 2 - H * 0.07));
+        g.add(foot);
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(ringR, H * 0.022, 10, 24), bright);
+        ring.rotation.y = Math.PI / 2;   // hoop in the y-z plane so a pole along x threads it
+        ring.position.set(sx * (L / 2 - H * 0.07), H * 0.18, sz * (W / 2 + H * 0.13));
+        g.add(ring);
       }
-      // Poles through the rings — the ark was never meant to be set down.
       for (const sz of [-1, 1]) {
         const pole = new THREE.Mesh(
-          new THREE.CylinderGeometry(H * 0.035, H * 0.035, L * 1.6, 10),
-          mat(GOLD, { metalness: 0.8, roughness: 0.35 }),
-        );
+          new THREE.CylinderGeometry(H * 0.04, H * 0.04, L * 1.7, 12), shell);
         pole.rotation.z = Math.PI / 2;
-        pole.position.set(0, H * 0.6, sz * W * 0.62);
+        pole.position.set(0, H * 0.18, sz * (W / 2 + H * 0.13));
         g.add(pole);
+        for (const sx of [-1, 1]) {
+          const cap = new THREE.Mesh(new THREE.SphereGeometry(H * 0.055, 12, 10), bright);
+          cap.position.set(sx * L * 0.85, H * 0.18, sz * (W / 2 + H * 0.13));
+          g.add(cap);
+        }
+      }
+      // The mercy seat, its own slab on top, the same length and width as the
+      // ark — Exodus 25:17 — with its own lip.
+      const seat = box(L, H * 0.07, W, bright);
+      seat.position.y = H + H * 0.035;
+      g.add(seat);
+      const seatTop = H + H * 0.07;
+      // Two cherubim of hammered gold at the two ends of the mercy seat, of
+      // one piece with it, wings spread upward and overshadowing it, faces
+      // toward each other — Exodus 25:18-20. The text gives posture and
+      // nothing else, so each is a kneeling figure — thighs, torso, head, two
+      // long wings raised and swept in to meet over the seat — enough to be
+      // read as a winged figure from the veil, which two domes were not.
+      const cherubMat = mat(GOLD, { metalness: 0.96, roughness: 0.2, side: THREE.DoubleSide });
+      const wingLen = H * 0.72;
+      for (const sx of [-1, 1]) {
+        const cherub = new THREE.Group();
+        // kneeling: thighs as a low block, torso rising from it
+        const knees = new THREE.Mesh(new THREE.BoxGeometry(H * 0.2, H * 0.11, H * 0.24), cherubMat);
+        knees.position.set(-H * 0.03, H * 0.055, 0);
+        cherub.add(knees);
+        const torso = new THREE.Mesh(new THREE.CylinderGeometry(H * 0.075, H * 0.1, H * 0.34, 14), cherubMat);
+        torso.position.set(H * 0.02, H * 0.28, 0);
+        torso.rotation.z = -0.12;   // leans in toward the centre
+        cherub.add(torso);
+        const shoulders = new THREE.Mesh(new THREE.SphereGeometry(H * 0.095, 14, 10), cherubMat);
+        shoulders.scale.set(1, 0.6, 1.5);
+        shoulders.position.set(H * 0.04, H * 0.45, 0);
+        cherub.add(shoulders);
+        const head = new THREE.Mesh(new THREE.SphereGeometry(H * 0.07, 14, 12), cherubMat);
+        head.position.set(H * 0.06, H * 0.55, 0);
+        cherub.add(head);
+        // Wings: two thin blades rising from the shoulders, tipped forward so
+        // they overshadow the seat; the near edges of the pair from either
+        // end almost meet at the centre line.
+        for (const side of [-1, 1]) {
+          // A blade that tapers to the tip: a cone laid on its side and
+          // flattened, root at the shoulder.
+          const wing = new THREE.Mesh(new THREE.ConeGeometry(H * 0.15, wingLen, 12), cherubMat);
+          wing.scale.set(1, 1, 0.22);   // thin through, full width; the broad face looks along the seat
+          wing.rotation.z = -Math.PI / 2;   // point along +x
+          const pivot = new THREE.Group();
+          pivot.position.set(H * 0.02, H * 0.46, side * H * 0.07);
+          wing.position.x = wingLen / 2;   // grows from the pivot outward
+          pivot.add(wing);
+          // raise ~62° above horizontal, splay ±22° to the sides, lean in
+          pivot.rotation.set(side * 0.32, side * -0.2, 0.98);
+          cherub.add(pivot);
+        }
+        cherub.position.set(sx * L * 0.38, seatTop, 0);
+        cherub.rotation.y = sx > 0 ? Math.PI : 0;   // faces toward each other
+        g.add(cherub);
       }
       break;
     }

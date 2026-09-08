@@ -35,6 +35,7 @@ const LAMP = { x: -10, z: -3 };
 const TABLE = { x: -10, z: 3 };
 const INCENSE = { x: -12.8, z: 0 };
 const VEIL = { x: -15, z: 0 };
+const ARK = { x: -30, z: 0 };
 
 // Stand back far enough to see the thing WITH the room around it. Standing on
 // top of an object fills a phone screen with one texture, which is how a
@@ -64,9 +65,15 @@ export const TOUR: Stop[] = [
   { x: -7, z: 2.8, at: INCENSE, atY: 2, travel: 3.5, dwell: 4,
     zh: '香坛 · 一肘见方，高二肘', en: 'The altar of incense — a cubit square, two high',
     ref: '出 30:1–6 · Ex 30:1–6' },
-  { x: -9, z: 0, at: VEIL, atY: 5, travel: 3, dwell: 5,
+  { x: -9, z: 0, at: VEIL, atY: 5, travel: 3, dwell: 4,
     zh: '幔子之前 · 里面是至圣所', en: 'Before the veil — beyond it, the most holy place',
     ref: '出 26:31–33 · Ex 26:31–33' },
+  // Past the veil. The text admits one man, once a year (Leviticus 16); the
+  // walk goes where he went, because leaving the visitor outside the only room
+  // the whole building exists for is a tour that ends before its subject.
+  { x: -24.5, z: 1.1, at: ARK, atY: 1.35, travel: 4, dwell: 6,
+    zh: '至圣所 · 约柜与施恩座', en: 'The most holy place — the ark and the mercy seat',
+    ref: '出 25:10–22 · Ex 25:10–22' },
 ];
 
 /** Yaw that points the camera from a stop toward what it is meant to see.
