@@ -52,5 +52,13 @@
   }
   .sitenav ol::-webkit-scrollbar { display: none; }
   .sitenav a.tab { padding: 2px var(--sp-2); font-size: var(--fs-100); white-space: nowrap; }
+  /* A 22px tab is not a touch target. The hit area is extended with a
+     pseudo-element rather than padding, so the strip keeps its visual size and
+     the bar does not grow to swallow the map. */
+  .sitenav a.tab, .sitenav .brand { position: relative; }
+  .sitenav a.tab::after, .sitenav .brand::after {
+    content: ''; position: absolute; left: 0; right: 0;
+    top: 50%; height: 44px; transform: translateY(-50%);
+  }
   .sitenav .spacer { display: none; }
 }

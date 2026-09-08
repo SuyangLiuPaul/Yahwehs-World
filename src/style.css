@@ -331,6 +331,18 @@ body {
   #r-why { display: none; }
   /* The stop is already named in the card; the strip below need not repeat it. */
   #t-here, #t-count { display: none; }
+
+  /* Touch targets. The visual sizes are right for the type; the hit areas were
+     not — 19px for the route's close control is a miss waiting to happen. */
+  #lang, #r-toggle, #t-play, #r-open { position: relative; }
+  #lang::after, #r-toggle::after, #t-play::after, #r-open::after {
+    content: ''; position: absolute; left: 50%; top: 50%;
+    width: max(100%, 44px); height: 44px; transform: translate(-50%, -50%);
+  }
+  #r-clear {
+    width: 40px; height: 40px; display: grid; place-content: center;
+    margin: calc(var(--sp-2) * -1) calc(var(--sp-2) * -1) 0 0;
+  }
   #rlist { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: var(--sp-1); }
   #r-basis { max-height: 64px; }
   #panel {
