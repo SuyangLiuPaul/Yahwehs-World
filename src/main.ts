@@ -284,16 +284,76 @@ function frameRoute(jr: Journey) {
   const hHalf = Math.atan(Math.tan(vHalf) * camera.aspect);
   const half = Math.max(0.12, Math.min(vHalf, hHalf));
 
-  // On a phone the route card occupies the lower quarter of the screen, so the
-  // usable field is smaller than the viewport suggests and a route framed to
-  // the full height puts its southern stops under the panel.
-  const occluded = innerWidth < 900 ? 1.3 : 1.0;
-  const need = Math.max(0.035, spread * 1.25 * occluded);
-  const alt = GLOBE_RADIUS * (Math.sin(need) / Math.tan(half) + 1 - Math.cos(need));
-  const dist = THREE.MathUtils.clamp(GLOBE_RADIUS + alt, GLOBE_RADIUS * 1.09, GLOBE_RADIUS * 4.2);
+  // Frame into the band that is actually visible, not into the viewport. The
+  // nav sits over the top and the route card over the bottom, and in an in-app
+  // browser — with its own address bar and toolbar shortening the page — those
+  // two together take more than half the height. A route framed to the full
+  // viewport then puts its northern stops behind the nav, which is what made a
+  // stationary camera still look like it was running away.
+  const band = visibleBand();
+  const bandRatio = Math.max(0.25, band.height / Math.max(1, innerHeight));
 
-  camera.position.copy(centre.multiplyScalar(dist));
+  const need = Math.max(0.035, spread * 1.18);
+  // The usable vertical field is only the band's share of the frame.
+  const usableHalf = Math.min(half, vHalf * bandRatio);
+  const alt = GLOBE_RADIUS * (Math.sin(need) / Math.tan(usableHalf) + 1 - Math.cos(need));
+  const dist = THREE.MathUtils.clamp(GLOBE_RADIUS + alt, GLOBE_RADIUS * 1.09, GLOBE_RADIUS * 5);
+
+  camera.position.copy(centre.clone().multiplyScalar(dist));
+
+  // And aim so the route lands in the band's centre rather than the frame's.
+  //
+  // Camera rotation does not map to screen displacement by any simple factor —
+  // it depends on the altitude and on where the route sits on the sphere, and
+  // a formula derived for one produced two and a half times the intended shift
+  // for another. So the correction is measured instead: nudge, project, look
+  // at the residual, correct. Two passes land it inside a few pixels.
+  const wantY = band.top + band.height / 2;
+  const axis = new THREE.Vector3().crossVectors(centre, camera.up).normalize();
+  if (axis.lengthSq() > 0.5) {
+    const probe = new THREE.Vector3();
+    const screenY = () => {
+      camera.updateMatrixWorld(true);
+      camera.lookAt(0, 0, 0);
+      camera.updateMatrixWorld(true);
+      probe.copy(centre).multiplyScalar(GLOBE_RADIUS).project(camera);
+      return (-probe.y + 1) / 2 * innerHeight;
+    };
+    // A small known rotation calibrates pixels-per-radian for this exact framing.
+    const y0 = screenY();
+    const PROBE = 0.02;
+    camera.position.applyAxisAngle(axis, PROBE);
+    const y1 = screenY();
+    const pxPerRad = (y1 - y0) / PROBE;
+    camera.position.applyAxisAngle(axis, -PROBE);
+
+    if (Math.abs(pxPerRad) > 1) {
+      for (let i = 0; i < 2; i++) {
+        const residual = wantY - screenY();
+        if (Math.abs(residual) < 2) break;
+        camera.position.applyAxisAngle(axis, residual / pxPerRad);
+      }
+    }
+  }
+
   controls.update();
+}
+
+/** The strip of screen the map actually shows through, measured from the DOM
+ *  rather than assumed, since the chrome differs between a tab and an in-app
+ *  browser and between a route being open and not. */
+function visibleBand() {
+  const h = Math.max(1, innerHeight);
+  const navEl = document.querySelector('.sitenav') as HTMLElement | null;
+  const top = navEl ? navEl.getBoundingClientRect().bottom : 0;
+
+  let bottom = h;
+  for (const el of [rCard, $('timeline')]) {
+    if (!el || (el as HTMLElement).hidden) continue;
+    const r = el.getBoundingClientRect();
+    if (r.height > 0) bottom = Math.min(bottom, r.top);
+  }
+  return { top, height: Math.max(h * 0.25, bottom - top) };
 }
 
 function updateRouteReadout() {
