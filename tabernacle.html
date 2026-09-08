@@ -12,19 +12,44 @@
   <canvas id="stage"></canvas>
 
   <div id="gate">
-    <p class="eyebrow">出埃及记 26–27 章</p>
-    <h1>走进会幕</h1>
-    <p class="lede">
-      院子、帷子、柱子、竖板、卯座、闩、幔子——全部按经文给的数量生成，没有一件是摆出来好看的。
-    </p>
-    <ul class="tally" id="tally"></ul>
-    <button id="enter" type="button">点击进入</button>
-    <p class="keys"><b>W A S D</b> 走动　<b>Shift</b> 快走　<b>鼠标</b> 转头　<b>Esc</b> 退出</p>
+    <div class="gate-inner">
+      <p class="eyebrow">出埃及记 26–27 章</p>
+      <h1>走进会幕</h1>
+      <p class="lede">
+        院子、帷子、柱子、竖板、卯座、闩、幔子——全部按经文给的数量生成。
+        经文不只给尺寸，还把每样东西数了几个都记下来，所以这些数字不是设计，是算出来的。
+      </p>
+
+      <div class="tally" id="tally"></div>
+
+      <div class="gate-go">
+        <button id="enter" type="button">点击进入</button>
+        <p class="keys">
+          <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 走动
+          <kbd>Shift</kbd> 快走
+          <span>鼠标转头</span>
+          <kbd>Esc</kbd> 退出
+        </p>
+      </div>
+    </div>
   </div>
 
   <div id="hud" hidden>
-    <div id="where"></div>
-    <div id="verse"></div>
+    <!-- A plan of the enclosure with the walker on it. In a space made of
+         nested rectangles, knowing which one you are inside is most of
+         knowing where you are. -->
+    <svg id="plan" viewBox="0 0 132 74" aria-hidden="true">
+      <rect class="p-court" x="1" y="1" width="130" height="72"></rect>
+      <rect class="p-tent"  x="14" y="19" width="52" height="36"></rect>
+      <line  class="p-veil" x1="40" y1="19" x2="40" y2="55"></line>
+      <rect class="p-altar" x="92" y="30" width="14" height="14"></rect>
+      <circle id="p-you" class="p-you" cx="120" cy="37" r="3.4"></circle>
+    </svg>
+    <div class="hud-text">
+      <div id="where"></div>
+      <div id="verse"></div>
+    </div>
+    <p class="hud-keys"><kbd>Esc</kbd> 退出</p>
   </div>
 
   <script type="module" src="/src/walk/main.ts"></script>

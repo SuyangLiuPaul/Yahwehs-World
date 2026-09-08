@@ -67,14 +67,15 @@ const hud = document.getElementById('hud')!;
 const whereEl = document.getElementById('where')!;
 const verseEl = document.getElementById('verse')!;
 
-document.getElementById('tally')!.innerHTML = [
+document.getElementById('tally')!.innerHTML = ([
   [counts.courtPillars, '院子的柱子', '出 27:10–16'],
   [counts.boards, '竖板', '出 26:18–25'],
   [counts.sockets, '带卯的座', '出 26:19'],
   [counts.bars, '横闩', '出 26:26–27'],
   [counts.clasps, '金钩', '出 26:6'],
   [counts.curtains, '幔子', '出 26:1'],
-].map(([n, zh, ref]) => `<li><b>${n}</b><span>${zh}</span><i>${ref}</i></li>`).join('');
+] as [number, string, string][])
+  .map(([n, zh, ref]) => `<div><b>${n}</b><span>${zh}</span><i>${ref}</i></div>`).join('');
 
 document.getElementById('enter')!.addEventListener('click', () => canvas.click());
 walker.onLockChange = (locked) => {
@@ -82,9 +83,22 @@ walker.onLockChange = (locked) => {
   hud.hidden = !locked;
 };
 
+// The plan's viewBox maps the court's own extent, so the dot's position is the
+// walker's actual position and not an approximation drawn to look right.
+const you = document.getElementById('p-you')!;
+const PLAN = { x0: 1, y0: 1, w: 130, h: 72 };
+const COURT_L = CUBIT * 100, COURT_W = CUBIT * 50;
+
 let lastZone = '';
 function updateHud() {
   const { x, z } = walker.position;
+
+  // World +x is the court's eastern end, which the plan draws on the right.
+  const u = (x + COURT_L / 2) / COURT_L;
+  const v = (z + COURT_W / 2) / COURT_W;
+  you.setAttribute('cx', String(PLAN.x0 + PLAN.w * Math.max(-0.12, Math.min(1.12, u))));
+  you.setAttribute('cy', String(PLAN.y0 + PLAN.h * Math.max(-0.12, Math.min(1.12, v))));
+
   const zone = ZONES.find((zn) => zn.test(x, z));
   const name = zone?.zh ?? '院外';
   if (name === lastZone) return;
@@ -113,7 +127,7 @@ renderer.setAnimationLoop(() => {
 
 if (import.meta.env.DEV) {
   (globalThis as unknown as Record<string, unknown>).__walk = {
-    scene, camera, renderer, walker, counts, colliders, CUBIT,
+    scene, camera, renderer, walker, counts, colliders, CUBIT, updateHud,
     /** Renders one frame at an arbitrary size and returns it, so the scene can
      *  be inspected where the page is not being painted. */
     snapshot(w = 1400, h = 900) {
