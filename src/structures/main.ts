@@ -231,7 +231,14 @@ function frameCamera(aspectW = innerWidth, aspectH = innerHeight) {
   const dist = Math.max(fitH, fitW) * 1.12 + boundsSize.z * 0.5;
 
   const lookX = boundsCentre.x + (wide ? boundsSize.x * 0.35 : 0);
-  const lookY = boundsCentre.y;
+
+  // On a narrow screen the card is a sheet across the lower half, and a model
+  // framed to the centre of the canvas renders behind it — which is why the
+  // phone showed an empty black band above a card and no structure at all.
+  // Aiming below the object lifts it into the free space over the sheet.
+  const visibleH = 2 * dist * Math.tan(vFov / 2);
+  const lookY = boundsCentre.y - (wide ? 0 : visibleH * 0.22);
+
   camera.position.set(lookX - boundsSize.x * (wide ? 0.12 : 0), lookY + dist * 0.22, dist);
   camera.lookAt(lookX, lookY, 0);
 }
