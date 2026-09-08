@@ -41,6 +41,9 @@ export class RouteLabels {
       // A merged marker says outright that it is a guess, on the label itself
       // rather than only in a panel the reader may never open.
       if (m.stops.length > 1) el.title = `${m.stops.length} 站共用一个坐标——这些营站的位置从未考定`;
+      // Hidden until the first update places it; otherwise every label flashes
+      // at the top-left corner for a frame before it is positioned.
+      el.style.display = 'none';
       this.root.appendChild(el);
       return { el, pos: mesh.position.clone(), marker: m };
     });
@@ -92,7 +95,12 @@ export class RouteLabels {
     candidates.sort((a, b) => a.rank - b.rank || b.op - a.op);
 
     const taken: { x: number; y: number }[] = [];
-    const GAP_X = 62, GAP_Y = 15;
+    // Spacing scales with the viewport. A fixed 62px gap is a sixth of a phone
+    // screen and a twentieth of a desktop one, so the same rule that reads as
+    // comfortable on a laptop leaves a phone with labels stacked on top of one
+    // another.
+    const GAP_X = Math.max(52, Math.min(96, w * 0.24));
+    const GAP_Y = w < 520 ? 20 : 15;
     for (const c of candidates) {
       const clash = taken.some((t) => Math.abs(t.x - c.x) < GAP_X && Math.abs(t.y - c.y) < GAP_Y);
       if (clash) { c.it.el.style.display = 'none'; continue; }

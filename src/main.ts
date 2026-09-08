@@ -272,13 +272,19 @@ function frameRoute(jr: Journey) {
   // Widest angle any stop sits from the centre — the route's own radius.
   const spread = Math.max(...pts.map((v) => v.angleTo(centre)));
 
-  // Enough altitude that the spread fits the vertical field, with a margin,
-  // and never so close that the globe fills the frame or so far that a
-  // continent-spanning voyage runs off it.
-  const vFov = (camera.fov * Math.PI) / 180;
-  const need = Math.max(0.035, spread * 1.9);
-  const alt = GLOBE_RADIUS * (Math.sin(need) / Math.tan(vFov / 2) + 1 - Math.cos(need));
-  const dist = THREE.MathUtils.clamp(GLOBE_RADIUS + alt, GLOBE_RADIUS * 1.09, GLOBE_RADIUS * 3.4);
+  // The route has to fit BOTH ways, and on a portrait phone the horizontal
+  // field is the binding one: a perspective camera's fov is vertical, so at
+  // 375x812 the horizontal half-angle is less than half the vertical. Framing
+  // to the vertical field alone left Paul's fourteen degrees of longitude
+  // fitting top-to-bottom and running clean off both sides, after which the
+  // camera chased the head east and west across a route it could never hold.
+  const vHalf = (camera.fov * Math.PI) / 360;
+  const hHalf = Math.atan(Math.tan(vHalf) * camera.aspect);
+  const half = Math.max(0.12, Math.min(vHalf, hHalf));
+
+  const need = Math.max(0.035, spread * 1.25);
+  const alt = GLOBE_RADIUS * (Math.sin(need) / Math.tan(half) + 1 - Math.cos(need));
+  const dist = THREE.MathUtils.clamp(GLOBE_RADIUS + alt, GLOBE_RADIUS * 1.09, GLOBE_RADIUS * 4.2);
 
   camera.position.copy(centre.multiplyScalar(dist));
   controls.update();
@@ -439,7 +445,12 @@ function fitToViewport() {
   camera.updateProjectionMatrix();
   renderer.setSize(w, h, false);
 }
-addEventListener('resize', fitToViewport);
+addEventListener('resize', () => {
+  fitToViewport();
+  // A phone turning from portrait to landscape changes which field binds, so
+  // a route framed for one orientation has to be re-framed for the other.
+  if (route) frameRoute(route.journey);
+});
 // Catches the transition from zero size to real size, which fires no resize
 // event of its own when the page was laid out hidden from the start.
 new ResizeObserver(fitToViewport).observe(document.body);

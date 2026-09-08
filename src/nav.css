@@ -35,8 +35,16 @@
 .sitenav a.tab:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
 .sitenav .spacer { flex: 1; }
 @media (max-width: 760px) {
-  .sitenav { padding: var(--sp-2) var(--sp-3); gap: var(--sp-2); }
-  .sitenav .brand .zh { font-size: var(--fs-300); }
+  .sitenav { padding: var(--sp-2) var(--sp-3); gap: var(--sp-3); }
+  .sitenav .brand .zh { font-size: var(--fs-300); letter-spacing: .08em; }
   .sitenav .brand .en { display: none; }
-  .sitenav a.tab { padding: 2px var(--sp-2); font-size: var(--fs-100); }
+  /* One row that scrolls rather than a row that wraps: a wrapped tab strip
+     pushes the second line under the brand and reads as a mistake. */
+  .sitenav ol {
+    flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+    -webkit-overflow-scrolling: touch; min-width: 0;
+  }
+  .sitenav ol::-webkit-scrollbar { display: none; }
+  .sitenav a.tab { padding: 2px var(--sp-2); font-size: var(--fs-100); white-space: nowrap; }
+  .sitenav .spacer { display: none; }
 }

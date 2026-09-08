@@ -314,6 +314,10 @@ body {
 
 @media (max-width: 900px) {
   :root { --fs-600: 19px; --fs-700: 24px; }
+  /* The legend costs two lines on a phone and explains a colour key most
+     readers will not consult before they have tapped something. */
+  .legend { display: none; }
+  .credit { font-size: 10px; }
   #routes {
     top: auto; bottom: 188px; left: var(--sp-3); right: var(--sp-3); width: auto;
   }
