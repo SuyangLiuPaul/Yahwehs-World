@@ -31,15 +31,31 @@
     <p id="p-refs"></p>
   </aside>
 
-  <nav id="routes">
-    <p class="rlabel">路线</p>
-    <div id="rlist"></div>
-    <div id="rplay" hidden>
-      <button id="r-toggle" type="button">▶</button>
-      <span id="r-stop"></span>
-      <button id="r-clear" type="button">退出路线</button>
-    </div>
-    <p id="r-basis"></p>
+  <nav id="routes" data-state="closed">
+    <button id="r-open" type="button" aria-expanded="false">
+      <span class="rlabel">路线</span>
+      <span class="r-open-name">选一条走过的路</span>
+      <span class="r-chev" aria-hidden="true">▾</span>
+    </button>
+
+    <div id="rlist" role="list"></div>
+
+    <article id="r-card" hidden>
+      <header>
+        <h2 id="r-name"></h2>
+        <button id="r-clear" type="button" aria-label="退出路线">×</button>
+      </header>
+      <p id="r-range"></p>
+      <div id="r-stats"></div>
+      <div id="rplay">
+        <button id="r-toggle" type="button" aria-label="播放">▶</button>
+        <span id="r-stop"></span>
+      </div>
+      <details id="r-why">
+        <summary>依据</summary>
+        <p id="r-basis"></p>
+      </details>
+    </article>
   </nav>
 
   <footer id="timeline">

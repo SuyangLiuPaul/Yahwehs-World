@@ -116,13 +116,36 @@ body {
   line-height: var(--lh-normal); color: var(--ink-2); letter-spacing: 0;
 }
 
-/* ── routes ──────────────────────────────────────────────────────────── */
+/* ── routes ──────────────────────────────────────────────────────────────
+   A disclosure, not a permanent column. Ten routes stacked open took a fifth
+   of the screen away from the thing they annotate, and the map is the point.
+   Closed it is one control; open it is the list; with a route running it is a
+   card about that route and the list steps back. */
 #routes {
   position: fixed; top: 76px; left: var(--sp-5); z-index: 20;
-  width: min(258px, calc(100vw - var(--sp-5) * 2));
+  width: min(268px, calc(100vw - var(--sp-5) * 2));
   display: grid; gap: var(--sp-2);
 }
-#rlist { display: grid; gap: 1px; }
+
+#r-open {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+  gap: var(--sp-3); width: 100%; cursor: pointer; text-align: left;
+  background: #0d1a28d9; border: 1px solid var(--line); border-radius: var(--radius);
+  padding: var(--sp-2) var(--sp-3); color: var(--ink-2);
+  font-family: var(--ui); font-size: var(--fs-200); letter-spacing: var(--tr-cjk);
+  backdrop-filter: blur(10px); transition: border-color .16s, color .16s;
+}
+#r-open:hover { color: var(--ink); border-color: var(--line-gold); }
+#r-open:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+#r-open .rlabel { color: var(--gold); }
+.r-open-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.r-chev { color: var(--ink-4); font-size: var(--fs-100); transition: transform .2s; }
+#routes[data-state="open"] .r-chev { transform: rotate(180deg); }
+/* With a route running the trigger is redundant — the card names it. */
+#routes[data-state="active"] #r-open { display: none; }
+
+#rlist { display: none; gap: 1px; }
+#routes[data-state="open"] #rlist { display: grid; }
 .rbtn {
   display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-2);
   text-align: left; cursor: pointer;
@@ -136,34 +159,76 @@ body {
   font-style: normal; font-family: var(--mono); font-size: var(--fs-100);
   color: var(--ink-4); letter-spacing: 0; flex: none;
 }
-.rbtn:hover { color: var(--ink); border-color: var(--line-gold); }
-.rbtn.on { color: var(--gold-bright); border-color: var(--gold); background: #c9a2271f; }
-.rbtn.on i { color: var(--gold-dim); }
+.rbtn:hover { color: var(--ink); border-color: var(--line-gold); background: #11202fdd; }
 .rbtn:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
 
+/* ── the running route ───────────────────────────────────────────────── */
+#r-card {
+  background: linear-gradient(180deg, #0e1d2ef7, #0a1622fa);
+  border: 1px solid var(--line-gold); border-radius: var(--radius);
+  padding: var(--sp-3) var(--sp-3) var(--sp-3);
+  backdrop-filter: blur(16px); box-shadow: var(--shadow);
+  display: grid; gap: var(--sp-3);
+}
+#r-card[hidden] { display: none; }
+#r-card header { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-2); }
+#r-name {
+  margin: 0; font-family: var(--display); font-size: var(--fs-500);
+  font-weight: 600; line-height: var(--lh-tight); letter-spacing: .04em;
+}
+#r-clear {
+  background: none; border: none; color: var(--ink-3); cursor: pointer;
+  font-size: var(--fs-600); line-height: 1; padding: 0 var(--sp-1); flex: none;
+}
+#r-clear:hover { color: var(--ink); }
+#r-clear:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+#r-range {
+  margin: calc(var(--sp-3) * -1 + 2px) 0 0;
+  font-family: var(--mono); font-size: var(--fs-100); color: var(--gold);
+  letter-spacing: 0;
+}
+/* Numbers first, label under: the count is what the reader came for, and the
+   merge count is the route's own caveat made visible rather than buried. */
+#r-stats { display: grid; grid-auto-flow: column; gap: var(--sp-4); justify-content: start; }
+#r-stats div { display: grid; gap: 2px; }
+#r-stats b {
+  font-family: var(--mono); font-size: var(--fs-500); font-weight: 500;
+  color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1;
+}
+#r-stats span { font-size: var(--fs-100); color: var(--ink-3); letter-spacing: var(--tr-cjk); }
+#r-stats div.caveat b { color: var(--gold-dim); }
+
 #rplay { display: flex; align-items: center; gap: var(--sp-2); }
-#rplay[hidden] { display: none; }
-#r-toggle, #r-clear {
+#r-toggle {
   background: transparent; border: 1px solid var(--line-gold); color: var(--gold);
-  border-radius: var(--radius); font-family: var(--ui); cursor: pointer;
+  border-radius: 50%; width: 26px; height: 26px; padding: 0; flex: none;
+  font-size: var(--fs-100); cursor: pointer; display: grid; place-content: center;
   transition: color .16s, background .16s;
 }
-#r-toggle {
-  border-radius: 50%; width: 26px; height: 26px; padding: 0; flex: none;
-  font-size: var(--fs-100); display: grid; place-content: center;
-}
-#r-clear { padding: 3px var(--sp-2); font-size: var(--fs-100); letter-spacing: var(--tr-cjk); }
-#r-toggle:hover, #r-clear:hover { color: var(--gold-bright); background: #c9a2271a; }
-#r-toggle:focus-visible, #r-clear:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+#r-toggle:hover { color: var(--gold-bright); background: #c9a2271a; }
+#r-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 #r-stop {
   flex: 1; min-width: 0; font-size: var(--fs-200); color: var(--ink);
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-#r-basis {
-  margin: 0; font-size: var(--fs-100); line-height: var(--lh-normal);
-  color: var(--ink-3); max-height: 156px; overflow-y: auto; padding-right: var(--sp-1);
+
+#r-why { border-top: 1px solid var(--line); padding-top: var(--sp-2); }
+#r-why summary {
+  cursor: pointer; list-style: none;
+  font-family: var(--mono); font-size: var(--fs-100); font-weight: 500;
+  letter-spacing: var(--tr-caps); text-transform: uppercase; color: var(--ink-3);
 }
-#r-basis:empty { display: none; }
+#r-why summary::-webkit-details-marker { display: none; }
+#r-why summary::after { content: ' +'; color: var(--ink-4); }
+#r-why[open] summary::after { content: ' –'; }
+#r-why summary:hover { color: var(--gold); }
+#r-why summary:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+#r-basis {
+  margin: var(--sp-2) 0 0; font-size: var(--fs-100); line-height: var(--lh-normal);
+  color: var(--ink-3); max-height: 176px; overflow-y: auto; padding-right: var(--sp-1);
+}
+/* The first sentence carries the claim; the rest carries the caveats. */
+#r-basis::first-line { color: var(--ink-2); }
 
 /* ── route labels ────────────────────────────────────────────────────── */
 .route-labels { position: fixed; inset: 0; pointer-events: none; z-index: 6; }

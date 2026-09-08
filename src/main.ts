@@ -187,8 +187,10 @@ let routePlaying = false;
 let routeT = 0;
 const routeLabels = new RouteLabels(document.body);
 
+const routesEl = $('routes');
 const rlist = $('rlist');
-const rplay = $('rplay');
+const rOpen = $('r-open');
+const rCard = $('r-card');
 const rToggle = $('r-toggle');
 const rStop = $('r-stop');
 const rBasis = $('r-basis');
@@ -197,15 +199,21 @@ rlist.innerHTML = journeyData.journeys.map((jr) => `
   <button class="rbtn" type="button" data-id="${jr.id}">
     <span>${jr.zh}</span><i>${jr.stopCount} 站</i>
   </button>`).join('');
+setRoutesState('closed');
+
+function setRoutesState(state: 'closed' | 'open' | 'active') {
+  routesEl.dataset.state = state;
+  rOpen.setAttribute('aria-expanded', String(state === 'open'));
+}
 
 function clearRoute() {
   if (route) { globe.remove(route.group); route.dispose(); route = null; }
   routePlaying = false; routeT = 0;
   routeLabels.clear();
-  rplay.hidden = true;
+  rCard.hidden = true;
   rBasis.textContent = '';
   rToggle.textContent = '▶';
-  rlist.querySelectorAll('.rbtn').forEach((b) => b.classList.remove('on'));
+  setRoutesState('closed');
   markers.mesh.visible = true;
   applyCursor();
 }
@@ -221,9 +229,25 @@ function openRoute(id: string) {
   // The place field would otherwise sit under the route as visual noise.
   markers.mesh.visible = false;
   closePanel();
-  rplay.hidden = false;
+  rCard.hidden = false;
+  setRoutesState('active');
+  $('r-name').textContent = jr.zh;
+  $('r-range').textContent = jr.range;
   rBasis.textContent = jr.basis;
-  rlist.querySelector(`[data-id="${id}"]`)?.classList.add('on');
+
+  // The merge count is the route's own reservation; putting it in the header
+  // beside the stop count means a reader meets it before the animation, not
+  // after wondering why 42 stops drew 23 dots.
+  const stats: [number, string, boolean][] = [
+    [jr.stopCount, '站', false],
+    [jr.markers.length, '个标记', false],
+  ];
+  if (jr.merged > 0) stats.push([jr.merged, '组共用坐标', true]);
+  $('r-stats').innerHTML = stats
+    .map(([n, label, caveat]) =>
+      `<div${caveat ? ' class="caveat"' : ''}><b>${n}</b><span>${label}</span></div>`)
+    .join('');
+
   routeT = 0; routePlaying = true;
   rToggle.textContent = '❚❚';
   updateRouteReadout();
@@ -244,11 +268,16 @@ function updateRouteReadout() {
   $('t-count').textContent = `${route.journey.stopCount} 站 · 合并为 ${route.journey.markers.length} 个标记`;
 }
 
+rOpen.addEventListener('click', () => {
+  setRoutesState(routesEl.dataset.state === 'open' ? 'closed' : 'open');
+});
 rlist.addEventListener('click', (e) => {
   const btn = (e.target as HTMLElement).closest('.rbtn') as HTMLElement | null;
   if (!btn) return;
-  const id = btn.dataset.id!;
-  if (route?.journey.id === id) clearRoute(); else openRoute(id);
+  openRoute(btn.dataset.id!);
+});
+addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && routesEl.dataset.state === 'open') setRoutesState('closed');
 });
 rToggle.addEventListener('click', () => {
   if (!route) return;
