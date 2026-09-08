@@ -105,6 +105,20 @@ function cardHtml(s: Structure, cubitM: number) {
     <td class="m">${fmt(metres(d.cubits, s, cubitM))}</td>
     <td class="r">${d.ref}</td></tr>`).join('');
 
+  // The card exists to answer one question — how big is this actually — so
+  // that answer leads, at a size nothing else on the card competes with. The
+  // cubit figure sits under it because the conversion is the interesting part:
+  // one is what the text says, the other is what it means.
+  const lead = s.dims.length
+    ? (() => {
+        const biggest = s.dims.reduce((a, b) => (b.cubits > a.cubits ? b : a));
+        return `<div class="lead">
+          <b>${fmt(metres(biggest.cubits, s, cubitM))}</b>
+          <span>${biggest.zh} · ${biggest.cubits.toLocaleString()} ${s.unit ? s.unit.zh : '肘'}</span>
+        </div>`;
+      })()
+    : `<div class="lead none"><b>经文未给尺寸</b><span>数量却记得极清楚</span></div>`;
+
   const own = Math.max(...s.dims.map((d) => metres(d.cubits, s, cubitM)));
   const rows = [{ zh: s.zh, m: own, self: true }, ...s.compare.map((c) => ({ ...c, self: false }))]
     .sort((a, b) => b.m - a.m);
@@ -127,10 +141,12 @@ function cardHtml(s: Structure, cubitM: number) {
     <p class="eyebrow">照着经文的尺寸</p>
     <h1>${s.zh}</h1>
     <p class="en">${s.en}</p>
+    ${lead}
     <blockquote>${s.textZh}<cite>${s.refZh}　·　${s.ref}</cite></blockquote>
     <table><tbody>${dimRows}${countRows}</tbody></table>
     ${variant}
     <p class="punch">${s.punchZh.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</p>
+    <h3 class="sec">放在旁边有多大</h3>
     <div class="compare">${compare}</div>
     <details class="unstated"><summary>经文没有给的部分（${s.unstated.length}）</summary>
       <ul>${s.unstated.map((u) => `<li>${u}</li>`).join('')}</ul></details>
