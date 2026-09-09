@@ -26,6 +26,12 @@ export class Markers {
   private readonly lastSeen: Int32Array;
   private readonly scratch = new THREE.Color();
   private visibleCountCache = 0;
+  /** Per-instance scale from the last cursor pass, before the zoom factor. */
+  private readonly curScale: Float32Array;
+  /** Markers are sized for the whole-globe view. Held at that size they become
+   *  beach balls the moment the camera drops to terrain height, so the world
+   *  size tracks camera distance and the screen size stays put. */
+  private zoomK = 1;
   /** Places named by the verse the cursor is sitting on. */
   activeIndices: number[] = [];
 
@@ -48,6 +54,7 @@ export class Markers {
     });
 
     this.lastSeen = new Int32Array(places.length).fill(-1);
+    this.curScale = new Float32Array(places.length);
     this.setCursor(events.length - 1);
   }
 
@@ -67,29 +74,54 @@ export class Markers {
     for (let i = 0; i < this.places.length; i++) {
       const seen = this.lastSeen[i]!;
       if (seen < 0) {
-        this.dummy.scale.setScalar(0);
+        this.curScale[i] = 0;
       } else {
         visible++;
         const age = clamped - seen;
         // Warm just after being named, settling to the visited floor.
         const heat = age === 0 ? 1 : Math.max(0, 1 - age / AFTERGLOW);
         const brightness = VISITED + (1 - VISITED) * heat;
-        this.dummy.scale.setScalar(this.baseScale[i]! * (1 + heat * 0.85));
+        this.curScale[i] = this.baseScale[i]! * (1 + heat * 0.85);
         this.scratch.copy(this.baseColor[i]!).multiplyScalar(brightness);
         // The verse's own places get lifted toward gold so the eye lands on
         // what is being read right now, not merely on what is bright.
         if (age === 0) this.scratch.lerp(GOLD, 0.55);
         this.mesh.setColorAt(i, this.scratch);
       }
-      this.dummy.position.copy(lonLatToVec3(this.places[i]!.lon, this.places[i]!.lat, 0.5));
-      this.dummy.updateMatrix();
-      this.mesh.setMatrixAt(i, this.dummy.matrix);
     }
 
     this.visibleCountCache = visible;
-    this.mesh.instanceMatrix.needsUpdate = true;
+    this.writeMatrices();
     this.mesh.instanceColor!.needsUpdate = true;
+  }
+
+  /** Rewrites every instance matrix from the cached scales and the current
+   *  zoom factor. Kept separate from setCursor because zooming must not
+   *  re-run the 8,700-write event replay on every frame. */
+  private writeMatrices() {
+    for (let i = 0; i < this.places.length; i++) {
+      this.dummy.scale.setScalar(this.curScale[i]! * this.zoomK);
+      // Lift with the zoom too, so a marker never sinks into the relief.
+      this.dummy.position.copy(
+        lonLatToVec3(this.places[i]!.lon, this.places[i]!.lat, 0.35 + 0.5 * this.zoomK));
+      this.dummy.updateMatrix();
+      this.mesh.setMatrixAt(i, this.dummy.matrix);
+    }
+    this.mesh.instanceMatrix.needsUpdate = true;
     this.mesh.computeBoundingSphere();
+  }
+
+  /** Screen-size compensation. The markers were tuned at the opening distance
+   *  of four radii; world size tracks distance from there, floored so they do
+   *  not vanish entirely when the camera is right down on the ground. */
+  setZoom(cameraDistance: number, globeRadius: number) {
+    // Slightly faster than linear: at terrain height the markers should be
+    // dots the labels hang off, not spheres the map hangs off.
+    const t = cameraDistance / (globeRadius * 4);
+    const k = THREE.MathUtils.clamp(Math.pow(t, 1.5), 0.075, 1.15);
+    if (Math.abs(k - this.zoomK) < 0.004) return;
+    this.zoomK = k;
+    this.writeMatrices();
   }
 
   get visibleCount() { return this.visibleCountCache; }

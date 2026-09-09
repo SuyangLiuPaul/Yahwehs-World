@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import './style.css';
 import { paintBasemap } from './basemap.ts';
 import { createGlobe, createLighting, GLOBE_RADIUS, lonLatToVec3 } from './globe.ts';
+import { Terrain } from './terrain.ts';
 import { Markers } from './markers.ts';
 import { bookName, bookOf } from './books.ts';
 import { precisionOf, precisionStyle } from './theme.ts';
@@ -88,6 +89,10 @@ controls.zoomSpeed = 0.7;
 createLighting(scene);
 const globe = createGlobe(paintBasemap({ land, coastline, lakes, rivers }));
 scene.add(globe);
+
+// Measured relief over the biblical world, fading in as the camera closes.
+const terrain = new Terrain();
+globe.add(terrain.mesh);
 
 const markers = new Markers(bundle.places, bundle.events);
 globe.add(markers.mesh);
@@ -533,6 +538,8 @@ renderer.setAnimationLoop(() => {
     routeLabels.update(camera, globe, route.reachedIndex(routeT), innerWidth, innerHeight);
   }
   controls.update();
+  terrain.update(camera.position.length(), dt);
+  markers.setZoom(camera.position.length(), GLOBE_RADIUS);
   // The selection ring breathes so the eye can find it again after orbiting.
   if (selectionRing.visible) selectionRing.scale.setScalar(1 + Math.sin(t * 2.4) * 0.12);
   renderer.render(scene, camera);
