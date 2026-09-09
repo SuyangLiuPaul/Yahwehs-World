@@ -28,7 +28,7 @@ const FAR = 2.45;
 
 export class Terrain {
   readonly mesh: THREE.Mesh;
-  private readonly material: THREE.MeshStandardMaterial;
+  private readonly material: THREE.MeshBasicMaterial;
   private target = 0;
 
   constructor() {
@@ -48,23 +48,30 @@ export class Terrain {
     const map = loader.load('data/terrain-color.webp');
     map.colorSpace = THREE.SRGBColorSpace;
     map.anisotropy = 16;
-    const normalMap = loader.load('data/terrain-normal.webp');
-    normalMap.anisotropy = 8;
 
-    this.material = new THREE.MeshStandardMaterial({
-      map, normalMap,
-      // The scene's lighting is tuned for a dark parchment globe and blows a
-      // photographic map straight to white, so the albedo is pulled down to
-      // meet it rather than the lights being retuned for one layer.
-      color: new THREE.Color(0x9a968f),
-      // The relief is lit by the scene rather than only baked, so ranges catch
-      // the light as the globe turns instead of staying a printed picture.
-      normalScale: new THREE.Vector2(1.5, 1.5),
-      roughness: 0.92, metalness: 0.0,
-      // The texture carries a feathered alpha border so the patch dissolves
-      // into the painted globe; without it the relief ends on a straight line
-      // and reads as a sticker.
-      transparent: true, opacity: 0, alphaTest: 0,
+    // Unlit, and the texture carries the whole appearance.
+    //
+    // The scene's rig is built for a dark painted globe: ambient 1.35, a key
+    // whose sub-solar point falls in the mid-Atlantic and a fill whose own
+    // falls in the Coral Sea. Over this crop the fill contributes nothing at
+    // all and the key only about a quarter of the light, so a lit material
+    // here is very nearly ambient times albedo -- a flat multiply, which was
+    // then being fought with a second flat multiply on the albedo. Together
+    // they landed the terrain at roughly a third of its graded colour. That is
+    // the grey-olive.
+    //
+    // A normal map cannot earn its place against that rig, and the relief is
+    // already shaded into the source raster, so the honest arrangement is to
+    // stop pretending the light does the modelling: grade the texture to the
+    // tone it should render at, and show it unmodified. Lost is a relief that
+    // shifts as the globe turns; bought is a map that looks like what was
+    // graded, and a mid tone for the gold route and markers to sit on instead
+    // of a near-white one.
+    this.material = new THREE.MeshBasicMaterial({
+      map,
+      // The texture carries a feathered alpha border, so the patch dissolves
+      // into the painted globe instead of ending on a straight line.
+      transparent: true, opacity: 0,
       depthWrite: false,
     });
 

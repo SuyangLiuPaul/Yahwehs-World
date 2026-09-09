@@ -19,7 +19,10 @@ export interface RouteMarker {
   n: number; place: string; zh: string;
   lat: number | null; lon: number | null;
   ref: string; leg: string | null; attested: boolean; aside: boolean; note: string;
-  stops: number[]; places: string[]; zhAll: string[]; refs: string[];
+  // Present on merged markers only. build-journeys.mjs pushes an `aside` stop
+  // without them, so every read has to guard — typing them as required let a
+  // patch that dropped the guard past tsc and blanked five Chinese names.
+  stops: number[]; places?: string[]; zhAll?: string[]; refs?: string[];
 }
 
 export interface Journey {

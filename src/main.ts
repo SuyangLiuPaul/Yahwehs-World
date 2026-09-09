@@ -4,6 +4,7 @@ import './style.css';
 import { paintBasemap } from './basemap.ts';
 import { createGlobe, createLighting, GLOBE_RADIUS, lonLatToVec3 } from './globe.ts';
 import { Terrain } from './terrain.ts';
+import { placeLabel, bareName } from './names.ts';
 import { Markers } from './markers.ts';
 import { bookName, bookOf } from './books.ts';
 import { precisionOf, precisionStyle } from './theme.ts';
@@ -20,7 +21,7 @@ const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as 
 /** A place's name in the reader's language. The English name is kept alongside
  *  rather than replaced: it is what every other Bible atlas and every English
  *  commentary calls the place, and a reader cross-referencing needs both. */
-const placeName = (p: Place) => (locale === 'zh' && p.zh) ? p.zh : p.name;
+const placeName = (p: Place) => placeLabel(p.name, p.zh, locale);
 
 const T = {
   loading:   { zh: '正在绘制世界…', en: 'Drawing the world…' },
@@ -160,8 +161,8 @@ function renderPanel() {
   $('p-name').textContent = placeName(p);
   // When a Chinese name is shown, the English one moves to the line below so
   // the reader can still find the place in an English reference.
-  const alt = locale === 'zh' && p.zh ? p.name : '';
-  const modern = p.modern && p.modern !== p.name ? `${T.modernName[locale]} · ${p.modern}` : '';
+  const alt = locale === 'zh' && p.zh ? placeLabel(p.name, undefined, 'en') : '';
+  const modern = p.modern && p.modern !== bareName(p.name) ? `${T.modernName[locale]} · ${p.modern}` : '';
   $('p-modern').textContent = [alt, modern].filter(Boolean).join('　·　');
 
   const prec = precisionOf(p.precision);
@@ -370,10 +371,14 @@ function updateRouteReadout() {
     // A merged marker says so outright: these camps share one coordinate
     // because nobody knows where they were.
     ? `第 ${m.stops[0]}–${m.stops[m.stops.length - 1]} 站（${m.stops.length} 站共用一个坐标）`
-    : `第 ${m.n} 站 · ${locale === 'zh' ? m.zh : m.place}`;
+    : `第 ${m.n} 站 · ${placeLabel(m.place, m.zh, locale)}`;
   rStop.textContent = label;
   $('t-ref').textContent = m.refs?.[0] ?? m.ref;
-  $('t-here').textContent = m.zhAll?.length ? m.zhAll.join(' · ') : m.zh;
+  // Keeps the `: m.zh` fallback: five aside markers across paul-rome and
+  // elijah carry no zhAll at all, and mapping over a missing array blanks them.
+  $('t-here').textContent = m.zhAll?.length
+    ? m.zhAll.map((z, k) => placeLabel(m.places?.[k] ?? m.place, z, 'zh')).join(' · ')
+    : placeLabel(m.place, m.zh, 'zh');
   $('t-count').textContent = `${route.journey.stopCount} 站 · 合并为 ${route.journey.markers.length} 个标记`;
 }
 
