@@ -38,6 +38,15 @@ const T = {
   settled:   { zh: '考据一致', en: 'Undisputed' },
   times:     { zh: (n: number) => `${n} 次`, en: (n: number) => `${n}×` },
   andMore:   { zh: (n: number) => `…另有 ${n} 处`, en: (n: number) => `…and ${n} more` },
+  stop:      { zh: (n: number) => `第 ${n} 站`, en: (n: number) => `Stop ${n}` },
+  stopsMerged: {
+    zh: (a: number, b: number, n: number) => `第 ${a}–${b} 站（${n} 站共用一个坐标）`,
+    en: (a: number, b: number, n: number) => `Stops ${a}–${b} (${n} camps on one coordinate)`,
+  },
+  stopCount: {
+    zh: (n: number, m: number) => `${n} 站 · 合并为 ${m} 个标记`,
+    en: (n: number, m: number) => `${n} stops · ${m} markers`,
+  },
 };
 
 // ── data ──────────────────────────────────────────────────────────────────
@@ -370,16 +379,20 @@ function updateRouteReadout() {
   const label = m.stops.length > 1
     // A merged marker says so outright: these camps share one coordinate
     // because nobody knows where they were.
-    ? `第 ${m.stops[0]}–${m.stops[m.stops.length - 1]} 站（${m.stops.length} 站共用一个坐标）`
-    : `第 ${m.n} 站 · ${placeLabel(m.place, m.zh, locale)}`;
+    ? T.stopsMerged[locale](m.stops[0]!, m.stops[m.stops.length - 1]!, m.stops.length)
+    : `${T.stop[locale](m.n)} · ${placeLabel(m.place, m.zh, locale)}`;
   rStop.textContent = label;
   $('t-ref').textContent = m.refs?.[0] ?? m.ref;
   // Keeps the `: m.zh` fallback: five aside markers across paul-rome and
   // elijah carry no zhAll at all, and mapping over a missing array blanks them.
-  $('t-here').textContent = m.zhAll?.length
-    ? m.zhAll.map((z, k) => placeLabel(m.places?.[k] ?? m.place, z, 'zh')).join(' · ')
-    : placeLabel(m.place, m.zh, 'zh');
-  $('t-count').textContent = `${route.journey.stopCount} 站 · 合并为 ${route.journey.markers.length} 个标记`;
+  // Two OpenBible places can share one Chinese name — 25 verses in the index
+  // name two that render identically — and printing "伯特利 · 伯特利" reads as
+  // a bug rather than as two places the Union Version calls the same thing.
+  const here = m.zhAll?.length
+    ? m.zhAll.map((z, k) => placeLabel(m.places?.[k] ?? m.place, z, locale))
+    : [placeLabel(m.place, m.zh, locale)];
+  $('t-here').textContent = [...new Set(here)].join(' · ');
+  $('t-count').textContent = T.stopCount[locale](route.journey.stopCount, route.journey.markers.length);
 }
 
 rOpen.addEventListener('click', () => {
@@ -509,7 +522,13 @@ onLocale((l) => {
   applyStatic();
   renderLegend();
   applyCursor();
-  if (route) routeLabels.build(route.markerObjects, locale);
+  if (route) {
+    routeLabels.build(route.markerObjects, locale);
+    // applyCursor() has just overwritten the readout with timeline text, and
+    // nothing else put the route's own back, so switching language with a
+    // route open left the stop line in the language you just left.
+    updateRouteReadout();
+  }
   if (selected) renderPanel();
 });
 

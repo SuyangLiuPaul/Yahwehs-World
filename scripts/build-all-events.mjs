@@ -28,6 +28,11 @@ const otsyn = JSON.parse(readFileSync(`${SS}/ot_synopsis.json`, 'utf8'));
 const cuv = JSON.parse(readFileSync(`${SS}/cuvs-yhwh.json`, 'utf8'));
 const spine = JSON.parse(readFileSync('data/events/seeksparks-timeline.json', 'utf8')).events;
 const bundle = JSON.parse(readFileSync('public/data/places.json', 'utf8'));
+// Section blurbs were written as study notes, and about one in seven of them
+// interprets or applies rather than saying what happens. Those were rewritten
+// against the passage itself; the rewrites live here so a regeneration keeps
+// them instead of reverting to the blurb.
+const overrides = JSON.parse(readFileSync('data/events/summary-overrides.json', 'utf8')).summaries;
 
 const key = (b, c, v) => b * 1_000_000 + c * 1000 + v;
 const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -267,7 +272,7 @@ for (let bi = 0; bi < BOOKS.length; bi++) {
       ref: refEn, refZh,
       refs: [refEn, ...par.flatMap((p) => p.alsoIn)],
       parallels: par.map((p) => ({ group: p.group, zh: p.zh, en: p.en, alsoIn: p.alsoIn })),
-      summaryZh: s.context ?? '',
+      summaryZh: overrides[`${slug(meta.en)}-${s.c}-${s.v}`] ?? s.context ?? '',
       yearEarly: d.yearEarly, yearLate: d.yearLate,
       dateBasis: d.dateBasis, dateConfidence: d.dateConfidence, dateSource: d.dateSource,
       placeIds: pl.map((i2) => bundle.places[i2].id),

@@ -19,13 +19,23 @@ const journeys = JSON.parse(readFileSync('../SeekSparks/assets/bible_journeys.js
 const gaz = JSON.parse(readFileSync('../SeekSparks/assets/bible_places.json', 'utf8'));
 const bundle = JSON.parse(readFileSync('public/data/places.json', 'utf8'));
 
+// The upstream gazetteer is a shared asset this repo does not edit, so its
+// known Chinese-name errors are corrected on read, each with the verse that
+// settles it. Genesis 35:16 names Bethel and Ephrath in one sentence as two
+// places 26km apart; the gazetteer had given Ephrath Bethel's Chinese name.
+const CORRECTIONS = new Map(
+  JSON.parse(readFileSync('data/events/gazetteer-corrections.json', 'utf8'))
+    .corrections.map((c) => [c.name, c.zh]),
+);
 const gazByName = new Map(gaz.places.map((p) => [p.n, p]));
 const mineByName = new Map(bundle.places.map((p) => [p.name, p]));
 
 function locate(name) {
   const g = gazByName.get(name);
   if (g && Array.isArray(g.ll) && g.ll.length === 2) {
-    return { lat: g.ll[0], lon: g.ll[1], zh: g.s ?? '', zhHant: g.t ?? '', from: 'gazetteer' };
+    const fixed = CORRECTIONS.get(name);
+    return { lat: g.ll[0], lon: g.ll[1], zh: fixed ?? g.s ?? '', zhHant: fixed ?? g.t ?? '',
+             from: fixed ? 'gazetteer+corrected' : 'gazetteer' };
   }
   const m = mineByName.get(name);
   if (m) return { lat: m.lat, lon: m.lon, zh: m.zh ?? '', zhHant: m.zhHant ?? '', from: 'openbible' };

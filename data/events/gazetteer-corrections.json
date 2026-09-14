@@ -1,0 +1,30 @@
+{
+  "_meta": {
+    "purpose": "对 SeekSparks assets/bible_places.json 中文地名的更正。上游是共用资产，本仓库不直接改它；这里记录更正与经文依据，由本仓库的脚本在读取时套用。",
+    "method": "系统排查：把共用同一中文名、但英文词根不同的地名两两列出（89 对），再逐条回和合本原文核对。绝大多数是真同名或同地异拼，不是错误；只有下列几条经文明确否定。",
+    "generated": "2026-09-14"
+  },
+  "corrections": [
+    {
+      "name": "Ephrath",
+      "wasZh": "伯特利",
+      "zh": "以法他",
+      "evidence": "创 35:19「拉结死了，葬在以法他的路旁；以法他就是伯利恒。」创 35:16 同一节中「他们从伯特利起行，离以法他还有一段路程」——伯特利与以法他是两个地方，相距约 26 公里。上游把伯特利的名字给了以法他。",
+      "affects": ["public/data/journeys.json jacob 第 9 站", "public/data/places.json"]
+    },
+    {
+      "name": "Caphtor",
+      "wasZh": "迦萨",
+      "zh": "迦斐托",
+      "evidence": "创 10:14「迦斐托人；从迦斐托出来的有非利士人」，耶 47:4「迦斐托海岛余剩的人」，摩 9:7「领非利士人出迦斐托」。迦萨（Gaza）是非利士五城之一，与迦斐托不是一地。",
+      "affects": ["public/data/places.json"]
+    }
+  ],
+  "checkedAndCorrect": [
+    { "name": "Shibah", "zh": "示巴", "why": "创 26:33「他就给那井起名叫示巴」。与示巴王国同名，是真同名，不是错误。" },
+    { "name": "Heliopolis", "zh": "伯示麦", "why": "耶 43:13「埃及地伯示麦的柱像」——和合本确实以伯示麦称埃及的安城。" },
+    { "name": "Shual", "zh": "书亚", "why": "撒上 13:17「一队往俄弗拉向书亚地去」。" },
+    { "name": "Ramah / Raamah", "zh": "拉玛", "why": "和合本两者皆作拉玛，是真同名。" },
+    { "name": "Antioch 1 / Antioch 2", "zh": "安提阿", "why": "叙利亚与彼西底的安提阿，和合本同名；本仓库在 src/names.ts 中具名区分。" }
+  ]
+}
