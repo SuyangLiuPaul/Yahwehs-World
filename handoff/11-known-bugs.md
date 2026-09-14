@@ -105,6 +105,31 @@ five chapters; the quotation is Acts 15:16, where James is the speaker.
 reads 「神啊！求你保佑我，因为我投靠你」. Both rewritten, and the Acts 2 reference
 that was correct is kept.
 
+**B17 — FIXED. 耶和华 was shipping to the browser.** A place carried the label
+「耶和华的所在」 (Ezekiel 48:35) and the wilderness route's own basis note said
+「摩西奉耶和华的吩咐」. This edition reads 雅伟 throughout, and nothing was
+checking the two files the browser downloads — the audit only looked at the
+events. Both are 雅伟 now, `public/data/places.json` and
+`public/data/journeys.json` are clean, and `audit-events.mjs` counts occurrences
+in both so this cannot come back quietly.
+
+**B18 — FIXED. The three long-open name questions are settled from the text.**
+`Elkosh` was cited at Habakkuk 1:1; 伊勒歌斯 appears exactly once in the whole
+Union Version, at Nahum 1:1, and the abbreviation `Hah` is used once in the
+entire gazetteer while Habakkuk uses `Hab` and Nahum uses `hum` — a one-off
+corrupt code. `Beth-gilgal` was cited at Nehemiah 12:29, which this edition
+merges into 12:28, where 伯吉甲 is written plainly: a versification artefact, not
+an error. `Ephron 1` and `Ephron 2` were given one merged citation list by the
+gazetteer, and one of its two verses (Joshua 18:15) contains no Ephron at all.
+OpenBible keeps them apart: Ephron 1 is anchored at Joshua 18:15 with modern
+Al Qastal, west of Jerusalem, and its name 以弗仑山 is written at Joshua 15:9 —
+the same boundary line described from Judah's side; Ephron 2 is 2 Chronicles
+13:19 with modern Taybeh, which is the standard identification of that town
+(bibleatlas.org/mount_ephron.htm; biblestudytools.com/dictionary/ephron/). So
+以弗仑 is right for the first and 以法拉音 for the second. All three are recorded
+in `gazetteer-corrections.json` under `refCorrections`, with `nameAttestedAt`
+for the case where the name and the location live in different verses.
+
 ## Open questions for the owner
 - Q1: Should the repo become public once SeekSparks-derived assets are
   replaced or licensed? (Today private for that reason.)

@@ -14,28 +14,31 @@
 // route breaks rather than being joined through it: a gap is true, and an
 // invented straight line is not.
 import { readFileSync, writeFileSync } from 'node:fs';
+import { makeZhResolver } from './lib/zh-names.mjs';
 
 const journeys = JSON.parse(readFileSync('../SeekSparks/assets/bible_journeys.json', 'utf8'));
+
+/** 耶和华 → 雅伟, the rendering this project's edition uses. */
+const yhwh = (t) => (t ?? '').replaceAll('耶和华', '雅伟');
 const gaz = JSON.parse(readFileSync('../SeekSparks/assets/bible_places.json', 'utf8'));
 const bundle = JSON.parse(readFileSync('public/data/places.json', 'utf8'));
 
-// The upstream gazetteer is a shared asset this repo does not edit, so its
-// known Chinese-name errors are corrected on read, each with the verse that
-// settles it. Genesis 35:16 names Bethel and Ephrath in one sentence as two
-// places 26km apart; the gazetteer had given Ephrath Bethel's Chinese name.
-const CORRECTIONS = new Map(
-  JSON.parse(readFileSync('data/events/gazetteer-corrections.json', 'utf8'))
-    .corrections.map((c) => [c.name, c.zh]),
-);
+// Chinese names are not decided here. The upstream gazetteer is a shared asset
+// this repo does not edit; which name this project shows for one of its entries
+// — the Union Version's own rendering, a correction with the verse that settles
+// it, or nothing at all when the name belongs elsewhere — is one decision, and
+// it lives in scripts/lib/zh-names.mjs so that it cannot reach the globe and
+// miss the routes, which is exactly what happened twice.
+const resolveZh = makeZhResolver();
 const gazByName = new Map(gaz.places.map((p) => [p.n, p]));
 const mineByName = new Map(bundle.places.map((p) => [p.name, p]));
 
 function locate(name) {
   const g = gazByName.get(name);
   if (g && Array.isArray(g.ll) && g.ll.length === 2) {
-    const fixed = CORRECTIONS.get(name);
-    return { lat: g.ll[0], lon: g.ll[1], zh: fixed ?? g.s ?? '', zhHant: fixed ?? g.t ?? '',
-             from: fixed ? 'gazetteer+corrected' : 'gazetteer' };
+    const r = resolveZh(g);
+    return { lat: g.ll[0], lon: g.ll[1], zh: r.zh, zhHant: r.zhHant,
+             from: r.source === 'gazetteer' ? 'gazetteer' : `gazetteer+${r.source}` };
   }
   const m = mineByName.get(name);
   if (m) return { lat: m.lat, lon: m.lon, zh: m.zh ?? '', zhHant: m.zhHant ?? '', from: 'openbible' };
@@ -99,7 +102,10 @@ const out = journeys.journeys.map((j) => {
     // Chinese one left the route card speaking Chinese inside the English
     // interface, so both are carried through and the page picks one.
     range: j.range['zh-Hans'], rangeEn: j.range.en,
-    basis: j.basis['zh-Hans'], basisEn: j.basis.en,
+    // The shared asset's Chinese prose writes the divine name 耶和华; this
+    // project reads the 雅伟 edition throughout, and a route's own note should
+    // not be the one place on the site that says otherwise.
+    basis: yhwh(j.basis['zh-Hans']), basisEn: j.basis.en,
     style: j.style, mark: j.mark,
     stopCount: stops.length,
     markers, segments,

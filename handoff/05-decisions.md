@@ -57,3 +57,26 @@ exists in both, and Chinese is never a translation afterthought.
 **D15 — Default to the honest number.** Where the text gives no measurement
 (lampstand height, cherubim form, ark hull shape) the card says so in a
 labelled "unstated" section rather than silently choosing.
+
+**D16 — Place names follow the Union Version, not modern Mandarin.** The shared
+gazetteer labels places in present-day Mandarin: 大马士革, 黎巴嫩, 马耳他, 西奈山,
+塞浦路斯. Sixty-three of its names appear nowhere in the edition this project
+reads, which calls those places 大马色, 利巴嫩, 米利大, 西乃山, 居比路. A reader
+holding that Bible beside the map should find the same names in both, so the
+Union Version's own rendering wins. The evidence for each is the verse it was
+read out of, recorded in `data/places/cuv-renderings.json`; the modern form is
+kept on the record as `zhModern` so nothing is lost and a search for 大马士革
+still reaches 大马色. Seven places have no Union Version name at all, because the
+edition translates rather than transliterates them — Gammadim as 「勇士」, Helech
+as 「你的军队」 — and those keep their English label. This supersedes the earlier
+reading of "Chinese names come from SeekSparks, no separate system": the source
+is still SeekSparks' gazetteer, but where it and the text disagree about what a
+place is called in Chinese, the text decides.
+
+**D17 — One place decides a Chinese name.** `scripts/lib/zh-names.mjs` resolves
+a gazetteer entry to the name this project shows, and both `build-journeys.mjs`
+and `merge-chinese-names.mjs` call it. This is not tidiness. The logic existed
+twice, and both times a correction reached one consumer and not the other: the
+globe called Ephrath 伯特利 for a week after the journeys had stopped, and the
+voyage to Rome still called Malta 马耳他 after the globe had started saying
+米利大. A table can be data in two files; the order it is applied in cannot.

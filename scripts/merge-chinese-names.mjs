@@ -10,6 +10,7 @@
 // one found it — a name matched only by proximity is a weaker claim than one
 // matched by name, and the record should not hide that.
 import { readFileSync, writeFileSync } from 'node:fs';
+import { makeZhResolver } from './lib/zh-names.mjs';
 
 const bundle = JSON.parse(readFileSync('public/data/places.json', 'utf8'));
 const gaz = JSON.parse(readFileSync('../SeekSparks/assets/bible_places.json', 'utf8'));
@@ -19,14 +20,10 @@ const gaz = JSON.parse(readFileSync('../SeekSparks/assets/bible_places.json', 'u
  *  name is attached to a place, so a correction made here reaches the globe's
  *  own labels, the journeys and the events alike. Before this, only the
  *  journeys read the file, and the globe still called Ephrath 伯特利. */
-const gazDoc = JSON.parse(readFileSync('data/events/gazetteer-corrections.json', 'utf8'));
-const fixes = new Map(gazDoc.corrections.map((c) => [c.name, c]));
-/** Places whose Chinese name belongs to somewhere — or someone — else, and
- *  which the Union Version does not call by any Chinese proper name in the
- *  verses that cite them. The name is withdrawn rather than replaced: the same
- *  rule as an ambiguous coordinate, that an English label is better than
- *  another place's name. */
-const drop = new Map((gazDoc.removals?.places ?? []).map((c) => [c.name, c]));
+// Which Chinese name this project shows for a gazetteer entry is one decision,
+// shared with build-journeys.mjs so a correction cannot reach the globe and
+// miss the routes. See scripts/lib/zh-names.mjs.
+const resolveZh = makeZhResolver();
 let corrected = 0, dropped = 0;
 
 /** Names for places the gazetteer does not carry, or that sit on a coordinate
@@ -39,6 +36,8 @@ const fromText = new Map(
     .names.map((n) => [n.name, n]),
 );
 let fromTextUsed = 0;
+
+let cuvUsed = 0;
 
 /** The two gazetteers punctuate differently: OpenBible writes King’s Valley
  *  and Diviners’ Oak with a typographic apostrophe, SeekSparks with a plain
@@ -69,7 +68,7 @@ for (const p of bundle.places) {
   // earlier, looser run is still sitting on the record. Clearing first is what
   // makes a re-run mean anything: without it, tightening the rules leaves
   // every label the old rules produced exactly where it was.
-  delete p.zh; delete p.zhHant; delete p.zhMatch; delete p.zhCorrected; delete p.zhEvidence; delete p.zhWithdrawn;
+  delete p.zh; delete p.zhHant; delete p.zhMatch; delete p.zhCorrected; delete p.zhEvidence; delete p.zhWithdrawn; delete p.zhModern; delete p.zhSource;
 
   let hit = byName.get(key(p.name));
   let how = 'name';
@@ -106,13 +105,20 @@ for (const p of bundle.places) {
     }
     stats.none++; continue;
   }
-  const gone = drop.get(hit.n);
-  if (gone && hit.s === gone.wasZh) { p.zhMatch = 'withdrawn'; p.zhWithdrawn = gone.evidence; dropped++; continue; }
-
-  const fix = fixes.get(hit.n);
-  if (fix && hit.s === fix.wasZh) { p.zh = fix.zh; p.zhCorrected = fix.evidence; corrected++; }
-  else p.zh = hit.s;
-  p.zhHant = fix ? fix.zh : hit.t;
+  const r = resolveZh(hit);
+  if (r.source === 'withdrawn') { p.zhMatch = 'withdrawn'; p.zhWithdrawn = r.why; dropped++; continue; }
+  p.zh = r.zh;
+  p.zhHant = r.zhHant;
+  if (r.source === 'corrected') { p.zhCorrected = r.why; corrected++; }
+  if (r.source === 'cuv') {
+    // The modern form is kept so a reader searching 大马士革 still finds 大马色.
+    // The resolver withholds it where the gazetteer spells the divine name out:
+    // places.json ships to the browser, and this edition does not put 耶和华 in
+    // front of a reader even in a field nothing displays.
+    if (r.modern) p.zhModern = r.modern;
+    p.zhSource = r.why;
+    cuvUsed++;
+  }
   // How confidently this label was attached, so the UI can hold back a name it
   // only inferred from proximity if it ever needs to.
   p.zhMatch = how;
@@ -137,6 +143,7 @@ console.log(`仍无中文名        ${stats.none}`);
 console.log(`按更正表改名      ${corrected}`);
 console.log(`按经文原文补名    ${fromTextUsed}`);
 console.log(`名属他处，撤名    ${dropped}`);
+console.log(`改用和合本写法    ${cuvUsed}`);
 console.log(`\n中文名覆盖        ${got}/${bundle.places.length}  (${(got / bundle.places.length * 100).toFixed(1)}%)`);
 const sample = bundle.places.filter((p) => p.zh).slice(0, 8);
 console.log('\n样例：');

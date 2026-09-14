@@ -6,85 +6,24 @@ Verses in the canon: 31102. Covered by some event: 31102.
 
 None.
 
+## The divine name in what ships
+
+None. `public/data/places.json` and `public/data/journeys.json` are clean.
+
+
 ## Place names the Union Version never uses at that place
 
-### The name belongs to somewhere else — 3
+### The name belongs to somewhere else — 0
 
 The name is in the Union Version, but at a different place. Each needs a verse read.
 
-- Ephron 1 → 以弗仑 (2 verses cite it; none say 以弗仑)
-- Beth-gilgal → 伯吉甲 (1 verses cite it; none say 伯吉甲)
-- Elkosh → 伊勒歌斯 (1 verses cite it; none say 伊勒歌斯)
 
-### The name is nowhere in the Union Version — 63
+### The name is nowhere in the Union Version — 0
 
 Modern Mandarin renderings and descriptive translations: 大马士革 for 大马色,
 黎巴嫩 for 利巴嫩, 马耳他 for 米利大. Not errors — a decision about which
 naming the globe should follow. See the open question in this file.
 
-- Lebanon → 黎巴嫩 (56 verses)
-- Damascus → 大马士革 (55 verses)
-- Mount Sinai → 西奈山 (21 verses)
-- Ramoth-gilead → 拉末基列 (20 verses)
-- Asia → 亚细亚 (18 verses)
-- Sinai → 西奈 (17 verses)
-- Cyprus → 塞浦路斯 (12 verses)
-- Media → 米底亚 (8 verses)
-- Pisgah → 毘斯迦 (8 verses)
-- Arabia → 阿拉伯 (7 verses)
-- Mesopotamia → 美索不达米亚 (7 verses)
-- House of the Forest of Lebanon → 黎巴嫩林宫 (5 verses)
-- Horesh → 何列斯 (4 verses)
-- Italy → 意大利 (4 verses)
-- Valley of Jezreel → 耶斯列谷 (3 verses)
-- Abel-beth-maacah → 亚比拉伯玛迦 (2 verses)
-- Beth-millo → 伯特米罗 (2 verses)
-- Jordan Valley → 约旦河全平原 (2 verses)
-- Kidron Valley → 汲沦谷 (2 verses)
-- Libya → 利比亚 (2 verses)
-- Pethor → 毘夺 (2 verses)
-- Spain → 西班牙 (2 verses)
-- Tower of the Hundred → 哈米亚城楼 (2 verses)
-- Valley of Lebanon → 黎巴嫩平原 (2 verses)
-- Adriatic Sea → 亚得里亚海 (1 verses)
-- Alemeth → 亚勒篾 (1 verses)
-- Aram-maacah → 亚兰玛迦 (1 verses)
-- Beth-ashbea → 伯亚实比 (1 verses)
-- Bethesda → 毕士大池 (1 verses)
-- Bethlehem Ephrathah → 伯利恒以法他 (1 verses)
-- Brook of the Arabah → 亚拉巴河 (1 verses)
-- City of the Lord → 耶和华的城 (1 verses)
-- Dragon Spring → 译龙 (1 verses)
-- Gamad → 歌玛底 (1 verses)
-- Gibeath-haaraloth → 割礼山 (1 verses)
-- Hall of Jdg ment → 审判厅 (1 verses)
-- Hall of Pillars → 柱廊 (1 verses)
-- Hall of the Throne → 宝座室 (1 verses)
-- Helech → 赫勒克 (1 verses)
-- House of the Forest → 森林仓库 (1 verses)
-- Irpeel → 伊利毘勒 (1 verses)
-- Ituraea → 以土利亚 (1 verses)
-- Kedesh-naphtali → 基低斯拿弗他利 (1 verses)
-- Lower and Upper Beth-horon → 上伯和仑下伯和仑 (1 verses)
-- Mahalab → 玛黑拉 (1 verses)
-- Malta → 马耳他 (1 verses)
-- Meshech-Tubal → 米设土巴 (1 verses)
-- Mount Lebanon → 黎巴嫩山 (1 verses)
-- Neapolis → 尼亚坡里 (1 verses)
-- Nicopolis → 尼哥坡里 (1 verses)
-- Pas-dammim → 巴斯‧达闵 (1 verses)
-- People's Gate → 人民城门 (1 verses)
-- Phoenix → 菲尼基 (1 verses)
-- Potsherd Gate → 瓦片门 (1 verses)
-- Ramathaim-zophim → 拉玛．琐非 (1 verses)
-- Sahar → 察哈尔 (1 verses)
-- Solomon's → 所罗门廊 (1 verses)
-- Solomon's Portico → 所罗门廊 (1 verses)
-- The Lord Is There → 耶和华的所在 (1 verses)
-- Valley of Jericho → 耶利哥平原 (1 verses)
-- Valley of Mizpeh → 米斯巴平原 (1 verses)
-- Wildgoats' Rocks → 野羊磐石 (1 verses)
-- Zobah-Hamath → 琐巴哈马 (1 verses)
 
 ## Passages no event cites — 0 runs
 

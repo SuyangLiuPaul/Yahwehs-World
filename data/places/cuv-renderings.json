@@ -1,0 +1,440 @@
+{
+  "_meta": {
+    "purpose": "共用地名录用的是现代普通话译名，本项目引用的却是雅伟版和合本。这 63 个地名在整本和合本里一次都没出现过——大马士革（和合本作大马色）、黎巴嫩（利巴嫩）、马耳他（米利大）、西奈山（西乃山）、塞浦路斯（居比路）。读者拿着和合本对照地图时对不上名。本表给出和合本自己的写法。",
+    "evidence": "第一手证据是经文本身。每一条的 cuvZh 都必须逐字出现在地名录为该地点所引的经节里，由脚本逐条核验；56 条通过，0 条被驳回。",
+    "policy": "显示以和合本写法为准（cuvZh），地名录的现代译名保留在 zhModern，两者都不丢。",
+    "notTranslated": "另有 7 处，和合本是意译而非音译，没有中文地名可用（Gammadim 作「勇士」，Helech 作「你的军队」），保持无中文名。",
+    "generated": "2026-09-14"
+  },
+  "renderings": [
+    {
+      "name": "Abel-beth-maacah",
+      "gazetteerZh": "亚比拉伯玛迦",
+      "cuvZh": "亚伯伯玛迦",
+      "evidence": "王上 15:20「他们就攻破以云、但、亚伯伯玛迦」",
+      "note": ""
+    },
+    {
+      "name": "Adriatic Sea",
+      "gazetteerZh": "亚得里亚海",
+      "cuvZh": "亚底亚",
+      "evidence": "徒 27:27「船在亚底亚海飘来飘去」",
+      "note": "和合本作「亚底亚海」，此处去掉「海」后缀。"
+    },
+    {
+      "name": "Alemeth",
+      "gazetteerZh": "亚勒篾",
+      "cuvZh": "阿勒篾",
+      "evidence": "代上 6:60「阿勒篾与其郊野」",
+      "note": "和合本作「阿勒篾」，不作「亚勒篾」。"
+    },
+    {
+      "name": "Arabia",
+      "gazetteerZh": "阿拉伯",
+      "cuvZh": "亚拉伯",
+      "evidence": "赛 21:13「论亚拉伯的默示」",
+      "note": "结 30:5 所引一节未出现该地名。"
+    },
+    {
+      "name": "Aram-maacah",
+      "gazetteerZh": "亚兰玛迦",
+      "cuvZh": "玛迦",
+      "evidence": "代上 19:6「从米所波大米、亚兰、玛迦、琐巴雇战车和马兵」",
+      "note": "和合本把 Aram-maacah 拆成「亚兰、玛迦」两地并列，未合写为一名；此处取「玛迦」。请人工复核。 和合本无「亚兰玛迦」合写（代上 19:6 作「亚兰、玛迦」分列），与玛迦同名，是真同名。"
+    },
+    {
+      "name": "Asia",
+      "gazetteerZh": "亚细亚",
+      "cuvZh": "亚西亚",
+      "evidence": "徒 16:6「圣灵既然禁止他们在亚西亚讲道」",
+      "note": ""
+    },
+    {
+      "name": "Beth-ashbea",
+      "gazetteerZh": "伯亚实比",
+      "cuvZh": "亚实比",
+      "evidence": "代上 4:21「和属亚实比族织细麻布的各家」",
+      "note": "和合本无「伯」前缀，作「亚实比族」，此处去掉「族」后缀。"
+    },
+    {
+      "name": "Beth-millo",
+      "gazetteerZh": "伯特米罗",
+      "cuvZh": "米罗",
+      "evidence": "士 9:6「示剑人和米罗人都一同聚集」",
+      "note": "和合本无「伯」前缀，仅作「米罗」（士 9:6、9:20 皆作「米罗人」）。 和合本对 Millo 与 Beth-millo 同作「米罗」（士 9:6、撒下 5:9），是真同名，不另造区分。"
+    },
+    {
+      "name": "Bethesda",
+      "gazetteerZh": "毕士大池",
+      "cuvZh": "毕士大",
+      "evidence": "约 5:2「希伯来话叫作毕士大，旁边有五个廊子」",
+      "note": "和合本不带「池」字。"
+    },
+    {
+      "name": "Bethlehem Ephrathah",
+      "gazetteerZh": "伯利恒以法他",
+      "cuvZh": "伯利恒、以法他",
+      "evidence": "弥 5:2「伯利恒、以法他啊！你在犹大诸城中为小」",
+      "note": "和合本以顿号分写为「伯利恒、以法他」，不连写；此处按原文逐字取。请人工复核是否只取「伯利恒」。"
+    },
+    {
+      "name": "Brook of the Arabah",
+      "gazetteerZh": "亚拉巴河",
+      "cuvZh": "亚拉巴的河",
+      "evidence": "摩 6:14「亚拉巴的河」——不作「亚拉巴」，否则与亚拉巴地撞名。",
+      "note": "撞名，补回和合本的限定写法"
+    },
+    {
+      "name": "City of the Lord",
+      "gazetteerZh": "耶和华的城",
+      "cuvZh": "雅伟的城",
+      "evidence": "赛 60:14「他们要称你为雅伟的城，为以色列圣者的锡安」",
+      "note": "描述性短语而非专名；本版本作「雅伟」。"
+    },
+    {
+      "name": "Cyprus",
+      "gazetteerZh": "塞浦路斯",
+      "cuvZh": "居比路",
+      "evidence": "徒 4:36「有一个利未人，生在居比路」",
+      "note": "新约作「居比路」；旧约所引各节（赛 23:1、23:12，耶 2:10，结 27:6）作「基提」/「基提海岛」，是 Kittim 的译法，非 Cyprus 一词的直接对应。 和合本旧约作「基提」（创 10:4 等 9 处），新约作「居比路」（徒 4:36 等 8 处）；本条 12 节引用中 8 节出自使徒行传，取「居比路」。"
+    },
+    {
+      "name": "Damascus",
+      "gazetteerZh": "大马士革",
+      "cuvZh": "大马色",
+      "evidence": "创 14:15「又追到大马色左边的何把」",
+      "note": ""
+    },
+    {
+      "name": "Dragon Spring",
+      "gazetteerZh": "译龙",
+      "cuvZh": "野狗井",
+      "evidence": "尼 2:13「往野狗井去」（注：\"野狗\"：或译\"龙\"）",
+      "note": "描述性称呼而非专名；「井」不可拆，单取「野狗」无意义。和合本注脚给出或译「龙」。"
+    },
+    {
+      "name": "Gibeath-haaraloth",
+      "gazetteerZh": "割礼山",
+      "cuvZh": "除皮山",
+      "evidence": "书 5:3「在除皮山那里给以色列人行割礼」",
+      "note": "「山」是名字的一部分（Gibeath=山），单取「除皮」不成名；与地名录「割礼山」不同。"
+    },
+    {
+      "name": "Hall of Pillars",
+      "gazetteerZh": "柱廊",
+      "cuvZh": "有柱子的廊子",
+      "evidence": "王上 7:6「并建造有柱子的廊子，长五十肘，宽三十肘」",
+      "note": "描述性短语而非专名。"
+    },
+    {
+      "name": "Horesh",
+      "gazetteerZh": "何列斯",
+      "cuvZh": "树林",
+      "evidence": "撒上 23:15「那时他住在西弗旷野的树林里」",
+      "note": "和合本未作专名，把 Horesh 意译为「树林」，属描述性词而非专名。"
+    },
+    {
+      "name": "House of the Forest",
+      "gazetteerZh": "森林仓库",
+      "cuvZh": "林库",
+      "evidence": "赛 22:8「你就仰望林库内的军器」",
+      "note": "本节只作「林库」（列王纪中的全称「利巴嫩林宫」不在所引经文内）。"
+    },
+    {
+      "name": "House of the Forest of Lebanon",
+      "gazetteerZh": "黎巴嫩林宫",
+      "cuvZh": "利巴嫩林宫",
+      "evidence": "王上 7:2「又建造利巴嫩林宫」",
+      "note": ""
+    },
+    {
+      "name": "Irpeel",
+      "gazetteerZh": "伊利毘勒",
+      "cuvZh": "伊利毗勒",
+      "evidence": "书 18:27「利坚、伊利毗勒、他拉拉」",
+      "note": "和合本用「毗」，地名录用「毘」，仅异体字之差。"
+    },
+    {
+      "name": "Italy",
+      "gazetteerZh": "意大利",
+      "cuvZh": "义大利",
+      "evidence": "徒 27:1「叫我们坐船往义大利去」",
+      "note": ""
+    },
+    {
+      "name": "Ituraea",
+      "gazetteerZh": "以土利亚",
+      "cuvZh": "以士利亚",
+      "evidence": "路 3:1「作以士利亚和特拉可尼地方分封的王」",
+      "note": ""
+    },
+    {
+      "name": "Jordan Valley",
+      "gazetteerZh": "约旦河全平原",
+      "cuvZh": "约但河的全平原",
+      "evidence": "创 13:10「罗得举目看见约但河的全平原，直到琐珥」",
+      "note": "描述性短语而非专名；注意和合本作「约但」不作「约旦」。"
+    },
+    {
+      "name": "Kedesh-naphtali",
+      "gazetteerZh": "基低斯拿弗他利",
+      "cuvZh": "拿弗他利的基低斯",
+      "evidence": "士 4:6「从拿弗他利的基低斯将亚比挪庵的儿子巴拉召了来」",
+      "note": "和合本把复合名拆成短语「拿弗他利的基低斯」；地名本身是「基低斯」。"
+    },
+    {
+      "name": "Kidron Valley",
+      "gazetteerZh": "汲沦谷",
+      "cuvZh": "汲沦溪",
+      "evidence": "撒下 15:23「汲沦溪」——和合本无「汲沦谷」之说。",
+      "note": "撞名，补回和合本的限定写法"
+    },
+    {
+      "name": "Lebanon",
+      "gazetteerZh": "黎巴嫩",
+      "cuvZh": "利巴嫩",
+      "evidence": "申 1:7「并利巴嫩山又到伯拉大河」；申 3:25「那佳美的山地和利巴嫩」",
+      "note": ""
+    },
+    {
+      "name": "Libya",
+      "gazetteerZh": "利比亚",
+      "cuvZh": "吕彼亚",
+      "evidence": "徒 2:10「并靠近古利奈的吕彼亚一带地方的人」",
+      "note": "结 30:5 正文作「弗人」，小字注「或译：吕彼亚」。"
+    },
+    {
+      "name": "Lower and Upper Beth-horon",
+      "gazetteerZh": "上伯和仑下伯和仑",
+      "cuvZh": "上伯和仑、下伯和仑",
+      "evidence": "代上 7:24「就是建筑上伯和仑、下伯和仑与乌羡舍伊拉的」",
+      "note": "和合本分作两名，顺序为上、下；地名本身是「伯和仑」。"
+    },
+    {
+      "name": "Malta",
+      "gazetteerZh": "马耳他",
+      "cuvZh": "米利大",
+      "evidence": "徒 28:1「才知道那岛名叫米利大」",
+      "note": ""
+    },
+    {
+      "name": "Media",
+      "gazetteerZh": "米底亚",
+      "cuvZh": "玛代",
+      "evidence": "斯 1:3「有波斯和玛代的权贵」",
+      "note": ""
+    },
+    {
+      "name": "Meshech-Tubal",
+      "gazetteerZh": "米设土巴",
+      "cuvZh": "米设、土巴",
+      "evidence": "结 32:26「米设、土巴，和他们的群众都在那里」",
+      "note": "和合本作两个并列名「米设、土巴」，无连写形式。"
+    },
+    {
+      "name": "Mesopotamia",
+      "gazetteerZh": "美索不达米亚",
+      "cuvZh": "米所波大米",
+      "evidence": "创 24:10「起身往米所波大米去」",
+      "note": ""
+    },
+    {
+      "name": "Mount Lebanon",
+      "gazetteerZh": "黎巴嫩山",
+      "cuvZh": "利巴嫩山",
+      "evidence": "申 1:7「利巴嫩山」——与利巴嫩地区区分。",
+      "note": "撞名，补回和合本的限定写法"
+    },
+    {
+      "name": "Mount Sinai",
+      "gazetteerZh": "西奈山",
+      "cuvZh": "西乃山",
+      "evidence": "出 19:11「西乃山」——与西乃旷野区分。",
+      "note": "撞名，补回和合本的限定写法"
+    },
+    {
+      "name": "Neapolis",
+      "gazetteerZh": "尼亚坡里",
+      "cuvZh": "尼亚波利",
+      "evidence": "徒 16:11「第二天到了尼亚波利」",
+      "note": ""
+    },
+    {
+      "name": "Nicopolis",
+      "gazetteerZh": "尼哥坡里",
+      "cuvZh": "尼哥波立",
+      "evidence": "多 3:12「你要赶紧往尼哥波立去见我」",
+      "note": ""
+    },
+    {
+      "name": "Pas-dammim",
+      "gazetteerZh": "巴斯‧达闵",
+      "cuvZh": "巴斯达闵",
+      "evidence": "代上 11:13「他从前与大卫在巴斯达闵」",
+      "note": ""
+    },
+    {
+      "name": "People's Gate",
+      "gazetteerZh": "人民城门",
+      "cuvZh": "平民的门",
+      "evidence": "耶 17:19「你去站在平民的门口，就是犹大君王出入的门」",
+      "note": "描述性短语而非专名；和合本作「平民的门」。"
+    },
+    {
+      "name": "Pethor",
+      "gazetteerZh": "毘夺",
+      "cuvZh": "毗夺",
+      "evidence": "民 22:5「他差遣使者往大河边的毗夺去」",
+      "note": "和合本用「毗」不用「毘」。"
+    },
+    {
+      "name": "Phoenix",
+      "gazetteerZh": "菲尼基",
+      "cuvZh": "非尼基",
+      "evidence": "徒 27:12「或者能到非尼基过冬。非尼基是革哩底的一个海口」",
+      "note": ""
+    },
+    {
+      "name": "Pisgah",
+      "gazetteerZh": "毘斯迦",
+      "cuvZh": "毗斯迦",
+      "evidence": "申 3:27「你且上毗斯迦山顶去」",
+      "note": "地名录用「毘」，和合本原文用「毗」，字形不同。"
+    },
+    {
+      "name": "Potsherd Gate",
+      "gazetteerZh": "瓦片门",
+      "cuvZh": "哈珥西",
+      "evidence": "耶 19:2「出去到欣嫩子谷、哈珥西的门口那里」",
+      "note": "和合本音译作「哈珥西」，并附小注「就是瓦片的意思」；「门」是后缀，未取。"
+    },
+    {
+      "name": "Ramathaim-zophim",
+      "gazetteerZh": "拉玛．琐非",
+      "cuvZh": "拉玛琐非",
+      "evidence": "撒上 1:1「以法莲山地的拉玛琐非」",
+      "note": ""
+    },
+    {
+      "name": "Ramoth-gilead",
+      "gazetteerZh": "拉末基列",
+      "cuvZh": "基列的拉末",
+      "evidence": "王上 22:3「你们不知道基列的拉末是属我们的吗」",
+      "note": "和合本不作「拉末基列」，一律作「基列的拉末」（带「的」），该短语即其专名写法。"
+    },
+    {
+      "name": "Sinai",
+      "gazetteerZh": "西奈",
+      "cuvZh": "西乃",
+      "evidence": "出 19:1「就来到西乃的旷野」",
+      "note": ""
+    },
+    {
+      "name": "Solomon's",
+      "gazetteerZh": "所罗门廊",
+      "cuvZh": "所罗门的廊",
+      "evidence": "徒 3:11「那人正在称为所罗门的廊下」",
+      "note": "描述性短语而非专名；经文作「所罗门的廊下」，「下」是方位词，取「所罗门的廊」。 与 Solomon's Portico 同指一处（约 10:23、徒 3:11「所罗门的廊」），名录重复收录。"
+    },
+    {
+      "name": "Solomon's Portico",
+      "gazetteerZh": "所罗门廊",
+      "cuvZh": "所罗门的廊",
+      "evidence": "徒 5:12「都同心合意的在所罗门的廊下」",
+      "note": "描述性短语而非专名；经文作「所罗门的廊下」，「下」是方位词，取「所罗门的廊」。 与 Solomon's 同指一处（约 10:23、徒 3:11「所罗门的廊」），名录重复收录。"
+    },
+    {
+      "name": "Spain",
+      "gazetteerZh": "西班牙",
+      "cuvZh": "士班雅",
+      "evidence": "罗 15:28「我就要路过你们那里，往士班雅去」",
+      "note": "罗 15:24 该节未出现地名。"
+    },
+    {
+      "name": "The Lord Is There",
+      "gazetteerZh": "耶和华的所在",
+      "cuvZh": "雅伟的所在",
+      "evidence": "结 48:35「这城的名字，必称为“雅伟的所在”」",
+      "note": "描述性名称；本版本用「雅伟」，地名录给的写法不可用。"
+    },
+    {
+      "name": "Tower of the Hundred",
+      "gazetteerZh": "哈米亚城楼",
+      "cuvZh": "哈米亚",
+      "evidence": "尼 3:1「又筑城墙到哈米亚楼，直到哈楠业楼」",
+      "note": "和合本作「哈米亚楼」，此处去掉「楼」后缀。"
+    },
+    {
+      "name": "Valley of Jericho",
+      "gazetteerZh": "耶利哥平原",
+      "cuvZh": "耶利哥的平原",
+      "evidence": "申 34:3「南地和棕树城耶利哥的平原，直到琐珥」",
+      "note": "描述性短语；条目指平原本身，故连「平原」一起取；城名本身为「耶利哥」。"
+    },
+    {
+      "name": "Valley of Jezreel",
+      "gazetteerZh": "耶斯列谷",
+      "cuvZh": "耶斯列平原",
+      "evidence": "书 17:16「耶斯列平原」——不作「耶斯列」，否则与耶斯列城撞名。",
+      "note": "撞名，补回和合本的限定写法"
+    },
+    {
+      "name": "Valley of Lebanon",
+      "gazetteerZh": "黎巴嫩平原",
+      "cuvZh": "利巴嫩平原",
+      "evidence": "书 11:17「直到黑门山下利巴嫩平原的巴力迦得」",
+      "note": "描述性短语而非专名；地名本身为「利巴嫩」，和合本称此处为「平原」不作「谷」。"
+    },
+    {
+      "name": "Valley of Mizpeh",
+      "gazetteerZh": "米斯巴平原",
+      "cuvZh": "米斯巴的平原",
+      "evidence": "书 11:8「直到东边米斯巴的平原」",
+      "note": "描述性短语；条目指平原本身，故连「平原」一起取；地名本身为「米斯巴」。"
+    },
+    {
+      "name": "Wildgoats' Rocks",
+      "gazetteerZh": "野羊磐石",
+      "cuvZh": "野羊的磐石",
+      "evidence": "撒上 24:2「率领他们往野羊的磐石去」",
+      "note": "描述性短语而非专名。"
+    }
+  ],
+  "noCuvName": [
+    {
+      "name": "Gamad",
+      "gazetteerZh": "歌玛底",
+      "why": "和合本把 Gammadim 意译为「勇士」，未作地名。"
+    },
+    {
+      "name": "Hall of Jdg ment",
+      "gazetteerZh": "审判厅",
+      "why": "和合本无专名，只作「一廊，其中设立审判的座位」；「审判的座位」指座位而非厅。与 Hall of the Throne 同一节、同一建筑。"
+    },
+    {
+      "name": "Hall of the Throne",
+      "gazetteerZh": "宝座室",
+      "why": "和合本无专名，「宝座」一词未出现，只作「一廊，其中设立审判的座位」。与 Hall of Judgment 同一节、同一建筑。"
+    },
+    {
+      "name": "Helech",
+      "gazetteerZh": "赫勒克",
+      "why": "和合本把 Helech 意译为「你的军队」，未作地名。"
+    },
+    {
+      "name": "Mahalab",
+      "gazetteerZh": "玛黑拉",
+      "why": "和合本把 Mahalab 意译为「一带地方」，未作地名。"
+    },
+    {
+      "name": "Sahar",
+      "gazetteerZh": "察哈尔",
+      "why": "和合本把 Sahar/Zahar 意译为「白」（白羊毛），原文无对应专名。"
+    },
+    {
+      "name": "Zobah-Hamath",
+      "gazetteerZh": "琐巴哈马",
+      "why": "和合本无「琐巴哈马」合称，只分别作「琐巴」与「哈马」；若须选一个，可取「琐巴」。"
+    }
+  ]
+}

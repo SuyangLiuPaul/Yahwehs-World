@@ -88,14 +88,35 @@ const WHOLE = verses.map((v) => v.text).join('');
 const gazDoc = JSON.parse(readFileSync('data/events/gazetteer-corrections.json', 'utf8'));
 const corr = new Map(gazDoc.corrections.map((c) => [c.name, c]));
 const gone = new Set((gazDoc.removals?.places ?? []).map((c) => c.name));
+// The Union Version's own rendering replaces the gazetteer's modern one, and
+// three entries cite the wrong verse upstream — both have to be read through
+// or the audit keeps reporting a state the site left behind.
+const cuvZh = new Map(
+  JSON.parse(readFileSync('data/places/cuv-renderings.json', 'utf8'))
+    .renderings.filter((r) => r.cuvZh).map((r) => [r.name, r.cuvZh]),
+);
+const noCuv = new Set(
+  JSON.parse(readFileSync('data/places/cuv-renderings.json', 'utf8'))
+    .noCuvName.map((r) => r.name),
+);
+// `nameAttestedAt` is where the NAME appears, which is not always the verse
+// the location is anchored to: OpenBible pins Mount Ephron to Joshua 18:15,
+// Benjamin's southern border, while the name 以弗仑山 is written at Joshua 15:9,
+// Judah's northern border — the same line described from the other side.
+const refFix = new Map((gazDoc.refCorrections?.places ?? [])
+  .map((c) => [c.name, c.nameAttestedAt ?? c.ref]));
 
 const wrongName = [], unknownName = [];
 for (const g of (places.places ?? places)) {
-  if (gone.has(g.n)) continue;
-  const zh = corr.get(g.n)?.zh ?? g.s;
+  if (gone.has(g.n) || noCuv.has(g.n)) continue;
+  const zh = cuvZh.get(g.n) ?? corr.get(g.n)?.zh ?? g.s;
   if (!zh || !g.refs?.length) continue;
+  const fixed = refFix.get(g.n);
+  const refs = fixed
+    ? [{ book: fixed.split(' ')[0], chapter: fixed.split(' ')[1].split(':')[0], verse: fixed.split(' ')[1].split(':')[1] }]
+    : g.refs;
   let seen = false, checked = 0;
-  for (const r of g.refs) {
+  for (const r of refs) {
     const b = BOOKNO[r.book];
     if (b === undefined) continue;
     const v = byId.get(b * 1_000_000 + Number(r.chapter) * 1_000 + Number(r.verse));
@@ -143,6 +164,18 @@ for (const ev of events) {
   if (blob.includes('耶和华')) note('divine-name', ev, '耶和华 in authored text');
 }
 
+// ── G · the divine name, in everything that ships ─────────────────────────
+// The events check above only covers the events. 耶和华 reached a place label
+// and a route's own basis note without anything noticing, because nothing was
+// looking at the two files the browser actually downloads.
+const shipped = [];
+for (const f of ['public/data/places.json', 'public/data/journeys.json']) {
+  const blob = readFileSync(f, 'utf8');
+  let n = 0, i = -1;
+  while ((i = blob.indexOf('耶和华', i + 1)) !== -1) n++;
+  if (n) shipped.push([f, n]);
+}
+
 // ── report ────────────────────────────────────────────────────────────────
 const byKind = {};
 for (const f of findings) (byKind[f.kind] ??= []).push(f);
@@ -158,6 +191,10 @@ for (const k of kinds) {
   if (byKind[k].length > 40) lines.push(`- …and ${byKind[k].length - 40} more`);
   lines.push('');
 }
+lines.push('## The divine name in what ships', '');
+if (!shipped.length) lines.push('None. `public/data/places.json` and `public/data/journeys.json` are clean.', '');
+for (const [f, n] of shipped) lines.push(`- **${f} — ${n} occurrences of 耶和华.** This edition reads 雅伟.`);
+lines.push('');
 lines.push(`## Place names the Union Version never uses at that place`, '');
 lines.push(`### The name belongs to somewhere else — ${wrongName.length}`, '');
 lines.push('The name is in the Union Version, but at a different place. Each needs a verse read.', '');
@@ -181,6 +218,7 @@ writeFileSync('handoff/EVENT-REVIEW.md', lines.join('\n') + '\n');
 
 console.log(`findings: ${findings.length}`);
 for (const k of kinds) console.log(`  ${k}: ${byKind[k].length}`);
+console.log(`耶和华 in shipped payloads: ${shipped.length ? shipped.map(([f, n]) => `${f}:${n}`).join(', ') : 'none'}`);
 console.log(`names that belong elsewhere: ${wrongName.length}; names absent from the CUV: ${unknownName.length}`);
 console.log(`uncited verses: ${gaps.reduce((a, g) => a + g[2], 0)} in ${gaps.length} runs`);
 console.log(`lowest summary overlap: ${(overlap[0]?.share * 100).toFixed(0)}%`);
