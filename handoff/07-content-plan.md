@@ -23,9 +23,11 @@ otherwise bound by the nearest spine events before and after → a band with
 `confidence: inferred`; (d) Genesis 1–11 and most poetry/prophecy → `none`,
 drawn undated but placed.
 
-**Estimated volume.** Genesis 35 exists. Narrative books run 20–60 events
-each; poetry and epistles 0–8 (a psalm's superscription can be an event; an
-epistle's dispatch is one). Expect 900–1,400 total. Order of work: Genesis →
+**Estimated volume.** See `EVENT-GAP.md` for the measured per-book ledger:
+140 exist, ~730 estimated total, ~600 remaining, 42 books at zero. The estimate
+is calibrated on Genesis (1.30 events/chapter authored) and scaled down by
+genre — narrative 1.15/ch, law 0.25, prophets 0.30, poetry 0.08, epistles 1–2
+per letter. Order of work: Genesis →
 Exodus → Numbers → Joshua → Judges → Samuel → Kings → Chronicles → Ezra/Nehemiah
 → Gospels → Acts → the rest.
 

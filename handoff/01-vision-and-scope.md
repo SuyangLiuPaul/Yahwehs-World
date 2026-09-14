@@ -41,7 +41,7 @@ repo today:
 | Places | located ancient places | 1,332 (+10 unlocatable, kept) | 1,332 — already complete | OpenBible geocoding is the full index of every place name in the text |
 | Place-verses | verses naming ≥1 locatable place | 5,582 (8,702 instances) | 5,582 — already complete | Same index; the timeline already walks all of them |
 | Chinese place names | places with 和合本 name | 1,263 / 1,332 | 1,332 | 69 remain; `07` says how |
-| Named events | dated, summarised, place-linked events | 105 approved + 35 Genesis candidates | one authored event set per book, 66 books; est. 900–1,400 events | SeekSparks chronology spine + authored candidates per book (`07`) |
+| Named events | dated, summarised, place-linked events | 105 approved + 35 Genesis candidates = **140**; 42 of 66 books have zero | est. **~730** (range 600–900) — see `EVENT-GAP.md` for the per-book ledger and the method | SeekSparks chronology spine + authored candidates per book (`07`) |
 | Journeys | routes with ordered stops | 10 (174 stops) | every itinerary the text narrates; est. 25–35 | `07` lists them |
 | Structures | buildings rebuilt from measurements | 5 cards + 1 walkable (tabernacle) | every structure the text measures; `07` lists 11 | Exodus 25–27, 1 Kings 6–7, Ezekiel 40–48, Genesis 6, Revelation 21, and more |
 | Books covered by inventory | | 61 / 66 | 66 (the 5 name no place; they still get events) | |
