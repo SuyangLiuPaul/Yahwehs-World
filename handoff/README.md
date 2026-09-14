@@ -34,27 +34,26 @@ from the repository on 2026-09-14.
 
 ## Rules for whoever builds this
 
-1. **Screenshots are the referee.** A change is not done until it has been
+1. **Run `node scripts/audit-events.mjs` before and after you touch data.** It
+   checks that every citation resolves, that no year band crosses into the wrong
+   testament, that all 31,102 verses of the canon fall inside some event, that
+   neither shipped JSON contains 耶和华 (this edition reads 雅伟), and that each
+   Chinese place name actually appears in the verse cited for it. Every count is
+   0 as of `c62d052`; if your change makes one non-zero, that is your change and
+   not a fault you inherited.
+2. **Screenshots are the referee.** A change is not done until it has been
    rendered at 375×812, 768×1024 and 1440×900 and looked at. `09` explains how.
-2. **The four differentiators are the product** (`01`). A feature that does not
+3. **The four differentiators are the product** (`01`). A feature that does not
    strengthen one of them is a feature for a sixth Bible atlas.
-3. **Licences are not negotiable** (`04`). No satellite imagery, no NIV text,
+4. **Licences are not negotiable** (`04`). No satellite imagery, no NIV text,
    OpenBible attribution stays in the footer.
-4. **Decisions in `05` stand.** If one must change, write the reason as a new
+5. **Decisions in `05` stand.** If one must change, write the reason as a new
    entry there first, then change the code.
-0. **Run `node scripts/audit-events.mjs` before and after you touch data.**
-   It checks that every citation resolves, that no year band crosses into the
-   wrong testament, that all 31,102 verses of the canon fall inside some event,
-   that neither shipped JSON contains 耶和华 (this edition reads 雅伟), and that
-   each Chinese place name actually appears in the verse cited for it. Every
-   count is 0 as of `c62d052`. If your change makes one non-zero, that is your
-   change, not a pre-existing fault.
-
-5. **Every asset gets a line in `MANIFEST-assets.md`** — source, licence,
+6. **Every asset gets a line in `MANIFEST-assets.md`** — source, licence,
    generation prompt if generated, and the commit that introduced it.
-6. **Commit messages explain the why**, in the style of the existing history
+7. **Commit messages explain the why**, in the style of the existing history
    (`git log`). No attribution trailers.
-7. **Run the pipeline honestly**: `set -o pipefail` before any `npm run build | …`.
+8. **Run the pipeline honestly**: `set -o pipefail` before any `npm run build | …`.
    A previous commit shipped broken TypeScript because a pipe masked the exit code.
 
 ## Where things are
