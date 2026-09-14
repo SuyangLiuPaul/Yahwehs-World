@@ -6,7 +6,7 @@ import { createGlobe, createLighting, GLOBE_RADIUS, lonLatToVec3 } from './globe
 import { Terrain } from './terrain.ts';
 import { placeLabel, bareName } from './names.ts';
 import { Markers } from './markers.ts';
-import { bookName, bookOf } from './books.ts';
+import { bookName, bookOf, localiseRef } from './books.ts';
 import { precisionOf, precisionStyle } from './theme.ts';
 import { Route, type Journey } from './routes.ts';
 import { RouteLabels } from './labels.ts';
@@ -47,6 +47,10 @@ const T = {
     zh: (n: number, m: number) => `${n} 站 · 合并为 ${m} 个标记`,
     en: (n: number, m: number) => `${n} stops · ${m} markers`,
   },
+  stops:     { zh: (n: number) => `${n} 站`, en: (n: number) => `${n} stops` },
+  statStops:   { zh: '站', en: 'stops' },
+  statMarkers: { zh: '个标记', en: 'markers' },
+  statMerged:  { zh: '组共用坐标', en: 'shared coordinates' },
 };
 
 // ── data ──────────────────────────────────────────────────────────────────
@@ -211,10 +215,16 @@ const rToggle = $('r-toggle');
 const rStop = $('r-stop');
 const rBasis = $('r-basis');
 
-rlist.innerHTML = journeyData.journeys.map((jr) => `
-  <button class="rbtn" type="button" data-id="${jr.id}">
-    <span>${jr.zh}</span><i>${jr.stopCount} 站</i>
-  </button>`).join('');
+// Rebuilt rather than written once: the menu names the ten journeys, and a
+// reader who switches language with the menu open should not be left reading
+// the list they just switched away from.
+function renderRouteList() {
+  rlist.innerHTML = journeyData.journeys.map((jr) => `
+    <button class="rbtn" type="button" data-id="${jr.id}">
+      <span>${jr[locale]}</span><i>${T.stops[locale](jr.stopCount)}</i>
+    </button>`).join('');
+}
+renderRouteList();
 setRoutesState('closed');
 
 function setRoutesState(state: 'closed' | 'open' | 'active') {
@@ -249,22 +259,12 @@ function openRoute(id: string) {
   closePanel();
   rCard.hidden = false;
   setRoutesState('active');
-  $('r-name').textContent = jr.zh;
-  $('r-range').textContent = jr.range;
-  rBasis.textContent = jr.basis;
+  renderRouteHeader(jr);
 
   // The merge count is the route's own reservation; putting it in the header
   // beside the stop count means a reader meets it before the animation, not
   // after wondering why 42 stops drew 23 dots.
-  const stats: [number, string, boolean][] = [
-    [jr.stopCount, '站', false],
-    [jr.markers.length, '个标记', false],
-  ];
-  if (jr.merged > 0) stats.push([jr.merged, '组共用坐标', true]);
-  $('r-stats').innerHTML = stats
-    .map(([n, label, caveat]) =>
-      `<div${caveat ? ' class="caveat"' : ''}><b>${n}</b><span>${label}</span></div>`)
-    .join('');
+  renderRouteStats(jr);
 
   frameRoute(jr);
   routeT = 0; routePlaying = true;
@@ -382,7 +382,9 @@ function updateRouteReadout() {
     ? T.stopsMerged[locale](m.stops[0]!, m.stops[m.stops.length - 1]!, m.stops.length)
     : `${T.stop[locale](m.n)} · ${placeLabel(m.place, m.zh, locale)}`;
   rStop.textContent = label;
-  $('t-ref').textContent = m.refs?.[0] ?? m.ref;
+  // Marker refs are stored in English; the book name is the only part of a
+  // reference that is language at all, so it is swapped on the way out.
+  $('t-ref').textContent = localiseRef(m.refs?.[0] ?? m.ref, locale);
   // Keeps the `: m.zh` fallback: five aside markers across paul-rome and
   // elijah carry no zhAll at all, and mapping over a missing array blanks them.
   // Two OpenBible places can share one Chinese name — 25 verses in the index
@@ -509,6 +511,24 @@ function follow(dt: number) {
 }
 
 // ── legend & i18n ─────────────────────────────────────────────────────────
+function renderRouteStats(jr: Journey) {
+  const stats: [number, string, boolean][] = [
+    [jr.stopCount, T.statStops[locale], false],
+    [jr.markers.length, T.statMarkers[locale], false],
+  ];
+  if (jr.merged > 0) stats.push([jr.merged, T.statMerged[locale], true]);
+  $('r-stats').innerHTML = stats
+    .map(([n, label, caveat]) =>
+      `<div${caveat ? ' class="caveat"' : ''}><b>${n}</b><span>${label}</span></div>`)
+    .join('');
+}
+
+function renderRouteHeader(jr: Journey) {
+  $('r-name').textContent = jr[locale];
+  $('r-range').textContent = locale === 'zh' ? jr.range : jr.rangeEn;
+  rBasis.textContent = locale === 'zh' ? jr.basis : jr.basisEn;
+}
+
 function renderLegend() {
   $('legend').innerHTML = Object.entries(precisionStyle)
     .filter(([k]) => k !== 'unknown')
@@ -522,7 +542,10 @@ onLocale((l) => {
   applyStatic();
   renderLegend();
   applyCursor();
+  renderRouteList();
   if (route) {
+    renderRouteHeader(route.journey);
+    renderRouteStats(route.journey);
     routeLabels.build(route.markerObjects, locale);
     // applyCursor() has just overwritten the readout with timeline text, and
     // nothing else put the route's own back, so switching language with a

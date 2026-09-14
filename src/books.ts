@@ -42,3 +42,37 @@ export const bookName = (n: number, locale: 'en' | 'zh') =>
   BOOKS[n - 1]?.[locale] ?? '';
 /** Canonical key just past the end of book `n` — the timeline steps in books. */
 export const endOfBook = (n: number) => n * 1_000_000 + 999_999;
+
+// ── references ────────────────────────────────────────────────────────────
+// The two reference strings the data carries were written in opposite
+// languages: journeys.json gives `range` in Chinese ("使徒行传 13:1 – 14:28")
+// and every marker's `ref` in English ("Acts 13:1"). Whichever locale the
+// reader picked, one of them used to come out in the other language. Rather
+// than duplicate every string in the data, translate the book name on the way
+// to the screen — it is the only part of a reference that is language at all;
+// chapter, verse and dash are the same in both.
+//
+// Names are matched longest-first so that 撒母耳记上 wins over 撒母耳记 and
+// "1 Corinthians" is never read as a stray "Corinthians". Every name in the
+// string is replaced, because two ranges span two books ("撒母耳记上4章 –
+// 撒母耳记下6章"). Anything that is not a book name is left exactly as it is,
+// so a reference this table does not know passes through unharmed.
+const NAME_TO_INDEX = new Map<string, number>();
+for (const [i, b] of BOOKS.entries()) {
+  NAME_TO_INDEX.set(b.en, i);
+  NAME_TO_INDEX.set(b.zh, i);
+}
+const ANY_BOOK = new RegExp(
+  [...NAME_TO_INDEX.keys()]
+    .sort((a, b) => b.length - a.length)
+    .map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .join('|'),
+  'g',
+);
+
+export function localiseRef(ref: string, locale: 'en' | 'zh'): string {
+  let out = ref.replace(ANY_BOOK, (m) => BOOKS[NAME_TO_INDEX.get(m)!]![locale]);
+  // 「4章」 is how Chinese cites a whole chapter; English just gives the number.
+  if (locale === 'en') out = out.replace(/(\d+)\s*章/g, '$1');
+  return out;
+}

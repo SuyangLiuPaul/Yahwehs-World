@@ -95,8 +95,11 @@ const out = journeys.journeys.map((j) => {
   return {
     id: j.id,
     zh: j.name['zh-Hans'], en: j.name.en,
-    range: j.range['zh-Hans'],
-    basis: j.basis['zh-Hans'],
+    // The upstream asset carries both languages for these two; taking only the
+    // Chinese one left the route card speaking Chinese inside the English
+    // interface, so both are carried through and the page picks one.
+    range: j.range['zh-Hans'], rangeEn: j.range.en,
+    basis: j.basis['zh-Hans'], basisEn: j.basis.en,
     style: j.style, mark: j.mark,
     stopCount: stops.length,
     markers, segments,

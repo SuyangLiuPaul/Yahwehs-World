@@ -26,7 +26,8 @@ export interface RouteMarker {
 }
 
 export interface Journey {
-  id: string; zh: string; en: string; range: string; basis: string;
+  id: string; zh: string; en: string;
+  range: string; rangeEn: string; basis: string; basisEn: string;
   stopCount: number; merged: number; unlocated: number;
   markers: RouteMarker[];
   segments: [number, number][][];

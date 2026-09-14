@@ -1,4 +1,4 @@
-# 11 · Known bugs and open questions (as of `3cda3a8`)
+# 11 · Known bugs and open questions (as of `4a32bd6`+)
 
 ## Bugs
 
@@ -44,6 +44,21 @@ All of it awaits the owner's review, which is the project's only remaining
 bottleneck on content.
 
 **B10 — Markers at close zoom are noise around a route** (`06-L7`).
+
+**B11 — FIXED.** The route card and the journey menu spoke the wrong language.
+The menu listed the ten journeys by their Chinese names with a Chinese stop
+count regardless of locale; the card's title, range, basis and stat labels
+were Chinese-only; and the marker reference went the other way, printing
+"Acts 27:16" to a Chinese reader because journeys.json stores `range` in
+Chinese but every marker `ref` in English. The upstream asset already carries
+`range` and `basis` in both languages — `build-journeys.mjs` was dropping the
+English — so both are now carried through as `rangeEn`/`basisEn`. The marker
+reference is translated on the way to the screen by `localiseRef` in
+`books.ts`, which swaps the book name (longest match first, every occurrence,
+so "撒母耳记上4章 – 撒母耳记下6章" becomes "1 Samuel 4 – 2 Samuel 6") and
+leaves anything it does not recognise untouched. `renderRouteList`,
+`renderRouteHeader` and `renderRouteStats` are called from `onLocale`, so a
+switch with a route open reaches all of it.
 
 ## Open questions for the owner
 - Q1: Should the repo become public once SeekSparks-derived assets are
