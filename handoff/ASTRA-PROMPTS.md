@@ -55,7 +55,9 @@ message. Do not summarize them back to me.
 Rules: handoff/README.md §Rules apply. Do not ask me anything: where the docs are silent,
 take the honest default (handoff/05-decisions.md D15), record the assumption in the commit
 body, and continue. Never reopen a decision in handoff/05. Never add satellite imagery,
-NIV text, or an asset without a row in handoff/MANIFEST-assets.md.
+NIV text, or an asset without a row in handoff/MANIFEST-assets.md. The divine name is 雅伟 in
+Chinese and Yahweh in English wherever the Hebrew is YHWH (handoff/05 D18); never write 耶和华
+or all-caps LORD into anything that ships.
 Work until the Definition of Done below is fully met. Verify exactly as handoff/09 says:
 375x812, 768x1024, 1440x900, both locales, screenshots saved under
 handoff/evidence/<phase>/. `set -o pipefail; npm run build` must pass before each commit. If you touch anything under
