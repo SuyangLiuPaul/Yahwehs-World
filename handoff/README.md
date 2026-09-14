@@ -26,6 +26,7 @@ from the repository on 2026-09-14.
 | 10 | `10-operations.md` | Repo, deploy, where secrets live (not their values), commands, ownership |
 | 11 | `11-known-bugs.md` | Open defects with repro steps |
 | 12 | `12-glossary.md` | 中英术语对照 |
+| — | `ALL-EVENTS.md` | **The complete event layer — 1,443 events, Genesis to Revelation, each with its passage range, parallels, date band and computed places** |
 | — | `EVENT-GAP.md` | Per-book ledger of how many events exist and how many are missing, with the estimation method |
 | — | `ASTRA-PROMPTS.md` | Phase-by-phase execution prompts for a token-scarce executor model |
 | — | `MANIFEST-assets.md` | Provenance ledger for every non-code asset; append to it, never delete from it |
