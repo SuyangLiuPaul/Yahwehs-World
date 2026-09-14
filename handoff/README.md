@@ -30,6 +30,7 @@ from the repository on 2026-09-14.
 | — | `EVENT-GAP.md` | Per-book ledger of how many events exist and how many are missing, with the estimation method |
 | — | `ASTRA-PROMPTS.md` | Phase-by-phase execution prompts for a token-scarce executor model |
 | — | `MANIFEST-assets.md` | Provenance ledger for every non-code asset; append to it, never delete from it |
+| — | `EVENT-REVIEW.md` | Output of `node scripts/audit-events.mjs`. Regenerated, never hand-edited. Every number in it is measured — read it before believing any claim about coverage |
 
 ## Rules for whoever builds this
 
@@ -41,6 +42,14 @@ from the repository on 2026-09-14.
    OpenBible attribution stays in the footer.
 4. **Decisions in `05` stand.** If one must change, write the reason as a new
    entry there first, then change the code.
+0. **Run `node scripts/audit-events.mjs` before and after you touch data.**
+   It checks that every citation resolves, that no year band crosses into the
+   wrong testament, that all 31,102 verses of the canon fall inside some event,
+   that neither shipped JSON contains 耶和华 (this edition reads 雅伟), and that
+   each Chinese place name actually appears in the verse cited for it. Every
+   count is 0 as of `c62d052`. If your change makes one non-zero, that is your
+   change, not a pre-existing fault.
+
 5. **Every asset gets a line in `MANIFEST-assets.md`** — source, licence,
    generation prompt if generated, and the commit that introduced it.
 6. **Commit messages explain the why**, in the style of the existing history
