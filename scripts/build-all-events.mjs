@@ -297,6 +297,17 @@ writeFileSync('data/events/all-events.json', JSON.stringify({
     books: perBook.size,
     provenance,
     divineName: '中文引用以雅伟版和合本（SeekSparks cuvs-yhwh.json）为准，神名作「雅伟」。',
+    // Per-event status stays `candidate`, because that is what is true: no one
+    // has read these one at a time. What changed on 2026-09-14 is the gate, not
+    // the events — the owner cleared candidates for use on the strength of the
+    // mechanical review, so a consumer no longer has to wait for a per-event
+    // approval that is not coming. See handoff/07 · Review gate.
+    candidatesCleared: {
+      date: '2026-09-14',
+      by: 'owner',
+      basis: 'scripts/audit-events.mjs 全部归零：引用可解析、年代无越代、全书 31,102 节无遗漏、发往浏览器的两个 JSON 无「耶和华」、地名在所引经节中确实出现。',
+      notReviewed: '事件的切分粒度、有争议年代是否登载、有分歧的地点考据是否背书——这三类未逐条审阅。',
+    },
   },
   events: all,
 }, null, 2));

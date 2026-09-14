@@ -31,9 +31,24 @@ per letter. Order of work: Genesis →
 Exodus → Numbers → Joshua → Judges → Samuel → Kings → Chronicles → Ezra/Nehemiah
 → Gospels → Acts → the rest.
 
-**Review gate.** `scripts/build-review-page.mjs` renders candidates for a human;
-approvals are written by `apply-review`. The builder may propose; only the
-owner approves. Target throughput: one book per review session.
+**Review gate — opened 2026-09-14.** The owner cleared the candidates for use.
+They may be displayed and built on; nobody is waiting for a per-book approval
+pass. Note precisely what that does and does not mean. Every event has been
+checked against the text by `scripts/audit-events.mjs` — citations resolve, no
+year band crosses into the wrong testament, all 31,102 verses of the canon fall
+inside some event, neither shipped payload contains 耶和华, and each Chinese
+place name appears in the verse cited for it. What has *not* been reviewed one
+at a time is where an event should begin and end, whether a disputed date such
+as 4114 BC should be published at all, and whether a contested identification is
+one this project wants to endorse. Those are the owner's to revisit whenever a
+particular event is in front of them, not a queue blocking release.
+
+`status` therefore stays `candidate` on each event, because that remains true —
+the clearance is recorded once, at the collection level, in the `meta` block of
+`all-events.json` (`candidatesCleared`). Do not mass-rewrite the field to
+`approved`: it would assert an individual review that did not happen.
+`scripts/build-review-page.mjs` and `apply-review` still work and are still the
+way to approve an event properly when someone sits down with one.
 
 **Rendering.** A second track under the verse timeline: events as bands (band
 width = yearLate − yearEarly, hatched when `disputed`, dotted when `none`),

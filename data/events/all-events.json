@@ -1,10 +1,16 @@
 {
   "meta": {
-    "generated": "2026-09-14T04:27:25.199Z",
+    "generated": "2026-09-14T04:40:54.760Z",
     "count": 1443,
     "books": 66,
     "provenance": "段落边界、标题与导语取自 SeekSparks assets/section_titles.json（app 自撰，非某一出版译本的分段）；平行经文取自 gospel_synopsis.json（Robertson 1922，公有领域）与 ot_synopsis.json；年代取自 SeekSparks 年表，未直接收录者按正典顺序夹逼；地点由脚本从 OpenBible.info 逐节索引算出（CC BY 4.0），不是人工指定。全部 status=candidate，等待审阅。",
-    "divineName": "中文引用以雅伟版和合本（SeekSparks cuvs-yhwh.json）为准，神名作「雅伟」。"
+    "divineName": "中文引用以雅伟版和合本（SeekSparks cuvs-yhwh.json）为准，神名作「雅伟」。",
+    "candidatesCleared": {
+      "date": "2026-09-14",
+      "by": "owner",
+      "basis": "scripts/audit-events.mjs 全部归零：引用可解析、年代无越代、全书 31,102 节无遗漏、发往浏览器的两个 JSON 无「耶和华」、地名在所引经节中确实出现。",
+      "notReviewed": "事件的切分粒度、有争议年代是否登载、有分歧的地点考据是否背书——这三类未逐条审阅。"
+    }
   },
   "events": [
     {
