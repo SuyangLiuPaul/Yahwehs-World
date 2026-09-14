@@ -14,8 +14,46 @@ import { readFileSync, writeFileSync } from 'node:fs';
 const bundle = JSON.parse(readFileSync('public/data/places.json', 'utf8'));
 const gaz = JSON.parse(readFileSync('../SeekSparks/assets/bible_places.json', 'utf8'));
 
+/** Corrections to the shared gazetteer, each with the verses that settle it.
+ *  Applied here rather than in each consumer: this is the one place a Chinese
+ *  name is attached to a place, so a correction made here reaches the globe's
+ *  own labels, the journeys and the events alike. Before this, only the
+ *  journeys read the file, and the globe still called Ephrath 伯特利. */
+const gazDoc = JSON.parse(readFileSync('data/events/gazetteer-corrections.json', 'utf8'));
+const fixes = new Map(gazDoc.corrections.map((c) => [c.name, c]));
+/** Places whose Chinese name belongs to somewhere — or someone — else, and
+ *  which the Union Version does not call by any Chinese proper name in the
+ *  verses that cite them. The name is withdrawn rather than replaced: the same
+ *  rule as an ambiguous coordinate, that an English label is better than
+ *  another place's name. */
+const drop = new Map((gazDoc.removals?.places ?? []).map((c) => [c.name, c]));
+let corrected = 0, dropped = 0;
+
+/** Names for places the gazetteer does not carry, or that sit on a coordinate
+ *  shared with other places and so cannot be identified by proximity. Each was
+ *  read out of the Union Version passage that names the place, and each is
+ *  checked here against the text again before it is used: a name that is not
+ *  in the verse it claims is dropped rather than trusted. */
+const fromText = new Map(
+  JSON.parse(readFileSync('data/places/names-from-text.json', 'utf8'))
+    .names.map((n) => [n.name, n]),
+);
+let fromTextUsed = 0;
+
+/** The two gazetteers punctuate differently: OpenBible writes King’s Valley
+ *  and Diviners’ Oak with a typographic apostrophe, SeekSparks with a plain
+ *  one. Nothing else separates the names, and a name that fails to match here
+ *  falls through to the coordinate rule, which is where labels went wrong. */
+const key = (n) => n
+  .normalize('NFC')
+  .replace(/[\u2018\u2019\u02bc\u02bb`\u00b4]/g, "'")
+  .replace(/[\u2010-\u2015]/g, '-')
+  .replace(/\s+/g, ' ')
+  .trim()
+  .toLowerCase();
+
 const byName = new Map();
-for (const p of gaz.places) byName.set(p.n.toLowerCase(), p);
+for (const p of gaz.places) byName.set(key(p.n), p);
 
 const withLL = gaz.places.filter((p) => Array.isArray(p.ll) && p.ll.length === 2);
 
@@ -24,22 +62,57 @@ const withLL = gaz.places.filter((p) => Array.isArray(p.ll) && p.ll.length === 2
  *  once the exact one fails. */
 const bare = (n) => n.replace(/\s+\d+$/, '');
 
-const stats = { name: 0, bareName: 0, coord: 0, none: 0 };
+const stats = { name: 0, bareName: 0, coord: 0, ambiguous: 0, none: 0 };
 
 for (const p of bundle.places) {
-  let hit = byName.get(p.name.toLowerCase());
+  // This script rewrites places.json in place, so a name attached by an
+  // earlier, looser run is still sitting on the record. Clearing first is what
+  // makes a re-run mean anything: without it, tightening the rules leaves
+  // every label the old rules produced exactly where it was.
+  delete p.zh; delete p.zhHant; delete p.zhMatch; delete p.zhCorrected; delete p.zhEvidence; delete p.zhWithdrawn;
+
+  let hit = byName.get(key(p.name));
   let how = 'name';
 
-  if (!hit) { hit = byName.get(bare(p.name).toLowerCase()); how = 'bare-name'; }
+  if (!hit) { hit = byName.get(key(bare(p.name))); how = 'bare-name'; }
   if (!hit) {
-    // Within ~2 km. Close enough that two gazetteers mean the same site.
-    hit = withLL.find((h) => Math.abs(h.ll[0] - p.lat) < 0.02 && Math.abs(h.ll[1] - p.lon) < 0.02);
-    how = 'coord';
+    // Within ~2 km. Close enough that two gazetteers mean the same site —
+    // but only when one place is there. A great many biblical sites are
+    // recorded at the coordinate of the city they belong to: every feature in
+    // and around Jerusalem sits on 31.77, 35.23, so taking the first entry
+    // within the radius handed King's Valley the name of Akeldama, the field
+    // of blood, and handed Abraham's 雅伟以勒 the same. A point that holds
+    // more than one place is not evidence for any of them; the place keeps
+    // its English label rather than being given a name that belongs to
+    // somewhere else.
+    const near = withLL.filter((h) =>
+      Math.abs(h.ll[0] - p.lat) < 0.02 && Math.abs(h.ll[1] - p.lon) < 0.02);
+    if (near.length === 1) { hit = near[0]; how = 'coord'; }
+    else if (near.length > 1) {
+      const t = fromText.get(p.name);
+      if (t) {
+        p.zh = t.zh; p.zhHant = t.zh; p.zhMatch = 'from-text'; p.zhEvidence = t.evidence;
+        fromTextUsed++; continue;
+      }
+      p.zhMatch = 'ambiguous'; stats.ambiguous++; continue;
+    }
   }
 
-  if (!hit) { stats.none++; continue; }
-  p.zh = hit.s;
-  p.zhHant = hit.t;
+  if (!hit) {
+    const t = fromText.get(p.name);
+    if (t) {
+      p.zh = t.zh; p.zhHant = t.zh; p.zhMatch = 'from-text'; p.zhEvidence = t.evidence;
+      fromTextUsed++; continue;
+    }
+    stats.none++; continue;
+  }
+  const gone = drop.get(hit.n);
+  if (gone && hit.s === gone.wasZh) { p.zhMatch = 'withdrawn'; p.zhWithdrawn = gone.evidence; dropped++; continue; }
+
+  const fix = fixes.get(hit.n);
+  if (fix && hit.s === fix.wasZh) { p.zh = fix.zh; p.zhCorrected = fix.evidence; corrected++; }
+  else p.zh = hit.s;
+  p.zhHant = fix ? fix.zh : hit.t;
   // How confidently this label was attached, so the UI can hold back a name it
   // only inferred from proximity if it ever needs to.
   p.zhMatch = how;
@@ -48,18 +121,22 @@ for (const p of bundle.places) {
 
 bundle.meta.chineseNames = {
   source: 'SeekSparks assets/bible_places.json',
-  matched: bundle.places.length - stats.none,
+  matched: bundle.places.filter((p) => p.zh).length,
   total: bundle.places.length,
   byMethod: stats,
 };
 
 writeFileSync('public/data/places.json', JSON.stringify(bundle));
 
-const got = bundle.places.length - stats.none;
+const got = bundle.places.filter((p) => p.zh).length;
 console.log(`按英文名匹配      ${stats.name}`);
 console.log(`去编号后匹配      ${stats.bareName}`);
 console.log(`按坐标就近匹配    ${stats.coord}`);
+console.log(`坐标有歧义，不给名 ${stats.ambiguous}`);
 console.log(`仍无中文名        ${stats.none}`);
+console.log(`按更正表改名      ${corrected}`);
+console.log(`按经文原文补名    ${fromTextUsed}`);
+console.log(`名属他处，撤名    ${dropped}`);
 console.log(`\n中文名覆盖        ${got}/${bundle.places.length}  (${(got / bundle.places.length * 100).toFixed(1)}%)`);
 const sample = bundle.places.filter((p) => p.zh).slice(0, 8);
 console.log('\n样例：');

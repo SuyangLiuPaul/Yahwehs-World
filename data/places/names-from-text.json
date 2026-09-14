@@ -1,0 +1,340 @@
+{
+  "_meta": {
+    "purpose": "共用地名录（SeekSparks bible_places.json）没有收录、或坐标上有歧义因而不能按坐标认定的地点，其中文名取自雅伟版和合本原文本身。",
+    "method": "对每一处，把 OpenBible 指认的经节原文交给模型判读，只许从原文取词，不许音译、造词或用今名；回来的每一条再由脚本核对：该名必须逐字出现在所给的经文里。66 条全部通过，0 条被驳回。",
+    "notAttempted": "另有 58 处仍无中文名。其中绝大多数在 OpenBible 自身的数据里 verseCount 为 0、refs 为空——它们是地图的上下文条目，不是经文地名（迦太基、埃利都、斯巴达之类）。无经文可依据，就不给名。",
+    "generated": "2026-09-14"
+  },
+  "names": [
+    {
+      "name": "The Lord Will Provide",
+      "zh": "雅伟以勒",
+      "evidence": "创 22:14「亚伯拉罕给那地方起名叫雅伟以勒」"
+    },
+    {
+      "name": "Nahor",
+      "zh": "拿鹤的城",
+      "evidence": "创 24:10「起身往米所波大米去，到了拿鹤的城」"
+    },
+    {
+      "name": "Mizpah 4",
+      "zh": "米斯巴",
+      "evidence": "创 31:49「又叫米斯巴，意思说：我们彼此离别以后，愿雅伟在你我中间鉴察」"
+    },
+    {
+      "name": "Mezahab",
+      "zh": "米萨合",
+      "evidence": "创 36:39「他的妻子名叫米希他别，是米萨合的孙女」"
+    },
+    {
+      "name": "Timnah 3",
+      "zh": "亭拿",
+      "evidence": "创 38:12「就和他朋友亚杜兰人希拉上亭拿去」"
+    },
+    {
+      "name": "Wilderness of Sinai",
+      "zh": "西乃的旷野",
+      "evidence": "出 19:1「满了三个月的那一天，就来到西乃的旷野」"
+    },
+    {
+      "name": "Way of the Red Sea",
+      "zh": "红海的路",
+      "evidence": "民 14:25「明天你们要转回，从红海的路往旷野去」"
+    },
+    {
+      "name": "Ir-moab",
+      "zh": "摩押京城",
+      "evidence": "民 22:36「就往摩押京城去迎接他；这城是在边界上，在亚嫩河旁」"
+    },
+    {
+      "name": "Chinnereth",
+      "zh": "基尼烈",
+      "evidence": "书 19:35「坚固的城，就是西丁、侧耳、哈末、拉甲、基尼烈」"
+    },
+    {
+      "name": "Gilgal 4",
+      "zh": "吉甲",
+      "evidence": "申 11:30「在住亚拉巴的迦南人之地与吉甲相对，靠近摩利橡树吗」"
+    },
+    {
+      "name": "City of Palms 1",
+      "zh": "棕树城",
+      "evidence": "申 34:3「南地和棕树城耶利哥的平原，直到琐珥」"
+    },
+    {
+      "name": "Waters of Merom",
+      "zh": "米伦水",
+      "evidence": "书 11:5「这诸王会合，来到米伦水边，一同安营」"
+    },
+    {
+      "name": "Aphek 4",
+      "zh": "亚弗",
+      "evidence": "书 13:4「并属西顿人的米亚拉到亚弗，直到亚摩利人的境界」"
+    },
+    {
+      "name": "Goshen 3",
+      "zh": "歌珊",
+      "evidence": "书 15:51「歌珊、何伦、基罗，共十一座城」"
+    },
+    {
+      "name": "Waters of Jericho",
+      "zh": "耶利哥东边的水",
+      "evidence": "书 16:1「是从靠近耶利哥的约但河起，以耶利哥东边的水为界」"
+    },
+    {
+      "name": "Ataroth 3",
+      "zh": "亚他绿",
+      "evidence": "书 16:7「从雅挪哈下到亚他绿，又到拿拉，达到耶利哥」"
+    },
+    {
+      "name": "Geba 4",
+      "zh": "迦巴",
+      "evidence": "书 18:24「基法阿摩尼、俄弗尼、迦巴，共十二座城」"
+    },
+    {
+      "name": "Gibeah 4",
+      "zh": "基比亚",
+      "evidence": "书 18:28「耶布斯（耶布斯就是耶路撒冷）、基比亚、基列，共十四座城」"
+    },
+    {
+      "name": "Ramah 6",
+      "zh": "南地的拉玛",
+      "evidence": "书 19:8「直到巴拉比珥，就是南地的拉玛」"
+    },
+    {
+      "name": "Allon",
+      "zh": "撒拿音的橡树",
+      "evidence": "书 19:33「他们的境界是从希利弗，从撒拿音的橡树，从亚大米尼吉和雅比聂」"
+    },
+    {
+      "name": "Kedesh 5",
+      "zh": "基低斯",
+      "evidence": "书 20:7「以色列人在拿弗他利山地分定加利利的基低斯」"
+    },
+    {
+      "name": "Ain 3",
+      "zh": "亚因",
+      "evidence": "书 21:16「亚因和属城的郊野，淤他和属城的郊野」"
+    },
+    {
+      "name": "City of Palms 2",
+      "zh": "棕树城",
+      "evidence": "士 1:16「他的子孙与犹大人一同离了棕树城，往亚拉得以南的犹大旷野去」"
+    },
+    {
+      "name": "Kedesh 4",
+      "zh": "基低斯",
+      "evidence": "士 4:10「巴拉就招聚西布伦人和拿弗他利人到基低斯」"
+    },
+    {
+      "name": "Tabbur-erez",
+      "zh": "高处",
+      "evidence": "士 9:37「看哪！有人从高处下来」"
+    },
+    {
+      "name": "Havilah 3",
+      "zh": "哈腓拉",
+      "evidence": "撒上 15:7「从哈腓拉直到埃及前的书珥」"
+    },
+    {
+      "name": "Ramah 8",
+      "zh": "拉玛",
+      "evidence": "撒上 22:6「扫罗在基比亚的拉玛，坐在垂丝柳树下」"
+    },
+    {
+      "name": "Wilderness of Maon",
+      "zh": "玛云旷野",
+      "evidence": "撒上 23:24「却在玛云旷野南边的亚拉巴」"
+    },
+    {
+      "name": "City of David",
+      "zh": "大卫城",
+      "evidence": "撒下 5:9「给保障起名叫大卫城」"
+    },
+    {
+      "name": "Hushah",
+      "zh": "户沙",
+      "evidence": "代上 4:4「户沙之祖是以谢珥」"
+    },
+    {
+      "name": "Shaalbon",
+      "zh": "沙本",
+      "evidence": "撒下 23:32「沙本人以利雅哈巴」"
+    },
+    {
+      "name": "Socoh 3",
+      "zh": "梭哥",
+      "evidence": "王上 4:10「他管理梭哥和希弗全地」"
+    },
+    {
+      "name": "Upper Pool",
+      "zh": "上池",
+      "evidence": "王下 18:17「就站在上池的水沟旁」"
+    },
+    {
+      "name": "Geba 3",
+      "zh": "迦巴",
+      "evidence": "王下 23:8「从迦巴直到别是巴」"
+    },
+    {
+      "name": "Caleb Ephrathah",
+      "zh": "迦勒以法他",
+      "evidence": "代上 2:24「希斯仑在迦勒以法他死后」"
+    },
+    {
+      "name": "Gibea",
+      "zh": "基比亚",
+      "evidence": "代上 2:49「抹比拿和基比亚之祖示法」"
+    },
+    {
+      "name": "Beth-gader",
+      "zh": "伯迦得",
+      "evidence": "代上 2:51「伯迦得之祖哈勒」"
+    },
+    {
+      "name": "Atroth-beth-joab",
+      "zh": "亚他绿伯约押",
+      "evidence": "代上 2:54「尼陀法人、亚他绿伯约押人」"
+    },
+    {
+      "name": "Ge-harashim",
+      "zh": "匠人之谷",
+      "evidence": "尼 11:35「罗德、阿挪、匠人之谷」"
+    },
+    {
+      "name": "Gedor 4",
+      "zh": "基多",
+      "evidence": "代上 12:7「基多人耶罗罕的儿子犹拉和西巴第雅」"
+    },
+    {
+      "name": "North Gate",
+      "zh": "北门",
+      "evidence": "代上 26:14「掣签守北门」"
+    },
+    {
+      "name": "South Gate",
+      "zh": "南门",
+      "evidence": "代上 26:15「俄别以东守南门」"
+    },
+    {
+      "name": "West Gate",
+      "zh": "西门",
+      "evidence": "代上 26:16「书聘与何萨守西门」"
+    },
+    {
+      "name": "Parbar",
+      "zh": "游廊",
+      "evidence": "代上 26:18「在游廊上有两个」"
+    },
+    {
+      "name": "Meronoth",
+      "zh": "米仑",
+      "evidence": "代上 27:30「掌管驴群的，是米仑人耶希底亚」"
+    },
+    {
+      "name": "East Square",
+      "zh": "东边的宽阔处",
+      "evidence": "代下 29:4「聚集在东边的宽阔处」"
+    },
+    {
+      "name": "Gibbar",
+      "zh": "吉罢珥",
+      "evidence": "拉 2:20「吉罢珥人九十五名」"
+    },
+    {
+      "name": "Ai 3",
+      "zh": "艾",
+      "evidence": "拉 2:28「伯特利人、艾人共二百二十三名」"
+    },
+    {
+      "name": "Magbish",
+      "zh": "末必",
+      "evidence": "拉 2:30「末必人一百五十六名」"
+    },
+    {
+      "name": "Harim",
+      "zh": "哈琳",
+      "evidence": "拉 2:32「哈琳的子孙三百二十名」"
+    },
+    {
+      "name": "Senaah",
+      "zh": "西拿",
+      "evidence": "拉 2:35「西拿人三千六百三十名」"
+    },
+    {
+      "name": "Nebo 3",
+      "zh": "尼波",
+      "evidence": "拉 10:43「尼波的子孙中，有耶利、玛他提雅」"
+    },
+    {
+      "name": "Mount Bashan",
+      "zh": "巴珊山",
+      "evidence": "诗 68:15「巴珊山是神的山；巴珊山是多峰多岭的山」"
+    },
+    {
+      "name": "Dibon 3",
+      "zh": "底们",
+      "evidence": "赛 15:9「底们的水充满了血；我还要加增底们的灾难」"
+    },
+    {
+      "name": "Lower Pool",
+      "zh": "下池",
+      "evidence": "赛 22:9「便聚积下池的水」"
+    },
+    {
+      "name": "Old Pool",
+      "zh": "旧池",
+      "evidence": "赛 22:11「挖一个聚水池可盛旧池的水」"
+    },
+    {
+      "name": "Sheshach",
+      "zh": "示沙克",
+      "evidence": "耶 25:26「以后示沙克王也要喝」"
+    },
+    {
+      "name": "Middle Gate",
+      "zh": "中门",
+      "evidence": "耶 39:3「并巴比伦王其余的一切首领，都来坐在中门」"
+    },
+    {
+      "name": "Geruth Chimham",
+      "zh": "金罕寓",
+      "evidence": "耶 41:17「带到靠近伯利恒的金罕寓住下」"
+    },
+    {
+      "name": "Misgab",
+      "zh": "米斯迦",
+      "evidence": "耶 48:1「米斯迦蒙羞被毁坏」"
+    },
+    {
+      "name": "Bethel 3",
+      "zh": "伯特利",
+      "evidence": "耶 48:13「像以色列家从前倚靠伯特利的神羞愧一样」"
+    },
+    {
+      "name": "North",
+      "zh": "北方",
+      "evidence": "但 11:6「南方王的女儿必就了北方王来立约」"
+    },
+    {
+      "name": "Valley of Decision",
+      "zh": "断定谷",
+      "evidence": "珥 3:14「许多许多的人在断定谷，因为雅伟的日子临近断定谷」"
+    },
+    {
+      "name": "Gadara",
+      "zh": "加大拉",
+      "evidence": "太 8:28「来到加大拉人的地方」"
+    },
+    {
+      "name": "Gerasa",
+      "zh": "格拉森",
+      "evidence": "可 5:1「他们来到海那边格拉森人的地方」"
+    },
+    {
+      "name": "Straight Street",
+      "zh": "直街",
+      "evidence": "徒 9:11「起来！往直街去，在犹大的家里」"
+    }
+  ]
+}

@@ -342,7 +342,7 @@
 - **年代**　前 2086 — 前 2080　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「亚伯兰与罗得分开」（-2086）、另一侧是「与亚伯拉罕立约」（-2080），故落在 -2086—-2080 之间。区间宽度即为不确定度，不是精度。
 - **内容**　亚伯兰得胜归来，撒冷王麦基洗德带饼和酒为他祝福；亚伯兰献上十分之一，拒受所多玛王的财物。
-- **地点**　亚革大马（King’s Valley）、所多玛（Sodom）、沙微谷（Valley of Shaveh）、撒冷（Salem）
+- **地点**　王谷（King’s Valley）、所多玛（Sodom）、沙微谷（Valley of Shaveh）、撒冷（Salem）
 
 ### 神与亚伯兰立约 · God's Covenant with Abram
 
@@ -439,7 +439,7 @@
 - **年代**　前 2055　·　推算
 - **定年依据**　与年表重叠：献以撒。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　亚伯拉罕带以撒往摩利亚山献燔祭，举刀时天使阻止，以公羊代替；那地名叫雅伟以勒。
-- **地点**　摩利亚（Moriah）、亚革大马（The Lord Will Provide）、别是巴（Beersheba 2）
+- **地点**　摩利亚（Moriah）、雅伟以勒（The Lord Will Provide）、别是巴（Beersheba 2）
 
 ### 拿鹤的子孙 · The Children of Nahor
 
@@ -463,7 +463,7 @@
 - **年代**　前 2026　·　推算
 - **定年依据**　与年表重叠：利百加嫁以撒。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　亚伯拉罕的仆人为以撒娶利百加——一段动人的护理故事。
-- **地点**　美索不达米亚（Mesopotamia）、哈兰（Nahor）、庇耳拉海莱（Beer-lahai-roi）、南地（Negeb）
+- **地点**　美索不达米亚（Mesopotamia）、拿鹤的城（Nahor）、庇耳拉海莱（Beer-lahai-roi）、南地（Negeb）
 
 ### 亚伯拉罕去世 · The Death of Abraham
 
@@ -560,7 +560,7 @@
 - **年代**　前 1922 — 前 1898　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「雅各娶利亚拉结」（-1922）、另一侧是「约瑟被卖到埃及」（-1898），故落在 -1922—-1898 之间。区间宽度即为不确定度，不是精度。
 - **内容**　雅各偷偷离开拉班——二十年逃亡生涯的最后一幕。
-- **地点**　伯特利（Bethel 1）、迦南（Canaan）、巴旦亚兰（Paddan-aram）、幼发拉底河（Euphrates）、基列（Gilead 1）、Mizpah 4
+- **地点**　伯特利（Bethel 1）、迦南（Canaan）、巴旦亚兰（Paddan-aram）、幼发拉底河（Euphrates）、基列（Gilead 1）、米斯巴（Mizpah 4）
 
 ### 雅各预备见以扫 · Jacob Prepares to Meet Esau
 
@@ -619,7 +619,7 @@
 - **年代**　前 1922 — 前 1898　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「雅各娶利亚拉结」（-1922）、另一侧是「约瑟被卖到埃及」（-1898），故落在 -1922—-1898 之间。区间宽度即为不确定度，不是精度。
 - **内容**　以扫的家谱——「以东」民族的根源，日后与以色列恩怨纠葛。
-- **地点**　迦南（Canaan）、西珥山（Mount Seir 1）、以东（Edom）、波斯拉（Bozrah 1）、亚未得（Avith）、米甸（Midian）、摩押（Moab 1）、玛士利加（Masrekah）、利河伯（Rehoboth 2）、大河（River 3）、Mezahab、巴乌（Pau）
+- **地点**　迦南（Canaan）、西珥山（Mount Seir 1）、以东（Edom）、波斯拉（Bozrah 1）、亚未得（Avith）、米甸（Midian）、摩押（Moab 1）、玛士利加（Masrekah）、利河伯（Rehoboth 2）、大河（River 3）、米萨合（Mezahab）、巴乌（Pau）
 
 ### 约瑟的梦 · Joseph's Dreams
 
@@ -644,7 +644,7 @@
 - **年代**　前 1898 — 前 1885　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「约瑟被卖到埃及」（-1898）、另一侧是「约瑟升为宰相」（-1885），故落在 -1898—-1885 之间。区间宽度即为不确定度，不是精度。
 - **内容**　犹大与他玛——一段令人不安的家族故事，却是基督家谱的一部分。
-- **地点**　亚杜兰（Adullam）、基悉（Chezib）、亚珊（Timnah 3）、伊拿印（Enaim）
+- **地点**　亚杜兰（Adullam）、基悉（Chezib）、亭拿（Timnah 3）、伊拿印（Enaim）
 
 ### 约瑟在波提乏家 · Joseph in Potiphar's House
 
@@ -659,7 +659,7 @@
 - **经文**　创世记 39:7–39:23（Genesis 39:7–39:23）
 - **年代**　前 1898 — 前 1885　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「约瑟被卖到埃及」（-1898）、另一侧是「约瑟升为宰相」（-1885），故落在 -1898—-1885 之间。区间宽度即为不确定度，不是精度。
-- **内容**　约瑟拒绝引诱——「我怎能犯这大恶，得罪神呢？」纯洁的最高典范。
+- **内容**　约瑟拒绝引诱——「我怎能作这大恶，得罪神呢？」纯洁的最高典范。
 - **地点**　经文此段未点名可定位的地点
 
 ### 约瑟解囚犯的梦 · The Cupbearer and the Baker
@@ -783,7 +783,7 @@
 - **经文**　创世记 50:22–50:26（Genesis 50:22–50:26）
 - **年代**　前 1876 — 前 1700　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「雅各全家下埃及」（-1876）、另一侧是「以色列在埃及受苦」（-1700），故落在 -1876—-1700 之间。区间宽度即为不确定度，不是精度。
-- **内容**　约瑟的临终：「神必然看顾你们」——遗嘱中的信心，预言出埃及。
+- **内容**　约瑟的临终：「神必定看顾你们」——遗嘱中的信心，预言出埃及。
 - **地点**　埃及（Egypt）
 
 ---
@@ -1008,8 +1008,8 @@
 - **经文**　出埃及记 19:1–19:25（Exodus 19:1–19:25）
 - **年代**　前 1446　·　推算
 - **定年依据**　与年表重叠：西奈山十诫。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　西奈山——神向以色列显现立约的地点。从此他们成为「祭司的国度，圣洁的国民」。
-- **地点**　埃及（Egypt）、何烈（Wilderness of Sinai）、西奈山（Mount Sinai）、利非订（Rephidim）
+- **内容**　西奈山——神向以色列显现立约的地点。从此他们成为「作祭司的国度，为圣洁的国民」。
+- **地点**　埃及（Egypt）、西乃的旷野（Wilderness of Sinai）、西奈山（Mount Sinai）、利非订（Rephidim）
 
 ### 颁布十诫 · The Ten Commandments
 
@@ -1017,7 +1017,7 @@
 - **平行经文**　十诫 — 同见 Deuteronomy 5:6–21
 - **年代**　前 1446　·　推算
 - **定年依据**　与年表重叠：西奈山十诫。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　神颁布十诫——从「除了我以外不可有别的神」到「不可贪恋」；百姓见雷轰闪电发颤，求摩西代为说话。
+- **内容**　神颁布十诫——从「除了我以外，你不可有别的神」到「不可贪恋」；百姓见雷轰闪电发颤，求摩西代为说话。
 - **地点**　埃及（Egypt）
 
 ### 约书条例 · Laws of the Covenant
@@ -1086,7 +1086,7 @@
 - **经文**　出埃及记 33:1–33:23（Exodus 33:1–33:23）
 - **年代**　前 1445　·　推算
 - **定年依据**　与年表重叠：建造会幕。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　摩西求见神荣耀——「我容许我的恩慈在你面前经过」，神的本性就是丰盛的恩典。
+- **内容**　摩西求见神荣耀——「我要显我一切的恩慈，在你面前经过」，神的本性就是丰盛的恩典。
 - **地点**　埃及（Egypt）、何烈山（Mount Horeb）
 
 ### 重立约版 · The New Tablets
@@ -1168,7 +1168,7 @@
 - **年代**　前 1445 — 前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「建造会幕」（-1445）、另一侧是「旷野四十年」（-1406），故落在 -1445—-1406 之间。区间宽度即为不确定度，不是精度。
 - **内容**　赎愆祭——为得罪邻舍而献，必须先归还财物再加五分之一。
-- **地点**　西奈山（Mount Sinai）、何烈（Wilderness of Sinai）
+- **地点**　西奈山（Mount Sinai）、西乃的旷野（Wilderness of Sinai）
 
 ### 亚伦的就职 · The Ordination of Aaron
 
@@ -1234,7 +1234,7 @@
 - **经文**　利未记 19:1–19:37（Leviticus 19:1–19:37）
 - **年代**　前 1445 — 前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「建造会幕」（-1445）、另一侧是「旷野四十年」（-1406），故落在 -1445—-1406 之间。区间宽度即为不确定度，不是精度。
-- **内容**　「你们要圣洁，因为我雅伟是圣洁的」——留田角给穷人、不可欺压邻舍、爱人如己、公道升斗。
+- **内容**　「你们要圣洁，因为我雅伟你们的神是圣洁的」——留田角给穷人、不可欺压邻舍、爱人如己、公道升斗。
 - **地点**　埃及（Egypt）
 
 ### 对各样恶行的刑罚 · Penalties for Sin
@@ -1312,7 +1312,7 @@
 - **年代**　前 1445 — 前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「建造会幕」（-1445）、另一侧是「旷野四十年」（-1406），故落在 -1445—-1406 之间。区间宽度即为不确定度，不是精度。
 - **内容**　第一次数点——出埃及第二年，预备争战。神的百姓有秩序。
-- **地点**　埃及（Egypt）、何烈（Wilderness of Sinai）
+- **地点**　埃及（Egypt）、西乃的旷野（Wilderness of Sinai）
 
 ### 利未人的职分 · The Levites
 
@@ -1320,7 +1320,7 @@
 - **年代**　前 1445 — 前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「建造会幕」（-1445）、另一侧是「旷野四十年」（-1406），故落在 -1445—-1406 之间。区间宽度即为不确定度，不是精度。
 - **内容**　利未人的职分——在会幕中事奉，作其余支派代赎的人。
-- **地点**　西奈山（Mount Sinai）、何烈（Wilderness of Sinai）、埃及（Egypt）
+- **地点**　西奈山（Mount Sinai）、西乃的旷野（Wilderness of Sinai）、埃及（Egypt）
 
 ### 营中洁净的条例 · Purity in the Camp
 
@@ -1352,7 +1352,7 @@
 - **年代**　前 1445 — 前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「建造会幕」（-1445）、另一侧是「旷野四十年」（-1406），故落在 -1445—-1406 之间。区间宽度即为不确定度，不是精度。
 - **内容**　第二次逾越节——出埃及一年后纪念神的拯救。
-- **地点**　埃及（Egypt）、何烈（Wilderness of Sinai）
+- **地点**　埃及（Egypt）、西乃的旷野（Wilderness of Sinai）
 
 ### 云柱与行止 · The Cloud Above the Tabernacle
 
@@ -1368,7 +1368,7 @@
 - **年代**　前 1445 — 前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「建造会幕」（-1445）、另一侧是「旷野四十年」（-1406），故落在 -1445—-1406 之间。区间宽度即为不确定度，不是精度。
 - **内容**　离开西奈——神百姓终于动身往应许之地去。
-- **地点**　埃及（Egypt）、巴兰（Paran）、何烈（Wilderness of Sinai）
+- **地点**　埃及（Egypt）、巴兰（Paran）、西乃的旷野（Wilderness of Sinai）
 
 ### 在他备拉怨言 · Complaints at Taberah
 
@@ -1408,7 +1408,7 @@
 - **年代**　前 1406　·　推算
 - **定年依据**　与年表重叠：旷野四十年。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　百姓决定回埃及——一代以色列因不信而失去应许之地。
-- **地点**　埃及（Egypt）、Way of the Red Sea、何珥玛（Hormah）
+- **地点**　埃及（Egypt）、红海的路（Way of the Red Sea）、何珥玛（Hormah）
 
 ### 可拉的反叛 · Korah's Rebellion
 
@@ -1432,7 +1432,7 @@
 - **年代**　前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「旷野四十年」（-1406）、另一侧是「摩西之死」（-1406），故落在 -1406—-1406 之间。区间宽度即为不确定度，不是精度。
 - **内容**　摩西击磐石（不是吩咐）——因这一时之忿失去进入应许之地的机会。
-- **地点**　加低斯巴尼亚（Kadesh-barnea）、寻（Zin 1）、埃及（Egypt）、米利巴（Meribah 1）、以东（Edom）、亚扪（King’s Highway）
+- **地点**　加低斯巴尼亚（Kadesh-barnea）、寻（Zin 1）、埃及（Egypt）、米利巴（Meribah 1）、以东（Edom）、王道（King’s Highway）
 
 ### 亚伦之死 · The Death of Aaron
 
@@ -1448,7 +1448,7 @@
 - **年代**　前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「旷野四十年」（-1406）、另一侧是「摩西之死」（-1406），故落在 -1406—-1406 之间。区间宽度即为不确定度，不是精度。
 - **内容**　铜蛇的事件——耶稣在约翰福音3:14 引用此事，预示他自己被举起。
-- **地点**　以东（Edom）、何珥山（Mount Hor 1）、Way of the Red Sea、埃及（Egypt）、阿伯（Oboth）、以耶亚巴琳（Iye-abarim）、摩押（Moab 1）、撒烈谷（Valley of Zered）、亚嫩河（Arnon）、苏法（Suphah）、哇哈伯（Waheb）、亚珥（Ar）、比珥（Beer 1）、玛他拿（Mattanah）、巴末（Bamoth）、拿哈列（Nahaliel）、旷野（Jeshimon）、毘斯迦（Pisgah）、亚扪（King’s Highway）、雅杂（Jahaz）、亚扪（Ammon）、雅博（Jabbok）、雅谢（Jazer）、希实本（Heshbon）、底本（Dibon 1）、米底巴（Medeba）、挪法（Nophah）、巴珊（Bashan）、以得来（Edrei 1）
+- **地点**　以东（Edom）、何珥山（Mount Hor 1）、红海的路（Way of the Red Sea）、埃及（Egypt）、阿伯（Oboth）、以耶亚巴琳（Iye-abarim）、摩押（Moab 1）、撒烈谷（Valley of Zered）、亚嫩河（Arnon）、苏法（Suphah）、哇哈伯（Waheb）、亚珥（Ar）、比珥（Beer 1）、玛他拿（Mattanah）、巴末（Bamoth）、拿哈列（Nahaliel）、旷野（Jeshimon）、毘斯迦（Pisgah）、王道（King’s Highway）、雅杂（Jahaz）、亚扪（Ammon）、雅博（Jabbok）、雅谢（Jazer）、希实本（Heshbon）、底本（Dibon 1）、米底巴（Medeba）、挪法（Nophah）、巴珊（Bashan）、以得来（Edrei 1）
 
 ### 巴勒招巴兰 · Balak Summons Balaam
 
@@ -1456,7 +1456,7 @@
 - **年代**　前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「旷野四十年」（-1406）、另一侧是「摩西之死」（-1406），故落在 -1406—-1406 之间。区间宽度即为不确定度，不是精度。
 - **内容**　巴勒招巴兰——异邦先知被请来咒诅以色列，反成为祝福者。
-- **地点**　耶利哥（Jericho 1）、约旦河（Jordan）、摩押（Moab 2）、摩押（Moab 1）、米甸（Midian）、亚扪（Amaw）、埃及（Egypt）、毘夺（Pethor）、大河（River 2）
+- **地点**　耶利哥（Jericho 1）、约旦河（Jordan）、摩押（Moab 2）、摩押（Moab 1）、米甸（Midian）、Amaw、埃及（Egypt）、毘夺（Pethor）、大河（River 2）
 
 ### 巴兰与会说话的驴 · Balaam's Donkey
 
@@ -1464,7 +1464,7 @@
 - **年代**　前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「旷野四十年」（-1406）、另一侧是「摩西之死」（-1406），故落在 -1406—-1406 之间。区间宽度即为不确定度，不是精度。
 - **内容**　巴兰与会说话的驴——一个滑稽却严肃的故事，连驴也比先知更敬畏神。
-- **地点**　亚嫩河（Arnon）、Ir-moab、基列胡琐（Kiriath-huzoth）、巴末巴力（Bamoth-baal）
+- **地点**　亚嫩河（Arnon）、摩押京城（Ir-moab）、基列胡琐（Kiriath-huzoth）、巴末巴力（Bamoth-baal）
 
 ### 巴兰的预言 · Balaam's Oracles
 
@@ -1491,7 +1491,7 @@
 - **年代**　前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「旷野四十年」（-1406）、另一侧是「摩西之死」（-1406），故落在 -1406—-1406 之间。区间宽度即为不确定度，不是精度。
 - **内容**　第二次数点——出埃及40年后的新一代，预备进入应许之地。
-- **地点**　耶利哥（Jericho 1）、约旦河（Jordan）、摩押（Moab 2）、埃及（Egypt）、迦南（Canaan）、何烈（Wilderness of Sinai）
+- **地点**　耶利哥（Jericho 1）、约旦河（Jordan）、摩押（Moab 2）、埃及（Egypt）、迦南（Canaan）、西乃的旷野（Wilderness of Sinai）
 
 ### 西罗非哈的女儿们 · Inheritance for Daughters
 
@@ -1520,7 +1520,7 @@
 - **年代**　前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「旷野四十年」（-1406）、另一侧是「摩西之死」（-1406），故落在 -1406—-1406 之间。区间宽度即为不确定度，不是精度。
 - **内容**　流便、迦得、玛拿西半支派定居约旦河东——约定在征战完后才回家。
-- **地点**　基列（Gilead 1）、雅谢（Jazer）、亚大录（Ataroth 1）、比稳（Beon）、底本（Dibon 1）、以利亚利（Elealeh）、希实本（Heshbon）、尼波（Nebo 1）、宁拉（Nimrah）、西比玛（Sibmah）、约旦河（Jordan）、加低斯巴尼亚（Kadesh-barnea）、以实各谷（Valley of Eshcol）、埃及（Egypt）、迦南（Canaan）、巴珊（Bashan）、亚罗珥（Aroer 1）、亚他录朔反（Atroth-shophan）、约比哈（Jogbehah）、伯亚兰（Beth-haram）、伯宁拉（Beth-nimrah）、基列亭（Kiriathaim 1）、巴力免（Baal-meon）、哈倭特睚珥（Havvoth-jair）、基纳（Kenath）、挪巴（Nobah 1）、兰塞（Rameses）、疏割（Succoth 2）、以倘（Etham）、巴力洗分（Baal-zephon）、密夺（Migdol 1）、比哈希录（Pi-hahiroth）、玛拉（Marah）、红海（Red Sea 1）、以琳（Elim）、红海（Red Sea 3）、汛（Sin）、脱加（Dophkah）、亚录（Alush）、利非订（Rephidim）、何烈（Wilderness of Sinai）、基博罗哈他瓦（Kibroth-hattaavah）、哈洗录（Hazeroth）、利提玛（Rithmah）、临门帕烈（Rimmon-perez）、立拿（Libnah 2）、勒撒（Rissah）、基希拉他（Kehelathah）、沙斐山（Mount Shepher）、哈拉大（Haradah）、玛吉希录（Makheloth）、他哈（Tahath）、他拉（Terah）、密加（Mithkah）、哈摩拿（Hashmonah）、摩西录（Moseroth）、比尼亚干（Bene-jaakan）、曷哈及甲（Hor-haggidgad）、约巴他（Jotbathah）、阿博拿（Abronah）、以旬迦别（Ezion-geber）、寻（Zin 1）、以东（Edom）、何珥山（Mount Hor 1）、亚拉得（Arad 1）、南地（Negeb）、撒摩拿（Zalmonah）、普嫩（Punon）、阿伯（Oboth）、以耶亚巴琳（Iye-abarim）、摩押（Moab 1）、亚门低比拉太音（Almon-diblathaim）、亚巴琳（Abarim）、耶利哥（Jericho 1）、摩押（Moab 2）、亚伯什亭（Abel-shittim）、伯耶施末（Beth-jeshimoth）、盐海（Salt Sea）、亚克拉滨（Akrabbim）、押们（Azmon）、哈萨亚达（Hazar-addar）、寻（Zin 2）、埃及小河（Brook of Egypt）、大海（Great Sea）、何珥山（Mount Hor 2）、哈马（Lebo-hamath）、西达达（Zedad）、哈萨以难（Hazar-enan）、西斐仑（Ziphron）、示番（Shepham）、亚延（Ain 1）、利比拉（Riblah 2）、加利利海（Sea of Galilee）
+- **地点**　基列（Gilead 1）、雅谢（Jazer）、亚大录（Ataroth 1）、比稳（Beon）、底本（Dibon 1）、以利亚利（Elealeh）、希实本（Heshbon）、尼波（Nebo 1）、宁拉（Nimrah）、西比玛（Sibmah）、约旦河（Jordan）、加低斯巴尼亚（Kadesh-barnea）、以实各谷（Valley of Eshcol）、埃及（Egypt）、迦南（Canaan）、巴珊（Bashan）、亚罗珥（Aroer 1）、亚他录朔反（Atroth-shophan）、约比哈（Jogbehah）、伯亚兰（Beth-haram）、伯宁拉（Beth-nimrah）、基列亭（Kiriathaim 1）、巴力免（Baal-meon）、哈倭特睚珥（Havvoth-jair）、基纳（Kenath）、挪巴（Nobah 1）、兰塞（Rameses）、疏割（Succoth 2）、以倘（Etham）、巴力洗分（Baal-zephon）、密夺（Migdol 1）、比哈希录（Pi-hahiroth）、玛拉（Marah）、红海（Red Sea 1）、以琳（Elim）、红海（Red Sea 3）、汛（Sin）、脱加（Dophkah）、亚录（Alush）、利非订（Rephidim）、西乃的旷野（Wilderness of Sinai）、基博罗哈他瓦（Kibroth-hattaavah）、哈洗录（Hazeroth）、利提玛（Rithmah）、临门帕烈（Rimmon-perez）、立拿（Libnah 2）、勒撒（Rissah）、基希拉他（Kehelathah）、沙斐山（Mount Shepher）、哈拉大（Haradah）、玛吉希录（Makheloth）、他哈（Tahath）、他拉（Terah）、密加（Mithkah）、哈摩拿（Hashmonah）、摩西录（Moseroth）、比尼亚干（Bene-jaakan）、曷哈及甲（Hor-haggidgad）、约巴他（Jotbathah）、阿博拿（Abronah）、以旬迦别（Ezion-geber）、寻（Zin 1）、以东（Edom）、何珥山（Mount Hor 1）、亚拉得（Arad 1）、南地（Negeb）、撒摩拿（Zalmonah）、普嫩（Punon）、阿伯（Oboth）、以耶亚巴琳（Iye-abarim）、摩押（Moab 1）、亚门低比拉太音（Almon-diblathaim）、亚巴琳（Abarim）、耶利哥（Jericho 1）、摩押（Moab 2）、亚伯什亭（Abel-shittim）、伯耶施末（Beth-jeshimoth）、盐海（Salt Sea）、亚克拉滨（Akrabbim）、押们（Azmon）、哈萨亚达（Hazar-addar）、寻（Zin 2）、埃及小河（Brook of Egypt）、大海（Great Sea）、何珥山（Mount Hor 2）、哈马（Lebo-hamath）、西达达（Zedad）、哈萨以难（Hazar-enan）、西斐仑（Ziphron）、示番（Shepham）、亚延（Ain 1）、利比拉（Riblah 2）、加利利海（Sea of Galilee）
 
 ### 逃城的设立 · Cities of Refuge
 
@@ -1543,7 +1543,7 @@
 - **年代**　前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「旷野四十年」（-1406）、另一侧是「摩西之死」（-1406），故落在 -1406—-1406 之间。区间宽度即为不确定度，不是精度。
 - **内容**　摩西的告别讲论——回顾旷野的经历，向新一代传承立约信仰。
-- **地点**　亚拉巴（Arabah）、底撒哈（Dizahab）、哈洗录（Hazeroth）、约旦河（Jordan）、拉班（Laban）、巴兰（Paran）、疏弗（Suph）、陀弗（Tophel）、加低斯巴尼亚（Kadesh-barnea）、何烈山（Mount Horeb）、西珥山（Mount Seir 1）、埃及（Egypt）、亚斯他录（Ashtaroth）、巴珊（Bashan）、以得来（Edrei 1）、希实本（Heshbon）、摩押（Moab 1）、迦南（Canaan）、幼发拉底河（Euphrates）、黎巴嫩（Lebanon）、南地（Negeb）、高原（Shephelah）、以实各谷（Valley of Eshcol）、Way of the Red Sea、何珥玛（Hormah）、以拉他（Elath）、以旬迦别（Ezion-geber）、亚珥（Ar）、撒烈（Zered）、亚扪（Ammon）、迦斐托（Caphtor）、迦萨（Gaza）、亚嫩谷（Valley of the Arnon）、基底莫（Kedemoth）、雅杂（Jahaz）、亚罗珥（Aroer 1）、基列（Gilead 1）、雅博（Jabbok）、亚珥歌伯（Argob）、黑门山（Mount Hermon）、示尼珥（Senir）、撒迦（Salecah）、拉巴（Rabbah 1）、哈倭特睚珥（Havvoth-jair）、Chinnereth、毘斯迦（Pisgah）、盐海（Salt Sea）、伯毗珥（Beth-peor）
+- **地点**　亚拉巴（Arabah）、底撒哈（Dizahab）、哈洗录（Hazeroth）、约旦河（Jordan）、拉班（Laban）、巴兰（Paran）、疏弗（Suph）、陀弗（Tophel）、加低斯巴尼亚（Kadesh-barnea）、何烈山（Mount Horeb）、西珥山（Mount Seir 1）、埃及（Egypt）、亚斯他录（Ashtaroth）、巴珊（Bashan）、以得来（Edrei 1）、希实本（Heshbon）、摩押（Moab 1）、迦南（Canaan）、幼发拉底河（Euphrates）、黎巴嫩（Lebanon）、南地（Negeb）、高原（Shephelah）、以实各谷（Valley of Eshcol）、红海的路（Way of the Red Sea）、何珥玛（Hormah）、以拉他（Elath）、以旬迦别（Ezion-geber）、亚珥（Ar）、撒烈（Zered）、亚扪（Ammon）、迦斐托（Caphtor）、迦萨（Gaza）、亚嫩谷（Valley of the Arnon）、基底莫（Kedemoth）、雅杂（Jahaz）、亚罗珥（Aroer 1）、基列（Gilead 1）、雅博（Jabbok）、亚珥歌伯（Argob）、黑门山（Mount Hermon）、示尼珥（Senir）、撒迦（Salecah）、拉巴（Rabbah 1）、哈倭特睚珥（Havvoth-jair）、基尼烈（Chinnereth）、毘斯迦（Pisgah）、盐海（Salt Sea）、伯毗珥（Beth-peor）
 
 ### 呼吁顺服与不忘记 · Obedience Commanded
 
@@ -1576,7 +1576,7 @@
 - **经文**　申命记 7:1–7:26（Deuteronomy 7:1–7:26）
 - **年代**　前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「旷野四十年」（-1406）、另一侧是「摩西之死」（-1406），故落在 -1406—-1406 之间。区间宽度即为不确定度，不是精度。
-- **内容**　拣选的民——「我拣选你们，不是因你们多，乃因我爱你们」。神不变的爱。
+- **内容**　拣选的民——「雅伟专爱你们，拣选你们，并非因你们的人数多于别民」。神不变的爱。
 - **地点**　埃及（Egypt）
 
 ### 记念神的供应 · Remember the LORD
@@ -1584,7 +1584,7 @@
 - **经文**　申命记 8:1–8:20（Deuteronomy 8:1–8:20）
 - **年代**　前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「旷野四十年」（-1406）、另一侧是「摩西之死」（-1406），故落在 -1406—-1406 之间。区间宽度即为不确定度，不是精度。
-- **内容**　「人活着不是单靠食物，乃靠雅伟口里所出的一切话」——耶稣引此抵挡试探。
+- **内容**　「人活着不是单靠食物，乃是靠雅伟口里所出的一切话」——耶稣引此抵挡试探。
 - **地点**　埃及（Egypt）
 
 ### 金牛犊事件的回顾 · The Golden Calf Recalled
@@ -1601,7 +1601,7 @@
 - **年代**　前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「旷野四十年」（-1406）、另一侧是「摩西之死」（-1406），故落在 -1406—-1406 之间。区间宽度即为不确定度，不是精度。
 - **内容**　摩西说雅伟所要的是敬畏、爱他、事奉他；应许秋雨春雨，祝福与咒诅要陈明在基利心山与以巴路山。
-- **地点**　埃及（Egypt）、红海（Red Sea 1）、约旦河（Jordan）、幼发拉底河（Euphrates）、大海（Great Sea）、黎巴嫩（Lebanon）、以巴路山（Mount Ebal）、基利心山（Mount Gerizim）、亚拉巴（Arabah）、耶利哥（Gilgal 4）、摩利（Moreh 1）
+- **地点**　埃及（Egypt）、红海（Red Sea 1）、约旦河（Jordan）、幼发拉底河（Euphrates）、大海（Great Sea）、黎巴嫩（Lebanon）、以巴路山（Mount Ebal）、基利心山（Mount Gerizim）、亚拉巴（Arabah）、吉甲（Gilgal 4）、摩利（Moreh 1）
 
 ### 正确敬拜的中心地 · The Place of Worship
 
@@ -1646,7 +1646,7 @@
 - **平行经文**　众逃城 — 同见 Numbers 35:6–34、Joshua 20:1–9、Deuteronomy 4:41–43
 - **年代**　前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「旷野四十年」（-1406）、另一侧是「摩西之死」（-1406），故落在 -1406—-1406 之间。区间宽度即为不确定度，不是精度。
-- **内容**　「与我相似的先知」——彼得、司提反在使徒行传引此预言耶稣。
+- **内容**　「从你们弟兄中间给你兴起一位先知像我」——彼得、司提反在使徒行传引此预言耶稣。
 - **地点**　何烈山（Mount Horeb）
 
 ### 战争的法则 · Going to War
@@ -1702,7 +1702,7 @@
 - **经文**　申命记 30:11–30:20（Deuteronomy 30:11–30:20）
 - **年代**　前 1406　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「旷野四十年」（-1406）、另一侧是「摩西之死」（-1406），故落在 -1406—-1406 之间。区间宽度即为不确定度，不是精度。
-- **内容**　「这话离你甚近，就在你口中、心里」——摩西将生死祸福陈明，呼吁百姓拣选生命。
+- **内容**　「这话却离你甚近，就在你口中，在你心里」——摩西将生死祸福陈明，呼吁百姓拣选生命。
 - **地点**　约旦河（Jordan）
 
 ### 约书亚接续摩西 · Joshua to Succeed Moses
@@ -1734,8 +1734,8 @@
 - **经文**　申命记 34:1–34:12（Deuteronomy 34:1–34:12）
 - **年代**　前 1406　·　推算
 - **定年依据**　与年表重叠：摩西之死。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　摩西在尼波山眺望应许之地后归于神——「雅伟亲手把他葬了」。
-- **地点**　基列（Gilead 1）、耶利哥（Jericho 1）、摩押（Moab 2）、尼波山（Mount Nebo）、毘斯迦（Pisgah）、大海（Great Sea）、耶利哥（City of Palms 1）、南地（Negeb）、耶利哥平原（Valley of Jericho）、琐珥（Zoar）、摩押（Moab 1）、伯毗珥（Beth-peor）、埃及（Egypt）
+- **内容**　摩西在尼波山眺望应许之地后归于神——「雅伟将他埋葬在摩押地」。
+- **地点**　基列（Gilead 1）、耶利哥（Jericho 1）、摩押（Moab 2）、尼波山（Mount Nebo）、毘斯迦（Pisgah）、大海（Great Sea）、棕树城（City of Palms 1）、南地（Negeb）、耶利哥平原（Valley of Jericho）、琐珥（Zoar）、摩押（Moab 1）、伯毗珥（Beth-peor）、埃及（Egypt）
 
 ---
 
@@ -1845,22 +1845,22 @@
 - **年代**　前 1406 — 前 1399　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶利哥城陷」（-1406）、另一侧是「分地给十二支派」（-1399），故落在 -1406—-1399 之间。区间宽度即为不确定度，不是精度。
 - **内容**　北方诸王战役——夏琐被烧，迦南北部完全被征服。
-- **地点**　押煞（Achshaph）、夏琐（Hazor 1）、玛顿（Madon）、伸仑（Shimron）、亚拉巴（Arabah）、Chinnereth、多珥山冈（Naphoth-dor）、高原（Shephelah）、迦南（Canaan）、米斯巴（Mizpah 2）、黑门山（Mount Hermon）、Waters of Merom、米斯利弗玛音（Misrephoth-maim）、西顿（Sidon）、米斯巴平原（Valley of Mizpeh）、歌珊（Goshen 2）、南地（Negeb）、巴力迦得（Baal-gad）、哈拉山（Mount Halak）、西珥山（Mount Seir 1）、黎巴嫩平原（Valley of Lebanon）、基遍（Gibeon）、亚拿伯（Anab）、底璧（Debir 1）、希伯仑（Hebron）、亚实突（Ashdod）、迦特（Gath 1）、迦萨（Gaza）、约旦河（Jordan）、亚嫩谷（Valley of the Arnon）、亚扪（Ammon）、亚罗珥（Aroer 1）、基列（Gilead 1）、希实本（Heshbon）、雅博（Jabbok）、伯耶施末（Beth-jeshimoth）、毘斯迦（Pisgah）、盐海（Salt Sea）、加利利海（Sea of Galilee）、亚斯他录（Ashtaroth）、巴珊（Bashan）、以得来（Edrei 1）、基述（Geshur）、玛迦（Maacah）、撒迦（Salecah）、艾（Ai 1）、伯特利（Bethel 1）、耶利哥（Jericho 1）、耶路撒冷（Jerusalem）、耶末（Jarmuth 1）、拉吉（Lachish）、伊矶伦（Eglon）、基色（Gezer）、基德（Geder）、亚拉得（Arad 1）、何珥玛（Hormah）、亚杜兰（Adullam）、立拿（Libnah 1）、玛基大（Makkedah）、希弗（Hepher）、他普亚（Tappuah 1）、亚弗（Aphek 2）、拉沙仑（Lasharon）、伸仑米仑（Shimron-meron）、米吉多（Megiddo）、他纳（Taanach）、约念（Jokneam）、基低斯（Kedesh 1）、迦密山（Mount Carmel）、多珥（Dor）、加利利（Galilee 2）、戈印（Goiim 2）、得撒（Tirzah）
+- **地点**　押煞（Achshaph）、夏琐（Hazor 1）、玛顿（Madon）、伸仑（Shimron）、亚拉巴（Arabah）、基尼烈（Chinnereth）、多珥山冈（Naphoth-dor）、高原（Shephelah）、迦南（Canaan）、米斯巴（Mizpah 2）、黑门山（Mount Hermon）、米伦水（Waters of Merom）、米斯利弗玛音（Misrephoth-maim）、西顿（Sidon）、米斯巴平原（Valley of Mizpeh）、歌珊（Goshen 2）、南地（Negeb）、巴力迦得（Baal-gad）、哈拉山（Mount Halak）、西珥山（Mount Seir 1）、黎巴嫩平原（Valley of Lebanon）、基遍（Gibeon）、亚拿伯（Anab）、底璧（Debir 1）、希伯仑（Hebron）、亚实突（Ashdod）、迦特（Gath 1）、迦萨（Gaza）、约旦河（Jordan）、亚嫩谷（Valley of the Arnon）、亚扪（Ammon）、亚罗珥（Aroer 1）、基列（Gilead 1）、希实本（Heshbon）、雅博（Jabbok）、伯耶施末（Beth-jeshimoth）、毘斯迦（Pisgah）、盐海（Salt Sea）、加利利海（Sea of Galilee）、亚斯他录（Ashtaroth）、巴珊（Bashan）、以得来（Edrei 1）、基述（Geshur）、玛迦（Maacah）、撒迦（Salecah）、艾（Ai 1）、伯特利（Bethel 1）、耶利哥（Jericho 1）、耶路撒冷（Jerusalem）、耶末（Jarmuth 1）、拉吉（Lachish）、伊矶伦（Eglon）、基色（Gezer）、基德（Geder）、亚拉得（Arad 1）、何珥玛（Hormah）、亚杜兰（Adullam）、立拿（Libnah 1）、玛基大（Makkedah）、希弗（Hepher）、他普亚（Tappuah 1）、亚弗（Aphek 2）、拉沙仑（Lasharon）、伸仑米仑（Shimron-meron）、米吉多（Megiddo）、他纳（Taanach）、约念（Jokneam）、基低斯（Kedesh 1）、迦密山（Mount Carmel）、多珥（Dor）、加利利（Galilee 2）、戈印（Goiim 2）、得撒（Tirzah）
 
 ### 尚未得地 · Land Yet to Be Conquered
 
 - **经文**　约书亚记 13:1–13:33（Joshua 13:1–13:33）
 - **年代**　前 1399　·　推算
 - **定年依据**　与年表重叠：分地给十二支派。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　「尚未得地」——征服开始了，但还没完成。属灵生活也是如此。
-- **地点**　亚实突（Ashdod）、亚实基伦（Ashkelon）、埃及（Egypt）、以革伦（Ekron）、迦特（Gath 1）、迦萨（Gaza）、西曷（Shihor 1）、Aphek 4、米亚拉（Mearah）、西顿（Sidon）、巴力迦得（Baal-gad）、迦巴勒（Gebal 1）、黎巴嫩（Lebanon）、哈马（Lebo-hamath）、黑门山（Mount Hermon）、米斯利弗玛音（Misrephoth-maim）、约旦河（Jordan）、亚罗珥（Aroer 1）、底本（Dibon 1）、米底巴（Medeba）、亚嫩谷（Valley of the Arnon）、亚扪（Ammon）、希实本（Heshbon）、巴珊（Bashan）、基述（Geshur）、基列（Gilead 1）、玛迦（Maacah）、撒迦（Salecah）、亚斯他录（Ashtaroth）、以得来（Edrei 1）、巴力免（Baal-meon）、巴末巴力（Bamoth-baal）、雅杂（Jahaz）、基底莫（Kedemoth）、米法押（Mephaath）、基列亭（Kiriathaim 1）、西比玛（Sibmah）、细列哈沙辖（Zereth-shahar）、伯耶施末（Beth-jeshimoth）、伯毗珥（Beth-peor）、毘斯迦（Pisgah）、米甸（Midian）、亚罗珥（Aroer 2）、雅谢（Jazer）、拉巴（Rabbah 1）、比多宁（Betonim）、底璧（Debir 3）、玛哈念（Mahanaim）、拉抹米斯巴（Ramath-mizpeh）、伯亚兰（Beth-haram）、伯宁拉（Beth-nimrah）、加利利海（Sea of Galilee）、疏割（Succoth 1）、伯亚兰（Zaphon 1）、哈倭特睚珥（Havvoth-jair）、耶利哥（Jericho 1）、摩押（Moab 2）
+- **内容**　「还有许多未得之地」——征服开始了，但还没完成。属灵生活也是如此。
+- **地点**　亚实突（Ashdod）、亚实基伦（Ashkelon）、埃及（Egypt）、以革伦（Ekron）、迦特（Gath 1）、迦萨（Gaza）、西曷（Shihor 1）、亚弗（Aphek 4）、米亚拉（Mearah）、西顿（Sidon）、巴力迦得（Baal-gad）、迦巴勒（Gebal 1）、黎巴嫩（Lebanon）、哈马（Lebo-hamath）、黑门山（Mount Hermon）、米斯利弗玛音（Misrephoth-maim）、约旦河（Jordan）、亚罗珥（Aroer 1）、底本（Dibon 1）、米底巴（Medeba）、亚嫩谷（Valley of the Arnon）、亚扪（Ammon）、希实本（Heshbon）、巴珊（Bashan）、基述（Geshur）、基列（Gilead 1）、玛迦（Maacah）、撒迦（Salecah）、亚斯他录（Ashtaroth）、以得来（Edrei 1）、巴力免（Baal-meon）、巴末巴力（Bamoth-baal）、雅杂（Jahaz）、基底莫（Kedemoth）、米法押（Mephaath）、基列亭（Kiriathaim 1）、西比玛（Sibmah）、细列哈沙辖（Zereth-shahar）、伯耶施末（Beth-jeshimoth）、伯毗珥（Beth-peor）、毘斯迦（Pisgah）、米甸（Midian）、亚罗珥（Aroer 2）、雅谢（Jazer）、拉巴（Rabbah 1）、比多宁（Betonim）、底璧（Debir 3）、玛哈念（Mahanaim）、拉抹米斯巴（Ramath-mizpeh）、伯亚兰（Beth-haram）、伯宁拉（Beth-nimrah）、加利利海（Sea of Galilee）、疏割（Succoth 1）、伯亚兰（Zaphon 1）、哈倭特睚珥（Havvoth-jair）、耶利哥（Jericho 1）、摩押（Moab 2）
 
 ### 迦勒求希伯仑为业 · Caleb's Inheritance
 
 - **经文**　约书亚记 14:1–14:15（Joshua 14:1–14:15）
 - **年代**　前 1399　·　推算
 - **定年依据**　与年表重叠：分地给十二支派。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　迦勒求希伯仑——85岁了，仍然有信心要争战。「我今日还是强壮，与摩西打发我去的那天一样」。
+- **内容**　迦勒求希伯仑——85岁了，仍然有信心要争战。「我还是强壮，像摩西打发我去的那天一样」。
 - **地点**　迦南（Canaan）、约旦河（Jordan）、吉甲（Gilgal 1）、加低斯巴尼亚（Kadesh-barnea）、希伯仑（Hebron）
 
 ### 犹大支派的地业 · Judah's Allotment
@@ -1871,7 +1871,7 @@
 - **年代**　前 1399　·　推算
 - **定年依据**　与年表重叠：分地给十二支派。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　犹大支派的地业——日后的弥赛亚之地。每一寸都有意义。
-- **地点**　以东（Edom）、南地（Negeb）、寻（Zin 1）、盐海（Salt Sea）、亚达珥（Addar）、亚克拉滨（Akrabbim）、希斯仑（Hezron）、加低斯巴尼亚（Kadesh-barnea）、甲加（Karka）、寻（Zin 2）、押们（Azmon）、埃及小河（Brook of Egypt）、大海（Great Sea）、约旦河（Jordan）、伯亚拉巴（Beth-arabah）、伯曷拉（Beth-hoglah）、亚都冥（Adummim）、底璧（Debir 2）、隐罗结（En-rogel）、隐示麦泉（En-shemesh）、底璧（Gilgal 3）、亚割谷（Valley of Achor）、耶布斯（Jebus）、耶路撒冷（Jerusalem）、欣嫩谷（Valley of Hinnom）、利乏音谷（Valley of Rephaim）、巴拉（Baalah 2）、基列耶琳（Kiriath-jearim）、以弗仑山（Mount Ephron）、尼弗多亚（Nephtoah）、伯示麦（Beth-shemesh 1）、基撒仑（Chesalon）、耶琳山（Mount Jearim）、西珥山（Mount Seir 2）、亭拿（Timnah 1）、以革伦（Ekron）、雅比聂（Jabneel 1）、巴拉山（Mount Baalah）、施基仑（Shikkeron）、希伯仑（Hebron）、底璧（Debir 1）、以珊（Gulloth-mayim）、以珊（Lower Gulloth）、以珊（Upper Gulloth）、以得（Eder 2）、雅姑珥（Jagur）、甲薛（Kabzeel）、亚大达（Adadah）、底摩拿（Dimonah）、基拿（Kinah）、夏琐（Hazor 2）、以提楠（Ithnan）、基低斯（Kedesh 2）、比亚绿（Bealoth 1）、提炼（Telem）、西弗（Ziph 2）、夏琐（Hazor 3）、夏琐哈大他（Hazor-hadattah）、加略希斯仑（Kerioth-hezron）、亚曼（Amam）、摩拉大（Moladah）、示玛（Shema）、伯帕列（Beth-pelet）、哈萨迦大（Hazar-gaddah）、黑实门（Heshmon）、别是巴（Beersheba 1）、哈萨书亚（Hazar-shual）、巴拉（Baalah 1）、以森（Ezem）、以因（Iim）、基失（Chesil）、伊勒多腊（Eltolad）、何珥玛（Hormah）、麦玛拿（Madmannah）、三撒拿（Sansannah）、洗革拉（Ziklag）、亚延（Ain 2）、利巴勿（Lebaoth）、临门（Rimmon 2）、实忻（Shilhim）、亚实拿（Ashnah 1）、以实陶（Eshtaol）、高原（Shephelah）、琐拉（Zorah）、以楠（Enam）、隐干宁（En-gannim 1）、他普亚（Tappuah 2）、撒挪亚（Zanoah 1）、亚杜兰（Adullam）、亚西加（Azekah）、耶末（Jarmuth 1）、梭哥（Socoh 1）、亚底他音（Adithaim）、基底拉（Gederah 1）、基底罗他音（Gederothaim）、沙拉音（Shaaraim 1）、哈大沙（Hadashah）、麦大迦得（Migdal-gad）、洗楠（Zenan）、底连（Dilean）、约帖（Joktheel 1）、米斯巴（Mizpeh 2）、波斯加（Bozkath）、伊矶伦（Eglon）、拉吉（Lachish）、迦本（Cabbon）、基提利（Chitlish）、拉幔（Lahmam）、伯大衮（Beth-dagon 1）、基低罗（Gederoth）、玛基大（Makkedah）、拿玛（Naamah 1）、亚珊（Ashan）、以帖（Ether 1）、立拿（Libnah 1）、亚实拿（Ashnah 2）、益弗他（Iphtah）、尼悉（Nezib）、亚革悉（Achzib 1）、基伊拉（Keilah）、玛利沙（Mareshah）、亚实突（Ashdod）、迦萨（Gaza）、雅提珥（Jattir）、沙密（Shamir 1）、梭哥（Socoh 2）、大拿（Dannah）、亚拿伯（Anab）、亚念（Anim）、以实提莫（Eshtemoa）、基罗（Giloh）、底璧（Goshen 3）、何伦（Holon 1）、亚拉（Arab）、度玛（Dumah 1）、以珊（Eshan）、亚非加（Aphekah）、伯他普亚（Beth-tappuah）、雅农（Janim）、宏他（Humtah）、洗珥（Zior）、迦密（Carmel 1）、淤他（Juttah）、玛云（Maon）、西弗（Ziph 1）、耶斯列（Jezreel 1）、约甸（Jokdeam）、撒挪亚（Zanoah 2）、基比亚（Gibeah 2）、基尼（Kain）、亭拿（Timnah 2）、伯夙（Beth-zur）、基突（Gedor 1）、哈忽（Halhul）、伯亚诺（Beth-anoth）、伊勒提君（Eltekon）、玛腊（Maarath）、拉巴（Rabbah 2）、密丁（Middin）、西迦迦（Secacah）、盐城（City of Salt）、隐基底（Engedi）、匿珊（Nibshan）、伯特利（Bethel 1）、耶利哥（Jericho 1）、耶利哥（Waters of Jericho）、亚大录（Ataroth 2）、路斯（Luz 1）、基色（Gezer）、下伯和仑（Lower Beth-horon）、亚他绿亚达（Ataroth-addar）、上伯和仑（Upper Beth-horon）、雅挪哈（Janoah 1）、密米他（Michmethath）、他纳示罗（Taanath-shiloh）、Ataroth 3、拿拉（Naarah）、加拿（Kanah 1）、他普亚（Tappuah 1）、巴珊（Bashan）、基列（Gilead 1）、隐他普亚（En-tappuah）、示剑（Shechem）、伯珊（Beth-shan）、多珥（Dor）、隐多珥（En-dor）、以伯莲（Ibleam）、米吉多（Megiddo）、多珥山冈（Naphoth-dor）、他纳（Taanach）、耶斯列谷（Valley of Jezreel）、示罗（Shiloh）、伯亚文（Beth-aven 1）、伯和仑（Beth-horon）、以弗仑（Ephron 1）、基利绿（Geliloth）、亚拉巴（Arabah）、伊麦基悉（Emek-keziz）、洗玛脸（Zemaraim）、亚文（Avvim）、俄弗拉（Ophrah 1）、巴拉（Parah）、基法阿摩尼（Chephar-ammoni）、播薛（Geba 4）、俄弗尼（Ophni）、比录（Beeroth）、基遍（Gibeon）、拉玛（Ramah 1）、基非拉（Chephirah）、米斯巴（Mizpeh 1）、摩撒（Mozah）、伊利毘勒（Irpeel）、利坚（Rekem）、他拉拉（Taralah）、巴力他玛（Gibeah 4）、以利弗（Haeleph）、洗拉（Zela）、示巴（Sheba 2）、巴拉（Balah）、比土力（Bethul）、伯玛加博（Beth-marcaboth）、哈萨苏撒（Hazar-susah）、伯利巴勿（Beth-lebaoth）、沙鲁险（Sharuhen）、以帖（Ether 2）、巴拉比珥（Baalath-beer）、Ramah 6、撒立（Sarid）、大巴设（Dabbesheth）、约念（Jokneam）、玛拉拉（Mareal）、吉斯绿他泊（Chisloth-tabor）、大比拉（Daberath）、雅非亚（Japhia）、特加汛（Eth-kazin）、迦特希弗（Gath-hepher）、尼亚（Neah）、临门（Rimmon 3）、哈拿顿（Hannathon）、伊弗他伊勒谷（Valley of Iphtahel）、伯利恒（Bethlehem 2）、以大拉（Idalah）、加他（Kattath）、拿哈拉（Nahalal）、伸仑（Shimron）、基苏律（Chesulloth）、耶斯列（Jezreel 2）、书念（Shunem）、亚拿哈拉（Anaharath）、哈弗连（Hapharaim）、示按（Shion）、亚别（Ebez）、基善（Kishion）、拉璧（Rabbith）、伯帕薛（Beth-pazzez）、隐干宁（En-gannim 2）、隐哈大（En-haddah）、利篾（Remeth）、伯示麦（Beth-shemesh 2）、他泊山（Mount Tabor）、沙哈洗玛（Shahazumah）、押煞（Achshaph）、比田（Beten）、哈利（Hali）、黑甲（Helkath）、亚拉米勒（Allammelech）、亚末（Amad）、米沙勒（Mishal）、迦密山（Mount Carmel）、希曷立纳（Shihor-libnath）、伯大衮（Beth-dagon 2）、伯以墨（Beth-emek）、迦步勒（Cabul 1）、尼业（Neiel）、义伯仑（Ebron）、哈们（Hammon 1）、加拿（Kanah 2）、利合（Rehob 2）、西顿（Sidon）、亚革悉（Achzib 2）、何萨（Hosah）、玛黑拉（Mahalab）、拉玛（Ramah 2）、推罗（Tyre）、亚弗（Aphek 1）、利合（Rehob 3）、乌玛（Ummah）、亚大米尼吉（Adami-nekeb）、Allon、希利弗（Heleph）、雅比聂（Jabneel 2）、拉共（Lakkum）、撒拿音（Zaanannim）、亚斯纳他泊（Aznoth-tabor）、户割（Hukkok）、Chinnereth、哈末（Hammath 1）、拉甲（Rakkath）、侧耳（Zer）、西丁（Ziddim）、亚大玛（Adamah）、夏琐（Hazor 1）、拉玛（Ramah 3）、以得来（Edrei 2）、隐夏琐（En-hazor）、基低斯（Kedesh 5）、伯亚纳（Beth-anath）、伯示麦（Beth-shemesh 3）、和琏（Horem）、密大伊勒（Migdal-el）、以利稳（Yiron）、伊珥示麦（Ir-shemesh）、亚雅仑（Aijalon 1）、伊提拉（Ithlah）、沙宾（Shaalbim）、以伦（Elon）、巴拉（Baalath 1）、伊利提基（Eltekeh）、基比顿（Gibbethon）、比尼比拉（Bene-berak）、迦特临门（Gath-rimmon 1）、伊胡得（Jehud）、约帕（Joppa）、美耶昆（Me-jarkon）、拉昆（Rakkon）、但（Dan）、亭拿希烈（Timnath-heres）
+- **地点**　以东（Edom）、南地（Negeb）、寻（Zin 1）、盐海（Salt Sea）、亚达珥（Addar）、亚克拉滨（Akrabbim）、希斯仑（Hezron）、加低斯巴尼亚（Kadesh-barnea）、甲加（Karka）、寻（Zin 2）、押们（Azmon）、埃及小河（Brook of Egypt）、大海（Great Sea）、约旦河（Jordan）、伯亚拉巴（Beth-arabah）、伯曷拉（Beth-hoglah）、亚都冥（Adummim）、底璧（Debir 2）、隐罗结（En-rogel）、隐示麦泉（En-shemesh）、底璧（Gilgal 3）、亚割谷（Valley of Achor）、耶布斯（Jebus）、耶路撒冷（Jerusalem）、欣嫩谷（Valley of Hinnom）、利乏音谷（Valley of Rephaim）、巴拉（Baalah 2）、基列耶琳（Kiriath-jearim）、以弗仑山（Mount Ephron）、尼弗多亚（Nephtoah）、伯示麦（Beth-shemesh 1）、基撒仑（Chesalon）、耶琳山（Mount Jearim）、西珥山（Mount Seir 2）、亭拿（Timnah 1）、以革伦（Ekron）、雅比聂（Jabneel 1）、巴拉山（Mount Baalah）、施基仑（Shikkeron）、希伯仑（Hebron）、底璧（Debir 1）、以珊（Gulloth-mayim）、以珊（Lower Gulloth）、以珊（Upper Gulloth）、以得（Eder 2）、雅姑珥（Jagur）、甲薛（Kabzeel）、亚大达（Adadah）、底摩拿（Dimonah）、基拿（Kinah）、夏琐（Hazor 2）、以提楠（Ithnan）、基低斯（Kedesh 2）、比亚绿（Bealoth 1）、提炼（Telem）、西弗（Ziph 2）、夏琐（Hazor 3）、夏琐哈大他（Hazor-hadattah）、加略希斯仑（Kerioth-hezron）、亚曼（Amam）、摩拉大（Moladah）、示玛（Shema）、伯帕列（Beth-pelet）、哈萨迦大（Hazar-gaddah）、黑实门（Heshmon）、别是巴（Beersheba 1）、哈萨书亚（Hazar-shual）、巴拉（Baalah 1）、以森（Ezem）、以因（Iim）、基失（Chesil）、伊勒多腊（Eltolad）、何珥玛（Hormah）、麦玛拿（Madmannah）、三撒拿（Sansannah）、洗革拉（Ziklag）、亚延（Ain 2）、利巴勿（Lebaoth）、临门（Rimmon 2）、实忻（Shilhim）、亚实拿（Ashnah 1）、以实陶（Eshtaol）、高原（Shephelah）、琐拉（Zorah）、以楠（Enam）、隐干宁（En-gannim 1）、他普亚（Tappuah 2）、撒挪亚（Zanoah 1）、亚杜兰（Adullam）、亚西加（Azekah）、耶末（Jarmuth 1）、梭哥（Socoh 1）、亚底他音（Adithaim）、基底拉（Gederah 1）、基底罗他音（Gederothaim）、沙拉音（Shaaraim 1）、哈大沙（Hadashah）、麦大迦得（Migdal-gad）、洗楠（Zenan）、底连（Dilean）、约帖（Joktheel 1）、米斯巴（Mizpeh 2）、波斯加（Bozkath）、伊矶伦（Eglon）、拉吉（Lachish）、迦本（Cabbon）、基提利（Chitlish）、拉幔（Lahmam）、伯大衮（Beth-dagon 1）、基低罗（Gederoth）、玛基大（Makkedah）、拿玛（Naamah 1）、亚珊（Ashan）、以帖（Ether 1）、立拿（Libnah 1）、亚实拿（Ashnah 2）、益弗他（Iphtah）、尼悉（Nezib）、亚革悉（Achzib 1）、基伊拉（Keilah）、玛利沙（Mareshah）、亚实突（Ashdod）、迦萨（Gaza）、雅提珥（Jattir）、沙密（Shamir 1）、梭哥（Socoh 2）、大拿（Dannah）、亚拿伯（Anab）、亚念（Anim）、以实提莫（Eshtemoa）、基罗（Giloh）、歌珊（Goshen 3）、何伦（Holon 1）、亚拉（Arab）、度玛（Dumah 1）、以珊（Eshan）、亚非加（Aphekah）、伯他普亚（Beth-tappuah）、雅农（Janim）、宏他（Humtah）、洗珥（Zior）、迦密（Carmel 1）、淤他（Juttah）、玛云（Maon）、西弗（Ziph 1）、耶斯列（Jezreel 1）、约甸（Jokdeam）、撒挪亚（Zanoah 2）、基比亚（Gibeah 2）、基尼（Kain）、亭拿（Timnah 2）、伯夙（Beth-zur）、基突（Gedor 1）、哈忽（Halhul）、伯亚诺（Beth-anoth）、伊勒提君（Eltekon）、玛腊（Maarath）、拉巴（Rabbah 2）、密丁（Middin）、西迦迦（Secacah）、盐城（City of Salt）、隐基底（Engedi）、匿珊（Nibshan）、伯特利（Bethel 1）、耶利哥（Jericho 1）、耶利哥东边的水（Waters of Jericho）、亚大录（Ataroth 2）、路斯（Luz 1）、基色（Gezer）、下伯和仑（Lower Beth-horon）、亚他绿亚达（Ataroth-addar）、上伯和仑（Upper Beth-horon）、雅挪哈（Janoah 1）、密米他（Michmethath）、他纳示罗（Taanath-shiloh）、亚他绿（Ataroth 3）、拿拉（Naarah）、加拿（Kanah 1）、他普亚（Tappuah 1）、巴珊（Bashan）、基列（Gilead 1）、隐他普亚（En-tappuah）、示剑（Shechem）、伯珊（Beth-shan）、多珥（Dor）、隐多珥（En-dor）、以伯莲（Ibleam）、米吉多（Megiddo）、多珥山冈（Naphoth-dor）、他纳（Taanach）、耶斯列谷（Valley of Jezreel）、示罗（Shiloh）、伯亚文（Beth-aven 1）、伯和仑（Beth-horon）、以弗仑（Ephron 1）、基利绿（Geliloth）、亚拉巴（Arabah）、伊麦基悉（Emek-keziz）、洗玛脸（Zemaraim）、亚文（Avvim）、俄弗拉（Ophrah 1）、巴拉（Parah）、基法阿摩尼（Chephar-ammoni）、迦巴（Geba 4）、俄弗尼（Ophni）、比录（Beeroth）、基遍（Gibeon）、拉玛（Ramah 1）、基非拉（Chephirah）、米斯巴（Mizpeh 1）、摩撒（Mozah）、伊利毘勒（Irpeel）、利坚（Rekem）、他拉拉（Taralah）、基比亚（Gibeah 4）、以利弗（Haeleph）、洗拉（Zela）、示巴（Sheba 2）、巴拉（Balah）、比土力（Bethul）、伯玛加博（Beth-marcaboth）、哈萨苏撒（Hazar-susah）、伯利巴勿（Beth-lebaoth）、沙鲁险（Sharuhen）、以帖（Ether 2）、巴拉比珥（Baalath-beer）、南地的拉玛（Ramah 6）、撒立（Sarid）、大巴设（Dabbesheth）、约念（Jokneam）、玛拉拉（Mareal）、吉斯绿他泊（Chisloth-tabor）、大比拉（Daberath）、雅非亚（Japhia）、特加汛（Eth-kazin）、迦特希弗（Gath-hepher）、尼亚（Neah）、临门（Rimmon 3）、哈拿顿（Hannathon）、伊弗他伊勒谷（Valley of Iphtahel）、伯利恒（Bethlehem 2）、以大拉（Idalah）、加他（Kattath）、拿哈拉（Nahalal）、伸仑（Shimron）、基苏律（Chesulloth）、耶斯列（Jezreel 2）、书念（Shunem）、亚拿哈拉（Anaharath）、哈弗连（Hapharaim）、示按（Shion）、亚别（Ebez）、基善（Kishion）、拉璧（Rabbith）、伯帕薛（Beth-pazzez）、隐干宁（En-gannim 2）、隐哈大（En-haddah）、利篾（Remeth）、伯示麦（Beth-shemesh 2）、他泊山（Mount Tabor）、沙哈洗玛（Shahazumah）、押煞（Achshaph）、比田（Beten）、哈利（Hali）、黑甲（Helkath）、亚拉米勒（Allammelech）、亚末（Amad）、米沙勒（Mishal）、迦密山（Mount Carmel）、希曷立纳（Shihor-libnath）、伯大衮（Beth-dagon 2）、伯以墨（Beth-emek）、迦步勒（Cabul 1）、尼业（Neiel）、义伯仑（Ebron）、哈们（Hammon 1）、加拿（Kanah 2）、利合（Rehob 2）、西顿（Sidon）、亚革悉（Achzib 2）、何萨（Hosah）、玛黑拉（Mahalab）、拉玛（Ramah 2）、推罗（Tyre）、亚弗（Aphek 1）、利合（Rehob 3）、乌玛（Ummah）、亚大米尼吉（Adami-nekeb）、撒拿音的橡树（Allon）、希利弗（Heleph）、雅比聂（Jabneel 2）、拉共（Lakkum）、撒拿音（Zaanannim）、亚斯纳他泊（Aznoth-tabor）、户割（Hukkok）、基尼烈（Chinnereth）、哈末（Hammath 1）、拉甲（Rakkath）、侧耳（Zer）、西丁（Ziddim）、亚大玛（Adamah）、夏琐（Hazor 1）、拉玛（Ramah 3）、以得来（Edrei 2）、隐夏琐（En-hazor）、基低斯（Kedesh 5）、伯亚纳（Beth-anath）、伯示麦（Beth-shemesh 3）、和琏（Horem）、密大伊勒（Migdal-el）、以利稳（Yiron）、伊珥示麦（Ir-shemesh）、亚雅仑（Aijalon 1）、伊提拉（Ithlah）、沙宾（Shaalbim）、以伦（Elon）、巴拉（Baalath 1）、伊利提基（Eltekeh）、基比顿（Gibbethon）、比尼比拉（Bene-berak）、迦特临门（Gath-rimmon 1）、伊胡得（Jehud）、约帕（Joppa）、美耶昆（Me-jarkon）、拉昆（Rakkon）、但（Dan）、亭拿希烈（Timnath-heres）
 
 ### 设立逃城 · Cities of Refuge
 
@@ -1889,7 +1889,7 @@
 - **年代**　前 1399　·　推算
 - **定年依据**　与年表重叠：分地给十二支派。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　利未人的城邑——分散在各支派中。神在每个角落都有祂的代表。
-- **地点**　迦南（Canaan）、示罗（Shiloh）、巴珊（Bashan）、希伯仑（Hebron）、立拿（Libnah 1）、以实提莫（Eshtemoa）、雅提珥（Jattir）、底璧（Debir 1）、何伦（Holon 1）、Ain 3、伯示麦（Beth-shemesh 1）、淤他（Juttah）、迦巴（Geba 1）、基遍（Gibeon）、亚勒们（Almon）、亚拿突（Anathoth）、基色（Gezer）、示剑（Shechem）、伯和仑（Beth-horon）、基伯先（Kibzaim）、伊利提基（Eltekeh）、基比顿（Gibbethon）、亚雅仑（Aijalon 1）、迦特临门（Gath-rimmon 1）、迦特临门（Gath-rimmon 2）、他纳（Taanach）、比施提拉（Beeshterah）、玛拿西（Golan）、大比拉（Daberath）、基善（Kishion）、隐干宁（En-gannim 2）、耶末（Jarmuth 2）、押顿（Abdon）、米沙勒（Mishal）、黑甲（Helkath）、利合（Rehob 3）、加利利（Galilee 1）、哈末多珥（Hammoth-dor）、加珥坦（Kartan）、基低斯（Kedesh 1）、约念（Jokneam）、加珥他（Kartah）、丁拿（Dimnah）、拿哈拉（Nahalal）、比悉（Bezer）、雅杂（Jahaz）、基底莫（Kedemoth）、米法押（Mephaath）、基列（Gilead 1）、玛哈念（Mahanaim）、拉末（Ramoth 3）、希实本（Heshbon）、雅谢（Jazer）
+- **地点**　迦南（Canaan）、示罗（Shiloh）、巴珊（Bashan）、希伯仑（Hebron）、立拿（Libnah 1）、以实提莫（Eshtemoa）、雅提珥（Jattir）、底璧（Debir 1）、何伦（Holon 1）、亚因（Ain 3）、伯示麦（Beth-shemesh 1）、淤他（Juttah）、迦巴（Geba 1）、基遍（Gibeon）、亚勒们（Almon）、亚拿突（Anathoth）、基色（Gezer）、示剑（Shechem）、伯和仑（Beth-horon）、基伯先（Kibzaim）、伊利提基（Eltekeh）、基比顿（Gibbethon）、亚雅仑（Aijalon 1）、迦特临门（Gath-rimmon 1）、迦特临门（Gath-rimmon 2）、他纳（Taanach）、比施提拉（Beeshterah）、玛拿西（Golan）、大比拉（Daberath）、基善（Kishion）、隐干宁（En-gannim 2）、耶末（Jarmuth 2）、押顿（Abdon）、米沙勒（Mishal）、黑甲（Helkath）、利合（Rehob 3）、加利利（Galilee 1）、哈末多珥（Hammoth-dor）、加珥坦（Kartan）、基低斯（Kedesh 1）、约念（Jokneam）、加珥他（Kartah）、丁拿（Dimnah）、拿哈拉（Nahalal）、比悉（Bezer）、雅杂（Jahaz）、基底莫（Kedemoth）、米法押（Mephaath）、基列（Gilead 1）、玛哈念（Mahanaim）、拉末（Ramoth 3）、希实本（Heshbon）、雅谢（Jazer）
 
 ### 河东支派的归回与坛 · The Eastern Tribes Return
 
@@ -1921,7 +1921,7 @@
 - **平行经文**　约书亚被埋葬 — 同见 Judges 2:7–9
 - **年代**　前 1399 — 前 1380　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「分地给十二支派」（-1399）、另一侧是「士师时代」（-1380），故落在 -1399—-1380 之间。区间宽度即为不确定度，不是精度。
-- **内容**　约书亚之死——「以色列事奉雅伟」的世代结束，士师时代开始。
+- **内容**　约书亚之死——「以色列人事奉雅伟」的世代结束，士师时代开始。
 - **地点**　迦实（Gaash）、亭拿希烈（Timnath-heres）、埃及（Egypt）、示剑（Shechem）、Gibeah 3
 
 ---
@@ -1937,7 +1937,7 @@
 - **年代**　前 1380　·　推算
 - **定年依据**　与年表重叠：士师时代。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　约书亚后的征战——未完成的征服将带来未来的麻烦。
-- **地点**　比利洗（Bezek 1）、耶路撒冷（Jerusalem）、南地（Negeb）、高原（Shephelah）、希伯仑（Hebron）、底璧（Debir 1）、以珊（Gulloth-mayim）、以珊（Lower Gulloth）、以珊（Upper Gulloth）、亚拉得（Arad 2）、耶利哥（City of Palms 2）、耶利哥（Jericho 1）、何珥玛（Hormah）、洗法（Zephath）、亚实基伦（Ashkelon）、以革伦（Ekron）、迦萨（Gaza）、伯特利（Bethel 1）、路斯（Luz 1）、路斯（Luz 2）、伯珊（Beth-shan）、多珥（Dor）、以伯莲（Ibleam）、米吉多（Megiddo）、他纳（Taanach）、基色（Gezer）、基伦（Kitron）、拿哈拉（Nahalal）、亚柯（Acco）、亚革悉（Achzib 2）、亚黑拉（Ahlab）、亚弗革（Aphik）、黑巴（Helbah）、利合（Rehob 3）、西顿（Sidon）、伯亚纳（Beth-anath）、伯示麦（Beth-shemesh 3）、亚雅仑（Aijalon 1）、希烈山（Mount Heres）、沙宾（Shaalbim）、亚克拉滨（Akrabbim）、西拉（Sela 1）
+- **地点**　比利洗（Bezek 1）、耶路撒冷（Jerusalem）、南地（Negeb）、高原（Shephelah）、希伯仑（Hebron）、底璧（Debir 1）、以珊（Gulloth-mayim）、以珊（Lower Gulloth）、以珊（Upper Gulloth）、亚拉得（Arad 2）、棕树城（City of Palms 2）、耶利哥（Jericho 1）、何珥玛（Hormah）、洗法（Zephath）、亚实基伦（Ashkelon）、以革伦（Ekron）、迦萨（Gaza）、伯特利（Bethel 1）、路斯（Luz 1）、路斯（Luz 2）、伯珊（Beth-shan）、多珥（Dor）、以伯莲（Ibleam）、米吉多（Megiddo）、他纳（Taanach）、基色（Gezer）、基伦（Kitron）、拿哈拉（Nahalal）、亚柯（Acco）、亚革悉（Achzib 2）、亚黑拉（Ahlab）、亚弗革（Aphik）、黑巴（Helbah）、利合（Rehob 3）、西顿（Sidon）、伯亚纳（Beth-anath）、伯示麦（Beth-shemesh 3）、亚雅仑（Aijalon 1）、希烈山（Mount Heres）、沙宾（Shaalbim）、亚克拉滨（Akrabbim）、西拉（Sela 1）
 
 ### 悖逆的循环开始 · The Cycle Begins
 
@@ -1962,7 +1962,7 @@
 - **年代**　前 1380　·　推算
 - **定年依据**　与年表重叠：士师时代。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　以笏与摩押王——一个机智的左撇子如何独自击败巨人之王。
-- **地点**　摩押（Moab 1）、亚玛力（Amalek）、亚扪（Ammon）、耶利哥（City of Palms 1）、耶利哥（Jericho 1）、吉甲（Gilgal 1）、约旦河（Jordan）、西伊拉（Seirah）
+- **地点**　摩押（Moab 1）、亚玛力（Amalek）、亚扪（Ammon）、棕树城（City of Palms 1）、耶利哥（Jericho 1）、吉甲（Gilgal 1）、约旦河（Jordan）、西伊拉（Seirah）
 
 ### 底波拉与巴拉 · Deborah and Barak
 
@@ -1970,7 +1970,7 @@
 - **年代**　前 1380 — 前 1240　·　推算
 - **定年依据**　与年表重叠：士师时代、底波拉与巴拉胜西西拉。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　底波拉——士师中唯一的女先知，与雅亿一同打败迦南强敌西西拉。
-- **地点**　迦南（Canaan）、夏罗设（Harosheth-hagoyim）、夏琐（Hazor 1）、伯特利（Bethel 1）、拉玛（Ramah 1）、基低斯拿弗他利（Kedesh-naphtali）、他泊山（Mount Tabor）、基顺（Kishon）、Kedesh 4、撒拿音（Zaanannim）
+- **地点**　迦南（Canaan）、夏罗设（Harosheth-hagoyim）、夏琐（Hazor 1）、伯特利（Bethel 1）、拉玛（Ramah 1）、基低斯拿弗他利（Kedesh-naphtali）、他泊山（Mount Tabor）、基顺（Kishon）、基低斯（Kedesh 4）、撒拿音（Zaanannim）
 
 ### 底波拉之歌 · The Song of Deborah
 
@@ -2010,7 +2010,7 @@
 - **年代**　前 1380　·　推算
 - **定年依据**　与年表重叠：士师时代。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　亚比米勒篡位——基甸的儿子杀掉自己的兄弟，宣称作王。
-- **地点**　示剑（Shechem）、俄弗拉（Ophrah 2）、伯特米罗（Beth-millo）、基利心山（Mount Gerizim）、黎巴嫩（Lebanon）、米甸（Midian）、比珥（Beer 2）、亚鲁玛（Arumah）、伯特米罗（Diviners’ Oak）、伯特米罗（Tabbur-erez）、示剑楼（Tower of Shechem）、撒们山（Mount Zalmon）、提备斯（Thebez）
+- **地点**　示剑（Shechem）、俄弗拉（Ophrah 2）、伯特米罗（Beth-millo）、基利心山（Mount Gerizim）、黎巴嫩（Lebanon）、米甸（Midian）、比珥（Beer 2）、亚鲁玛（Arumah）、米恶尼尼橡树（Diviners’ Oak）、高处（Tabbur-erez）、示剑楼（Tower of Shechem）、撒们山（Mount Zalmon）、提备斯（Thebez）
 
 ### 陀拉与睚珥 · Tola and Jair
 
@@ -2198,7 +2198,7 @@
 - **经文**　撒母耳记上 3:1–3:21（1 Samuel 3:1–3:21）
 - **年代**　前 1080　·　推算
 - **定年依据**　与年表重叠：撒母耳蒙召。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　「主啊请说，仆人敬听」——少年撒母耳的回应，成为历世历代敬虔者的祷告范本。
+- **内容**　「雅伟啊！请说，仆人敬听」——少年撒母耳的回应，成为历世历代敬虔者的祷告范本。
 - **地点**　别是巴（Beersheba 1）、但（Dan）、示罗（Shiloh）
 
 ### 约柜被掳 · The Ark Captured
@@ -2206,7 +2206,7 @@
 - **经文**　撒母耳记上 4:1–4:22（1 Samuel 4:1–4:22）
 - **年代**　前 1080 — 前 1050　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「撒母耳蒙召」（-1080）、另一侧是「扫罗膏立为王」（-1050），故落在 -1080—-1050 之间。区间宽度即为不确定度，不是精度。
-- **内容**　约柜被掳——以色列最低的属灵谷底。「神的荣耀离开以色列」。
+- **内容**　约柜被掳——以色列最低的属灵谷底。「荣耀离开以色列」。
 - **地点**　亚弗（Aphek 2）、以便以谢（Ebenezer 1）、示罗（Shiloh）
 
 ### 约柜在非利士地 · The Ark Among the Philistines
@@ -2247,7 +2247,7 @@
 - **年代**　前 1050　·　推算
 - **定年依据**　与年表重叠：扫罗膏立为王。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　扫罗找驴遇撒母耳——神以一件小事引导祂所拣选的人。
-- **地点**　沙琳（Shaalim）、沙利沙（Shalishah）、疏弗（Zuph）
+- **地点**　沙琳（Shaalim）、沙利沙（Shalishah）、苏弗（Zuph）
 
 ### 扫罗被立为王 · Saul Anointed King
 
@@ -2295,7 +2295,7 @@
 - **年代**　前 1050 — 前 1025　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「扫罗膏立为王」（-1050）、另一侧是「大卫被膏」（-1025），故落在 -1050—-1025 之间。区间宽度即为不确定度，不是精度。
 - **内容**　扫罗悖逆——「听命胜于献祭」。神的拒绝是终局。
-- **地点**　亚玛力（Amalek）、埃及（Egypt）、提炼（Telem）、Havilah 3、书珥（Shur）、迦密（Carmel 1）、吉甲（Gilgal 1）、基比亚（Gibeah 1）、拉玛（Ramah 4）
+- **地点**　亚玛力（Amalek）、埃及（Egypt）、提炼（Telem）、哈腓拉（Havilah 3）、书珥（Shur）、迦密（Carmel 1）、吉甲（Gilgal 1）、基比亚（Gibeah 1）、拉玛（Ramah 4）
 
 ### 膏立大卫 · David Anointed
 
@@ -2359,7 +2359,7 @@
 - **年代**　前 1024 — 前 1010　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「大卫战歌利亚」（-1024）、另一侧是「大卫登基」（-1010），故落在 -1024—-1010 之间。区间宽度即为不确定度，不是精度。
 - **内容**　亚杜兰洞——大卫的「四百勇士」是受困苦、负债、心里不满者。
-- **地点**　亚杜兰（Adullam）、迦特（Gath 1）、米斯巴（Mizpeh 3）、摩押（Moab 1）、哈列（Hereth）、基比亚（Gibeah 1）、巴力他玛（Ramah 8）、挪伯（Nob）
+- **地点**　亚杜兰（Adullam）、迦特（Gath 1）、米斯巴（Mizpeh 3）、摩押（Moab 1）、哈列（Hereth）、基比亚（Gibeah 1）、拉玛（Ramah 8）、挪伯（Nob）
 
 ### 大卫救基伊拉 · David Saves Keilah
 
@@ -2367,15 +2367,15 @@
 - **年代**　前 1024 — 前 1010　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「大卫战歌利亚」（-1024）、另一侧是「大卫登基」（-1010），故落在 -1024—-1010 之间。区间宽度即为不确定度，不是精度。
 - **内容**　救基伊拉——危险中仍听命行事。属神之人的生命模式。
-- **地点**　基伊拉（Keilah）、西弗（Wilderness of Ziph）、何列斯（Horesh）、基比亚（Gibeah 1）、哈基拉（Hachilah）、旷野（Jeshimon）、西弗（Ziph 1）、亚拉巴（Arabah）、Wilderness of Maon、西拉哈玛希罗结（Rock of Escape）、隐基底（Engedi）
+- **地点**　基伊拉（Keilah）、西弗（Wilderness of Ziph）、何列斯（Horesh）、基比亚（Gibeah 1）、哈基拉（Hachilah）、旷野（Jeshimon）、西弗（Ziph 1）、亚拉巴（Arabah）、玛云旷野（Wilderness of Maon）、西拉哈玛希罗结（Rock of Escape）、隐基底（Engedi）
 
 ### 大卫不杀扫罗 · David Spares Saul
 
 - **经文**　撒母耳记上 24:1–24:22（1 Samuel 24:1–24:22）
 - **年代**　前 1024 — 前 1010　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「大卫战歌利亚」（-1024）、另一侧是「大卫登基」（-1010），故落在 -1024—-1010 之间。区间宽度即为不确定度，不是精度。
-- **内容**　大卫不杀扫罗——「我不敢伸手害雅伟的受膏者」。属灵原则胜过实际机会。
-- **地点**　隐基底（Engedi）、盐城（Wildgoats’ Rocks）
+- **内容**　大卫不杀扫罗——「我不敢伸手害我的主，因为他是雅伟的受膏者」。属灵原则胜过实际机会。
+- **地点**　隐基底（Engedi）、野羊磐石（Wildgoats’ Rocks）
 
 ### 拿八与亚比该 · Nabal and Abigail
 
@@ -2491,7 +2491,7 @@
 - **年代**　前 1010 — 前 1003　·　推算
 - **定年依据**　与年表重叠：大卫登基、攻取耶路撒冷。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　大卫攻取耶路撒冷——神立约的中心从此固定下来。
-- **地点**　耶路撒冷（Jerusalem）、亚革大马（City of David）、锡安（Zion）、米罗（Millo）、推罗（Tyre）、希伯仑（Hebron）、利乏音谷（Valley of Rephaim）、巴力毗拉心（Baal-perazim）、迦巴（Geba 2）、基色（Gezer）
+- **地点**　耶路撒冷（Jerusalem）、大卫城（City of David）、锡安（Zion）、米罗（Millo）、推罗（Tyre）、希伯仑（Hebron）、利乏音谷（Valley of Rephaim）、巴力毗拉心（Baal-perazim）、迦巴（Geba 2）、基色（Gezer）
 
 ### 约柜进耶路撒冷 · The Ark Brought to Jerusalem
 
@@ -2502,7 +2502,7 @@
 - **年代**　前 1003 — 前 1000　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「攻取耶路撒冷」（-1003）、另一侧是「与大卫立约」（-1000），故落在 -1003—-1000 之间。区间宽度即为不确定度，不是精度。
 - **内容**　约柜进耶路撒冷——大卫的舞蹈，神的同在与百姓的中心。
-- **地点**　巴拉犹大（Baale-judah）、基比亚（Gibeah 1）、毗列斯乌撒（Perez-uzzah）、亚革大马（City of David）、迦特（Gath 3）
+- **地点**　巴拉犹大（Baale-judah）、基比亚（Gibeah 1）、毗列斯乌撒（Perez-uzzah）、大卫城（City of David）、迦特（Gath 3）
 
 ### 大卫之约 · God's Covenant with David
 
@@ -2597,7 +2597,7 @@
 - **年代**　前 1000 — 前 970　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「与大卫立约」（-1000）、另一侧是「所罗门登基」（-970），故落在 -1000—-970 之间。区间宽度即为不确定度，不是精度。
 - **内容**　押沙龙之死——大卫赢了战争，却失去儿子。「我儿押沙龙啊！」
-- **地点**　迦特（Gath 1）、以法莲（Ephraim 3）、亚革大马（King’s Valley）、古实（Ethiopia）、约旦河全平原（Jordan Valley）、玛哈念（Mahanaim）
+- **地点**　迦特（Gath 1）、以法莲（Ephraim 3）、王谷（King’s Valley）、古实（Ethiopia）、约旦河全平原（Jordan Valley）、玛哈念（Mahanaim）
 
 ### 大卫归回耶路撒冷 · David Returns to Jerusalem
 
@@ -2622,7 +2622,7 @@
 - **年代**　前 1000 — 前 970　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「与大卫立约」（-1000）、另一侧是「所罗门登基」（-970），故落在 -1000—-970 之间。区间宽度即为不确定度，不是精度。
 - **内容**　三年饥荒与勇士榜——王国的内忧外患。
-- **地点**　基比亚（Gibeah 1）、基遍（Gibeon）、伯珊（Beth-shan）、基列雅比（Jabesh-gilead）、基利波山（Mount Gilboa）、洗拉（Zela）、挪伯（Nob）、歌伯（Gob）、Hushah、伯利恒（Bethlehem 1）、迦特（Gath 1）
+- **地点**　基比亚（Gibeah 1）、基遍（Gibeon）、伯珊（Beth-shan）、基列雅比（Jabesh-gilead）、基利波山（Mount Gilboa）、洗拉（Zela）、挪伯（Nob）、歌伯（Gob）、户沙（Hushah）、伯利恒（Bethlehem 1）、迦特（Gath 1）
 
 ### 大卫的赞美诗 · David's Song of Praise
 
@@ -2640,7 +2640,7 @@
 - **年代**　前 1000 — 前 970　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「与大卫立约」（-1000）、另一侧是「所罗门登基」（-970），故落在 -1000—-970 之间。区间宽度即为不确定度，不是精度。
 - **内容**　大卫的临终之言与勇士榜——以「神所膏的、雅各神所喜悦的诗人」自称结束。
-- **地点**　以弗大悯（Ephes-dammim）、利希（Lehi）、亚杜兰（Adullam）、利乏音谷（Valley of Rephaim）、伯利恒（Bethlehem 1）、甲薛（Kabzeel）、摩押（Moab 1）、哈律（Harod 2）、提哥亚（Tekoa）、亚拿突（Anathoth）、Hushah、尼陀法（Netophah）、基比亚（Gibeah 1）、迦实（Gaash）、比拉顿（Pirathon）、亚拉巴（Arabah）、巴户琳（Bahurim）、沙宾（Shaalbon）、基罗（Giloh）、玛迦（Maacah）、迦密（Carmel 1）、琐巴（Zobah）、亚扪（Ammon）、比录（Beeroth）、雅提珥（Jattir）
+- **地点**　以弗大悯（Ephes-dammim）、利希（Lehi）、亚杜兰（Adullam）、利乏音谷（Valley of Rephaim）、伯利恒（Bethlehem 1）、甲薛（Kabzeel）、摩押（Moab 1）、哈律（Harod 2）、提哥亚（Tekoa）、亚拿突（Anathoth）、户沙（Hushah）、尼陀法（Netophah）、基比亚（Gibeah 1）、迦实（Gaash）、比拉顿（Pirathon）、亚拉巴（Arabah）、巴户琳（Bahurim）、沙本（Shaalbon）、基罗（Giloh）、玛迦（Maacah）、迦密（Carmel 1）、琐巴（Zobah）、亚扪（Ammon）、比录（Beeroth）、雅提珥（Jattir）
 
 ### 大卫数点百姓 · David Counts the People
 
@@ -2663,7 +2663,7 @@
 - **年代**　前 970　·　推算
 - **定年依据**　与年表重叠：所罗门登基。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　亚多尼雅自立——大卫年迈时另一儿子未经允许就要作王。
-- **地点**　书念（Shunem）、隐罗结（En-rogel）、亚革大马（Serpent’s Stone）
+- **地点**　书念（Shunem）、隐罗结（En-rogel）、琐希列磐石（Serpent’s Stone）
 
 ### 所罗门继位 · Solomon Anointed King
 
@@ -2681,7 +2681,7 @@
 - **年代**　前 970　·　推算
 - **定年依据**　与年表重叠：所罗门登基。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　大卫临终嘱咐所罗门守雅伟的律法并处置约押、示每，随后去世；所罗门除掉亚多尼雅、约押、示每，废亚比亚他。
-- **地点**　基列（Gilead 1）、巴户琳（Bahurim）、约旦河（Jordan）、玛哈念（Mahanaim）、亚革大马（City of David）、希伯仑（Hebron）、耶路撒冷（Jerusalem）、书念（Shunem）、亚拿突（Anathoth）、示罗（Shiloh）、汲沦（Kidron）、迦特（Gath 1）
+- **地点**　基列（Gilead 1）、巴户琳（Bahurim）、约旦河（Jordan）、玛哈念（Mahanaim）、大卫城（City of David）、希伯仑（Hebron）、耶路撒冷（Jerusalem）、书念（Shunem）、亚拿突（Anathoth）、示罗（Shiloh）、汲沦（Kidron）、迦特（Gath 1）
 
 ### 所罗门求智慧 · Solomon Asks for Wisdom
 
@@ -2690,7 +2690,7 @@
 - **年代**　前 970　·　推算
 - **定年依据**　与年表重叠：所罗门登基。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　所罗门求智慧而非财富——成为后世数千年「祈求得当」的典范。
-- **地点**　亚革大马（City of David）、埃及（Egypt）、耶路撒冷（Jerusalem）、基遍（Gibeon）
+- **地点**　大卫城（City of David）、埃及（Egypt）、耶路撒冷（Jerusalem）、基遍（Gibeon）
 
 ### 所罗门的智慧判断 · A Wise Ruling
 
@@ -2706,7 +2706,7 @@
 - **年代**　前 970 — 前 966　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「所罗门登基」（-970）、另一侧是「所罗门建圣殿」（-966），故落在 -970—-966 之间。区间宽度即为不确定度，不是精度。
 - **内容**　所罗门的官员——王国如何运作的最早组织图。
-- **地点**　伯示麦（Beth-shemesh 1）、以伦伯哈南（Elonbeth-hanan）、沙宾（Makaz）、沙宾（Shaalbim）、亚鲁泊（Arubboth）、希弗（Hepher）、Socoh 3、多珥山冈（Naphoth-dor）、亚伯米何拉（Abel-meholah）、伯珊（Beth-shan）、耶斯列（Jezreel 2）、约缅（Jokmeam 1）、米吉多（Megiddo）、他纳（Taanach）、撒拉但（Zarethan）、亚珥歌伯（Argob）、巴珊（Bashan）、基列（Gilead 1）、哈倭特睚珥（Havvoth-jair）、拉末基列（Ramoth-gilead）、玛哈念（Mahanaim）、比亚绿（Bealoth 2）、埃及（Egypt）、幼发拉底河（Euphrates）、迦萨（Gaza）、提斐萨（Tiphsah 1）、别是巴（Beersheba 1）、但（Dan）、东方（East）、黎巴嫩（Lebanon）
+- **地点**　伯示麦（Beth-shemesh 1）、以伦伯哈南（Elonbeth-hanan）、沙宾（Makaz）、沙宾（Shaalbim）、亚鲁泊（Arubboth）、希弗（Hepher）、梭哥（Socoh 3）、多珥山冈（Naphoth-dor）、亚伯米何拉（Abel-meholah）、伯珊（Beth-shan）、耶斯列（Jezreel 2）、约缅（Jokmeam 1）、米吉多（Megiddo）、他纳（Taanach）、撒拉但（Zarethan）、亚珥歌伯（Argob）、巴珊（Bashan）、基列（Gilead 1）、哈倭特睚珥（Havvoth-jair）、拉末基列（Ramoth-gilead）、玛哈念（Mahanaim）、比亚绿（Bealoth 2）、埃及（Egypt）、幼发拉底河（Euphrates）、迦萨（Gaza）、提斐萨（Tiphsah 1）、别是巴（Beersheba 1）、但（Dan）、东方（East）、黎巴嫩（Lebanon）
 
 ### 预备建殿 · Preparations to Build the Temple
 
@@ -2733,7 +2733,7 @@
 - **年代**　前 966 — 前 931　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「所罗门建圣殿」（-966）、另一侧是「王国分裂」（-931），故落在 -966—-931 之间。区间宽度即为不确定度，不是精度。
 - **内容**　所罗门王宫——更大、更久才建成。属世优先于敬拜的预兆。
-- **地点**　黎巴嫩林宫（House of the Forest of Lebanon）、柱廊（Hall of Pillars）、亚革大马（Hall of Judgment）、宝座室（Hall of the Throne）、推罗（Tyre）、约旦河（Jordan）、疏割（Succoth 1）、撒拉但（Zarethan）、至圣所（Most Holy Place 2）
+- **地点**　黎巴嫩林宫（House of the Forest of Lebanon）、柱廊（Hall of Pillars）、Hall of Judgment、宝座室（Hall of the Throne）、推罗（Tyre）、约旦河（Jordan）、疏割（Succoth 1）、撒拉但（Zarethan）、至圣所（Most Holy Place 2）
 
 ### 约柜入殿 · The Ark Brought to the Temple
 
@@ -2742,7 +2742,7 @@
 - **年代**　前 966 — 前 931　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「所罗门建圣殿」（-966）、另一侧是「王国分裂」（-931），故落在 -966—-931 之间。区间宽度即为不确定度，不是精度。
 - **内容**　约柜进入新殿——神百姓的故事走向最高峰。
-- **地点**　亚革大马（City of David）、耶路撒冷（Jerusalem）、锡安（Zion）、至圣所（Most Holy Place 2）、圣所（Holy Place 2）、埃及（Egypt）、何烈山（Mount Horeb）
+- **地点**　大卫城（City of David）、耶路撒冷（Jerusalem）、锡安（Zion）、至圣所（Most Holy Place 2）、圣所（Holy Place 2）、埃及（Egypt）、何烈山（Mount Horeb）
 
 ### 所罗门献殿祷告 · Solomon's Prayer of Dedication
 
@@ -2761,8 +2761,8 @@
 - **平行经文**　所罗门的异象 — 同见 2 Chronicles 7:11–22
 - **年代**　前 966 — 前 931　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「所罗门建圣殿」（-966）、另一侧是「王国分裂」（-931），故落在 -966—-931 之间。区间宽度即为不确定度，不是精度。
-- **内容**　圣殿建成后雅伟在基遍二次向所罗门显现，应许并警告「若离弃我」；所罗门送希兰二十城，筑城服劳役，从俄斐运回金子。
-- **地点**　基遍（Gibeon）、埃及（Egypt）、加利利（Galilee 1）、推罗（Tyre）、迦步勒（Cabul 2）、基色（Gezer）、夏琐（Hazor 1）、耶路撒冷（Jerusalem）、米吉多（Megiddo）、米罗（Millo）、下伯和仑（Lower Beth-horon）、巴拉（Baalath 2）、他玛（Tamar 1）、黎巴嫩（Lebanon）、亚革大马（City of David）、以东（Edom）、以拉他（Elath）、以旬迦别（Ezion-geber）、红海（Red Sea 2）、俄斐（Ophir）
+- **内容**　圣殿建成后雅伟在基遍二次向所罗门显现，应许并警告「倘若你们和你们的子孙转去不跟从我」；所罗门送希兰二十城，筑城服劳役，从俄斐运回金子。
+- **地点**　基遍（Gibeon）、埃及（Egypt）、加利利（Galilee 1）、推罗（Tyre）、迦步勒（Cabul 2）、基色（Gezer）、夏琐（Hazor 1）、耶路撒冷（Jerusalem）、米吉多（Megiddo）、米罗（Millo）、下伯和仑（Lower Beth-horon）、巴拉（Baalath 2）、他玛（Tamar 1）、黎巴嫩（Lebanon）、大卫城（City of David）、以东（Edom）、以拉他（Elath）、以旬迦别（Ezion-geber）、红海（Red Sea 2）、俄斐（Ophir）
 
 ### 示巴女王的来访 · The Queen of Sheba
 
@@ -2772,8 +2772,8 @@
 - **平行经文**　所罗门的财富 — 同见 2 Chronicles 1:14–17、2 Chronicles 9:25–28
 - **年代**　前 966 — 前 931　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「所罗门建圣殿」（-966）、另一侧是「王国分裂」（-931），故落在 -966—-931 之间。区间宽度即为不确定度，不是精度。
-- **内容**　示巴女王带香料金子宝石来耶路撒冷用难题试所罗门，「所听见的还不到一半」；所罗门的金盾牌、象牙宝座与年入金子。
-- **地点**　示巴（Sheba 1）、耶路撒冷（Jerusalem）、俄斐（Ophir）、阿拉伯（Arabia 1）、黎巴嫩林宫（House of the Forest of Lebanon）、他施（Tarshish 2）、高原（Shephelah）、埃及（Egypt）、基利家（Kue）、亚兰（Syria 1）
+- **内容**　示巴女王带香料金子宝石来耶路撒冷用难题试所罗门，「人所告诉我的还不到一半」；所罗门的金盾牌、象牙宝座与年入金子。
+- **地点**　示巴（Sheba 1）、耶路撒冷（Jerusalem）、俄斐（Ophir）、阿拉伯（Arabia 1）、黎巴嫩林宫（House of the Forest of Lebanon）、他施（Tarshish 2）、高原（Shephelah）、埃及（Egypt）、Kue、亚兰（Syria 1）
 
 ### 所罗门的妻子使他离开神 · Solomon's Wives
 
@@ -2790,7 +2790,7 @@
 - **年代**　前 966 — 前 931　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「所罗门建圣殿」（-966）、另一侧是「王国分裂」（-931），故落在 -966—-931 之间。区间宽度即为不确定度，不是精度。
 - **内容**　耶罗波安兴起——一位先知的预言：王国将一分为二。神在审判中也立定接续。
-- **地点**　撒利但（Zeredah 1）、亚革大马（City of David）、米罗（Millo）、耶路撒冷（Jerusalem）、示罗（Shiloh）、亚扪（Ammon）、摩押（Moab 1）、埃及（Egypt）
+- **地点**　撒利但（Zeredah 1）、大卫城（City of David）、米罗（Millo）、耶路撒冷（Jerusalem）、示罗（Shiloh）、亚扪（Ammon）、摩押（Moab 1）、埃及（Egypt）
 
 ### 王国分裂 · The Kingdom Divided
 
@@ -2834,7 +2834,7 @@
 - **年代**　前 931 — 前 860　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「王国分裂」（-931）、另一侧是「以利亚在迦密山」（-860），故落在 -931—-860 之间。区间宽度即为不确定度，不是精度。
 - **内容**　罗波安在犹大——南国的开始。圣殿被外敌洗劫，黄金变铜。
-- **地点**　耶路撒冷（Jerusalem）、埃及（Egypt）、亚革大马（City of David）
+- **地点**　耶路撒冷（Jerusalem）、埃及（Egypt）、大卫城（City of David）
 
 ### 亚比央与亚撒 · Abijam and Asa
 
@@ -2846,8 +2846,8 @@
 - **平行经文**　亚撒的变革 — 同见 2 Chronicles 15:1–19
 - **年代**　前 931 — 前 860　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「王国分裂」（-931）、另一侧是「以利亚在迦密山」（-860），故落在 -931—-860 之间。区间宽度即为不确定度，不是精度。
-- **内容**　亚比央与亚撒——犹大首批王，开始了「行雅伟眼中正道」与否的循环评价。
-- **地点**　耶路撒冷（Jerusalem）、亚革大马（City of David）、汲沦（Kidron）、拉玛（Ramah 1）、大马士革（Damascus）、亚兰（Syria 1）、亚比拉伯玛迦（Abel-beth-maacah）、Chinnereth、但（Dan）、以云（Ijon）、得撒（Tirzah）、迦巴（Geba 1）、米斯巴（Mizpah 3）、基比顿（Gibbethon）、示罗（Shiloh）
+- **内容**　亚比央与亚撒——犹大首批王，开始了「行雅伟眼中看为正的事」与否的循环评价。
+- **地点**　耶路撒冷（Jerusalem）、大卫城（City of David）、汲沦（Kidron）、拉玛（Ramah 1）、大马士革（Damascus）、亚兰（Syria 1）、亚比拉伯玛迦（Abel-beth-maacah）、基尼烈（Chinnereth）、但（Dan）、以云（Ijon）、得撒（Tirzah）、迦巴（Geba 1）、米斯巴（Mizpah 3）、基比顿（Gibbethon）、示罗（Shiloh）
 
 ### 暗利与亚哈 · Omri and Ahab
 
@@ -2924,7 +2924,7 @@
 - **年代**　前 860 — 前 848　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「以利亚在迦密山」（-860）、另一侧是「以利亚被接升天；以利沙继任」（-848），故落在 -860—-848 之间。区间宽度即为不确定度，不是精度。
 - **内容**　亚哈之死——一支随便射出的箭准确射中王。神的预言永不落空。
-- **地点**　拉末基列（Ramoth-gilead）、亚兰（Syria 1）、撒玛利亚（Samaria 1）、耶路撒冷（Jerusalem）、以东（Edom）、以旬迦别（Ezion-geber）、俄斐（Ophir）、他施（Tarshish 2）、亚革大马（City of David）
+- **地点**　拉末基列（Ramoth-gilead）、亚兰（Syria 1）、撒玛利亚（Samaria 1）、耶路撒冷（Jerusalem）、以东（Edom）、以旬迦别（Ezion-geber）、俄斐（Ophir）、他施（Tarshish 2）、大卫城（City of David）
 
 ---
 
@@ -3012,7 +3012,7 @@
 - **年代**　前 848 — 前 722　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「以利亚被接升天；以利沙继任」（-848）、另一侧是「北国以色列亡于亚述」（-722），故落在 -848—-722 之间。区间宽度即为不确定度，不是精度。
 - **内容**　哈薛与约兰——以利沙预言哈薛将作叙利亚王，并行许多恶事。
-- **地点**　大马士革（Damascus）、亚兰（Syria 1）、亚兰（Aram）、耶路撒冷（Jerusalem）、以东（Edom）、撒益（Zair）、立拿（Libnah 1）、亚革大马（City of David）、拉末基列（Ramoth-gilead）、耶斯列（Jezreel 2）、拉玛（Ramah 5）
+- **地点**　大马士革（Damascus）、亚兰（Syria 1）、亚兰（Aram）、耶路撒冷（Jerusalem）、以东（Edom）、撒益（Zair）、立拿（Libnah 1）、大卫城（City of David）、拉末基列（Ramoth-gilead）、耶斯列（Jezreel 2）、拉末（Ramah 5）
 
 ### 膏耶户为王 · Jehu Anointed King
 
@@ -3021,7 +3021,7 @@
 - **年代**　前 848 — 前 722　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「以利亚被接升天；以利沙继任」（-848）、另一侧是「北国以色列亡于亚述」（-722），故落在 -848—-722 之间。区间宽度即为不确定度，不是精度。
 - **内容**　耶户被膏为王——猛烈的改革者，却也以恶行收场。
-- **地点**　拉末基列（Ramoth-gilead）、耶斯列（Jezreel 2）、亚兰（Syria 1）、园亭之路（Beth-haggan）、姑珥（Gur）、以伯莲（Ibleam）、米吉多（Megiddo）、亚革大马（City of David）、耶路撒冷（Jerusalem）
+- **地点**　拉末基列（Ramoth-gilead）、耶斯列（Jezreel 2）、亚兰（Syria 1）、园亭之路（Beth-haggan）、姑珥（Gur）、以伯莲（Ibleam）、米吉多（Megiddo）、大卫城（City of David）、耶路撒冷（Jerusalem）
 
 ### 耶洗别之死 · Jezebel's Death
 
@@ -3068,7 +3068,7 @@
 - **年代**　前 848 — 前 722　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「以利亚被接升天；以利沙继任」（-848）、另一侧是「北国以色列亡于亚述」（-722），故落在 -848—-722 之间。区间宽度即为不确定度，不是精度。
 - **内容**　约阿施修圣殿——少年王心向神，重新点燃敬拜。
-- **地点**　别是巴（Beersheba 1）、耶路撒冷（Jerusalem）、迦特（Gath 1）、亚兰（Syria 1）、伯特米罗（Beth-millo）、悉拉（Silla）、亚革大马（City of David）、撒玛利亚（Samaria 1）
+- **地点**　别是巴（Beersheba 1）、耶路撒冷（Jerusalem）、迦特（Gath 1）、亚兰（Syria 1）、伯特米罗（Beth-millo）、悉拉（Silla）、大卫城（City of David）、撒玛利亚（Samaria 1）
 
 ### 以利沙之死 · Elisha's Death
 
@@ -3088,7 +3088,7 @@
 - **年代**　前 848 — 前 722　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「以利亚被接升天；以利沙继任」（-848）、另一侧是「北国以色列亡于亚述」（-722），故落在 -848—-722 之间。区间宽度即为不确定度，不是精度。
 - **内容**　亚玛谢与约阿施——南北王朝之间的冲突。
-- **地点**　耶路撒冷（Jerusalem）、以东（Edom）、西拉（Sela 2）、盐谷（Valley of Salt）、黎巴嫩（Lebanon）、伯示麦（Beth-shemesh 1）、角门（Corner Gate）、以法莲门（Ephraim Gate）、撒玛利亚（Samaria 1）、拉吉（Lachish）、亚革大马（City of David）、以拉他（Elath）、迦特希弗（Gath-hepher）、哈马（Lebo-hamath）、盐海（Salt Sea）、大马士革（Damascus）、哈马（Hamath 1）
+- **地点**　耶路撒冷（Jerusalem）、以东（Edom）、西拉（Sela 2）、盐谷（Valley of Salt）、黎巴嫩（Lebanon）、伯示麦（Beth-shemesh 1）、角门（Corner Gate）、以法莲门（Ephraim Gate）、撒玛利亚（Samaria 1）、拉吉（Lachish）、大卫城（City of David）、以拉他（Elath）、迦特希弗（Gath-hepher）、哈马（Lebo-hamath）、盐海（Salt Sea）、大马士革（Damascus）、哈马（Hamath 1）
 
 ### 乌西雅长大痲疯 · Uzziah Struck with Leprosy
 
@@ -3101,7 +3101,7 @@
 - **年代**　前 848 — 前 722　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「以利亚被接升天；以利沙继任」（-848）、另一侧是「北国以色列亡于亚述」（-722），故落在 -848—-722 之间。区间宽度即为不确定度，不是精度。
 - **内容**　乌西雅长大痲疯——犯罪时进入圣殿献香，神立即审判。
-- **地点**　耶路撒冷（Jerusalem）、亚革大马（City of David）、撒玛利亚（Samaria 1）、以伯莲（Ibleam）、得撒（Tirzah）、提斐萨（Tiphsah 2）、亚述（Assyria）、基列（Gilead 1）、亚比拉伯玛迦（Abel-beth-maacah）、加利利（Galilee 1）、夏琐（Hazor 1）、以云（Ijon）、雅挪哈（Janoah 2）、基低斯（Kedesh 1）、亚兰（Syria 1）、以东（Edom）、以拉他（Elath）、大马士革（Damascus）、吉珥（Kir 1）
+- **地点**　耶路撒冷（Jerusalem）、大卫城（City of David）、撒玛利亚（Samaria 1）、以伯莲（Ibleam）、得撒（Tirzah）、提斐萨（Tiphsah 2）、亚述（Assyria）、基列（Gilead 1）、亚比拉伯玛迦（Abel-beth-maacah）、加利利（Galilee 1）、夏琐（Hazor 1）、以云（Ijon）、雅挪哈（Janoah 2）、基低斯（Kedesh 1）、亚兰（Syria 1）、以东（Edom）、以拉他（Elath）、大马士革（Damascus）、吉珥（Kir 1）
 
 ### 撒马利亚陷落 · Samaria Falls
 
@@ -3138,7 +3138,7 @@
 - **年代**　前 715　·　推算
 - **定年依据**　与年表重叠：希西家的改革。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　亚述围耶路撒冷——西拿基立差人辱骂。希西家把信展开在神面前。
-- **地点**　亚述（Assyria）、拉吉（Lachish）、耶路撒冷（Jerusalem）、亚革大马（Upper Pool）、亚革大马（Washer’s Field）、埃及（Egypt）、亚珥拔（Arpad）、哈马（Hamath 1）、希拿（Hena）、以瓦（Ivvah）、撒玛利亚（Samaria 1）、西法瓦音（Sepharvaim）
+- **地点**　亚述（Assyria）、拉吉（Lachish）、耶路撒冷（Jerusalem）、上池（Upper Pool）、漂布地（Washer’s Field）、埃及（Egypt）、亚珥拔（Arpad）、哈马（Hamath 1）、希拿（Hena）、以瓦（Ivvah）、撒玛利亚（Samaria 1）、西法瓦音（Sepharvaim）
 
 ### 希西家求问以赛亚 · Hezekiah Seeks Isaiah
 
@@ -3209,7 +3209,7 @@
 - **年代**　前 622　·　推算
 - **定年依据**　与年表重叠：约西亚发现律法书。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　约西亚的改革——拆毁偶像、恢复逾越节，是被掳前最后的伟大复兴。
-- **地点**　耶路撒冷（Jerusalem）、伯特利（Bethel 1）、汲沦（Kidron）、别是巴（Beersheba 1）、播薛（Geba 3）、陀斐特（Topheth）、欣嫩谷（Valley of Hinnom）、亚扪（Ammon）、摩押（Moab 1）、橄榄山（Mount of Olives）、撒玛利亚（Samaria 1）、亚述（Assyria）、埃及（Egypt）、幼发拉底河（Euphrates）、米吉多（Megiddo）、立拿（Libnah 1）、哈马（Hamath 1）、利比拉（Riblah 1）、鲁玛（Rumah）
+- **地点**　耶路撒冷（Jerusalem）、伯特利（Bethel 1）、汲沦（Kidron）、别是巴（Beersheba 1）、迦巴（Geba 3）、陀斐特（Topheth）、欣嫩谷（Valley of Hinnom）、亚扪（Ammon）、摩押（Moab 1）、橄榄山（Mount of Olives）、撒玛利亚（Samaria 1）、亚述（Assyria）、埃及（Egypt）、幼发拉底河（Euphrates）、米吉多（Megiddo）、立拿（Libnah 1）、哈马（Hamath 1）、利比拉（Riblah 1）、鲁玛（Rumah）
 
 ### 巴比伦的入侵 · Babylon Attacks Judah
 
@@ -3261,7 +3261,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　从亚当起的家谱——历代志将救恩史的视角带回到创造之初。
-- **地点**　迦斐托（Caphtor）、以东（Edom）、波斯拉（Bozrah 1）、亚未得（Avith）、米甸（Midian）、摩押（Moab 1）、玛士利加（Masrekah）、利河伯（Rehoboth 2）、大河（River 3）、Mezahab、巴乌（Pau）
+- **地点**　迦斐托（Caphtor）、以东（Edom）、波斯拉（Bozrah 1）、亚未得（Avith）、米甸（Midian）、摩押（Moab 1）、玛士利加（Masrekah）、利河伯（Rehoboth 2）、大河（River 3）、米萨合（Mezahab）、巴乌（Pau）
 
 ### 雅各的儿子们 · The Sons of Israel
 
@@ -3275,7 +3275,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　雅各的儿子们——犹大支派得到最详尽的记载，因为弥赛亚出于此。
-- **地点**　基列（Gilead 1）、亚兰（Aram）、基述（Geshur）、哈倭特睚珥（Havvoth-jair）、基纳（Kenath）、伯利恒（Caleb Ephrathah）、提哥亚（Tekoa）、西弗（Jorkeam）、伯夙（Beth-zur）、Gibea、拉幔（Machbenah）、麦玛拿（Madmannah）、基列耶琳（Kiriath-jearim）、伯利恒（Beth-gader）、伯利恒（Bethlehem 1）、以实陶（Eshtaol）、琐拉（Zorah）、伯利恒（Atroth-beth-joab）、哈末（Hammath 2）、雅比斯（Jabez）、迦密（Carmel 1）、希伯仑（Hebron）、耶斯列（Jezreel 3）、耶路撒冷（Jerusalem）、基突（Gedor 1）、Hushah、洗法谷（Ir-nahash）、利迦（Recah）、罗德（Ge-harashim）、基德（Gedor 3）、伯亚实比（Beth-ashbea）、哥西巴（Cozeba）、雅叔比利恒（Lehem）、摩押（Moab 1）、基底拉（Gederah 3）、尼他应（Netaim）、别是巴（Beersheba 1）、哈萨书亚（Hazar-shual）、摩拉大（Moladah）、辟拉（Bilhah）、伊勒多腊（Eltolad）、以森（Ezem）、彼土利（Bethuel）、何珥玛（Hormah）、洗革拉（Ziklag）、伯比利（Beth-biri）、伯玛加博（Beth-marcaboth）、哈萨苏撒（Hazar-susah）、沙拉音（Shaaraim 2）、亚延（Ain 2）、亚珊（Ashan）、以坦（Etam 2）、临门（Rimmon 2）、陀健（Tochen）、巴拉比珥（Baalath-beer）、基突（Gedor 2）、西珥山（Mount Seir 1）
+- **地点**　基列（Gilead 1）、亚兰（Aram）、基述（Geshur）、哈倭特睚珥（Havvoth-jair）、基纳（Kenath）、迦勒以法他（Caleb Ephrathah）、提哥亚（Tekoa）、西弗（Jorkeam）、伯夙（Beth-zur）、基比亚（Gibea）、拉幔（Machbenah）、麦玛拿（Madmannah）、基列耶琳（Kiriath-jearim）、伯迦得（Beth-gader）、伯利恒（Bethlehem 1）、以实陶（Eshtaol）、琐拉（Zorah）、亚他绿伯约押（Atroth-beth-joab）、哈末（Hammath 2）、雅比斯（Jabez）、迦密（Carmel 1）、希伯仑（Hebron）、耶斯列（Jezreel 3）、耶路撒冷（Jerusalem）、基突（Gedor 1）、户沙（Hushah）、洗法谷（Ir-nahash）、利迦（Recah）、匠人之谷（Ge-harashim）、Gedor 3、伯亚实比（Beth-ashbea）、哥西巴（Cozeba）、雅叔比利恒（Lehem）、摩押（Moab 1）、基底拉（Gederah 3）、尼他应（Netaim）、别是巴（Beersheba 1）、哈萨书亚（Hazar-shual）、摩拉大（Moladah）、辟拉（Bilhah）、伊勒多腊（Eltolad）、以森（Ezem）、彼土利（Bethuel）、何珥玛（Hormah）、洗革拉（Ziklag）、伯比利（Beth-biri）、伯玛加博（Beth-marcaboth）、哈萨苏撒（Hazar-susah）、沙拉音（Shaaraim 2）、亚延（Ain 2）、亚珊（Ashan）、以坦（Etam 2）、临门（Rimmon 2）、陀健（Tochen）、巴拉比珥（Baalath-beer）、基突（Gedor 2）、西珥山（Mount Seir 1）
 
 ### 流便、迦得、玛拿西半支派 · Reuben, Gad, and East Manasseh
 
@@ -3328,7 +3328,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　大卫作全以色列王——历代志的视角直接跳到大卫的得胜。神的应许必应验。
-- **地点**　希伯仑（Hebron）、耶布斯（Jebus）、耶路撒冷（Jerusalem）、亚革大马（City of David）、锡安（Zion）、米罗（Millo）
+- **地点**　希伯仑（Hebron）、耶布斯（Jebus）、耶路撒冷（Jerusalem）、大卫城（City of David）、锡安（Zion）、米罗（Millo）
 
 ### 大卫的勇士 · David's Mighty Warriors
 
@@ -3337,7 +3337,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　大卫的勇士——一代英雄的姓名得以铭记。神看见每一位忠心的仆人。
-- **地点**　以弗大悯（Ephes-dammim）、亚杜兰（Adullam）、利乏音谷（Valley of Rephaim）、伯利恒（Bethlehem 1）、甲薛（Kabzeel）、摩押（Moab 1）、哈律（Harod 2）、亚拿突（Anathoth）、提哥亚（Tekoa）、Hushah、尼陀法（Netophah）、基比亚（Gibeah 1）、比拉顿（Pirathon）、亚拉巴（Arabah）、迦实（Gaash）、巴户琳（Bahurim）、沙宾（Shaalbon）、迦密（Carmel 1）、亚扪（Ammon）、比录（Beeroth）、雅提珥（Jattir）、亚罗珥（Aroer 4）、亚斯他录（Ashtaroth）、琐巴（Zobah）、洗革拉（Ziklag）、基底拉（Gederah 2）、基遍（Gibeon）、基德（Gedor 4）、约旦河（Jordan）、希伯仑（Hebron）
+- **地点**　以弗大悯（Ephes-dammim）、亚杜兰（Adullam）、利乏音谷（Valley of Rephaim）、伯利恒（Bethlehem 1）、甲薛（Kabzeel）、摩押（Moab 1）、哈律（Harod 2）、亚拿突（Anathoth）、提哥亚（Tekoa）、户沙（Hushah）、尼陀法（Netophah）、基比亚（Gibeah 1）、比拉顿（Pirathon）、亚拉巴（Arabah）、迦实（Gaash）、巴户琳（Bahurim）、沙本（Shaalbon）、迦密（Carmel 1）、亚扪（Ammon）、比录（Beeroth）、雅提珥（Jattir）、亚罗珥（Aroer 4）、亚斯他录（Ashtaroth）、琐巴（Zobah）、洗革拉（Ziklag）、基底拉（Gederah 2）、基遍（Gibeon）、基多（Gedor 4）、约旦河（Jordan）、希伯仑（Hebron）
 
 ### 约柜归回的初次 · Bringing Back the Ark
 
@@ -3348,7 +3348,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　初次接约柜——大卫的热心却无条理。乌撒因不当方式被击杀。
-- **地点**　埃及（Egypt）、基列耶琳（Kiriath-jearim）、哈马（Lebo-hamath）、西曷（Shihor 1）、巴拉（Baalah 2）、毗列斯乌撒（Perez-uzzah）、亚革大马（City of David）、迦特（Gath 3）、推罗（Tyre）、耶路撒冷（Jerusalem）、利乏音谷（Valley of Rephaim）、巴力毗拉心（Baal-perazim）、基色（Gezer）、基遍（Gibeon）
+- **地点**　埃及（Egypt）、基列耶琳（Kiriath-jearim）、哈马（Lebo-hamath）、西曷（Shihor 1）、巴拉（Baalah 2）、毗列斯乌撒（Perez-uzzah）、大卫城（City of David）、迦特（Gath 3）、推罗（Tyre）、耶路撒冷（Jerusalem）、利乏音谷（Valley of Rephaim）、巴力毗拉心（Baal-perazim）、基色（Gezer）、基遍（Gibeon）
 
 ### 约柜安抵耶路撒冷 · The Ark Reaches Jerusalem
 
@@ -3357,7 +3357,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　约柜安抵耶路撒冷——这次按神的方式：利未人扛抬。
-- **地点**　亚革大马（City of David）、耶路撒冷（Jerusalem）
+- **地点**　大卫城（City of David）、耶路撒冷（Jerusalem）
 
 ### 大卫的赞美诗 · David's Psalm of Thanks
 
@@ -3380,7 +3380,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　神与大卫立约——大卫想为神建殿，神却应许要为大卫建立朝代。
-- **地点**　埃及（Egypt）、迦特（Gath 1）、摩押（Moab 1）、幼发拉底河（Euphrates）、哈马琐巴（Hamath-zobah）、大马士革（Damascus）、亚兰（Syria 1）、琐巴（Zobah）、耶路撒冷（Jerusalem）、均（Cun）、提巴（Tibhath）、哈马（Hamath 1）、亚玛力（Amalek）、亚扪（Ammon）、以东（Edom）、非利士（Philistia）、盐谷（Valley of Salt）、耶利哥（Jericho 1）、玛迦（Maacah）、美索不达米亚（Mesopotamia）、米底巴（Medeba）、约旦河（Jordan）、拉巴（Rabbah 1）、基色（Gezer）、Hushah
+- **地点**　埃及（Egypt）、迦特（Gath 1）、摩押（Moab 1）、幼发拉底河（Euphrates）、哈马琐巴（Hamath-zobah）、大马士革（Damascus）、亚兰（Syria 1）、琐巴（Zobah）、耶路撒冷（Jerusalem）、均（Cun）、提巴（Tibhath）、哈马（Hamath 1）、亚玛力（Amalek）、亚扪（Ammon）、以东（Edom）、非利士（Philistia）、盐谷（Valley of Salt）、耶利哥（Jericho 1）、玛迦（Maacah）、美索不达米亚（Mesopotamia）、米底巴（Medeba）、约旦河（Jordan）、拉巴（Rabbah 1）、基色（Gezer）、户沙（Hushah）
 
 ### 大卫数点的罪 · David's Sinful Census
 
@@ -3406,7 +3406,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　利未人的分工——敬拜不是即兴；神百姓有秩序的事奉。
-- **地点**　耶路撒冷（Jerusalem）、圣所（Holy Place 2）、东门（East Gate）、亚革大马（North Gate）、亚革大马（South Gate）、沙利基（Shallecheth）、亚革大马（West Gate）、亚革大马（Parbar）、约旦河（Jordan）、基列（Gilead 1）、雅谢（Jazer）、提哥亚（Tekoa）、Hushah、亚拿突（Anathoth）、尼陀法（Netophah）、比拉顿（Pirathon）、迦巴（Ramah 9）、示番（Shepham）、基德（Geder）、高原（Shephelah）、沙仑（Sharon 1）、比珥（Meronoth）
+- **地点**　耶路撒冷（Jerusalem）、圣所（Holy Place 2）、东门（East Gate）、北门（North Gate）、南门（South Gate）、沙利基（Shallecheth）、西门（West Gate）、游廊（Parbar）、约旦河（Jordan）、基列（Gilead 1）、雅谢（Jazer）、提哥亚（Tekoa）、户沙（Hushah）、亚拿突（Anathoth）、尼陀法（Netophah）、比拉顿（Pirathon）、迦巴（Ramah 9）、示番（Shepham）、基德（Geder）、高原（Shephelah）、沙仑（Sharon 1）、米仑（Meronoth）
 
 ### 大卫给所罗门的吩咐 · David's Charge to Solomon
 
@@ -3441,7 +3441,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　所罗门求智慧——一颗谦卑的心比无尽的财富更能蒙神祝福。
-- **地点**　基遍（Gibeon）、耶路撒冷（Jerusalem）、基列耶琳（Kiriath-jearim）、高原（Shephelah）、埃及（Egypt）、基利家（Kue）、亚兰（Syria 1）
+- **地点**　基遍（Gibeon）、耶路撒冷（Jerusalem）、基列耶琳（Kiriath-jearim）、高原（Shephelah）、埃及（Egypt）、Kue、亚兰（Syria 1）
 
 ### 预备建殿 · Preparations for the Temple
 
@@ -3470,7 +3470,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　约柜入殿——以色列敬拜历史的高峰，神的荣光充满圣殿。
-- **地点**　亚革大马（City of David）、耶路撒冷（Jerusalem）、锡安（Zion）、至圣所（Most Holy Place 2）、圣所（Holy Place 2）、埃及（Egypt）、何烈山（Mount Horeb）
+- **地点**　大卫城（City of David）、耶路撒冷（Jerusalem）、锡安（Zion）、至圣所（Most Holy Place 2）、圣所（Holy Place 2）、埃及（Egypt）、何烈山（Mount Horeb）
 
 ### 所罗门献殿祷告 · Solomon's Dedication Prayer
 
@@ -3491,7 +3491,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　天上降火、神荣光充满——立约在历史中最有形的肯定。
-- **地点**　埃及小河（Brook of Egypt）、哈马（Lebo-hamath）、埃及（Egypt）、哈马琐巴（Hamath-zobah）、哈马（Hamath 1）、达莫（Tadmor）、下伯和仑（Lower Beth-horon）、上伯和仑（Upper Beth-horon）、巴拉（Baalath 2）、耶路撒冷（Jerusalem）、黎巴嫩（Lebanon）、亚革大马（City of David）、以东（Edom）、以拉他（Elath）、以旬迦别（Ezion-geber）、红海（Red Sea 2）、俄斐（Ophir）
+- **地点**　埃及小河（Brook of Egypt）、哈马（Lebo-hamath）、埃及（Egypt）、哈马琐巴（Hamath-zobah）、哈马（Hamath 1）、达莫（Tadmor）、下伯和仑（Lower Beth-horon）、上伯和仑（Upper Beth-horon）、巴拉（Baalath 2）、耶路撒冷（Jerusalem）、黎巴嫩（Lebanon）、大卫城（City of David）、以东（Edom）、以拉他（Elath）、以旬迦别（Ezion-geber）、红海（Red Sea 2）、俄斐（Ophir）
 
 ### 示巴女王的来访 · The Queen of Sheba
 
@@ -3503,7 +3503,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　示巴女王带香料金子来试所罗门的智慧，见其筵席臣仆后「诧异得神不守舍」；所罗门的财富与金盾牌，作王四十年去世。
-- **地点**　耶路撒冷（Jerusalem）、示巴（Sheba 1）、俄斐（Ophir）、阿拉伯（Arabia 1）、黎巴嫩林宫（House of the Forest of Lebanon）、他施（Tarshish 1）、埃及（Egypt）、幼发拉底河（Euphrates）、高原（Shephelah）、示罗（Shiloh）、亚革大马（City of David）
+- **地点**　耶路撒冷（Jerusalem）、示巴（Sheba 1）、俄斐（Ophir）、阿拉伯（Arabia 1）、黎巴嫩林宫（House of the Forest of Lebanon）、他施（Tarshish 1）、埃及（Egypt）、幼发拉底河（Euphrates）、高原（Shephelah）、示罗（Shiloh）、大卫城（City of David）
 
 ### 王国分裂 · The Kingdom Divides
 
@@ -3516,7 +3516,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　王国分裂——罗波安拒绝百姓的请求，王朝一分为二。
-- **地点**　示剑（Shechem）、埃及（Egypt）、示罗（Shiloh）、耶路撒冷（Jerusalem）、伯利恒（Bethlehem 1）、以坦（Etam 3）、提哥亚（Tekoa）、亚杜兰（Adullam）、伯夙（Beth-zur）、梭哥（Socoh 1）、迦特（Gath 1）、玛利沙（Mareshah）、西弗（Ziph 1）、亚多莱音（Adoraim）、亚西加（Azekah）、拉吉（Lachish）、亚雅仑（Aijalon 1）、希伯仑（Hebron）、琐拉（Zorah）、亚扪（Ammon）、亚革大马（City of David）、基比亚（Gibeah 2）、以法莲山（Mount Zemaraim）、伯特利（Bethel 1）、以弗仑（Ephron 2）、耶沙拿（Jeshanah）
+- **地点**　示剑（Shechem）、埃及（Egypt）、示罗（Shiloh）、耶路撒冷（Jerusalem）、伯利恒（Bethlehem 1）、以坦（Etam 3）、提哥亚（Tekoa）、亚杜兰（Adullam）、伯夙（Beth-zur）、梭哥（Socoh 1）、迦特（Gath 1）、玛利沙（Mareshah）、西弗（Ziph 1）、亚多莱音（Adoraim）、亚西加（Azekah）、拉吉（Lachish）、亚雅仑（Aijalon 1）、希伯仑（Hebron）、琐拉（Zorah）、亚扪（Ammon）、大卫城（City of David）、基比亚（Gibeah 2）、以法莲山（Mount Zemaraim）、伯特利（Bethel 1）、以法拉音（Ephron 2）、耶沙拿（Jeshanah）
 
 ### 亚撒的改革 · Asa's Reforms
 
@@ -3528,7 +3528,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　亚撒除偶像，在洗法谷祈祷「求你帮助我们」而击败古实百万大军；先知亚撒利雅劝民立约寻求雅伟；晚年囚哈拿尼，患脚病死。
-- **地点**　亚革大马（City of David）、玛利沙（Mareshah）、洗法谷（Valley of Zephathah）、基拉耳（Gerar）、耶路撒冷（Jerusalem）、汲沦（Kidron）、拉玛（Ramah 1）、大马士革（Damascus）、亚兰（Syria 1）、亚比拉伯玛迦（Abel-beth-maacah）、但（Dan）、以云（Ijon）、迦巴（Geba 1）、米斯巴（Mizpah 3）
+- **地点**　大卫城（City of David）、玛利沙（Mareshah）、洗法谷（Valley of Zephathah）、基拉耳（Gerar）、耶路撒冷（Jerusalem）、汲沦（Kidron）、拉玛（Ramah 1）、大马士革（Damascus）、亚兰（Syria 1）、亚比拉伯玛迦（Abel-beth-maacah）、但（Dan）、以云（Ijon）、迦巴（Geba 1）、米斯巴（Mizpah 3）
 
 ### 约沙法的改革 · Jehoshaphat's Reforms
 
@@ -3554,7 +3554,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　约沙法禁食祈祷「我们的眼目单仰望你」，歌唱者在前敌军自相残杀；后约兰、亚哈谢作王，亚他利雅篡位，耶何耶大立约阿施。
-- **地点**　亚扪（Ammon）、摩押（Moab 1）、以东（Edom）、隐基底（Engedi）、哈洗逊他玛（Hazazon-tamar 2）、盐海（Salt Sea）、耶路撒冷（Jerusalem）、埃及（Egypt）、西珥山（Mount Seir 1）、耶鲁伊勒（Jeruel）、洗斯（Ziz）、提哥亚（Tekoa）、比拉迦谷（Valley of Beracah）、以旬迦别（Ezion-geber）、他施（Tarshish 1）、玛利沙（Mareshah）、亚革大马（City of David）、立拿（Libnah 1）、拉末基列（Ramoth-gilead）、亚兰（Syria 1）、耶斯列（Jezreel 2）、拉玛（Ramah 5）、撒玛利亚（Samaria 1）、泉门（Gate of the Foundation）、马门（Horse Gate）
+- **地点**　亚扪（Ammon）、摩押（Moab 1）、以东（Edom）、隐基底（Engedi）、哈洗逊他玛（Hazazon-tamar 2）、盐海（Salt Sea）、耶路撒冷（Jerusalem）、埃及（Egypt）、西珥山（Mount Seir 1）、耶鲁伊勒（Jeruel）、洗斯（Ziz）、提哥亚（Tekoa）、比拉迦谷（Valley of Beracah）、以旬迦别（Ezion-geber）、他施（Tarshish 1）、玛利沙（Mareshah）、大卫城（City of David）、立拿（Libnah 1）、拉末基列（Ramoth-gilead）、亚兰（Syria 1）、耶斯列（Jezreel 2）、拉末（Ramah 5）、撒玛利亚（Samaria 1）、基址门（Gate of the Foundation）、马门（Horse Gate）
 
 ### 约阿施修圣殿 · Joash Repairs the Temple
 
@@ -3573,7 +3573,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　约阿施修圣殿——少年王回应大祭司的指引重建敬拜。
-- **地点**　别是巴（Beersheba 1）、耶路撒冷（Jerusalem）、亚革大马（City of David）、大马士革（Damascus）、亚兰（Syria 1）、西珥山（Mount Seir 1）、盐谷（Valley of Salt）、西拉（Sela 1）、伯和仑（Beth-horon）、撒玛利亚（Samaria 1）、黎巴嫩（Lebanon）、以东（Edom）、伯示麦（Beth-shemesh 1）、角门（Corner Gate）、以法莲门（Ephraim Gate）、拉吉（Lachish）、以拉他（Elath）、亚实突（Ashdod）、迦特（Gath 1）、雅比聂（Jabneel 1）、非利士（Philistia）、姑珥巴力（Gurbaal）、埃及（Egypt）、城楼（Angle）、谷门（Valley Gate）、迦密（Carmel 1）、高原（Shephelah）、俄斐勒（Ophel）、亚扪（Ammon）、欣嫩谷（Valley of Hinnom）、耶利哥（City of Palms 1）、耶利哥（Jericho 1）、亚述（Assyria）、亚雅仑（Aijalon 1）、基低罗（Gederoth）、基低罗（Gimzo）、南地（Negeb）、梭哥（Socoh 1）、亭拿（Timnah 1）
+- **地点**　别是巴（Beersheba 1）、耶路撒冷（Jerusalem）、大卫城（City of David）、大马士革（Damascus）、亚兰（Syria 1）、西珥山（Mount Seir 1）、盐谷（Valley of Salt）、西拉（Sela 1）、伯和仑（Beth-horon）、撒玛利亚（Samaria 1）、黎巴嫩（Lebanon）、以东（Edom）、伯示麦（Beth-shemesh 1）、角门（Corner Gate）、以法莲门（Ephraim Gate）、拉吉（Lachish）、以拉他（Elath）、亚实突（Ashdod）、迦特（Gath 1）、雅比聂（Jabneel 1）、非利士（Philistia）、姑珥巴力（Gurbaal）、埃及（Egypt）、城楼（Angle）、谷门（Valley Gate）、迦密（Carmel 1）、高原（Shephelah）、俄斐勒（Ophel）、亚扪（Ammon）、欣嫩谷（Valley of Hinnom）、棕树城（City of Palms 1）、耶利哥（Jericho 1）、亚述（Assyria）、亚雅仑（Aijalon 1）、基低罗（Gederoth）、基低罗（Gimzo）、南地（Negeb）、梭哥（Socoh 1）、亭拿（Timnah 1）
 
 ### 希西家洁净圣殿 · Hezekiah Purifies the Temple
 
@@ -3582,7 +3582,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　希西家洁净圣殿——王朝的属灵复兴从清洁圣殿开始。
-- **地点**　耶路撒冷（Jerusalem）、亚革大马（East Square）、圣所（Holy Place 2）、汲沦（Kidron）
+- **地点**　耶路撒冷（Jerusalem）、东边的宽阔处（East Square）、圣所（Holy Place 2）、汲沦（Kidron）
 
 ### 希西家守逾越节 · Hezekiah's Passover
 
@@ -3604,7 +3604,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　亚述围攻——希西家信靠神，神击杀十八万五千人。
-- **地点**　亚述（Assyria）、耶路撒冷（Jerusalem）、亚革大马（City of David）、米罗（Millo）、拉吉（Lachish）、基训（Gihon 2）、巴比伦（Babylon 1）
+- **地点**　亚述（Assyria）、耶路撒冷（Jerusalem）、大卫城（City of David）、米罗（Millo）、拉吉（Lachish）、基训（Gihon 2）、巴比伦（Babylon 1）
 
 ### 玛拿西的悔改 · Manasseh Repents
 
@@ -3614,7 +3614,7 @@
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
 - **内容**　玛拿西的悔改——历代志独家记载这位最坏王的回转。神的恩典够任何人。
-- **地点**　耶路撒冷（Jerusalem）、欣嫩谷（Valley of Hinnom）、亚述（Assyria）、巴比伦（Babylon 1）、亚革大马（City of David）、鱼门（Fish Gate）、基训（Gihon 2）、汲沦（Kidron）、俄斐勒（Ophel）
+- **地点**　耶路撒冷（Jerusalem）、欣嫩谷（Valley of Hinnom）、亚述（Assyria）、巴比伦（Babylon 1）、大卫城（City of David）、鱼门（Fish Gate）、基训（Gihon 2）、汲沦（Kidron）、俄斐勒（Ophel）
 
 ### 约西亚的改革 · Josiah's Reforms
 
@@ -3625,7 +3625,7 @@
 - **平行经文**　律法书卷被发现 — 同见 2 Kings 22:8–20
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
-- **内容**　约西亚——8岁就开始追求神。「他还年少」。
+- **内容**　约西亚——8岁就开始追求神。「尚且年幼，就寻求他祖大卫的神」。
 - **地点**　耶路撒冷（Jerusalem）
 
 ### 发现律法书 · The Book of the Law Found
@@ -3658,7 +3658,7 @@
 - **平行经文**　西底家的统治 — 同见 2 Kings 24:18–25:30、Jeremiah 52:1–34、Jeremiah 39:1–10
 - **年代**　前 586 — 前 538　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「犹大亡国；圣殿被毁」（-586）、另一侧是「所罗巴伯第一次回归」（-538），故落在 -586—-538 之间。区间宽度即为不确定度，不是精度。
-- **内容**　「无可救药」——神长久忍耐的极限。被掳成为不可避免。
+- **内容**　「无法可救」——神长久忍耐的极限。被掳成为不可避免。
 - **地点**　巴比伦（Babylon 1）、迦勒底（Chaldea）、耶路撒冷（Jerusalem）、波斯（Persia）
 
 ### 居鲁士的诏书 · The Decree of Cyrus
@@ -3692,7 +3692,7 @@
 - **年代**　前 538　·　推算
 - **定年依据**　与年表重叠：所罗巴伯第一次回归。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　归回的人数——49697人。即使少数也是神的余民。
-- **地点**　巴比伦（Babylon 1）、巴比伦（Babylonia）、耶路撒冷（Jerusalem）、亚利马（Gibbar）、伯利恒（Bethlehem 1）、尼陀法（Netophah）、亚拿突（Anathoth）、亚斯玛弗（Azmaveth）、比录（Beeroth）、基非拉（Chephirah）、基列耶琳（Kiriath-jearim）、迦巴（Geba 1）、拉玛（Ramah 1）、密抹（Michmash）、艾（Ai 3）、伯特利（Bethel 1）、尼波（Nebo 2）、Magbish、Harim、哈第（Hadid）、罗德（Lod）、阿挪（Ono）、耶利哥（Jericho 1）、Senaah、亚顿（Addon）、基绿（Cherub）、音麦（Immer）、特哈萨（Tel-harsha）、特米拉（Tel-melah）、基列（Gilead 1）
+- **地点**　巴比伦（Babylon 1）、巴比伦（Babylonia）、耶路撒冷（Jerusalem）、吉罢珥（Gibbar）、伯利恒（Bethlehem 1）、尼陀法（Netophah）、亚拿突（Anathoth）、亚斯玛弗（Azmaveth）、比录（Beeroth）、基非拉（Chephirah）、基列耶琳（Kiriath-jearim）、迦巴（Geba 1）、拉玛（Ramah 1）、密抹（Michmash）、艾（Ai 3）、伯特利（Bethel 1）、尼波（Nebo 2）、末必（Magbish）、哈琳（Harim）、哈第（Hadid）、罗德（Lod）、阿挪（Ono）、耶利哥（Jericho 1）、西拿（Senaah）、亚顿（Addon）、基绿（Cherub）、音麦（Immer）、特哈萨（Tel-harsha）、特米拉（Tel-melah）、基列（Gilead 1）
 
 ### 重立祭坛 · The Altar Rebuilt
 
@@ -3756,7 +3756,7 @@
 - **年代**　前 458　·　推算
 - **定年依据**　与年表重叠：以斯拉回归。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　百姓认罪——以斯拉的眼泪带来全国的悔改。
-- **地点**　耶路撒冷（Jerusalem）、Harim、哈列（Nebo 3）
+- **地点**　耶路撒冷（Jerusalem）、哈琳（Harim）、尼波（Nebo 3）
 
 ---
 
@@ -3777,7 +3777,7 @@
 - **经文**　尼希米记 2:1–2:10（Nehemiah 2:1–2:10）
 - **年代**　前 445　·　推算
 - **定年依据**　与年表重叠：尼希米重建城墙。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　尼希米求王差遣——四个月的祷告之后，他在王面前作出关键决定。「我向天上的神默祷」。
+- **内容**　尼希米求王差遣——四个月的祷告之后，他在王面前作出关键决定。「我默祷天上的神」。
 - **地点**　河西（Beyond the River）
 
 ### 夜察城墙 · Inspecting the Walls
@@ -3794,7 +3794,7 @@
 - **年代**　前 445　·　推算
 - **定年依据**　与年表重叠：尼希米重建城墙。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　重建城墙的人——每一节都列出建造者的名字。神记念每一个忠心的工人。
-- **地点**　羊门（Sheep Gate）、哈楠业楼（Tower of Hananel）、哈米亚城楼（Tower of the Hundred）、耶利哥（Jericho 1）、鱼门（Fish Gate）、Senaah、提哥亚（Tekoa）、古门（Gate of Yeshanah）、河西（Beyond the River）、基遍（Gibeon）、比珥（Meronoth）、米斯巴（Mizpah 3）、宽墙（Broad Wall）、耶路撒冷（Jerusalem）、Harim、炉楼（Tower of the Ovens）、粪厂门（Dung Gate）、谷门（Valley Gate）、撒挪亚（Zanoah 1）、伯哈基琳（Beth-haccherem）、亚革大马（City of David）、泉门（Fountain Gate）、西罗亚（Siloam）、伯夙（Beth-zur）、基伊拉（Keilah）、城楼（Angle）、俄斐勒（Ophel）、水门（Water Gate）、马门（Horse Gate）、东门（East Gate）、哈米弗甲门（Muster Gate）
+- **地点**　羊门（Sheep Gate）、哈楠业楼（Tower of Hananel）、哈米亚城楼（Tower of the Hundred）、耶利哥（Jericho 1）、鱼门（Fish Gate）、西拿（Senaah）、提哥亚（Tekoa）、古门（Gate of Yeshanah）、河西（Beyond the River）、基遍（Gibeon）、米仑（Meronoth）、米斯巴（Mizpah 3）、宽墙（Broad Wall）、耶路撒冷（Jerusalem）、哈琳（Harim）、炉楼（Tower of the Ovens）、粪厂门（Dung Gate）、谷门（Valley Gate）、撒挪亚（Zanoah 1）、伯哈基琳（Beth-haccherem）、大卫城（City of David）、泉门（Fountain Gate）、西罗亚（Siloam）、伯夙（Beth-zur）、基伊拉（Keilah）、城楼（Angle）、俄斐勒（Ophel）、水门（Water Gate）、马门（Horse Gate）、东门（East Gate）、哈米弗甲门（Muster Gate）
 
 ### 敌人讥笑与抵挡 · Opposition to the Work
 
@@ -3819,7 +3819,7 @@
 - **年代**　前 445　·　推算
 - **定年依据**　与年表重叠：尼希米重建城墙。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　参巴拉四次约尼希米到阿挪平原，又散谣言、买通示玛雅恐吓，均被识破；城墙五十二日完工，尼希米查点归回者的家谱名单。
-- **地点**　Hakkephirim、阿挪（Ono）、耶路撒冷（Jerusalem）、巴比伦（Babylon 1）、基遍（Gibeon）、伯利恒（Bethlehem 1）、尼陀法（Netophah）、亚拿突（Anathoth）、亚斯玛弗（Azmaveth）、比录（Beeroth）、基非拉（Chephirah）、基列耶琳（Kiriath-jearim）、迦巴（Geba 1）、拉玛（Ramah 1）、密抹（Michmash）、艾（Ai 3）、伯特利（Bethel 1）、尼波（Nebo 2）、Harim、耶利哥（Jericho 1）、哈第（Hadid）、罗德（Lod）、Senaah、亚顿（Addon）、基绿（Cherub）、音麦（Immer）、特哈萨（Tel-harsha）、特米拉（Tel-melah）、基列（Gilead 1）
+- **地点**　Hakkephirim、阿挪（Ono）、耶路撒冷（Jerusalem）、巴比伦（Babylon 1）、基遍（Gibeon）、伯利恒（Bethlehem 1）、尼陀法（Netophah）、亚拿突（Anathoth）、亚斯玛弗（Azmaveth）、比录（Beeroth）、基非拉（Chephirah）、基列耶琳（Kiriath-jearim）、迦巴（Geba 1）、拉玛（Ramah 1）、密抹（Michmash）、艾（Ai 3）、伯特利（Bethel 1）、尼波（Nebo 2）、哈琳（Harim）、耶利哥（Jericho 1）、哈第（Hadid）、罗德（Lod）、西拿（Senaah）、亚顿（Addon）、基绿（Cherub）、音麦（Immer）、特哈萨（Tel-harsha）、特米拉（Tel-melah）、基列（Gilead 1）
 
 ### 以斯拉宣读律法 · Ezra Reads the Law
 
@@ -3835,7 +3835,7 @@
 - **年代**　前 478 — 前 445　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「尼希米重建城墙」（-445）、另一侧是「以斯帖救犹太人」（-478），故落在 -478—-445 之间。区间宽度即为不确定度，不是精度。
 - **内容**　百姓的认罪与立约——回顾以色列史，承认神的信实和自己的失败。
-- **地点**　迦勒底（Chaldea）、吾珥（Ur 1）、埃及（Egypt）、红海（Red Sea 1）、西奈山（Mount Sinai）、巴珊（Bashan）、希实本（Heshbon）、亚述（Assyria）、Harim、耶路撒冷（Jerusalem）、第二区（Second Quarter）、俄斐勒（Ophel）、底本（Dibon 2）、希伯仑（Hebron）、甲薛（Kabzeel）、伯帕列（Beth-pelet）、耶书亚（Jeshua）、摩拉大（Moladah）、别是巴（Beersheba 1）、哈萨书亚（Hazar-shual）、米哥拿（Meconah）、洗革拉（Ziklag）、音临门（En-rimmon）、耶末（Jarmuth 1）、琐拉（Zorah）、亚杜兰（Adullam）、亚西加（Azekah）、拉吉（Lachish）、欣嫩谷（Valley of Hinnom）、撒挪亚（Zanoah 1）、亚雅（Aija）、伯特利（Bethel 1）、迦巴（Geba 1）、密抹（Michmash）、亚难雅（Ananiah）、亚拿突（Anathoth）、挪伯（Nob）、基他音（Gittaim）、夏琐（Hazor 4）、迦巴（Ramah 7）、哈第（Hadid）、尼八拉（Neballat）、洗扁（Zeboim）、罗德（Ge-harashim）、罗德（Lod）、阿挪（Ono）
+- **地点**　迦勒底（Chaldea）、吾珥（Ur 1）、埃及（Egypt）、红海（Red Sea 1）、西奈山（Mount Sinai）、巴珊（Bashan）、希实本（Heshbon）、亚述（Assyria）、哈琳（Harim）、耶路撒冷（Jerusalem）、第二区（Second Quarter）、俄斐勒（Ophel）、底本（Dibon 2）、希伯仑（Hebron）、甲薛（Kabzeel）、伯帕列（Beth-pelet）、耶书亚（Jeshua）、摩拉大（Moladah）、别是巴（Beersheba 1）、哈萨书亚（Hazar-shual）、米哥拿（Meconah）、洗革拉（Ziklag）、音临门（En-rimmon）、耶末（Jarmuth 1）、琐拉（Zorah）、亚杜兰（Adullam）、亚西加（Azekah）、拉吉（Lachish）、欣嫩谷（Valley of Hinnom）、撒挪亚（Zanoah 1）、亚雅（Aija）、伯特利（Bethel 1）、迦巴（Geba 1）、密抹（Michmash）、亚难雅（Ananiah）、亚拿突（Anathoth）、挪伯（Nob）、基他音（Gittaim）、夏琐（Hazor 4）、迦巴（Ramah 7）、哈第（Hadid）、尼八拉（Neballat）、洗编（Zeboim）、匠人之谷（Ge-harashim）、罗德（Lod）、阿挪（Ono）
 
 ### 城墙的奉献礼 · Dedication of the Wall
 
@@ -3843,7 +3843,7 @@
 - **年代**　前 478 — 前 445　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「尼希米重建城墙」（-445）、另一侧是「以斯帖救犹太人」（-478），故落在 -478—-445 之间。区间宽度即为不确定度，不是精度。
 - **内容**　城墙奉献礼——感恩与音乐充满全城，远处都听见。
-- **地点**　耶路撒冷（Jerusalem）、亚斯玛弗（Azmaveth）、伯吉甲（Beth-gilgal）、迦巴（Geba 1）、粪厂门（Dung Gate）、亚革大马（City of David）、泉门（Fountain Gate）、水门（Water Gate）、宽墙（Broad Wall）、炉楼（Tower of the Ovens）、以法莲门（Ephraim Gate）、鱼门（Fish Gate）、护卫门（Gate of the Guard）、古门（Gate of Yeshanah）、羊门（Sheep Gate）、哈楠业楼（Tower of Hananel）、哈米亚城楼（Tower of the Hundred）
+- **地点**　耶路撒冷（Jerusalem）、亚斯玛弗（Azmaveth）、伯吉甲（Beth-gilgal）、迦巴（Geba 1）、粪厂门（Dung Gate）、大卫城（City of David）、泉门（Fountain Gate）、水门（Water Gate）、宽墙（Broad Wall）、炉楼（Tower of the Ovens）、以法莲门（Ephraim Gate）、鱼门（Fish Gate）、护卫门（Gate of the Guard）、古门（Gate of Yeshanah）、羊门（Sheep Gate）、哈楠业楼（Tower of Hananel）、哈米亚城楼（Tower of the Hundred）
 
 ### 尼希米最后的改革 · Nehemiah's Final Reforms
 
@@ -4006,7 +4006,7 @@
 - **经文**　约伯记 4:1–7:21（Job 4:1–7:21）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　以利法的发言——「正直人受罚是不可能的」。看似敬虔，其实不当。
+- **内容**　以利法的发言——「无辜的人有谁灭亡？正直的人在何处剪除？」。看似敬虔，其实不当。
 - **地点**　示巴（Sheba 1）、提玛（Tema）
 
 ### 比勒达首次发言 · Bildad Speaks
@@ -4022,7 +4022,7 @@
 - **经文**　约伯记 11:1–14:22（Job 11:1–14:22）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　琐法的发言——三友中最严厉。「神惩罚你比该的还要少」。极端错误。
+- **内容**　琐法的发言——三友中最严厉。「神追讨你，比你罪孽该得的还少」。极端错误。
 - **地点**　拿玛（Naamah 2）
 
 ### 以利法二次发言 · Eliphaz Speaks Again
@@ -4070,7 +4070,7 @@
 - **经文**　约伯记 40:1–40:5（Job 40:1–40:5）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　约伯的回应——「我用手捂口」。看见神的伟大就不再申辩。
+- **内容**　约伯的回应——「只好用手捂口」。看见神的伟大就不再申辩。
 - **地点**　经文此段未点名可定位的地点
 
 ### 神再次说话 · God Speaks Again
@@ -4132,7 +4132,7 @@
 - **经文**　诗篇 5:1–5:12（Psalms 5:1–5:12）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　晨祷——「雅伟啊，求你听我的言语」。
+- **内容**　晨祷——「雅伟啊！求你留心听我的言语」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 求医治与怜悯 · Prayer in Time of Distress
@@ -4278,7 +4278,7 @@
 - **经文**　诗篇 23:1–23:6（Psalms 23:1–23:6）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　大卫的诗——「雅伟是我的牧者，我必不至缺乏」，青草地、可安歇的水边、死荫幽谷，在敌人面前摆设筵席。
+- **内容**　大卫的诗——「雅伟是我的牧者，我必不致缺乏」，青草地、可安歇的水边、死荫幽谷，在敌人面前摆设筵席。
 - **地点**　经文此段未点名可定位的地点
 
 ### 荣耀的王进入圣殿 · The King of Glory
@@ -4286,7 +4286,7 @@
 - **经文**　诗篇 24:1–24:10（Psalms 24:1–24:10）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　「地和其中所充满的，都属雅伟」——荣耀的王进入圣殿。
+- **内容**　「地和其中所充满的，世界和住在其间的，都属雅伟」——荣耀的王进入圣殿。
 - **地点**　经文此段未点名可定位的地点
 
 ### 求引导与饶恕 · Teach Me Your Paths
@@ -4318,7 +4318,7 @@
 - **经文**　诗篇 28:1–28:9（Psalms 28:1–28:9）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　「我的盘石啊」——求神回应的呼求。
+- **内容**　「我的磐石啊」——求神回应的呼求。
 - **地点**　至圣所（Most Holy Place 2）
 
 ### 雅伟的声音 · The Voice of the LORD
@@ -4367,7 +4367,7 @@
 - **经文**　诗篇 34:1–34:22（Psalms 34:1–34:22）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　尝主恩的滋味——「凡投靠他的，便为有福」。彼前2:3 引用此节。
+- **内容**　尝主恩的滋味——「投靠他的人有福了」。彼前2:3 引用此节。
 - **地点**　经文此段未点名可定位的地点
 
 ### 求神为我争战 · Prayer for Rescue
@@ -4407,7 +4407,7 @@
 - **经文**　诗篇 39:1–39:13（Psalms 39:1–39:13）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　人生的短暂——「我的年日如同手掌般短促」。
+- **内容**　人生的短暂——「你使我的年日窄如手掌」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 新歌颂赞 · A Song of Deliverance
@@ -4424,7 +4424,7 @@
 - **经文**　诗篇 41:1–41:13（Psalms 41:1–41:13）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　顾念贫穷人之福——耶稣在最后晚餐中引「同我吃饭的人」。
+- **内容**　顾念贫穷人之福——耶稣在最后晚餐中引「吃过我饭的」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 如鹿渴慕溪水 · As the Deer Pants for Water
@@ -4440,7 +4440,7 @@
 - **经文**　诗篇 43:1–43:5（Psalms 43:1–43:5）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　「求你光照我」——和诗42篇是一首长诗。
+- **内容**　「求你发出你的亮光和真实」——和诗42篇是一首长诗。
 - **地点**　经文此段未点名可定位的地点
 
 ### 为国家求恢复 · A Plea for National Restoration
@@ -4488,7 +4488,7 @@
 - **经文**　诗篇 49:1–49:20（Psalms 49:1–49:20）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　财富的虚空——「死时什么也不能带去」。
+- **内容**　财富的虚空——「他死的时候，什么也不能带去」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 真敬拜与心灵之祭 · True Worship
@@ -4644,14 +4644,14 @@
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
 - **内容**　神大胜之歌——抬约柜上锡安时的诗。以弗所4:8 引此论基督升天。
-- **地点**　埃及（Egypt）、西奈山（Mount Sinai）、撒们（Zalmon）、Mount Bashan、锡安山（Mount Zion）、圣所（Holy Place 2）、巴珊（Bashan）、耶路撒冷（Jerusalem）、古实（Cush 1）
+- **地点**　埃及（Egypt）、西奈山（Mount Sinai）、撒们（Zalmon）、巴珊山（Mount Bashan）、锡安山（Mount Zion）、圣所（Holy Place 2）、巴珊（Bashan）、耶路撒冷（Jerusalem）、古实（Cush 1）
 
 ### 受苦者哀歌 · Save Me, O God
 
 - **经文**　诗篇 69:1–69:36（Psalms 69:1–69:36）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　受苦者哀歌——使徒行传引「他的居住成为荒场」论犹大。
+- **内容**　受苦者哀歌——使徒行传引「愿他们的住处，变为荒场」论犹大。
 - **地点**　锡安（Zion）
 
 ### 急切的求救 · Urgent Prayer for Help
@@ -4701,7 +4701,7 @@
 - **经文**　诗篇 75:1–75:10（Psalms 75:1–75:10）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　神是审判者——「我必擢升正直人」。
+- **内容**　神是审判者——「惟有义人的角必被高举」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 胜利的神 · God Is Victorious
@@ -4725,7 +4725,7 @@
 - **经文**　诗篇 78:1–78:72（Psalms 78:1–78:72）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　以色列历史的教训——「告诉来代」。下一代须知神的作为。
+- **内容**　以色列历史的教训——「他们也要起来告诉他们的子孙」。下一代须知神的作为。
 - **地点**　埃及（Egypt）、锁安（Zoan）、哈麦（Ham 2）、示罗（Shiloh）、锡安山（Mount Zion）
 
 ### 为耶路撒冷被毁哀痛 · Lament Over Jerusalem
@@ -4797,7 +4797,7 @@
 - **经文**　诗篇 87:1–87:7（Psalms 87:1–87:7）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　锡安城的荣耀——一首罕见的诗，预言列国都将「在锡安生」。
+- **内容**　锡安城的荣耀——一首罕见的诗，预言列国都将「这一个那一个都生在其中」。
 - **地点**　锡安（Zion）、巴比伦（Babylon 1）、古实（Cush 1）、埃及（Egypt）、耶路撒冷（Jerusalem）、非利士（Philistia）、推罗（Tyre）
 
 ### 黑夜中的哀歌 · Cry from the Depths
@@ -4813,7 +4813,7 @@
 - **经文**　诗篇 89:1–89:52（Psalms 89:1–89:52）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　大卫之约的歌——以提前问「主你的慈爱在哪里」结束。
+- **内容**　大卫之约的歌——以提前问「主啊！你从前凭你的信实向大卫立誓，要施行的慈爱在哪里呢？」结束。
 - **地点**　黑门山（Mount Hermon）、他泊山（Mount Tabor）
 
 ### 神是永远的居所 · God Is Eternal
@@ -4821,7 +4821,7 @@
 - **经文**　诗篇 90:1–90:17（Psalms 90:1–90:17）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　摩西的祈祷——「主啊，你世世代代作我们的居所」，人生七十或八十年转眼成空，「求你指教我们数算自己的日子」。
+- **内容**　摩西的祈祷——「主啊，你世世代代作我们的居所」，人生七十或八十年转眼成空，「求你指教我们怎样数算自己的日子」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 至高者的隐密处 · The Shelter of the Most High
@@ -4853,7 +4853,7 @@
 - **经文**　诗篇 94:1–94:23（Psalms 94:1–94:23）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　神为公义伸冤——「报应的神啊」。
+- **内容**　神为公义伸冤——「伸冤的神啊」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 来敬拜雅伟 · Come, Let Us Worship
@@ -4878,7 +4878,7 @@
 - **经文**　诗篇 97:1–97:12（Psalms 97:1–97:12）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　「雅伟作王，全地欢喜」——王登基诗。
+- **内容**　「雅伟作王，愿地快乐，愿众海岛欢喜」——王登基诗。
 - **地点**　锡安（Zion）
 
 ### 新歌颂赞救主 · Sing a New Song to the LORD
@@ -4894,7 +4894,7 @@
 - **经文**　诗篇 99:1–99:9（Psalms 99:1–99:9）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　圣洁的雅伟——三次重复「他是圣洁的」。
+- **内容**　圣洁的雅伟——三次重复「他本为圣」。
 - **地点**　锡安（Zion）、耶路撒冷（Jerusalem）
 
 ### 感恩之歌 · A Psalm of Thanksgiving
@@ -4977,7 +4977,7 @@
 - **经文**　诗篇 109:1–109:31（Psalms 109:1–109:31）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　求神为我伸冤——使徒行传1章引「让别人得他的职分」论犹大。
+- **内容**　求神为我伸冤——使徒行传1章引「愿别人得他的职分」论犹大。
 - **地点**　经文此段未点名可定位的地点
 
 ### 弥赛亚君王与祭司 · The Lord Says to My Lord
@@ -5017,7 +5017,7 @@
 - **经文**　诗篇 114:1–114:8（Psalms 114:1–114:8）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　出埃及之歌——「以色列出埃及的时候」——历史化为诗。
+- **内容**　出埃及之歌——「以色列出了埃及」——历史化为诗。
 - **地点**　埃及（Egypt）、约旦河（Jordan）、红海（Red Sea 1）
 
 ### 唯独神当得颂赞 · Glory to God Alone
@@ -5026,7 +5026,7 @@
 - **平行经文**　诗篇一一五篇和诗篇一三五篇 — 同见 Psalms 135:15–20
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　「荣耀不要归与我们，要归在你的名下」——偶像有口不能言，以色列家、亚伦家当倚靠雅伟。
+- **内容**　「荣耀不要归与我们，不要归与我们，要因你的慈爱和诚实归在你的名下」——偶像有口不能言，以色列家、亚伦家当倚靠雅伟。
 - **地点**　经文此段未点名可定位的地点
 
 ### 感谢神的拯救 · Thanksgiving for Deliverance
@@ -5050,7 +5050,7 @@
 - **经文**　诗篇 118:1–118:29（Psalms 118:1–118:29）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　感恩诗——耶稣最后吃逾越节晚餐时唱的诗。「凡奉主名来的，是应当称颂的」。
+- **内容**　感恩诗——耶稣最后吃逾越节晚餐时唱的诗。「奉雅伟名来的，是应当称颂的」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 神话语的诗篇 · The Word of God: A Meditation
@@ -5082,7 +5082,7 @@
 - **经文**　诗篇 122:1–122:9（Psalms 122:1–122:9）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　为耶路撒冷祈祷——「愿爱你的人兴旺」。
+- **内容**　为耶路撒冷祈祷——「爱你的人必然兴旺」。
 - **地点**　耶路撒冷（Jerusalem）
 
 ### 举目望向神 · Our Eyes Look to the LORD
@@ -5122,7 +5122,7 @@
 - **经文**　诗篇 127:1–127:5（Psalms 127:1–127:5）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　「若非雅伟建造」——所罗门所作的「上行之诗」。
+- **内容**　「若不是雅伟建造房屋」——所罗门所作的「上行之诗」。
 - **地点**　耶路撒冷（Jerusalem）
 
 ### 敬畏神者之福 · Blessed Is Everyone Who Fears the LORD
@@ -5212,7 +5212,7 @@
 - **经文**　诗篇 138:1–138:8（Psalms 138:1–138:8）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　感谢神的应允——「凡尊大的，他从远处看出」。
+- **内容**　感谢神的应允——「他却从远处看出骄傲的人」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 神无所不知无所不在 · God Knows Me Completely
@@ -5236,7 +5236,7 @@
 - **经文**　诗篇 141:1–141:10（Psalms 141:1–141:10）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　晚祷——「愿我的祷告如香在你面前蒙悦纳」。
+- **内容**　晚祷——「愿我的祷告如香陈列在你面前」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 在洞穴中呼求 · Cry from the Cave
@@ -5370,7 +5370,7 @@
 - **经文**　箴言 6:1–6:35（Proverbs 6:1–6:35）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　六样神所恨的——含「散布纷争的」。属神的人当远离。
+- **内容**　六样神所恨的——含「布散纷争的」。属神的人当远离。
 - **地点**　经文此段未点名可定位的地点
 
 ### 防备淫妇 · Beware the Adulteress
@@ -5386,7 +5386,7 @@
 - **经文**　箴言 8:1–8:36（Proverbs 8:1–8:36）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　智慧的呼召——拟人化的智慧自我介绍：「在创世以前，我已被立」。新约称基督是「神的智慧」。
+- **内容**　智慧的呼召——拟人化的智慧自我介绍：「未有世界以前，我已被立」。新约称基督是「神的智慧」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 智慧与愚昧之妇 · Wisdom and Folly
@@ -5456,7 +5456,7 @@
 - **经文**　传道书 1:1–1:11（Ecclesiastes 1:1–1:11）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　「万事虚空」——传道者以此句开篇，全书重复38次。
+- **内容**　「虚空的虚空，虚空的虚空，凡事都是虚空」——传道者以此句开篇，全书重复38次。
 - **地点**　耶路撒冷（Jerusalem）
 
 ### 智慧也是虚空 · Wisdom Is Vanity
@@ -5566,7 +5566,7 @@
 - **经文**　雅歌 4:1–4:16（Song of Songs 4:1–4:16）
 - **年代**　未定年　·　不定年
 - **定年依据**　该段落体裁或位置不支持绝对定年，本项目不给年份。
-- **内容**　新郎赞美新妇——「妹子，新妇，你的爱情何其美」。爱情中的尊敬。
+- **内容**　新郎赞美新妇——「我妹子，我新妇，你的爱情何其美」。爱情中的尊敬。
 - **地点**　基列（Gilead 1）、亚玛拿（Amana）、黎巴嫩（Lebanon）、黑门山（Mount Hermon）、示尼珥（Senir）
 
 ### 新妇的离别与重逢 · The Bride's Search
@@ -5613,7 +5613,7 @@
 - **平行经文**　乌西雅或亚撒利雅的统治 — 同见 2 Chronicles 26:3–15、2 Kings 15:1–4
 - **年代**　前 700　·　推算
 - **定年依据**　与年表重叠：以赛亚预言。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　雅伟的控告——「以色列不认识，我的民不留意」。开篇即是审判。
+- **内容**　雅伟的控告——「以色列却不认识；我的民却不留意」。开篇即是审判。
 - **地点**　耶路撒冷（Jerusalem）、锡安（Zion）、蛾摩拉（Gomorrah）、所多玛（Sodom）
 
 ### 末后的山 · The Mountain of the LORD
@@ -5648,7 +5648,7 @@
 - **年代**　前 700　·　推算
 - **定年依据**　与年表重叠：以赛亚预言。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　利汛、比加攻耶路撒冷，以赛亚在上池水沟头迎亚哈斯；童女生子名以马内利，亚述必如大河冲入犹大。
-- **地点**　耶路撒冷（Jerusalem）、亚兰（Syria 1）、亚革大马（Upper Pool）、亚革大马（Washer’s Field）、大马士革（Damascus）、撒玛利亚（Samaria 1）、亚述（Assyria）、埃及（Egypt）、尼罗河（Nile）、幼发拉底河（Euphrates）、西罗亚（Shiloah）、锡安山（Mount Zion）
+- **地点**　耶路撒冷（Jerusalem）、亚兰（Syria 1）、上池（Upper Pool）、漂布地（Washer’s Field）、大马士革（Damascus）、撒玛利亚（Samaria 1）、亚述（Assyria）、埃及（Egypt）、尼罗河（Nile）、幼发拉底河（Euphrates）、西罗亚（Shiloah）、锡安山（Mount Zion）
 
 ### 为我们生了一婴孩 · A Child Is Born to Us
 
@@ -5683,7 +5683,7 @@
 - **年代**　前 700　·　推算
 - **定年依据**　与年表重叠：以赛亚预言。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　明亮之星的堕落——许多人解为撒但的堕落，但首先是巴比伦王的预言。
-- **地点**　伯亚兰（Zaphon 2）、巴比伦（Babylon 1）、亚述（Assyria）、非利士（Philistia）、锡安（Zion）、亚珥（Ar）、吉珥（Kir 2）、摩押（Moab 1）、底本（Dibon 1）、米底巴（Medeba）、尼波（Nebo 1）、以利亚利（Elealeh）、希实本（Heshbon）、雅杂（Jahaz）、伊基拉施利施亚（Eglath-shelishiyah）、何罗念（Horonaim 1）、鲁希坡（Luhith）、琐珥（Zoar）、宁林（Nimrim）、柳树河（Brook of the Willows）、比珥以琳（Beer-elim）、以基莲（Eglaim）、亚门低比拉太音（Dibon 3）、西拉（Sela 3）、亚嫩河（Arnon）、吉珥哈列设（Kir-hareseth）、雅谢（Jazer）、盐海（Salt Sea）、西比玛（Sibmah）、大马士革（Damascus）、亚罗珥（Aroer 1）、亚兰（Syria 1）、利乏音谷（Valley of Rephaim）、古实（Cush 1）、尼罗河（Nile）、锡安山（Mount Zion）、埃及（Egypt）、锁安（Zoan）、挪弗（Memphis）、迦南（Canaan）、灭亡城（City of Destruction）、亚实突（Ashdod）、南地（Negeb）、以拦（Elam）、米底亚（Media）、度玛（Dumah 2）、西珥山（Mount Seir 1）、阿拉伯（Arabia 1）、底但（Dedan）、提玛（Tema）、基达（Kedar）、耶路撒冷（Jerusalem）、吉珥（Kir 1）、黎巴嫩林宫（House of the Forest of Lebanon）、亚革大马（City of David）、亚革大马（Lower Pool）、亚革大马（Old Pool）、塞浦路斯（Cyprus）、他施（Tarshish 1）、推罗（Tyre）、西顿（Sidon）、西曷（Shihor 2）、迦勒底（Chaldea）
+- **地点**　伯亚兰（Zaphon 2）、巴比伦（Babylon 1）、亚述（Assyria）、非利士（Philistia）、锡安（Zion）、亚珥（Ar）、吉珥（Kir 2）、摩押（Moab 1）、底本（Dibon 1）、米底巴（Medeba）、尼波（Nebo 1）、以利亚利（Elealeh）、希实本（Heshbon）、雅杂（Jahaz）、伊基拉施利施亚（Eglath-shelishiyah）、何罗念（Horonaim 1）、鲁希坡（Luhith）、琐珥（Zoar）、宁林（Nimrim）、柳树河（Brook of the Willows）、比珥以琳（Beer-elim）、以基莲（Eglaim）、底们（Dibon 3）、西拉（Sela 3）、亚嫩河（Arnon）、吉珥哈列设（Kir-hareseth）、雅谢（Jazer）、盐海（Salt Sea）、西比玛（Sibmah）、大马士革（Damascus）、亚罗珥（Aroer 1）、亚兰（Syria 1）、利乏音谷（Valley of Rephaim）、古实（Cush 1）、尼罗河（Nile）、锡安山（Mount Zion）、埃及（Egypt）、锁安（Zoan）、挪弗（Memphis）、迦南（Canaan）、灭亡城（City of Destruction）、亚实突（Ashdod）、南地（Negeb）、以拦（Elam）、米底亚（Media）、度玛（Dumah 2）、西珥山（Mount Seir 1）、阿拉伯（Arabia 1）、底但（Dedan）、提玛（Tema）、基达（Kedar）、耶路撒冷（Jerusalem）、吉珥（Kir 1）、黎巴嫩林宫（House of the Forest of Lebanon）、大卫城（City of David）、下池（Lower Pool）、旧池（Old Pool）、塞浦路斯（Cyprus）、他施（Tarshish 1）、推罗（Tyre）、西顿（Sidon）、西曷（Shihor 2）、迦勒底（Chaldea）
 
 ### 全地的审判 · Judgment on the Earth
 
@@ -5698,7 +5698,7 @@
 - **经文**　以赛亚书 25:1–25:12（Isaiah 25:1–25:12）
 - **年代**　前 700　·　推算
 - **定年依据**　与年表重叠：以赛亚预言。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　锡安的颂赞——「在这山上他要除灭遮盖万民之物」，启示录21章引用。
+- **内容**　锡安的颂赞——「在这山上，除灭遮盖万民之物」，启示录21章引用。
 - **地点**　耶路撒冷（Jerusalem）、摩押（Moab 1）
 
 ### 信靠之歌 · A Song of Trust
@@ -5706,8 +5706,8 @@
 - **经文**　以赛亚书 26:1–34:17（Isaiah 26:1–34:17）
 - **年代**　前 700　·　推算
 - **定年依据**　与年表重叠：以赛亚预言。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　信靠之歌——「坚心信赖你的，你必保守他十分平安」。
-- **地点**　埃及小河（Brook of Egypt）、幼发拉底河（Euphrates）、亚述（Assyria）、埃及（Egypt）、耶路撒冷（Jerusalem）、撒玛利亚（Samaria 1）、锡安（Zion）、毗拉心山（Mount Perazim）、基遍谷（Valley of Gibeon）、亚利伊勒（Ariel）、亚革大马（City of David）、锡安山（Mount Zion）、黎巴嫩（Lebanon）、哈内斯（Hanes）、锁安（Zoan）、南地（Negeb）、陀斐特（Topheth）、亚拉巴（Arabah）、巴珊（Bashan）、迦密山（Mount Carmel）、沙仑（Sharon 1）、以东（Edom）、波斯拉（Bozrah 1）
+- **内容**　信靠之歌——「坚心倚赖你的，你必保守他十分平安」。
+- **地点**　埃及小河（Brook of Egypt）、幼发拉底河（Euphrates）、亚述（Assyria）、埃及（Egypt）、耶路撒冷（Jerusalem）、撒玛利亚（Samaria 1）、锡安（Zion）、毗拉心山（Mount Perazim）、基遍谷（Valley of Gibeon）、亚利伊勒（Ariel）、大卫城（City of David）、锡安山（Mount Zion）、黎巴嫩（Lebanon）、哈内斯（Hanes）、锁安（Zoan）、南地（Negeb）、陀斐特（Topheth）、亚拉巴（Arabah）、巴珊（Bashan）、迦密山（Mount Carmel）、沙仑（Sharon 1）、以东（Edom）、波斯拉（Bozrah 1）
 
 ### 旷野与喜乐 · The Joy of the Redeemed
 
@@ -5727,7 +5727,7 @@
 - **年代**　前 700　·　推算
 - **定年依据**　与年表重叠：以赛亚预言。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　亚述围困耶路撒冷——以赛亚书中央的历史插曲。神的应许在政治危机中得着检验。
-- **地点**　亚述（Assyria）、耶路撒冷（Jerusalem）、拉吉（Lachish）、亚革大马（Upper Pool）、亚革大马（Washer’s Field）、埃及（Egypt）、亚珥拔（Arpad）、哈马（Hamath 1）、撒玛利亚（Samaria 1）、西法瓦音（Sepharvaim）、立拿（Libnah 1）、古实（Cush 1）、伊甸（Eden 2）、歌散（Gozan）、哈兰（Haran）、利色（Rezeph）、提拉撒（Telassar）、希拿（Hena）、以瓦（Ivvah）、锡安（Zion）、黎巴嫩（Lebanon）、迦密山（Mount Carmel）、锡安山（Mount Zion）、尼尼微（Nineveh）、亚拉腊（Ararat）
+- **地点**　亚述（Assyria）、耶路撒冷（Jerusalem）、拉吉（Lachish）、上池（Upper Pool）、漂布地（Washer’s Field）、埃及（Egypt）、亚珥拔（Arpad）、哈马（Hamath 1）、撒玛利亚（Samaria 1）、西法瓦音（Sepharvaim）、立拿（Libnah 1）、古实（Cush 1）、伊甸（Eden 2）、歌散（Gozan）、哈兰（Haran）、利色（Rezeph）、提拉撒（Telassar）、希拿（Hena）、以瓦（Ivvah）、锡安（Zion）、黎巴嫩（Lebanon）、迦密山（Mount Carmel）、锡安山（Mount Zion）、尼尼微（Nineveh）、亚拉腊（Ararat）
 
 ### 希西家的病得医 · Hezekiah's Illness
 
@@ -5768,7 +5768,7 @@
 - **经文**　以赛亚书 43:1–44:28（Isaiah 43:1–44:28）
 - **年代**　前 700　·　推算
 - **定年依据**　与年表重叠：以赛亚预言。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　「我已救赎你」——神温柔的应许：「你从水中经过，我必与你同在」。
+- **内容**　「我救赎了你」——神温柔的应许：「你从水中经过，我必与你同在」。
 - **地点**　古实（Cush 1）、埃及（Egypt）、示巴（Sheba 1）、巴比伦（Babylon 1）、迦勒底（Chaldea）、耶路撒冷（Jerusalem）
 
 ### 居鲁士被指名 · Cyrus Named
@@ -5863,7 +5863,7 @@
 - **经文**　耶利米书 2:1–2:37（Jeremiah 2:1–2:37）
 - **年代**　前 627　·　推算
 - **定年依据**　与年表重叠：耶利米预言。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　以色列离弃神——「他们离弃我这活水的泉源，为自己凿出破裂不能存水的池子」。
+- **内容**　以色列离弃神——「离弃我这活水的泉源，为自己凿出池子，是破裂不能存水的池子」。
 - **地点**　耶路撒冷（Jerusalem）、埃及（Egypt）、塞浦路斯（Cyprus）、基达（Kedar）、挪弗（Memphis）、答比匿（Tahpanhes）、亚述（Assyria）、幼发拉底河（Euphrates）、尼罗河（Nile）、欣嫩谷（Valley of Hinnom）
 
 ### 悔改的呼召 · A Call to Repent
@@ -5879,7 +5879,7 @@
 - **经文**　耶利米书 7:1–9:26（Jeremiah 7:1–9:26）
 - **年代**　前 627　·　推算
 - **定年依据**　与年表重叠：耶利米预言。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　圣殿的讲论——揭穿假信仰：「雅伟的殿、雅伟的殿」。耶稣后来重复此言。
+- **内容**　圣殿的讲论——揭穿假信仰：「这些是雅伟的殿，是雅伟的殿，是雅伟的殿」。耶稣后来重复此言。
 - **地点**　示罗（Shiloh）、耶路撒冷（Jerusalem）、埃及（Egypt）、陀斐特（Topheth）、欣嫩谷（Valley of Hinnom）、但（Dan）、锡安（Zion）、基列（Gilead 1）、亚扪（Ammon）、以东（Edom）、摩押（Moab 1）
 
 ### 假神与真神 · Idols vs. the True God
@@ -5897,7 +5897,7 @@
 - **年代**　前 627　·　推算
 - **定年依据**　与年表重叠：耶利米预言。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　耶利米的哀诉——「我的母亲哪，我有祸了，因你生我」。先知也是人。
-- **地点**　耶路撒冷（Jerusalem）、埃及（Egypt）、亚拉巴（Arabah）、亚革大马（People’s Gate）、南地（Negeb）、高原（Shephelah）
+- **地点**　耶路撒冷（Jerusalem）、埃及（Egypt）、亚拉巴（Arabah）、人民城门（People’s Gate）、南地（Negeb）、高原（Shephelah）
 
 ### 陶匠之家 · At the Potter's House
 
@@ -5929,7 +5929,7 @@
 - **年代**　前 627　·　推算
 - **定年依据**　与年表重叠：耶利米预言。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　七十年的预言——但以理后来根据此节为以色列归回求告神。
-- **地点**　巴比伦（Babylon 1）、耶路撒冷（Jerusalem）、迦勒底（Chaldea）、埃及（Egypt）、亚实突（Ashdod）、亚实基伦（Ashkelon）、以革伦（Ekron）、迦萨（Gaza）、乌斯（Uz）、亚扪（Ammon）、以东（Edom）、摩押（Moab 1）、西顿（Sidon）、推罗（Tyre）、布斯（Buz）、底但（Dedan）、提玛（Tema）、阿拉伯（Arabia 1）、以拦（Elam）、米底亚（Media）、心利（Zimri）、巴别（Sheshach）、示罗（Shiloh）、新门（New Gate）、摩利设迦特（Moresheth-gath）、锡安山（Mount Zion）、锡安（Zion）、基列耶琳（Kiriath-jearim）、基遍（Gibeon）
+- **地点**　巴比伦（Babylon 1）、耶路撒冷（Jerusalem）、迦勒底（Chaldea）、埃及（Egypt）、亚实突（Ashdod）、亚实基伦（Ashkelon）、以革伦（Ekron）、迦萨（Gaza）、乌斯（Uz）、亚扪（Ammon）、以东（Edom）、摩押（Moab 1）、西顿（Sidon）、推罗（Tyre）、布斯（Buz）、底但（Dedan）、提玛（Tema）、阿拉伯（Arabia 1）、以拦（Elam）、米底亚（Media）、心利（Zimri）、示沙克（Sheshach）、示罗（Shiloh）、新门（New Gate）、摩利设迦特（Moresheth-gath）、锡安山（Mount Zion）、锡安（Zion）、基列耶琳（Kiriath-jearim）、基遍（Gibeon）
 
 ### 致被掳之民的信 · Letter to the Exiles
 
@@ -5986,7 +5986,7 @@
 - **年代**　前 627　·　推算
 - **定年依据**　与年表重叠：耶利米预言。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　耶路撒冷沦陷——耶利米四十年的预言一一应验。神言永不落空。
-- **地点**　巴比伦（Babylon 1）、耶路撒冷（Jerusalem）、亚革大马（Middle Gate）、亚拉巴（Arabah）、迦勒底（Chaldea）、哈马（Hamath 1）、耶利哥（Jericho 1）、利比拉（Riblah 1）
+- **地点**　巴比伦（Babylon 1）、耶路撒冷（Jerusalem）、中门（Middle Gate）、亚拉巴（Arabah）、迦勒底（Chaldea）、哈马（Hamath 1）、耶利哥（Jericho 1）、利比拉（Riblah 1）
 
 ### 基大利被立 · Gedaliah Appointed
 
@@ -5994,7 +5994,7 @@
 - **年代**　前 627　·　推算
 - **定年依据**　与年表重叠：耶利米预言。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　基大利被立——巴比伦立的总督。短暂的稳定。
-- **地点**　巴比伦（Babylon 1）、耶路撒冷（Jerusalem）、拉玛（Ramah 1）、米斯巴（Mizpah 3）、迦勒底（Chaldea）、亚扪（Ammon）、以东（Edom）、摩押（Moab 1）、撒玛利亚（Samaria 1）、示剑（Shechem）、示罗（Shiloh）、基遍（Gibeon）、伯利恒（Bethlehem 1）、埃及（Egypt）、伯利恒（Geruth Chimham）、答比匿（Tahpanhes）、伯示麦（Heliopolis）
+- **地点**　巴比伦（Babylon 1）、耶路撒冷（Jerusalem）、拉玛（Ramah 1）、米斯巴（Mizpah 3）、迦勒底（Chaldea）、亚扪（Ammon）、以东（Edom）、摩押（Moab 1）、撒玛利亚（Samaria 1）、示剑（Shechem）、示罗（Shiloh）、基遍（Gibeon）、伯利恒（Bethlehem 1）、埃及（Egypt）、金罕寓（Geruth Chimham）、答比匿（Tahpanhes）、伯示麦（Heliopolis）
 
 ### 在埃及的犹太人 · Jews in Egypt Rebuked
 
@@ -6004,7 +6004,7 @@
 - **年代**　前 627　·　推算
 - **定年依据**　与年表重叠：耶利米预言。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　在埃及的犹太人——逃到埃及的余民再次拜偶像。罪是顽梗的。
-- **地点**　埃及（Egypt）、挪弗（Memphis）、密夺（Migdol 2）、巴忒罗（Pathros）、答比匿（Tahpanhes）、耶路撒冷（Jerusalem）、巴比伦（Babylon 1）、迦基米施（Carchemish）、幼发拉底河（Euphrates）、尼罗河（Nile）、古实（Cush 1）、路德（Lud 2）、弗（Put）、基列（Gilead 1）、迦密山（Mount Carmel）、他泊山（Mount Tabor）、挪（Thebes）、迦萨（Gaza）、迦斐托（Caphtor）、西顿（Sidon）、推罗（Tyre）、亚实基伦（Ashkelon）、大海（Great Sea）、非利士（Philistia）、基列亭（Kiriathaim 1）、王道（Misgab）、摩押（Moab 1）、尼波（Nebo 1）、希实本（Heshbon）、玛得缅（Madmen）、何罗念（Horonaim 1）、鲁希坡（Luhith）、艾（Bethel 3）、底本（Dibon 1）、亚罗珥（Aroer 1）、亚嫩河（Arnon）、何伦（Holon 2）、雅杂（Jahaz）、米法押（Mephaath）、伯低比拉太音（Beth-diblathaim）、伯迦末（Beth-gamul）、伯米恩（Beth-meon）、波斯拉（Bozrah 2）、加略（Kerioth）、吉珥哈列设（Kir-hareseth）、雅谢（Jazer）、盐海（Salt Sea）、雅谢海（Sea of Jazer）、西比玛（Sibmah）、伊基拉施利施亚（Eglath-shelishiyah）、以利亚利（Elealeh）、宁林（Nimrim）、琐珥（Zoar）、亚扪（Ammon）、拉巴（Rabbah 1）、艾（Ai 2）、以东（Edom）、提幔（Teman）、底但（Dedan）、波斯拉（Bozrah 1）、蛾摩拉（Gomorrah）、所多玛（Sodom）、约旦河（Jordan）、红海（Red Sea 2）、亚珥拔（Arpad）、大马士革（Damascus）、哈马（Hamath 1）、东方（East）、夏琐（Hazor 5）、基达（Kedar）、以拦（Elam）
+- **地点**　埃及（Egypt）、挪弗（Memphis）、密夺（Migdol 2）、巴忒罗（Pathros）、答比匿（Tahpanhes）、耶路撒冷（Jerusalem）、巴比伦（Babylon 1）、迦基米施（Carchemish）、幼发拉底河（Euphrates）、尼罗河（Nile）、古实（Cush 1）、路德（Lud 2）、弗（Put）、基列（Gilead 1）、迦密山（Mount Carmel）、他泊山（Mount Tabor）、挪（Thebes）、迦萨（Gaza）、迦斐托（Caphtor）、西顿（Sidon）、推罗（Tyre）、亚实基伦（Ashkelon）、大海（Great Sea）、非利士（Philistia）、基列亭（Kiriathaim 1）、米斯迦（Misgab）、摩押（Moab 1）、尼波（Nebo 1）、希实本（Heshbon）、玛得缅（Madmen）、何罗念（Horonaim 1）、鲁希坡（Luhith）、伯特利（Bethel 3）、底本（Dibon 1）、亚罗珥（Aroer 1）、亚嫩河（Arnon）、何伦（Holon 2）、雅杂（Jahaz）、米法押（Mephaath）、伯低比拉太音（Beth-diblathaim）、伯迦末（Beth-gamul）、伯米恩（Beth-meon）、波斯拉（Bozrah 2）、加略（Kerioth）、吉珥哈列设（Kir-hareseth）、雅谢（Jazer）、盐海（Salt Sea）、雅谢海（Sea of Jazer）、西比玛（Sibmah）、伊基拉施利施亚（Eglath-shelishiyah）、以利亚利（Elealeh）、宁林（Nimrim）、琐珥（Zoar）、亚扪（Ammon）、拉巴（Rabbah 1）、艾（Ai 2）、以东（Edom）、提幔（Teman）、底但（Dedan）、波斯拉（Bozrah 1）、蛾摩拉（Gomorrah）、所多玛（Sodom）、约旦河（Jordan）、红海（Red Sea 2）、亚珥拔（Arpad）、大马士革（Damascus）、哈马（Hamath 1）、东方（East）、夏琐（Hazor 5）、基达（Kedar）、以拦（Elam）
 
 ### 巴比伦的预言 · Prophecy Against Babylon
 
@@ -6013,7 +6013,7 @@
 - **年代**　前 627　·　推算
 - **定年依据**　与年表重叠：耶利米预言。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　巴比伦的预言——征服以色列的国终也必倾覆。神是公义的审判者。
-- **地点**　巴比伦（Babylon 1）、迦勒底（Chaldea）、锡安（Zion）、巴比伦（Babylonia）、亚述（Assyria）、巴珊（Bashan）、基列（Gilead 1）、迦密山（Mount Carmel）、以法莲山（Mount Ephraim）、米拉大翁（Merathaim）、比割（Pekod）、蛾摩拉（Gomorrah）、所多玛（Sodom）、约旦河（Jordan）、立加米（Leb-kamai）、米底亚（Media）、亚拉腊（Ararat）、亚实基拿（Ashkenaz）、米尼（Minni）、耶路撒冷（Jerusalem）、巴别（Sheshach）、幼发拉底河（Euphrates）
+- **地点**　巴比伦（Babylon 1）、迦勒底（Chaldea）、锡安（Zion）、巴比伦（Babylonia）、亚述（Assyria）、巴珊（Bashan）、基列（Gilead 1）、迦密山（Mount Carmel）、以法莲山（Mount Ephraim）、米拉大翁（Merathaim）、比割（Pekod）、蛾摩拉（Gomorrah）、所多玛（Sodom）、约旦河（Jordan）、立加米（Leb-kamai）、米底亚（Media）、亚拉腊（Ararat）、亚实基拿（Ashkenaz）、米尼（Minni）、耶路撒冷（Jerusalem）、示沙克（Sheshach）、幼发拉底河（Euphrates）
 
 ### 耶路撒冷沦陷的回顾 · Jerusalem Falls Reviewed
 
@@ -6163,14 +6163,14 @@
 - **年代**　前 627 — 前 540　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶利米预言」（-627）、另一侧是「但以理与狮子」（-540），故落在 -627—-540 之间。区间宽度即为不确定度，不是精度。
 - **内容**　对七国的预言——以东、摩押、亚扪、推罗等。神是全地的审判者。
-- **地点**　亚扪（Ammon）、东方（East）、拉巴（Rabbah 1）、摩押（Moab 1）、西珥山（Mount Seir 1）、巴力免（Baal-meon）、伯耶施末（Beth-jeshimoth）、基列亭（Kiriathaim 1）、以东（Edom）、底但（Dedan）、提幔（Teman）、非利士（Philistia）、耶路撒冷（Jerusalem）、推罗（Tyre）、巴比伦（Babylon 1）、黎巴嫩（Lebanon）、示尼珥（Senir）、巴珊（Bashan）、塞浦路斯（Cyprus）、埃及（Egypt）、以利沙岛（Elishah）、亚瓦底（Arvad）、西顿（Sidon）、迦巴勒（Gebal 1）、路德（Lud 1）、波斯（Persia）、弗（Put）、歌玛底（Gamad）、赫勒克（Helech）、他施（Tarshish 1）、雅完（Javan）、米设（Meshech）、土巴（Tubal）、陀迦玛（Beth-togarmah）、罗底（Rhodes 2）、亚兰（Syria 1）、米匿（Minnith）、大马士革（Damascus）、黑本（Helbon）、察哈尔（Sahar）、但（Dan）、乌萨（Uzal）、阿拉伯（Arabia 1）、基达（Kedar）、拉玛（Raamah）、示巴（Sheba 1）、亚述（Asshur）、干尼（Canneh）、基抹（Chilmad）、伊甸（Eden 2）、哈兰（Haran）、伊甸（Eden 1）、尼罗河（Nile）、古实（Cush 1）、密夺（Migdol 3）、希尼（Syene）、巴忒罗（Pathros）、利比亚（Libya）、路德（Lud 2）、挪弗（Memphis）、挪（Thebes）、锁安（Zoan）、训（Pelusium）、伯示麦（Heliopolis）、比伯实（Pi-beseth）、答比匿（Tahpanhes）、亚述（Assyria）、以拦（Elam）
+- **地点**　亚扪（Ammon）、东方（East）、拉巴（Rabbah 1）、摩押（Moab 1）、西珥山（Mount Seir 1）、巴力免（Baal-meon）、伯耶施末（Beth-jeshimoth）、基列亭（Kiriathaim 1）、以东（Edom）、底但（Dedan）、提幔（Teman）、非利士（Philistia）、耶路撒冷（Jerusalem）、推罗（Tyre）、巴比伦（Babylon 1）、黎巴嫩（Lebanon）、示尼珥（Senir）、巴珊（Bashan）、塞浦路斯（Cyprus）、埃及（Egypt）、以利沙岛（Elishah）、亚发（Arvad）、西顿（Sidon）、迦巴勒（Gebal 1）、路德（Lud 1）、波斯（Persia）、弗（Put）、歌玛底（Gamad）、赫勒克（Helech）、他施（Tarshish 1）、雅完（Javan）、米设（Meshech）、土巴（Tubal）、陀迦玛（Beth-togarmah）、罗底（Rhodes 2）、亚兰（Syria 1）、米匿（Minnith）、大马士革（Damascus）、黑本（Helbon）、察哈尔（Sahar）、但（Dan）、Uzal、阿拉伯（Arabia 1）、基达（Kedar）、拉玛（Raamah）、示巴（Sheba 1）、亚述（Asshur）、干尼（Canneh）、基抹（Chilmad）、伊甸（Eden 2）、哈兰（Haran）、伊甸（Eden 1）、尼罗河（Nile）、古实（Cush 1）、密夺（Migdol 3）、希尼（Syene）、巴忒罗（Pathros）、利比亚（Libya）、路德（Lud 2）、挪弗（Memphis）、挪（Thebes）、锁安（Zoan）、训（Pelusium）、伯示麦（Heliopolis）、比伯实（Pi-beseth）、答比匿（Tahpanhes）、亚述（Assyria）、以拦（Elam）
 
 ### 守望者的呼声 · The Watchman Again
 
 - **经文**　以西结书 33:1–33:33（Ezekiel 33:1–33:33）
 - **年代**　前 627 — 前 540　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶利米预言」（-627）、另一侧是「但以理与狮子」（-540），故落在 -627—-540 之间。区间宽度即为不确定度，不是精度。
-- **内容**　守望者再次的呼声——审判已成事实，呼召现在转向「转回归回吧」。
+- **内容**　守望者再次的呼声——审判已成事实，呼召现在转向「你们转回，转回吧」。
 - **地点**　耶路撒冷（Jerusalem）
 
 ### 对牧人的责备 · Shepherds of Israel
@@ -6321,7 +6321,7 @@
 - **年代**　前 780 — 前 540　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「但以理与狮子」（-540）、另一侧是「约拿在尼尼微传道」（-780），故落在 -780—-540 之间。区间宽度即为不确定度，不是精度。
 - **内容**　南方北方诸王——细致预言托勒密王朝与塞琉古王朝的兴衰。
-- **地点**　希腊（Greece）、波斯（Persia）、南地（South 3）、North、埃及（Egypt）、迦南（Canaan）、基提界（Kittim）、亚扪（Ammon）、以东（Edom）、摩押（Moab 1）
+- **地点**　希腊（Greece）、波斯（Persia）、南地（South 3）、北方（North）、埃及（Egypt）、迦南（Canaan）、基提界（Kittim）、亚扪（Ammon）、以东（Edom）、摩押（Moab 1）
 
 ### 末后的复活 · The End of Days
 
@@ -6382,7 +6382,7 @@
 - **经文**　何西阿书 11:1–13:16（Hosea 11:1–13:16）
 - **年代**　前 780 — 前 540　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「但以理与狮子」（-540）、另一侧是「约拿在尼尼微传道」（-780），故落在 -780—-540 之间。区间宽度即为不确定度，不是精度。
-- **内容**　「我从埃及召出我的儿子来」——马太福音2章引此应验在耶稣身上。
+- **内容**　「从埃及召出我的儿子来」——马太福音2章引此应验在耶稣身上。
 - **地点**　埃及（Egypt）、亚述（Assyria）、押玛（Admah）、洗扁（Zeboiim）、伯特利（Bethel 1）、基列（Gilead 1）、吉甲（Gilgal 1）、亚兰（Aram）、撒玛利亚（Samaria 1）
 
 ### 复兴的应许 · Repent and Be Restored
@@ -6390,7 +6390,7 @@
 - **经文**　何西阿书 14:1–14:9（Hosea 14:1–14:9）
 - **年代**　前 780 — 前 540　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「但以理与狮子」（-540）、另一侧是「约拿在尼尼微传道」（-780），故落在 -780—-540 之间。区间宽度即为不确定度，不是精度。
-- **内容**　复兴的应许——「归向雅伟吧」。审判后的恩典。
+- **内容**　复兴的应许——「当归向雅伟」。审判后的恩典。
 - **地点**　亚述（Assyria）、黎巴嫩（Lebanon）
 
 ---
@@ -6429,7 +6429,7 @@
 - **年代**　前 780 — 前 540　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「但以理与狮子」（-540）、另一侧是「约拿在尼尼微传道」（-780），故落在 -780—-540 之间。区间宽度即为不确定度，不是精度。
 - **内容**　审判列邦——神的公义遍及万族。
-- **地点**　耶路撒冷（Jerusalem）、约沙法谷（Valley of Jehoshaphat）、非利士（Philistia）、西顿（Sidon）、推罗（Tyre）、示巴（Sheba 1）、亚革大马（Valley of Decision）、锡安（Zion）、什亭谷（Valley of Shittim）、以东（Edom）、埃及（Egypt）
+- **地点**　耶路撒冷（Jerusalem）、约沙法谷（Valley of Jehoshaphat）、非利士（Philistia）、西顿（Sidon）、推罗（Tyre）、示巴（Sheba 1）、断定谷（Valley of Decision）、锡安（Zion）、什亭谷（Valley of Shittim）、以东（Edom）、埃及（Egypt）
 
 ---
 
@@ -6450,7 +6450,7 @@
 - **经文**　阿摩司书 2:4–2:16（Amos 2:4–2:16）
 - **年代**　前 780 — 前 540　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「但以理与狮子」（-540）、另一侧是「约拿在尼尼微传道」（-780），故落在 -780—-540 之间。区间宽度即为不确定度，不是精度。
-- **内容**　对犹大与以色列的审判——「为三番四次的罪不免去他的刑罚」。
+- **内容**　对犹大与以色列的审判——「三番四次地犯罪，我必不免去他们的刑罚」。
 - **地点**　耶路撒冷（Jerusalem）、埃及（Egypt）
 
 ### 以色列的拣选与审判 · Israel's Privilege and Punishment
@@ -6475,7 +6475,7 @@
 - **年代**　前 780 — 前 540　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「但以理与狮子」（-540）、另一侧是「约拿在尼尼微传道」（-780），故落在 -780—-540 之间。区间宽度即为不确定度，不是精度。
 - **内容**　真敬拜与公义——「我厌恶你们的节期」。形式没有公义，敬拜就成虚伪。
-- **地点**　大马士革（Damascus）、撒玛利亚（Samaria 1）、锡安（Zion）、甲尼（Calneh 2）、迦特（Gath 1）、哈马（Hamath 1）、非利士（Philistia）、加宁（Karnaim）、罗底巴（Lo-debar）、亚拉巴河（Brook of the Arabah）、哈马（Lebo-hamath）
+- **地点**　大马士革（Damascus）、撒玛利亚（Samaria 1）、锡安（Zion）、甲尼（Calneh 2）、迦特（Gath 1）、哈马（Hamath 1）、非利士（Philistia）、Karnaim、罗底巴（Lo-debar）、亚拉巴河（Brook of the Arabah）、哈马（Lebo-hamath）
 
 ### 五个异象 · Five Visions
 
@@ -6614,7 +6614,7 @@
 - **经文**　弥迦书 7:1–7:20（Micah 7:1–7:20）
 - **年代**　前 780 — 前 430　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「约拿在尼尼微传道」（-780）、另一侧是「玛拉基：旧约最后先知」（-430），故落在 -780—-430 之间。区间宽度即为不确定度，不是精度。
-- **内容**　锡安蒙赦免——「他喜爱施恩」。神性中最深的字之一。
+- **内容**　锡安蒙赦免——「喜爱施恩」。神性中最深的字之一。
 - **地点**　亚述（Assyria）、埃及（Egypt）、幼发拉底河（Euphrates）、巴珊（Bashan）、基列（Gilead 1）、迦密山（Mount Carmel）
 
 ---
@@ -6658,7 +6658,7 @@
 - **经文**　哈巴谷书 1:1–1:4（Habakkuk 1:1–1:4）
 - **年代**　前 780 — 前 430　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「约拿在尼尼微传道」（-780）、另一侧是「玛拉基：旧约最后先知」（-430），故落在 -780—-430 之间。区间宽度即为不确定度，不是精度。
-- **内容**　先知的疑问——「我呼求你而你不应允」。诚实地向神发出怀疑。
+- **内容**　先知的疑问——「我呼求你，你不应允」。诚实地向神发出怀疑。
 - **地点**　经文此段未点名可定位的地点
 
 ### 神兴起巴比伦 · God's Answer
@@ -6712,7 +6712,7 @@
 - **经文**　西番雅书 3:1–3:20（Zephaniah 3:1–3:20）
 - **年代**　前 780 — 前 430　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「约拿在尼尼微传道」（-780）、另一侧是「玛拉基：旧约最后先知」（-430），故落在 -780—-430 之间。区间宽度即为不确定度，不是精度。
-- **内容**　耶路撒冷的审判与复兴——审判后是惊人的应许：「他必因你欢呼」。
+- **内容**　耶路撒冷的审判与复兴——审判后是惊人的应许：「他在你中间必因你欢欣喜乐」。
 - **地点**　耶路撒冷（Jerusalem）、古实（Cush 1）、锡安（Zion）
 
 ---
@@ -6781,7 +6781,7 @@
 - **年代**　前 780 — 前 430　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「约拿在尼尼微传道」（-780）、另一侧是「玛拉基：旧约最后先知」（-430），故落在 -780—-430 之间。区间宽度即为不确定度，不是精度。
 - **内容**　金灯台的异象——「不是倚靠势力，不是倚靠才能，乃是倚靠我的灵」。
-- **地点**　示拿（Shinar）、巴比伦（Babylon 1）、艾（Bethel 3）、耶路撒冷（Jerusalem）、高原（Shephelah）、南地（South 1）
+- **地点**　示拿（Shinar）、巴比伦（Babylon 1）、伯特利（Bethel 3）、耶路撒冷（Jerusalem）、高原（Shephelah）、南地（South 1）
 
 ### 锡安的复兴 · Restoration of Zion
 
@@ -6796,7 +6796,7 @@
 - **经文**　撒迦利亚书 9:9–10:12（Zechariah 9:9–10:12）
 - **年代**　前 780 — 前 430　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「约拿在尼尼微传道」（-780）、另一侧是「玛拉基：旧约最后先知」（-430），故落在 -780—-430 之间。区间宽度即为不确定度，不是精度。
-- **内容**　「看哪，你的王来到！谦谦和和地骑着驴」——预言500年后耶稣骑驴进耶路撒冷。
+- **内容**　「看哪！你的王来到你这里！他是公义的，并且施行拯救，谦谦和和地骑着驴」——预言500年后耶稣骑驴进耶路撒冷。
 - **地点**　耶路撒冷（Jerusalem）、锡安（Zion）、幼发拉底河（Euphrates）、希腊（Greece）、亚述（Assyria）、埃及（Egypt）、基列（Gilead 1）、黎巴嫩（Lebanon）、尼罗河（Nile）
 
 ### 好牧人与坏牧人 · Two Shepherds
@@ -6812,7 +6812,7 @@
 - **经文**　撒迦利亚书 12:1–13:9（Zechariah 12:1–13:9）
 - **年代**　前 780 — 前 430　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「约拿在尼尼微传道」（-780）、另一侧是「玛拉基：旧约最后先知」（-430），故落在 -780—-430 之间。区间宽度即为不确定度，不是精度。
-- **内容**　「他们必仰望被刺的」——约翰福音19章引为耶稣被刺的预言。
+- **内容**　「他们必仰望我」——约翰福音19章引为耶稣被刺的预言。
 - **地点**　耶路撒冷（Jerusalem）、哈达临门（Hadad-rimmon）、米吉多（Megiddo）
 
 ### 末后的雅伟日子 · The Day of the LORD
@@ -6821,7 +6821,7 @@
 - **年代**　前 780 — 前 430　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「约拿在尼尼微传道」（-780）、另一侧是「玛拉基：旧约最后先知」（-430），故落在 -780—-430 之间。区间宽度即为不确定度，不是精度。
 - **内容**　末后的雅伟日子——橄榄山裂开。基督升天的地方将成为他再来的地点。
-- **地点**　耶路撒冷（Jerusalem）、橄榄山（Mount of Olives）、亚萨（Azal）、大海（Great Sea）、盐海（Salt Sea）、亚拉巴（Arabah）、便雅悯门（Benjamin Gate）、角门（Corner Gate）、播薛（Geba 3）、临门（Rimmon 2）、哈楠业楼（Tower of Hananel）、埃及（Egypt）
+- **地点**　耶路撒冷（Jerusalem）、橄榄山（Mount of Olives）、亚萨（Azal）、大海（Great Sea）、盐海（Salt Sea）、亚拉巴（Arabah）、便雅悯门（Benjamin Gate）、角门（Corner Gate）、迦巴（Geba 3）、临门（Rimmon 2）、哈楠业楼（Tower of Hananel）、埃及（Egypt）
 
 ---
 
@@ -6834,7 +6834,7 @@
 - **经文**　玛拉基书 1:1–1:14（Malachi 1:1–1:14）
 - **年代**　前 430　·　推算
 - **定年依据**　与年表重叠：玛拉基：旧约最后先知。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　神的爱与残废的祭——「我何曾爱你？」百姓的反问揭示属灵的死。
+- **内容**　神的爱与残废的祭——「你在何事上爱我们呢？」百姓的反问揭示属灵的死。
 - **地点**　以东（Edom）
 
 ### 对祭司的责备 · A Warning to the Priests
@@ -6842,7 +6842,7 @@
 - **经文**　玛拉基书 2:1–2:9（Malachi 2:1–2:9）
 - **年代**　前 430　·　推算
 - **定年依据**　与年表重叠：玛拉基：旧约最后先知。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　对祭司的责备——「你们使许多人在律法上跌倒」。属灵领袖的责任极重。
+- **内容**　对祭司的责备——「使许多人在律法上跌倒」。属灵领袖的责任极重。
 - **地点**　经文此段未点名可定位的地点
 
 ### 对离婚的斥责 · Faithlessness in Marriage
@@ -6850,7 +6850,7 @@
 - **经文**　玛拉基书 2:10–2:17（Malachi 2:10–2:17）
 - **年代**　前 430　·　推算
 - **定年依据**　与年表重叠：玛拉基：旧约最后先知。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　对离婚的斥责——「神是恨恶休妻的」。婚姻是立约。
+- **内容**　对离婚的斥责——「休妻的事和以强暴待妻的人，都是我所恨恶的」。婚姻是立约。
 - **地点**　耶路撒冷（Jerusalem）
 
 ### 立约的使者 · The Messenger Will Come
@@ -6866,7 +6866,7 @@
 - **经文**　玛拉基书 3:8–3:18（Malachi 3:8–3:18）
 - **年代**　前 430　·　推算
 - **定年依据**　与年表重叠：玛拉基：旧约最后先知。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　什一与十分——「人怎可夺取神之物呢？」可以夺取的，证明心灵的状态。
+- **内容**　什一与十分——「人岂可夺取神之物呢？」可以夺取的，证明心灵的状态。
 - **地点**　经文此段未点名可定位的地点
 
 ### 公义的日头 · The Sun of Righteousness
@@ -6930,7 +6930,7 @@
 - **平行经文**　施洗约翰的事工 — 同见 Mark 1:1-8、Luke 3:1-18、John 1:19-28
 - **年代**　前 4 — 公元 26　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「逃往埃及」（-4）、另一侧是「耶稣受洗」（26），故落在 -4—26 之间。区间宽度即为不确定度，不是精度。
-- **内容**　施洗约翰传道——「悔改！天国近了」。新约的开门人。
+- **内容**　施洗约翰传道——「天国近了，你们应当悔改！」。新约的开门人。
 - **地点**　犹太（Judea 1）、耶路撒冷（Jerusalem）、约旦河（Jordan）
 
 ### 耶稣受洗 · The Baptism of Jesus
@@ -6983,7 +6983,7 @@
 - **平行经文**　盐和光 — 同见 Mark 4:21、Luke 8:16, 11:33
 - **年代**　公元 28　·　推算
 - **定年依据**　与年表重叠：登山宝训。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　「你们是世上的盐……你们是世上的光」——灯放在灯台上，光照在人前，荣耀归给天上的父。
+- **内容**　「你们是世上的盐」——灯放在灯台上，光照在人前，荣耀归给天上的父。
 - **地点**　经文此段未点名可定位的地点
 
 ### 耶稣与律法 · The Fulfillment of the Law
@@ -6999,7 +6999,7 @@
 - **经文**　马太福音 5:21–5:26（Matthew 5:21–5:26）
 - **年代**　公元 28　·　推算
 - **定年依据**　与年表重叠：登山宝训。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　论怒气——耶稣比律法更深入：「凡向弟兄动怒的，难免受审判」。律法触及内心。
+- **内容**　论怒气——耶稣比律法更深入：「向弟兄动怒的，难免受审断」。律法触及内心。
 - **地点**　经文此段未点名可定位的地点
 
 ### 论奸淫 · Teaching About Lust
@@ -7007,7 +7007,7 @@
 - **经文**　马太福音 5:27–5:30（Matthew 5:27–5:30）
 - **年代**　公元 28　·　推算
 - **定年依据**　与年表重叠：登山宝训。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　论奸淫——「凡看见妇女就动淫念的，已经犯奸淫」。神看心，不看行为。
+- **内容**　论奸淫——「凡看见妇女就动淫念的，这人心里已经与她犯奸淫了」。神看心，不看行为。
 - **地点**　经文此段未点名可定位的地点
 
 ### 论离婚 · Teaching About Divorce
@@ -7151,7 +7151,7 @@
 - **平行经文**　百夫长的仆人得医治 — 同见 Luke 7:1-10
 - **年代**　公元 28 — 公元 29　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「登山宝训」（28）、另一侧是「五饼二鱼」（29），故落在 28—29 之间。区间宽度即为不确定度，不是精度。
-- **内容**　百夫长的信心——耶稣称：「这么大的信心，连以色列中我也未见过」。
+- **内容**　百夫长的信心——耶稣称：「这么大的信心，就是在以色列中，我也没有遇见过」。
 - **地点**　迦百农（Capernaum）
 
 ### 医治许多病人 · Jesus Heals Many
@@ -7159,7 +7159,7 @@
 - **经文**　马太福音 8:14–8:22（Matthew 8:14–8:22）
 - **年代**　公元 28 — 公元 29　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「登山宝训」（28）、另一侧是「五饼二鱼」（29），故落在 28—29 之间。区间宽度即为不确定度，不是精度。
-- **内容**　耶稣在彼得家医好他岳母的热病，晚上赶鬼治病；对要跟从的人说「人子没有枕头的地方」。
+- **内容**　耶稣在彼得家医好他岳母的热病，晚上赶鬼治病；对要跟从的人说「人子却没有枕头的地方」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 平静风浪 · Jesus Calms the Storm
@@ -7178,7 +7178,7 @@
 - **年代**　公元 28 — 公元 29　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「登山宝训」（28）、另一侧是「五饼二鱼」（29），故落在 28—29 之间。区间宽度即为不确定度，不是精度。
 - **内容**　赶逐群鬼——污鬼不只承认他是神的儿子，更怕他的审判。
-- **地点**　Gadara
+- **地点**　加大拉（Gadara）
 
 ### 医治瘫子 · Jesus Heals a Paralyzed Man
 
@@ -7203,7 +7203,7 @@
 - **经文**　马太福音 9:14–9:17（Matthew 9:14–9:17）
 - **年代**　公元 28 — 公元 29　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「登山宝训」（28）、另一侧是「五饼二鱼」（29），故落在 28—29 之间。区间宽度即为不确定度，不是精度。
-- **内容**　禁食的问题——耶稣说：「新郎与陪伴之人同在的时候，岂能哀恸呢？」
+- **内容**　禁食的问题——耶稣说：「新郎和陪伴之人同在的时候，陪伴之人岂能哀恸呢？」
 - **地点**　经文此段未点名可定位的地点
 
 ### 复活女孩与医治血漏 · The Dead Girl and the Sick Woman
@@ -7220,7 +7220,7 @@
 - **经文**　马太福音 9:27–9:34（Matthew 9:27–9:34）
 - **年代**　公元 28 — 公元 29　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「登山宝训」（28）、另一侧是「五饼二鱼」（29），故落在 28—29 之间。区间宽度即为不确定度，不是精度。
-- **内容**　医治瞎子与哑巴——「大卫的子孙啊」——他们的呼喊是认信。
+- **内容**　医治瞎子与哑巴——「大卫的子孙，可怜我们吧」——他们的呼喊是认信。
 - **地点**　经文此段未点名可定位的地点
 
 ### 庄稼多工人少 · The Workers Are Few
@@ -7247,7 +7247,7 @@
 - **平行经文**　差遣十二使徒 — 同见 Mark 6:7-13、Luke 9:1-6
 - **年代**　公元 28 — 公元 29　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「登山宝训」（28）、另一侧是「五饼二鱼」（29），故落在 28—29 之间。区间宽度即为不确定度，不是精度。
-- **内容**　面临逼迫——耶稣预言门徒会被弃、被打、被杀。「凡为我的名」。
+- **内容**　面临逼迫——耶稣预言门徒会被弃、被打、被杀。「为我的名，被众人恨恶」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 认主与作门徒的代价 · Acknowledging Christ
@@ -7256,7 +7256,7 @@
 - **平行经文**　差遣十二使徒 — 同见 Mark 6:7-13、Luke 9:1-6
 - **年代**　公元 28 — 公元 29　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「登山宝训」（28）、另一侧是「五饼二鱼」（29），故落在 28—29 之间。区间宽度即为不确定度，不是精度。
-- **内容**　认主与作门徒的代价——「不背着十字架跟从我的，也不配作我的门徒」。
+- **内容**　认主与作门徒的代价——「不背着他的十字架跟从我的，也不配作我的门徒」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 施洗约翰的疑问 · Jesus and John the Baptist
@@ -7304,7 +7304,7 @@
 - **经文**　马太福音 12:46–12:50（Matthew 12:46–12:50）
 - **年代**　公元 28 — 公元 29　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「登山宝训」（28）、另一侧是「五饼二鱼」（29），故落在 28—29 之间。区间宽度即为不确定度，不是精度。
-- **内容**　耶稣的真亲属——「凡遵行我天父旨意的人，就是我的弟兄姊妹」。
+- **内容**　耶稣的真亲属——「凡遵行我天父旨意的人，就是我的弟兄姐妹和母亲了」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 撒种的比喻 · The Parable of the Sower
@@ -7347,7 +7347,7 @@
 - **经文**　马太福音 13:53–13:58（Matthew 13:53–13:58）
 - **年代**　公元 28 — 公元 29　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「登山宝训」（28）、另一侧是「五饼二鱼」（29），故落在 28—29 之间。区间宽度即为不确定度，不是精度。
-- **内容**　在拿撒勒被弃——「先知在自己家乡和家中没有人尊敬」。
+- **内容**　在拿撒勒被弃——「大凡先知，除了本地本家之外，没有不被人尊敬的」。
 - **地点**　拿撒勒（Nazareth）
 
 ### 施洗约翰被斩 · John the Baptist Beheaded
@@ -7389,7 +7389,7 @@
 - **经文**　马太福音 15:21–15:31（Matthew 15:21–15:31）
 - **年代**　公元 29 — 公元 30　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「五饼二鱼」（29）、另一侧是「登山变像」（30），故落在 29—30 之间。区间宽度即为不确定度，不是精度。
-- **内容**　迦南妇人的信心——「主啊，连狗也吃他主人桌子上掉下来的碎渣儿」。
+- **内容**　迦南妇人的信心——「主啊，不错；但是狗也吃它主人桌子上掉下来的碎渣儿」。
 - **地点**　加利利（Galilee 1）、西顿（Sidon）、推罗（Tyre）、迦南（Canaan）、加利利海（Sea of Galilee）
 
 ### 喂饱四千人 · Jesus Feeds the Four Thousand
@@ -7406,7 +7406,7 @@
 - **经文**　马太福音 16:1–16:12（Matthew 16:1–16:12）
 - **年代**　公元 29 — 公元 30　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「五饼二鱼」（29）、另一侧是「登山变像」（30），故落在 29—30 之间。区间宽度即为不确定度，不是精度。
-- **内容**　求兆头——「邪恶淫乱的世代求看神迹」。耶稣已经显了无数神迹。
+- **内容**　求兆头——「一个邪恶淫乱的世代求神迹」。耶稣已经显了无数神迹。
 - **地点**　经文此段未点名可定位的地点
 
 ### 彼得的认信 · Peter's Confession of Christ
@@ -7441,7 +7441,7 @@
 - **经文**　马太福音 17:14–17:23（Matthew 17:14–17:23）
 - **年代**　公元 30 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「登山变像」（30）、另一侧是「荣进圣城」（33），故落在 30—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　医治被鬼附的孩子——门徒做不到，因「这一类的鬼若不祷告禁食，他就不出来」。
+- **内容**　医治被鬼附的孩子——门徒做不到，因「至于这一类的鬼，若不祷告、禁食，它就不出来」。
 - **地点**　加利利（Galilee 1）
 
 ### 纳殿税 · The Temple Tax
@@ -7507,7 +7507,7 @@
 - **平行经文**　财主的少年官 — 同见 Mark 10:17-31、Luke 18:18-30
 - **年代**　公元 30 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「登山变像」（30）、另一侧是「荣进圣城」（33），故落在 30—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　财主的难处——「骆驼穿针眼比财主进神国还容易」。耶稣最尖锐的教训之一。
+- **内容**　财主的难处——「骆驼穿过针的眼，比财主进神的国还容易」。耶稣最尖锐的教训之一。
 - **地点**　经文此段未点名可定位的地点
 
 ### 葡萄园工人的比喻 · The Workers in the Vineyard
@@ -7600,7 +7600,7 @@
 - **平行经文**　凯撒的物归凯撒 — 同见 Mark 12:13-17、Luke 20:20-26
 - **年代**　公元 33 — 公元 70　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「荣进圣城」（33）、另一侧是「圣殿被毁」（70），故落在 33—70 之间。区间宽度即为不确定度，不是精度。
-- **内容**　纳税给凯撒——「凯撒的物归凯撒，神的物归神」。最被引用的政治神学经文。
+- **内容**　纳税给凯撒——「该撒的物当归给该撒；神的物当归给神」。最被引用的政治神学经文。
 - **地点**　经文此段未点名可定位的地点
 
 ### 复活的问题 · Marriage at the Resurrection
@@ -7643,7 +7643,7 @@
 - **平行经文**　橄榄山讲论——末世 — 同见 Mark 13、Luke 21:5-36
 - **年代**　公元 33 — 公元 70　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「圣殿被毁」（70）、另一侧是「最后的晚餐」（33），故落在 33—70 之间。区间宽度即为不确定度，不是精度。
-- **内容**　无人知道那日子——「连子也不知道」。基督徒该警醒、不预测。
+- **内容**　无人知道那日子——「子也不知道」。基督徒该警醒、不预测。
 - **地点**　经文此段未点名可定位的地点
 
 ### 十童女的比喻 · The Parable of the Ten Virgins
@@ -7659,7 +7659,7 @@
 - **经文**　马太福音 25:14–25:30（Matthew 25:14–25:30）
 - **年代**　公元 33 — 公元 70　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「圣殿被毁」（70）、另一侧是「最后的晚餐」（33），故落在 33—70 之间。区间宽度即为不确定度，不是精度。
-- **内容**　按才受托的比喻——神托付，期待回报。「忠心的好仆人」。
+- **内容**　按才受托的比喻——神托付，期待回报。「你这又良善又忠心的仆人」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 羊与山羊 · The Final Judgment
@@ -7684,7 +7684,7 @@
 - **平行经文**　在伯大尼受膏 — 同见 Mark 14:3-9、John 12:1-8
 - **年代**　公元 33 — 公元 70　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「圣殿被毁」（70）、另一侧是「最后的晚餐」（33），故落在 33—70 之间。区间宽度即为不确定度，不是精度。
-- **内容**　在伯大尼受膏——一位妇人破石膏倒香膏在耶稣脚上。「这福音被传到的地方，要述说她所做的」。
+- **内容**　在伯大尼受膏——一位妇人破石膏倒香膏在耶稣脚上。「无论在什么地方传这福音，也要述说这女人所行的」。
 - **地点**　伯大尼（Bethany 1）
 
 ### 犹大要卖耶稣 · Judas Agrees to Betray Jesus
@@ -7736,7 +7736,7 @@
 - **平行经文**　彼得三次不认主 — 同见 Mark 14:66-72、Luke 22:54-62、John 18:15-27
 - **年代**　公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「最后的晚餐」（33）、另一侧是「耶稣被钉十字架」（33），故落在 33—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　彼得三次否认——「我不认得这个人」。神最忠心的门徒在最关键的时刻失败。
+- **内容**　彼得三次否认——「我不认得那个人」。神最忠心的门徒在最关键的时刻失败。
 - **地点**　加利利（Galilee 1）、拿撒勒（Nazareth）
 
 ### 犹大自杀 · Judas Hangs Himself
@@ -7797,7 +7797,7 @@
 - **平行经文**　空坟墓——复活的早晨 — 同见 Mark 16:1-8、Luke 24:1-12、John 20:1-10
 - **年代**　公元 33　·　推算
 - **定年依据**　与年表重叠：耶稣复活。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　七日的头一日，两个马利亚来看坟墓，天使滚开石头说「他已经复活了」；耶稣在路上遇见她们。
+- **内容**　七日的头一日，两个马利亚来看坟墓，天使滚开石头说「照他所说的，已经复活了」；耶稣在路上遇见她们。
 - **地点**　加利利（Galilee 1）
 
 ### 兵丁的报告 · The Report of the Guards
@@ -7990,7 +7990,7 @@
 - **平行经文**　盐和光 — 同见 Matthew 5:13-16、Luke 8:16, 11:33
 - **年代**　前 6 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣复活」（33）、另一侧是「施洗约翰出生」（-6），故落在 -6—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　灯与量度——「凡你们用什么量器量给人，神也必用什么量器量给你们」。
+- **内容**　灯与量度——「你们用什么量器量给人，也必用什么量器量给你们」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 种子生长的比喻 · The Growing Seed
@@ -8026,7 +8026,7 @@
 - **年代**　前 6 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣复活」（33）、另一侧是「施洗约翰出生」（-6），故落在 -6—33 之间。区间宽度即为不确定度，不是精度。
 - **内容**　赶逐群鬼入猪群——城里的人请耶稣离开。一个失去财产比失去鬼附人更使人不安。
-- **地点**　Gerasa、低加波利（Decapolis）
+- **地点**　格拉森（Gerasa）、低加波利（Decapolis）
 
 ### 睚鲁的女儿与血漏妇人 · A Dead Girl and a Sick Woman
 
@@ -8042,7 +8042,7 @@
 - **经文**　马可福音 6:1–6:6（Mark 6:1–6:6）
 - **年代**　前 6 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣复活」（33）、另一侧是「施洗约翰出生」（-6），故落在 -6—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　在拿撒勒被弃——「先知在自己家乡没有人尊敬」。
+- **内容**　在拿撒勒被弃——「大凡先知，除了本地、亲属、本家之外，没有不被人尊敬的」。
 - **地点**　拿撒勒（Nazareth）
 
 ### 差遣十二门徒 · Jesus Sends Out the Twelve
@@ -8068,7 +8068,7 @@
 - **平行经文**　五饼二鱼 — 同见 Matthew 14:13-21、Luke 9:10-17、John 6:1-15
 - **年代**　前 6 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣复活」（33）、另一侧是「施洗约翰出生」（-6），故落在 -6—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　喂饱五千人——「你们给他们吃罢」。耶稣使最不可能的事成为见证。
+- **内容**　喂饱五千人——「你们给他们吃吧」。耶稣使最不可能的事成为见证。
 - **地点**　经文此段未点名可定位的地点
 
 ### 耶稣行走海面 · Jesus Walks on Water
@@ -8186,7 +8186,7 @@
 - **经文**　马可福音 9:33–9:37（Mark 9:33–9:37）
 - **年代**　前 6 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣复活」（33）、另一侧是「施洗约翰出生」（-6），故落在 -6—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　天国里最大的——「若有人愿意作首先，就必作众人末后的」。
+- **内容**　天国里最大的——「若有人愿意作首先的，他必作众人末后的」。
 - **地点**　迦百农（Capernaum）
 
 ### 不绊倒小子 · Whoever Is Not Against Us
@@ -8194,7 +8194,7 @@
 - **经文**　马可福音 9:38–9:50（Mark 9:38–9:50）
 - **年代**　前 6 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣复活」（33）、另一侧是「施洗约翰出生」（-6），故落在 -6—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　不绊倒小子——「使一个相信我的小子跌倒，倒不如把大磨石拴在脖子上」。
+- **内容**　不绊倒小子——「凡使这信我的一个小子跌倒的，倒不如把大磨石拴在这人的颈项上」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 论离婚 · Jesus Teaches About Divorce
@@ -8202,7 +8202,7 @@
 - **经文**　马可福音 10:1–10:12（Mark 10:1–10:12）
 - **年代**　前 6 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣复活」（33）、另一侧是「施洗约翰出生」（-6），故落在 -6—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　论离婚——耶稣回到创世起初的设计：「他们二人成为一体」。
+- **内容**　论离婚——耶稣回到创世起初的设计：「二人成为一体」。
 - **地点**　迦百农（Capernaum）、约旦河（Jordan）、犹太（Judea 1）
 
 ### 耶稣祝福小孩 · Jesus Blesses Little Children
@@ -8210,7 +8210,7 @@
 - **经文**　马可福音 10:13–10:16（Mark 10:13–10:16）
 - **年代**　前 6 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣复活」（33）、另一侧是「施洗约翰出生」（-6），故落在 -6—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　耶稣祝福小孩——「在神的国里的，正是这样的人」。
+- **内容**　耶稣祝福小孩——「在神国的，正是这样的人」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 财主的难处 · The Rich Young Man
@@ -8288,7 +8288,7 @@
 - **平行经文**　凯撒的物归凯撒 — 同见 Matthew 22:15-22、Luke 20:20-26
 - **年代**　前 6 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣复活」（33）、另一侧是「施洗约翰出生」（-6），故落在 -6—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　纳税给凯撒——「凯撒的物归凯撒，神的物归神」。
+- **内容**　纳税给凯撒——「该撒的物当归给该撒，神的物当归给神」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 复活的问题 · Marriage at the Resurrection
@@ -8332,7 +8332,7 @@
 - **平行经文**　橄榄山讲论——末世 — 同见 Matthew 24、Luke 21:5-36
 - **年代**　前 6 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣复活」（33）、另一侧是「施洗约翰出生」（-6），故落在 -6—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　无人知道那日子——「连子也不知道」。基督徒该警醒。
+- **内容**　无人知道那日子——「子也不知道」。基督徒该警醒。
 - **地点**　经文此段未点名可定位的地点
 
 ### 杀害耶稣的阴谋 · The Plot Against Jesus
@@ -8349,7 +8349,7 @@
 - **平行经文**　在伯大尼受膏 — 同见 Matthew 26:6-13、John 12:1-8
 - **年代**　前 6 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣复活」（33）、另一侧是「施洗约翰出生」（-6），故落在 -6—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　在伯大尼受膏——「这福音被传到的地方，要述说她所做的」。
+- **内容**　在伯大尼受膏——「无论在什么地方传这福音，也要述说这女人所作的」。
 - **地点**　伯大尼（Bethany 1）
 
 ### 最后的晚餐 · The Last Supper
@@ -8367,7 +8367,7 @@
 - **平行经文**　客西马尼祷告 — 同见 Matthew 26:36-46、Luke 22:39-46
 - **年代**　前 6 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣复活」（33）、另一侧是「施洗约翰出生」（-6），故落在 -6—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　客西马尼园祷告——完全的人性面对受苦的恐惧，却仍说：「不要照我的意思，只要照你的意思。」
+- **内容**　客西马尼园祷告——完全的人性面对受苦的恐惧，却仍说：「不要从我的意思，只要从你的意思」
 - **地点**　客西马尼（Gethsemane）
 
 ### 耶稣被捕 · Jesus Arrested
@@ -8393,7 +8393,7 @@
 - **平行经文**　彼得三次不认主 — 同见 Matthew 26:69-75、Luke 22:54-62、John 18:15-27
 - **年代**　前 6 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣复活」（33）、另一侧是「施洗约翰出生」（-6），故落在 -6—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　彼得三次否认——「我不认得这个人」。神最忠心的人在最危险的时刻失败。
+- **内容**　彼得三次否认——「我不认得你们说的这个人」。神最忠心的人在最危险的时刻失败。
 - **地点**　拿撒勒（Nazareth）
 
 ### 彼拉多前受审 · Jesus Before Pilate
@@ -8465,7 +8465,7 @@
 - **平行经文**　升天 — 同见 Luke 24:50-53
 - **年代**　前 6 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣复活」（33）、另一侧是「施洗约翰出生」（-6），故落在 -6—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　大使命——「往普天下传福音给万民听」。教会两千年的使命。
+- **内容**　大使命——「你们往普天下去，传福音给万民」。教会两千年的使命。
 - **地点**　经文此段未点名可定位的地点
 
 ---
@@ -8536,7 +8536,7 @@
 - **经文**　路加福音 2:22–2:40（Luke 2:22–2:40）
 - **年代**　前 5 — 公元 8　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣基督降生」（-5）、另一侧是「耶稣十二岁在圣殿」（8），故落在 -5—8 之间。区间宽度即为不确定度，不是精度。
-- **内容**　在圣殿献婴孩——西面与亚拿见证：「我亲眼见过你的救恩」。
+- **内容**　在圣殿献婴孩——西面与亚拿见证：「我的眼睛已经看见你的救恩」。
 - **地点**　耶路撒冷（Jerusalem）、加利利（Galilee 1）、拿撒勒（Nazareth）
 
 ### 十二岁的耶稣 · Jesus at Twelve in the Temple
@@ -8544,7 +8544,7 @@
 - **经文**　路加福音 2:41–2:52（Luke 2:41–2:52）
 - **年代**　公元 8　·　推算
 - **定年依据**　与年表重叠：耶稣十二岁在圣殿。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
-- **内容**　十二岁的耶稣——「岂不知我应当以我父的事为念吗？」少年耶稣已知自己的使命。
+- **内容**　十二岁的耶稣——「岂不知我应当以我父的事为念么」少年耶稣已知自己的使命。
 - **地点**　耶路撒冷（Jerusalem）、拿撒勒（Nazareth）
 
 ### 施洗约翰的传道 · John the Baptist Preaches
@@ -8595,7 +8595,7 @@
 - **经文**　路加福音 4:31–4:44（Luke 4:31–4:44）
 - **年代**　公元 8 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣十二岁在圣殿」（8）、另一侧是「耶稣升天」（33），故落在 8—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　在迦百农传道——「耶稣讲道，他们都希奇他的教训」。
+- **内容**　在迦百农传道——「他们很希奇他的教训，因为他的话里有权柄」。
 - **地点**　迦百农（Capernaum）、加利利（Galilee 1）、拿撒勒（Nazareth）、犹太（Judea 1）
 
 ### 呼召首批门徒 · Calling the First Disciples
@@ -8604,7 +8604,7 @@
 - **平行经文**　呼召最初的门徒 — 同见 Matthew 4:18-22、Mark 1:16-20、John 1:35-51
 - **年代**　公元 8 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣十二岁在圣殿」（8）、另一侧是「耶稣升天」（33），故落在 8—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　呼召首批门徒——彼得见耶稣后说：「主啊！离开我，我是个罪人！」
+- **内容**　呼召首批门徒——彼得见耶稣后说：「主啊！离开我，我是个罪人」
 - **地点**　革尼撒勒（Gennesaret）
 
 ### 医治痲疯 · Healing a Leper
@@ -8631,7 +8631,7 @@
 - **平行经文**　呼召马太 — 同见 Matthew 9:9-13、Mark 2:13-17
 - **年代**　公元 8 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣十二岁在圣殿」（8）、另一侧是「耶稣升天」（33），故落在 8—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　呼召利未——「不是召义人，乃是召罪人悔改」。
+- **内容**　呼召利未——「我来本不是召义人悔改，乃是召罪人悔改」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 选立十二门徒 · Choosing the Twelve
@@ -8661,7 +8661,7 @@
 - **平行经文**　百夫长的仆人得医治 — 同见 Matthew 8:5-13
 - **年代**　公元 8 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣十二岁在圣殿」（8）、另一侧是「耶稣升天」（33），故落在 8—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　百夫长的仆人——「在以色列我也未见过这么大的信心」。
+- **内容**　百夫长的仆人——「这么大的信心，就是在以色列中，我也没有遇见过」。
 - **地点**　迦百农（Capernaum）
 
 ### 拿因城寡妇之子复活 · Widow's Son at Nain Raised
@@ -8710,7 +8710,7 @@
 - **年代**　公元 8 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣十二岁在圣殿」（8）、另一侧是「耶稣升天」（33），故落在 8—33 之间。区间宽度即为不确定度，不是精度。
 - **内容**　格拉森人得医——一军群鬼被赶入猪群。
-- **地点**　加利利（Galilee 1）、Gerasa
+- **地点**　加利利（Galilee 1）、格拉森（Gerasa）
 
 ### 喂饱五千人 · Feeding the Five Thousand
 
@@ -8749,7 +8749,7 @@
 - **平行经文**　盐和光 — 同见 Matthew 5:13-16、Mark 4:21
 - **年代**　公元 8 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣十二岁在圣殿」（8）、另一侧是「耶稣升天」（33），故落在 8—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　差遣七十人——使命的扩展。「庄稼多，工人少」。
+- **内容**　差遣七十人——使命的扩展。「要收的庄稼多，作工的人少」。
 - **地点**　所多玛（Sodom）、伯赛大（Bethsaida 1）、哥拉汛（Chorazin）、西顿（Sidon）、推罗（Tyre）、迦百农（Capernaum）
 
 ### 好撒玛利亚人的比喻 · The Good Samaritan
@@ -8887,7 +8887,7 @@
 - **平行经文**　橄榄山讲论——末世 — 同见 Matthew 24、Mark 13
 - **年代**　公元 8 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣十二岁在圣殿」（8）、另一侧是「耶稣升天」（33），故落在 8—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　洁净圣殿——「我的殿是祷告的殿」。耶稣对宗教虚伪的怒。
+- **内容**　洁净圣殿——「我的殿必作祷告的殿」。耶稣对宗教虚伪的怒。
 - **地点**　耶路撒冷（Jerusalem）、犹太（Judea 1）、橄榄山（Mount of Olives）
 
 ### 最后晚餐 · The Last Supper
@@ -8906,7 +8906,7 @@
 - **平行经文**　被卖被捉 — 同见 Matthew 26:47-56、Mark 14:43-52、John 18:1-12
 - **年代**　公元 8 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣十二岁在圣殿」（8）、另一侧是「耶稣升天」（33），故落在 8—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　客西马尼祷告与被捕——「不要照我的意思，只要照你的意思」。
+- **内容**　客西马尼祷告与被捕——「不要成就我的意思，只要成就你的意思」。
 - **地点**　橄榄山（Mount of Olives）
 
 ### 彼得三次否认 · Peter's Denial
@@ -8915,7 +8915,7 @@
 - **平行经文**　彼得三次不认主 — 同见 Matthew 26:69-75、Mark 14:66-72、John 18:15-27
 - **年代**　公元 8 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣十二岁在圣殿」（8）、另一侧是「耶稣升天」（33），故落在 8—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　彼得三次否认——「我不认得这个人」。鸡叫了。耶稣转过来看彼得。
+- **内容**　彼得三次否认——「我不认得他」。鸡叫了。耶稣转过来看彼得。
 - **地点**　经文此段未点名可定位的地点
 
 ### 彼拉多前受审 · Before Pilate and Herod
@@ -8969,7 +8969,7 @@
 - **平行经文**　向门徒显现 — 同见 John 20:19-29
 - **年代**　公元 8 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣十二岁在圣殿」（8）、另一侧是「耶稣升天」（33），故落在 8—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　向门徒显现——耶稣亲自来到他们中间。「平安归与你们」。
+- **内容**　向门徒显现——耶稣亲自来到他们中间。「愿你们平安」。
 - **地点**　耶路撒冷（Jerusalem）
 
 ### 升天 · The Ascension
@@ -9142,7 +9142,7 @@
 - **经文**　约翰福音 7:25–7:36（John 7:25–7:36）
 - **年代**　公元 8 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣十二岁在圣殿」（8）、另一侧是「耶稣升天」（33），故落在 8—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　群众的争论——「他不就是基督吗？」 vs. 「他不能是基督」。
+- **内容**　群众的争论——「难道官长真知道这是基督吗？」 vs. 「只是基督来的时候，没有人知道他从那里来」。
 - **地点**　耶路撒冷（Jerusalem）
 
 ### 活水的应许 · Streams of Living Water
@@ -9199,7 +9199,7 @@
 - **年代**　公元 8 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣十二岁在圣殿」（8）、另一侧是「耶稣升天」（33），故落在 8—33 之间。区间宽度即为不确定度，不是精度。
 - **内容**　修殿节耶稣在所罗门廊下说「我与父原为一」，犹太人拿石头要打他；他逃出去到约但河外，信他的人多了。
-- **地点**　耶路撒冷（Jerusalem）、亚革大马（Solomon’s Portico）、约旦河（Jordan）
+- **地点**　耶路撒冷（Jerusalem）、所罗门廊（Solomon’s Portico）、约旦河（Jordan）
 
 ### 拉撒路复活 · The Death and Raising of Lazarus
 
@@ -9232,7 +9232,7 @@
 - **平行经文**　光荣入城 — 同见 Matthew 21:1-11、Mark 11:1-11、Luke 19:28-44
 - **年代**　公元 8 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣十二岁在圣殿」（8）、另一侧是「耶稣升天」（33），故落在 8—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　光荣进入耶路撒冷——百姓挥棕树枝。「奉主名来的，是应当称颂的！」
+- **内容**　光荣进入耶路撒冷——百姓挥棕树枝。「奉主名来的以色列王是应当称颂的！」
 - **地点**　耶路撒冷（Jerusalem）、锡安（Zion）
 
 ### 希利尼人求见耶稣 · Jesus Predicts His Death
@@ -9282,7 +9282,7 @@
 - **经文**　约翰福音 14:15–14:31（John 14:15–14:31）
 - **年代**　公元 8 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣十二岁在圣殿」（8）、另一侧是「耶稣升天」（33），故落在 8—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　应许圣灵——「另外赐你们一位保惠师」。圣灵的应许。
+- **内容**　应许圣灵——「另外赐给你们一位保惠师」。圣灵的应许。
 - **地点**　经文此段未点名可定位的地点
 
 ### 真葡萄树 · The True Vine
@@ -9298,7 +9298,7 @@
 - **经文**　约翰福音 15:18–15:27（John 15:18–15:27）
 - **年代**　公元 8 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣十二岁在圣殿」（8）、另一侧是「耶稣升天」（33），故落在 8—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　世人的恨——「世人若恨你们，你们要知道恨你们以前已经恨我了」。
+- **内容**　世人的恨——「恨你们以先已经恨我了」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 圣灵的工作 · The Work of the Holy Spirit
@@ -9427,7 +9427,7 @@
 - **经文**　约翰福音 21:15–21:25（John 21:15–21:25）
 - **年代**　公元 8 — 公元 33　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶稣十二岁在圣殿」（8）、另一侧是「耶稣升天」（33），故落在 8—33 之间。区间宽度即为不确定度，不是精度。
-- **内容**　三次问爱与托付——「西门巴约拿，你爱我吗？」彼得三次否认得三次的恢复。
+- **内容**　三次问爱与托付——「约翰的儿子西门，你爱我吗？」彼得三次否认得三次的恢复。
 - **地点**　经文此段未点名可定位的地点
 
 ---
@@ -9506,7 +9506,7 @@
 - **年代**　公元 33 — 公元 35　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「五旬节圣灵降临」（33）、另一侧是「司提反殉道」（35），故落在 33—35 之间。区间宽度即为不确定度，不是精度。
 - **内容**　彼得对围观的众人指证：是亚伯拉罕、以撒、雅各的神荣耀了他的仆人耶稣。
-- **地点**　亚革大马（Solomon’s Portico）
+- **地点**　所罗门廊（Solomon’s Portico）
 
 ### 被捕入监 · Peter and John Arrested
 
@@ -9554,7 +9554,7 @@
 - **年代**　公元 33 — 公元 35　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「五旬节圣灵降临」（33）、另一侧是「司提反殉道」（35），故落在 33—35 之间。区间宽度即为不确定度，不是精度。
 - **内容**　甚至有人将病人抬到街上，盼望彼得过来时影子能照到他们。
-- **地点**　亚革大马（Solomon’s Portico）、耶路撒冷（Jerusalem）
+- **地点**　所罗门廊（Solomon’s Portico）、耶路撒冷（Jerusalem）
 
 ### 使徒下监被天使救出 · Apostles Freed by an Angel
 
@@ -9650,7 +9650,7 @@
 - **年代**　公元 35　·　推算
 - **定年依据**　与年表重叠：保罗大马色路上悔改。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　主差大马士革的门徒亚拿尼亚去按手，使他得见、被圣灵充满。
-- **地点**　大马士革（Damascus）、琐巴（Straight Street）、大数（Tarsus）、耶路撒冷（Jerusalem）
+- **地点**　大马士革（Damascus）、直街（Straight Street）、大数（Tarsus）、耶路撒冷（Jerusalem）
 
 ### 扫罗起初的传道 · Saul Begins to Preach
 
@@ -9985,7 +9985,7 @@
 - **经文**　使徒行传 19:23–19:41（Acts 19:23–19:41）
 - **年代**　公元 49 — 公元 60　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶路撒冷会议」（49）、另一侧是「保罗在罗马」（60），故落在 49—60 之间。区间宽度即为不确定度，不是精度。
-- **内容**　银匠底米丢因偶像生意受损，煽动众人扰乱全城，呼喊「亚底米女神」。
+- **内容**　银匠底米丢因偶像生意受损，煽动众人扰乱全城，呼喊「大哉！以弗所人的亚底米啊」。
 - **地点**　以弗所（Ephesus）、亚细亚（Asia）、马其顿（Macedonia）、罗马（Rome）
 
 ### 经马其顿和希腊 · Through Macedonia and Greece
@@ -10105,7 +10105,7 @@
 - **经文**　使徒行传 24:10–24:21（Acts 24:10–24:21）
 - **年代**　公元 49 — 公元 60　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶路撒冷会议」（49）、另一侧是「保罗在罗马」（60），故落在 49—60 之间。区间宽度即为不确定度，不是精度。
-- **内容**　保罗在巡抚腓力斯前分诉——上耶路撒冷不过十二天，没有聚众吵嚷；「我受审是为死人复活的道理」。
+- **内容**　保罗在巡抚腓力斯前分诉——上耶路撒冷不过十二天，没有聚众吵嚷；「我今日在你们面前受审，是为死人复活的道理」。
 - **地点**　耶路撒冷（Jerusalem）、亚细亚（Asia）
 
 ### 监禁两年 · Two Years in Custody
@@ -10247,7 +10247,7 @@
 - **经文**　罗马书 1:18–1:32（Romans 1:18–1:32）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　神的忿怒——「神的忿怒……从天上显明」。无人有借口。
+- **内容**　神的忿怒——「神的忿怒从天上显明」。无人有借口。
 - **地点**　经文此段未点名可定位的地点
 
 ### 神公义的审判 · God's Righteous Judgment
@@ -10391,7 +10391,7 @@
 - **经文**　罗马书 9:1–9:13（Romans 9:1–9:13）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　保罗为同胞忧伤——「我心里大有忧愁，时常伤痛」。爱国家的灵魂。
+- **内容**　保罗为同胞忧伤——「我是大有忧愁，心里时常伤痛」。爱国家的灵魂。
 - **地点**　经文此段未点名可定位的地点
 
 ### 神的拣选 · God's Sovereign Choice
@@ -10487,7 +10487,7 @@
 - **经文**　罗马书 13:8–13:10（Romans 13:8–13:10）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　彼此相爱——「不可亏欠人，唯有彼此相爱要常以为亏欠」。
+- **内容**　彼此相爱——「凡事都不可亏欠人，惟有彼此相爱要常以为亏欠」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 披戴主基督 · The Day Is Near
@@ -10495,7 +10495,7 @@
 - **经文**　罗马书 13:11–13:14（Romans 13:11–13:14）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　披戴主基督——「夜已深，日已近」。基督徒该警醒度日。
+- **内容**　披戴主基督——「黑夜已深，白昼将近」。基督徒该警醒度日。
 - **地点**　经文此段未点名可定位的地点
 
 ### 信心软弱者 · The Weak and the Strong
@@ -10573,7 +10573,7 @@
 - **经文**　哥林多前书 1:1–1:9（1 Corinthians 1:1–1:9）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　问候——保罗向这一间「在基督里成圣的」教会问安。
+- **内容**　问候——保罗向这一间「在基督耶稣里成圣」教会问安。
 - **地点**　哥林多（Corinth）
 
 ### 教会的分裂 · Divisions in the Church
@@ -10581,7 +10581,7 @@
 - **经文**　哥林多前书 1:10–1:17（1 Corinthians 1:10–1:17）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　教会的分裂——「我属保罗，我属亚波罗」。属灵骄傲的最早表现。
+- **内容**　教会的分裂——「我是属保罗的”；“我是属亚波罗的」。属灵骄傲的最早表现。
 - **地点**　经文此段未点名可定位的地点
 
 ### 十字架的智慧 · The Wisdom of the Cross
@@ -10589,7 +10589,7 @@
 - **经文**　哥林多前书 1:18–2:16（1 Corinthians 1:18–2:16）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　十字架的智慧——「神的愚拙，比人的智慧更高」。世人看为愚的，神选用之。
+- **内容**　十字架的智慧——「神的愚拙总比人智慧」。世人看为愚的，神选用之。
 - **地点**　经文此段未点名可定位的地点
 
 ### 教会的根基是基督 · The Foundation Is Christ
@@ -10605,7 +10605,7 @@
 - **经文**　哥林多前书 5:1–5:13（1 Corinthians 5:1–5:13）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　处理淫乱——教会内不可放任明显的罪。「除掉旧酵」。
+- **内容**　处理淫乱——教会内不可放任明显的罪。「应当把旧酵除净」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 弟兄间的诉讼 · Lawsuits Among Believers
@@ -10629,7 +10629,7 @@
 - **经文**　哥林多前书 8:1–8:13（1 Corinthians 8:1–8:13）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　祭偶像之物——基督徒的自由要受弟兄软弱良心的约束。「知识叫人自高自大，惟有爱心能造就人」。
+- **内容**　祭偶像之物——基督徒的自由要受弟兄软弱良心的约束。「知识是叫人自高自大，惟有爱心能造就人」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 保罗的使徒权柄 · Paul's Apostolic Rights
@@ -10701,7 +10701,7 @@
 - **经文**　哥林多前书 15:1–15:34（1 Corinthians 15:1–15:34）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　基督照圣经死了、埋葬、第三天复活，显给矶法、十二使徒、五百多弟兄、雅各和保罗看；「若基督没有复活，你们的信便是徒然」。
+- **内容**　基督照圣经死了、埋葬、第三天复活，显给矶法、十二使徒、五百多弟兄、雅各和保罗看；「基督若没有复活，你们的信便是徒然」。
 - **地点**　以弗所（Ephesus）
 
 ### 复活的身体 · The Resurrection Body
@@ -10803,7 +10803,7 @@
 - **经文**　哥林多后书 9:6–9:15（2 Corinthians 9:6–9:15）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　甘心乐意的奉献——「神爱乐意捐输的人」。
+- **内容**　甘心乐意的奉献——「捐得乐意的人是神所喜爱的」。
 - **地点**　耶路撒冷（Jerusalem）
 
 ### 保罗为权柄辩护 · Paul Defends His Ministry
@@ -10857,7 +10857,7 @@
 - **经文**　加拉太书 1:11–1:24（Galatians 1:11–1:24）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　保罗使徒资格的辩护——「不是从人，乃是从基督耶稣」。
+- **内容**　保罗使徒资格的辩护——「我不是从人领受的，也不是人教导我的，乃是从耶稣基督启示来的」。
 - **地点**　阿拉伯（Arabia 2）、大马士革（Damascus）、耶路撒冷（Jerusalem）、基利家（Cilicia）、亚兰（Syria 2）、犹太（Judea 1）
 
 ### 在耶路撒冷的会议 · Paul Accepted by the Apostles
@@ -10889,7 +10889,7 @@
 - **经文**　加拉太书 3:1–3:14（Galatians 3:1–3:14）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　保罗以此向加拉太人发问：「你们这无知的加拉太人哪……」继续阐明因信称义的道理。
+- **内容**　保罗以此向加拉太人发问：「无知的加拉太人哪」继续阐明因信称义的道理。
 - **地点**　经文此段未点名可定位的地点
 
 ### 律法与应许 · The Law and the Promise
@@ -10905,7 +10905,7 @@
 - **经文**　加拉太书 4:1–4:20（Galatians 4:1–4:20）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　儿子的名分——「神就差他的儿子……要把律法以下的人赎出来」。
+- **内容**　儿子的名分——「要把律法以下的人赎出来，叫我们得着儿子的名分」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 夏甲与撒拉 · Hagar and Sarah
@@ -10959,7 +10959,7 @@
 - **经文**　以弗所书 1:1–1:14（Ephesians 1:1–1:14）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　在基督里的属灵福气——以弗所书最壮观的开篇。「在创立世界以前」就被拣选。
+- **内容**　在基督里的属灵福气——以弗所书最壮观的开篇。「从创立世界以前」就被拣选。
 - **地点**　以弗所（Ephesus）
 
 ### 保罗为信徒祷告 · Paul's Prayer of Thanksgiving
@@ -10999,7 +10999,7 @@
 - **经文**　以弗所书 3:14–3:21（Ephesians 3:14–3:21）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　保罗第二次祷告——「叫你们能以和众圣徒一同明白基督的爱」。
+- **内容**　保罗第二次祷告——「能以和众圣徒一同明白基督的爱」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 教会的合一 · Unity in the Body
@@ -11023,7 +11023,7 @@
 - **经文**　以弗所书 5:1–5:21（Ephesians 5:1–5:21）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　效法神而行——「行事为人就要像光明的子女」。
+- **内容**　效法神而行——「行事为人就当像光明的子女」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 夫妻之间的关系 · Husbands and Wives
@@ -11077,7 +11077,7 @@
 - **经文**　腓立比书 1:27–1:30（Philippians 1:27–1:30）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　为福音同心努力——基督徒该有「与福音的信心相称」的生活。
+- **内容**　为福音同心努力——基督徒该有「行事为人与基督的福音相称」的生活。
 - **地点**　经文此段未点名可定位的地点
 
 ### 基督的谦卑榜样 · Christ's Humility
@@ -11093,7 +11093,7 @@
 - **经文**　腓立比书 2:12–2:18（Philippians 2:12–2:18）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　如同明光照耀——「就要做神无瑕疵的儿女，在这弯曲悖谬的世代，作神无瑕疵的儿女」。
+- **内容**　如同明光照耀——「在这弯曲悖谬的世代作神无瑕疵的儿女」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 提摩太与以巴弗提 · Timothy and Epaphroditus
@@ -11125,7 +11125,7 @@
 - **经文**　腓立比书 4:1–4:3（Philippians 4:1–4:3）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　在主里站立得稳——「我所亲爱的弟兄哪，要靠主站立得稳」。
+- **内容**　在主里站立得稳——「我亲爱的弟兄，你们应当靠主站立得稳」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 凡事祷告交托 · Anxious for Nothing
@@ -11179,7 +11179,7 @@
 - **经文**　歌罗西书 2:1–2:15（Colossians 2:1–2:15）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　防备假教训——「不要被人用花言巧语欺骗了」。
+- **内容**　防备假教训——「免得有人用花言巧语迷惑你们」。
 - **地点**　老底嘉（Laodicea）
 
 ### 在基督里的自由 · Freedom from Human Rules
@@ -11211,7 +11211,7 @@
 - **经文**　歌罗西书 4:2–4:6（Colossians 4:2–4:6）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　祷告与外人——「为我祷告，求神给我开传道的门」。
+- **内容**　祷告与外人——「为我们祷告，求神给我们开传道的门」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 末后的问候 · Final Greetings
@@ -11265,7 +11265,7 @@
 - **经文**　帖撒罗尼迦前书 4:13–4:18（1 Thessalonians 4:13–4:18）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　主的再来——保罗最详细描写基督再来的经文之一。「主必从天降临」。
+- **内容**　主的再来——保罗最详细描写基督再来的经文之一。「主必亲自从天降临」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 做光明之子 · Be Children of Light
@@ -11273,7 +11273,7 @@
 - **经文**　帖撒罗尼迦前书 5:1–5:11（1 Thessalonians 5:1–5:11）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　做光明之子——「不要睡觉，要警醒谨守」。
+- **内容**　做光明之子——「不要睡觉像别人一样，总要儆醒谨守」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 末后的劝勉 · Final Instructions
@@ -11281,7 +11281,7 @@
 - **经文**　帖撒罗尼迦前书 5:12–5:28（1 Thessalonians 5:12–5:28）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　末后的劝勉——「常常喜乐、不住地祷告、凡事谢恩」。
+- **内容**　末后的劝勉——「要常常喜乐」。
 - **地点**　经文此段未点名可定位的地点
 
 ---
@@ -11311,7 +11311,7 @@
 - **经文**　帖撒罗尼迦后书 2:13–2:17（2 Thessalonians 2:13–2:17）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　拣选与立稳——「站立得稳，凡所领受的教训……要持守」。
+- **内容**　拣选与立稳——「你们要站立得稳，凡所领受的教训，不拘是我们口传的，是信上写的，都要坚守」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 保罗求代祷 · Pray for Us
@@ -11357,7 +11357,7 @@
 - **经文**　提摩太前书 2:1–2:7（1 Timothy 2:1–2:7）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　为众人代祷——「为君王和一切在位的祷告」。
+- **内容**　为众人代祷——「为君王和一切在位的，也该如此」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 男女在敬拜中的本分 · Men and Women in Worship
@@ -11373,7 +11373,7 @@
 - **经文**　提摩太前书 3:1–3:7（1 Timothy 3:1–3:7）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　监督的资格——「监督必须……」。教会领袖的15项标准。
+- **内容**　监督的资格——「作监督的，必须无可指责」。教会领袖的15项标准。
 - **地点**　经文此段未点名可定位的地点
 
 ### 执事的资格 · Qualifications for Deacons
@@ -11389,7 +11389,7 @@
 - **经文**　提摩太前书 4:1–4:16（1 Timothy 4:1–4:16）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　末后的危险——「在末后的时候，必有人离弃信仰」。
+- **内容**　末后的危险——「在后来的时候，必有人离弃真道」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 对各年龄信徒的劝勉 · Care for Widows and Elders
@@ -11435,7 +11435,7 @@
 - **经文**　提摩太后书 2:1–2:13（2 Timothy 2:1–2:13）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　做基督好兵丁——「忍受苦难……为基督耶稣的精兵」。
+- **内容**　做基督好兵丁——「你要和我同受苦难，好像基督耶稣的精兵」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 无愧的工人 · An Approved Worker
@@ -11459,7 +11459,7 @@
 - **经文**　提摩太后书 3:14–3:17（2 Timothy 3:14–3:17）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　圣经的功用——「圣经……都是叫属神的人得以完全」。
+- **内容**　圣经的功用——「叫属神的人得以完全」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 传道的托付 · Preach the Word
@@ -11513,7 +11513,7 @@
 - **经文**　提多书 3:1–3:15（Titus 3:1–3:15）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　对外的好行为——基督徒在世上的见证。「向众人显出温柔」。
+- **内容**　对外的好行为——基督徒在世上的见证。「向众人大显温柔」。
 - **地点**　尼哥坡里（Nicopolis）
 
 ---
@@ -11535,7 +11535,7 @@
 - **经文**　腓利门书 1:8–1:16（Philemon 1:8–1:16）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　为阿尼西母代求——保罗打发他回腓利门那里，「不再是奴仆，乃是亲爱的兄弟」。
+- **内容**　为阿尼西母代求——保罗打发他回腓利门那里，「不再是奴仆，乃是高过奴仆，是亲爱的兄弟」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 接纳如同接纳保罗 · Receive Him as You Would Me
@@ -11543,7 +11543,7 @@
 - **经文**　腓利门书 1:17–1:25（Philemon 1:17–1:25）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　接纳如同接纳保罗——「就当接纳他，如同接纳我一样」。
+- **内容**　接纳如同接纳保罗——「就收纳他，如同收纳我一样」。
 - **地点**　经文此段未点名可定位的地点
 
 ---
@@ -11853,7 +11853,7 @@
 - **经文**　希伯来书 12:25–12:29（Hebrews 12:25–12:29）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　不可弃绝那从天上说话的——他应许「再一次震动地和天」，我们既得了不能震动的国就当感恩事奉。
+- **内容**　不可弃绝那从天上说话的——他应许「再一次我不单要震动地，还要震动天」，我们既得了不能震动的国就当感恩事奉。
 - **地点**　西奈山（Mount Sinai）
 
 ### 弟兄相爱与款待客旅 · Brotherly Love and Hospitality
@@ -11907,7 +11907,7 @@
 - **经文**　雅各书 1:1–1:18（James 1:1–1:18）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　雅各以「试炼当为大喜乐」开篇——颠覆人对苦难的理解：试炼成全信心。
+- **内容**　雅各以「落在百般试炼中，都要以为大喜乐」开篇——颠覆人对苦难的理解：试炼成全信心。
 - **地点**　经文此段未点名可定位的地点
 
 ### 听道与行道 · Hearing and Doing the Word
@@ -11963,7 +11963,7 @@
 - **经文**　雅各书 4:13–4:17（James 4:13–4:17）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　斥责说「明天要往某城做买卖得利」的人——生命是一片云雾，只当说「主若愿意」。
+- **内容**　斥责说「今天明天我们要往某城里去，在那里住一年，做买卖得利」的人——生命是一片云雾，只当说「主若愿意」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 对富人的警告 · Warning to the Rich
@@ -12009,7 +12009,7 @@
 - **经文**　彼得前书 2:1–2:10（1 Peter 2:1–2:10）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　「你们是被拣选的族类、有君尊的祭司」——出埃及记19章对以色列的话语，如今给教会。
+- **内容**　「你们是被拣选的族类，是有君尊的祭司」——出埃及记19章对以色列的话语，如今给教会。
 - **地点**　锡安（Zion）
 
 ### 在世为客旅 · Living as Aliens
@@ -12017,7 +12017,7 @@
 - **经文**　彼得前书 2:11–2:17（1 Peter 2:11–2:17）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　在世为客旅——「亲爱的弟兄阿，你们是客旅，是寄居的」。
+- **内容**　在世为客旅——「亲爱的弟兄啊，你们是客旅，是寄居的」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 仆人与主人 · Servants and Masters
@@ -12041,7 +12041,7 @@
 - **经文**　彼得前书 3:8–3:22（1 Peter 3:8–3:22）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　为义受苦——「为义受苦的，乃是有福的」。
+- **内容**　为义受苦——「你们就是为义受苦，也是有福的」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 为基督受苦 · Suffering for Christ
@@ -12057,7 +12057,7 @@
 - **经文**　彼得前书 4:12–4:19（1 Peter 4:12–4:19）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　「不要以试炼为奇怪的事」——苦难是基督徒生活的一部分，不是反常。彼得本人深知此事。
+- **内容**　「有火炼的试验临到你们，不要以为奇怪」——苦难是基督徒生活的一部分，不是反常。彼得本人深知此事。
 - **地点**　经文此段未点名可定位的地点
 
 ### 对长老的劝勉 · Charge to the Elders
@@ -12087,7 +12087,7 @@
 - **经文**　彼得后书 1:1–1:15（2 Peter 1:1–1:15）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　在恩典里成长——「分外加上信心、有了信心，又要加上德行」。属灵成长的阶梯。
+- **内容**　在恩典里成长——「有了信心，又要加上德行」。属灵成长的阶梯。
 - **地点**　经文此段未点名可定位的地点
 
 ### 亲眼见过荣光 · Eyewitnesses of His Majesty
@@ -12111,7 +12111,7 @@
 - **经文**　彼得后书 3:1–3:18（2 Peter 3:1–3:18）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　为何主迟迟不来？「主所应许的尚未成就……乃是宽容你们」。延迟即是怜悯。
+- **内容**　为何主迟迟不来？「主所应许的尚未成就，有人以为他是耽延，其实不是耽延，乃是宽容你们」。延迟即是怜悯。
 - **地点**　经文此段未点名可定位的地点
 
 ---
@@ -12205,7 +12205,7 @@
 - **经文**　约翰壹书 5:13–5:21（1 John 5:13–5:21）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　得永生的确据——「我将这些话写给你们……可以晓得自己有永生」。
+- **内容**　得永生的确据——「我将这些话写给你们信奉神儿子之名的人，要叫你们知道自己有永生」。
 - **地点**　经文此段未点名可定位的地点
 
 ---
@@ -12227,7 +12227,7 @@
 - **经文**　约翰贰书 1:7–1:13（2 John 1:7–1:13）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　防备假师傅——「凡过分而不常守基督教训的，就没有神」。
+- **内容**　防备假师傅——「凡越过基督的教训、不常守着的，就没有神」。
 - **地点**　经文此段未点名可定位的地点
 
 ---
@@ -12287,7 +12287,7 @@
 - **经文**　犹大书 1:17–1:23（Jude 1:17–1:23）
 - **年代**　公元 60 — 公元 95　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「保罗在罗马」（60）、另一侧是「约翰被流放拔摩；写启示录」（95），故落在 60—95 之间。区间宽度即为不确定度，不是精度。
-- **内容**　末世的警戒——「在末世必有好讥诮的人」。
+- **内容**　末世的警戒——「末世必有好讥诮的人」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 颂赞 · Doxology
@@ -12373,7 +12373,7 @@
 - **经文**　启示录 3:14–3:22（Revelation 3:14–3:22）
 - **年代**　未定年　·　不定年
 - **定年依据**　年表前后皆无可夹逼的已定年事件，本项目不给年份。
-- **内容**　致老底嘉的信——「不冷不热」——耶稣最不能忍受的属灵状态。
+- **内容**　致老底嘉的信——「也不冷也不热」——耶稣最不能忍受的属灵状态。
 - **地点**　老底嘉（Laodicea）
 
 ### 天上的宝座 · The Throne in Heaven
@@ -12429,7 +12429,7 @@
 - **经文**　启示录 10:1–10:11（Revelation 10:1–10:11）
 - **年代**　未定年　·　不定年
 - **定年依据**　年表前后皆无可夹逼的已定年事件，本项目不给年份。
-- **内容**　天使与小书卷——约翰被命令吃下书卷。「在我口中甘甜如蜜，吃完了，肚子觉得发苦」。
+- **内容**　天使与小书卷——约翰被命令吃下书卷。「在我口中果然甜如蜜，吃了以后，肚子觉得发苦了」。
 - **地点**　经文此段未点名可定位的地点
 
 ### 两位见证人 · The Two Witnesses
@@ -12541,7 +12541,7 @@
 - **经文**　启示录 22:12–22:21（Revelation 22:12–22:21）
 - **年代**　未定年　·　不定年
 - **定年依据**　年表前后皆无可夹逼的已定年事件，本项目不给年份。
-- **内容**　圣经最后的应许：「我必快来！」教会两千年来的回应：「主耶稣啊，我愿祢来！」
+- **内容**　圣经最后的应许：「我必快来！」教会两千年来的回应：「主耶稣啊，我愿你来！」
 - **地点**　经文此段未点名可定位的地点
 
 ---

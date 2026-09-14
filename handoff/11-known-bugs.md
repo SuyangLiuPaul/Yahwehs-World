@@ -1,4 +1,4 @@
-# 11 · Known bugs and open questions (as of `4a32bd6`+)
+# 11 · Known bugs and open questions (as of `7aea034`+)
 
 ## Bugs
 
@@ -61,6 +61,49 @@ so "撒母耳记上4章 – 撒母耳记下6章" becomes "1 Samuel 4 – 2 Samue
 leaves anything it does not recognise untouched. `renderRouteList`,
 `renderRouteHeader` and `renderRouteStats` are called from `onLocale`, so a
 switch with a route open reaches all of it.
+
+**B12 — FIXED. Chinese names were attached by proximity, and 62 places got
+another place's name.** `merge-chinese-names.mjs` matched a place to the
+gazetteer by name, then by bare name, then by "first entry within 2 km". That
+last rule is the bug: a great many biblical sites are recorded at the
+coordinate of the city they belong to — every feature in and around Jerusalem
+sits on 31.77, 35.23 — so the fallback handed out whichever entry came first in
+the file. King's Valley (Gen 14:17) was labelled 亚革大马, the field of blood
+from Acts 1:19; Abraham's 雅伟以勒 got the same name; Timnah was labelled 亚珊.
+Two things were wrong. Eight of those places would have matched by name if
+apostrophes were normalised (`King’s Valley` against `King's Valley`), and the
+coordinate rule never checked whether the point held more than one candidate.
+Now names are matched on a normalised key, the coordinate rule fires only when
+exactly one gazetteer place is within the radius, and an ambiguous point yields
+no name at all — an English label beats another place's name. The script also
+clears `zh` before each pass, without which tightening the rules left every
+label the old rules had produced exactly where it was.
+
+**B13 — FIXED. The gazetteer corrections only reached the journeys.** They were
+read by `build-journeys.mjs` alone, so the globe's own 1,332 labels still called
+Ephrath 伯特利. They are applied in `merge-chinese-names.mjs` now, the one place
+a Chinese name is attached, and so reach the globe, the journeys and the events
+alike.
+
+**B14 — 183 quotations did not match the edition the project cites.** Of 483
+strings in 「」 across the summaries, 223 were not in the passage they were
+attached to. Thirty of those are not quotations at all but terms — 「原始福音」,
+「登山宝训」 — and are correct as they stand. The rest were remembered, or taken
+from another translation: 「不住地祷告」 for the edition's 「不住的祷告」. 183 are
+corrected against the text and 50 strings still differ, of which the 30 terms
+are deliberate. Two are misattributions rather than misquotations and are listed
+as open items below.
+
+**B15 — Two quotations are attached to the wrong passage.** `revelation-3-7`
+quotes 「我必不抹去你的名」, which is Revelation 3:5 to Sardis, not the letter to
+Philadelphia; `exodus-11-1` quotes 「自己的长子」, which is Exodus 4:22. Both need
+the summary rewritten, not the quotation swapped.
+
+**B16 — Two summaries cite a book that does not exist or a verse that does not
+say it.** `amos-9-11` said Amos 9:11 is quoted in 「雅各书15章」 — James has five
+chapters, and the quotation is Acts 15:16, where James is speaking. `psalms-16-1`
+quoted 「我要尽心赞美你」, which is not in Psalm 16; verse 1 reads 「神啊！求你保佑
+我，因为我投靠你」. Both still need rewriting.
 
 ## Open questions for the owner
 - Q1: Should the repo become public once SeekSparks-derived assets are
