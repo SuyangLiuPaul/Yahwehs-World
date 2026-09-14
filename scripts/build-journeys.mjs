@@ -14,12 +14,13 @@
 // route breaks rather than being joined through it: a gap is true, and an
 // invented straight line is not.
 import { readFileSync, writeFileSync } from 'node:fs';
-import { makeZhResolver, makeProseNormaliser } from './lib/zh-names.mjs';
+import { makeZhResolver, makeProseNormaliser, makeEnNormaliser } from './lib/zh-names.mjs';
 
 const journeys = JSON.parse(readFileSync('../SeekSparks/assets/bible_journeys.json', 'utf8'));
 
 /** Inherited prose → the edition's spellings and divine name (see lib/zh-names). */
 const yhwh = makeProseNormaliser();
+const en = makeEnNormaliser();
 const gaz = JSON.parse(readFileSync('../SeekSparks/assets/bible_places.json', 'utf8'));
 const bundle = JSON.parse(readFileSync('public/data/places.json', 'utf8'));
 
@@ -50,7 +51,7 @@ const out = journeys.journeys.map((j) => {
     const loc = locate(s.place);
     return {
       n: i + 1,
-      place: s.place,
+      place: en.placeName(s.place),
       zh: loc?.zh || s.place,
       lat: loc?.lat ?? null,
       lon: loc?.lon ?? null,
@@ -105,7 +106,7 @@ const out = journeys.journeys.map((j) => {
     // The shared asset's Chinese prose writes the divine name 耶和华; this
     // project reads the 雅伟 edition throughout, and a route's own note should
     // not be the one place on the site that says otherwise.
-    basis: yhwh(j.basis['zh-Hans']), basisEn: j.basis.en,
+    basis: yhwh(j.basis['zh-Hans']), basisEn: en.prose(j.basis.en),
     style: j.style, mark: j.mark,
     stopCount: stops.length,
     markers, segments,

@@ -80,3 +80,15 @@ twice, and both times a correction reached one consumer and not the other: the
 globe called Ephrath 伯特利 for a week after the journeys had stopped, and the
 voyage to Rome still called Malta 马耳他 after the globe had started saying
 米利大. A table can be data in two files; the order it is applied in cannot.
+
+**D18 — The divine name is Yahweh / 雅伟 in every language, everywhere it ships.**
+Chinese: 耶和华 never appears; inherited prose is normalised on the way through
+the builders. English: small-capital LORD — the convention every English Bible
+uses for יהוה — becomes Yahweh; mixed-case "the Lord" is Adonai or Kyrios (the
+Lord's Supper, Lord of the Sabbath) and is never touched. Two OpenBible place
+names are YHWH compounds and are renamed by exact match: Yahweh Will Provide
+(Gen 22:14, 雅伟以勒) and Yahweh Is There (Ezek 48:35, 雅伟的所在); the original
+spelling is kept as `nameOriginal`. The rule and its evidence live in
+`data/places/cuv-renderings.json` (`englishDivineName`) and are applied by
+`makeEnNormaliser` in `scripts/lib/zh-names.mjs`; `audit-events` sweeps both
+shipped payloads for 耶和华, LORD and the two old names, and must print none.

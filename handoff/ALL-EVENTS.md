@@ -439,7 +439,7 @@
 - **年代**　前 2055　·　推算
 - **定年依据**　与年表重叠：献以撒。年代取自 SeekSparks 年表（以所罗门登基为锚点，按经文自述年数上溯），本项目不另行推算。
 - **内容**　亚伯拉罕带以撒往摩利亚山献燔祭，举刀时天使阻止，以公羊代替；那地名叫雅伟以勒。
-- **地点**　摩利亚（Moriah）、雅伟以勒（The Lord Will Provide）、别是巴（Beersheba 2）
+- **地点**　摩利亚（Moriah）、雅伟以勒（Yahweh Will Provide）、别是巴（Beersheba 2）
 
 ### 拿鹤的子孙 · The Children of Nahor
 
@@ -1563,7 +1563,7 @@
 - **内容**　摩西召集众人重述何烈山的约与十诫；百姓惧怕火焰，求摩西代听雅伟的话传给他们。
 - **地点**　何烈山（Mount Horeb）、埃及（Egypt）
 
-### 示玛——爱雅伟 · The Shema: Love the LORD
+### 示玛——爱雅伟 · The Shema: Love the Yahweh
 
 - **经文**　申命记 6:1–6:25（Deuteronomy 6:1–6:25）
 - **年代**　前 1406　·　推算
@@ -1579,7 +1579,7 @@
 - **内容**　拣选的民——「雅伟专爱你们，拣选你们，并非因你们的人数多于别民」。神不变的爱。
 - **地点**　埃及（Egypt）
 
-### 记念神的供应 · Remember the LORD
+### 记念神的供应 · Remember the Yahweh
 
 - **经文**　申命记 8:1–8:20（Deuteronomy 8:1–8:20）
 - **年代**　前 1406　·　推算
@@ -1595,7 +1595,7 @@
 - **内容**　回顾金牛犊——警戒新一代，他们的得地不是因公义，乃因神信实。
 - **地点**　约旦河（Jordan）、埃及（Egypt）、何烈山（Mount Horeb）、基博罗哈他瓦（Kibroth-hattaavah）、玛撒（Massah）、他备拉（Taberah）、加低斯巴尼亚（Kadesh-barnea）、比罗比尼亚干（Beeroth Bene-jaakan）、摩西录（Moseroth）、曷哈及甲（Hor-haggidgad）、约巴他（Jotbathah）
 
-### 敬畏神的呼召 · Fear the LORD
+### 敬畏神的呼召 · Fear the Yahweh
 
 - **经文**　申命记 10:12–11:32（Deuteronomy 10:12–11:32）
 - **年代**　前 1406　·　推算
@@ -1689,7 +1689,7 @@
 - **内容**　咒诅的预言——后来精确应验，成为先知书中神警戒的回声。
 - **地点**　埃及（Egypt）、摩押（Moab 1）、何烈山（Mount Horeb）、巴珊（Bashan）、希实本（Heshbon）、押玛（Admah）、蛾摩拉（Gomorrah）、所多玛（Sodom）、洗扁（Zeboiim）
 
-### 悔改与归回 · Return to the LORD
+### 悔改与归回 · Return to the Yahweh
 
 - **经文**　申命记 30:1–30:10（Deuteronomy 30:1–30:10）
 - **年代**　前 1406　·　推算
@@ -1783,7 +1783,7 @@
 - **内容**　在吉甲行割礼——出埃及一代的男丁未行割礼。立约的记号要重新确立。
 - **地点**　大海（Great Sea）、约旦河（Jordan）、除皮山（Gibeath-haaraloth）、埃及（Egypt）、吉甲（Gilgal 1）、耶利哥（Jericho 1）、迦南（Canaan）
 
-### 雅伟军队的元帅 · Commander of the LORD's Army
+### 雅伟军队的元帅 · Commander of the Yahweh's Army
 
 - **经文**　约书亚记 5:13–5:15（Joshua 5:13–5:15）
 - **年代**　前 1406　·　推算
@@ -2193,7 +2193,7 @@
 - **内容**　以利的两个恶子——祭司之家的悖逆。属灵的家长任不可推。
 - **地点**　示罗（Shiloh）、埃及（Egypt）
 
-### 撒母耳蒙召 · The LORD Calls Samuel
+### 撒母耳蒙召 · The Yahweh Calls Samuel
 
 - **经文**　撒母耳记上 3:1–3:21（1 Samuel 3:1–3:21）
 - **年代**　前 1080　·　推算
@@ -2754,7 +2754,7 @@
 - **内容**　所罗门献殿祷告——圣经最长、最丰盛的祷告之一。预先为外邦人代求。
 - **地点**　埃及（Egypt）、埃及小河（Brook of Egypt）、哈马（Lebo-hamath）
 
-### 神再次显现 · The LORD Appears Again
+### 神再次显现 · The Yahweh Appears Again
 
 - **经文**　列王纪上 9:1–9:28（1 Kings 9:1–9:28）
 - **平行经文**　所罗门的其他工程 — 同见 2 Chronicles 8:1–18
@@ -4057,7 +4057,7 @@
 - **内容**　以利户开口——年轻、激情、自以为是。但他的话准备约伯听神的回答。
 - **地点**　经文此段未点名可定位的地点
 
-### 雅伟从旋风中回答 · The LORD Speaks from the Whirlwind
+### 雅伟从旋风中回答 · The Yahweh Speaks from the Whirlwind
 
 - **经文**　约伯记 38:1–39:30（Job 38:1–39:30）
 - **年代**　未定年　·　不定年
@@ -4175,7 +4175,7 @@
 - **内容**　「雅伟啊，你为什么站在远处？」诚实的呼求。
 - **地点**　经文此段未点名可定位的地点
 
-### 信靠雅伟 · Refuge in the LORD
+### 信靠雅伟 · Refuge in the Yahweh
 
 - **经文**　诗篇 11:1–11:7（Psalms 11:1–11:7）
 - **年代**　未定年　·　不定年
@@ -4191,7 +4191,7 @@
 - **内容**　求神保守纯净的话——「雅伟的言语是纯净的言语」。
 - **地点**　经文此段未点名可定位的地点
 
-### 信徒的呼求 · How Long, O LORD?
+### 信徒的呼求 · How Long, O Yahweh?
 
 - **经文**　诗篇 13:1–13:6（Psalms 13:1–13:6）
 - **年代**　未定年　·　不定年
@@ -4249,7 +4249,7 @@
 - **内容**　诸天述说神荣耀——「自然」与「圣经」是神的两本书。诗人由前者过渡到后者。
 - **地点**　经文此段未点名可定位的地点
 
-### 为君王得胜祈祷 · Trust in the Name of the LORD
+### 为君王得胜祈祷 · Trust in the Name of the Yahweh
 
 - **经文**　诗篇 20:1–20:9（Psalms 20:1–20:9）
 - **年代**　未定年　·　不定年
@@ -4273,7 +4273,7 @@
 - **内容**　大卫的诗——「我的神，我的神，为什么离弃我」，被众人嗤笑、手脚扎伤、衣服被分，转而在大会中赞美，万国都要归向雅伟。
 - **地点**　巴珊（Bashan）
 
-### 雅伟是我的牧者 · The LORD Is My Shepherd
+### 雅伟是我的牧者 · The Yahweh Is My Shepherd
 
 - **经文**　诗篇 23:1–23:6（Psalms 23:1–23:6）
 - **年代**　未定年　·　不定年
@@ -4305,7 +4305,7 @@
 - **内容**　求神鉴察我心——一份灵魂的诚实。
 - **地点**　经文此段未点名可定位的地点
 
-### 雅伟是我的亮光 · The LORD My Light
+### 雅伟是我的亮光 · The Yahweh My Light
 
 - **经文**　诗篇 27:1–27:14（Psalms 27:1–27:14）
 - **年代**　未定年　·　不定年
@@ -4321,7 +4321,7 @@
 - **内容**　「我的磐石啊」——求神回应的呼求。
 - **地点**　至圣所（Most Holy Place 2）
 
-### 雅伟的声音 · The Voice of the LORD
+### 雅伟的声音 · The Voice of the Yahweh
 
 - **经文**　诗篇 29:1–29:11（Psalms 29:1–29:11）
 - **年代**　未定年　·　不定年
@@ -4362,7 +4362,7 @@
 - **内容**　颂赞创造与守护的神——「凡他所造的都借着他的话造成」。
 - **地点**　经文此段未点名可定位的地点
 
-### 尝主恩的滋味 · Taste and See the LORD Is Good
+### 尝主恩的滋味 · Taste and See the Yahweh Is Good
 
 - **经文**　诗篇 34:1–34:22（Psalms 34:1–34:22）
 - **年代**　未定年　·　不定年
@@ -4784,7 +4784,7 @@
 - **内容**　可拉后裔的诗——雅伟曾使雅各被掳的归回，求他再使我们活转；「慈爱和诚实彼此相遇，公义和平安彼此相亲」。
 - **地点**　经文此段未点名可定位的地点
 
-### 求神听祷告 · Hear Me, O LORD
+### 求神听祷告 · Hear Me, O Yahweh
 
 - **经文**　诗篇 86:1–86:17（Psalms 86:1–86:17）
 - **年代**　未定年　·　不定年
@@ -4840,7 +4840,7 @@
 - **内容**　安息日的颂歌——为安息日所作。
 - **地点**　利巴嫩（Lebanon）
 
-### 雅伟作王 · The LORD Reigns
+### 雅伟作王 · The Yahweh Reigns
 
 - **经文**　诗篇 93:1–93:5（Psalms 93:1–93:5）
 - **年代**　未定年　·　不定年
@@ -4873,7 +4873,7 @@
 - **内容**　向雅伟歌唱——和大卫所作（代上16章）相关。
 - **地点**　经文此段未点名可定位的地点
 
-### 雅伟作王全地欢喜 · The LORD Reigns, Let the Earth Rejoice
+### 雅伟作王全地欢喜 · The Yahweh Reigns, Let the Earth Rejoice
 
 - **经文**　诗篇 97:1–97:12（Psalms 97:1–97:12）
 - **年代**　未定年　·　不定年
@@ -4881,7 +4881,7 @@
 - **内容**　「雅伟作王，愿地快乐，愿众海岛欢喜」——王登基诗。
 - **地点**　锡安（Zion）
 
-### 新歌颂赞救主 · Sing a New Song to the LORD
+### 新歌颂赞救主 · Sing a New Song to the Yahweh
 
 - **经文**　诗篇 98:1–98:9（Psalms 98:1–98:9）
 - **年代**　未定年　·　不定年
@@ -4889,7 +4889,7 @@
 - **内容**　「向雅伟唱新歌」——以撒的「以色列的圣者」声调。
 - **地点**　经文此段未点名可定位的地点
 
-### 圣洁的雅伟 · The LORD Our God Is Holy
+### 圣洁的雅伟 · The Yahweh Our God Is Holy
 
 - **经文**　诗篇 99:1–99:9（Psalms 99:1–99:9）
 - **年代**　未定年　·　不定年
@@ -4921,7 +4921,7 @@
 - **内容**　受苦者的祷告——希伯来书1章引此节论基督。
 - **地点**　锡安（Zion）、耶路撒冷（Jerusalem）
 
-### 颂赞雅伟的恩慈 · Bless the LORD, O My Soul
+### 颂赞雅伟的恩慈 · Bless the Yahweh, O My Soul
 
 - **经文**　诗篇 103:1–103:22（Psalms 103:1–103:22）
 - **年代**　未定年　·　不定年
@@ -4946,7 +4946,7 @@
 - **内容**　回顾神的大作为——以色列史的诗。
 - **地点**　迦南（Canaan）、埃及（Egypt）、哈麦（Ham 2）
 
-### 神的恩慈与百姓的悖逆 · The LORD's Steadfast Love and Israel's Rebellion
+### 神的恩慈与百姓的悖逆 · The Yahweh's Steadfast Love and Israel's Rebellion
 
 - **经文**　诗篇 106:1–106:48（Psalms 106:1–106:48）
 - **年代**　未定年　·　不定年
@@ -4954,7 +4954,7 @@
 - **内容**　神的恩慈与百姓的悖逆——同105篇是配对：神信实 vs. 百姓不忠。
 - **地点**　埃及（Egypt）、红海（Red Sea 1）、何烈山（Mount Horeb）、哈麦（Ham 2）、毗珥（Peor）、米利巴（Meribah 1）、迦南（Canaan）
 
-### 向雅伟感谢 · Give Thanks to the LORD
+### 向雅伟感谢 · Give Thanks to the Yahweh
 
 - **经文**　诗篇 107:1–107:43（Psalms 107:1–107:43）
 - **年代**　未定年　·　不定年
@@ -4972,7 +4972,7 @@
 - **内容**　因神得胜——综合57篇、60篇的部分。
 - **地点**　示剑（Shechem）、疏割谷（Valley of Succoth）、基列（Gilead 1）、以东（Edom）、摩押（Moab 1）、非利士（Philistia）
 
-### 求神为我伸冤 · Help Me, O LORD My God
+### 求神为我伸冤 · Help Me, O Yahweh My God
 
 - **经文**　诗篇 109:1–109:31（Psalms 109:1–109:31）
 - **年代**　未定年　·　不定年
@@ -4988,7 +4988,7 @@
 - **内容**　弥赛亚君王与祭司——新约引用最多的旧约诗篇。
 - **地点**　锡安（Zion）
 
-### 颂赞神的作为 · Great Are the LORD's Works
+### 颂赞神的作为 · Great Are the Yahweh's Works
 
 - **经文**　诗篇 111:1–111:10（Psalms 111:1–111:10）
 - **年代**　未定年　·　不定年
@@ -5004,7 +5004,7 @@
 - **内容**　义人之福——「敬畏雅伟、甚喜爱他命令的，这人便为有福」。
 - **地点**　经文此段未点名可定位的地点
 
-### 颂赞至高神 · Praise the Name of the LORD
+### 颂赞至高神 · Praise the Name of the Yahweh
 
 - **经文**　诗篇 113:1–113:9（Psalms 113:1–113:9）
 - **年代**　未定年　·　不定年
@@ -5037,7 +5037,7 @@
 - **内容**　感谢神的拯救——可能在病得医治后所作。
 - **地点**　耶路撒冷（Jerusalem）
 
-### 万邦颂赞神 · Praise the LORD, All Nations
+### 万邦颂赞神 · Praise the Yahweh, All Nations
 
 - **经文**　诗篇 117:1–117:2（Psalms 117:1–117:2）
 - **年代**　未定年　·　不定年
@@ -5069,7 +5069,7 @@
 - **内容**　上行之诗的第一首——朝圣者上耶路撒冷时唱的15首之一。
 - **地点**　耶路撒冷（Jerusalem）、基达（Kedar）、米设（Meshech）
 
-### 我的帮助从何而来 · My Help Comes from the LORD
+### 我的帮助从何而来 · My Help Comes from the Yahweh
 
 - **经文**　诗篇 121:1–121:8（Psalms 121:1–121:8）
 - **年代**　未定年　·　不定年
@@ -5085,7 +5085,7 @@
 - **内容**　为耶路撒冷祈祷——「爱你的人必然兴旺」。
 - **地点**　耶路撒冷（Jerusalem）
 
-### 举目望向神 · Our Eyes Look to the LORD
+### 举目望向神 · Our Eyes Look to the Yahweh
 
 - **经文**　诗篇 123:1–123:4（Psalms 123:1–123:4）
 - **年代**　未定年　·　不定年
@@ -5093,7 +5093,7 @@
 - **内容**　举目望向神——仆人的眼仰望主人手。
 - **地点**　耶路撒冷（Jerusalem）
 
-### 若不是雅伟 · If the LORD Had Not Been on Our Side
+### 若不是雅伟 · If the Yahweh Had Not Been on Our Side
 
 - **经文**　诗篇 124:1–124:8（Psalms 124:1–124:8）
 - **年代**　未定年　·　不定年
@@ -5101,7 +5101,7 @@
 - **内容**　「若不是雅伟」——回顾被神拯救的奇事。
 - **地点**　耶路撒冷（Jerusalem）
 
-### 信靠雅伟者 · Those Who Trust in the LORD
+### 信靠雅伟者 · Those Who Trust in the Yahweh
 
 - **经文**　诗篇 125:1–125:5（Psalms 125:1–125:5）
 - **年代**　未定年　·　不定年
@@ -5117,7 +5117,7 @@
 - **内容**　归回锡安的喜乐——可能在被掳归回后所作。
 - **地点**　锡安（Zion）、南地（Negeb）
 
-### 若非雅伟建造 · Unless the LORD Builds
+### 若非雅伟建造 · Unless the Yahweh Builds
 
 - **经文**　诗篇 127:1–127:5（Psalms 127:1–127:5）
 - **年代**　未定年　·　不定年
@@ -5125,7 +5125,7 @@
 - **内容**　「若不是雅伟建造房屋」——所罗门所作的「上行之诗」。
 - **地点**　耶路撒冷（Jerusalem）
 
-### 敬畏神者之福 · Blessed Is Everyone Who Fears the LORD
+### 敬畏神者之福 · Blessed Is Everyone Who Fears the Yahweh
 
 - **经文**　诗篇 128:1–128:6（Psalms 128:1–128:6）
 - **年代**　未定年　·　不定年
@@ -5174,7 +5174,7 @@
 - **内容**　弟兄和睦同居——「何等地善！何等地美！」
 - **地点**　耶路撒冷（Jerusalem）、黑门山（Mount Hermon）、锡安（Zion）
 
-### 夜间颂赞神 · Bless the LORD by Night
+### 夜间颂赞神 · Bless the Yahweh by Night
 
 - **经文**　诗篇 134:1–134:3（Psalms 134:1–134:3）
 - **年代**　未定年　·　不定年
@@ -5182,7 +5182,7 @@
 - **内容**　夜间颂赞神——一首给祭司的祝福诗。
 - **地点**　耶路撒冷（Jerusalem）、锡安（Zion）
 
-### 颂赞神的奇妙作为 · Praise the LORD
+### 颂赞神的奇妙作为 · Praise the Yahweh
 
 - **经文**　诗篇 135:1–135:21（Psalms 135:1–135:21）
 - **平行经文**　诗篇一一五篇和诗篇一三五篇 — 同见 Psalms 115:4–11
@@ -5263,7 +5263,7 @@
 - **内容**　为得胜祈求——以多种形象求神拯救百姓。
 - **地点**　经文此段未点名可定位的地点
 
-### 颂赞君王神 · Great Is the LORD
+### 颂赞君王神 · Great Is the Yahweh
 
 - **经文**　诗篇 145:1–145:21（Psalms 145:1–145:21）
 - **年代**　未定年　·　不定年
@@ -5271,7 +5271,7 @@
 - **内容**　颂赞君王神——大卫所作最后的诗。
 - **地点**　经文此段未点名可定位的地点
 
-### 颂赞救助者 · Praise the LORD, O My Soul
+### 颂赞救助者 · Praise the Yahweh, O My Soul
 
 - **经文**　诗篇 146:1–146:10（Psalms 146:1–146:10）
 - **年代**　未定年　·　不定年
@@ -5279,7 +5279,7 @@
 - **内容**　颂赞救助者——五篇「哈利路亚」诗的开端。
 - **地点**　锡安（Zion）
 
-### 颂赞医治者 · Praise the LORD Who Heals
+### 颂赞医治者 · Praise the Yahweh Who Heals
 
 - **经文**　诗篇 147:1–147:20（Psalms 147:1–147:20）
 - **年代**　未定年　·　不定年
@@ -5303,7 +5303,7 @@
 - **内容**　向雅伟唱新歌——倒数第二篇，仍然新歌。
 - **地点**　锡安（Zion）
 
-### 用各样乐器赞美神 · Praise the LORD with All Instruments
+### 用各样乐器赞美神 · Praise the Yahweh with All Instruments
 
 - **经文**　诗篇 150:1–150:6（Psalms 150:1–150:6）
 - **年代**　未定年　·　不定年
@@ -5341,7 +5341,7 @@
 - **内容**　智慧的价值——比黄金更宝贵。要寻、要求、要藏。
 - **地点**　经文此段未点名可定位的地点
 
-### 信靠雅伟 · Trust in the LORD
+### 信靠雅伟 · Trust in the Yahweh
 
 - **经文**　箴言 3:1–3:35（Proverbs 3:1–3:35）
 - **年代**　未定年　·　不定年
@@ -5365,7 +5365,7 @@
 - **内容**　警戒淫妇——婚姻外的诱惑，年轻人最大的网罗。
 - **地点**　经文此段未点名可定位的地点
 
-### 六样神所恨的 · Things the LORD Hates
+### 六样神所恨的 · Things the Yahweh Hates
 
 - **经文**　箴言 6:1–6:35（Proverbs 6:1–6:35）
 - **年代**　未定年　·　不定年
@@ -5616,7 +5616,7 @@
 - **内容**　雅伟的控告——「以色列却不认识；我的民却不留意」。开篇即是审判。
 - **地点**　耶路撒冷（Jerusalem）、锡安（Zion）、蛾摩拉（Gomorrah）、所多玛（Sodom）
 
-### 末后的山 · The Mountain of the LORD
+### 末后的山 · The Mountain of the Yahweh
 
 - **经文**　以赛亚书 2:1–4:6（Isaiah 2:1–4:6）
 - **平行经文**　弥迦和以赛亚 — 同见 Micah 4:1–3
@@ -5693,7 +5693,7 @@
 - **内容**　全地的审判——末日异象的开端。神不只审判一国，而是全地。
 - **地点**　耶路撒冷（Jerusalem）、锡安山（Mount Zion）
 
-### 锡安的颂赞 · Praise to the LORD
+### 锡安的颂赞 · Praise to the Yahweh
 
 - **经文**　以赛亚书 25:1–25:12（Isaiah 25:1–25:12）
 - **年代**　前 700　·　推算
@@ -5755,7 +5755,7 @@
 - **内容**　「神是无可比拟的」——人类历史上最高的神学高峰之一。
 - **地点**　利巴嫩（Lebanon）、耶路撒冷（Jerusalem）、锡安（Zion）
 
-### 雅伟的仆人 · The LORD's Servant
+### 雅伟的仆人 · The Yahweh's Servant
 
 - **经文**　以赛亚书 42:1–42:25（Isaiah 42:1–42:25）
 - **年代**　前 700　·　推算
@@ -6039,7 +6039,7 @@
 - **内容**　锡安的悲叹——「先前满有人民的城，现在何竟独坐」。一座巨大的城被毁。
 - **地点**　耶路撒冷（Jerusalem）、锡安（Zion）
 
-### 主的忿怒 · The LORD's Anger
+### 主的忿怒 · The Yahweh's Anger
 
 - **经文**　耶利米哀歌 2:1–2:22（Lamentations 2:1–2:22）
 - **年代**　未定年　·　不定年
@@ -6071,7 +6071,7 @@
 - **内容**　围城的痛苦——母亲煮儿吃；金子失了光泽。最黑暗的画面。
 - **地点**　锡安（Zion）、所多玛（Sodom）、耶路撒冷（Jerusalem）、以东（Edom）、乌斯（Uz）
 
-### 求神记念 · Restore Us, O LORD
+### 求神记念 · Restore Us, O Yahweh
 
 - **经文**　耶利米哀歌 5:1–5:22（Lamentations 5:1–5:22）
 - **年代**　未定年　·　不定年
@@ -6227,7 +6227,7 @@
 - **年代**　前 627 — 前 540　·　推算
 - **定年依据**　年表未直接收录此段。按正典顺序夹逼：一侧是「耶利米预言」（-627）、另一侧是「但以理与狮子」（-540），故落在 -627—-540 之间。区间宽度即为不确定度，不是精度。
 - **内容**　土地的分配——以西结书的结尾，神把祂的城命名为「雅伟的所在」。
-- **地点**　大马色（Damascus）、哈马（Hamath 1）、哈萨以难（Hazar-enan）、希特伦（Hethlon）、哈马（Lebo-hamath）、至圣所（Most Holy Place 2）、埃及小河（Brook of Egypt）、大海（Great Sea）、米利巴（Meribah 1）、南地（Negeb）、他玛（Tamar 2）、雅伟的所在（The Lord Is There）
+- **地点**　大马色（Damascus）、哈马（Hamath 1）、哈萨以难（Hazar-enan）、希特伦（Hethlon）、哈马（Lebo-hamath）、至圣所（Most Holy Place 2）、埃及小河（Brook of Egypt）、大海（Great Sea）、米利巴（Meribah 1）、南地（Negeb）、他玛（Tamar 2）、雅伟的所在（Yahweh Is There）
 
 ---
 
@@ -6369,7 +6369,7 @@
 - **内容**　无知识的子民——「我的民因无知识而灭亡」。圣经知识的根本重要。
 - **地点**　伯亚文（Beth-aven 2）、吉甲（Gilgal 1）、米斯巴（Mizpah 1）、他泊山（Mount Tabor）、什亭（Shittim）、基比亚（Gibeah 1）、拉玛（Ramah 1）、亚述（Assyria）
 
-### 归向雅伟 · Return to the LORD
+### 归向雅伟 · Return to the Yahweh
 
 - **经文**　何西阿书 6:1–10:15（Hosea 6:1–10:15）
 - **年代**　前 780 — 前 540　·　推算
@@ -6407,7 +6407,7 @@
 - **内容**　蝗虫之灾——一场天灾成为属灵反思的窗口。
 - **地点**　经文此段未点名可定位的地点
 
-### 雅伟的日子 · The Day of the LORD
+### 雅伟的日子 · The Day of the Yahweh
 
 - **经文**　约珥书 2:1–2:27（Joel 2:1–2:27）
 - **年代**　前 780 — 前 540　·　推算
@@ -6461,7 +6461,7 @@
 - **内容**　以色列的拣选与审判——「我只认识你们」。蒙拣选不是免罪卡。
 - **地点**　埃及（Egypt）、亚实突（Ashdod）、撒玛利亚（Samaria 1）、大马色（Damascus）、伯特利（Bethel 1）、巴珊（Bashan）、哈门（Harmon）、吉甲（Gilgal 1）、蛾摩拉（Gomorrah）、所多玛（Sodom）
 
-### 求神就活 · Seek the LORD and Live
+### 求神就活 · Seek the Yahweh and Live
 
 - **经文**　阿摩司书 5:1–5:20（Amos 5:1–5:20）
 - **年代**　前 780 — 前 540　·　推算
@@ -6584,7 +6584,7 @@
 - **内容**　对领袖的责备——领袖的失败导致国家的瓦解。
 - **地点**　耶路撒冷（Jerusalem）、锡安（Zion）、锡安山（Mount Zion）
 
-### 末后的山 · The Mountain of the LORD
+### 末后的山 · The Mountain of the Yahweh
 
 - **经文**　弥迦书 4:1–4:13（Micah 4:1–4:13）
 - **平行经文**　弥迦和以赛亚 — 同见 Isaiah 2:2–4
@@ -6601,7 +6601,7 @@
 - **内容**　在被掳的阴影下，弥迦预言伯利恒——基督出生的小镇。希律王的祭司在马太福音2章引用此节。
 - **地点**　耶路撒冷（Jerusalem）、伯利恒（Bethlehem 1）、亚述（Assyria）、宁录（Nimrod）
 
-### 雅伟向你所要的 · What Does the LORD Require?
+### 雅伟向你所要的 · What Does the Yahweh Require?
 
 - **经文**　弥迦书 6:1–6:16（Micah 6:1–6:16）
 - **年代**　前 780 — 前 430　·　推算
@@ -6623,7 +6623,7 @@
 
 3 条事件。
 
-### 雅伟是慈爱也是公义 · The LORD's Anger Against Nineveh
+### 雅伟是慈爱也是公义 · The Yahweh's Anger Against Nineveh
 
 - **经文**　那鸿书 1:1–1:15（Nahum 1:1–1:15）
 - **年代**　前 780 — 前 430　·　推算
@@ -6691,7 +6691,7 @@
 
 3 条事件。
 
-### 雅伟大日子的预言 · The Day of the LORD
+### 雅伟大日子的预言 · The Day of the Yahweh
 
 - **经文**　西番雅书 1:1–1:18（Zephaniah 1:1–1:18）
 - **年代**　前 780 — 前 430　·　推算
@@ -6815,7 +6815,7 @@
 - **内容**　「他们必仰望我」——约翰福音19章引为耶稣被刺的预言。
 - **地点**　耶路撒冷（Jerusalem）、哈达临门（Hadad-rimmon）、米吉多（Megiddo）
 
-### 末后的雅伟日子 · The Day of the LORD
+### 末后的雅伟日子 · The Day of the Yahweh
 
 - **经文**　撒迦利亚书 14:1–14:21（Zechariah 14:1–14:21）
 - **年代**　前 780 — 前 430　·　推算

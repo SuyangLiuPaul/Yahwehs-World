@@ -65,3 +65,17 @@ export function makeProseNormaliser(root = '.') {
     return out;
   };
 }
+
+/** The English side of the same rule. Where the Hebrew is יהוה, English Bibles
+ *  print small-capital LORD; that and only that becomes Yahweh. Mixed-case
+ *  "the Lord" is Adonai or Kyrios — the Lord's Supper, Lord of the Sabbath —
+ *  and is left alone. Two OpenBible place names are YHWH compounds and are
+ *  renamed by exact match. Pairs and evidence live in cuv-renderings.json. */
+export function makeEnNormaliser(root = '.') {
+  const c = JSON.parse(readFileSync(`${root}/data/places/cuv-renderings.json`, 'utf8'));
+  const words = (c.englishDivineName?.wordPairs ?? []).map((p) => [new RegExp(`\\b${p.from}\\b`, 'g'), p.to]);
+  const names = new Map((c.englishDivineName?.placeNames ?? []).map((p) => [p.from, p.to]));
+  const prose = (t) => { if (!t) return t; let out = t; for (const [re, to] of words) out = out.replace(re, to); return out; };
+  const placeName = (n) => names.get(n) ?? n;
+  return { prose, placeName };
+}

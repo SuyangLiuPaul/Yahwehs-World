@@ -170,15 +170,16 @@ for (const ev of events) {
 // looking at the two files the browser actually downloads.
 // The same sweep counts the modern place spellings D16 replaced: the labels say
 // 西乃山 now, and a note beside them saying 西奈山 is the same fault in prose.
-const NEEDLES = ['耶和华', ...(
+const NEEDLES = ['耶和华', 'LORD', 'The Lord Will Provide', 'The Lord Is There', ...(
   JSON.parse(readFileSync('data/places/cuv-renderings.json', 'utf8')).proseSubstitutions?.pairs ?? []
 ).map((p) => p.from)];
-// `zhModern` is the one field allowed to hold the modern spelling: it exists so
-// a search for 大马士革 still reaches 大马色, and nothing displays it as a label.
+// `zhModern` and `nameOriginal` are the two fields allowed to hold the replaced
+// form — provenance, and so a search for 大马士革 still reaches 大马色 — and
+// nothing displays either as a label.
 const shipped = [];
 const sweep = (o, hits, path = '') => {
   if (typeof o === 'string') {
-    if (path.endsWith('.zhModern')) return;
+    if (path.endsWith('.zhModern') || path.endsWith('.nameOriginal')) return;
     for (const needle of NEEDLES) { let i = -1; while ((i = o.indexOf(needle, i + 1)) !== -1) hits.set(needle, (hits.get(needle) ?? 0) + 1); }
   } else if (Array.isArray(o)) o.forEach((v, i) => sweep(v, hits, `${path}[${i}]`));
   else if (o && typeof o === 'object') for (const [k, v] of Object.entries(o)) sweep(v, hits, `${path}.${k}`);

@@ -476,5 +476,32 @@
         "evidence": "徒 28:1「那岛名叫米利大」"
       }
     ]
+  },
+  "englishDivineName": {
+    "_why": "英文这边同一条规则：凡底本是 יהוה 的地方一律作 Yahweh。英文圣经以全大写 LORD 标记四字圣名，所以 LORD → Yahweh 是逐字安全的；「the Lord」（大小写混合）是 Adonai／Kyrios，指主或基督，绝不可改。两个地名是 YHWH 复合词。",
+    "wordPairs": [
+      {
+        "from": "LORD",
+        "to": "Yahweh",
+        "evidence": "英文圣经惯例：小型大写 LORD 对应希伯来文 יהוה（BSB、KJV、NASB 皆然）"
+      }
+    ],
+    "placeNames": [
+      {
+        "from": "The Lord Will Provide",
+        "to": "Yahweh Will Provide",
+        "evidence": "创 22:14 יהוה יראה；雅伟版作「雅伟以勒」"
+      },
+      {
+        "from": "The Lord Is There",
+        "to": "Yahweh Is There",
+        "evidence": "结 48:35 יהוה שמה；雅伟版作「雅伟的所在」"
+      },
+      {
+        "from": "City of the Lord",
+        "to": "City of Yahweh",
+        "evidence": "赛 60:14 עיר יהוה；雅伟版作「雅伟的城」"
+      }
+    ]
   }
 }

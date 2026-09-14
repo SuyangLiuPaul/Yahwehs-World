@@ -19,7 +19,7 @@
 //                         geography is COMPUTED. An event's name and boundary
 //                         are proposals; its places are not.
 import { readFileSync, writeFileSync } from 'node:fs';
-import { makeProseNormaliser } from './lib/zh-names.mjs';
+import { makeProseNormaliser, makeEnNormaliser } from './lib/zh-names.mjs';
 
 const SS = '../SeekSparks/assets';
 const BOOKS = JSON.parse(readFileSync('scripts/books.json', 'utf8'));
@@ -36,6 +36,7 @@ const bundle = JSON.parse(readFileSync('public/data/places.json', 'utf8'));
 const overrides = JSON.parse(readFileSync('data/events/summary-overrides.json', 'utf8')).summaries;
 // Inherited prose is normalised to the edition's spellings (D16) and divine name.
 const prose = makeProseNormaliser();
+const { prose: enProse } = makeEnNormaliser();
 
 const key = (b, c, v) => b * 1_000_000 + c * 1000 + v;
 const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -270,7 +271,7 @@ for (let bi = 0; bi < BOOKS.length; bi++) {
 
     return {
       id: `${slug(meta.en)}-${s.c}-${s.v}`,
-      zh: prose(s.title), en: en ?? s.title,
+      zh: prose(s.title), en: enProse(en ?? s.title),
       book, start, end,
       ref: refEn, refZh,
       refs: [refEn, ...par.flatMap((p) => p.alsoIn)],

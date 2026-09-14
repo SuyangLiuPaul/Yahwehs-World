@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-09-14T22:49:35.426Z",
+    "generated": "2026-09-14T22:56:49.431Z",
     "count": 1443,
     "books": 66,
     "provenance": "段落边界、标题与导语取自 SeekSparks assets/section_titles.json（app 自撰，非某一出版译本的分段）；平行经文取自 gospel_synopsis.json（Robertson 1922，公有领域）与 ot_synopsis.json；年代取自 SeekSparks 年表，未直接收录者按正典顺序夹逼；地点由脚本从 OpenBible.info 逐节索引算出（CC BY 4.0），不是人工指定。全部 status=candidate，等待审阅。",
@@ -1670,7 +1670,7 @@
       ],
       "placeNames": [
         "Moriah",
-        "The Lord Will Provide",
+        "Yahweh Will Provide",
         "Beersheba 2"
       ],
       "placeNamesZh": [
@@ -7978,7 +7978,7 @@
     {
       "id": "deuteronomy-6-1",
       "zh": "示玛——爱雅伟",
-      "en": "The Shema: Love the LORD",
+      "en": "The Shema: Love the Yahweh",
       "book": 5,
       "start": 5006001,
       "end": 5006025,
@@ -8054,7 +8054,7 @@
     {
       "id": "deuteronomy-8-1",
       "zh": "记念神的供应",
-      "en": "Remember the LORD",
+      "en": "Remember the Yahweh",
       "book": 5,
       "start": 5008001,
       "end": 5008020,
@@ -8154,7 +8154,7 @@
     {
       "id": "deuteronomy-10-12",
       "zh": "敬畏神的呼召",
-      "en": "Fear the LORD",
+      "en": "Fear the Yahweh",
       "book": 5,
       "start": 5010012,
       "end": 5011032,
@@ -8675,7 +8675,7 @@
     {
       "id": "deuteronomy-30-1",
       "zh": "悔改与归回",
-      "en": "Return to the LORD",
+      "en": "Return to the Yahweh",
       "book": 5,
       "start": 5030001,
       "end": 5030010,
@@ -9213,7 +9213,7 @@
     {
       "id": "joshua-5-13",
       "zh": "雅伟军队的元帅",
-      "en": "Commander of the LORD's Army",
+      "en": "Commander of the Yahweh's Army",
       "book": 6,
       "start": 6005013,
       "end": 6005015,
@@ -13390,7 +13390,7 @@
     {
       "id": "1-samuel-3-1",
       "zh": "撒母耳蒙召",
-      "en": "The LORD Calls Samuel",
+      "en": "The Yahweh Calls Samuel",
       "book": 9,
       "start": 9003001,
       "end": 9003021,
@@ -17095,7 +17095,7 @@
     {
       "id": "1-kings-9-1",
       "zh": "神再次显现",
-      "en": "The LORD Appears Again",
+      "en": "The Yahweh Appears Again",
       "book": 11,
       "start": 11009001,
       "end": 11009028,
@@ -26434,7 +26434,7 @@
     {
       "id": "job-38-1",
       "zh": "雅伟从旋风中回答",
-      "en": "The LORD Speaks from the Whirlwind",
+      "en": "The Yahweh Speaks from the Whirlwind",
       "book": 18,
       "start": 18038001,
       "end": 18039030,
@@ -26836,7 +26836,7 @@
     {
       "id": "psalms-11-1",
       "zh": "信靠雅伟",
-      "en": "Refuge in the LORD",
+      "en": "Refuge in the Yahweh",
       "book": 19,
       "start": 19011001,
       "end": 19011007,
@@ -26890,7 +26890,7 @@
     {
       "id": "psalms-13-1",
       "zh": "信徒的呼求",
-      "en": "How Long, O LORD?",
+      "en": "How Long, O Yahweh?",
       "book": 19,
       "start": 19013001,
       "end": 19013006,
@@ -27105,7 +27105,7 @@
     {
       "id": "psalms-20-1",
       "zh": "为君王得胜祈祷",
-      "en": "Trust in the Name of the LORD",
+      "en": "Trust in the Name of the Yahweh",
       "book": 19,
       "start": 19020001,
       "end": 19020009,
@@ -27198,7 +27198,7 @@
     {
       "id": "psalms-23-1",
       "zh": "雅伟是我的牧者",
-      "en": "The LORD Is My Shepherd",
+      "en": "The Yahweh Is My Shepherd",
       "book": 19,
       "start": 19023001,
       "end": 19023006,
@@ -27306,7 +27306,7 @@
     {
       "id": "psalms-27-1",
       "zh": "雅伟是我的亮光",
-      "en": "The LORD My Light",
+      "en": "The Yahweh My Light",
       "book": 19,
       "start": 19027001,
       "end": 19027014,
@@ -27366,7 +27366,7 @@
     {
       "id": "psalms-29-1",
       "zh": "雅伟的声音",
-      "en": "The Voice of the LORD",
+      "en": "The Voice of the Yahweh",
       "book": 19,
       "start": 19029001,
       "end": 19029011,
@@ -27523,7 +27523,7 @@
     {
       "id": "psalms-34-1",
       "zh": "尝主恩的滋味",
-      "en": "Taste and See the LORD Is Good",
+      "en": "Taste and See the Yahweh Is Good",
       "book": 19,
       "start": 19034001,
       "end": 19034022,
@@ -29263,7 +29263,7 @@
     {
       "id": "psalms-86-1",
       "zh": "求神听祷告",
-      "en": "Hear Me, O LORD",
+      "en": "Hear Me, O Yahweh",
       "book": 19,
       "start": 19086001,
       "end": 19086017,
@@ -29491,7 +29491,7 @@
     {
       "id": "psalms-93-1",
       "zh": "雅伟作王",
-      "en": "The LORD Reigns",
+      "en": "The Yahweh Reigns",
       "book": 19,
       "start": 19093001,
       "end": 19093005,
@@ -29622,7 +29622,7 @@
     {
       "id": "psalms-97-1",
       "zh": "雅伟作王全地欢喜",
-      "en": "The LORD Reigns, Let the Earth Rejoice",
+      "en": "The Yahweh Reigns, Let the Earth Rejoice",
       "book": 19,
       "start": 19097001,
       "end": 19097012,
@@ -29655,7 +29655,7 @@
     {
       "id": "psalms-98-1",
       "zh": "新歌颂赞救主",
-      "en": "Sing a New Song to the LORD",
+      "en": "Sing a New Song to the Yahweh",
       "book": 19,
       "start": 19098001,
       "end": 19098009,
@@ -29682,7 +29682,7 @@
     {
       "id": "psalms-99-1",
       "zh": "圣洁的雅伟",
-      "en": "The LORD Our God Is Holy",
+      "en": "The Yahweh Our God Is Holy",
       "book": 19,
       "start": 19099001,
       "end": 19099009,
@@ -29808,7 +29808,7 @@
     {
       "id": "psalms-103-1",
       "zh": "颂赞雅伟的恩慈",
-      "en": "Bless the LORD, O My Soul",
+      "en": "Bless the Yahweh, O My Soul",
       "book": 19,
       "start": 19103001,
       "end": 19103022,
@@ -29921,7 +29921,7 @@
     {
       "id": "psalms-106-1",
       "zh": "神的恩慈与百姓的悖逆",
-      "en": "The LORD's Steadfast Love and Israel's Rebellion",
+      "en": "The Yahweh's Steadfast Love and Israel's Rebellion",
       "book": 19,
       "start": 19106001,
       "end": 19106048,
@@ -29972,7 +29972,7 @@
     {
       "id": "psalms-107-1",
       "zh": "向雅伟感谢",
-      "en": "Give Thanks to the LORD",
+      "en": "Give Thanks to the Yahweh",
       "book": 19,
       "start": 19107001,
       "end": 19107043,
@@ -30066,7 +30066,7 @@
     {
       "id": "psalms-109-1",
       "zh": "求神为我伸冤",
-      "en": "Help Me, O LORD My God",
+      "en": "Help Me, O Yahweh My God",
       "book": 19,
       "start": 19109001,
       "end": 19109031,
@@ -30126,7 +30126,7 @@
     {
       "id": "psalms-111-1",
       "zh": "颂赞神的作为",
-      "en": "Great Are the LORD's Works",
+      "en": "Great Are the Yahweh's Works",
       "book": 19,
       "start": 19111001,
       "end": 19111010,
@@ -30180,7 +30180,7 @@
     {
       "id": "psalms-113-1",
       "zh": "颂赞至高神",
-      "en": "Praise the Name of the LORD",
+      "en": "Praise the Name of the Yahweh",
       "book": 19,
       "start": 19113001,
       "end": 19113009,
@@ -30316,7 +30316,7 @@
     {
       "id": "psalms-117-1",
       "zh": "万邦颂赞神",
-      "en": "Praise the LORD, All Nations",
+      "en": "Praise the Yahweh, All Nations",
       "book": 19,
       "start": 19117001,
       "end": 19117002,
@@ -30436,7 +30436,7 @@
     {
       "id": "psalms-121-1",
       "zh": "我的帮助从何而来",
-      "en": "My Help Comes from the LORD",
+      "en": "My Help Comes from the Yahweh",
       "book": 19,
       "start": 19121001,
       "end": 19121008,
@@ -30502,7 +30502,7 @@
     {
       "id": "psalms-123-1",
       "zh": "举目望向神",
-      "en": "Our Eyes Look to the LORD",
+      "en": "Our Eyes Look to the Yahweh",
       "book": 19,
       "start": 19123001,
       "end": 19123004,
@@ -30535,7 +30535,7 @@
     {
       "id": "psalms-124-1",
       "zh": "若不是雅伟",
-      "en": "If the LORD Had Not Been on Our Side",
+      "en": "If the Yahweh Had Not Been on Our Side",
       "book": 19,
       "start": 19124001,
       "end": 19124008,
@@ -30568,7 +30568,7 @@
     {
       "id": "psalms-125-1",
       "zh": "信靠雅伟者",
-      "en": "Those Who Trust in the LORD",
+      "en": "Those Who Trust in the Yahweh",
       "book": 19,
       "start": 19125001,
       "end": 19125005,
@@ -30640,7 +30640,7 @@
     {
       "id": "psalms-127-1",
       "zh": "若非雅伟建造",
-      "en": "Unless the LORD Builds",
+      "en": "Unless the Yahweh Builds",
       "book": 19,
       "start": 19127001,
       "end": 19127005,
@@ -30673,7 +30673,7 @@
     {
       "id": "psalms-128-1",
       "zh": "敬畏神者之福",
-      "en": "Blessed Is Everyone Who Fears the LORD",
+      "en": "Blessed Is Everyone Who Fears the Yahweh",
       "book": 19,
       "start": 19128001,
       "end": 19128006,
@@ -30904,7 +30904,7 @@
     {
       "id": "psalms-134-1",
       "zh": "夜间颂赞神",
-      "en": "Bless the LORD by Night",
+      "en": "Bless the Yahweh by Night",
       "book": 19,
       "start": 19134001,
       "end": 19134003,
@@ -30940,7 +30940,7 @@
     {
       "id": "psalms-135-1",
       "zh": "颂赞神的奇妙作为",
-      "en": "Praise the LORD",
+      "en": "Praise the Yahweh",
       "book": 19,
       "start": 19135001,
       "end": 19135021,
@@ -31265,7 +31265,7 @@
     {
       "id": "psalms-145-1",
       "zh": "颂赞君王神",
-      "en": "Great Is the LORD",
+      "en": "Great Is the Yahweh",
       "book": 19,
       "start": 19145001,
       "end": 19145021,
@@ -31292,7 +31292,7 @@
     {
       "id": "psalms-146-1",
       "zh": "颂赞救助者",
-      "en": "Praise the LORD, O My Soul",
+      "en": "Praise the Yahweh, O My Soul",
       "book": 19,
       "start": 19146001,
       "end": 19146010,
@@ -31325,7 +31325,7 @@
     {
       "id": "psalms-147-1",
       "zh": "颂赞医治者",
-      "en": "Praise the LORD Who Heals",
+      "en": "Praise the Yahweh Who Heals",
       "book": 19,
       "start": 19147001,
       "end": 19147020,
@@ -31421,7 +31421,7 @@
     {
       "id": "psalms-150-1",
       "zh": "用各样乐器赞美神",
-      "en": "Praise the LORD with All Instruments",
+      "en": "Praise the Yahweh with All Instruments",
       "book": 19,
       "start": 19150001,
       "end": 19150006,
@@ -31529,7 +31529,7 @@
     {
       "id": "proverbs-3-1",
       "zh": "信靠雅伟",
-      "en": "Trust in the LORD",
+      "en": "Trust in the Yahweh",
       "book": 20,
       "start": 20003001,
       "end": 20003035,
@@ -31610,7 +31610,7 @@
     {
       "id": "proverbs-6-1",
       "zh": "六样神所恨的",
-      "en": "Things the LORD Hates",
+      "en": "Things the Yahweh Hates",
       "book": 20,
       "start": 20006001,
       "end": 20006035,
@@ -32549,7 +32549,7 @@
     {
       "id": "isaiah-2-1",
       "zh": "末后的山",
-      "en": "The Mountain of the LORD",
+      "en": "The Mountain of the Yahweh",
       "book": 23,
       "start": 23002001,
       "end": 23004006,
@@ -33313,7 +33313,7 @@
     {
       "id": "isaiah-25-1",
       "zh": "锡安的颂赞",
-      "en": "Praise to the LORD",
+      "en": "Praise to the Yahweh",
       "book": 23,
       "start": 23025001,
       "end": 23025012,
@@ -33798,7 +33798,7 @@
     {
       "id": "isaiah-42-1",
       "zh": "雅伟的仆人",
-      "en": "The LORD's Servant",
+      "en": "The Yahweh's Servant",
       "book": 23,
       "start": 23042001,
       "end": 23042025,
@@ -35893,7 +35893,7 @@
     {
       "id": "lamentations-2-1",
       "zh": "主的忿怒",
-      "en": "The LORD's Anger",
+      "en": "The Yahweh's Anger",
       "book": 25,
       "start": 25002001,
       "end": 25002022,
@@ -36034,7 +36034,7 @@
     {
       "id": "lamentations-5-1",
       "zh": "求神记念",
-      "en": "Restore Us, O LORD",
+      "en": "Restore Us, O Yahweh",
       "book": 25,
       "start": 25005001,
       "end": 25005022,
@@ -37119,7 +37119,7 @@
         "Meribah 1",
         "Negeb",
         "Tamar 2",
-        "The Lord Is There"
+        "Yahweh Is There"
       ],
       "placeNamesZh": [
         "大马色",
@@ -37813,7 +37813,7 @@
     {
       "id": "hosea-6-1",
       "zh": "归向雅伟",
-      "en": "Return to the LORD",
+      "en": "Return to the Yahweh",
       "book": 28,
       "start": 28006001,
       "end": 28010015,
@@ -38013,7 +38013,7 @@
     {
       "id": "joel-2-1",
       "zh": "雅伟的日子",
-      "en": "The Day of the LORD",
+      "en": "The Day of the Yahweh",
       "book": 29,
       "start": 29002001,
       "end": 29002027,
@@ -38358,7 +38358,7 @@
     {
       "id": "amos-5-1",
       "zh": "求神就活",
-      "en": "Seek the LORD and Live",
+      "en": "Seek the Yahweh and Live",
       "book": 30,
       "start": 30005001,
       "end": 30005020,
@@ -38981,7 +38981,7 @@
     {
       "id": "micah-4-1",
       "zh": "末后的山",
-      "en": "The Mountain of the LORD",
+      "en": "The Mountain of the Yahweh",
       "book": 33,
       "start": 33004001,
       "end": 33004013,
@@ -39079,7 +39079,7 @@
     {
       "id": "micah-6-1",
       "zh": "雅伟向你所要的",
-      "en": "What Does the LORD Require?",
+      "en": "What Does the Yahweh Require?",
       "book": 33,
       "start": 33006001,
       "end": 33006016,
@@ -39176,7 +39176,7 @@
     {
       "id": "nahum-1-1",
       "zh": "雅伟是慈爱也是公义",
-      "en": "The LORD's Anger Against Nineveh",
+      "en": "The Yahweh's Anger Against Nineveh",
       "book": 34,
       "start": 34001001,
       "end": 34001015,
@@ -39460,7 +39460,7 @@
     {
       "id": "zephaniah-1-1",
       "zh": "雅伟大日子的预言",
-      "en": "The Day of the LORD",
+      "en": "The Day of the Yahweh",
       "book": 36,
       "start": 36001001,
       "end": 36001018,
@@ -40076,7 +40076,7 @@
     {
       "id": "zechariah-14-1",
       "zh": "末后的雅伟日子",
-      "en": "The Day of the LORD",
+      "en": "The Day of the Yahweh",
       "book": 38,
       "start": 38014001,
       "end": 38014021,

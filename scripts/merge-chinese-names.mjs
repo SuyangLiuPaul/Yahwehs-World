@@ -10,7 +10,7 @@
 // one found it — a name matched only by proximity is a weaker claim than one
 // matched by name, and the record should not hide that.
 import { readFileSync, writeFileSync } from 'node:fs';
-import { makeZhResolver } from './lib/zh-names.mjs';
+import { makeZhResolver, makeEnNormaliser } from './lib/zh-names.mjs';
 
 const bundle = JSON.parse(readFileSync('public/data/places.json', 'utf8'));
 const gaz = JSON.parse(readFileSync('../SeekSparks/assets/bible_places.json', 'utf8'));
@@ -24,6 +24,7 @@ const gaz = JSON.parse(readFileSync('../SeekSparks/assets/bible_places.json', 'u
 // shared with build-journeys.mjs so a correction cannot reach the globe and
 // miss the routes. See scripts/lib/zh-names.mjs.
 const resolveZh = makeZhResolver();
+const en = makeEnNormaliser();
 let corrected = 0, dropped = 0;
 
 /** Names for places the gazetteer does not carry, or that sit on a coordinate
@@ -69,6 +70,9 @@ for (const p of bundle.places) {
   // makes a re-run mean anything: without it, tightening the rules leaves
   // every label the old rules produced exactly where it was.
   delete p.zh; delete p.zhHant; delete p.zhMatch; delete p.zhCorrected; delete p.zhEvidence; delete p.zhWithdrawn; delete p.zhModern; delete p.zhSource;
+  // Every lookup below is keyed on OpenBible's own spelling; the English
+  // rename happens after this loop, once the Chinese name is attached.
+  if (p.nameOriginal) { p.name = p.nameOriginal; delete p.nameOriginal; }
 
   let hit = byName.get(key(p.name));
   let how = 'name';
@@ -125,6 +129,15 @@ for (const p of bundle.places) {
   stats[how === 'bare-name' ? 'bareName' : how]++;
 }
 
+// English is held to the same rule as Chinese: a YHWH compound says Yahweh.
+// Done last so that names-from-text and the gazetteer were matched on the
+// spelling they were written against. The original is kept for provenance.
+let renamedEn = 0;
+for (const p of bundle.places) {
+  const renamed = en.placeName(p.name);
+  if (renamed !== p.name) { p.nameOriginal = p.name; p.name = renamed; renamedEn++; }
+}
+
 bundle.meta.chineseNames = {
   source: 'SeekSparks assets/bible_places.json',
   matched: bundle.places.filter((p) => p.zh).length,
@@ -144,6 +157,7 @@ console.log(`按更正表改名      ${corrected}`);
 console.log(`按经文原文补名    ${fromTextUsed}`);
 console.log(`名属他处，撤名    ${dropped}`);
 console.log(`改用和合本写法    ${cuvUsed}`);
+console.log(`英文 YHWH 复合词改名 ${renamedEn}`);
 console.log(`\n中文名覆盖        ${got}/${bundle.places.length}  (${(got / bundle.places.length * 100).toFixed(1)}%)`);
 const sample = bundle.places.filter((p) => p.zh).slice(0, 8);
 console.log('\n样例：');
