@@ -94,16 +94,16 @@ corrected against the text and 50 strings still differ, of which the 30 terms
 are deliberate. Two are misattributions rather than misquotations and are listed
 as open items below.
 
-**B15 — Two quotations are attached to the wrong passage.** `revelation-3-7`
-quotes 「我必不抹去你的名」, which is Revelation 3:5 to Sardis, not the letter to
-Philadelphia; `exodus-11-1` quotes 「自己的长子」, which is Exodus 4:22. Both need
-the summary rewritten, not the quotation swapped.
+**B15 — FIXED.** `revelation-3-7` quoted 「我必不抹去你的名」, which is Revelation
+3:5 to Sardis, not the letter to Philadelphia, and `exodus-11-1` quoted 「自己的
+长子」, which is Exodus 4:22. Neither could be repaired by swapping the quotation,
+so both summaries are rewritten from their own passage.
 
-**B16 — Two summaries cite a book that does not exist or a verse that does not
-say it.** `amos-9-11` said Amos 9:11 is quoted in 「雅各书15章」 — James has five
-chapters, and the quotation is Acts 15:16, where James is speaking. `psalms-16-1`
-quoted 「我要尽心赞美你」, which is not in Psalm 16; verse 1 reads 「神啊！求你保佑
-我，因为我投靠你」. Both still need rewriting.
+**B16 — FIXED.** `amos-9-11` said Amos 9:11 is quoted in 「雅各书15章」. James has
+five chapters; the quotation is Acts 15:16, where James is the speaker.
+`psalms-16-1` quoted 「我要尽心赞美你」, which is not in Psalm 16 at all — verse 1
+reads 「神啊！求你保佑我，因为我投靠你」. Both rewritten, and the Acts 2 reference
+that was correct is kept.
 
 ## Open questions for the owner
 - Q1: Should the repo become public once SeekSparks-derived assets are

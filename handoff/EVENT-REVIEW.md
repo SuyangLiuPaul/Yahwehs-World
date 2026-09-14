@@ -97,8 +97,6 @@ Screening only — a low share means look, not that it is wrong.
 
 - `isaiah-52-13` Isaiah 52:13–52:15 — 6% (absent: 受苦歌开端段震撼基督教信仰预言)
   受苦仆人之歌的开端——一段震撼基督教信仰的预言。
-- `amos-9-11` Amos 9:11–9:15 — 6% (absent: 末复兴审判书结尾仍盼望章引用节)
-  末后的复兴——审判书结尾仍有盼望。雅各书15章引用此节。
 - `matthew-5-38` Matthew 5:38–5:42 — 6% (absent: 论报复耶稣开始场颠覆本反应革命)
   论报复——「不要与恶人作对」。耶稣开始一场颠覆人本能反应的革命。
 - `2-chronicles-36-22` 2 Chronicles 36:22–36:23 — 8% (absent: 旧约结尾居鲁士书绝望线盼)
@@ -109,8 +107,6 @@ Screening only — a low share means look, not that it is wrong.
   选立十二使徒——以最普通的人组成最伟大的使命。
 - `genesis-39-1` Genesis 39:1–39:6 — 13% (absent: 生私室深井囚牢始终变放弃应许)
   约瑟的人生从私室到深井再到囚牢，神「与他同在」始终未变——一个从不放弃的应许。
-- `psalms-16-1` Psalms 16:1–16:11 — 13% (absent: 尽赞使徒行传章引基督复活预言)
-  「我要尽心赞美你」——使徒行传2章引此为基督复活的预言。
 - `matthew-5-31` Matthew 5:31–5:32 — 13% (absent: 论离婚保护姻圣洁约束随便现实)
   论离婚——保护婚姻的圣洁，约束随便休妻的现实。
 - `matthew-5-33` Matthew 5:33–5:37 — 13% (absent: 论基督徒语应贯)
@@ -175,3 +171,7 @@ Screening only — a low share means look, not that it is wrong.
   犹太人的优势——保罗回应可能的反驳：那犹太人的特权何用？
 - `matthew-27-32` Matthew 27:32–27:44 — 22% (absent: 历史公开处决卷福音高峰用笔墨描述事件)
   钉十字架——历史上最公开的处决。圣经四卷福音以此为高峰，用最少的笔墨描述最大的事件。
+- `psalms-117-1` Psalms 117:1–117:2 — 22% (absent: 圣经短章两节邦)
+  圣经最短的章——只有两节，万邦颂赞神。
+- `matthew-20-17` Matthew 20:17–20:19 — 22% (absent: 次预言受难苦知)
+  再次预言受难——耶稣对苦难的预知。
