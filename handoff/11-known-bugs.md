@@ -27,9 +27,11 @@ open, after `applyCursor()` has overwritten the readout with timeline text.
 **B5 — FIXED.** The readout de-duplicates identical rendered names and now
 follows the active locale instead of always printing Chinese.
 
-**B6 — PARTLY DONE.** `public/data/terrain-normal.webp` is untracked and no
-longer ships; the working-copy file still needs deleting by hand (the sandbox
-refused the `rm`).
+**B6 — CLOSED by state, not by a step recorded here.** As of `04385cc`
+`public/data/terrain-normal.webp` is absent from the working copy and from
+git. The `rm` was refused by the sandbox twice and was never run from this
+session, so who removed the file is not known; only the end state was
+verified (`ls`, `git ls-files`). Nothing references it.
 
 **B7 — Structures card bodies are Chinese-only** (`specs.ts` `textZh`,
 `punchZh`, `unstated`). English parity needed (`08` Phase 9).
