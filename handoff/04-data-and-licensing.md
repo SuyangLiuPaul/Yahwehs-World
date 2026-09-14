@@ -9,6 +9,7 @@
 | SeekSparks `assets/bible_journeys.json`, `bible_places.json`, `bible_evidence.json` | Journeys, Chinese gazetteer, 209 evidence findings | same | same | |
 | Berean Standard Bible (BSB) | Verse text where shown; gentilic check | Public domain (CC0-equivalent dedication) | none | |
 | 和合本 place names via SeekSparks gazetteer | Chinese names | 和合本 text is public domain | none | |
+| SeekSparks `assets/cuvs-yhwh.json` (雅伟版和合本) | The Chinese text every quotation, place rendering and summary check is verified against; the divine name is 雅伟 throughout | 和合本 (1919) is public domain; the 雅伟 substitution is the owner's edition | Never write 耶和华 into anything that ships | `audit-events` counts it in both shipped payloads |
 
 ## Forbidden
 

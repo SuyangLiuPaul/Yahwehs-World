@@ -19,6 +19,7 @@
 //                         geography is COMPUTED. An event's name and boundary
 //                         are proposals; its places are not.
 import { readFileSync, writeFileSync } from 'node:fs';
+import { makeProseNormaliser } from './lib/zh-names.mjs';
 
 const SS = '../SeekSparks/assets';
 const BOOKS = JSON.parse(readFileSync('scripts/books.json', 'utf8'));
@@ -33,6 +34,8 @@ const bundle = JSON.parse(readFileSync('public/data/places.json', 'utf8'));
 // against the passage itself; the rewrites live here so a regeneration keeps
 // them instead of reverting to the blurb.
 const overrides = JSON.parse(readFileSync('data/events/summary-overrides.json', 'utf8')).summaries;
+// Inherited prose is normalised to the edition's spellings (D16) and divine name.
+const prose = makeProseNormaliser();
 
 const key = (b, c, v) => b * 1_000_000 + c * 1000 + v;
 const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -267,14 +270,14 @@ for (let bi = 0; bi < BOOKS.length; bi++) {
 
     return {
       id: `${slug(meta.en)}-${s.c}-${s.v}`,
-      zh: s.title, en: en ?? s.title,
+      zh: prose(s.title), en: en ?? s.title,
       book, start, end,
       ref: refEn, refZh,
       refs: [refEn, ...par.flatMap((p) => p.alsoIn)],
       parallels: par.map((p) => ({ group: p.group, zh: p.zh, en: p.en, alsoIn: p.alsoIn })),
-      summaryZh: overrides[`${slug(meta.en)}-${s.c}-${s.v}`] ?? s.context ?? '',
+      summaryZh: prose(overrides[`${slug(meta.en)}-${s.c}-${s.v}`] ?? s.context ?? ''),
       yearEarly: d.yearEarly, yearLate: d.yearLate,
-      dateBasis: d.dateBasis, dateConfidence: d.dateConfidence, dateSource: d.dateSource,
+      dateBasis: prose(d.dateBasis), dateConfidence: d.dateConfidence, dateSource: d.dateSource,
       placeIds: pl.map((i2) => bundle.places[i2].id),
       placeNames: pl.map((i2) => bundle.places[i2].name),
       placeNamesZh: pl.map((i2) => bundle.places[i2].zh ?? null),

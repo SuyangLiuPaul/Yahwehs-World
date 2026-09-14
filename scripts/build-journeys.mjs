@@ -14,12 +14,12 @@
 // route breaks rather than being joined through it: a gap is true, and an
 // invented straight line is not.
 import { readFileSync, writeFileSync } from 'node:fs';
-import { makeZhResolver } from './lib/zh-names.mjs';
+import { makeZhResolver, makeProseNormaliser } from './lib/zh-names.mjs';
 
 const journeys = JSON.parse(readFileSync('../SeekSparks/assets/bible_journeys.json', 'utf8'));
 
-/** 耶和华 → 雅伟, the rendering this project's edition uses. */
-const yhwh = (t) => (t ?? '').replaceAll('耶和华', '雅伟');
+/** Inherited prose → the edition's spellings and divine name (see lib/zh-names). */
+const yhwh = makeProseNormaliser();
 const gaz = JSON.parse(readFileSync('../SeekSparks/assets/bible_places.json', 'utf8'));
 const bundle = JSON.parse(readFileSync('public/data/places.json', 'utf8'));
 
@@ -62,7 +62,7 @@ const out = journeys.journeys.map((j) => {
       // Named by the narrative but never reached — aimed at and missed, feared
       // and avoided. Drawn detached, taking no ordinal in the line.
       aside: s.kind === 'aside',
-      note: s.note?.['zh-Hans'] ?? '',
+      note: yhwh(s.note?.['zh-Hans'] ?? ''),
     };
   });
 

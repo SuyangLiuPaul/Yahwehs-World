@@ -1,4 +1,4 @@
-# 11 · Known bugs and open questions (as of `7aea034`+)
+# 11 · Known bugs and open questions (as of `6b3471b`)
 
 ## Bugs
 
@@ -40,10 +40,12 @@ verified (`ls`, `git ls-files`). Nothing references it.
 when two markers are 90 px apart. Replace with measured boxes without changing
 label density (`06-L3`).
 
-**B9 — SUPERSEDED.** The event layer is now 1,443 candidates over all 66
-books (`ALL-EVENTS.md`); the 35 Genesis candidates are a subset of that work.
-All of it awaits the owner's review, which is the project's only remaining
-bottleneck on content.
+**B9 — SUPERSEDED, then CLEARED.** The event layer is 1,443 candidates over
+all 66 books (`ALL-EVENTS.md`); the 35 Genesis candidates are a subset. On
+2026-09-14 the owner cleared them for use on the strength of the mechanical
+review (`all-events.json` `meta.candidatesCleared`). They are not a bottleneck.
+Per-event `status` stays `candidate` because no one has read them one at a time;
+see `07` · Review gate for what that does and does not mean.
 
 **B10 — Markers at close zoom are noise around a route** (`06-L7`).
 

@@ -5,11 +5,9 @@ Work top to bottom. Each phase ships on its own (push to `main` deploys).
 both locales, screenshots are in the PR/commit, and `11-known-bugs.md` is
 updated.
 
-## Phase 0 — Clean the slate (½ day)
-- Fix bugs B1–B6 in `11`.
-- Delete orphan `public/data/terrain-normal.webp`.
-- Add `handoff/MANIFEST-assets.md` rows for the terrain files.
-Done: build green, live site shows no `第 N 站` in English, jacob stop 9 reads 以法他.
+## Phase 0 — Clean the slate — DONE 2026-09-14
+B1–B6 and B11–B18 fixed; orphan deleted; manifest rows present; audit at zero.
+Nothing to send Astra here.
 
 ## Phase 1 — Route experience to the standard (L3, L4, L5, L7) (3–4 days)
 - Measured-box declutter + leaders; pills never under the card.
@@ -28,15 +26,23 @@ Done: paul-rome fully on terrain; L1/L2 tests pass; payload delta ≤ +3 MB.
   budget allows. Provenance in the manifest for anything generated.
 Done: L6 tests pass; frame time measured and recorded.
 
-## Phase 4 — Events layer rendered (C1 spine) (3 days)
-- Render the 105 approved events as bands on a year axis toggle; click to
-  frame places + summary; Genesis 35 candidates through the review tool.
-Done: year/verse toggle works; bands hatch when disputed; owner has reviewed Genesis.
+## Phase 4 — Events layer rendered (C1) (3–4 days)
+- Render **all 1,443 events** of `data/events/all-events.json` as bands on a
+  year axis toggle (verse index ⇄ years); band width = yearLate − yearEarly,
+  hatched when `disputed`, dotted when `none`; click frames the event's places
+  and shows `summaryZh`; the 105 spine events visually distinct from candidates.
+- Read `meta.candidatesCleared` and do not gate rendering on `status`.
+- Do not author, re-date or re-summarise any event; data changes go through
+  `summary-overrides.json` and must leave `audit-events` at zero.
+Done: toggle works at three sizes; a disputed band renders hatched; clicking a
+band with places frames them; 1,443 bands present; audit still zero.
 
-## Phase 5 — Events for all 66 books (C1 full) (ongoing; ≈ 1 book/day authoring + owner review)
-- Author candidates book by book in the order in `07`; review gate per book;
-  inventory shows per-book event counts.
-Done: every book has an approved event file; build fails on a zero-event book.
+## Phase 5 — Events for all 66 books (C1 full) — DATA DONE 2026-09-14
+All 66 books are covered by 1,443 events; every one of the canon's 31,102
+verses falls inside some event (measured by `audit-events`). The owner cleared
+the candidates for use. There is no authoring left to send Astra; what remains
+is Phase 4 (render them). Per-event review, if the owner ever wants it, runs
+through `build-review-page` + `apply-review` at their own pace.
 
 ## Phase 6 — Journeys to full coverage (C3) (4–6 days)
 Done: ≈ 25–35 journeys; each stop cites a verse; sea legs dashed.

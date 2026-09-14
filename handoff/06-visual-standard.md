@@ -35,8 +35,9 @@ head (`#fff2c4`) remains legible over the brightest desert pixel.
 
 ## L2 · Sea and region names — not started
 
-What: 地中海 / Mediterranean, 红海 / Red Sea, 西奈半岛 / Sinai, 埃及 / Egypt,
-迦南 / Canaan, 亚拉伯 / Arabia, 尼罗河 / Nile — letter-spaced, set in the
+What: 地中海 / Mediterranean, 红海 / Red Sea, 西乃 / Sinai, 埃及 / Egypt,
+迦南 / Canaan, 亚拉伯 / Arabia, 尼罗河 / Nile — Union Version spellings
+throughout (D16), each with the verse it is read from — letter-spaced, set in the
 display face, curved along water bodies where the shape warrants it.
 
 Source: Natural Earth `ne_10m_geography_regions_polys` and
@@ -50,7 +51,7 @@ Rules: rendered as HTML like route labels (D8); visible only between 1.3 R and
 3.0 R; hidden when they collide with a route label (route labels win); tracking
 `--tr-caps` for Latin, `--tr-cjk` for CJK.
 
-Test: open exodus-wilderness at 375×812 — 红海, 西奈半岛 and 埃及 visible,
+Test: open exodus-wilderness at 375×812 — 红海, 西乃 and 埃及 visible,
 none overlapping a stop pill.
 
 ## L3 · Numbered stop pills — partly done

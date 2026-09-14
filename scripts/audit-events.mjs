@@ -168,12 +168,25 @@ for (const ev of events) {
 // The events check above only covers the events. 耶和华 reached a place label
 // and a route's own basis note without anything noticing, because nothing was
 // looking at the two files the browser actually downloads.
+// The same sweep counts the modern place spellings D16 replaced: the labels say
+// 西乃山 now, and a note beside them saying 西奈山 is the same fault in prose.
+const NEEDLES = ['耶和华', ...(
+  JSON.parse(readFileSync('data/places/cuv-renderings.json', 'utf8')).proseSubstitutions?.pairs ?? []
+).map((p) => p.from)];
+// `zhModern` is the one field allowed to hold the modern spelling: it exists so
+// a search for 大马士革 still reaches 大马色, and nothing displays it as a label.
 const shipped = [];
+const sweep = (o, hits, path = '') => {
+  if (typeof o === 'string') {
+    if (path.endsWith('.zhModern')) return;
+    for (const needle of NEEDLES) { let i = -1; while ((i = o.indexOf(needle, i + 1)) !== -1) hits.set(needle, (hits.get(needle) ?? 0) + 1); }
+  } else if (Array.isArray(o)) o.forEach((v, i) => sweep(v, hits, `${path}[${i}]`));
+  else if (o && typeof o === 'object') for (const [k, v] of Object.entries(o)) sweep(v, hits, `${path}.${k}`);
+};
 for (const f of ['public/data/places.json', 'public/data/journeys.json']) {
-  const blob = readFileSync(f, 'utf8');
-  let n = 0, i = -1;
-  while ((i = blob.indexOf('耶和华', i + 1)) !== -1) n++;
-  if (n) shipped.push([f, n]);
+  const hits = new Map();
+  sweep(JSON.parse(readFileSync(f, 'utf8')), hits);
+  for (const [needle, n] of hits) shipped.push([`${f} · ${needle}`, n]);
 }
 
 // ── report ────────────────────────────────────────────────────────────────
@@ -191,9 +204,9 @@ for (const k of kinds) {
   if (byKind[k].length > 40) lines.push(`- …and ${byKind[k].length - 40} more`);
   lines.push('');
 }
-lines.push('## The divine name in what ships', '');
+lines.push('## The divine name and modern spellings in what ships', '');
 if (!shipped.length) lines.push('None. `public/data/places.json` and `public/data/journeys.json` are clean.', '');
-for (const [f, n] of shipped) lines.push(`- **${f} — ${n} occurrences of 耶和华.** This edition reads 雅伟.`);
+for (const [f, n] of shipped) lines.push(`- **${f} — ${n} occurrences.** This edition reads 雅伟 and the Union Version spellings (D16).`);
 lines.push('');
 lines.push(`## Place names the Union Version never uses at that place`, '');
 lines.push(`### The name belongs to somewhere else — ${wrongName.length}`, '');
@@ -218,7 +231,7 @@ writeFileSync('handoff/EVENT-REVIEW.md', lines.join('\n') + '\n');
 
 console.log(`findings: ${findings.length}`);
 for (const k of kinds) console.log(`  ${k}: ${byKind[k].length}`);
-console.log(`耶和华 in shipped payloads: ${shipped.length ? shipped.map(([f, n]) => `${f}:${n}`).join(', ') : 'none'}`);
+console.log(`耶和华 / modern spellings in shipped payloads: ${shipped.length ? shipped.map(([f, n]) => `${f}:${n}`).join(', ') : 'none'}`);
 console.log(`names that belong elsewhere: ${wrongName.length}; names absent from the CUV: ${unknownName.length}`);
 console.log(`uncited verses: ${gaps.reduce((a, g) => a + g[2], 0)} in ${gaps.length} runs`);
 console.log(`lowest summary overlap: ${(overlap[0]?.share * 100).toFixed(0)}%`);

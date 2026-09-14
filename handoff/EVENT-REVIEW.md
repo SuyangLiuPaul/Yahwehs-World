@@ -6,7 +6,7 @@ Verses in the canon: 31102. Covered by some event: 31102.
 
 None.
 
-## The divine name in what ships
+## The divine name and modern spellings in what ships
 
 None. `public/data/places.json` and `public/data/journeys.json` are clean.
 

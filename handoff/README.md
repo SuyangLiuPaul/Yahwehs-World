@@ -61,4 +61,7 @@ from the repository on 2026-09-14.
 - Repo: `SuyangLiuPaul/yahwehs-globe` (private), default branch `main`
 - Live: <https://yahwehsworld.netlify.app> — auto-deploys on push to `main`
 - This folder: `handoff/` at the repo root
-- Sister data: `../SeekSparks/assets/` (chronology, journeys, Chinese gazetteer)
+- Sister data: `../SeekSparks/assets/` (chronology, journeys, Chinese gazetteer, `cuvs-yhwh.json` — the text everything is checked against)
+- Authored corrections that survive regeneration: `data/events/summary-overrides.json`, `data/events/gazetteer-corrections.json`, `data/places/cuv-renderings.json`, `data/places/names-from-text.json` — every row cites its verse
+- The one place a Chinese place name is decided: `scripts/lib/zh-names.mjs` (D17)
+- The audit: `node scripts/audit-events.mjs` → `handoff/EVENT-REVIEW.md`; all counts 0 as of `6b3471b`

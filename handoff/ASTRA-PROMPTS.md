@@ -20,26 +20,28 @@
 
 | 阶段 | 内容（对应 `08-roadmap.md`） | 条数 |
 |---|---|---|
-| P0 | 清场：B1–B6、删孤儿资产、台账 | 2 |
+| P0 | ~~清场~~ **已完成（2026-09-14），0 条** | 0 |
 | P1 | 路线体验到标准：L3 L4 L5 L7 | 4 |
 | P2 | 地形扩到 5W + 海域/地区名：L1 L2 | 3 |
 | P3 | 装饰物：L6 | 4 |
-| P4 | 事件层渲染（105 脊柱 + 创世记 35 过审核工具）：C1 | 3 |
-| P5 | 66 卷事件候选（每条 6–8 卷，只出候选，业主审） | 10 |
+| P4 | 事件层渲染：**全部 1,443 条**（数据已就绪、已放行）：C1 | 3 |
+| P5 | ~~66 卷事件候选~~ **数据已完成（1,443 条，全书无遗漏），0 条** | 0 |
 | P6 | 路线补全到 25–35 条：C3 | 3 |
 | P7 | 建筑卡片补全 + 所罗门圣殿可走：C4 | 5 |
 | P8 | 证据层 + 新闻层：C5 C6 | 3 |
 | P9 | 中文补全 + 英文对等：C2 B7 | 2 |
 | P10 | 性能与加载：L10 | 2 |
-| — | **修补保留** | 9 |
+| — | **修补保留**（P0、P5 省下的 12 条并入） | 21 |
 
 顺序就是优先级；一周不够就跨周，不要为了赶而并两个阶段进一条。
 
 ## 每次调用 Astra 之前，先在便宜模型里做的事（不花 Astra 额度）
 
 1. `git pull`，确认 `main` 干净、上一阶段的报告已读。
-2. 把 `11-known-bugs.md` 末尾的 Q1–Q3 答掉，写进 `05-decisions.md` 作 D16+。
-   没答的决定 Astra 会替你选，选错要再花一条修。
+2. 把 `11-known-bugs.md` 末尾的 Q1–Q3 答掉，写进 `05-decisions.md` 作 D18+
+   （D16、D17 已用）。没答的决定 Astra 会替你选，选错要再花一条修。
+2b. 凡涉及 `data/` 的阶段，发 Astra 之前先跑 `node scripts/audit-events.mjs`
+   确认全部为 0，把这行输出贴进 prompt——这样它交回来的「仍为 0」才有基线可比。
 3. 让 Sol/Opus 按下面模板生成本阶段的最终 prompt，检查三点：范围只有一个阶段、
    验收标准可测量、没有留给 Astra 的问句。
 4. 把上一阶段报告里的"未完成"项挪进本阶段或修补条。
@@ -56,7 +58,9 @@ body, and continue. Never reopen a decision in handoff/05. Never add satellite i
 NIV text, or an asset without a row in handoff/MANIFEST-assets.md.
 Work until the Definition of Done below is fully met. Verify exactly as handoff/09 says:
 375x812, 768x1024, 1440x900, both locales, screenshots saved under
-handoff/evidence/<phase>/. `set -o pipefail; npm run build` must pass before each commit.
+handoff/evidence/<phase>/. `set -o pipefail; npm run build` must pass before each commit. If you touch anything under
+data/ or scripts/, `node scripts/audit-events.mjs` must print zero on every count before you
+commit; paste its output in the report.
 Commit in the style of `git log` (what + why, no attribution trailers), one concern per
 commit, then push main.
 Reply with ONLY: (1) commit hashes + first lines; (2) evidence file paths;
@@ -66,18 +70,8 @@ Reply with ONLY: (1) commit hashes + first lines; (2) evidence file paths;
 
 ## 阶段 prompt（前言之后粘贴）
 
-### P0 · 清场（2 条）
-```
-PHASE 0 — Clean the slate. Read handoff/11-known-bugs.md and handoff/MANIFEST-assets.md.
-Do: fix B1 (jacob stop 9 zh name — fix the join in scripts/build-journeys.mjs, regenerate,
-and diff every journey's zh column against en to prove no other stop is wrong), B3
-(localise `第 N 站` via the T table), B4 (call updateRouteReadout() in onLocale), B5
-(dedupe adjacent identical zh names in #t-here), B6 (delete public/data/terrain-normal.webp
-and mark it removed in the manifest). B2 is Phase 2 — do not touch the terrain.
-Definition of Done: build green; live site shows no Chinese stop line in the English UI;
-jacob stop 9 reads 以法他; a language switch with a route open updates #t-here and #t-ref
-immediately; handoff/11 updated with B1–B6 marked fixed and the commit hash.
-```
+### P0 · 清场 — 已完成，不发
+B1–B6、B11–B18 已修，孤儿已删，台账已齐，审计归零（见 `11`）。这一阶段没有东西给 Astra。
 
 ### P1 · 路线体验（4 条：L3+L7 / L4 / L5 / 修补）
 ```
@@ -117,10 +111,13 @@ payload delta reported; L1 test passes.
 ```
 ```
 PHASE 2b — Sea and region names. Read handoff/06 L2, src/labels.ts (pattern), data/.
-Author data/regions.zh.json (~40 biblical-era names with 和合本 forms) from Natural Earth
-geography/marine polys label points; render as HTML labels visible 1.3–3.0 R, route
-labels win collisions. Definition of Done: exodus-wilderness at 375x812 shows 红海,
-西奈半岛, 埃及 with no overlap on a stop pill; both locales screenshot.
+Author data/regions.zh.json (~40 biblical-era names), label points taken from Natural Earth
+geography/marine polygons. Chinese forms MUST be the Union Version's own (handoff/05 D16:
+利巴嫩 not 黎巴嫩, 大马色 not 大马士革, 西乃 not 西奈), each row carrying the verse it is read
+from, and never 耶和华; a region the edition never names in Chinese gets its English label
+only. Render as HTML labels visible 1.3–3.0 R; route labels win collisions.
+Definition of Done: exodus-wilderness at 375x812 shows 红海, 西乃, 埃及 with no overlap on
+a stop pill; both locales screenshot; node scripts/audit-events.mjs still zero.
 ```
 
 ### P3 · 装饰物（4 条：精灵层 / 动画与密度 / 修补 ×2）
@@ -134,29 +131,25 @@ frame time measured and reported; manifest rows added for any generated bitmap.
 
 ### P4 · 事件层渲染（3 条）
 ```
-PHASE 4 — Events layer. Read handoff/07 C1, src/events/schema.ts,
-data/events/seeksparks-timeline.json, scripts/build-review-page.mjs.
-Render the 105 approved events as bands on a year axis toggle (verse index ⇄ years);
-band width = yearLate−yearEarly, hatched when disputed, dotted when none; click frames
-the event's places and shows summaryZh/en. Rebuild the review page for the 35 Genesis
-candidates so the owner can approve them (do NOT approve anything yourself).
-Definition of Done: toggle works at three sizes; a disputed band renders hatched; the
-review page opens with 35 candidates.
+PHASE 4 — Events layer. Read handoff/07 C1 (esp. "Review gate"), src/events/schema.ts,
+data/events/all-events.json (read its meta block first — meta.candidatesCleared is the
+owner's clearance to render every event), src/main.ts (timeline + T table).
+Render ALL 1,443 events as bands on a year-axis toggle (verse index ⇄ years): band width
+= yearLate−yearEarly, hatched when dateConfidence is disputed, dotted when none, undated
+events placed on the verse axis only; the 105 spine events (dateSource.kind === 'spine',
+id present in seeksparks-timeline.json) visually distinct from the rest; click frames the
+event's placeIds and shows summaryZh (zh) / en title (en); localise everything through T.
+Do NOT author, re-date, re-summarise or change the status of any event; do NOT edit
+data/events/all-events.json by hand — it is generated. If a summary must change, it goes
+in data/events/summary-overrides.json and node scripts/audit-events.mjs must stay at zero.
+Definition of Done: toggle works at three sizes both locales; 1,443 bands present (count
+in the report); a disputed band renders hatched; clicking a band with places frames them;
+audit output pasted and all zero.
 ```
 
-### P5 · 66 卷事件候选（10 条，每条 6–8 卷）
-```
-PHASE 5-k — Event candidates, books <list, e.g. Exodus, Leviticus, Numbers, Deuteronomy,
-Joshua, Judges, Ruth>. Read handoff/07 C1 (authoring rule, dating rule a–d),
-data/events/01-genesis.json as the format exemplar, scripts/build-events.mjs,
-scripts/date-candidates.mjs.
-For each book write data/events/NN-book.json with status: candidate, verse ranges at
-narrative boundaries, summaryZh one line each, dates strictly by rules a–d with
-dateBasis showing the arithmetic or the bounding spine events; run build-events so
-placeIds are computed, never authored. Do not mark anything approved.
-Definition of Done: files validate against schema.ts; per-book counts in the report;
-review page lists them; inventory.json shows per-book candidate counts.
-```
+### P5 · 66 卷事件候选 — 数据已完成，不发
+1,443 条已生成、已核、已放行（`ALL-EVENTS.md`、`EVENT-REVIEW.md`）。**不要让 Astra
+再写事件** —— 它会写出第二套、跟现有的打架。事件相关的工作只剩 P4 的渲染。
 
 ### P6 · 路线补全（3 条）
 ```

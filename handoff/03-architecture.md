@@ -41,17 +41,29 @@ journeys.json ──▶ routes.ts Line2 legs + labels.ts HTML overlay
 
 ```
 Bible-Geocoding-Data (git) ──build-places──▶ places.json (en names, coords, precision, verseCount, refs)
-SeekSparks/assets/bible_places.json ──merge-chinese-names──▶ zh names (1,263/1,332; by name 1,074, bare name 111, coord 78)
-SeekSparks/assets/bible_journeys.json ──build-journeys──▶ journeys.json
+SeekSparks/assets/bible_places.json ──merge-chinese-names──▶ zh names (1,270/1,332; by name 1,078, bare name 111,
+                                        │                     unique coord 16, from text 66; ambiguous coord 12 → no name)
+                                        └── lib/zh-names.mjs  ◀── data/events/gazetteer-corrections.json (fix / withdraw / ref)
+                                              │                ◀── data/places/cuv-renderings.json (Union Version form, D16)
+SeekSparks/assets/bible_journeys.json ──build-journeys──┘──▶ journeys.json   (same resolver — D17)
 SeekSparks/assets/bible_timeline.json ──import-seeksparks-timeline──▶ data/events/seeksparks-timeline.json
-authored candidates ──build-events──▶ date-candidates ──▶ review-page ──human──▶ apply-review
+SeekSparks section index + synopses + spine ──build-all-events──▶ data/events/all-events.json (1,443)
+                                              ◀── data/events/summary-overrides.json (371 rewrites)
+all-events.json ──build-events-doc──▶ handoff/ALL-EVENTS.md
+everything above ──audit-events──▶ handoff/EVENT-REVIEW.md   (all counts must be 0)
 places.json ──build-inventory──▶ inventory.json
 ```
 
 Rules the pipeline enforces and the next builder must keep:
 - `placeIds` on an event are **computed** from its verse range against the
   OpenBible index, never authored.
-- Nothing is `approved` until a human marks it in the review tool.
+- Nothing is `approved` per event until a human marks it in the review tool.
+  The owner's 2026-09-14 clearance is recorded once, in
+  `all-events.json` `meta.candidatesCleared`; it means candidates may be shown
+  and built on, not that any one of them was read. Do not mass-rewrite `status`.
+- A Chinese place name is decided in exactly one place, `scripts/lib/zh-names.mjs`
+  (D17). Do not add a second table lookup in a consumer.
+- `audit-events.mjs` must report zero on every count after any data change.
 - Gentilic filter: a place link is removed when the BSB text of the verse has
   the demonym but not the place name and the demonym is ≥3 chars longer
   (this took three passes to get right; do not loosen it).

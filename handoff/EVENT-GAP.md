@@ -4,7 +4,10 @@
 逐条带经文范围，见 [`ALL-EVENTS.md`](ALL-EVENTS.md)；机器可读的真源是
 `data/events/all-events.json`。
 
-剩下的不是"还要写多少"，而是**"还要审多少"**。
+**2026-09-14 再更新：审阅关卡已开。** 业主凭机械审计（`scripts/audit-events.mjs`
+全部归零）放行了全部候选，见 `all-events.json` 的 `meta.candidatesCleared` 与
+`07` · Review gate。逐条 `status` 仍为 `candidate`，因为没有人逐条读过——那是
+事实，不是待办。本台账此后只是历史记录。
 
 | 数字 | 值 | 性质 |
 |---|---:|---|

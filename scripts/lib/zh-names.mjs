@@ -48,3 +48,20 @@ export function makeZhResolver(root = '.') {
     return { zh: base, zhHant: baseHant, source: 'gazetteer' };
   };
 }
+
+/** Normalise inherited Chinese prose — event titles, summaries, date notes,
+ *  route basis text — to the Union Version's spellings and divine name. The
+ *  place labels changed under D16; a summary that still says 西奈山 beside a
+ *  marker that says 西乃山 would show two spellings on one screen. Only the
+ *  pairs listed in cuv-renderings.json `proseSubstitutions` are applied: each
+ *  is multi-character, unambiguous, and cited. 耶和华 → 雅伟 always. */
+export function makeProseNormaliser(root = '.') {
+  const c = JSON.parse(readFileSync(`${root}/data/places/cuv-renderings.json`, 'utf8'));
+  const pairs = (c.proseSubstitutions?.pairs ?? []).map((p) => [p.from, p.to]);
+  return (t) => {
+    if (!t) return t;
+    let out = t.replaceAll('耶和华', '雅伟');
+    for (const [a, b] of pairs) out = out.replaceAll(a, b);
+    return out;
+  };
+}

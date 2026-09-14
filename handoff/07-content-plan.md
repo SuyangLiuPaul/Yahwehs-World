@@ -14,22 +14,24 @@ computed `placeIds`, `status`.
 
 **Spine.** The 105 SeekSparks events are the spine and are already approved.
 
-**Authoring rule per book.** Candidates are proposed at passage boundaries
-(narrative units, not chapters), one file per book `data/events/NN-book.json`,
-`status: candidate`. Each carries the verse range; the script computes places.
+**How the events were produced (done).** `scripts/build-all-events.mjs`
+derives one event per section of SeekSparks' section index (narrative units,
+not chapters), joins `ot_synopsis`/`gospel_synopsis` for parallels, and dates by
+the rules below; the result is `data/events/all-events.json`, 1,443 events,
+`status: candidate`. Places are computed from the verse range, never authored.
+Summaries that needed rewriting live in `summary-overrides.json` and survive
+regeneration. The per-book `NN-book.json` path described in earlier versions of
+this file is superseded; `01-genesis.json` remains as a format exemplar only.
 Dates: (a) if the SeekSparks spine has the event, take its year; (b) if the text
 states years relative to a spine event, compute and show the arithmetic; (c)
 otherwise bound by the nearest spine events before and after → a band with
 `confidence: inferred`; (d) Genesis 1–11 and most poetry/prophecy → `none`,
 drawn undated but placed.
 
-**Estimated volume.** See `EVENT-GAP.md` for the measured per-book ledger:
-140 exist, ~730 estimated total, ~600 remaining, 42 books at zero. The estimate
-is calibrated on Genesis (1.30 events/chapter authored) and scaled down by
-genre — narrative 1.15/ch, law 0.25, prophets 0.30, poetry 0.08, epistles 1–2
-per letter. Order of work: Genesis →
-Exodus → Numbers → Joshua → Judges → Samuel → Kings → Chronicles → Ezra/Nehemiah
-→ Gospels → Acts → the rest.
+**Volume (measured, 2026-09-14).** 1,443 events over 66 books; 894 with
+places, 1,207 with years, 306 with parallels; 0 verses uncited. The earlier
+estimate in `EVENT-GAP.md` (~730) was low by half because it scaled by genre
+where the section index does not. The gap is closed; the ledger is history.
 
 **Review gate — opened 2026-09-14.** The owner cleared the candidates for use.
 They may be displayed and built on; nobody is waiting for a per-book approval
