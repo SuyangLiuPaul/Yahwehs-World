@@ -20,6 +20,8 @@ for(const name of ['index.html','structures.html','tabernacle.html']){
   pages.push({name,status:response.status,buildReferencesMatch:true});
 }
 const verified=[];
+// Include lazy scene modules, not only assets linked by the three HTML shells.
+for(const name of await readdir('dist/assets'))if(/\.(js|css)$/.test(name))assets.add(`/assets/${name}`);
 const materialPaths=(await readdir('dist/materials')).map(name=>`/materials/${name}`);
 for(const path of [...assets,'/data/journeys.json','/data/terrain-color.webp','/models/laver.glb',...materialPaths]){
   const expected=await readFile(`dist${path}`);

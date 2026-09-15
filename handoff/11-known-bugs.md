@@ -194,6 +194,12 @@ GPU/memory validation remain. Do not describe the reference-image bar as passed.
 
 ## Open questions for the owner
 
+Batch 4 update: static route decoration has been replaced with animated
+instanced figures/vessels and three representative Exodus tents. Five short
+story inspectors are implemented; these do not close B28 or certify all event
+scenes. Photographic assets, full event choreography, birds/flocks and physical
+mobile testing remain open. See `BATCH-4.md` for exact reconstruction boundaries.
+
 - Q1: Should the repo become public once SeekSparks-derived assets are
   replaced or licensed? (Today private for that reason.)
 - Q2: Year axis default — Thiele (SeekSparks) is the spine; should the UI

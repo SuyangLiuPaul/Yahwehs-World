@@ -1,0 +1,61 @@
+{
+  "map": {
+    "fps": 60.147070578034736,
+    "p95": 16.700000000000728,
+    "globe": {
+      "frame": 348,
+      "calls": 80,
+      "triangles": 342366,
+      "points": 0,
+      "lines": 0
+    }
+  },
+  "camp": {
+    "fps": 60.17833579925574,
+    "p95": 16.700000000000728,
+    "globe": {
+      "frame": 661,
+      "calls": 80,
+      "triangles": 342366,
+      "points": 0,
+      "lines": 0
+    },
+    "scene": {
+      "frame": 306,
+      "calls": 11,
+      "triangles": 63312,
+      "points": 0,
+      "lines": 0
+    }
+  },
+  "fire": {
+    "fps": 60.15668718579993,
+    "p95": 16.700000000000728,
+    "globe": {
+      "frame": 974,
+      "calls": 45,
+      "triangles": 287252,
+      "points": 0,
+      "lines": 0
+    },
+    "scene": {
+      "frame": 614,
+      "calls": 14,
+      "triangles": 26648,
+      "points": 0,
+      "lines": 0
+    }
+  },
+  "memory": {
+    "before": {
+      "geometries": 11,
+      "textures": 4
+    },
+    "after": {
+      "geometries": 11,
+      "textures": 4
+    },
+    "dialogs": 1
+  },
+  "limit": "Desktop Chrome 4× CPU throttle; not a physical Android/Safari/GPU certification."
+}

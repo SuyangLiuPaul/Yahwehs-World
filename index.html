@@ -50,8 +50,10 @@
     <article id="r-card" hidden>
       <header>
         <div class="r-heading"><h2 id="r-name"></h2><div id="r-stats"></div></div>
+        <button id="r-scene" type="button" hidden data-en="3D scene" data-zh="3D 场景">3D scene</button>
         <button id="r-clear" type="button" aria-label="Close journey">×</button>
       </header>
+      <p id="r-scene-message" role="alert" hidden></p>
       <div id="rplay">
         <div class="r-preview"><canvas id="r-thumbnail" width="160" height="90" role="img" aria-label="Terrain near this stop"></canvas><span class="r-loading" data-en="Loading terrain" data-zh="地形加载中">Loading terrain</span><span class="r-error" data-en="Terrain unavailable" data-zh="地形未载入">Terrain unavailable</span><span id="r-unlocated" hidden data-en="Unlocated" data-zh="位置未定">Unlocated</span></div>
         <div class="r-reading"><span id="r-stop"></span><span id="r-ref"></span></div>

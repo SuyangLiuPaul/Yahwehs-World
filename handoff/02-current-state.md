@@ -1,5 +1,11 @@
 # 02 · Current state (measured 2026-09-15, commit `6b3471b`)
 
+Latest interaction pass: `BATCH-4.md`. Route actors now follow journey progress;
+Exodus has 42 camp/departure stages and an unlocated-stage safeguard. A lazy
+`3D scene` inspector supplies five short bilingual, explicitly interpretive
+demonstrations. No new event coordinates, dates, approvals or full-canon scene
+coverage are asserted. The ten routes and 1,443-event ledger are unchanged.
+
 Latest visual pass: `BATCH-3.md`, source `f6a0bae`. Five original Higgsfield
 material studies (2.22 MB total), a textured geometric arid environment,
 local interior reflections and revised lampstand/cherub/horn forms are live.

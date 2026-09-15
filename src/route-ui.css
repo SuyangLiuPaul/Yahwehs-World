@@ -10,6 +10,11 @@ body.route-active #timeline { padding: var(--sp-2) var(--sp-4); }
 #r-card { padding: var(--sp-2) var(--sp-3); gap: var(--sp-1); background: var(--surface); border-color: var(--line-gold); }
 #r-card header { align-items: center; min-height: 44px; }
 .r-heading { min-width: 0; }
+.r-heading { flex: 1; }
+#r-scene { min-width:64px; min-height:44px; flex:none; padding:0 8px; border:1px solid var(--line-gold); border-radius:var(--radius); color:var(--gold-bright); background:var(--surface-hi); font:var(--fs-100) var(--ui); cursor:pointer; }
+#r-scene[hidden] { display:none; }
+#r-scene[aria-busy="true"] { opacity:.6; }
+#r-scene-message { margin:0; font:var(--fs-100)/var(--lh-snug) var(--ui); color:var(--gold); }
 #r-name { font-size: var(--fs-500); font-family: var(--latin); letter-spacing: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 html[lang="zh-CN"] #r-name { font-family: var(--display); font-size: var(--fs-400); }
 #r-stats { display: flex; flex-wrap: nowrap; gap: var(--sp-2); }

@@ -12,9 +12,10 @@ from the repository on 2026-09-14.
 
 ## Reading order
 
-Latest implemented batch: `BATCH-3.md` (2026-09-15), original Higgsfield material
-studies, close-up furnishing forms and the tabernacle environment. It supersedes older scene/payload descriptions,
-but does not mark the full 1,443-event product or photographic visual target complete.
+Latest implemented batch: `BATCH-4.md` (2026-09-15), route-linked people and
+ships, the 42-stage Exodus camp cycle, and five inspectable story demonstrations.
+`BATCH-3.md` remains the current tabernacle material/environment pass. Neither
+marks the full 1,443-event product or photographic visual target complete.
 
 | # | File | What it settles |
 |---|------|-----------------|

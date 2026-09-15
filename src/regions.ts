@@ -33,13 +33,14 @@ export class RegionLabels{
    this.root.append(el);this.labels.push({el,point:lonLatToVec3(lon,lat,.06),place});
   }
  }
- update(camera:THREE.PerspectiveCamera,globe:THREE.Group,locale:'en'|'zh',top:number,bottom:number,dt:number){
+ update(camera:THREE.PerspectiveCamera,globe:THREE.Group,locale:'en'|'zh',top:number,bottom:number,dt:number,actorBox:DOMRect|null=null){
   this.time+=dt;if(this.time<.09)return;this.time=0;
   const dist=camera.position.length()/100;
   this.root.hidden=dist>3||dist<1.08;if(this.root.hidden)return;
   if(this.last!==locale){this.labels.forEach(l=>l.el.textContent=placeLabel(l.place.name,l.place.zh,locale));this.last=locale;}
   this.root.style.opacity=String(Math.min(1,(3-dist)/.5));
   const occupied=Array.from(document.querySelectorAll<HTMLElement>('.rlab')).filter(e=>e.style.display!=='none').map(e=>e.getBoundingClientRect());
+  if(actorBox)occupied.push(actorBox);
   const cameraLocal=globe.worldToLocal(camera.position.clone());
   for(const label of this.labels){
    const p=label.point;

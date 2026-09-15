@@ -1,0 +1,4 @@
+{
+  "moduleFailure": "Visible error; map and playback remain usable",
+  "textureFailure": "Original ochre fallback, animation still works"
+}

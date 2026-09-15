@@ -70,9 +70,10 @@ try {
         // Live rAF playback, not a manually advanced dev handle.
         const before=await page.evaluate(()=>({camera:window.__globe?.camera.position.toArray(),t:window.__globe?.routeT}));
         await page.click('#r-toggle');
-        await page.waitForTimeout(1200);
+        // Exodus now completes an explicit camp/packing pause before travel.
+        await page.waitForTimeout(route==='exodus-wilderness'?3300:1200);
         const after=await page.evaluate(()=>({camera:window.__globe?.camera.position.toArray(),t:window.__globe?.routeT}));
-        if(before.camera){check(after.t>before.t,'Real animation frames did not advance');assert.deepEqual(after.camera,before.camera,'Playback moved the camera');}
+        if(before.camera){check(after.t>before.t,`${name}/${locale}/${route}: real frames did not advance after camp dwell (${before.t} → ${after.t})`);assert.ok(Math.hypot(...after.camera.map((v,i)=>v-before.camera[i]))<1e-8,'Playback moved the camera');}
         await page.click('#r-toggle');
         await page.click('#r-clear');
       }

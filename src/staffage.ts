@@ -1,76 +1,98 @@
-import * as THREE from 'three';
-import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
+import * as T from 'three';
 import {sampleLeg} from './route-path.ts';
+import {lonLatToVec3} from './globe.ts';
 import type {Route} from './routes.ts';
+import type {GeoJson} from './types.ts';
+import {ActorBatch} from './journey-actors/geometry.ts';
+import type {CampPhase} from './journey-actors/camp-playback.ts';
 
-/** Authored miniatures, not historical models or scaled geography. A single
- * vertex-colour material and instancing keep the complete layer to 2 draws. */
-function miniature(kind:'ship'|'camel'){
- const parts:THREE.BufferGeometry[]=[];
- const part=(geo:THREE.BufferGeometry,color:string,x=0,y=0,z=0,sx=1,sy=1,sz=1,rx=0,rz=0)=>{
-  geo.scale(sx,sy,sz);geo.rotateX(rx);geo.rotateZ(rz);geo.translate(x,y,z);
-  const g=geo.toNonIndexed();const p=g.attributes.position!,n=g.attributes.normal!;const c=new THREE.Color(color);const colors=[];
-  for(let i=0;i<p.count;i++){const k=.72+.28*Math.max(0,n.getY(i)*.8+n.getX(i)*.5);colors.push(c.r*k,c.g*k,c.b*k);}
-  g.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));parts.push(g);
- };
- if(kind==='ship'){
-  part(new THREE.SphereGeometry(1,10,4), '#865334',0,.11,0,1,.25,.35);
-  part(new THREE.BoxGeometry(1.5,.035,.45),'#bd9263',0,.28);
-  part(new THREE.CylinderGeometry(.02,.028,1.4,5),'#986637',0,.91);
-  part(new THREE.CylinderGeometry(.02,.02,1.35,5),'#986637',0,1.42,0,1,1,1,0,Math.PI/2);
-  const sail=new THREE.PlaneGeometry(1.24,.9,8,6),p=sail.attributes.position!;
-  for(let i=0;i<p.count;i++)p.setZ(i,Math.cos(p.getX(i)*2.3)*Math.cos(p.getY(i)*2.8)*.20);
-  sail.computeVertexNormals();part(sail,'#e5d7b9',0,.99,0);
- }else{
-  part(new THREE.SphereGeometry(1,8,4),'#9c7044',0,.65,0,.47,.28,.19);
-  part(new THREE.SphereGeometry(1,8,3),'#b38a59',-.08,.9,0,.20,.21,.15);
-  part(new THREE.CylinderGeometry(.075,.1,.55,6),'#b38a59',.43,.96,0,1,1,1,0,-.5);
-  part(new THREE.SphereGeometry(1,6,3),'#9c7044',.60,1.21,0,.18,.12,.09);
-  for(const x of [-.3,.3])for(const z of [-.13,.13])part(new THREE.CylinderGeometry(.035,.035,.55,5),'#785236',x,.27,z);
-  part(new THREE.BoxGeometry(.35,.11,.43),'#634e3f',-.08,.97,0);
- }
- const geometry=mergeGeometries(parts)!;parts.forEach(p=>p.dispose());return geometry;
+/** Modern land is a visual exclusion mask, NOT ancient navigability. */
+function landMask(land:GeoJson){
+  const canvas=document.createElement('canvas');canvas.width=1440;canvas.height=720;
+  const ctx=canvas.getContext('2d',{willReadFrequently:true})!;
+  for(const f of land.features){
+    const g=f.geometry;if(!g)continue;
+    const polys=g.type==='Polygon'?[g.coordinates as number[][][]]:g.type==='MultiPolygon'?g.coordinates as number[][][][]:[];
+    for(const poly of polys){ctx.beginPath();for(const ring of poly){ring.forEach(([lon,lat],i)=>{const x=(lon!+180)*4,y=(90-lat!)*4;i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.closePath();}ctx.fill('evenodd');}
+  }
+  const pixels=ctx.getImageData(0,0,1440,720).data;
+  return (p:T.Vector3)=>{
+    const lon=Math.atan2(-p.z,p.x)*180/Math.PI,lat=Math.asin(p.y/p.length())*180/Math.PI;
+    const x=T.MathUtils.clamp(Math.floor((lon+180)*4),0,1439),y=T.MathUtils.clamp(Math.floor((90-lat)*4),0,719);
+    return pixels[(y*1440+x)*4+3]!>128;
+  };
 }
-export class Staffage{
- readonly group=new THREE.Group();
- private material=new THREE.MeshBasicMaterial({vertexColors:true,side:THREE.DoubleSide,transparent:true,opacity:0,depthWrite:false});
- private ships=new THREE.InstancedMesh(miniature('ship'),this.material,6);
- private camels=new THREE.InstancedMesh(miniature('camel'),this.material,5);
- private dummy=new THREE.Object3D();private opacity=0;
- constructor(){this.ships.count=0;this.camels.count=0;this.ships.frustumCulled=false;this.camels.frustumCulled=false;this.group.add(this.ships,this.camels);}
- update(route:Route|null,camera:THREE.PerspectiveCamera,dt:number){
-  const dist=camera.position.length(),target=route?THREE.MathUtils.clamp((2.2-dist/100)/.3,0,1):0;
-  this.opacity+=(target-this.opacity)*(1-Math.exp(-dt*10));this.material.opacity=this.opacity;
-  this.group.visible=this.opacity>.01;if(!this.group.visible||!route)return;
-  const scale=Math.max(.05,(dist-100)*2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))/innerHeight*12);
-  let shipCount=0;
-  const used:THREE.Vector3[]=[];
-  for(const leg of route.path.legs){
-   if(!leg.sea||shipCount>=6)continue;
-   const p=sampleLeg(leg,.5,new THREE.Vector3());
-   if(used.some(v=>v.distanceTo(p)<scale*3))continue;used.push(p.clone());
-   const normal=p.clone().normalize(),tangent=sampleLeg(leg,.51,new THREE.Vector3()).sub(p).normalize();
-   // Miniature sits adjacent to, not over, the route stroke.
-   p.addScaledVector(new THREE.Vector3().crossVectors(tangent,normal),scale*1.4);
-   this.place(p,normal,tangent,scale);this.ships.setMatrixAt(shipCount++,this.dummy.matrix);
+export class Staffage {
+  readonly group=new T.Group();
+  private material=new T.MeshBasicMaterial({vertexColors:true,side:T.DoubleSide,transparent:true,opacity:0,depthWrite:false});
+  private batch=new ActorBatch(this.material,4);
+  private opacity=0;private time=0;private key='';private water=false;private maskAge=1;
+  private p=new T.Vector3();private normal=new T.Vector3();private tangent=new T.Vector3();private side=new T.Vector3();private basis=new T.Matrix4();
+  private onLand:(p:T.Vector3)=>boolean;
+  readonly state={mode:'hidden',people:0,tents:0,ship:0,anchor:[0,0,0],phase:'rest'};
+  hit(ray:T.Raycaster){
+    if(!this.group.visible||this.opacity<.2)return false;
+    const objects=[...this.batch.meshes.values()].filter(m=>m.visible&&m.count>0);
+    objects.forEach(m=>m.computeBoundingSphere());
+    return ray.intersectObjects(objects,false).some(hit=>hit.distance<ray.ray.origin.length());
   }
-  this.ships.count=shipCount;this.ships.instanceMatrix.needsUpdate=true;
-  // One schematic caravan beside a land segment, not on a disputed camp.
-  const land=route.path.legs.find(l=>!l.sea&&l.angle>.008);
-  this.camels.count=land?5:0;
-  if(land){
-   for(let i=0;i<5;i++){
-    const p=sampleLeg(land,.40+i*.025,new THREE.Vector3()),normal=p.clone().normalize();
-    const tangent=sampleLeg(land,.405+i*.025,new THREE.Vector3()).sub(p).normalize();
-    p.addScaledVector(new THREE.Vector3().crossVectors(tangent,normal),scale*2.1);
-    this.place(p,normal,tangent,scale*.7);this.camels.setMatrixAt(i,this.dummy.matrix);
-   }
-   this.camels.instanceMatrix.needsUpdate=true;
+  screenBox(camera:T.PerspectiveCamera){
+    if(!this.group.visible||this.state.mode==='hidden')return null;
+    this.group.updateWorldMatrix(true,true);
+    const points:T.Vector3[]=[];
+    for(const x of [-4,4])for(const y of [0,3.3])for(const z of [-2,4])points.push(new T.Vector3(x,y,z).applyMatrix4(this.batch.group.matrixWorld).project(camera));
+    const xs=points.map(p=>(p.x+1)*innerWidth/2),ys=points.map(p=>(1-p.y)*innerHeight/2);
+    return new DOMRect(Math.min(...xs),Math.min(...ys),Math.max(...xs)-Math.min(...xs),Math.max(...ys)-Math.min(...ys));
   }
- }
- private place(p:THREE.Vector3,normal:THREE.Vector3,tangent:THREE.Vector3,scale:number){
-  const z=new THREE.Vector3().crossVectors(tangent,normal).normalize();const x=new THREE.Vector3().crossVectors(normal,z).normalize();
-  this.dummy.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(x,normal,z));
-  this.dummy.position.copy(p);this.dummy.scale.setScalar(scale);this.dummy.updateMatrix();
- }
+  constructor(land:GeoJson){
+    this.onLand=landMask(land);this.group.add(this.batch.group);
+    // Cartographic miniatures have an oblique display tilt, not geographic size.
+    // Lift their display base so the tilt does not push feet under the sphere.
+    this.batch.group.rotation.x=.85;this.batch.group.position.y=1.3;
+  }
+  update(route:Route|null,camera:T.PerspectiveCamera,dt:number,progress=0,playing=false,ordinal:number|null=null,campPhase:CampPhase='rest',tentScale=1){
+    const key=route?.journey.id??'';
+    if(key!==this.key){this.key=key;this.time=0;this.opacity=0;this.maskAge=1;}
+    if(playing&&!matchMedia('(prefers-reduced-motion: reduce)').matches)this.time+=dt;
+    const dist=camera.position.length();
+    const marker=route&&(ordinal===null?route.markerAt(progress):route.journey.markers.find(m=>m.stops.includes(ordinal)));
+    const valid=!!marker&&marker.lat!==null&&marker.lon!==null&&!marker.aside&&marker.attested;
+    const target=route&&valid?T.MathUtils.clamp((2.2-dist/100)/.3,0,1):0;
+    this.opacity+=(target-this.opacity)*(1-Math.exp(-dt*10));this.material.opacity=this.opacity;
+    this.batch.begin();this.state.mode='hidden';this.state.people=0;this.state.tents=0;this.state.ship=0;this.state.phase=campPhase;
+    this.group.visible=valid&&this.opacity>.01;
+    if(!this.group.visible||!route||!marker){this.batch.finish();return;}
+    const leg=route.path.legs.find(l=>progress<l.to-1e-10)??route.path.legs.at(-1);
+    if(ordinal!==null)this.p.copy(lonLatToVec3(marker.lon!,marker.lat!,.18));else this.p.copy(route.headPosition);
+    this.normal.copy(this.p).normalize();
+    if(leg){sampleLeg(leg,.501,this.tangent).sub(sampleLeg(leg,.5,this.side));this.tangent.addScaledVector(this.normal,-this.tangent.dot(this.normal)).normalize();}
+    else this.tangent.crossVectors(new T.Vector3(0,1,0),this.normal).normalize();
+    if(this.tangent.lengthSq()<.5)this.tangent.set(1,0,0).cross(this.normal).normalize();
+    this.side.crossVectors(this.tangent,this.normal).normalize();this.tangent.crossVectors(this.normal,this.side).normalize();
+    this.basis.makeBasis(this.tangent,this.normal,this.side);
+    this.group.quaternion.setFromRotationMatrix(this.basis);this.group.position.copy(this.p);
+    const scale=Math.max(.025,(dist-100)*2*Math.tan(T.MathUtils.degToRad(camera.fov/2))/Math.max(1,innerHeight)*16);
+    this.group.scale.setScalar(scale);this.state.anchor=this.p.toArray();
+    const exodus=route.journey.id==='exodus-wilderness';
+    if(leg?.sea&&ordinal===null&&progress>leg.from&&progress<leg.to){
+      this.maskAge+=dt;if(this.maskAge>.1){this.water=!this.onLand(this.p);this.maskAge=0;}
+      if(this.water){this.batch.ship(this.time);this.state.mode='sailing';this.state.ship=1;this.state.people=3;}
+    }else if(!leg?.sea||ordinal!==null||exodus||progress===0||progress>=1){
+      const count=exodus?12:route.journey.id==='elijah'?1:3;
+      const camping=exodus&&campPhase!=='travel'&&(ordinal!==null||!playing);
+      for(let i=0;i<count;i++){
+        const x=camping?(i%4-1.5)*.75:-(i%6)*.65;
+        const z=camping?1.6+Math.floor(i/4)*.58:(Math.floor(i/6)-.5)*.85;
+        this.batch.person(x,z,this.time,i,.72,0,playing&&!camping);
+      }
+      if(camping){for(let i=0;i<3;i++)this.batch.put('tent',(i-1)*2.05,0,-1,.65,0,0,Math.max(.03,tentScale));this.state.tents=3;}
+      this.state.mode=camping?'camp':'walking';this.state.people=count;
+      if(route.journey.id==='elijah'&&marker.stops.includes(4)&&ordinal===4){
+        for(let i=0;i<12;i++){const a=i%4*Math.PI/2;this.batch.put('stone',1.5+Math.cos(a)*.48,.2+Math.floor(i/4)*.33,Math.sin(a)*.48,1.1,i);}
+        this.batch.put('wood',1.5,1.2,0,.8);this.batch.put('offering',1.5,1.4,0,.8);
+        this.state.mode='altar';
+      }
+    }
+    this.batch.finish();
+  }
 }

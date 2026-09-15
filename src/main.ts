@@ -7,6 +7,8 @@ import { createGlobe, createLighting, GLOBE_RADIUS, lonLatToVec3 } from './globe
 import { Terrain } from './terrain.ts';
 import { RegionLabels } from './regions.ts';
 import { Staffage } from './staffage.ts';
+import {CampPlayback} from './journey-actors/camp-playback.ts';
+import {storyOptions,type StoryId} from './journey-actors/stories.ts';
 import { placeLabel, bareName } from './names.ts';
 import { Markers } from './markers.ts';
 import { bookName, bookOf, localiseRef } from './books.ts';
@@ -116,7 +118,7 @@ scene.add(globe);
 const terrain = new Terrain();
 globe.add(terrain.mesh);
 const regionLabels=new RegionLabels(bundle.places);
-const staffage=new Staffage();globe.add(staffage.group);
+const staffage=new Staffage(land);globe.add(staffage.group);
 
 const markers = new Markers(bundle.places, bundle.events);
 globe.add(markers.mesh);
@@ -157,6 +159,9 @@ let downAt = { x: 0, y: 0 };
 canvas.addEventListener('pointerdown', (ev) => { downAt = { x: ev.clientX, y: ev.clientY }; });
 canvas.addEventListener('pointerup', (ev) => {
   if (Math.hypot(ev.clientX - downAt.x, ev.clientY - downAt.y) > 5) return;
+  pointer.set((ev.clientX/innerWidth)*2-1,1-(ev.clientY/innerHeight)*2);
+  raycaster.setFromCamera(pointer,camera);
+  if(route&&storyOptions(route.journey.id).length&&staffage.hit(raycaster)){$('r-scene').click();return;}
   const i = pick(ev);
   if (i >= 0) select(bundle.places[i]!); else closePanel();
 });
@@ -215,6 +220,8 @@ function renderPanel() {
 let route: Route | null = null;
 let routePlaying = false;
 let routeT = 0;
+let campPlayback:CampPlayback|null=null;
+let storyRequest=0;
 const routeLabels = new RouteLabels(document.body);
 const routeThumbnail = new RouteThumbnail(renderer, globe, terrain, $<HTMLCanvasElement>('r-thumbnail'));
 const cartography = new Cartography();
@@ -248,6 +255,10 @@ function setRoutesState(state: 'closed' | 'open' | 'active') {
 }
 
 function clearRoute() {
+  storyRequest++;
+  campPlayback=null;
+  $('r-scene').hidden=true;
+  $('r-scene-message').hidden=true;
   if (route) { globe.remove(route.group); route.dispose(); route = null; }
   // Leaving a route restores the world's own up, or the globe stays tilted.
   camera.up.set(0, 1, 0);
@@ -273,6 +284,8 @@ function openRoute(id: string) {
   const jr = journeyData.journeys.find((x) => x.id === id);
   if (!jr) return;
   route = new Route(jr);
+  campPlayback=jr.id==='exodus-wilderness'?new CampPlayback(route):null;
+  $('r-scene').hidden=storyOptions(jr.id).length===0;
   route.setProgress(0);
   globe.add(route.group);
   routeLabels.build(route.markerObjects, locale);
@@ -390,7 +403,8 @@ function frameRoute(jr: Journey) {
     return {width:right-left,height:bottom-top,x:(left+right)/2,y:(top+bottom)/2};
   };
   const fitAxis=new THREE.Vector3().crossVectors(centre,camera.up).normalize();
-  const horizontalPadding = innerWidth <= 520 ? 40 : 64;
+  // Leave room for the moving miniature at coastal/end-point stops too.
+  const horizontalPadding = innerWidth <= 520 ? (jr.id.startsWith('paul-') ? 80 : 40) : 64;
   for(let i=0;i<8;i++){
     const bounds=projectedBounds();
     const ratio=Math.max(bounds.width/Math.max(100,innerWidth-horizontalPadding),bounds.height/Math.max(100,band.height-32));
@@ -483,8 +497,10 @@ function seekStop(n: number) {
   const index=route.journey.markers.findIndex(m=>m.stops.includes(n));
   if(index<0)return;
   selectedOrdinal=n;
+  campPlayback?.seek(n);
   const at=route.progressAt(index);
-  if(at!==undefined&&Number.isFinite(at)){routeT=at;route.setProgress(routeT);}
+  if(campPlayback){routeT=campPlayback.t;route.setProgress(routeT);}
+  else if(at!==undefined&&Number.isFinite(at)){routeT=at;route.setProgress(routeT);}
   route.focusMarker(index);
   setRoutePlayback(false);
   updateRouteReadout();
@@ -497,6 +513,20 @@ function stepStop(delta:number){
 $('r-prev').addEventListener('click',()=>stepStop(-1));
 $('r-next').addEventListener('click',()=>stepStop(1));
 $('r-info').addEventListener('click',()=>{setRoutePlayback(false);$<HTMLDialogElement>('r-sources').showModal();});
+$('r-scene').addEventListener('click',async()=>{
+  if(!route)return;
+  setRoutePlayback(false);
+  const request=++storyRequest,options=storyOptions(route.journey.id);
+  const ordinal=selectedOrdinal??route.markerAt(routeT)?.n??1;
+  const id:StoryId=route.journey.id==='elijah'?(ordinal>=6?'flight':'carmel'):options[0]!;
+  const jr=route.journey,m=jr.markers.find(m=>m.stops.includes(ordinal));
+  const context={en:jr.en+' · '+(m?placeLabel(m.place,m.zh,'en'):''),zh:jr.zh+' · '+(m?placeLabel(m.place,m.zh,'zh'):'')};
+  $('r-scene').setAttribute('aria-busy','true');
+  $('r-scene-message').hidden=true;
+  try{const {openStory}=await import('./journey-actors/viewer.ts');if(request===storyRequest&&route)openStory(id,options,context);}
+  catch{if(request===storyRequest){$('r-scene-message').textContent=locale==='zh'?'场景未载入，请刷新后重试。地图仍可使用。':'Scene unavailable. Refresh to retry; the map still works.';$('r-scene-message').hidden=false;}}
+  finally{$('r-scene').removeAttribute('aria-busy');}
+});
 $('r-sources-close').addEventListener('click',()=>$<HTMLDialogElement>('r-sources').close());
 $('map-fit').addEventListener('click',()=>{if(route)frameRoute(route.journey);});
 for(const [id,factor] of [['map-in',.75],['map-out',1.3]] as const){
@@ -573,8 +603,8 @@ addEventListener('keydown', (e) => {
 });
 rToggle.addEventListener('click', () => {
   if (!route) return;
-  if (routeT >= 1) { routeT=0;route.setProgress(0); }
-  selectedOrdinal=null;
+  if (routeT >= 1) { routeT=0;route.setProgress(0);if(campPlayback)campPlayback=new CampPlayback(route); }
+  selectedOrdinal=campPlayback&&!campPlayback.travelling?campPlayback.ordinal:null;
   setRoutePlayback(!routePlaying);
   updateRouteReadout();
 });
@@ -583,6 +613,12 @@ $('r-clear').addEventListener('click', clearRoute);
 /** Advances the path only; the camera belongs to the reader. */
 function advanceRoute(dt: number) {
   if (!route || !routePlaying) return;
+  if(campPlayback){
+    campPlayback.advance(dt);routeT=campPlayback.t;route.setProgress(routeT);
+    selectedOrdinal=campPlayback.travelling?null:campPlayback.ordinal;
+    if(selectedOrdinal!==null)route.focusMarker(route.journey.markers.findIndex(m=>m.stops.includes(selectedOrdinal!)));
+    updateRouteReadout();if(campPlayback.done)setRoutePlayback(false);return;
+  }
   // Slow enough to read each stop; the wilderness is forty years, not a lap.
   routeT = Math.min(1, routeT + dt / Math.max(24,route.journey.stopCount*1.6));
   route.setProgress(routeT);
@@ -756,8 +792,8 @@ renderer.setAnimationLoop(() => {
     routeLabels.update(camera, globe, route.reachedIndex(routeT), innerWidth, innerHeight, safeBand, route.highlightedIndex(routeT));
   }
   terrain.update(camera.position.length(), dt);
-  regionLabels.update(camera,globe,locale,safeBand.top,safeBand.top+safeBand.height,dt);
-  staffage.update(route,camera,dt);
+  staffage.update(route,camera,dt,routeT,routePlaying,selectedOrdinal,campPlayback?.phase??'rest',campPlayback?.tentScale??1);
+  regionLabels.update(camera,globe,locale,safeBand.top,safeBand.top+safeBand.height,dt,staffage.screenBox(camera));
   markers.setZoom(camera.position.length(), GLOBE_RADIUS, dt, innerHeight, camera.fov);
   cartography.update(camera,innerWidth,innerHeight,locale);
   // The selection ring breathes so the eye can find it again after orbiting.
@@ -781,7 +817,8 @@ console.info(
 // Guarded by import.meta.env.DEV, so it is dropped from a production build.
 if (import.meta.env.DEV) {
   (globalThis as unknown as Record<string, unknown>).__globe = {
-    scene, camera, controls, markers, globe, bundle, renderer,
+    scene, camera, controls, markers, globe, bundle, renderer,staffage,
+    get campPlayback(){return campPlayback;},
     measureMap, visibleBand, frameRoute, seekStop,
     /** Screen-space position of a place, for synthetic pointer events. */
     screenOf(place: Place) {

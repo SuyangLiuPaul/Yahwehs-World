@@ -1,0 +1,180 @@
+{
+  "camp": {
+    "visited": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42
+    ],
+    "phases": [
+      "pitch",
+      "rest",
+      "pack",
+      "travel"
+    ],
+    "maxSpeedError": 5.2909066017292616e-17,
+    "done": true,
+    "t": 1,
+    "frames": 3805
+  },
+  "playPauseOrbitLocale": "passed",
+  "errors": [],
+  "stages": {
+    "stones": {
+      "id": "carmel",
+      "time": 3.3,
+      "playing": false,
+      "phase": 0,
+      "pieces": {
+        "ship": 0,
+        "sail": 0,
+        "person": 5,
+        "leg": 10,
+        "arm": 10,
+        "stone": 12,
+        "wood": 5,
+        "offering": 1
+      }
+    },
+    "water": {
+      "id": "carmel",
+      "time": 6.6,
+      "playing": false,
+      "phase": 1,
+      "pieces": {
+        "ship": 0,
+        "sail": 0,
+        "person": 5,
+        "leg": 10,
+        "arm": 10,
+        "stone": 12,
+        "wood": 5,
+        "offering": 1,
+        "jar": 4,
+        "water": 56
+      }
+    },
+    "fire": {
+      "id": "carmel",
+      "time": 15.84,
+      "playing": false,
+      "phase": 3,
+      "pieces": {
+        "ship": 0,
+        "sail": 0,
+        "person": 5,
+        "leg": 10,
+        "arm": 10,
+        "stone": 12,
+        "wood": 5,
+        "offering": 1,
+        "jar": 0,
+        "water": 0,
+        "flame": 18
+      }
+    },
+    "consumed": {
+      "id": "carmel",
+      "time": 22,
+      "playing": false,
+      "phase": 4,
+      "pieces": {
+        "ship": 0,
+        "sail": 0,
+        "person": 5,
+        "leg": 10,
+        "arm": 10,
+        "stone": 0,
+        "wood": 0,
+        "offering": 0,
+        "jar": 0,
+        "water": 0,
+        "flame": 0
+      }
+    },
+    "ascent": {
+      "id": "whirlwind",
+      "time": 13.64,
+      "playing": false,
+      "phase": 2,
+      "pieces": {
+        "ship": 0,
+        "sail": 0,
+        "person": 2,
+        "leg": 4,
+        "arm": 4,
+        "stone": 0,
+        "wood": 0,
+        "offering": 0,
+        "jar": 0,
+        "water": 0,
+        "flame": 30,
+        "chariot": 1,
+        "horse": 2,
+        "whirl": 1,
+        "cloak": 1
+      }
+    },
+    "end": {
+      "id": "whirlwind",
+      "time": 22,
+      "playing": false,
+      "phase": 3,
+      "pieces": {
+        "ship": 0,
+        "sail": 0,
+        "person": 1,
+        "leg": 2,
+        "arm": 2,
+        "stone": 0,
+        "wood": 0,
+        "offering": 0,
+        "jar": 0,
+        "water": 0,
+        "flame": 0,
+        "chariot": 0,
+        "horse": 0,
+        "whirl": 0,
+        "cloak": 1
+      }
+    }
+  }
+}
