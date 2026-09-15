@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
 import { mkdir,writeFile } from 'node:fs/promises';
-const dir='handoff/evidence/phase-1/navigation';await mkdir(dir,{recursive:true});
+const dir=process.env.EVIDENCE_DIR||'handoff/evidence/phase-1/navigation';await mkdir(dir,{recursive:true});
 const browser=await chromium.launch({channel:'chrome',headless:true});const report=[];
 try{
   for(const [name,width,height] of [['phone',375,812],['tablet',768,1024],['desktop',1440,900]]){

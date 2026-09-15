@@ -5,15 +5,20 @@ import { buildTabernacle } from './tabernacle.ts';
 import { Walker } from './controls.ts';
 import { Tour, TOUR } from './tour.ts';
 import { applyStatic, bindSwitch, onLocale, t } from '../locale.ts';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
 const CUBIT = 0.445;   // the common cubit; the card feed carries the argument
 
 const canvas = document.getElementById('stage') as HTMLCanvasElement;
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.info.autoReset=false;
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.92;
+renderer.toneMappingExposure = 1.05;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -30,18 +35,18 @@ scene.environment = pmrem.fromEquirectangular(sky).texture;
 // The sky is bright, and at full strength it washed the sand to concrete and
 // flattened every form: ambient light from all directions is exactly the light
 // that removes shading. It fills; the sun models.
-scene.environmentIntensity = 0.42;
+scene.environmentIntensity = 0.65;
 // Haze thickens toward the horizon so distance reads as distance.
 // Far enough out that the court itself stays crisp; haze belongs to the
 // desert beyond it, not to a wall forty metres away.
 scene.fog = new THREE.Fog(0xc8cec6, 150, 460);
 
 const camera = new THREE.PerspectiveCamera(
-  72, Math.max(1, innerWidth) / Math.max(1, innerHeight), 0.05, 400);
+  65, Math.max(1, innerWidth) / Math.max(1, innerHeight), 0.04, 600);
 
 // Mid-morning rather than noon: a sun overhead casts no shadows worth having,
 // and shadow is most of what makes a shape read as solid.
-const sun = new THREE.DirectionalLight(0xfff2d6, 3.4);
+const sun = new THREE.DirectionalLight(0xfff0d6, 2.6);
 sun.position.set(50, 30, 22);
 sun.castShadow = true;
 sun.shadow.mapSize.set(4096, 4096);
@@ -53,7 +58,7 @@ sun.shadow.camera.near = 20;
 sun.shadow.camera.far = 130;
 // Without a bias, a shadow map at this scale stripes every lit surface.
 sun.shadow.bias = -0.0004;
-sun.shadow.normalBias = 0.02;
+sun.shadow.normalBias = 0.006;
 sun.shadow.radius = 3;
 scene.add(sun);
 // Sky above, sand below — the bounce off a desert floor is warm and strong,
@@ -62,16 +67,29 @@ scene.add(sun);
 // a floor under the shadows to keep them from going black.
 scene.add(new THREE.HemisphereLight(0x9fc2e0, 0xb9a377, 0.25));
 
-const { group, colliders, counts } = buildTabernacle(CUBIT);
+const { group, colliders, counts, ready } = buildTabernacle(CUBIT);
 group.traverse((o) => {
   if (!(o as THREE.Mesh).isMesh) return;
   o.receiveShadow = true;
   o.castShadow = o.userData.noCast !== true;
 });
 scene.add(group);
+// The architecture and sun are static. Build the shadow atlas once, then
+// refresh when the authored GLB arrives, not on every first-person frame.
+renderer.shadowMap.autoUpdate=false;renderer.shadowMap.needsUpdate=true;
+void ready.then(ok=>{renderer.shadowMap.needsUpdate=true;document.body.dataset.laver=ok?'ready':'fallback';});
+pmrem.dispose();
 
 const walker = new Walker(camera, canvas, colliders);
 scene.add(walker.yaw);
+const composer=new EffectComposer(renderer,new THREE.WebGLRenderTarget(1,1,{type:THREE.HalfFloatType,samples:2}));
+composer.setPixelRatio(Math.min(devicePixelRatio,1.5));
+composer.addPass(new RenderPass(scene,camera));
+const ao=new GTAOPass(scene,camera,1,1);
+ao.updateGtaoMaterial({radius:.7,distanceExponent:1.3,thickness:.15,distanceFallOff:1,samples:8});
+ao.updatePdMaterial({radius:4,rings:2,samples:8});
+ao.blendIntensity=.9;
+composer.addPass(ao);composer.addPass(new OutputPass());
 // Standing outside the eastern gate, looking in — the way anyone approaching
 // the tabernacle would have come to it. A yaw of +PI/2 turns the camera's own
 // -Z toward -X, which is where the court lies; -PI/2 faces the empty desert.
@@ -81,11 +99,11 @@ walker.moveTo(CUBIT * 62, 0, Math.PI / 2);
 // Named zones rather than coordinates, each carrying the verse that defines it.
 const ZONES: { test: (x: number, z: number) => boolean; zh: string; en: string; ref: string }[] = [
   { zh: '至圣所', en: 'The most holy place', ref: '出 26:33–34 · Ex 26:33–34',
-    test: (x) => x < CUBIT * -20 },
+    test: (x,z) => x < CUBIT * -25 && x>CUBIT*-35 && Math.abs(z)<CUBIT*5 },
   { zh: '圣所 · 灯台 · 陈设饼桌 · 香坛',
     en: 'The holy place — lampstand, table, incense',
     ref: '出 25:23–40、26:35、30:1–6 · Ex 25:23–40, 26:35, 30:1–6',
-    test: (x) => x < CUBIT * 0 },
+    test: (x,z) => x < CUBIT * -5 && x>=CUBIT*-25 && Math.abs(z)<CUBIT*5 },
   { zh: '会幕内', en: 'Inside the tent', ref: '出 26:15 · Ex 26:15',
     test: (x) => x < CUBIT * 10 },
   { zh: '院内 · 铜坛旁', en: 'The court — by the bronze altar', ref: '出 27:1 · Ex 27:1',
@@ -143,6 +161,8 @@ const tour = new Tour(CUBIT);
 const tourBar = document.getElementById('tour-bar')!;
 const tourFill = tourBar.querySelector('i') as HTMLElement;
 const tourToggle = document.getElementById('tour-toggle')!;
+const stopSelect=document.getElementById('tour-stop') as HTMLSelectElement;
+const veilFade=document.getElementById('view-transition')!;
 
 let tourCaption: { zh: string; en: string; ref: string } | null = null;
 
@@ -152,17 +172,16 @@ tour.onStop = (stop, i, total) => {
   verseEl.textContent = stop.ref;
   tourFill.style.width = `${((i + 1) / total * 100).toFixed(0)}%`;
   lastZone = '__tour';           // keep the zone readout from overwriting this
+  stopSelect.value=String(i);
 };
 tour.onEnd = () => {
-  tourCaption = null;
-  tourToggle.hidden = true;
-  tourBar.hidden = true;
-  lastZone = '';                 // hand the readout back to the zones
+  tourToggle.textContent='↺';
+  tourToggle.setAttribute('aria-label',t('Replay the tour','重新导览'));
 };
 
 // Any reach for the controls ends the tour. A guided walk that fights the
 // visitor for the camera is worse than no guided walk.
-walker.onManualInput = () => { if (tour.running) endTour(); };
+walker.onManualInput = () => { if (tour.running||tour.paused) endTour(); };
 
 function startTour() {
   gateEl.classList.add('hidden');
@@ -170,6 +189,7 @@ function startTour() {
   tourBar.hidden = false;
   tourToggle.hidden = false;
   tourToggle.textContent = '❚❚';
+  tourToggle.setAttribute('aria-label',t('Pause tour','暂停导览'));
   const first = TOUR[0]!;
   // Start already facing the first stop's subject, so the tour does not open
   // by swinging the whole world around.
@@ -186,8 +206,23 @@ function endTour() {
 }
 document.getElementById('tour')!.addEventListener('click', startTour);
 tourToggle.addEventListener('click', () => {
-  if (tour.running) { tour.stop(); tourToggle.textContent = '▶'; }
-  else { tour.start(walker.pose); tourToggle.textContent = '❚❚'; }
+  if (tour.running) { tour.pause(); tourToggle.textContent = '▶';tourToggle.setAttribute('aria-label',t('Resume tour','继续导览')); }
+  else if(tour.paused){tour.resume();tourToggle.textContent='❚❚';tourToggle.setAttribute('aria-label',t('Pause tour','暂停导览'));}
+  else startTour();
+});
+function inspectStop(index:number){
+  tour.pause();walker.setPose(tour.goTo(index));tourToggle.hidden=false;
+  tourToggle.textContent='▶';tourToggle.setAttribute('aria-label',t('Resume tour','继续导览'));
+}
+stopSelect.addEventListener('change',()=>inspectStop(Number(stopSelect.value)));
+document.getElementById('tour-prev')!.addEventListener('click',()=>inspectStop(tour.currentIndex-1));
+document.getElementById('tour-next')!.addEventListener('click',()=>inspectStop(tour.currentIndex+1));
+function exitWalk(){endTour();walker.exit();gateEl.classList.remove('hidden');hud.hidden=true;}
+document.getElementById('walk-exit')!.addEventListener('click',exitWalk);
+addEventListener('keydown',e=>{if(e.code==='Escape')exitWalk();});
+document.getElementById('model-info')!.addEventListener('click',()=>{
+  if(tour.running){tour.pause();tourToggle.textContent='▶';}
+  (document.getElementById('assumptions') as HTMLDialogElement).showModal();
 });
 
 let lastZone = '';
@@ -220,8 +255,14 @@ function updateHud() {
 function fit() {
   const w = Math.max(1, innerWidth), h = Math.max(1, innerHeight);
   camera.aspect = w / h;
+  // Keep a whole furnishing visible in a portrait viewport; this changes
+  // only on resize, never in response to playback progress.
+  camera.fov=w<h?84:65;
   camera.updateProjectionMatrix();
   renderer.setSize(w, h, false);
+  composer.setSize(w,h);
+  // Contact shading at half resolution, denoised; geometry remains full res.
+  ao.setSize(Math.ceil(w*.6),Math.ceil(h*.6));
 }
 addEventListener('resize', fit);
 new ResizeObserver(fit).observe(document.body);
@@ -232,6 +273,10 @@ bindSwitch(document.querySelector('.lang-switch') as HTMLElement);
 function applyLocale() {
   applyStatic();
   renderTally();
+  stopSelect.replaceChildren(...TOUR.map((s,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=`${i+1} / ${TOUR.length} · ${t(s.en,s.zh)}`;return option;}));
+  if(tour.currentIndex>=0)stopSelect.value=String(tour.currentIndex);
+  document.getElementById('tour-prev')!.setAttribute('aria-label',t('Previous stop','上一站'));
+  document.getElementById('tour-next')!.setAttribute('aria-label',t('Next stop','下一站'));
   lastZone = '';                       // force the zone readout to re-render
   if (tourCaption) {
     whereEl.textContent = t(tourCaption.en, tourCaption.zh);
@@ -247,14 +292,15 @@ renderer.setAnimationLoop(() => {
   const pose = tour.update(dt);
   // The tour owns the camera while it runs; otherwise the walker does.
   if (pose) walker.setPose(pose); else walker.update(dt);
+  veilFade.style.opacity=String(tour.fade);
   updateHud();
-  renderer.render(scene, camera);
+  renderer.info.reset();composer.render();
 });
 
 if (import.meta.env.DEV) {
   (globalThis as unknown as Record<string, unknown>).__walk = {
     scene, camera, renderer, walker, counts, colliders, CUBIT, updateHud,
-    tour, startTour, endTour, TOUR,
+    tour, startTour, endTour, TOUR, ready, inspectStop,
     /** Renders one frame at an arbitrary size and returns it, so the scene can
      *  be inspected where the page is not being painted. */
     snapshot(w = 1400, h = 900) {

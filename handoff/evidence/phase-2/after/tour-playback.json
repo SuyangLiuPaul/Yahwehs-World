@@ -1,0 +1,45 @@
+{
+  "events": [
+    {
+      "stop": 1,
+      "elapsedMs": 1
+    },
+    {
+      "stop": 2,
+      "elapsedMs": 3619
+    },
+    {
+      "stop": 3,
+      "elapsedMs": 11761
+    },
+    {
+      "stop": 4,
+      "elapsedMs": 22618
+    },
+    {
+      "stop": 5,
+      "elapsedMs": 33482
+    },
+    {
+      "stop": 6,
+      "elapsedMs": 44351
+    },
+    {
+      "stop": 7,
+      "elapsedMs": 57923
+    },
+    {
+      "stop": 8,
+      "elapsedMs": 68775
+    },
+    {
+      "stop": 9,
+      "elapsedMs": 81446
+    },
+    {
+      "stop": 10,
+      "elapsedMs": 91389
+    }
+  ],
+  "errors": []
+}

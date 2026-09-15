@@ -10,6 +10,7 @@
 </head>
 <body>
   <canvas id="stage"></canvas>
+  <div id="view-transition" aria-hidden="true"></div>
 
   <nav class="sitenav">
     <a class="brand" href="/">
@@ -61,20 +62,34 @@
          knowing where you are. -->
     <svg id="plan" viewBox="0 0 132 74" aria-hidden="true">
       <rect class="p-court" x="1" y="1" width="130" height="72"></rect>
-      <rect class="p-tent"  x="14" y="19" width="52" height="36"></rect>
-      <line  class="p-veil" x1="40" y1="19" x2="40" y2="55"></line>
-      <rect class="p-altar" x="92" y="30" width="14" height="14"></rect>
+      <rect class="p-tent"  x="20.5" y="29.8" width="39" height="14.4"></rect>
+      <line  class="p-veil" x1="33.5" y1="29.8" x2="33.5" y2="44.2"></line>
+      <rect class="p-altar" x="99.15" y="33.4" width="6.5" height="7.2"></rect>
       <circle id="p-you" class="p-you" cx="120" cy="37" r="3.4"></circle>
     </svg>
     <div class="hud-text">
+      <label class="sr-only" for="tour-stop" data-en="Choose a tour stop" data-zh="选择导览站点">Choose a tour stop</label>
+      <select id="tour-stop"></select>
       <div id="where"></div>
       <div id="verse"></div>
     </div>
     <div class="hud-side">
-      <button id="tour-toggle" type="button" hidden>❚❚</button>
-      <p class="hud-keys"><kbd>Esc</kbd> <span data-en="exit" data-zh="退出">exit</span></p>
+      <button id="tour-prev" type="button" aria-label="Previous stop">‹</button>
+      <button id="tour-toggle" type="button" aria-label="Pause tour" hidden>❚❚</button>
+      <button id="tour-next" type="button" aria-label="Next stop">›</button>
+      <button id="model-info" type="button" data-en="Evidence" data-zh="依据">Evidence</button>
+      <button id="walk-exit" type="button" data-en="Exit" data-zh="退出">Exit</button>
     </div>
   </div>
+  <dialog id="assumptions">
+    <form method="dialog"><button class="dialog-close" data-en="Close" data-zh="关闭">Close</button></form>
+    <p class="eyebrow" data-en="Text • reconstruction • display" data-zh="经文 · 重建 · 展示">Text • reconstruction • display</p>
+    <h2 data-en="What this model can claim" data-zh="这个模型的依据与边界">What this model can claim</h2>
+    <p data-en="Stated in the text: the 100 × 50 cubit court; 48 boards; 96 board sockets; ten 28 × 4 cubit linen curtains; seven lamps; altar, table and ark dimensions. One cubit is displayed as 0.445 m, not an exact ancient universal measure." data-zh="经文明确记载：院子100×50肘、48块竖板、板下96个座、十幅28×4肘的细麻布幔子、七盏灯，以及坛、桌和约柜的尺寸。这里以一肘0.445米展示，不代表古代统一的精确长度。"></p>
+    <p data-en="Reconstructed: the 20/10 cubit room division follows the curtain-and-clasp arrangement. Board thickness, corner joinery, basin profile and size, lampstand height, cherubim anatomy, embroidery motifs, and the unidentified outer hide are not fully specified. They are illustrative, not excavated replicas." data-zh="重建推定：圣所20肘、至圣所10肘的分隔依据幔子与金钩布局推算。板厚、转角接合、铜盆形状大小、灯台高度、基路伯形体、刺绣纹样和外层皮料的物种都未完整记载。这些是示意，不是出土器物复刻。"></p>
+    <p data-en="Display choices: screens are gathered aside so visitors can see the entrance. The view beyond the veil is an educational cut, not ordinary historical access (Leviticus 16:2). Interior fill lights make details readable; they are not a claim about divine light. The surrounding desert is generic scenery." data-zh="展示处理：门帘收向两侧以便辨认入口；幔子后的画面是教学剖视，并非历史上可以自由进出（利未记16:2）。室内补光用于看清细节，不代表神圣光源。周围沙漠是通用布景。"></p>
+    <p><a href="https://biblehub.com/bsb/exodus/25.htm" target="_blank" rel="noopener">Exodus 25</a> · <a href="https://biblehub.com/bsb/exodus/26.htm" target="_blank" rel="noopener">Exodus 26</a> · <a href="https://biblehub.com/bsb/exodus/27.htm" target="_blank" rel="noopener">Exodus 27</a> · <a href="https://biblehub.com/bsb/exodus/30.htm" target="_blank" rel="noopener">Exodus 30</a> · <a href="https://biblehub.com/bsb/leviticus/24.htm" target="_blank" rel="noopener">Leviticus 24</a></p>
+  </dialog>
 
   <script type="module" src="/src/walk/main.ts"></script>
   <footer class="source-credit"><p><span data-en="Place data" data-zh="地名数据">Place data</span> <a href="https://www.openbible.info/geo/" target="_blank" rel="noopener">OpenBible.info</a> · CC BY 4.0 · <span data-en="basemap Natural Earth (public domain)" data-zh="底图 Natural Earth（公有领域）">basemap Natural Earth (public domain)</span></p></footer>

@@ -84,3 +84,8 @@ html[lang="zh-CN"] #r-name { font-family: var(--display); font-size: var(--fs-40
   #r-thumbnail { width: 64px; height: 36px; }
   #map-tools { top: 50px; left: var(--sp-3); }
 }
+#region-labels{position:fixed;inset:0;pointer-events:none;z-index:1;}
+#region-labels[hidden]{display:none;}
+.region-label{position:absolute;transform:translate(-50%,-50%);max-width:110px;text-align:center;font:600 var(--fs-400) var(--display);letter-spacing:.12em;color:#e3d2aa;text-shadow:0 1px 3px #1c221df0,0 0 8px #1a201aaa;}
+.region-label.water{color:#c0d9df;font-style:italic;letter-spacing:.14em;}
+@media(max-width:640px){.region-label{font-size:var(--fs-300);letter-spacing:.06em;}}

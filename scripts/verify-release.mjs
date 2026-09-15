@@ -20,7 +20,7 @@ for(const name of ['index.html','structures.html','tabernacle.html']){
   pages.push({name,status:response.status,buildReferencesMatch:true});
 }
 const verified=[];
-for(const path of [...assets,'/data/journeys.json']){
+for(const path of [...assets,'/data/journeys.json','/data/terrain-color.webp','/models/laver.glb']){
   const expected=await readFile(`dist${path}`);
   const response=await fetch(new URL(path,site),{cache:'no-store'});
   assert.equal(response.status,200,`${path} did not load`);

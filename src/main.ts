@@ -5,6 +5,8 @@ import './route-ui.css';
 import { paintBasemap } from './basemap.ts';
 import { createGlobe, createLighting, GLOBE_RADIUS, lonLatToVec3 } from './globe.ts';
 import { Terrain } from './terrain.ts';
+import { RegionLabels } from './regions.ts';
+import { Staffage } from './staffage.ts';
 import { placeLabel, bareName } from './names.ts';
 import { Markers } from './markers.ts';
 import { bookName, bookOf, localiseRef } from './books.ts';
@@ -113,6 +115,8 @@ scene.add(globe);
 // Measured relief over the biblical world, fading in as the camera closes.
 const terrain = new Terrain();
 globe.add(terrain.mesh);
+const regionLabels=new RegionLabels(bundle.places);
+const staffage=new Staffage();globe.add(staffage.group);
 
 const markers = new Markers(bundle.places, bundle.events);
 globe.add(markers.mesh);
@@ -752,6 +756,8 @@ renderer.setAnimationLoop(() => {
     routeLabels.update(camera, globe, route.reachedIndex(routeT), innerWidth, innerHeight, safeBand, route.highlightedIndex(routeT));
   }
   terrain.update(camera.position.length(), dt);
+  regionLabels.update(camera,globe,locale,safeBand.top,safeBand.top+safeBand.height,dt);
+  staffage.update(route,camera,dt);
   markers.setZoom(camera.position.length(), GLOBE_RADIUS, dt, innerHeight, camera.fov);
   cartography.update(camera,innerWidth,innerHeight,locale);
   // The selection ring breathes so the eye can find it again after orbiting.

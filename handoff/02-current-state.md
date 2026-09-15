@@ -1,5 +1,13 @@
 # 02 · Current state (measured 2026-09-15, commit `6b3471b`)
 
+Scene update 2026-09-15: `BATCH-2.md` supersedes the old tabernacle/terrain
+entries below. The globe now uses NOAA ETOPO relief at 6600×3960, 22 audited
+gazetteer-derived region labels, and schematic instanced ships/caravans.
+The tabernacle has a 10-stop tour, an original Higgsfield/Blender laver,
+layered open-ended construction, a corrected interpretive 20/10 room layout,
+close-up material/geometry improvements and an evidence/assumptions dialog.
+Scene evidence: `evidence/phase-2/`. Historical tables remain for context.
+
 Phase 1 update, 2026-09-15: `BATCH-1.md` supersedes the route behavior and
 payload/cache measurements below. Exodus keeps all 42 stages, with 22
 plotted markers and one explicitly unlocated camp. New modules:

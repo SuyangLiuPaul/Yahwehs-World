@@ -172,6 +172,23 @@ hold and abort the image request. Selecting an unlocated stage also no longer
 reveals the following camp as reached simply because their path parameters match.
 
 ## Open questions for the owner
+
+**B26 — FIXED (Batch 2).** The walk's outer hide was a closed box with an
+invisible interior face; screens had no visible opening and room lengths
+were reversed. Layered drapes replace the box, entrance screens are gathered
+for educational display, and the conventional 20/10-cubit room reconstruction
+is explicitly marked as inferred. Board walls now have colliders.
+
+**B27 — FIXED (Batch 2).** Pausing the guided walk restarted at stop 1, and
+touch visitors had no exit button. Pause/resume, previous/next, all ten stop
+selectors, replay, a 44px exit and evidence controls are now tested bilingually.
+
+**B28 — Visual ceiling still open.** Batch 2 improves materials, construction,
+terrain and furnishings but is not a photographic/game-production scene.
+The desert remains illustrative procedural scenery; imagery has not been
+generated to make false archaeological claims. Full ~40 region labels,
+tents/birds, richer historically researched object detail and physical-device
+GPU/memory validation remain. Do not describe the reference-image bar as passed.
 - Q1: Should the repo become public once SeekSparks-derived assets are
   replaced or licensed? (Today private for that reason.)
 - Q2: Year axis default — Thiele (SeekSparks) is the spine; should the UI

@@ -12,6 +12,10 @@ from the repository on 2026-09-14.
 
 ## Reading order
 
+Latest implemented batch: `BATCH-2.md` (2026-09-15), detailed terrain and
+tabernacle reconstruction. It supersedes older scene/payload descriptions,
+but does not mark the full 1,443-event product or photographic visual target complete.
+
 | # | File | What it settles |
 |---|------|-----------------|
 | 01 | `01-vision-and-scope.md` | What the product is, the four things that make it different, and what "all of Scripture" means as a countable target |

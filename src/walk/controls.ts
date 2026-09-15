@@ -37,7 +37,7 @@ export class Walker {
     camera.position.set(0, 0, 0);
     this.yaw.position.set(0, EYE, 0);
 
-    dom.addEventListener('click', () => { if (!this.locked) dom.requestPointerLock(); });
+    dom.addEventListener('click', () => { if (!this.locked&&!Walker.touchOnly) void dom.requestPointerLock()?.catch(()=>{}); });
     document.addEventListener('pointerlockchange', () => {
       this.locked = document.pointerLockElement === dom;
       this.onLockChange?.(this.locked);
@@ -184,4 +184,5 @@ export class Walker {
   get isTouching() { return this.touching; }
   /** Entered by either route — a pointer lock, or a touch device let straight in. */
   enterTouch() { this.onLockChange?.(true); }
+  exit(){this.keys.clear();this.velocity.set(0,0,0);this.stick.set(0,0);if(document.pointerLockElement)document.exitPointerLock();this.onLockChange?.(false);}
 }

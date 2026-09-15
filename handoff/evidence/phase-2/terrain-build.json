@@ -1,0 +1,79 @@
+{
+  "source": "NOAA ETOPO 2022 v1, 15 arc-second surface elevation, CC0",
+  "bounds": [
+    -5,
+    12,
+    50,
+    45
+  ],
+  "width": 6600,
+  "height": 3960,
+  "displayArcSeconds": 30,
+  "shading": "NW directional, 5.5x vertical exaggeration baked into colour; unlit at runtime",
+  "tint": "authored hypsometric atlas colours; not historical vegetation",
+  "modernReliefCaveat": "Modern coastlines, lakes, reservoirs and channels are not a reconstruction of biblical-era geography.",
+  "tiles": [
+    {
+      "url": "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/15s/15s_surface_elev_gtif/ETOPO_2022_v1_15s_N15W015_surface.tif",
+      "sha256": "e0944c0bccb08cadac8bf5f53d20f4b871cc28ef14306a00797ac0058d7010a5"
+    },
+    {
+      "url": "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/15s/15s_surface_elev_gtif/ETOPO_2022_v1_15s_N15E000_surface.tif",
+      "sha256": "40fcab39a0722b878fdd5b37561a8c9417e2963eff8ee288b8c8e795dcfc8a25"
+    },
+    {
+      "url": "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/15s/15s_surface_elev_gtif/ETOPO_2022_v1_15s_N15E015_surface.tif",
+      "sha256": "6857ee40f94d33fd91cdf4f195046a154053db663ffe62a3e7bc1bf619003351"
+    },
+    {
+      "url": "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/15s/15s_surface_elev_gtif/ETOPO_2022_v1_15s_N15E030_surface.tif",
+      "sha256": "100faf017c91e699173519dbbda30fccb1f82941eace98ddaca3f085e2697455"
+    },
+    {
+      "url": "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/15s/15s_surface_elev_gtif/ETOPO_2022_v1_15s_N15E045_surface.tif",
+      "sha256": "c3f1b91b3d5691a52ebad444acff7993c29706150c8b487221bc117c1ced6f05"
+    },
+    {
+      "url": "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/15s/15s_surface_elev_gtif/ETOPO_2022_v1_15s_N30W015_surface.tif",
+      "sha256": "7d364296c8bf1f212b31fe443080d24bd5f8a36e765a54679352e183678ec43d"
+    },
+    {
+      "url": "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/15s/15s_surface_elev_gtif/ETOPO_2022_v1_15s_N30E000_surface.tif",
+      "sha256": "2e661b1af6e235a6fba11c65897fc935ac0528f54975c7c6415ce97d95e7f8a1"
+    },
+    {
+      "url": "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/15s/15s_surface_elev_gtif/ETOPO_2022_v1_15s_N30E015_surface.tif",
+      "sha256": "1ee225cb379eb7c95d446337004f413a2eb270a4682383afb6930270ec04515c"
+    },
+    {
+      "url": "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/15s/15s_surface_elev_gtif/ETOPO_2022_v1_15s_N30E030_surface.tif",
+      "sha256": "deaa83101bcc301484382fbc350a444df5757674b9fd814635c10beaa5167a6b"
+    },
+    {
+      "url": "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/15s/15s_surface_elev_gtif/ETOPO_2022_v1_15s_N30E045_surface.tif",
+      "sha256": "fb6d1f74de28511f1d255930e06c50c87aa6056a2969c68cdfeccfe972a1acaf"
+    },
+    {
+      "url": "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/15s/15s_surface_elev_gtif/ETOPO_2022_v1_15s_N45W015_surface.tif",
+      "sha256": "4accf0190b62f20c2adc1bf29bd4ee98ddd1be885745276f2476b0d941e0d195"
+    },
+    {
+      "url": "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/15s/15s_surface_elev_gtif/ETOPO_2022_v1_15s_N45E000_surface.tif",
+      "sha256": "86f7ba59e904807fee7e035ada1ad8e761fd89d658574e91efa9e0e727f8d5d0"
+    },
+    {
+      "url": "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/15s/15s_surface_elev_gtif/ETOPO_2022_v1_15s_N45E015_surface.tif",
+      "sha256": "b4983c653eeb75a5a88d0dd5887192f3416aefa211e147e17a0298404cf2d5ea"
+    },
+    {
+      "url": "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/15s/15s_surface_elev_gtif/ETOPO_2022_v1_15s_N45E030_surface.tif",
+      "sha256": "f4d1005d3c43defc9e33260e119e4d36ad5fc18f7d452febf13f3d6223fb4c73"
+    },
+    {
+      "url": "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/15s/15s_surface_elev_gtif/ETOPO_2022_v1_15s_N45E045_surface.tif",
+      "sha256": "08a1ce34d2544cc3c4d583a6fce6c853cc9080917fbd4b9a20348124edb98fc4"
+    }
+  ],
+  "bytes": 1234044,
+  "sha256": "2c01c218871417f80f174bf7a28bc9155e32c00a34b979e10c41542860a9b8ba"
+}

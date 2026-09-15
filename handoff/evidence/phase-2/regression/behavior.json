@@ -1,0 +1,44 @@
+{
+  "path": {
+    "totalLegs": 138,
+    "maxEndpointError": 0,
+    "maxUniformSpeedError": 4.306108034978894e-12,
+    "failures": [],
+    "visitChecks": {
+      "first": 0,
+      "last": 1,
+      "startReached": 0,
+      "endReached": 14
+    },
+    "gapLegs": 2,
+    "gapJumpDegrees": 29.00000400000002,
+    "missingT": true
+  },
+  "everyExodusStopChecked": 42,
+  "touchSwipe": "passed",
+  "cameraChecks": [
+    "verse playback stopped",
+    "live playback stationary",
+    "manual drag",
+    "resize stationary",
+    "locale stationary",
+    "explicit fit"
+  ],
+  "scale": {
+    "km": 200,
+    "actualKm": 199.99999999998337,
+    "relativeError": 8.313350008393172e-14,
+    "north": 0,
+    "tiltedNorth": 29.999999999999556
+  },
+  "performance": {
+    "environment": "Headless Chrome on macOS, 4x CPU throttle, 375x812 at DPR 2; not a physical Android",
+    "frames": 301,
+    "elapsedMs": 5003.700000000001,
+    "fps": 60.15548494114355,
+    "p95FrameMs": 16.799999999999272,
+    "drawCalls": 61,
+    "triangles": 283816
+  },
+  "errors": []
+}

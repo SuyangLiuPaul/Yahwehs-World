@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+let randomState=260027;
+const random=()=>{randomState=(Math.imul(randomState,1664525)+1013904223)>>>0;return randomState/4294967296;};
 
 // Every surface in this scene was flat colour — 604 meshes, not one of them
 // carrying a texture — which is the single largest reason it read as an
@@ -50,18 +52,19 @@ function normalFrom(src: HTMLCanvasElement, strength = 2.2): THREE.CanvasTexture
 
 /** Value noise, tiling, so a surface never shows a seam. */
 function noise(x: CanvasRenderingContext2D, n: number, cells: number, alpha: number) {
+  const height=x.canvas.height;
   const step = n / cells;
   const grid: number[][] = [];
   for (let j = 0; j <= cells; j++) {
     grid[j] = [];
-    for (let i = 0; i <= cells; i++) grid[j]![i] = Math.random();
+    for (let i = 0; i <= cells; i++) grid[j]![i] = random();
   }
   for (let j = 0; j < cells; j++) for (let i = 0; i < cells; i++) grid[j]![cells] = grid[j]![0]!;
   for (let i = 0; i <= cells; i++) grid[cells]![i] = grid[0]![i]!;
 
-  const img = x.getImageData(0, 0, n, n);
+  const img = x.getImageData(0, 0, n, height);
   const sm = (t: number) => t * t * (3 - 2 * t);
-  for (let y = 0; y < n; y++) {
+  for (let y = 0; y < height; y++) {
     for (let X = 0; X < n; X++) {
       const gx = X / step, gy = y / step;
       const i0 = Math.floor(gx), j0 = Math.floor(gy);
@@ -82,14 +85,14 @@ export interface Surface { map: THREE.Texture; normalMap: THREE.Texture }
 /** Desert floor: fine grain over broad drift, the whole thing warm. */
 export function sand(): Surface {
   const { c, x } = cv(512);
-  x.fillStyle = '#a8906a';
+  x.fillStyle = '#c2ad87';
   x.fillRect(0, 0, 512, 512);
   // Tight grain, not broad blotches: a low cell count over a texture repeated
   // sixty times reads as cloud shadow rather than sand.
-  noise(x, 512, 20, 0.16);
-  noise(x, 512, 90, 0.20);
-  noise(x, 512, 260, 0.14);
-  return { map: wrap(new THREE.CanvasTexture(c), 60), normalMap: wrap(normalFrom(c, 1.9), 60) };
+  noise(x, 512, 20, 0.035);
+  noise(x, 512, 90, 0.07);
+  noise(x, 512, 260, 0.08);
+  return { map: wrap(new THREE.CanvasTexture(c), 180), normalMap: wrap(normalFrom(c, 1.9), 180) };
 }
 
 /** "Finely twisted linen" — Exodus 27:9. A woven cloth reads as a weave, and
@@ -101,7 +104,7 @@ export function linen(): Surface {
   x.strokeStyle = '#d9d0bd';
   x.lineWidth = 1;
   for (let i = 0; i < 256; i += 3) {
-    x.globalAlpha = 0.5 + Math.random() * 0.35;
+    x.globalAlpha = 0.5 + random() * 0.35;
     x.beginPath(); x.moveTo(i, 0); x.lineTo(i, 256); x.stroke();
     x.beginPath(); x.moveTo(0, i + 1.5); x.lineTo(256, i + 1.5); x.stroke();
   }
@@ -120,7 +123,7 @@ export function veilCloth(): Surface {
   // away, and moiré from two.
   for (let i = 0; i < 256; i += 4) {
     x.strokeStyle = i % 12 === 0 ? '#6a3550' : i % 8 === 0 ? '#3e4478' : '#52447a';
-    x.globalAlpha = 0.10 + Math.random() * 0.12;
+    x.globalAlpha = 0.10 + random() * 0.12;
     x.lineWidth = 3;
     x.beginPath(); x.moveTo(0, i); x.lineTo(256, i); x.stroke();
   }
@@ -137,20 +140,20 @@ export function veilCloth(): Surface {
  *  embroiderer" for the door and gate screens, which therefore get the border
  *  and a plain lozenge and no figure the text did not name. */
 export function embroidered(withCherubim: boolean): Surface {
-  const n = 512;
+  const n = 1024;
   const { c, x } = cv(n);
-  x.fillStyle = '#4a3b6e';
+  x.fillStyle = '#343956';
   x.fillRect(0, 0, n, n);
   // The woven ground.
   for (let i = 0; i < n; i += 4) {
     x.strokeStyle = i % 12 === 0 ? '#7d2f3d' : i % 8 === 0 ? '#2f4a7d' : '#55447c';
-    x.globalAlpha = 0.28 + Math.random() * 0.22;
+    x.globalAlpha = 0.12 + random() * 0.12;
     x.lineWidth = 2;
     x.beginPath(); x.moveTo(0, i); x.lineTo(n, i); x.stroke();
   }
   x.globalAlpha = 1;
-  // Gold thread border, doubled.
-  x.strokeStyle = '#d9b444';
+  // Linen-coloured embroidery. Gold yarn is not specified for these screens.
+  x.strokeStyle = '#c8b898';
   x.lineWidth = 6; x.strokeRect(18, 18, n - 36, n - 36);
   x.lineWidth = 2; x.strokeRect(34, 34, n - 68, n - 68);
   // Scarlet running motif inside the border.
@@ -163,29 +166,28 @@ export function embroidered(withCherubim: boolean): Surface {
     // Two figures, facing each other across the centre, wings up.
     const fig = (cx: number, flip: number) => {
       x.save(); x.translate(cx, n * 0.5); x.scale(flip, 1);
-      x.fillStyle = '#d9b444';
+      x.fillStyle = '#c8b898';
       // body
       x.beginPath(); x.ellipse(0, 20, 22, 60, 0, 0, Math.PI * 2); x.fill();
       // head
       x.beginPath(); x.arc(0, -52, 16, 0, Math.PI * 2); x.fill();
       // wings — two raised sweeps
-      x.strokeStyle = '#d9b444'; x.lineWidth = 9; x.lineCap = 'round';
+      x.strokeStyle = '#c8b898'; x.lineWidth = 9; x.lineCap = 'round';
       x.beginPath(); x.moveTo(14, -10); x.quadraticCurveTo(70, -60, 96, -140); x.stroke();
       x.beginPath(); x.moveTo(18, 10); x.quadraticCurveTo(80, -20, 110, -90); x.stroke();
       x.restore();
     };
-    fig(n * 0.32, 1);
-    fig(n * 0.68, -1);
+    x.save();x.scale(.25,.25);
+    for(let r=0;r<6;r++)for(let c=0;c<4;c++){
+      x.save();x.translate(c*1024+128,r*580-110);fig(100,c%2?1:-1);x.restore();
+    }x.restore();
   } else {
     // A single lozenge, the plainest figure an embroiderer would set.
-    x.strokeStyle = '#d9b444'; x.lineWidth = 5;
-    x.beginPath();
-    x.moveTo(n / 2, n * 0.3); x.lineTo(n * 0.62, n / 2); x.lineTo(n / 2, n * 0.7); x.lineTo(n * 0.38, n / 2);
-    x.closePath(); x.stroke();
-    x.strokeStyle = '#9c2f3a'; x.lineWidth = 3;
-    x.beginPath();
-    x.moveTo(n / 2, n * 0.36); x.lineTo(n * 0.57, n / 2); x.lineTo(n / 2, n * 0.64); x.lineTo(n * 0.43, n / 2);
-    x.closePath(); x.stroke();
+    for(let row=0;row<10;row++)for(let col=0;col<8;col++){
+      const xx=80+col*123,yy=82+row*95;
+      x.strokeStyle=(row+col)%2?'#b6a68b':'#98424a';x.lineWidth=3;
+      x.beginPath();x.moveTo(xx,yy-19);x.lineTo(xx+15,yy);x.lineTo(xx,yy+19);x.lineTo(xx-15,yy);x.closePath();x.stroke();
+    }
   }
   noise(x, n, 40, 0.07);
   const t = new THREE.CanvasTexture(c);
@@ -205,9 +207,9 @@ export function beatenGold(): Surface {
   x.fillStyle = '#f0d585';
   x.fillRect(0, 0, 256, 256);
   for (let i = 0; i < 380; i++) {
-    const r = 5 + Math.random() * 13;
+    const r = 5 + random() * 13;
     x.save();
-    x.translate(Math.random() * 256, Math.random() * 256);
+    x.translate(random() * 256, random() * 256);
     const grd = x.createRadialGradient(0, 0, 0, 0, 0, r);
     grd.addColorStop(0, 'rgba(255,248,220,0.18)');
     grd.addColorStop(1, 'rgba(200,160,70,0.10)');
@@ -226,15 +228,15 @@ export function bronze(): Surface {
   // colour of a fence post.
   x.fillStyle = '#c98a4a';
   x.fillRect(0, 0, 256, 256);
-  noise(x, 256, 10, 0.18);
-  noise(x, 256, 70, 0.12);
+  noise(x, 256, 10, 0.045);
+  noise(x, 256, 70, 0.035);
   // A little verdigris in the recesses.
   for (let i = 0; i < 60; i++) {
     x.save();
-    x.translate(Math.random() * 256, Math.random() * 256);
-    const r = 4 + Math.random() * 10;
+    x.translate(random() * 256, random() * 256);
+    const r = 4 + random() * 10;
     const g = x.createRadialGradient(0, 0, 0, 0, 0, r);
-    g.addColorStop(0, 'rgba(70,120,100,0.22)');
+    g.addColorStop(0, 'rgba(70,120,100,0.035)');
     g.addColorStop(1, 'rgba(70,120,100,0)');
     x.fillStyle = g;
     x.beginPath(); x.arc(0, 0, r, 0, Math.PI * 2); x.fill();
@@ -248,7 +250,7 @@ export function bronze(): Surface {
  *  this is what the tabernacle looked like: dark leather, not gold. */
 export function hide(): Surface {
   const { c, x } = cv(256);
-  x.fillStyle = '#4a3527';
+  x.fillStyle = '#77624b';
   x.fillRect(0, 0, 256, 256);
   noise(x, 256, 8, 0.22);
   noise(x, 256, 40, 0.16);
@@ -257,7 +259,7 @@ export function hide(): Surface {
   x.strokeStyle = 'rgba(30,20,14,0.5)';
   x.lineWidth = 2;
   for (let i = 0; i < 4; i++) {
-    const y = 32 + i * 64 + (Math.random() - 0.5) * 8;
+    const y = 32 + i * 64 + (random() - 0.5) * 8;
     x.beginPath(); x.moveTo(0, y); x.lineTo(256, y); x.stroke();
   }
   return { map: wrap(new THREE.CanvasTexture(c), 5), normalMap: wrap(normalFrom(c, 1.6), 5) };
@@ -272,8 +274,8 @@ export function goatHair(): Surface {
   x.strokeStyle = 'rgba(90,75,60,0.5)';
   x.lineWidth = 1;
   for (let i = 0; i < 700; i++) {
-    const X = Math.random() * 256, Y = Math.random() * 256;
-    x.beginPath(); x.moveTo(X, Y); x.lineTo(X + (Math.random() - 0.5) * 4, Y + 6 + Math.random() * 10); x.stroke();
+    const X = random() * 256, Y = random() * 256;
+    x.beginPath(); x.moveTo(X, Y); x.lineTo(X + (random() - 0.5) * 4, Y + 6 + random() * 10); x.stroke();
   }
   noise(x, 256, 30, 0.10);
   return { map: wrap(new THREE.CanvasTexture(c), 6), normalMap: wrap(normalFrom(c, 1.3), 6) };
@@ -303,8 +305,8 @@ export function desertSky(): THREE.CanvasTexture {
   // Each cloud is painted three times, a full width apart, so the map wraps
   // without a seam — the seam stood as a bright vertical line in the sky.
   for (let i = 0; i < 40; i++) {
-    const cx0 = Math.random() * 2048, cy = 80 + Math.random() * 300;
-    const rx = 80 + Math.random() * 220, ry = 8 + Math.random() * 20;
+    const cx0 = random() * 2048, cy = 80 + random() * 300;
+    const rx = 80 + random() * 220, ry = 8 + random() * 20;
     for (const cx of [cx0 - 2048, cx0, cx0 + 2048]) {
       const cg = x.createRadialGradient(cx, cy, 0, cx, cy, rx);
       cg.addColorStop(0, 'rgba(255,255,255,0.08)');

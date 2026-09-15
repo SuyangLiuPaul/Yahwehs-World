@@ -6,6 +6,8 @@ import {
 } from './textures.ts';
 import { buildStructure } from '../structures/build.ts';
 import { STRUCTURES } from '../structures/specs.ts';
+import { bevelBox, cord, hanging, batchStatic } from './craft.ts';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 // The tabernacle of Exodus 26-27, generated from the counts the text states.
 //
@@ -44,6 +46,7 @@ export interface Tabernacle {
   /** Axis-aligned boxes the walker cannot pass through. */
   colliders: THREE.Box3[];
   counts: TabernacleCounts;
+  ready: Promise<boolean>;
 }
 
 // Textures are generated once and shared: a hundred boards carrying a hundred
@@ -55,6 +58,10 @@ const TEX = {
   // screens "the work of an embroiderer" without naming a figure.
   veilWork: embroidered(true), screenWork: embroidered(false),
 };
+for(const surface of Object.values(TEX)){
+  surface.map.colorSpace=THREE.SRGBColorSpace;
+  surface.normalMap.colorSpace=THREE.NoColorSpace;
+}
 
 const M = {
   // Linen is thin, and sunlight goes through it. Without that the shaded face
@@ -65,16 +72,16 @@ const M = {
     color: 0xf7f2e6, roughness: 0.96, side: THREE.DoubleSide,
     map: TEX.linen.map, normalMap: TEX.linen.normalMap,
     normalScale: new THREE.Vector2(0.55, 0.55),
-    emissive: 0x6b6250, emissiveIntensity: 0.42,
+    emissive: 0x655a42, emissiveIntensity: 0.15,
   }),
   acacia: () => new THREE.MeshStandardMaterial({ color: 0x6a4c28, roughness: 0.8 }),
   // Metals reflect more of the environment than everything else does. A metal
   // lit at the same envMapIntensity as cloth has nothing to shine with.
   gold: () => new THREE.MeshStandardMaterial({
-    color: 0xffe9a8, metalness: 1, roughness: 0.22,
+    color: 0xffffff, metalness: 1, roughness: 0.34, side:THREE.DoubleSide,
     map: TEX.gold.map, normalMap: TEX.gold.normalMap,
-    normalScale: new THREE.Vector2(0.7, 0.7),
-    envMapIntensity: 2.4,
+    normalScale: new THREE.Vector2(0.25, 0.25),
+    envMapIntensity: 1.1,
   }),
   silver: () => new THREE.MeshStandardMaterial({
     color: 0xe4e6ea, metalness: 1, roughness: 0.3,
@@ -82,9 +89,9 @@ const M = {
     envMapIntensity: 2.0,
   }),
   bronze: () => new THREE.MeshStandardMaterial({
-    color: 0xd9a868, metalness: 0.95, roughness: 0.45,
+    color: 0xffffff, metalness: 0.92, roughness: 0.34,
     map: TEX.bronze.map, normalMap: TEX.bronze.normalMap,
-    envMapIntensity: 2.0,
+    envMapIntensity: 1.1,
   }),
   hide: () => new THREE.MeshStandardMaterial({
     color: 0xffffff, roughness: 0.92,
@@ -98,17 +105,17 @@ const M = {
   veil: () => new THREE.MeshStandardMaterial({
     color: 0xffffff, roughness: 0.9, side: THREE.DoubleSide,
     map: TEX.veilWork.map, normalMap: TEX.veilWork.normalMap,
-    emissive: 0x241c3a, emissiveIntensity: 0.45,
+    emissive: 0x241c3a, emissiveIntensity: 0.08,
   }),
   screen: () => new THREE.MeshStandardMaterial({
     color: 0xffffff, roughness: 0.9, side: THREE.DoubleSide,
     map: TEX.screenWork.map, normalMap: TEX.screenWork.normalMap,
-    emissive: 0x241c3a, emissiveIntensity: 0.45,
+    emissive: 0x241c3a, emissiveIntensity: 0.08,
   }),
   ground: () => new THREE.MeshStandardMaterial({
-    color: 0xcbb894, roughness: 1,
+    color: 0xffffff, roughness: 1,
     map: TEX.sand.map, normalMap: TEX.sand.normalMap,
-    normalScale: new THREE.Vector2(0.8, 0.8),
+    normalScale: new THREE.Vector2(0.35, 0.35),
   }),
 };
 
@@ -155,6 +162,7 @@ export function buildTabernacle(cubit: number): Tabernacle {
   const linen = M.linen();
   const bronze = M.bronze();
   const silver = M.silver();
+  const rope = new THREE.MeshStandardMaterial({color:0x998365,roughness:1});
 
   /** A run of hangings on its pillars. Each pillar carries one bronze socket,
    *  a silver hook and a silver band — 27:10-11 names all three. */
@@ -167,7 +175,7 @@ export function buildTabernacle(cubit: number): Tabernacle {
 
     // Cloth on a rope sags between its posts. A plane hung dead flat is the
     // single detail that made the court read as cardboard panels.
-    const segs = Math.max(8, pillars * 6);
+    const segs = Math.max(48, pillars * 20);
     const clothGeo = new THREE.PlaneGeometry(len, height, segs, 6);
     const cp = clothGeo.attributes.position as THREE.BufferAttribute;
     const bay = len / Math.max(1, pillars - 1);
@@ -177,7 +185,7 @@ export function buildTabernacle(cubit: number): Tabernacle {
       const inBay = (u % bay) / bay;                // 0..1 across one bay
       const sag = Math.sin(inBay * Math.PI);        // deepest mid-bay
       // Hangs from the top rope: the top edge stays put, the middle bellies.
-      cp.setZ(i, sag * (1 - v) * cubit * 0.22 + sag * cubit * 0.05);
+      cp.setZ(i, sag * (1 - v) * cubit * 0.22 + sag * cubit * 0.05 + Math.sin(u*25)*.025);
       cp.setY(i, cp.getY(i) - sag * v * cubit * 0.12);
     }
     clothGeo.computeVertexNormals();
@@ -203,6 +211,11 @@ export function buildTabernacle(cubit: number): Tabernacle {
       band.rotation.x = Math.PI / 2;
       band.position.set(p.x, height * 0.94, p.z);
       g.add(band);
+      const outward = new THREE.Vector3(p.x===-hx?-1:p.x===hx?1:0,0,p.z<0?-1:1).normalize();
+      const pegPos=p.clone().addScaledVector(outward,C(2.4));
+      const peg=new THREE.Mesh(new THREE.CylinderGeometry(.018,.026,.27,8),bronze);
+      peg.position.copy(pegPos).add(new THREE.Vector3(0,.06,0));peg.rotation.z=.2;g.add(peg);
+      g.add(cord([new THREE.Vector3(p.x,height*.96,p.z),new THREE.Vector3((p.x+pegPos.x)/2,height*.44,(p.z+pegPos.z)/2),new THREE.Vector3(pegPos.x,.16,pegPos.z)],.009,rope));
       counts.courtPillars++;
     }
   }
@@ -217,8 +230,8 @@ export function buildTabernacle(cubit: number): Tabernacle {
   const gateHalf = C(10);
   hangingRun(new THREE.Vector3(hx, 0, -hz), new THREE.Vector3(hx, 0, -gateHalf), 3, hangH, linen);
   hangingRun(new THREE.Vector3(hx, 0, gateHalf), new THREE.Vector3(hx, 0, hz), 3, hangH, linen);
-  const gate = new THREE.Mesh(new THREE.PlaneGeometry(C(20), hangH), M.screen());
-  gate.position.set(hx, hangH / 2, 0);
+  const gate = hanging(C(20),hangH,M.screen(),C(3));
+  gate.position.set(hx, 0, 0);
   gate.rotation.y = -Math.PI / 2;
   g.add(gate);
   for (let i = 0; i < 4; i++) {
@@ -231,32 +244,51 @@ export function buildTabernacle(cubit: number): Tabernacle {
   }
 
   // ── the bronze altar, Exodus 27:1 ──────────────────────────────────────
-  const altar = new THREE.Mesh(new THREE.BoxGeometry(C(5), C(3), C(5)), bronze);
-  altar.position.set(hx - C(22), C(1.5), 0);
+  // 27:8 explicitly says hollow boards, not a solid bronze cube. The network
+  // at half-height is visible through the open top, not buried inside a box.
+  const altar = new THREE.Group();
+  for(const side of [-1,1]){
+    const wall=bevelBox(C(5),C(3),C(.13),bronze);
+    wall.position.set(0,C(1.5),side*C(2.435));altar.add(wall);
+    const end=bevelBox(C(.13),C(3),C(4.74),bronze);
+    end.position.set(side*C(2.435),C(1.5),0);altar.add(end);
+    for(const y of [C(.16),C(2.85)]){
+      const rail=bevelBox(C(5.08),C(.09),C(.16),bronze);
+      rail.position.set(0,y,side*C(2.45));altar.add(rail);
+      const rail2=bevelBox(C(.16),C(.09),C(5.08),bronze);
+      rail2.position.set(side*C(2.45),y,0);altar.add(rail2);
+    }
+  }
+  altar.position.set(hx - C(22), 0, 0);
   g.add(altar);
   addCollider(altar);
   for (const [dx, dz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]] as const) {
     // "Horns on its four corners" — 27:2. Large enough to read from across
     // the court; a horn the size of a finger is not a horn.
-    const horn = new THREE.Mesh(new THREE.ConeGeometry(cubit * 0.28, cubit * 0.9, 8), bronze);
-    horn.position.set(hx - C(22) + dx * C(2.3), C(3.4), dz * C(2.3));
+    const hornGeo=new THREE.LatheGeometry([new THREE.Vector2(.11,0),new THREE.Vector2(.095,.08),new THREE.Vector2(.06,.22),new THREE.Vector2(.01,.35)],24);
+    const horn = new THREE.Mesh(hornGeo, bronze);
+    horn.position.set(hx - C(22) + dx * C(2.3), C(3), dz * C(2.3));
     g.add(horn);
   }
   // "A grating, a bronze network" halfway up (27:4-5), and the poles it was
   // carried by, through rings on two sides (27:6-7).
-  for (let i = -2; i <= 2; i++) {
+  for (let i = -10; i <= 10; i++) {
     const bar = new THREE.Mesh(new THREE.BoxGeometry(C(5.1), cubit * 0.07, cubit * 0.07), bronze);
-    bar.position.set(hx - C(22), C(1.5), i * C(1));
+    bar.position.set(hx - C(22), C(1.5), i * C(.23));
     g.add(bar);
     const bar2 = new THREE.Mesh(new THREE.BoxGeometry(cubit * 0.07, cubit * 0.07, C(5.1)), bronze);
-    bar2.position.set(hx - C(22) + i * C(1), C(1.5), 0);
+    bar2.position.set(hx - C(22) + i * C(.23), C(1.5), 0);
     g.add(bar2);
   }
   for (const sz of [-1, 1]) {
     const pole = new THREE.Mesh(new THREE.CylinderGeometry(cubit * 0.09, cubit * 0.09, C(7), 10), bronze);
     pole.rotation.z = Math.PI / 2;
-    pole.position.set(hx - C(22), C(2.6), sz * C(2.7));
+    pole.position.set(hx - C(22), C(1.7), sz * C(2.7));
     g.add(pole);
+    for(const sx of [-1,1]){
+      const ring=new THREE.Mesh(new THREE.TorusGeometry(C(.18),C(.035),8,24),bronze);
+      ring.rotation.y=Math.PI/2;ring.position.set(hx-C(22)+sx*C(2.1),C(1.7),sz*C(2.7));g.add(ring);
+    }
   }
 
   // ── the laver, Exodus 30:18 ─────────────────────────────────────────
@@ -281,6 +313,21 @@ export function buildTabernacle(cubit: number): Tabernacle {
   laver.position.set(hx - C(36), 0, 0);
   g.add(laver);
   addCollider(laver);
+  const laverColliderIndex=colliders.length-1;
+  laver.traverse(o=>o.userData.dynamic=true);
+  const ready=new GLTFLoader().loadAsync('models/laver.glb').then(gltf=>{
+    const asset=gltf.scene.getObjectByName('Laver_Exodus30_18');
+    if(!asset)throw Error('Laver root missing');
+    // Preserve glTF's Blender-Z-up conversion; root world pose is captured
+    // by attach rather than copying its local transform out of the hierarchy.
+    gltf.scene.updateMatrixWorld(true);
+    const clean=new THREE.Group();clean.attach(asset);
+    clean.position.copy(laver.position);
+    clean.traverse(o=>{if(o instanceof THREE.Mesh){o.castShadow=true;o.receiveShadow=true;}});
+    g.add(clean);clean.updateWorldMatrix(true,true);
+    colliders[laverColliderIndex]=new THREE.Box3().setFromObject(clean);
+    laver.visible=false;return true;
+  }).catch(()=>false);
 
   // ── the dwelling itself, Exodus 26 ─────────────────────────────────────
   // Twenty boards a side at a cubit and a half make the thirty-cubit length.
@@ -296,10 +343,10 @@ export function buildTabernacle(cubit: number): Tabernacle {
   function boardRow(count: number, place: (i: number) => [number, number, number], west = false) {
     for (let i = 0; i < count; i++) {
       const [x, y, z] = place(i);
-      const board = new THREE.Mesh(new THREE.BoxGeometry(boardW * 0.98, boardH, cubit * 0.3), gold);
+      const board = bevelBox(boardW, boardH, cubit * 0.3, gold,.009);
       board.position.set(x, y, z);
       if (west) board.rotation.y = Math.PI / 2;
-      g.add(board);
+      g.add(board);addCollider(board);
       counts.boards++;
       // "Two sockets under one board" — 26:19. Ninety-six in all.
       for (const s of [-0.3, 0.3]) {
@@ -341,19 +388,25 @@ export function buildTabernacle(cubit: number): Tabernacle {
   // Ten linen curtains over the frame, joined by fifty gold clasps — 26:1,6.
   // These are the CEILING seen from inside; from outside they lie under three
   // more layers.
-  for (let i = 0; i < 10; i++) {
-    const strip = new THREE.Mesh(
-      new THREE.PlaneGeometry(tentL / 10 * 0.98, tentW + cubit * 0.6), linen);
-    strip.rotation.x = -Math.PI / 2;
-    strip.position.set(x0 - boardW / 2 + (tentL / 10) * (i + 0.5), boardH + cubit * 0.05, 0);
-    g.add(strip);
-    counts.curtains++;
+  const ceiling=M.veil();ceiling.map=ceiling.map!.clone();ceiling.map.repeat.set(1,4);ceiling.map.wrapS=ceiling.map.wrapT=THREE.RepeatWrapping;
+  function drape(length:number,width:number,offset:number,material:THREE.Material,raise:number){
+    const geo=new THREE.PlaneGeometry(C(length),C(width),16,64);
+    const p=geo.attributes.position as THREE.BufferAttribute;
+    for(let i=0;i<p.count;i++){
+      const along=p.getX(i)/cubit+length/2+offset, across=p.getY(i)/cubit;
+      const drop=Math.max(0,Math.abs(across)-5);
+      p.setXYZ(i,C(-5-Math.min(along,30))-raise*.15,
+        Math.max(.03,C(10-drop-Math.max(0,along-30)))+raise+Math.sin(across*5)*.017,
+        C(Math.max(-5,Math.min(5,across)))+Math.sign(across)*raise);
+    }
+    geo.computeVertexNormals();return new THREE.Mesh(geo,material);
   }
+  for(let i=0;i<10;i++) {g.add(drape(4,28,i*4,ceiling,.025));counts.curtains++;}
   for (let i = 0; i < 50; i++) {
     const clasp = new THREE.Mesh(new THREE.TorusGeometry(cubit * 0.07, cubit * 0.02, 6, 10), gold);
     clasp.position.set(
-      x0 + (tentL / 50) * i, boardH + cubit * 0.09,
-      (i % 2 ? 1 : -1) * tentW * 0.32);
+      C(-25), Math.max(.04,C(10-Math.max(0,Math.abs(-14+i*28/49)-5)))+.05,
+      C(Math.max(-5,Math.min(5,-14+i*28/49))));
     clasp.rotation.x = Math.PI / 2;
     g.add(clasp);
     counts.clasps++;
@@ -364,24 +417,25 @@ export function buildTabernacle(cubit: number): Tabernacle {
   // gold boards were only ever seen from within. Rendering the boards on the
   // outside, as this did, showed a building the text says nobody saw. The
   // covering stops short of the east end, where the door screen hangs.
-  const coverH = boardH + cubit * 0.45;
-  const coverL = tentL + cubit * 0.9;
-  const cover = new THREE.Mesh(
-    new THREE.BoxGeometry(coverL, coverH, tentW + cubit * 1.4), M.hide());
-  cover.position.set(tentX - cubit * 0.75, coverH / 2, 0);
-  g.add(cover);
-  // The goat-hair layer is a cubit longer than the linen (26:13) and hangs
-  // below the hide, so it shows as a dark fringe at the base.
-  const skirt = new THREE.Mesh(
-    new THREE.BoxGeometry(coverL + cubit * 0.3, cubit * 1.1, tentW + cubit * 1.7), M.goat());
-  skirt.position.set(tentX - cubit * 0.75, cubit * 0.55, 0);
-  g.add(skirt);
+  const goat=M.goat(),outer=M.hide();
+  for(let i=0;i<11;i++)g.add(drape(4,30,i*4,goat,.06));
+  const red=M.hide();red.color.set(0xa14b38);
+  g.add(drape(39,29,0,red,.095));
+  // The outermost hide species and exact coverage are uncertain (26:14).
+  // Open at the east end: no hidden box face for the camera to walk through.
+  g.add(drape(38,28.6,0,outer,.14));
+  for(const side of [-1,1])for(let i=0;i<8;i++){
+    const x=C(-6-i*4),z=side*C(5.3);
+    g.add(cord([new THREE.Vector3(x,C(9.8),z),new THREE.Vector3(x,C(4.5),side*C(7)),new THREE.Vector3(x,.1,side*C(10))],.015,rope));
+    const pin=new THREE.Mesh(new THREE.CylinderGeometry(.025,.04,.35,8),bronze);
+    pin.position.set(x,.10,side*C(10));pin.rotation.x=side*.25;g.add(pin);
+  }
 
   // The veil on four pillars, dividing holy from most holy — 26:31-33.
-  const veilX = tentX - tentL / 2 + C(20);
-  const veil = new THREE.Mesh(new THREE.PlaneGeometry(tentW, boardH * 0.96), M.veil());
+  const veilX = tentX - tentL / 2 + C(10);
+  const veil = hanging(tentW,boardH*.985,M.veil());
   veil.rotation.y = Math.PI / 2;
-  veil.position.set(veilX, boardH * 0.48, 0);
+  veil.position.set(veilX, 0, 0);
   g.add(veil);
   addCollider(veil);
   // A pillar with its socket and its hook — the veil's four stand in silver
@@ -410,14 +464,13 @@ export function buildTabernacle(cubit: number): Tabernacle {
   // embroiderer", on five pillars — 26:37. The pillars were here and the
   // curtain was not, so the tent simply had no door.
   const doorX = tentX + tentL / 2;
-  const doorScreen = new THREE.Mesh(
-    new THREE.PlaneGeometry(tentW, boardH * 0.96), M.screen());
+  const doorScreen = hanging(tentW,boardH*.985,M.screen(),C(4));
   doorScreen.rotation.y = -Math.PI / 2;
   // The curtain hangs from hooks on the pillars, so it sits a hand's breadth
   // inside them and the five pillars stand in front of it, seen from the
   // court. With the curtain outside, the pillars were invisible and the door
   // read as a square of cloth on a black frame.
-  doorScreen.position.set(doorX - cubit * 0.2, boardH * 0.48, 0);
+  doorScreen.position.set(doorX - cubit * 0.2, 0, 0);
   g.add(doorScreen);
   // No collider: this is the way in. The veil keeps its own, because the one
   // barrier in this building that means something is the one at 26:33.
@@ -432,6 +485,13 @@ export function buildTabernacle(cubit: number): Tabernacle {
   // "Put the table outside the veil on the north side of the tabernacle, and
   // the lampstand opposite it on the south side" — Exodus 26:35.
   const { group: lamp } = buildMenorah(1.5);
+  // No Roman-period tiered base is asserted for Moses' lampstand here: a
+  // plain support and branch shape are openly interpretive display choices.
+  lamp.children[0]!.visible=false;
+  lamp.remove(lamp.children[0]!);
+  const lampFoot=new THREE.Mesh(new THREE.LatheGeometry([[0,0],[.25,.01],[.27,.04],[.24,.08],[.13,.13],[.065,.22]].map(([r,y])=>new THREE.Vector2(r,y)),40),gold);
+  lamp.add(lampFoot);
+  lamp.traverse(o=>{if(o instanceof THREE.Mesh)o.material=gold;});
   lamp.position.set(holyMidX, 0, -tentW * 0.3);
   g.add(lamp);
   addCollider(lamp);
@@ -444,13 +504,13 @@ export function buildTabernacle(cubit: number): Tabernacle {
   const unit = 1.5 / 8.6;
   const lampY = 7.5 * unit;
   for (const u of [0, -2.15, 2.15, -2.93, 2.93, -3.71, 3.71]) {
-    const flame = new THREE.Mesh(new THREE.ConeGeometry(0.02, 0.07, 8), flameMat);
-    flame.position.set(holyMidX + u * unit, lampY + 0.14, -tentW * 0.3);
+    const flame = new THREE.Mesh(new THREE.SphereGeometry(.018,10,8), flameMat);flame.scale.set(.7,2,1);
+    flame.position.set(holyMidX + u * unit+.045, lampY + .046, -tentW * 0.3);
     g.add(flame);
   }
-  const glow = new THREE.PointLight(0xffb45a, 14, 12, 1.6);
+  const glow = new THREE.PointLight(0xffc87e, 2.0, 12, 2);
   glow.position.set(holyMidX, lampY + 0.3, -tentW * 0.3);
-  glow.castShadow = true;
+  glow.castShadow = false;
   glow.shadow.mapSize.set(1024, 1024);
   glow.shadow.bias = -0.002;
   g.add(glow);
@@ -458,9 +518,18 @@ export function buildTabernacle(cubit: number): Tabernacle {
   // The table of the Presence: two cubits by one, a cubit and a half high —
   // Exodus 25:23, overlaid with gold and crowned with a moulding.
   const table = new THREE.Group();
-  const top = new THREE.Mesh(new THREE.BoxGeometry(C(2), C(0.12), C(1)), gold);
-  top.position.y = C(1.5);
+  const top = bevelBox(C(2), C(0.12), C(1), gold);
+  top.position.y = C(1.44);
   table.add(top);
+  for(const sz of [-1,1]){
+    const border=bevelBox(C(2.05),C(.15),C(.07),gold);border.position.set(0,C(1.49),sz*C(.5));table.add(border);
+    const pole=new THREE.Mesh(new THREE.CylinderGeometry(C(.045),C(.045),C(3.8),16),gold);pole.rotation.z=Math.PI/2;
+    pole.position.set(0,C(1.23),sz*C(.64));table.add(pole);
+    for(const sx of [-1,1]){
+      const ring=new THREE.Mesh(new THREE.TorusGeometry(C(.095),C(.022),8,20),gold);ring.rotation.y=Math.PI/2;
+      ring.position.set(sx*C(.8),C(1.23),sz*C(.64));table.add(ring);
+    }
+  }
   for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]] as const) {
     const legMesh = new THREE.Mesh(
       new THREE.CylinderGeometry(cubit * 0.07, cubit * 0.07, C(1.5), 10), gold);
@@ -469,17 +538,24 @@ export function buildTabernacle(cubit: number): Tabernacle {
   }
   // "Put the bread of the Presence on this table" — 25:30; twelve loaves in
   // two rows of six — Leviticus 24:5-6.
-  const bread = new THREE.MeshStandardMaterial({ color: 0xd9b57a, roughness: 0.85 });
+  const bread = new THREE.MeshStandardMaterial({ color: 0xbb854d, roughness: 0.94 });
   for (let r = 0; r < 2; r++) {
     for (let i = 0; i < 6; i++) {
-      const loaf = new THREE.Mesh(
-        new THREE.CylinderGeometry(cubit * 0.11, cubit * 0.12, cubit * 0.06, 14), bread);
-      loaf.position.set((i - 2.5) * cubit * 0.3, C(1.5) + cubit * 0.09 + r * cubit * 0.055,
-                        (r - 0.5) * cubit * 0.35);
+      // Two arrangements of six (Lev 24:6); stacking is interpretive.
+      const loaf = new THREE.Mesh(new THREE.SphereGeometry(C(.24),24,12), bread);
+      loaf.scale.set(1,.15,1);loaf.position.set((r-.5)*C(.85),C(1.53+i*.065),0);
       table.add(loaf);
     }
   }
   table.position.set(holyMidX, 0, tentW * 0.3);
+  // Dishes and pouring vessels are named at 25:29; profiles and placement
+  // remain illustrative, just as the basin dimensions do.
+  for(const sx of [-1,1]){
+    const dish=new THREE.Mesh(new THREE.LatheGeometry([[0,0],[.04,0],[.063,.012],[.068,.028],[.060,.03],[.048,.015],[0,.01]].map(([r,y])=>new THREE.Vector2(r,y)),28),gold);
+    dish.position.set(sx*C(.75),C(1.5),C(.30));table.add(dish);
+  }
+  const jug=new THREE.Mesh(new THREE.LatheGeometry([[0,0],[.025,0],[.045,.02],[.055,.07],[.035,.12],[.021,.15],[.025,.18],[.017,.18],[.015,.15]].map(([r,y])=>new THREE.Vector2(r,y)),32),gold);
+  jug.position.set(C(.72),C(1.5),-C(.22));table.add(jug);
   g.add(table);
   addCollider(table);
 
@@ -490,6 +566,7 @@ export function buildTabernacle(cubit: number): Tabernacle {
   const arkSpec = STRUCTURES.find((x) => x.id === 'ark');
   if (arkSpec) {
     const ark = buildStructure(arkSpec, cubit);
+    ark.traverse(o=>{if(o instanceof THREE.Mesh)o.material=gold;});
     ark.position.set(tentX - tentL / 2 + C(5), 0, 0);
     // Length across the room, north–south, so that from the veil the two
     // cherubim stand side by side facing each other, as 25:20 describes
@@ -498,11 +575,9 @@ export function buildTabernacle(cubit: number): Tabernacle {
     ark.rotation.y = Math.PI / 2;
     g.add(ark);
     addCollider(ark);
-    // The most holy place had no lamp; its light was the presence between the
-    // cherubim (25:22). A dim glow from above the mercy seat stands in for
-    // what cannot be modelled, so that the one object in the room is not lost
-    // in the dark.
-    const presence = new THREE.SpotLight(0xfff0c8, 26, 12, 0.55, 0.7, 1.4);
+    // Inspection illumination is a museum-display aid. Exodus 25:22 does not
+    // specify a visible light source here; do not call it divine radiance.
+    const presence = new THREE.SpotLight(0xffead0, 12, 12, .8, 1, 2);
     presence.position.set(tentX - tentL / 2 + C(5), C(8.5), 0);
     presence.target.position.set(tentX - tentL / 2 + C(5), 0, 0);
     g.add(presence, presence.target);
@@ -514,7 +589,7 @@ export function buildTabernacle(cubit: number): Tabernacle {
   // The altar of incense: a cubit square and two cubits high, with horns —
   // Exodus 30:1-3. It stands before the veil, 30:6.
   const incense = new THREE.Group();
-  const body = new THREE.Mesh(new THREE.BoxGeometry(C(1), C(2), C(1)), gold);
+  const body = bevelBox(C(1), C(2), C(1), gold);
   body.position.y = C(1);
   incense.add(body);
   for (const [hx, hz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]] as const) {
@@ -547,21 +622,35 @@ export function buildTabernacle(cubit: number): Tabernacle {
   // flat plane to the edge of the world is a court on a table. These are
   // scenery, not scripture, and sit far enough out that they are only ever a
   // silhouette under haze.
-  const ringGeo = new THREE.CylinderGeometry(courtL * 5.2, courtL * 6.5, courtL * 1.6, 96, 6, true);
-  const rp = ringGeo.attributes.position as THREE.BufferAttribute;
-  for (let i = 0; i < rp.count; i++) {
-    const x = rp.getX(i), y = rp.getY(i), z = rp.getZ(i);
-    const a = Math.atan2(z, x);
-    const peak = Math.abs(Math.sin(a * 5.3) * 0.6 + Math.sin(a * 13.1) * 0.25 + Math.sin(a * 29) * 0.12);
-    const t = (y + courtL * 0.8) / (courtL * 1.6);
-    rp.setY(i, -courtL * 0.8 + t * courtL * (0.5 + peak * 1.1));
+  // A continuous eroded ridgeline, not a low-resolution cylinder silhouette.
+  // No claim is made that this invented backdrop locates Mount Sinai.
+  for(let layer=0;layer<2;layer++){
+    const ringGeo=new THREE.PlaneGeometry(720,720,160,160);
+    ringGeo.rotateX(-Math.PI/2);
+    const rp=ringGeo.attributes.position as THREE.BufferAttribute;
+    for(let i=0;i<rp.count;i++){
+      const x=rp.getX(i),z=rp.getZ(i),d=Math.hypot(x,z),a=Math.atan2(z,x);
+      const envelope=Math.exp(-(((d-(190+layer*100))/48)**2));
+      const ridge=18+23*Math.abs(Math.sin(a*4.3+.5))+18*Math.abs(Math.sin(a*11.2));
+      const erosion=7*Math.sin(x*.09+z*.04)+5*Math.abs(Math.sin(x*.21-z*.14))+2.5*Math.sin(x*.47+z*.31);
+      rp.setY(i,envelope*(ridge+erosion)-1.5-layer*.5);
+    }
+    ringGeo.computeVertexNormals();
+    const mountains=new THREE.Mesh(ringGeo,new THREE.MeshStandardMaterial({color:layer?0xaca18b:0xa18c72,roughness:1}));
+    mountains.userData.noCast=true;g.add(mountains);
   }
-  ringGeo.computeVertexNormals();
-  const mountains = new THREE.Mesh(ringGeo, new THREE.MeshStandardMaterial({
-    color: 0x8a7658, roughness: 1, side: THREE.BackSide,
-  }));
-  mountains.userData.noCast = true;
-  g.add(mountains);
 
-  return { group: g, colliders, counts };
+  // Soft physical ground contact and small stones use one instanced draw;
+  // they are generic set dressing, not a claim to identify Sinai's location.
+  const stones=new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1,0),new THREE.MeshStandardMaterial({color:0x9f896c,roughness:1}),420);
+  const dummy=new THREE.Object3D();
+  for(let i=0;i<420;i++){
+    const a=i*2.399963,r=27+Math.sqrt(i/420)*95;
+    const size=.05+(Math.sin(i*12.34)*.5+.5)*.15;
+    dummy.position.set(Math.cos(a)*r,size*.25,Math.sin(a)*r);
+    dummy.scale.set(size*1.5,size*.5,size);dummy.rotation.set(i,0,i*.8);dummy.updateMatrix();stones.setMatrixAt(i,dummy.matrix);
+  }
+  stones.userData.noCast=true;g.add(stones);
+  batchStatic(g);
+  return { group: g, colliders, counts, ready };
 }

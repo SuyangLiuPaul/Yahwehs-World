@@ -66,10 +66,10 @@ body { margin: 0; background: #060d16; color: var(--ink); font-family: var(--ui)
 #tour-bar[hidden] { display: none; }
 #tour-bar i { display: block; height: 100%; width: 0; background: var(--gold); transition: width .4s linear; }
 
-.hud-side { display: grid; gap: var(--sp-1); justify-items: end; align-self: end; }
+.hud-side { display: flex; gap: var(--sp-1); justify-content: end; align-self: end; }
 #tour-toggle {
   pointer-events: auto; background: transparent; border: 1px solid var(--line-gold);
-  color: var(--gold); border-radius: 50%; width: 30px; height: 30px; padding: 0;
+  color: var(--gold); border-radius: 50%; width: 44px; height: 44px; padding: 0;
   font-size: var(--fs-100); cursor: pointer; display: grid; place-content: center;
 }
 #tour-toggle[hidden] { display: none; }
@@ -95,6 +95,16 @@ kbd {
   display: grid; grid-template-columns: auto 1fr auto; align-items: end; gap: var(--sp-4);
 }
 #hud[hidden] { display: none; }
+#tour-stop {max-width:100%;width:100%;min-height:44px;background:#0c1720e8;color:var(--ink-2);border:1px solid var(--line);font:var(--fs-200) var(--ui);padding:0 8px;pointer-events:auto;}
+.hud-side button{min-height:44px;min-width:44px;border:1px solid var(--line);background:#0c1720d9;color:var(--ink);font:var(--fs-200) var(--ui);pointer-events:auto;cursor:pointer;padding:0 10px;}
+.hud-side button:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);}
+#view-transition{position:fixed;inset:0;background:#090b0e;pointer-events:none;opacity:0;z-index:4;}
+#assumptions{color:var(--ink);background:#101d27;border:1px solid var(--line-gold);width:min(620px,calc(100% - 32px));max-height:80dvh;padding:24px;font:var(--fs-300)/1.65 var(--ui);}
+#assumptions::backdrop{background:#000a;backdrop-filter:blur(4px);}
+#assumptions h2{font-family:var(--display);font-size:var(--fs-500);}
+#assumptions a{color:var(--gold-bright);}
+.dialog-close{min-width:72px;min-height:44px;background:transparent;color:var(--ink);border:1px solid var(--line);float:right;cursor:pointer;}
 #plan { width: 116px; height: 66px; overflow: visible; }
 #plan rect, #plan line { fill: none; stroke-width: 1.1; vector-effect: non-scaling-stroke; }
 .p-court { stroke: #ffffff2e; }
@@ -124,6 +134,11 @@ kbd {
 
 @media (max-width: 640px) {
   #hud { grid-template-columns: auto 1fr; padding: var(--sp-3) var(--sp-4); }
+  .hud-side{grid-column:1/-1;justify-content:flex-start;}
+  #where{font-size:var(--fs-300);letter-spacing:.015em;}
+  #verse{font-size:var(--fs-100);letter-spacing:0;}
+  #plan{align-self:center;}
+  #gate{overflow-y:auto;align-content:start;padding-top:76px;padding-bottom:60px;}
   .hud-keys { display: none; }
   #plan { width: 88px; height: 50px; }
   /* The gate's scrim runs left-to-right for a wide screen; on a phone the card

@@ -10,7 +10,7 @@ try{
     const page=await context.newPage();
     let release;
     const gate=new Promise(resolve=>{release=resolve;});
-    await page.route('**/data/terrain-color.webp',async route=>{
+    await page.route('**/data/terrain-color.webp*',async route=>{
       if(mode==='failed'){await route.abort();return;}
       await gate;
       await route.fulfill({path:'public/data/terrain-color.webp',contentType:'image/webp'});

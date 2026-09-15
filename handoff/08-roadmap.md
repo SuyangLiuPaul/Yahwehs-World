@@ -21,11 +21,19 @@ deployment status: `BATCH-1.md`; screenshots: `evidence/phase-1/`.
 Done: `06` tests L3–L5, L7 pass; exodus-wilderness and paul-1 screenshots at three sizes committed under `handoff/evidence/phase-1/`.
 
 ## Phase 2 — Terrain extension + names (L1, L2) (2–3 days)
+
+2026-09-15 scene batch: terrain extended and regenerated from ETOPO; 22
+region labels inherit the audited gazetteer. L1 resolution/payload checks and
+route regressions pass. L2's full ~40-name coverage remains unfinished.
+See `BATCH-2.md`; do not call the entire visual standard complete.
 - Crop to 5W–50E, 12N–45N; optional GEBCO height field.
 - Sea/region labels with 和合本 names.
 Done: paul-rome fully on terrain; L1/L2 tests pass; payload delta ≤ +3 MB.
 
 ## Phase 3 — Staffage (L6) (3–5 days)
+
+First original 3D ship/caravan tier added in Batch 2 (two instanced draws).
+Tents/birds and all stop-conditioned L6 scenarios are not complete.
 - Sprite tier first (ships, camels, tents, birds), then low-poly tier if
   budget allows. Provenance in the manifest for anything generated.
 Done: L6 tests pass; frame time measured and recorded.
@@ -52,6 +60,10 @@ through `build-review-page` + `apply-review` at their own pace.
 Done: ≈ 25–35 journeys; each stop cites a verse; sea legs dashed.
 
 ## Phase 7 — Structures to full coverage (C4) (1–2 days per card; 1–2 weeks per walkable)
+
+Owner-prioritized tabernacle repair completed as Batch 2, with 60 real tour
+camera captures and bilingual controls. This does not complete all structures,
+Solomon's temple, photoreal scenery or the B24 measurement-card framing defect.
 - Cards for every measured structure; Solomon's temple walkable; then Ezekiel's.
 Done: each card's "unstated" section written; walk tours verified on phone.
 

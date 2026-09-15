@@ -7,17 +7,17 @@ import { GLOBE_RADIUS } from './globe.ts';
 // rivers stroked from Natural Earth vectors. It carries the whole sphere at a
 // glance, and it can never show a mountain, because a stroke has no elevation
 // behind it. Relief has to come from measured height, so this patch carries
-// Natural Earth's shaded-relief and cross-blended hypsometric rasters (public
-// domain, elevation-derived, not photography), cropped to the ground the text
-// actually walks over and colour-graded so the sea has depth and the desert is
-// warm rather than atlas-grey.
+// NOAA ETOPO 2022 surface elevations (CC0), averaged from 15 to 30 arc seconds,
+// with offline slope shading and an authored hypsometric palette. Natural
+// Earth vectors provide the coastal mask, inland waters and rivers.
+// These are modern measurements, not a reconstruction of ancient shorelines.
 //
 // It fades in on approach. Far out, the parchment reads better and the patch
 // would only be a bright rectangle stuck to a globe; close in, the parchment
 // has nothing left to say and the terrain does.
 
 /** The crop, in degrees. Rome to Susa, the first cataract to the Black Sea. */
-export const REGION = { lon0: 10, lon1: 50, lat0: 12, lat1: 45 };
+export const REGION = { lon0: -5, lon1: 50, lat0: 12, lat1: 45 };
 
 const D2R = Math.PI / 180;
 
@@ -49,7 +49,7 @@ export class Terrain {
     const loader = new THREE.TextureLoader();
     let loaded!: (success: boolean) => void;
     this.ready = new Promise<boolean>(resolve => { loaded=resolve; });
-    const map = loader.load('data/terrain-color.webp', () => loaded(true), undefined, () => { this.loadFailed=true; loaded(false); });
+    const map = loader.load('data/terrain-color.webp?v=etopo-2022-r1', () => loaded(true), undefined, () => { this.loadFailed=true; loaded(false); });
     map.colorSpace = THREE.SRGBColorSpace;
     map.anisotropy = 16;
 

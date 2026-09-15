@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { metres, type Structure } from './specs.ts';
 import { buildMenorah, type BranchForm } from './menorah.ts';
+import { buildCherub } from './cherub.ts';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 // Geometry is generated from the stated dimensions, never modelled by hand.
 // The consequence that matters: move the cubit slider and every structure
@@ -15,7 +17,7 @@ const mat = (color: number, o: Partial<THREE.MeshStandardMaterialParameters> = {
   new THREE.MeshStandardMaterial({ color, roughness: 0.55, metalness: 0.1, ...o });
 
 const box = (w: number, h: number, d: number, m: THREE.Material) =>
-  new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
+  new THREE.Mesh(new RoundedBoxGeometry(w,h,d,2,Math.min(w,h,d)*.06), m);
 
 /** A 1.7 m figure, so a metre reads as a metre. Every card gets one, even the
  *  ones where it becomes a single pixel — that is the point of those cards. */
@@ -121,41 +123,8 @@ export function buildStructure(s: Structure, cubitM: number, form: BranchForm = 
       // long wings raised and swept in to meet over the seat — enough to be
       // read as a winged figure from the veil, which two domes were not.
       const cherubMat = mat(GOLD, { metalness: 0.96, roughness: 0.2, side: THREE.DoubleSide });
-      const wingLen = H * 0.72;
       for (const sx of [-1, 1]) {
-        const cherub = new THREE.Group();
-        // kneeling: thighs as a low block, torso rising from it
-        const knees = new THREE.Mesh(new THREE.BoxGeometry(H * 0.2, H * 0.11, H * 0.24), cherubMat);
-        knees.position.set(-H * 0.03, H * 0.055, 0);
-        cherub.add(knees);
-        const torso = new THREE.Mesh(new THREE.CylinderGeometry(H * 0.075, H * 0.1, H * 0.34, 14), cherubMat);
-        torso.position.set(H * 0.02, H * 0.28, 0);
-        torso.rotation.z = -0.12;   // leans in toward the centre
-        cherub.add(torso);
-        const shoulders = new THREE.Mesh(new THREE.SphereGeometry(H * 0.095, 14, 10), cherubMat);
-        shoulders.scale.set(1, 0.6, 1.5);
-        shoulders.position.set(H * 0.04, H * 0.45, 0);
-        cherub.add(shoulders);
-        const head = new THREE.Mesh(new THREE.SphereGeometry(H * 0.07, 14, 12), cherubMat);
-        head.position.set(H * 0.06, H * 0.55, 0);
-        cherub.add(head);
-        // Wings: two thin blades rising from the shoulders, tipped forward so
-        // they overshadow the seat; the near edges of the pair from either
-        // end almost meet at the centre line.
-        for (const side of [-1, 1]) {
-          // A blade that tapers to the tip: a cone laid on its side and
-          // flattened, root at the shoulder.
-          const wing = new THREE.Mesh(new THREE.ConeGeometry(H * 0.15, wingLen, 12), cherubMat);
-          wing.scale.set(1, 1, 0.22);   // thin through, full width; the broad face looks along the seat
-          wing.rotation.z = -Math.PI / 2;   // point along +x
-          const pivot = new THREE.Group();
-          pivot.position.set(H * 0.02, H * 0.46, side * H * 0.07);
-          wing.position.x = wingLen / 2;   // grows from the pivot outward
-          pivot.add(wing);
-          // raise ~62° above horizontal, splay ±22° to the sides, lean in
-          pivot.rotation.set(side * 0.32, side * -0.2, 0.98);
-          cherub.add(pivot);
-        }
+        const cherub = buildCherub(H,cherubMat);
         cherub.position.set(sx * L * 0.38, seatTop, 0);
         cherub.rotation.y = sx > 0 ? Math.PI : 0;   // faces toward each other
         g.add(cherub);
