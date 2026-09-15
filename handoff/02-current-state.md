@@ -1,5 +1,13 @@
 # 02 · Current state (measured 2026-09-15, commit `6b3471b`)
 
+Latest visual pass: `BATCH-3.md`, source `f6a0bae`. Five original Higgsfield
+material studies (2.22 MB total), a textured geometric arid environment,
+local interior reflections and revised lampstand/cherub/horn forms are live.
+The old "no image assets" row below is historical, not the present material
+pipeline; see `src/walk/materials.ts`, `environment.ts` and the asset manifest.
+All 1,443 event records remain unchanged; full event scenes and B7/B24/B28
+remain unfinished. Browser evidence is in `evidence/phase-3/`.
+
 Scene update 2026-09-15: `BATCH-2.md` supersedes the old tabernacle/terrain
 entries below. The globe now uses NOAA ETOPO relief at 6600×3960, 22 audited
 gazetteer-derived region labels, and schematic instanced ships/caravans.

@@ -88,3 +88,16 @@ passed (`checks/tour-playback.json`). Shared navigation/credits pass twelve
 page/viewport/language cases. Route regression passes all twelve Exodus/Paul 1
 cases: no label overlaps, 13 Exodus labels on phone, camera fixed during playback.
 Production acceptance is recorded separately after release.
+
+## Production acceptance
+
+Source `f6a0bae9f52d3f73c3a6d2609716b70e19341c34` is pushed to main and live at
+https://yahwehsworld.netlify.app/tabernacle.html. `live/release.json` verifies
+three HTML entry points, nine hashed code/style assets, three retained data/
+model assets and all five new textures byte-for-byte against the tested build.
+All six live viewport/language UI cases pass with the new textures and local
+reflections ready. The complete live tour visits all ten stops, reaches replay,
+and passes replay/exit with no page errors; its final phone screenshot was
+inspected. `live/walk-checks.json` uses production for UI checks; its CPU and
+deliberate GLB-failure sections still use the matching local development build.
+The evidence/documentation follow-up commit changes no deployed app assets.

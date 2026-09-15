@@ -183,6 +183,10 @@ selectors, replay, a 44px exit and evidence controls are now tested bilingually.
 
 **B28 — Visual ceiling still open.** Batch 2 improves materials, construction,
 terrain and furnishings but is not a photographic/game-production scene.
+Batch 3 adds five original AI material studies, modeled ridge/stone detail,
+local reflections and revised furnishing forms; it still does not certify the
+reference-image bar or the 1,443-event scene system. See `BATCH-3.md` for exact
+scope and browser/physical-device distinctions.
 The desert remains illustrative procedural scenery; imagery has not been
 generated to make false archaeological claims. Full ~40 region labels,
 tents/birds, richer historically researched object detail and physical-device
