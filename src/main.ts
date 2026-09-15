@@ -17,6 +17,7 @@ import { precisionOf, precisionStyle } from './theme.ts';
 import { Route, type Journey } from './routes.ts';
 import { RouteLabels } from './labels.ts';
 import { RouteThumbnail } from './route-thumbnail.ts';
+import { Scenes } from './scenes.ts';
 import { Cartography, measureMap } from './cartography.ts';
 import { applyStatic, bindSwitch, locale as currentLocale, onLocale } from './locale.ts';
 import type { GeoJson, Place, PlacesBundle } from './types.ts';
@@ -221,6 +222,8 @@ let campPlayback:CampPlayback|null=null;
 let storyRequest=0;
 const routeLabels = new RouteLabels(document.body);
 const routeThumbnail = new RouteThumbnail(renderer, globe, terrain, $<HTMLCanvasElement>('r-thumbnail'));
+const scenes = new Scenes($('r-scene-art'));
+void scenes.load();
 const cartography = new Cartography();
 let selectedOrdinal: number | null = null;
 let readoutKey = '';
@@ -265,6 +268,7 @@ function clearRoute() {
   $('map-tools').hidden=true;
   routeLabels.clear();
   routeThumbnail.clear();
+  scenes.hide();
   rCard.hidden = true;
   rBasis.textContent = '';
   rToggle.textContent = '▶';
@@ -563,6 +567,7 @@ function updateRouteReadout() {
   routeThumbnail.show(m);
   $('r-unlocated').hidden=m.lat!==null&&m.lon!==null;
   const ordinal=selectedOrdinal??m.stops[0]??m.n;
+  scenes.show(route.journey.id, ordinal, locale);
   for(const button of Array.from($('r-dots').querySelectorAll<HTMLButtonElement>('button'))){
     const n=Number(button.dataset.stop);
     button.classList.toggle('passed',n<ordinal);

@@ -1,0 +1,175 @@
+{
+  "_meta": {
+    "journey": "paul-rome",
+    "what": "保罗押解往罗马的航程，16 站，每站一幅画。",
+    "honesty": "这些是**画家的想象，不是考古复原**。画面依据的是使徒行传 27—28 章的叙述与该地一世纪的一般面貌，不代表任何具体遗址的考据结论。界面上必须带此标注。",
+    "howMade": "Higgsfield MCP，模型 gpt_image_2_5，16:9，每张 1 credit，2026-09-15。风格子句逐字复用于每一张，这是 16 张看起来像一套的唯一办法；场景子句按经文逐站书写。",
+    "sourceText": "BSB 使徒行传 27:1–28:16（见 SeekSparks assets/bsb-yhwh.json）",
+    "asides": "第 7 站非尼基与第 9 站赛耳底是经文提到、他们却从未到达的地方；两幅画中刻意没有船，与地图上的空心标记一致。",
+    "stylePrompt": "Painterly historical illustration, hand-painted antique atlas plate. Strictly muted palette: deep indigo sea (#0b1a2b), warm parchment stone and land (#ece2cd), antique gold highlights (#c9a227), no other saturated colour. Visible brushwork, soft edges, matte. NOT photorealistic. No modern objects, no lettering, no captions, no text anywhere. Wide establishing view, low horizon, human figures small and distant.",
+    "regenerate": "完整提示词 = stylePrompt + '\\n\\nScene: ' + scenePrompt",
+    "generated": "2026-09-15"
+  },
+  "scenes": [
+    {
+      "n": 1,
+      "place": "Caesarea",
+      "zh": "该撒利亚",
+      "ref": "Acts 23:33",
+      "file": "scenes/paul-rome-01.webp",
+      "captionEn": "Paul is led out along the Herodian mole to the ship.",
+      "captionZh": "保罗被押过希律所筑的防波堤上船。",
+      "scenePrompt": "the harbour of Caesarea Maritima on the coast of Judea in the first century AD. The great Herodian breakwater curves out into the sea, warehouses and a colonnade along the quay, a Roman grain ship moored with its single square sail furled, a small group of figures being led along the mole under guard. Late afternoon, long low sunlight raking across the stone, calm water. Mood: departure, quiet dread."
+    },
+    {
+      "n": 2,
+      "place": "Sidon",
+      "zh": "西顿",
+      "ref": "Acts 27:3",
+      "file": "scenes/paul-rome-02.webp",
+      "captionEn": "Julius lets Paul go ashore to his friends.",
+      "captionZh": "犹流准保罗上岸去见朋友。",
+      "scenePrompt": "the Phoenician harbour of Sidon in the first century AD, the morning after a day's sail. A coastal merchant ship lies alongside a stone quay under cedar-timbered warehouses; a prisoner is being allowed ashore by a Roman officer to meet a small group of friends waiting with baskets and jars at the head of the wharf. Clear early light, still water, the hills of Lebanon soft behind the town. Mood: unexpected kindness."
+    },
+    {
+      "n": 3,
+      "place": "Myra",
+      "zh": "每拉",
+      "ref": "Acts 27:5",
+      "file": "scenes/paul-rome-03.webp",
+      "captionEn": "Transferred to an Alexandrian grain ship bound for Italy.",
+      "captionZh": "改上一只往义大利去的亚历山大粮船。",
+      "scenePrompt": "the port of Myra in Lycia. A huge Alexandrian grain freighter, far larger than anything else in the harbour, lies at anchor with its great square mainsail and topsail, dwarfing the small coastal vessel beside it; prisoners and soldiers are being transferred across by gangplank and boat. Steep Lycian limestone cliffs with rock-cut tombs rise behind the town. Midday, hard bright light. Mood: the voyage becoming serious."
+    },
+    {
+      "n": 4,
+      "place": "Cnidus",
+      "zh": "革尼土",
+      "ref": "Acts 27:7",
+      "file": "scenes/paul-rome-04.webp",
+      "captionEn": "The wind refuses them the headland.",
+      "captionZh": "风不容他们绕过这个岬角。",
+      "scenePrompt": "the promontory of Cnidus seen from the sea. A Roman grain ship labours under shortened sail, unable to round the headland; the wind is dead against her and she is being pushed away from the marble city on its twin harbours. Whitecaps, spray, a hard grey-gold sky, the sail straining. Mood: the first refusal, a door closing."
+    },
+    {
+      "n": 5,
+      "place": "Salmone",
+      "zh": "撒摩尼",
+      "ref": "Acts 27:7",
+      "file": "scenes/paul-rome-05.webp",
+      "captionEn": "They slip into the lee of Crete.",
+      "captionZh": "他们贴着革哩底的背风处而行。",
+      "scenePrompt": "Cape Salmone, the bare eastern headland of Crete, seen from low on the water. A grain ship slips into the shelter of the cape's lee, sail slackening as the land takes the wind off her; open rough sea to the right, calm shadowed water under the cliffs to the left. Late afternoon, long shadow of the headland across the sea. Mood: relief taken where it is found."
+    },
+    {
+      "n": 6,
+      "place": "Fair Havens",
+      "zh": "佳澳",
+      "ref": "Acts 27:8",
+      "file": "scenes/paul-rome-06.webp",
+      "captionEn": "An open roadstead, and an argument about wintering.",
+      "captionZh": "一个不避风的锚地，和一场要不要过冬的争论。",
+      "scenePrompt": "Fair Havens on the south coast of Crete, an open unsheltered roadstead rather than a real harbour. Two ships ride at anchor in a shallow bay with no breakwater and no town, only a scatter of low buildings and the small settlement of Lasea inland among olive terraces. Autumn light, thin cloud, a swell already running into the bay. Mood: an argument about whether to stay."
+    },
+    {
+      "n": 7,
+      "place": "Phoenix",
+      "zh": "非尼基",
+      "ref": "Acts 27:12",
+      "file": "scenes/paul-rome-07.webp",
+      "captionEn": "The harbour they were making for, and never reached.",
+      "captionZh": "他们想去过冬、却始终没有到的港口。",
+      "scenePrompt": "the harbour of Phoenix on the south coast of Crete, EMPTY — no ship anywhere in the picture. A sheltered double bay facing southwest and northwest, safe winter moorings nobody reached, seen from a high bluff. The sky beyond the headland is already black with an approaching northeaster. Cold light on empty water. Mood: the safe place they never arrived at."
+    },
+    {
+      "n": 8,
+      "place": "Cauda",
+      "zh": "高大",
+      "ref": "Acts 27:16",
+      "file": "scenes/paul-rome-08.webp",
+      "captionEn": "In the island's brief lee they haul the boat aboard and undergird the hull.",
+      "captionZh": "在小岛短暂的背风处收起小船，用缆索捆绑船底。",
+      "scenePrompt": "the small barren island of Cauda giving a moment's shelter in a full gale. A Roman grain ship runs under its lee with bare masts, sailors hauling the waterlogged ship's boat up over the side on ropes and passing cables under the hull to undergird her. Torn sea, driving spray, the island a low dark mass to windward. Storm light, almost monochrome. Mood: desperate seamanship."
+    },
+    {
+      "n": 9,
+      "place": "Syrtis",
+      "zh": "赛耳底",
+      "ref": "Acts 27:17",
+      "file": "scenes/paul-rome-09.webp",
+      "captionEn": "The sandbanks they were driven in fear of.",
+      "captionZh": "他们所惧怕、被风刮着躲开的沙滩。",
+      "scenePrompt": "the Syrtis shoals off the North African coast, EMPTY — no ship anywhere in the picture. Endless pale shallows over drowned sandbanks, the water going from indigo to sickly parchment-gold where the bottom rises, a few bleached ribs of older wrecks half-buried in the sand, a flat featureless desert shore far off. Harsh flat light, no horizon line to steer by. Mood: the danger they were driven in fear of, and never saw."
+    },
+    {
+      "n": 10,
+      "place": "Malta",
+      "zh": "米利大",
+      "ref": "Acts 28:1",
+      "file": "scenes/paul-rome-10.webp",
+      "captionEn": "The ship breaks up; everyone reaches land.",
+      "captionZh": "船身破坏，众人都上了岸。",
+      "scenePrompt": "a first-century Roman grain ship driven aground on a sandbar off the coast of Malta at dawn after a two-week storm. The bow is stuck fast, the stern breaking apart in heavy surf, timbers and cargo scattered in the white water, survivors wading and swimming towards a shelving beach where a fire is being lit under low cliffs. Grey storm light breaking into pale gold on the horizon. Mood: exhaustion and deliverance."
+    },
+    {
+      "n": 11,
+      "place": "Syracuse",
+      "zh": "叙拉古",
+      "ref": "Acts 28:12",
+      "file": "scenes/paul-rome-11.webp",
+      "captionEn": "Three days' wait in a Sicilian harbour.",
+      "captionZh": "在西西里的港口停了三天。",
+      "scenePrompt": "the great harbour of Syracuse in Sicily in early spring. An Alexandrian grain ship carrying a carved figurehead of the twin brothers Castor and Pollux lies moored below the Greek theatre and temple colonnades of Ortygia; dock hands unload amphorae, passengers stand idle on the quay during a three-day wait. Clear cool morning light, calm harbour water. Mood: passage resumed after a long winter."
+    },
+    {
+      "n": 12,
+      "place": "Rhegium",
+      "zh": "利基翁",
+      "ref": "Acts 28:13",
+      "file": "scenes/paul-rome-12.webp",
+      "captionEn": "A south wind rises in the strait.",
+      "captionZh": "南风在海峡上刮起。",
+      "scenePrompt": "Rhegium on the Italian shore of the Strait of Messina, with the Sicilian coast and the cone of Etna faint across the narrow water. A grain ship lies at the mole; the first breath of a following south wind is lifting her sail and stirring the strait. Early morning, pale gold on the water, both coasts soft in haze. Mood: the wind finally turning in their favour."
+    },
+    {
+      "n": 13,
+      "place": "Puteoli",
+      "zh": "部丢利",
+      "ref": "Acts 28:13",
+      "file": "scenes/paul-rome-13.webp",
+      "captionEn": "Journey's end by sea; believers are waiting.",
+      "captionZh": "海路到此为止；有弟兄在等候。",
+      "scenePrompt": "Puteoli, the great grain port of the Bay of Naples, journey's end by sea. The long curved concrete mole on its arched piers reaches out into the bay crowded with Alexandrian freighters; sacks of Egyptian grain move ashore in a continuous line, and a small group of local believers waits at the landward end to greet the arriving prisoners. Warm afternoon, Vesuvius soft in the haze behind. Mood: solid ground at last."
+    },
+    {
+      "n": 14,
+      "place": "Forum of Appius",
+      "zh": "亚比乌市",
+      "ref": "Acts 28:15",
+      "file": "scenes/paul-rome-14.webp",
+      "captionEn": "Brothers walk out sixty kilometres to meet him.",
+      "captionZh": "弟兄们走了六十多公里来迎接他。",
+      "scenePrompt": "the Forum of Appius, a posting station forty miles south of Rome on the Appian Way, where the paved road runs dead straight across the marshy Pontine plain beside its barge canal. A small party of travellers on foot with a Roman guard is met on the road by a group who have walked out from the city; mules, a halted barge, low inns along the verge. Flat grey-gold afternoon over the marsh. Mood: strangers who came a long way to meet him."
+    },
+    {
+      "n": 15,
+      "place": "Three Taverns",
+      "zh": "三馆地方",
+      "ref": "Acts 28:15",
+      "file": "scenes/paul-rome-15.webp",
+      "captionEn": "He sees them, and takes courage.",
+      "captionZh": "他见了他们，就放心壮胆。",
+      "scenePrompt": "Three Taverns, a small roadside halt thirty miles from Rome on the Appian Way, three modest buildings where the straight paved road crosses rising ground. A second group has come out to meet the travellers; the prisoner has stopped in the road, and the others stand around him. Evening light along the stones of the road, the Alban hills soft ahead. Mood: courage returning."
+    },
+    {
+      "n": 16,
+      "place": "Rome",
+      "zh": "罗马",
+      "ref": "Acts 28:16",
+      "file": "scenes/paul-rome-16.webp",
+      "captionEn": "A rented lodging, and a soldier at the door.",
+      "captionZh": "一处租来的住处，门口有一个兵看守。",
+      "scenePrompt": "Rome, the end of the road. A modest rented upper-floor lodging in an ordinary insula street, a single Roman soldier standing at the doorway below, the prisoner at an open window above with the roofs, aqueduct arches and distant temple of the city stretching away behind. Not a triumphal view — a plain street. Low gold evening light on brick and stucco. Mood: arrival, and a guarded freedom."
+    }
+  ]
+}

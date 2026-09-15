@@ -92,3 +92,31 @@ spelling is kept as `nameOriginal`. The rule and its evidence live in
 `data/places/cuv-renderings.json` (`englishDivineName`) and are applied by
 `makeEnNormaliser` in `scripts/lib/zh-names.mjs`; `audit-events` sweeps both
 shipped payloads for 耶和华, LORD and the two old names, and must print none.
+
+**D19 — Painted scenes are allowed; painted geography is not.** A journey's
+stops may carry a generated illustration, shown in the route card above the
+player. This does not reopen D1: the basemap, the terrain and every coordinate
+still come from data, and no generated pixel is ever load-bearing for where
+something is. What a scene carries is atmosphere — what a first-century grain
+ship looked like, what an open roadstead is, what it means that the harbour at
+Phoenix was never reached.
+
+Three conditions, all enforced in code or data rather than by good intentions.
+(a) **The credit travels with the picture.** `src/scenes.ts` renders 「画家的想象」
+/ "Artist's impression" inside the figure; a reader must never have to wonder
+whether they are looking at evidence. This atlas is worth attention because it
+is straight about what is known, and a painting of an unexcavated harbour is
+exactly what would otherwise be mistaken for a finding.
+(b) **Provenance is complete enough to regenerate.** `data/scenes/paul-rome.json`
+holds the shared style clause, every per-scene prompt, the model, and the
+passage each scene was written from. The shipped `public/data/scenes.json`
+carries only filename and caption.
+(c) **A scene never contradicts the map.** Phoenix and Syrtis are places the
+text names and the travellers never reached; the map draws them as hollow,
+unconnected markers, and their plates contain no ship. If a stop's status
+changes, its plate is regenerated.
+
+Style is fixed by one clause repeated verbatim in all sixteen prompts — muted
+indigo/parchment/gold, visible brushwork, not photorealistic, no lettering,
+figures small and distant. That repetition is the only thing making them look
+like one set; do not paraphrase it per scene.

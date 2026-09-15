@@ -54,6 +54,10 @@
         <button id="r-clear" type="button" aria-label="Close journey">×</button>
       </header>
       <p id="r-scene-message" role="alert" hidden></p>
+      <figure id="r-scene-art" hidden>
+        <img alt="" decoding="async" loading="lazy" />
+        <figcaption><span class="r-scene-caption"></span><span class="r-scene-credit"></span></figcaption>
+      </figure>
       <div id="rplay">
         <div class="r-preview"><canvas id="r-thumbnail" width="160" height="90" role="img" aria-label="Terrain near this stop"></canvas><span class="r-loading" data-en="Loading terrain" data-zh="地形加载中">Loading terrain</span><span class="r-error" data-en="Terrain unavailable" data-zh="地形未载入">Terrain unavailable</span><span id="r-unlocated" hidden data-en="Unlocated" data-zh="位置未定">Unlocated</span></div>
         <div class="r-reading"><span id="r-stop"></span><span id="r-ref"></span></div>
