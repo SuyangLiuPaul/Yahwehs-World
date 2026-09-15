@@ -17,6 +17,26 @@ export function bevelBox(w:number,h:number,d:number,material:THREE.Material,r=.0
 export function cord(points:THREE.Vector3[],radius:number,material:THREE.Material){
   return new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points),Math.max(8,points.length*3),radius,5,false),material);
 }
+
+/** An interpretive swept horn profile. The four horns are specified; their
+ * curvature and dimensions are not. Continuous rings avoid cone-like spikes. */
+export function altarHorn(height:number,radius:number,material:THREE.Material){
+  const curve=new THREE.CubicBezierCurve3(new THREE.Vector3(),new THREE.Vector3(0,height*.45,0),
+    new THREE.Vector3(height*.10,height*.78,0),new THREE.Vector3(height*.32,height,0));
+  const p:number[]=[],uv:number[]=[],ix:number[]=[];
+  for(let j=0;j<=24;j++){
+    const t=j/24,c=curve.getPoint(t),tangent=curve.getTangent(t),n=new THREE.Vector3(tangent.y,-tangent.x,0);
+    const r=radius*(1-t)**.75;
+    for(let k=0;k<=24;k++){
+      const a=k/24*Math.PI*2;
+      p.push(c.x+n.x*Math.cos(a)*r,c.y+n.y*Math.cos(a)*r,c.z+Math.sin(a)*r);uv.push(k/24,t);
+      if(j<24&&k<24){const q=j*25+k;ix.push(q,q+25,q+1,q+1,q+25,q+26);}
+    }
+  }
+  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(p,3));
+  geo.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));geo.setIndex(ix);geo.computeVertexNormals();
+  return new THREE.Mesh(geo,material);
+}
 /** Vertical hanging with real folds. Opening narrows at the top: fabric is
  * gathered aside for this educational display, not erased from the scene. */
 export function hanging(width:number,height:number,material:THREE.Material,opening=0){
@@ -53,7 +73,9 @@ export function batchStatic(root:THREE.Group){
     const cast=o.userData.noCast!==true;
     const key=o.material.uuid+String(cast);
     if(!buckets.has(key))buckets.set(key,{material:o.material,cast,receive:true,geos:[]});
-    const geo=o.geometry.clone().applyMatrix4(o.matrixWorld).toNonIndexed();
+    const cloned=o.geometry.clone().applyMatrix4(o.matrixWorld);
+    const geo=cloned.index?cloned.toNonIndexed():cloned;
+    if(geo!==cloned)cloned.dispose();
     // All static geometry is PBR position/normal/uv, with no morph attributes.
     for(const name of Object.keys(geo.attributes))if(!['position','normal','uv'].includes(name))geo.deleteAttribute(name);
     if(!geo.attributes.uv)geo.setAttribute('uv',new THREE.BufferAttribute(new Float32Array(geo.attributes.position!.count*2),2));

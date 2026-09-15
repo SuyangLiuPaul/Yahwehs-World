@@ -1,0 +1,98 @@
+[
+  {
+    "name": "phone",
+    "locale": "en",
+    "surface": "structures",
+    "creditVisible": true,
+    "controlOverlap": false,
+    "errors": []
+  },
+  {
+    "name": "phone",
+    "locale": "en",
+    "surface": "tabernacle",
+    "creditVisible": true,
+    "controlOverlap": false,
+    "errors": []
+  },
+  {
+    "name": "phone",
+    "locale": "zh",
+    "surface": "structures",
+    "creditVisible": true,
+    "controlOverlap": false,
+    "errors": []
+  },
+  {
+    "name": "phone",
+    "locale": "zh",
+    "surface": "tabernacle",
+    "creditVisible": true,
+    "controlOverlap": false,
+    "errors": []
+  },
+  {
+    "name": "tablet",
+    "locale": "en",
+    "surface": "structures",
+    "creditVisible": true,
+    "controlOverlap": false,
+    "errors": []
+  },
+  {
+    "name": "tablet",
+    "locale": "en",
+    "surface": "tabernacle",
+    "creditVisible": true,
+    "controlOverlap": false,
+    "errors": []
+  },
+  {
+    "name": "tablet",
+    "locale": "zh",
+    "surface": "structures",
+    "creditVisible": true,
+    "controlOverlap": false,
+    "errors": []
+  },
+  {
+    "name": "tablet",
+    "locale": "zh",
+    "surface": "tabernacle",
+    "creditVisible": true,
+    "controlOverlap": false,
+    "errors": []
+  },
+  {
+    "name": "desktop",
+    "locale": "en",
+    "surface": "structures",
+    "creditVisible": true,
+    "controlOverlap": false,
+    "errors": []
+  },
+  {
+    "name": "desktop",
+    "locale": "en",
+    "surface": "tabernacle",
+    "creditVisible": true,
+    "controlOverlap": false,
+    "errors": []
+  },
+  {
+    "name": "desktop",
+    "locale": "zh",
+    "surface": "structures",
+    "creditVisible": true,
+    "controlOverlap": false,
+    "errors": []
+  },
+  {
+    "name": "desktop",
+    "locale": "zh",
+    "surface": "tabernacle",
+    "creditVisible": true,
+    "controlOverlap": false,
+    "errors": []
+  }
+]

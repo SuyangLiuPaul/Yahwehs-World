@@ -80,7 +80,7 @@ function noise(x: CanvasRenderingContext2D, n: number, cells: number, alpha: num
   x.putImageData(img, 0, 0);
 }
 
-export interface Surface { map: THREE.Texture; normalMap: THREE.Texture }
+export interface Surface { map: THREE.Texture; normalMap: THREE.Texture; roughnessMap?: THREE.Texture }
 
 /** Desert floor: fine grain over broad drift, the whole thing warm. */
 export function sand(): Surface {
@@ -218,7 +218,10 @@ export function beatenGold(): Surface {
     x.restore();
   }
   noise(x, 256, 64, 0.04);
-  return { map: wrap(new THREE.CanvasTexture(c), 3), normalMap: wrap(normalFrom(c, 3.0), 3) };
+  const rough=cv(256);rough.x.fillStyle='#c4c4c4';rough.x.fillRect(0,0,256,256);
+  noise(rough.x,256,16,.24);noise(rough.x,256,110,.12);
+  const roughnessMap=wrap(new THREE.CanvasTexture(rough.c),3);roughnessMap.colorSpace=THREE.NoColorSpace;
+  return { map: wrap(new THREE.CanvasTexture(c), 3), normalMap: wrap(normalFrom(c, 3.0), 3), roughnessMap };
 }
 
 /** Bronze for the court's pillars and the altar — Exodus 27:2, 27:10. */
@@ -226,10 +229,10 @@ export function bronze(): Surface {
   const { c, x } = cv(256);
   // Bronze is copper with tin: orange-gold, not brown. The old base was the
   // colour of a fence post.
-  x.fillStyle = '#c98a4a';
+  x.fillStyle = '#b7966c';
   x.fillRect(0, 0, 256, 256);
   noise(x, 256, 10, 0.045);
-  noise(x, 256, 70, 0.035);
+  noise(x, 256, 70, 0.025);
   // A little verdigris in the recesses.
   for (let i = 0; i < 60; i++) {
     x.save();
@@ -242,7 +245,16 @@ export function bronze(): Surface {
     x.beginPath(); x.arc(0, 0, r, 0, Math.PI * 2); x.fill();
     x.restore();
   }
-  return { map: wrap(new THREE.CanvasTexture(c), 2), normalMap: wrap(normalFrom(c, 1.8), 2) };
+  const rough=cv(256);rough.x.fillStyle='#aeaeae';rough.x.fillRect(0,0,256,256);
+  noise(rough.x,256,12,.14);noise(rough.x,256,90,.04);
+  // Irregular rubbed strokes, not embossed decoration claimed by the text.
+  for(let i=0;i<160;i++){
+    rough.x.strokeStyle=`rgba(235,235,235,${.1+random()*.2})`;rough.x.lineWidth=.35+random();
+    const px=random()*256,py=random()*256;rough.x.beginPath();rough.x.moveTo(px,py);
+    rough.x.lineTo(px+(random()-.5)*35,py+random()*8);rough.x.stroke();
+  }
+  const roughnessMap=wrap(new THREE.CanvasTexture(rough.c),2);roughnessMap.colorSpace=THREE.NoColorSpace;
+  return { map: wrap(new THREE.CanvasTexture(c), 2), normalMap: wrap(normalFrom(c, 1.8), 2), roughnessMap };
 }
 
 /** The outermost covering of the tent — "a covering of ram skins dyed red,

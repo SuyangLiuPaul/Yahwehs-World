@@ -1,0 +1,73 @@
+{
+  "results": [
+    {
+      "loaded": [
+        "desert-ground-v1.webp",
+        "desert-rock-v1.webp",
+        "fine-linen-v1.webp",
+        "screen-embroidery-v1.webp",
+        "veil-embroidery-v1.webp"
+      ],
+      "counts": {
+        "courtPillars": 60,
+        "boards": 48,
+        "sockets": 96,
+        "clasps": 50,
+        "bars": 15,
+        "curtains": 10
+      },
+      "reflection": "ready"
+    },
+    {
+      "name": "court",
+      "performance": {
+        "fps": 60.08823588111786,
+        "p95": 16.799999999999727,
+        "calls": 51,
+        "triangles": 989325,
+        "textures": 46
+      },
+      "environment": "macOS Chrome, 4× CPU, 375×812 DPR2. Not a physical mobile/GPU benchmark."
+    },
+    {
+      "name": "inner-room",
+      "performance": {
+        "fps": 60.23255350112327,
+        "p95": 16.799999999999272,
+        "calls": 35,
+        "triangles": 952749,
+        "textures": 46
+      },
+      "environment": "macOS Chrome, 4× CPU, 375×812 DPR2. Not a physical mobile/GPU benchmark."
+    },
+    {
+      "textureFailure": "Procedural fallback, reflection probe, stop selection and veil remain usable"
+    },
+    {
+      "assets": [
+        {
+          "name": "desert-ground-v1.webp",
+          "bytes": 278884
+        },
+        {
+          "name": "desert-rock-v1.webp",
+          "bytes": 328512
+        },
+        {
+          "name": "fine-linen-v1.webp",
+          "bytes": 220358
+        },
+        {
+          "name": "screen-embroidery-v1.webp",
+          "bytes": 635500
+        },
+        {
+          "name": "veil-embroidery-v1.webp",
+          "bytes": 756888
+        }
+      ],
+      "totalBytes": 2220142
+    }
+  ],
+  "errors": []
+}

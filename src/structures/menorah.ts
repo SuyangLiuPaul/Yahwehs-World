@@ -54,14 +54,27 @@ function hammered(geo: THREE.BufferGeometry, amp: number, seed = 1): THREE.Buffe
 function almondPetals(scale: number, mat: THREE.Material): THREE.Group {
   const g = new THREE.Group();
   for (let i = 0; i < 5; i++) {
-    // A partial sphere patch makes a cupped petal in one cheap geometry.
-    const geo = new THREE.SphereGeometry(scale * 0.36, 14, 9, 0, Math.PI * 0.78, 0, Math.PI * 0.5);
-    geo.scale(1, 0.34, 1.35);
-    hammered(geo, scale * 0.006, 2 + i);
+    // A thin cupped petal, not an open sphere segment that reads as a stack
+    // of washers. Both surfaces and their lip are modeled in actual geometry.
+    const positions:number[]=[],indices:number[]=[],uv:number[]=[];
+    for(const side of [-1,1])for(let j=0;j<=12;j++)for(let k=0;k<=6;k++){
+      const t=j/12,v=k/3-1,width=.23*Math.sin(Math.PI*t)**.65;
+      positions.push(v*width*scale,(.12+t*.32-.07*Math.sin(t*Math.PI)+v*v*.085+side*.012)*scale,(.12+t*.56)*scale);
+      uv.push(k/6,t);
+    }
+    const face=13*7;
+    for(let side=0;side<2;side++)for(let j=0;j<12;j++)for(let k=0;k<6;k++){
+      const a=side*face+j*7+k;
+      indices.push(...(side?[a,a+1,a+7,a+1,a+8,a+7]:[a,a+7,a+1,a+1,a+7,a+8]));
+    }
+    for(let j=0;j<12;j++)for(const k of [0,6]){
+      const a=j*7+k;indices.push(a,a+7,a+face,a+7,a+face+7,a+face);
+    }
+    const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
+    geo.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));geo.setIndex(indices);geo.computeVertexNormals();
     const petal = new THREE.Mesh(geo, mat);
     const a = (i / 5) * Math.PI * 2;
-    petal.position.set(Math.cos(a) * scale * 0.34, 0, Math.sin(a) * scale * 0.34);
-    petal.rotation.set(-1.05, -a, 0);
+    petal.rotation.y=a;
     g.add(petal);
   }
   return g;
@@ -73,22 +86,9 @@ function almondPetals(scale: number, mat: THREE.Material): THREE.Group {
 function blossomProfile(scale: number): THREE.Vector2[] {
   const p: [number, number][] = [
     [0.00, 0.00],
-    [0.34, 0.03],  // bulb (כַּפְתֹּר) swelling out
-    [0.46, 0.12],
-    [0.44, 0.22],
-    [0.30, 0.30],
-    [0.22, 0.36],  // waist between bulb and cup
-    [0.26, 0.44],
-    [0.40, 0.56],  // cup (גָּבִיעַ) flaring like an almond calyx
-    [0.46, 0.68],
-    [0.40, 0.74],
-    [0.30, 0.78],  // lip drawing back in
-    [0.34, 0.86],
-    [0.48, 0.96],  // flower (פֶּרַח) opening at the top
-    [0.52, 1.04],
-    [0.44, 1.08],
-    [0.16, 1.10],
-    [0.00, 1.12],
+    [0.18, 0.02], [0.29, 0.10], [0.30, 0.21], [0.22, 0.30],
+    [0.17, 0.38], [0.20, 0.48], [0.27, 0.58], [0.34, 0.67],
+    [0.36, 0.72], [0.32, 0.75], [0.28, 0.66], [0.18, 0.55], [0, 0.50],
   ];
   return p.map(([x, y]) => new THREE.Vector2(x * scale, y * scale));
 }
@@ -99,7 +99,7 @@ function blossom(scale: number, mat: THREE.Material): THREE.Group {
   g.add(new THREE.Mesh(geo, mat));
   // The blossom opens at the top of the unit, where the profile flares.
   const petals = almondPetals(scale, mat);
-  petals.position.y = scale * 1.0;
+  petals.position.y = scale * .53;
   g.add(petals);
   return g;
 }
@@ -164,7 +164,7 @@ function branch(
   // radii, so all six tips finish level with the shaft's lamp — the arrangement
   // shown on the Arch of Titus relief and assumed by "so that they give light
   // in front of it" (25:37).
-  const startY = unit * (2.55 + pair * 1.02);
+  const startY = unit * (4.65 - pair * 1.02);
   const radius = unit * (2.15 + pair * 0.78);
   const topY = unit * 7.5;
 
@@ -174,8 +174,8 @@ function branch(
   const curve = form === 'arch'
     ? new THREE.CatmullRomCurve3([
         start,
-        new THREE.Vector3(side * radius * 0.42, startY + (topY - startY) * 0.42, 0),
-        new THREE.Vector3(side * radius * 0.92, startY + (topY - startY) * 0.82, 0),
+        new THREE.Vector3(side * radius * 0.65, startY + (topY - startY) * 0.18, 0),
+        new THREE.Vector3(side * radius * 0.96, startY + (topY - startY) * 0.60, 0),
         end,
       ])
     // Maimonides' reading: a straight diagonal out of the shaft, then vertical
@@ -196,7 +196,7 @@ function branch(
     const t = 0.17 + i * 0.30;
     const pos = curve.getPointAt(t);
     const tan = curve.getTangentAt(t);
-    const b = blossom(unit * 0.78, mat);
+    const b = blossom(unit * 0.60, mat);
     b.position.copy(pos);
     // Seat each blossom square on the branch rather than leaving it axis-aligned.
     b.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), tan.clone().normalize());
@@ -339,7 +339,7 @@ export function buildMenorah(
     }
     // "A bulb under each pair of branches" — 25:35.
     const bulb = junctionBulb(unit * 0.78, gold);
-    bulb.position.y = unit * (2.55 + pair * 1.02) - unit * 0.24;
+    bulb.position.y = unit * (4.65 - pair * 1.02) - unit * 0.24;
     g.add(bulb);
   }
 

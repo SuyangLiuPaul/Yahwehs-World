@@ -9,6 +9,8 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { materialsReady as loadMaterials } from './materials.ts';
+import { RectAreaLightUniformsLib } from 'three/addons/lights/RectAreaLightUniformsLib.js';
 
 const CUBIT = 0.445;   // the common cubit; the card feed carries the argument
 
@@ -39,10 +41,10 @@ scene.environmentIntensity = 0.65;
 // Haze thickens toward the horizon so distance reads as distance.
 // Far enough out that the court itself stays crisp; haze belongs to the
 // desert beyond it, not to a wall forty metres away.
-scene.fog = new THREE.Fog(0xc8cec6, 150, 460);
+scene.fog = new THREE.Fog(0xcbd1cd, 190, 740);
 
 const camera = new THREE.PerspectiveCamera(
-  65, Math.max(1, innerWidth) / Math.max(1, innerHeight), 0.04, 600);
+  65, Math.max(1, innerWidth) / Math.max(1, innerHeight), 0.04, 900);
 
 // Mid-morning rather than noon: a sun overhead casts no shadows worth having,
 // and shadow is most of what makes a shape read as solid.
@@ -74,6 +76,35 @@ group.traverse((o) => {
   o.castShadow = o.userData.noCast !== true;
 });
 scene.add(group);
+// Broad educational fill, not a pinprick reflected as a white disc in the
+// boards. The oil lamps remain visible; this fill is disclosed in Evidence.
+RectAreaLightUniformsLib.init();
+const roomFill=new THREE.RectAreaLight(0xffe6c4,2.2,3,1.8);
+roomFill.position.set(-8,3.65,0);roomFill.lookAt(-8,0,0);scene.add(roomFill);
+
+// A single static local reflection probe stops indoor gold reflecting the
+// open desert sky as if the tent had no walls. Never refreshed while walking.
+const materialsReady=loadMaterials();
+const sceneReady=Promise.all([materialsReady,ready]).then(([ok])=>{
+  document.body.dataset.materials=ok?'ready':'fallback';
+  renderer.shadowMap.needsUpdate=true;
+  const target=new THREE.WebGLCubeRenderTarget(128,{type:THREE.HalfFloatType});
+  const probe=new THREE.CubeCamera(.08,45,target);probe.position.set(-9,2.2,0);
+  probe.update(renderer,scene);
+  const bake=new THREE.PMREMGenerator(renderer);
+  const room=bake.fromCubemap(target.texture);
+  const materials=new Set<THREE.MeshStandardMaterial>();
+  group.traverse(o=>{
+    if(o instanceof THREE.Mesh){
+      for(const m of (Array.isArray(o.material)?o.material:[o.material])){
+        if(m instanceof THREE.MeshStandardMaterial&&m.name.startsWith('Interior '))materials.add(m);
+      }
+    }
+  });
+  materials.forEach(m=>{m.envMap=room.texture;m.envMapIntensity=1.3;m.needsUpdate=true;});
+  target.dispose();bake.dispose();document.body.dataset.reflections='ready';
+  return ok;
+});
 // The architecture and sun are static. Build the shadow atlas once, then
 // refresh when the authored GLB arrives, not on every first-person frame.
 renderer.shadowMap.autoUpdate=false;renderer.shadowMap.needsUpdate=true;
@@ -300,7 +331,7 @@ renderer.setAnimationLoop(() => {
 if (import.meta.env.DEV) {
   (globalThis as unknown as Record<string, unknown>).__walk = {
     scene, camera, renderer, walker, counts, colliders, CUBIT, updateHud,
-    tour, startTour, endTour, TOUR, ready, inspectStop,
+    tour, startTour, endTour, TOUR, ready, materialsReady: sceneReady, inspectStop,
     /** Renders one frame at an arbitrary size and returns it, so the scene can
      *  be inspected where the page is not being painted. */
     snapshot(w = 1400, h = 900) {

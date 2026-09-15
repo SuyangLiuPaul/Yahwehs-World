@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, readdir } from 'node:fs/promises';
 
 const site=process.env.TEST_URL??'https://yahwehsworld.netlify.app';
 const directory=process.env.EVIDENCE_DIR??'handoff/evidence/phase-1/live';
@@ -20,7 +20,8 @@ for(const name of ['index.html','structures.html','tabernacle.html']){
   pages.push({name,status:response.status,buildReferencesMatch:true});
 }
 const verified=[];
-for(const path of [...assets,'/data/journeys.json','/data/terrain-color.webp','/models/laver.glb']){
+const materialPaths=(await readdir('dist/materials')).map(name=>`/materials/${name}`);
+for(const path of [...assets,'/data/journeys.json','/data/terrain-color.webp','/models/laver.glb',...materialPaths]){
   const expected=await readFile(`dist${path}`);
   const response=await fetch(new URL(path,site),{cache:'no-store'});
   assert.equal(response.status,200,`${path} did not load`);

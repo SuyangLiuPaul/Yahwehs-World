@@ -1,45 +1,66 @@
 import * as THREE from 'three';
 
-/** An explicitly interpretive winged, kneeling figure. Exodus 25:18–20 gives
- * number, orientation and spread wings, not anatomy, size or feather pattern.
- * This original sculpt is not presented as a recovered artifact. */
+/** Original interpretive goldwork. Exodus 25:18–20 specifies two figures,
+ * inward/downward faces and wings above the cover, NOT their anatomy, dress,
+ * posture, dimensions or feather pattern. Never an excavated replica. */
 export function buildCherub(scale:number,material:THREE.Material){
- const g=new THREE.Group();
- const oval=(x:number,y:number,z:number,rx:number,ry:number,rz:number)=>{
-  const m=new THREE.Mesh(new THREE.SphereGeometry(1,20,12),material);
-  m.position.set(x*scale,y*scale,z*scale);m.scale.set(rx*scale,ry*scale,rz*scale);g.add(m);return m;
- };
- // Folded legs and the rounded drape of a kneeling body, rather than blocks.
- oval(-.025,.065,0,.14,.065,.13);
- oval(.008,.245,0,.095,.20,.11).rotation.z=.14;
- oval(.036,.44,0,.09,.062,.13);
- oval(.075,.535,0,.07,.085,.064).rotation.z=.2;
- // A restrained brow/nose gives the face its inward/downward direction.
- oval(.134,.527,0,.024,.025,.017);
- for(const side of [-1,1]){
-  const root=new THREE.Vector3(.018,.40,side*.075).multiplyScalar(scale);
-  for(let i=0;i<10;i++){
-   const f=i/9;
-   const end=new THREE.Vector3(.21+.43*f,.58+.30*f,side*(.22+.05*Math.sin(f*Math.PI))).multiplyScalar(scale);
-   const mid=root.clone().lerp(end,.48);mid.y+=scale*.085;
-   const curve=new THREE.QuadraticBezierCurve3(root,mid,end);
-   // Tapered, cupped feather surface with a fine raised shaft. Width is not
-   // a cone's fixed base: it tapers gently all the way to the rounded tip.
-   const vertices:number[]=[],uv:number[]=[],indices:number[]=[];
-   for(let j=0;j<=16;j++){
-    const t=j/16,c=curve.getPoint(t),w=scale*.039*Math.sin(Math.PI*t)**.6;
-    for(const k of [-1,0,1]){
-     vertices.push(c.x-w*k*.6,c.y+w*k*.55,c.z+side*w*Math.abs(k)*.28);
-     uv.push(t,k/2+.5);
-    }
-   }
-   for(let j=0;j<16;j++)for(let k=0;k<2;k++){const a=j*3+k;indices.push(a,a+3,a+1,a+1,a+3,a+4);}
-   const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));geo.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));geo.setIndex(indices);geo.computeVertexNormals();
-   g.add(new THREE.Mesh(geo,material));
-   g.add(new THREE.Mesh(new THREE.TubeGeometry(curve,12,scale*.0025,4,false),material));
+  const g=new THREE.Group();
+  const oval=(x:number,y:number,z:number,rx:number,ry:number,rz:number)=>{
+    const geo=new THREE.SphereGeometry(1,24,16);geo.scale(rx,ry,rz);
+    const m=new THREE.Mesh(geo,material);m.position.set(x,y,z);g.add(m);return m;
+  };
+  const tube=(points:THREE.Vector3[],radius:number)=>{
+    const curve=new THREE.CatmullRomCurve3(points);
+    const m=new THREE.Mesh(new THREE.TubeGeometry(curve,24,radius,8,false),material);g.add(m);return m;
+  };
+  // Continuous tapered torso/robe, rather than separately stacked ellipsoids.
+  const sections=[[0,.035,.095,.125],[.04,.035,.13,.14],[.12,.004,.104,.12],
+    [.23,-.012,.064,.084],[.32,.004,.064,.093],[.39,.018,.064,.113],[.425,.024,.046,.068]];
+  const p:number[]=[],uv:number[]=[],ix:number[]=[];
+  for(let j=0;j<sections.length;j++)for(let k=0;k<=40;k++){
+    const [y,x,rx,rz]=sections[j]!,a=k/40*Math.PI*2;
+    const folds=1+(1-y!/.5)*(.028*Math.cos(a*9)+.018*Math.sin(a*17));
+    p.push(x!+Math.cos(a)*rx!*folds,y!,Math.sin(a)*rz!*folds);uv.push(k/40,y!*2);
+    if(j<sections.length-1&&k<40){const q=j*41+k;ix.push(q,q+41,q+1,q+1,q+41,q+42);}
   }
-  // Small layered coverts bind the fan back into the shoulder.
-  for(let i=0;i<4;i++)oval(.05+i*.032,.44+i*.027,side*(.10+i*.024),.065,.027,.036).rotation.z=.42;
- }
- return g;
+  const robe=new THREE.BufferGeometry();robe.setAttribute('position',new THREE.Float32BufferAttribute(p,3));
+  robe.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));robe.setIndex(ix);robe.computeVertexNormals();g.add(new THREE.Mesh(robe,material));
+  oval(.075,.057,.085,.093,.051,.054);oval(.075,.057,-.085,.093,.051,.054);
+  oval(.03,.442,0,.037,.045,.039);
+  const head=oval(.065,.502,0,.056,.078,.054);head.rotation.z=.28;
+  oval(.111,.506,0,.014,.042,.042).rotation.z=.28;
+  oval(.129,.490,0,.017,.022,.012).rotation.z=.2;
+  for(const side of [-1,1]){
+    tube([new THREE.Vector3(.008,.397,side*.091),new THREE.Vector3(.036,.335,side*.127),
+      new THREE.Vector3(.116,.258,side*.09),new THREE.Vector3(.161,.20,side*.063)],.021);
+    oval(.157,.20,side*.059,.032,.020,.023);
+    // Primaries trail from separate attachment points along a curved leading
+    // edge, giving a wing silhouette rather than a flat triangular fan.
+    const arm=new THREE.CubicBezierCurve3(new THREE.Vector3(-.025,.38,side*.084),
+      new THREE.Vector3(.02,.65,side*.21),new THREE.Vector3(.38,.90,side*.23),new THREE.Vector3(.66,.86,side*.11));
+    g.add(new THREE.Mesh(new THREE.TubeGeometry(arm,40,.013,8,false),material));
+    for(let row=0;row<2;row++)for(let i=0;i<22;i++){
+      const t=.02+i*.96/21,root=arm.getPoint(t);
+      root.y-=row*.016;root.z+=side*row*.012;
+      const length=(.12+.18*Math.sin(t*Math.PI))*(row?.47:1);
+      const end=root.clone().add(new THREE.Vector3(-length*(.65-t*.95),-length*(1-t*.7),side*length*.32));
+      const middle=root.clone().lerp(end,.55);middle.z+=side*.018;
+      const curve=new THREE.QuadraticBezierCurve3(root,middle,end);
+      const verts:number[]=[],tex:number[]=[],faces:number[]=[];
+      for(let j=0;j<=14;j++){
+        const f=j/14,c=curve.getPoint(f),tan=curve.getTangent(f),width=.036*Math.sin(Math.PI*f)**.65*(row?.85:1);
+        const n=new THREE.Vector3(-tan.y,tan.x,0).normalize();
+        for(const k of [-1,0,1]){
+          verts.push(c.x+n.x*width*k,c.y+n.y*width*k,c.z+side*width*(1-Math.abs(k))*.3);
+          tex.push(f,k/2+.5);
+        }
+      }
+      for(let j=0;j<14;j++)for(let k=0;k<2;k++){const a=j*3+k;faces.push(a,a+3,a+1,a+1,a+3,a+4);}
+      const feather=new THREE.BufferGeometry();feather.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));
+      feather.setAttribute('uv',new THREE.Float32BufferAttribute(tex,2));feather.setIndex(faces);feather.computeVertexNormals();
+      g.add(new THREE.Mesh(feather,material));
+      g.add(new THREE.Mesh(new THREE.TubeGeometry(curve,12,.0015,4,false),material));
+    }
+  }
+  g.scale.setScalar(scale);return g;
 }

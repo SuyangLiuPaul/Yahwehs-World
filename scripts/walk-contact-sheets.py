@@ -1,7 +1,8 @@
 """QA-only contact sheets of unchanged browser captures, not art assets."""
 from pathlib import Path
+import os
 from PIL import Image, ImageDraw
-root=Path(__file__).resolve().parent.parent/'handoff/evidence/phase-2/after'
+root=Path(os.environ.get('EVIDENCE_DIR',Path(__file__).resolve().parent.parent/'handoff/evidence/phase-2/after'))
 for surface in ('desktop','phone','tablet'):
     paths=sorted(root.glob(f'{surface}-en-walk-*.png'))
     thumbw=360 if surface!='phone' else 230

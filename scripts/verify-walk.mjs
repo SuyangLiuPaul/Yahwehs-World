@@ -10,7 +10,7 @@ try{
    const context=await browser.newContext({viewport:{width,height},hasTouch:name!=='desktop'});
    await context.addInitScript(l=>localStorage.setItem('ydh.locale',l),locale);
    const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
-   await page.goto(`${url}/tabernacle.html`);await page.waitForFunction(()=>document.body.dataset.laver==='ready');
+   await page.goto(`${url}/tabernacle.html`);await page.waitForFunction(()=>document.body.dataset.laver==='ready'&&document.body.dataset.materials==='ready'&&document.body.dataset.reflections==='ready');
    await page.evaluate(()=>document.fonts.ready);
    await page.click('#tour');await page.click('#tour-toggle');
    const stopBefore=await page.locator('#tour-stop').inputValue();
@@ -34,7 +34,7 @@ try{
  }
  // Honest, repeatable CPU-emulated measurement, not a physical phone claim.
  const context=await browser.newContext({viewport:{width:375,height:812},deviceScaleFactor:2});const page=await context.newPage();
- await page.goto('http://127.0.0.1:5175/tabernacle.html');await page.waitForFunction(()=>window.__walk&&document.body.dataset.laver==='ready');
+ await page.goto('http://127.0.0.1:5175/tabernacle.html');await page.waitForFunction(()=>window.__walk&&document.body.dataset.reflections==='ready'&&document.body.dataset.laver==='ready');
  await page.click('#tour');await page.selectOption('#tour-stop','5');
  const cdp=await context.newCDPSession(page);await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});
  const perf=await page.evaluate(()=>new Promise(resolve=>{let last=performance.now(),start=last;const samples=[];

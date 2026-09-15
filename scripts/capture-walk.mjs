@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 import {mkdir, writeFile} from 'node:fs/promises';
 const phase=process.env.WALK_PHASE||'before';
-const dir=`handoff/evidence/phase-2/${phase}`;
+const dir=process.env.EVIDENCE_DIR||`handoff/evidence/phase-2/${phase}`;
 await mkdir(dir,{recursive:true});
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const metrics=[];
@@ -13,6 +13,7 @@ try{
    const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
    await page.goto('http://127.0.0.1:5175/tabernacle.html');
    await page.waitForFunction(()=>window.__walk);await page.evaluate(()=>document.fonts.ready);
+   await page.evaluate(()=>Promise.all([window.__walk.ready,window.__walk.materialsReady]));
    await page.click('#tour');
    const count=await page.evaluate(()=>window.__walk.TOUR.length);
    for(let i=0;i<count;i++){

@@ -1,0 +1,71 @@
+{
+  "created": "2026-09-15",
+  "tool": "Higgsfield generate_image_batch",
+  "model": "gpt_image_2_5",
+  "returnedVariant": "flare",
+  "aspectRatio": "1:1",
+  "preflightCredits": {
+    "genericPerImage": 1,
+    "embroideredPerImage": 3,
+    "totalEstimated": 9
+  },
+  "rights": "Generated for the project through the connected Higgsfield account; service terms apply. Not downloaded stock photography or an assertion of public-domain copyright status.",
+  "limitations": "Generic original surface studies, not site photography or archaeological scans. Height is an artistic luminance approximation; colors, motifs and surface wear do not establish the historical appearance.",
+  "assets": [
+    {
+      "kind": "desert-ground",
+      "jobId": "5c9b835e-2e8e-442b-8faf-25da7fd0e78f",
+      "prompt": "Create a seamless tileable PBR BASE COLOR texture asset for a realistic interactive 3D historical desert courtyard. Full square edge-to-edge orthographic overhead material scan look, no perspective, NO landscape horizon. Generic natural compacted pale warm buff sandy soil, representing a 2 metre square patch. Extremely fine irregular quartz grains, subtle dusty ochre and grey mineral variation, sparse tiny 2-12mm dark shale and limestone chips, faint wind combing and compressed irregular patches. Dry, understated, believable mineral surface, not dunes, not mud cracks, no footprints, no plants. Entirely diffuse flat overcast illumination, neutral white balance, no shadows, no directional highlights, no vignette, no lens blur, no large focal stone. Fine even resolution to all edges, seamlessly matching left/right and top/bottom. No text, no borders, no logos. Original generic material study, not a photograph of any real modern place. Photorealistic microdetail, restrained low contrast midtones; intended to wrap real geometry and receive realtime shadows.",
+      "quality": "low",
+      "resolution": "1k",
+      "webpQuality": 72,
+      "original": "handoff/evidence/phase-3/materials/desert-ground.png",
+      "deployed": "public/materials/desert-ground-v1.webp",
+      "conversion": "cwebp -q 72 -m 6 <original> -o <deployed>"
+    },
+    {
+      "kind": "desert-rock",
+      "jobId": "9738b299-ee5f-416e-8d5a-634057b5b1c4",
+      "prompt": "Create a seamless tileable PBR BASE COLOR texture asset for a realistic interactive 3D environment. A square full-frame orthographic close material scan of natural rough granitic desert bedrock, representing 4 metres square. Weathered warm grey-taupe stone, muted rose granite and pale mineral veins, dense irregular millimetric mica/quartz speckles, flaking planar fracture faces, coarse clustered mineral facets, occasional thin irregular dark fissures, wind abrasion and light beige dust in recesses. Hard angular geology, not organic crumpled fabric, no brickwork, no regular repeating polygon cells. Neutral diffuse evenly lit albedo, no cast shadows, no sunlit gradients, no baked specular, no horizon, no large boulders, no plants, no text, no watermark. Seamless edges, equally sharp across entire square. Generic authored geology material, not depicting or identifying any real modern location. Photorealistic close detail, subtle colour contrast so it can receive real 3D lighting.",
+      "quality": "low",
+      "resolution": "1k",
+      "webpQuality": 72,
+      "original": "handoff/evidence/phase-3/materials/desert-rock.png",
+      "deployed": "public/materials/desert-rock-v1.webp",
+      "conversion": "cwebp -q 72 -m 6 <original> -o <deployed>"
+    },
+    {
+      "kind": "fine-linen",
+      "jobId": "8957d032-0d29-4f3a-b217-d2bc7651180a",
+      "prompt": "Create a seamless tileable PBR base colour material texture of handwoven fine undyed FLAX LINEN for a realistic 3D historical fabric reconstruction. Orthographic microscope-to-close-up flat scan, full square edge-to-edge, sample represents 12cm of cloth. Cream ivory flax thread, realistically uneven thin spun yarn with occasional fine slubs, interlaced plain weave warp and weft, subtle tiny fibre hairs and pinholes. Fine high-thread-count cloth, not burlap or rope; no embroidered symbols, no stripes, no stains, no seams, no folds. Neutral completely flat diffuse illumination, no directional lighting, no cast shadows, no vignette, sharp everywhere. Seamlessly tileable on all edges. No border, text, watermark or grid. Original photorealistic material study; color should remain pale flax with small tonal variation, not strong dark gaps.",
+      "quality": "low",
+      "resolution": "1k",
+      "webpQuality": 72,
+      "original": "handoff/evidence/phase-3/materials/fine-linen.png",
+      "deployed": "public/materials/fine-linen-v1.webp",
+      "conversion": "cwebp -q 72 -m 6 <original> -o <deployed>"
+    },
+    {
+      "kind": "veil-embroidery",
+      "jobId": "cf17ca95-f485-4dfb-8a12-071f17e106b1",
+      "prompt": "Asset for a live Three.js reconstruction of the biblical tabernacle: a single FLAT square textile albedo texture, edge-to-edge, orthographic, evenly lit, no folds or shadows, no wall or room, no perspective. Extremely detailed fine handwoven flax linen with indigo-blue, muted royal-purple, and scarlet-red dyed yarn, as named in Exodus 26:31. Base predominantly deep faded indigo, with subtle purple woven variation. An original interpretive embroidered pattern of 4 columns by 5 rows of SMALL paired facing winged guardian figures; each pair spreads wings upward toward each other. Their exact anatomy is not historically known: restrained geometric ancient textile silhouettes, ivory flax thread outlines filled with purple and scarlet accents, NO metallic gold, no modern angels, no halos, no text, no crosses. Fine actual stitched thread detail and visible irregular hand-spun fibres, not flat vector icons. Thin scarlet and ivory running-stitch zigzag border 2 percent inset, entire complete border visible all four sides. A subdued precious hand-crafted textile, NOT a fantasy jeweled tapestry, NOT brocade with gold, NOT plush fabric. The motifs occupy about 35 percent of cloth area, generous blue between them. Original museum-quality material study, not an archaeological artifact or copied historical pattern. Neutral material illumination, no cast shadow, no vignette, no framing background, no watermark.",
+      "quality": "high",
+      "resolution": "2k",
+      "webpQuality": 65,
+      "original": "handoff/evidence/phase-3/materials/veil-embroidery.png",
+      "deployed": "public/materials/veil-embroidery-v1.webp",
+      "conversion": "cwebp -q 65 -m 6 <original> -o <deployed>"
+    },
+    {
+      "kind": "screen-embroidery",
+      "jobId": "4d8cc1f3-1c4e-4a64-acd9-fcb861d7d9f7",
+      "prompt": "Asset for a live Three.js reconstruction of a biblical tabernacle entrance screen: one FLAT square textile albedo texture, orthographic edge-to-edge, diffuse even light with no folds, no curtains hanging in a room, no perspective. Fine handwoven linen, flax warp with indigo-blue, muted purple and scarlet-red yarn as described in Exodus 26:36. Predominantly rich indigo base, small repeated diamond/chevron embroidery motifs in scarlet, purple and natural pale flax, arranged in 8 columns and 10 rows, with a very fine running-stitch scarlet and pale flax border all four sides, 2 percent inset and fully visible. Intricate thread-by-thread stitch texture, yarn slubs, subtle handcrafted variation, no fake stains, modest restrained worn softness. No humans, no animals, no guardian figures, no crosses, no text, no gold or metallic embroidery, no gems, no modern or Baroque floral designs. Full-frame high-resolution material asset, no shadows, no specular highlights, no vignette, no logo, no watermark. An original interpretive design, not a claim to reproduce a recovered ancient textile.",
+      "quality": "high",
+      "resolution": "2k",
+      "webpQuality": 65,
+      "original": "handoff/evidence/phase-3/materials/screen-embroidery.png",
+      "deployed": "public/materials/screen-embroidery-v1.webp",
+      "conversion": "cwebp -q 65 -m 6 <original> -o <deployed>"
+    }
+  ]
+}
