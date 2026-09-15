@@ -1,0 +1,150 @@
+{
+  "site": "https://yahwehsworld.netlify.app",
+  "sourceCommit": "b51410faeb20bd5062245093db98757d1ef55b88",
+  "checkedAt": "2026-09-15T03:34:56.429Z",
+  "pages": [
+    {
+      "name": "index.html",
+      "status": 200,
+      "buildReferencesMatch": true
+    },
+    {
+      "name": "structures.html",
+      "status": 200,
+      "buildReferencesMatch": true
+    },
+    {
+      "name": "tabernacle.html",
+      "status": 200,
+      "buildReferencesMatch": true
+    }
+  ],
+  "verified": [
+    {
+      "path": "/assets/main-BafK_Xg-.js",
+      "sha256": "06907b9115098fb65edb6dadece3d1c68ced5217bdfcb2eefc42e01686d3bc9a",
+      "bytes": 66728,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/modulepreload-polyfill-B5Qt9EMX.js",
+      "sha256": "d2a32840421496e872ade591618d2fa5c33797605d1aec04301717e5a90757d0",
+      "bytes": 711,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/locale-tBMHGB0Y.js",
+      "sha256": "05ea5682c0e5ac636a0500fc96a217e34fd0b5204aa5bc2389b2c8b77be906a0",
+      "bytes": 601895,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/BufferGeometryUtils-n3vE1ccm.js",
+      "sha256": "96ebe67ab91500e9c618c8a893043217594c18716f337c87e4617c6e1a00538f",
+      "bytes": 4853,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/books-Z36wSdwC.js",
+      "sha256": "4b553a08472d7ba4ee85ef04807500cfe5b9090b8e2794d00ad9d045459d37c0",
+      "bytes": 36979,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/main-CPQ-yYPx.css",
+      "sha256": "1dc77a0b3fd765bd7c11e542d05c759139beb1d7ad5f9a686f36cd33c8edeb23",
+      "bytes": 23484,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/structures-DuxkABYD.js",
+      "sha256": "8a8051d058b21307c3717ed9d9def69557864bc44e9491319c149c17d6983489",
+      "bytes": 7309,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/build-CWX_O0W0.js",
+      "sha256": "aeea57871a164de54840d61ccbb1417a213199ffdb5407d1c5b68f1d2ec44d20",
+      "bytes": 18731,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/structures-8Z7awrHd.css",
+      "sha256": "ab28fd3b98a37283d0b1b2f24cf6c89254513382721bc5c6ade027efda2dd64f",
+      "bytes": 9045,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/tabernacle-DHh_fvVZ.js",
+      "sha256": "7c033537540bcac60105446cc2a9c4481f6f9e0f946cf516e80e27069eda22e8",
+      "bytes": 372909,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/tabernacle-CbGP7t9k.css",
+      "sha256": "48c4f7f96511b27617ea0f6fceb47fb7576e5024318489750e42b9fc9a6f1fd7",
+      "bytes": 9544,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/viewer-BQX6vPr5.js",
+      "sha256": "13c85750422db9ecbbbc0fe510c7f880f093ea875f077f21544ee81f3d25fc15",
+      "bytes": 13158,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/viewer-BQvWh_fn.css",
+      "sha256": "36533f94d2b39df4a24f9bc51e14fd88f728e878f518a3922564d6c03e3fcd62",
+      "bytes": 3669,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/data/journeys.json",
+      "sha256": "ef397a8b354bf243a45bff4e823c85e4ca3e5fd3e448ed48ab639e7875c2e7b8",
+      "bytes": 78823,
+      "cacheControl": "public,max-age=0,must-revalidate"
+    },
+    {
+      "path": "/data/terrain-color.webp",
+      "sha256": "2c01c218871417f80f174bf7a28bc9155e32c00a34b979e10c41542860a9b8ba",
+      "bytes": 1234044,
+      "cacheControl": "public,max-age=0,must-revalidate"
+    },
+    {
+      "path": "/models/laver.glb",
+      "sha256": "79572b540e3ff11312bc5e436f27c2d6278084e7b3782c19c431533ad913c8d1",
+      "bytes": 330632,
+      "cacheControl": "public,max-age=0,must-revalidate"
+    },
+    {
+      "path": "/materials/desert-ground-v1.webp",
+      "sha256": "ee69ba30a83259d560e47b2f45f4225836688c79d48d1acf7becbc6b5a418fb8",
+      "bytes": 278884,
+      "cacheControl": "public,max-age=0,must-revalidate"
+    },
+    {
+      "path": "/materials/desert-rock-v1.webp",
+      "sha256": "97bfb485d48477a6b23e97d2c1f027002949687258459e24ba0abe2694041ba3",
+      "bytes": 328512,
+      "cacheControl": "public,max-age=0,must-revalidate"
+    },
+    {
+      "path": "/materials/fine-linen-v1.webp",
+      "sha256": "251a4faf9e16de3d871ddebab9cfae170a0a641aed0c396f3dc7ea5caed5cb53",
+      "bytes": 220358,
+      "cacheControl": "public,max-age=0,must-revalidate"
+    },
+    {
+      "path": "/materials/screen-embroidery-v1.webp",
+      "sha256": "3859d60e9f23f65b567681750e15dd2a507eb5518c1b7e1f1be8fc139ba16793",
+      "bytes": 635500,
+      "cacheControl": "public,max-age=0,must-revalidate"
+    },
+    {
+      "path": "/materials/veil-embroidery-v1.webp",
+      "sha256": "03e0c2264b717f827ab1af2d5a8cef7e1968ee7a529ade0bce7ceb9551915901",
+      "bytes": 756888,
+      "cacheControl": "public,max-age=0,must-revalidate"
+    }
+  ]
+}

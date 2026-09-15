@@ -99,3 +99,23 @@ detail, full Exodus camp organisation, the Jordan crossing and complete flight
 episodes, birds/flocks, a complete Elijah/Elisha final-journey map, and physical
 mobile acceptance remain future batches. Existing B7/B24/B28 remain open.
 News stays disabled; D1–D18 are unchanged.
+
+## Live acceptance
+
+App source `b51410faeb20bd5062245093db98757d1ef55b88` is served at
+<https://yahwehsworld.netlify.app/>. On 2026-09-15 at 03:34 UTC,
+`evidence/phase-4/live/release.json` verified all three HTML entry references
+and 21 asset/data/model/material byte hashes, including the lazy inspector.
+This is a measured public deployment match, not an inferred GitHub status.
+
+Production `live/actors/actors.json` passes 30 cases with real play/pause
+through visible controls, as well as scrubbing and screenshots. Production
+`live/routes/measurements.json` passes 12 route cases; the phone retains 13
+Exodus labels, no overlapping route labels and a 158px player. Representative
+phone, tablet and desktop production captures were visually inspected.
+
+Final local CPU-throttled samples: map 60.15 fps, camp 60.18 fps, fire 60.16 fps;
+reopening the warm inspector eight times retained 11 geometries / 4 textures
+and one dialog. These are the bounded samples in the report, not a blanket
+performance guarantee. An extra regression covers selecting unlocated camp 7
+after camp 42 and resuming without accidentally restarting the journey.

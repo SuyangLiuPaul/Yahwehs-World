@@ -26,6 +26,11 @@ try{
     await page.locator('#story-scrub').evaluate((el,value)=>{el.value=String(value*1000);el.dispatchEvent(new Event('input',{bubbles:true}));},fractions[story]);
     await page.waitForTimeout(150);
     await page.screenshot({path:`${dir}/${name}-${lang}-${story}-scene.png`});
+    const progressBefore=Number(await page.locator('#story-scrub').inputValue());
+    await page.click('#story-play');await page.waitForTimeout(350);await page.click('#story-play');
+    const progressAfter=Number(await page.locator('#story-scrub').inputValue());
+    assert.ok(progressAfter>progressBefore,`${name}/${lang}/${story}: real scene playback did not advance`);
+    await page.waitForTimeout(150);assert.equal(Number(await page.locator('#story-scrub').inputValue()),progressAfter,'Paused scene progress changed');
     const metrics=await page.evaluate(()=>{
      const canvas=document.querySelector('#story-canvas').getBoundingClientRect(),dialog=document.querySelector('#story-viewer');
      const controls=['story-close','story-play','story-replay','story-reset','story-lang'].map(id=>{const r=document.getElementById(id).getBoundingClientRect();return {id,width:r.width,height:r.height};});

@@ -1,0 +1,1115 @@
+{
+  "cases": [
+    {
+      "viewport": "phone",
+      "lang": "en",
+      "story": "sailing",
+      "canvas": {
+        "width": 341,
+        "height": 310
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 99.421875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 73.796875,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 80.328125,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 50,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "phone",
+      "lang": "en",
+      "story": "camp",
+      "canvas": {
+        "width": 341,
+        "height": 310
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 99.421875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 73.796875,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 80.328125,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 50,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "phone",
+      "lang": "en",
+      "story": "carmel",
+      "canvas": {
+        "width": 341,
+        "height": 310
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 99.421875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 73.796875,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 80.328125,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 50,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "phone",
+      "lang": "en",
+      "story": "flight",
+      "canvas": {
+        "width": 341,
+        "height": 310
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 99.421875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 73.796875,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 80.328125,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 50,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "phone",
+      "lang": "en",
+      "story": "whirlwind",
+      "canvas": {
+        "width": 341,
+        "height": 310
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 99.421875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 73.796875,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 80.328125,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 50,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "phone",
+      "lang": "zh",
+      "story": "sailing",
+      "canvas": {
+        "width": 341,
+        "height": 310
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 88.6875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 81.53125,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 70,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "phone",
+      "lang": "zh",
+      "story": "camp",
+      "canvas": {
+        "width": 341,
+        "height": 310
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 88.6875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 81.53125,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 70,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "phone",
+      "lang": "zh",
+      "story": "carmel",
+      "canvas": {
+        "width": 341,
+        "height": 310
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 88.6875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 81.53125,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 70,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "phone",
+      "lang": "zh",
+      "story": "flight",
+      "canvas": {
+        "width": 341,
+        "height": 310
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 88.6875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 81.53125,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 70,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "phone",
+      "lang": "zh",
+      "story": "whirlwind",
+      "canvas": {
+        "width": 341,
+        "height": 310
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 88.6875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 81.53125,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 70,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "lang": "en",
+      "story": "sailing",
+      "canvas": {
+        "width": 440.390625,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 99.421875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 78.078125,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 80.328125,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 50,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "lang": "en",
+      "story": "camp",
+      "canvas": {
+        "width": 440.390625,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 99.421875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 78.078125,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 80.328125,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 50,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "lang": "en",
+      "story": "carmel",
+      "canvas": {
+        "width": 440.390625,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 99.421875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 78.078125,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 80.328125,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 50,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "lang": "en",
+      "story": "flight",
+      "canvas": {
+        "width": 440.390625,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 99.421875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 78.078125,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 80.328125,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 50,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "lang": "en",
+      "story": "whirlwind",
+      "canvas": {
+        "width": 440.390625,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 99.421875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 78.078125,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 80.328125,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 50,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "lang": "zh",
+      "story": "sailing",
+      "canvas": {
+        "width": 440.390625,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 88.6875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 86.515625,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 70,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "lang": "zh",
+      "story": "camp",
+      "canvas": {
+        "width": 440.390625,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 88.6875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 86.515625,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 70,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "lang": "zh",
+      "story": "carmel",
+      "canvas": {
+        "width": 440.390625,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 88.6875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 86.515625,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 70,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "lang": "zh",
+      "story": "flight",
+      "canvas": {
+        "width": 440.390625,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 88.6875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 86.515625,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 70,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "lang": "zh",
+      "story": "whirlwind",
+      "canvas": {
+        "width": 440.390625,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 88.6875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 86.515625,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 70,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "lang": "en",
+      "story": "sailing",
+      "canvas": {
+        "width": 634.796875,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 99.421875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 78.078125,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 80.328125,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 50,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "lang": "en",
+      "story": "camp",
+      "canvas": {
+        "width": 634.796875,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 99.421875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 78.078125,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 80.328125,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 50,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "lang": "en",
+      "story": "carmel",
+      "canvas": {
+        "width": 634.796875,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 99.421875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 78.078125,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 80.328125,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 50,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "lang": "en",
+      "story": "flight",
+      "canvas": {
+        "width": 634.796875,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 99.421875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 78.078125,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 80.328125,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 50,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "lang": "en",
+      "story": "whirlwind",
+      "canvas": {
+        "width": 634.796875,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 99.421875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 78.078125,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 80.328125,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 50,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "lang": "zh",
+      "story": "sailing",
+      "canvas": {
+        "width": 634.796875,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 88.6875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 86.515625,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 70,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "lang": "zh",
+      "story": "camp",
+      "canvas": {
+        "width": 634.796875,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 88.6875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 86.515625,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 70,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "lang": "zh",
+      "story": "carmel",
+      "canvas": {
+        "width": 634.796875,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 88.6875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 86.515625,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 70,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "lang": "zh",
+      "story": "flight",
+      "canvas": {
+        "width": 634.796875,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 88.6875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 86.515625,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 70,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "lang": "zh",
+      "story": "whirlwind",
+      "canvas": {
+        "width": 634.796875,
+        "height": 440
+      },
+      "overflow": false,
+      "controls": [
+        {
+          "id": "story-close",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "story-play",
+          "width": 88.6875,
+          "height": 44
+        },
+        {
+          "id": "story-replay",
+          "width": 86.515625,
+          "height": 44
+        },
+        {
+          "id": "story-reset",
+          "width": 70,
+          "height": 44
+        },
+        {
+          "id": "story-lang",
+          "width": 44,
+          "height": 44
+        }
+      ]
+    }
+  ],
+  "errors": []
+}
