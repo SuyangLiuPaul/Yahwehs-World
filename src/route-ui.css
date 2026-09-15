@@ -130,3 +130,18 @@ html[lang="zh-CN"] #r-name { font-family: var(--display); font-size: var(--fs-40
 @media (prefers-reduced-motion: reduce) { #r-scene-art img { transition: none; } }
 /* On a short phone the picture is the first thing to give up its height. */
 @media (max-height: 620px) { #r-scene-art { display: none; } }
+
+/* The way past the end of a route. Sits on the plate rather than in the
+   navigation row, because what it leads to is another picture, not another
+   stop — Elijah's route ends where Elisha is called and the chariot of fire is
+   the chapter after it, at a crossing this atlas will not pin. */
+.r-scene-more {
+  position: absolute; right: var(--sp-2); top: var(--sp-2); z-index: 1;
+  padding: var(--sp-1) var(--sp-2); border-radius: var(--radius);
+  border: 1px solid var(--line-gold); background: #0b1a2bcc; color: var(--gold-bright);
+  font-family: var(--ui); font-size: var(--fs-100); line-height: var(--lh-snug);
+  cursor: pointer; backdrop-filter: blur(3px);
+}
+.r-scene-more[hidden] { display: none; }
+.r-scene-more:hover { background: var(--surface-hi); }
+.r-scene-more:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }

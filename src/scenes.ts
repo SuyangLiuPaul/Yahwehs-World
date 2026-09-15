@@ -37,6 +37,10 @@ export class Scenes {
   private readonly vid: HTMLVideoElement;
   private readonly cap: HTMLElement;
   private readonly credit: HTMLElement;
+  private readonly more: HTMLButtonElement;
+  /** Set while the reader has chosen to look past the end of the route. */
+  private inEpilogue = false;
+  private locale: 'en' | 'zh' = 'en';
 
   constructor(root: HTMLElement) {
     this.fig = root;
@@ -44,6 +48,15 @@ export class Scenes {
     this.vid = root.querySelector('video')!;
     this.cap = root.querySelector('.r-scene-caption')!;
     this.credit = root.querySelector('.r-scene-credit')!;
+    this.more = root.querySelector('.r-scene-more')!;
+    // An epilogue used to appear only where a stop had no plate of its own,
+    // which meant painting the last stop silently hid it. It has its own way in
+    // now, so the two can never compete for one slot again.
+    this.more.addEventListener('click', () => {
+      this.inEpilogue = !this.inEpilogue;
+      this.key = '';
+      this.render();
+    });
     // A plate that 404s or is still in flight must not leave a torn card.
     this.img.addEventListener('load', () => { this.fig.dataset.state = 'ready'; });
     this.img.addEventListener('error', () => { this.hide(); });
@@ -59,6 +72,7 @@ export class Scenes {
 
   hide() {
     this.fig.hidden = true;
+    this.more.hidden = true;
     this.key = '';
     this.img.removeAttribute('src');
     // A paused clip still holds its decoder; a removed source does not. The
@@ -83,10 +97,29 @@ export class Scenes {
 
   /** `ordinal` is the stop number the reader is on, not the marker index:
    *  merged markers cover several stops and each still has its own plate. */
+  private last: { journeyId: string; ordinal: number; atEnd: boolean } | null = null;
+
   show(journeyId: string, ordinal: number, locale: 'en' | 'zh', atEnd = false) {
+    if (!this.last || this.last.journeyId !== journeyId || this.last.ordinal !== ordinal) this.inEpilogue = false;
+    this.last = { journeyId, ordinal, atEnd };
+    this.locale = locale;
+    this.render();
+  }
+
+  private render() {
+    if (!this.last) { this.hide(); return; }
+    const { journeyId, ordinal, atEnd } = this.last;
+    const locale = this.locale;
     const j = this.wanted ? this.data?.journeys[journeyId] : undefined;
-    const scene = j?.stops?.[String(ordinal)] ?? (atEnd ? j?.epilogue : undefined);
+    const epilogue = atEnd ? j?.epilogue : undefined;
+    const scene = this.inEpilogue && epilogue ? epilogue : (j?.stops?.[String(ordinal)] ?? epilogue);
     if (!scene) { this.hide(); return; }
+    // Offered only where there is something else to go to.
+    const canGo = Boolean(epilogue) && scene !== epilogue;
+    this.more.hidden = !(canGo || this.inEpilogue);
+    this.more.textContent = this.inEpilogue
+      ? (locale === 'zh' ? '← 回到本站' : '\u2190 Back to the stop')
+      : (locale === 'zh' ? '行程之后 →' : 'After the journey \u2192');
     const key = `${journeyId}:${scene.file}`;
     this.fig.hidden = false;
     this.cap.textContent = scene.ref ? `${scene[locale]}　${scene.ref}` : scene[locale];
