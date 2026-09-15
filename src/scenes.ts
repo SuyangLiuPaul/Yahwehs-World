@@ -42,10 +42,23 @@ export class Scenes {
 
   hide() { this.fig.hidden = true; this.key = ''; this.img.removeAttribute('src'); }
 
+  /** The reader's own choice about whether a picture is worth the map it
+   *  covers, kept because it is a preference rather than a per-stop decision.
+   *  `wanted` gates `show`, so a collapsed picture also stops being fetched. */
+  private wanted = (() => {
+    try { return localStorage.getItem('ydh.scene') !== 'off'; } catch { return true; }
+  })();
+  get showing() { return this.wanted; }
+  setWanted(value: boolean) {
+    this.wanted = value;
+    try { localStorage.setItem('ydh.scene', value ? 'on' : 'off'); } catch { /* private window */ }
+    if (!value) this.hide();
+  }
+
   /** `ordinal` is the stop number the reader is on, not the marker index:
    *  merged markers cover several stops and each still has its own plate. */
   show(journeyId: string, ordinal: number, locale: 'en' | 'zh') {
-    const scene = this.data?.journeys[journeyId]?.[String(ordinal)];
+    const scene = this.wanted ? this.data?.journeys[journeyId]?.[String(ordinal)] : undefined;
     if (!scene) { this.hide(); return; }
     const key = `${journeyId}:${ordinal}`;
     this.fig.hidden = false;

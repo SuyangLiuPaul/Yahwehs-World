@@ -457,6 +457,7 @@ function renderStops() {
     'r-next':['Next stop','下一站'],'r-sources-close':['Close sources','关闭依据'],
     'map-in':['Zoom in','放大'],'map-out':['Zoom out','缩小'],
     'r-thumbnail':['Terrain near this stop','本站附近的地形'],'r-dots':['Journey stops','行程各站'],
+    'r-art':['Show or hide the painted scene','显示或收起画面'],
   };
   for(const [id,words] of Object.entries(labels))$(id).setAttribute('aria-label',words[locale==='en'?0:1]!);
   for(const m of route.journey.markers){
@@ -507,6 +508,16 @@ function stepStop(delta:number){
 $('r-prev').addEventListener('click',()=>stepStop(-1));
 $('r-next').addEventListener('click',()=>stepStop(1));
 $('r-info').addEventListener('click',()=>{setRoutePlayback(false);$<HTMLDialogElement>('r-sources').showModal();});
+// The picture is worth a lot of map. Whether that trade is a good one is the
+// reader's call, not ours, and it survives a reload.
+$('r-art').addEventListener('click',()=>{
+  scenes.setWanted(!scenes.showing);
+  $('r-art').setAttribute('aria-pressed',String(scenes.showing));
+  updateRouteReadout();
+  if(route)frameRoute(route.journey);
+});
+$('r-art').setAttribute('aria-pressed',String(scenes.showing));
+
 $('r-sources-close').addEventListener('click',()=>$<HTMLDialogElement>('r-sources').close());
 $('map-fit').addEventListener('click',()=>{if(route)frameRoute(route.journey);});
 for(const [id,factor] of [['map-in',.75],['map-out',1.3]] as const){
@@ -755,7 +766,16 @@ addEventListener('resize', () => {
 // Catches the transition from zero size to real size, which fires no resize
 // event of its own when the page was laid out hidden from the start.
 new ResizeObserver(()=>{fitToViewport();updateLayout();}).observe(document.body);
-const chromeObserver=new ResizeObserver(updateLayout);
+// The card growing — a picture arriving, the reader collapsing it — leaves the
+// route framed for a card that no longer exists, which is how the line ended up
+// hidden behind it. Re-frame when the height actually moves, not on every
+// observation, so stepping between stops never yanks the camera.
+let cardHeight=0;
+const chromeObserver=new ResizeObserver(()=>{
+  updateLayout();
+  const h=rCard.hidden?0:rCard.getBoundingClientRect().height;
+  if(Math.abs(h-cardHeight)>24){cardHeight=h;if(route&&h>0)frameRoute(route.journey);}
+});
 chromeObserver.observe($('timeline'));chromeObserver.observe(rCard);
 
 const clock = new THREE.Clock();

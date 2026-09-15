@@ -102,6 +102,9 @@ html[lang="zh-CN"] #r-name { font-family: var(--display); font-size: var(--fs-40
 #r-scene-art {
   margin: 0; position: relative; border-radius: var(--radius); overflow: hidden;
   border: 1px solid var(--line-gold); background: var(--sea); aspect-ratio: 16 / 9;
+  /* Capped against the viewport, not just the card: on a short window a 16:9
+     block across the card's full width eats the map it is meant to annotate. */
+  max-height: 32vh;
 }
 #r-scene-art[hidden] { display: none; }
 #r-scene-art img {
