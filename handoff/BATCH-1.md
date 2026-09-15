@@ -35,8 +35,8 @@ Do not generate a substitute for measured geographic coordinates.
 
 ## Results · 2026-09-15
 
-Phase 1 passes local acceptance. Deployment status is recorded below once
-verified on the live site. This is not completion of the whole product.
+Phase 1 passes local and live acceptance and is deployed. This is not
+completion of the whole product.
 
 ### What changed
 
@@ -144,6 +144,21 @@ stationary camera still work (`after/network.json`). A missing stage also
 no longer reveals the camp after the gap as already reached; all 42 manual
 selections check that no later camp is labeled reached.
 
-Final production verification is pending for this follow-up. `scripts/verify-release.mjs`
-checks all three pages' build references, downloaded asset/data SHA-256 hashes
-and data cache headers; the live browser matrix uses `verify-routes.mjs`.
+### Deployment · verified
+
+Live: https://yahwehsworld.netlify.app — implementation commits `95aed97`
+and `4a3b3c897dbcfe800bb8ee74c4428680fecc2196` pushed to main. The latter
+is the source revision in `evidence/phase-1/live/release.json`.
+
+`scripts/verify-release.mjs` confirmed all three pages return 200 and
+reference the tested build; all eight referenced code/style assets and
+`journeys.json` match local SHA-256 hashes. Live JSON sends
+`public,max-age=0,must-revalidate`; hashed assets remain immutable.
+
+The production browser matrix passes all 12 route/viewport/locale cases:
+no overlapping labels, no undersized player controls, all stop selectors
+present and populated thumbnails. Counts match the local table above.
+Live screenshots were inspected at phone, tablet and desktop sizes in both
+languages. Camera, gap and network-failure assertions use the local build's
+dev handles; they are not misreported as production internals checks.
+See `evidence/phase-1/live/measurements.json` and the accompanying screenshots.

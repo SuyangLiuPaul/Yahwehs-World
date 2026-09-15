@@ -9,9 +9,9 @@ updated.
 B1–B6 and B11–B18 fixed; orphan deleted; manifest rows present; audit at zero.
 Nothing to send Astra here.
 
-## Phase 1 — Route experience to the standard (L3, L4, L5, L7) — IMPLEMENTED 2026-09-15
+## Phase 1 — Route experience to the standard (L3, L4, L5, L7) — DONE 2026-09-15
 
-Local acceptance passes. Measurements, source corrections, limitations and
+Local and live acceptance pass; deployed on Netlify. Measurements, source corrections, limitations and
 deployment status: `BATCH-1.md`; screenshots: `evidence/phase-1/`.
 
 - Measured-box declutter + leaders; pills never under the card.

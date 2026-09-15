@@ -1,0 +1,78 @@
+{
+  "site": "https://yahwehsworld.netlify.app",
+  "sourceCommit": "4a3b3c897dbcfe800bb8ee74c4428680fecc2196",
+  "checkedAt": "2026-09-15T01:02:54.063Z",
+  "pages": [
+    {
+      "name": "index.html",
+      "status": 200,
+      "buildReferencesMatch": true
+    },
+    {
+      "name": "structures.html",
+      "status": 200,
+      "buildReferencesMatch": true
+    },
+    {
+      "name": "tabernacle.html",
+      "status": 200,
+      "buildReferencesMatch": true
+    }
+  ],
+  "verified": [
+    {
+      "path": "/assets/main-Dj32EhHd.js",
+      "sha256": "fb5d7606fe61bb1beaed29a2f1f8f140b315eb35db0a336804d05b5fb11d5509",
+      "bytes": 77876,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/locale-C2jiLlym.js",
+      "sha256": "49fdf69ca9600ff368dbdd1296d09e231198cb8111005a9557e1365cc99e7f37",
+      "bytes": 560794,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/main-BxyGONDZ.css",
+      "sha256": "e5795aca4df827ae161b4f4619d11592b8389dd305e165ef16d72d3bcf027b15",
+      "bytes": 22607,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/structures-CMxmiwIY.js",
+      "sha256": "268380fac41ed2050d273327764c7daf5cbd0e9d67cc511354a29a373fe9b989",
+      "bytes": 7269,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/build-t1fGFjFe.js",
+      "sha256": "ade2df45e281fa8717620f0e8696954e36fe95b71fadc2adc779d6a040ee4c95",
+      "bytes": 14996,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/structures-8Z7awrHd.css",
+      "sha256": "ab28fd3b98a37283d0b1b2f24cf6c89254513382721bc5c6ade027efda2dd64f",
+      "bytes": 9045,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/tabernacle-0OaNMDN5.js",
+      "sha256": "46b38400641f29c8572832877d0b7ae7e60d0b4883467434a65362eccae46fb1",
+      "bytes": 26290,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/tabernacle-Da9DSlWU.css",
+      "sha256": "ffed42c813e3bbcb3365d23edef72da63d398e20bbf75c7a72d6d67aa445124f",
+      "bytes": 8090,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/data/journeys.json",
+      "sha256": "ef397a8b354bf243a45bff4e823c85e4ca3e5fd3e448ed48ab639e7875c2e7b8",
+      "bytes": 78823,
+      "cacheControl": "public,max-age=0,must-revalidate"
+    }
+  ]
+}
