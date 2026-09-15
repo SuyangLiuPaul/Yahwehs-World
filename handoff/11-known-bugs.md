@@ -171,8 +171,6 @@ now make this explicit; failed terrain leaves the base globe visible. Tests
 hold and abort the image request. Selecting an unlocated stage also no longer
 reveals the following camp as reached simply because their path parameters match.
 
-## Open questions for the owner
-
 **B26 — FIXED (Batch 2).** The walk's outer hide was a closed box with an
 invisible interior face; screens had no visible opening and room lengths
 were reversed. Layered drapes replace the box, entrance screens are gathered
@@ -189,6 +187,9 @@ The desert remains illustrative procedural scenery; imagery has not been
 generated to make false archaeological claims. Full ~40 region labels,
 tents/birds, richer historically researched object detail and physical-device
 GPU/memory validation remain. Do not describe the reference-image bar as passed.
+
+## Open questions for the owner
+
 - Q1: Should the repo become public once SeekSparks-derived assets are
   replaced or licensed? (Today private for that reason.)
 - Q2: Year axis default — Thiele (SeekSparks) is the spine; should the UI

@@ -1,0 +1,90 @@
+{
+  "results": [
+    {
+      "name": "phone",
+      "locale": "en",
+      "stops": 10,
+      "model": "ready",
+      "controls": "44px and in bounds",
+      "pauseResume": "same stop",
+      "previousNext": "pass",
+      "evidence": "pass",
+      "exit": "pass"
+    },
+    {
+      "name": "phone",
+      "locale": "zh",
+      "stops": 10,
+      "model": "ready",
+      "controls": "44px and in bounds",
+      "pauseResume": "same stop",
+      "previousNext": "pass",
+      "evidence": "pass",
+      "exit": "pass"
+    },
+    {
+      "name": "tablet",
+      "locale": "en",
+      "stops": 10,
+      "model": "ready",
+      "controls": "44px and in bounds",
+      "pauseResume": "same stop",
+      "previousNext": "pass",
+      "evidence": "pass",
+      "exit": "pass"
+    },
+    {
+      "name": "tablet",
+      "locale": "zh",
+      "stops": 10,
+      "model": "ready",
+      "controls": "44px and in bounds",
+      "pauseResume": "same stop",
+      "previousNext": "pass",
+      "evidence": "pass",
+      "exit": "pass"
+    },
+    {
+      "name": "desktop",
+      "locale": "en",
+      "stops": 10,
+      "model": "ready",
+      "controls": "44px and in bounds",
+      "pauseResume": "same stop",
+      "previousNext": "pass",
+      "evidence": "pass",
+      "exit": "pass"
+    },
+    {
+      "name": "desktop",
+      "locale": "zh",
+      "stops": 10,
+      "model": "ready",
+      "controls": "44px and in bounds",
+      "pauseResume": "same stop",
+      "previousNext": "pass",
+      "evidence": "pass",
+      "exit": "pass"
+    },
+    {
+      "performance": {
+        "fps": 60.195184385392686,
+        "p95FrameMs": 16.700000000000728,
+        "render": {
+          "frame": 2262,
+          "calls": 39,
+          "triangles": 713309,
+          "points": 0,
+          "lines": 0
+        },
+        "geometry": 31,
+        "textures": 31
+      },
+      "environment": "macOS headless Chrome, 4× CPU, 375×812 DPR2; not a physical Android"
+    },
+    {
+      "modelFailure": "procedural fallback remains usable"
+    }
+  ],
+  "errors": []
+}

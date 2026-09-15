@@ -1,0 +1,96 @@
+{
+  "site": "https://yahwehsworld.netlify.app",
+  "sourceCommit": "582f687212a0a0d5284c029ac6ae79e6db2f7578",
+  "checkedAt": "2026-09-15T01:52:40.995Z",
+  "pages": [
+    {
+      "name": "index.html",
+      "status": 200,
+      "buildReferencesMatch": true
+    },
+    {
+      "name": "structures.html",
+      "status": 200,
+      "buildReferencesMatch": true
+    },
+    {
+      "name": "tabernacle.html",
+      "status": 200,
+      "buildReferencesMatch": true
+    }
+  ],
+  "verified": [
+    {
+      "path": "/assets/main-DE1gscKi.js",
+      "sha256": "0fe0cf66307d3d88ab7081350dbc4496ebea84d34e7fffb56978a622926fecbc",
+      "bytes": 83108,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/locale-CzwcNNoD.js",
+      "sha256": "da0dd20cc93a27749e20f93570945eccf22a6c1132dafd97da26af8d57c3548a",
+      "bytes": 600662,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/BufferGeometryUtils-D-07CQ6d.js",
+      "sha256": "7aec0999105f65723abb63d03bcd6e5edff6427fec57c0d6ce3e37eea2d2e403",
+      "bytes": 4853,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/main-D326Bz8O.css",
+      "sha256": "dffe4138561765536042afd58554a77d5621be9ddd2ab10eb54f0ebc7c95df74",
+      "bytes": 23088,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/structures-BLItWz9e.js",
+      "sha256": "6632aa8be490f3216b9b40330b76dfe3d893a65e5434f5450b9fd06eeac48183",
+      "bytes": 7271,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/build-D5wfY7gl.js",
+      "sha256": "ad8d83ffa4a9fe21917f33798f8cd947976c4a8b61f9426bcd8989f179caf897",
+      "bytes": 17254,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/structures-8Z7awrHd.css",
+      "sha256": "ab28fd3b98a37283d0b1b2f24cf6c89254513382721bc5c6ade027efda2dd64f",
+      "bytes": 9045,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/tabernacle-uofM_HRF.js",
+      "sha256": "db02edadac558a09fcc869cfd88780be538300aa17edfb3406c31154d0fb926d",
+      "bytes": 118588,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/assets/tabernacle-CbGP7t9k.css",
+      "sha256": "48c4f7f96511b27617ea0f6fceb47fb7576e5024318489750e42b9fc9a6f1fd7",
+      "bytes": 9544,
+      "cacheControl": "public,max-age=31536000,immutable"
+    },
+    {
+      "path": "/data/journeys.json",
+      "sha256": "ef397a8b354bf243a45bff4e823c85e4ca3e5fd3e448ed48ab639e7875c2e7b8",
+      "bytes": 78823,
+      "cacheControl": "public,max-age=0,must-revalidate"
+    },
+    {
+      "path": "/data/terrain-color.webp",
+      "sha256": "2c01c218871417f80f174bf7a28bc9155e32c00a34b979e10c41542860a9b8ba",
+      "bytes": 1234044,
+      "cacheControl": "public,max-age=0,must-revalidate"
+    },
+    {
+      "path": "/models/laver.glb",
+      "sha256": "79572b540e3ff11312bc5e436f27c2d6278084e7b3782c19c431533ad913c8d1",
+      "bytes": 330632,
+      "cacheControl": "public,max-age=0,must-revalidate"
+    }
+  ]
+}

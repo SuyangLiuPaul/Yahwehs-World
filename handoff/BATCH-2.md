@@ -111,3 +111,16 @@ Historical Phase 1 evidence was preserved; rerun results are copied into
 Production verification is recorded separately after the scene commit deploys.
 The terrain URL carries a one-time ETOPO revision key to bypass immutable
 texture responses cached by releases predating the revalidation fix.
+
+## Production acceptance
+
+Scene source commit: `582f687212a0a0d5284c029ac6ae79e6db2f7578`, pushed to
+`main`, deployed at https://yahwehsworld.netlify.app/.
+`evidence/phase-2/live/release.json` verifies all three live HTML pages,
+nine hashed JS/CSS assets, journey data, the ETOPO texture and the Blender
+model against the local tested build, including response caching headers.
+Live tabernacle UI tests pass all six viewport/language cases. The performance
+and deliberate GLB-failure portions of that script use the matching local
+development build (for its instrumentation), not production or physical phones.
+Live route acceptance also passes all twelve cases (Exodus and Paul 1 × three
+sizes × two languages), with zero errors. Evidence is under `live/routes/`.
