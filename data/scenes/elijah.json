@@ -1,15 +1,110 @@
 {
   "_meta": {
     "journey": "elijah",
-    "what": "以利亚路线的尾声。本路线本身（王上 17—19）暂无逐站画面。",
+    "what": "以利亚路线十站，每站一幅画，外加走完全程后的尾声（王下 2:11）。",
     "honesty": "画家的想象，不是考古复原，也不是对地点的考据主张。",
     "whyEpilogueNotStop": "王下 2 章刻意不在本路线上——路线自己的依据里写明了原因：地名录中吉甲有两处、伯特利也有两处，王下 2:1 指的是哪一个正是各家重建彼此不一之处。所以火车火马不作为一站，而是走完全程之后出现的尾声，并始终打出自己的经文出处。",
     "textualCare": "经文说以利亚**在旋风中**升天（王下 2:11），火车火马是把二人**隔开**，不是他乘车升天；画面里的火车是空的。外衣落下是 2:13 以利沙拾起的那件。马的数目经文没有给。",
     "howMade": "两张静帧 + 一段动态。**首帧是动作的开始**（两人同行，尚无火车），**末帧是动作的结束**（以利亚已在旋风中）；seedance_2_0_mini 以 start_image + end_image 生成中间 5 秒（各 1 credit + 12.5 credits）。ffmpeg 转 960 宽 crf27。",
     "generated": "2026-09-15",
-    "lessonLearned": "第一版只给了一张静帧作 start_image，而那张已经是动作的**中段**（以利亚已在半空）。图生视频只会从首帧往后编，模型无处可去，于是把他**放了下来**——五秒钟演成了降落而不是升天，与王下 2:11 正好相反。凡有明确方向的动作，必须给首尾两帧，或让首帧是动作真正的起点。video_edit（由真实录像驱动）没有这个问题。"
+    "lessonLearned": "第一版只给了一张静帧作 start_image，而那张已经是动作的**中段**（以利亚已在半空）。图生视频只会从首帧往后编，模型无处可去，于是把他**放了下来**——五秒钟演成了降落而不是升天，与王下 2:11 正好相反。凡有明确方向的动作，必须给首尾两帧，或让首帧是动作真正的起点。video_edit（由真实录像驱动）没有这个问题。",
+    "asides": "第 3 站撒玛利亚与第 9 站大马色是经文提到、却没有记载他到达的地方；两幅画里都没有以利亚，与地图上的空心标记一致。第 10 站亚伯米何拉在 19:16 只是以利沙的本乡，真正记载以利亚遇见他耕田的 19:19 并没有指明地名，说明文字里写清楚了。"
   },
-  "scenes": [],
+  "scenes": [
+    {
+      "n": 1,
+      "place": "Cherith",
+      "zh": "基立",
+      "ref": "王上 17:5",
+      "file": "scenes/elijah-01.webp",
+      "captionEn": "The ravens brought him bread and meat, morning and evening.",
+      "captionZh": "乌鸦早晚给他叼饼和肉来。"
+    },
+    {
+      "n": 2,
+      "place": "Zarephath",
+      "zh": "撒勒法",
+      "ref": "王上 17:10",
+      "file": "scenes/elijah-02.webp",
+      "captionEn": "A widow gathering sticks at the gate; a handful of flour in the jar.",
+      "captionZh": "城门口一个寡妇正在捡柴；坛里只剩一把面。"
+    },
+    {
+      "n": 3,
+      "place": "Samaria",
+      "zh": "撒玛利亚",
+      "ref": "王上 18:2",
+      "file": "scenes/elijah-03.webp",
+      "captionEn": "The famine was severe here. The verse says the famine was in Samaria, not that he went there.",
+      "captionZh": "饥荒甚大之地。经文说饥荒在撒玛利亚，并没有说他去了那里。",
+      "note": "aside"
+    },
+    {
+      "n": 4,
+      "place": "Mount Carmel",
+      "zh": "迦密山",
+      "ref": "王上 18:38",
+      "file": "scenes/elijah-04.webp",
+      "captionEn": "Fire fell and consumed the offering, the wood, the stones, the dust, and the water in the trench.",
+      "captionZh": "雅伟降火，烧尽祭物、柴、石头、尘土，又烧干沟里的水。"
+    },
+    {
+      "n": 5,
+      "place": "Kishon",
+      "zh": "基顺",
+      "ref": "王上 18:40",
+      "file": "scenes/elijah-05.webp",
+      "captionEn": "The Kishon, at dusk, with the rain coming.",
+      "captionZh": "基顺河边，日落时分，雨已在路上。"
+    },
+    {
+      "n": 6,
+      "place": "Jezreel",
+      "zh": "耶斯列",
+      "ref": "王上 18:46",
+      "file": "scenes/elijah-06.webp",
+      "captionEn": "He tucked his cloak into his belt and ran ahead of the king's chariot.",
+      "captionZh": "他束上腰，在亚哈的车前奔到耶斯列。"
+    },
+    {
+      "n": 7,
+      "place": "Beersheba",
+      "zh": "别是巴",
+      "ref": "王上 19:4",
+      "file": "scenes/elijah-07.webp",
+      "captionEn": "A day beyond the town he sat down under a broom tree and asked to die.",
+      "captionZh": "出城一日路程，他坐在罗腾树下，求死。"
+    },
+    {
+      "n": 8,
+      "place": "Horeb",
+      "zh": "何烈",
+      "ref": "王上 19:12",
+      "file": "scenes/elijah-08.webp",
+      "captionEn": "After the wind, the earthquake and the fire — a still, small voice.",
+      "captionZh": "风后、地震后、火后，有微小的声音。"
+    },
+    {
+      "n": 9,
+      "place": "Damascus",
+      "zh": "大马色",
+      "ref": "王上 19:15",
+      "file": "scenes/elijah-09.webp",
+      "captionEn": "He was told to go back to the Desert of Damascus. Kings never records that he arrived.",
+      "captionZh": "经上吩咐他回大马色的旷野去。列王纪没有一节记载他到达。",
+      "note": "aside"
+    },
+    {
+      "n": 10,
+      "place": "Abel-meholah",
+      "zh": "亚伯米何拉",
+      "ref": "王上 19:19",
+      "file": "scenes/elijah-10.webp",
+      "captionEn": "Elisha was ploughing with the twelfth pair; Elijah passed by and threw his cloak over him. 19:19 does not name the place.",
+      "captionZh": "以利沙正用第十二对牛耕地；以利亚经过，把外衣搭在他身上。19:19 并未指明地名。",
+      "note": "aside"
+    }
+  ],
   "epilogue": {
     "n": "epilogue",
     "place": "Jordan",
