@@ -38,8 +38,14 @@ export class Markers {
   activeIndices: number[] = [];
 
   constructor(readonly places: Place[], readonly events: BibleEvent[]) {
+    // Unlit, so the marker reads as a filled dot rather than a lit bead. A
+    // shaded sphere with a specular highlight puts a glass ball on top of a
+    // painted map: it says "object sitting on the page" when the whole point
+    // is a symbol printed into it. In silhouette the same geometry is exactly
+    // the map dot it should have been, and it needs no billboarding to face
+    // the reader from anywhere on the sphere.
     const geo = new THREE.SphereGeometry(BASE_RADIUS, 10, 8);
-    const mat = new THREE.MeshStandardMaterial({ roughness: 0.4, metalness: 0.25, transparent: true });
+    const mat = new THREE.MeshBasicMaterial({ transparent: true });
     this.mesh = new THREE.InstancedMesh(geo, mat, places.length);
     this.mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
 
@@ -118,7 +124,7 @@ export class Markers {
    *  of four radii; world size tracks distance from there, floored so they do
    *  not vanish entirely when the camera is right down on the ground. */
   setZoom(cameraDistance: number, globeRadius: number, dt = 1/60, screenHeight=800, fov=42) {
-    const material=this.mesh.material as THREE.MeshStandardMaterial;
+    const material=this.mesh.material as THREE.MeshBasicMaterial;
     const target=this.routeActive ? THREE.MathUtils.lerp(.25,1,THREE.MathUtils.clamp((cameraDistance/globeRadius-1.8)/.5,0,1)) : 1;
     material.opacity+=(target-material.opacity)*(1-Math.exp(-dt*8));
     // Slightly faster than linear: at terrain height the markers should be

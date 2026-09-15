@@ -9,7 +9,6 @@ import { Terrain } from './terrain.ts';
 import { RegionLabels } from './regions.ts';
 import { Staffage } from './staffage.ts';
 import {CampPlayback} from './journey-actors/camp-playback.ts';
-import {storyOptions,type StoryId} from './journey-actors/stories.ts';
 import { placeLabel, bareName } from './names.ts';
 import { Markers } from './markers.ts';
 import { bookName, bookOf, localiseRef } from './books.ts';
@@ -159,7 +158,6 @@ canvas.addEventListener('pointerup', (ev) => {
   if (!navigation.consumeTap(ev)) return;
   pointer.set((ev.clientX/innerWidth)*2-1,1-(ev.clientY/innerHeight)*2);
   raycaster.setFromCamera(pointer,camera);
-  if(route&&storyOptions(route.journey.id).length&&staffage.hit(raycaster)){$('r-scene').click();return;}
   const i = pick(ev);
   if (i >= 0) select(bundle.places[i]!); else closePanel();
 });
@@ -219,7 +217,6 @@ let route: Route | null = null;
 let routePlaying = false;
 let routeT = 0;
 let campPlayback:CampPlayback|null=null;
-let storyRequest=0;
 const routeLabels = new RouteLabels(document.body);
 const routeThumbnail = new RouteThumbnail(renderer, globe, terrain, $<HTMLCanvasElement>('r-thumbnail'));
 const scenes = new Scenes($('r-scene-art'));
@@ -255,10 +252,7 @@ function setRoutesState(state: 'closed' | 'open' | 'active') {
 }
 
 function clearRoute() {
-  storyRequest++;
   campPlayback=null;
-  $('r-scene').hidden=true;
-  $('r-scene-message').hidden=true;
   if (route) { globe.remove(route.group); route.dispose(); route = null; }
   // Leaving a route restores the world's own up, or the globe stays tilted.
   camera.up.set(0, 1, 0);
@@ -286,7 +280,6 @@ function openRoute(id: string) {
   if (!jr) return;
   route = new Route(jr);
   campPlayback=jr.id==='exodus-wilderness'?new CampPlayback(route):null;
-  $('r-scene').hidden=storyOptions(jr.id).length===0;
   route.setProgress(0);
   globe.add(route.group);
   routeLabels.build(route.markerObjects, locale);
@@ -514,20 +507,6 @@ function stepStop(delta:number){
 $('r-prev').addEventListener('click',()=>stepStop(-1));
 $('r-next').addEventListener('click',()=>stepStop(1));
 $('r-info').addEventListener('click',()=>{setRoutePlayback(false);$<HTMLDialogElement>('r-sources').showModal();});
-$('r-scene').addEventListener('click',async()=>{
-  if(!route)return;
-  setRoutePlayback(false);
-  const request=++storyRequest,options=storyOptions(route.journey.id);
-  const ordinal=selectedOrdinal??route.markerAt(routeT)?.n??1;
-  const id:StoryId=route.journey.id==='elijah'?(ordinal>=6?'flight':'carmel'):options[0]!;
-  const jr=route.journey,m=jr.markers.find(m=>m.stops.includes(ordinal));
-  const context={en:jr.en+' · '+(m?placeLabel(m.place,m.zh,'en'):''),zh:jr.zh+' · '+(m?placeLabel(m.place,m.zh,'zh'):'')};
-  $('r-scene').setAttribute('aria-busy','true');
-  $('r-scene-message').hidden=true;
-  try{const {openStory}=await import('./journey-actors/viewer.ts');if(request===storyRequest&&route)openStory(id,options,context);}
-  catch{if(request===storyRequest){$('r-scene-message').textContent=locale==='zh'?'场景未载入，请刷新后重试。地图仍可使用。':'Scene unavailable. Refresh to retry; the map still works.';$('r-scene-message').hidden=false;}}
-  finally{$('r-scene').removeAttribute('aria-busy');}
-});
 $('r-sources-close').addEventListener('click',()=>$<HTMLDialogElement>('r-sources').close());
 $('map-fit').addEventListener('click',()=>{if(route)frameRoute(route.journey);});
 for(const [id,factor] of [['map-in',.75],['map-out',1.3]] as const){

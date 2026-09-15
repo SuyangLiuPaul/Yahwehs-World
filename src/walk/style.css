@@ -151,3 +151,30 @@ kbd {
   /* Touch has no Esc; a control has to be on screen. */
   #hud { pointer-events: none; }
 }
+
+/* ── the restyled pass ────────────────────────────────────────────────────
+   A short clip of this same model, re-rendered by a video model with the
+   camera and every structure held fixed. It belongs beside the tour, not
+   instead of it: what the reader walks is the model built from the counts in
+   Exodus, and this says where the picture came from rather than letting it
+   pass for a photograph of something that survives. */
+#gate-film {
+  margin: 0 0 var(--sp-3); position: relative; overflow: hidden;
+  border: 1px solid var(--line-gold); border-radius: var(--radius);
+  background: var(--sea); aspect-ratio: 16 / 9; max-height: 22vh;
+  /* The panel has to stay whole: the two buttons under it are the point of the
+     page, and a clip that pushes them off the bottom has cost more than it
+     gave. Cropped to 16:9 and capped, so it yields height before they do. */
+  margin-inline: auto; width: 100%;
+}
+#gate-film video { display: block; width: 100%; height: 100%; object-fit: cover; }
+#gate-film figcaption {
+  position: absolute; inset: auto 0 0 0; display: flex; gap: var(--sp-2);
+  align-items: baseline; justify-content: space-between;
+  padding: var(--sp-3) var(--sp-2) var(--sp-1);
+  font-family: var(--ui); font-size: var(--fs-100); line-height: var(--lh-snug);
+  color: var(--ink); text-shadow: 0 1px 3px #000c;
+  background: linear-gradient(to top, #000000b8, #00000000);
+}
+.film-credit { flex: none; color: var(--ink-3); font-variant: small-caps; letter-spacing: .04em; }
+@media (max-height: 760px) { #gate-film { display: none; } }

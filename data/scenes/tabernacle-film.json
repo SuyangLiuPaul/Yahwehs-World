@@ -1,0 +1,17 @@
+{
+  "_meta": {
+    "what": "会幕院子那段重新渲染的短片的来历。",
+    "honesty": "这是把**本项目自己的 3D 场景**重新上色，不是实拍，也不是考古复原。页面上的说明文字必须保留。",
+    "why": "会幕的几何全部按出埃及记 25–30 章给的尺寸和数量生成；先录下来再重渲，材质和光是模型给的，**结构仍然是经文给的**。反过来（直接让模型想象一座会幕）就会得到一座经文没说过的会幕。",
+    "pipeline": [
+      "在 /tabernacle.html 开导览，用 dev-only 的 /__capture 端点把 canvas 录成 webm（1024×768，12 秒，UI 已隐藏）",
+      "ffmpeg 截前 5 秒、转 1280 宽 24fps mp4",
+      "media_upload → curl PUT → media_confirm",
+      "seedance_2_5，mode: video_edit，1080p，无音轨",
+      "ffmpeg 转 1280 宽 crf26 + 抽一帧做 poster"
+    ],
+    "prompt": "Keep the camera move, the layout and every structure exactly as they are in the reference video — do not add, remove or reposition anything. Re-render the same shot as a photoreal cinematic plate of the wilderness tabernacle of Exodus: sun-bleached linen court hangings rippling slightly in a dry wind, hand-adzed acacia timber, hammered bronze on the altar with real metal patina, gold leaf catching a low warm sun, fine wind-blown desert dust hanging in the air, long raking shadows across the sand, subtle heat haze at the distant mountains, deep blue sky. Muted natural palette, no saturated colour, film grain, shallow atmospheric depth. No people, no text, no captions, no logos, no modern objects.",
+    "firstSentenceMatters": "提示词第一句「保持镜头和每一个结构原样」是这条流水线的关键约束，改写它就等于放弃了几何的可信度。",
+    "generated": "2026-09-15"
+  }
+}
