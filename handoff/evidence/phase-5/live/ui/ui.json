@@ -1,0 +1,472 @@
+{
+  "url": "https://yahwehsworld.netlify.app/",
+  "measurements": [
+    {
+      "name": "phone",
+      "locale": "en",
+      "zoom": "fit",
+      "input": "touch",
+      "anchors": [
+        {
+          "i": 2,
+          "gain": 0.8230232575785195,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 3,
+          "gain": 0.8270143212880512,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 4,
+          "gain": 0.7989350822724768,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 5,
+          "gain": 0.7838211686791098,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 6,
+          "gain": 0.7927136210064397,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 7,
+          "gain": 0.7965598801678446,
+          "releaseDriftPx": 0
+        }
+      ]
+    },
+    {
+      "name": "phone",
+      "locale": "en",
+      "zoom": "close",
+      "input": "touch",
+      "anchors": [
+        {
+          "i": 2,
+          "gain": 0.8246302794060376,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 3,
+          "gain": 0.8282443034419874,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 5,
+          "gain": 0.7829102422572969,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 6,
+          "gain": 0.7933262412116424,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 7,
+          "gain": 0.7973442903802035,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 8,
+          "gain": 0.8009163692430696,
+          "releaseDriftPx": 0
+        }
+      ]
+    },
+    {
+      "name": "phone",
+      "locale": "zh",
+      "zoom": "fit",
+      "input": "touch",
+      "anchors": [
+        {
+          "i": 2,
+          "gain": 0.8229712898668751,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 3,
+          "gain": 0.8269204275788752,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 4,
+          "gain": 0.7990679705666469,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 5,
+          "gain": 0.7840736854679118,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 6,
+          "gain": 0.7929242136768814,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 7,
+          "gain": 0.7967417415534264,
+          "releaseDriftPx": 0
+        }
+      ]
+    },
+    {
+      "name": "phone",
+      "locale": "zh",
+      "zoom": "close",
+      "input": "touch",
+      "anchors": [
+        {
+          "i": 2,
+          "gain": 0.8245605617399029,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 3,
+          "gain": 0.8281189356268637,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 5,
+          "gain": 0.7832466422437987,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 6,
+          "gain": 0.79360765224896,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 7,
+          "gain": 0.7975874403725769,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 8,
+          "gain": 0.8011310994424129,
+          "releaseDriftPx": 0
+        }
+      ]
+    },
+    {
+      "name": "tablet",
+      "locale": "en",
+      "zoom": "fit",
+      "input": "touch",
+      "anchors": [
+        {
+          "i": 2,
+          "gain": 0.8265706024057536,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 3,
+          "gain": 0.8289328956210682,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 4,
+          "gain": 0.7983372795036476,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 5,
+          "gain": 0.7835934937817036,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 6,
+          "gain": 0.7962790306401246,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 7,
+          "gain": 0.8002741153246206,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 8,
+          "gain": 0.8044008978023456,
+          "releaseDriftPx": 0
+        }
+      ]
+    },
+    {
+      "name": "tablet",
+      "locale": "en",
+      "zoom": "close",
+      "input": "touch",
+      "anchors": [
+        {
+          "i": 2,
+          "gain": 0.8293030019874834,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 6,
+          "gain": 0.7981033816475168,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 7,
+          "gain": 0.8023252785741193,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 8,
+          "gain": 0.8071499922943914,
+          "releaseDriftPx": 0
+        }
+      ]
+    },
+    {
+      "name": "tablet",
+      "locale": "zh",
+      "zoom": "fit",
+      "input": "touch",
+      "anchors": [
+        {
+          "i": 2,
+          "gain": 0.8265706024057536,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 3,
+          "gain": 0.8289328956210682,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 4,
+          "gain": 0.7983372795036476,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 5,
+          "gain": 0.7835934937817036,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 6,
+          "gain": 0.7962790306401246,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 7,
+          "gain": 0.8002741153246206,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 8,
+          "gain": 0.8044008978023456,
+          "releaseDriftPx": 0
+        }
+      ]
+    },
+    {
+      "name": "tablet",
+      "locale": "zh",
+      "zoom": "close",
+      "input": "touch",
+      "anchors": [
+        {
+          "i": 2,
+          "gain": 0.8293030019874834,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 6,
+          "gain": 0.7981033816475168,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 7,
+          "gain": 0.8023252785741193,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 8,
+          "gain": 0.8071499922943914,
+          "releaseDriftPx": 0
+        }
+      ]
+    },
+    {
+      "name": "desktop",
+      "locale": "en",
+      "zoom": "fit",
+      "input": "mouse",
+      "anchors": [
+        {
+          "i": 2,
+          "gain": 0.827208911836658,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 3,
+          "gain": 0.8294887513725001,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 4,
+          "gain": 0.7982918121855676,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 5,
+          "gain": 0.7834213954743646,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 6,
+          "gain": 0.7966839667618956,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 7,
+          "gain": 0.8007462618695399,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 8,
+          "gain": 0.8049947886867471,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 14,
+          "gain": 0.8025152111727835,
+          "releaseDriftPx": 0
+        }
+      ]
+    },
+    {
+      "name": "desktop",
+      "locale": "en",
+      "zoom": "close",
+      "input": "mouse",
+      "anchors": [
+        {
+          "i": 2,
+          "gain": 0.8301741586567459,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 4,
+          "gain": 0.7975575471653557,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 7,
+          "gain": 0.8029427200171426,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 8,
+          "gain": 0.8079483451470821,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 13,
+          "gain": 0.7963304348551745,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 14,
+          "gain": 0.801359220772224,
+          "releaseDriftPx": 0
+        }
+      ]
+    },
+    {
+      "name": "desktop",
+      "locale": "zh",
+      "zoom": "fit",
+      "input": "mouse",
+      "anchors": [
+        {
+          "i": 2,
+          "gain": 0.827208911836658,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 3,
+          "gain": 0.8294887513725001,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 4,
+          "gain": 0.7982918121855676,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 5,
+          "gain": 0.7834213954743646,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 6,
+          "gain": 0.7966839667618956,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 7,
+          "gain": 0.8007462618695399,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 8,
+          "gain": 0.8049947886867471,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 14,
+          "gain": 0.8025152111727835,
+          "releaseDriftPx": 0
+        }
+      ]
+    },
+    {
+      "name": "desktop",
+      "locale": "zh",
+      "zoom": "close",
+      "input": "mouse",
+      "anchors": [
+        {
+          "i": 2,
+          "gain": 0.8301741586567459,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 4,
+          "gain": 0.7975575471653557,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 7,
+          "gain": 0.8029427200171426,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 8,
+          "gain": 0.8079483451470821,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 13,
+          "gain": 0.7963304348551745,
+          "releaseDriftPx": 0
+        },
+        {
+          "i": 14,
+          "gain": 0.801359220772224,
+          "releaseDriftPx": 0
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

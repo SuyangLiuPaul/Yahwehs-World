@@ -77,3 +77,16 @@ also accepts `EVIDENCE_DIR` so future changes need not overwrite Phase 1.
 
 Full photographic scenery and all-event scene coverage remain open; this
 interaction repair does not close B7/B24/B28.
+
+## Live acceptance
+
+App source `0ce612108ee0e2cb310f0ace5d7b6d29ad49544a` was verified at
+<https://yahwehsworld.netlify.app/> on 2026-09-15 at 03:57 UTC. The public
+release matches all three HTML entry references and all 21 checked
+JS/CSS/data/model/material byte hashes (`live/release.json`).
+
+`live/ui/ui.json` passes all 12 three-viewport/bilingual/zoom cases using
+rendered SVG anchors and real mouse/touch events, with no dev handles in
+production. The public site was also reloaded and manually dragged in the
+owner's in-app browser; the small drag moved the geography a small distance,
+and explicit Fit restored the route. The temporary local tab was closed.
