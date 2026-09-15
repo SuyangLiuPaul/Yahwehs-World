@@ -1,0 +1,15 @@
+{
+  "_meta": {
+    "what": "「与保罗一同渡海」场景里的罗马粮船模型的来历。",
+    "honesty": "艺术示意，不是出土船只复原。场景里原有的免责文字已经说明这一点，不要删。",
+    "pipeline": [
+      "gpt_image_2_5 出一张干净的单体参考图（下方 referencePrompt），1 credit",
+      "image_to_3d，should_texture: true，20 credits，得到 5.82 MB GLB",
+      "npx @gltf-transform/cli optimize --texture-compress webp --texture-size 768 --compress quantize --simplify true --simplify-ratio 0.45 --simplify-error 0.002 → 869 KB"
+    ],
+    "whyNotDraco": "Draco 能压到 441 KB，但需要额外下载 wasm 解码器；quantize 是 three.js 原生支持的，少一个运行时依赖，换来 428 KB，值得。",
+    "referencePrompt": "A single first-century Roman merchant grain ship, isolated on a plain flat neutral mid-grey background, no sea, no sky, no horizon, no ground, no shadow, nothing else in frame. Three-quarter view from slightly above the bow. Broad rounded hull of overlapping tarred planks, high curved sternpost carved into a swan's neck, one heavy mast amidships carrying a furled square mainsail on its yard, a small foremast raked forward over the bow, two side-mounted steering oars at the stern, rope rigging, a deck house aft. Clean even studio lighting, no dramatic shadows, full object visible, centred, entire ship inside the frame. Painted illustration style, muted colours, matte, no text, no watermark.",
+    "shipDetailsFromText": "使徒行传 27:6 的亚历山大粮船、27:16 的小船、27:17 用缆索捆船、27:40 的两支舵桨与船头帆——模型的形制与这些描述不冲突，但经文没有给尺寸，所以这是示意不是复原。",
+    "generated": "2026-09-15"
+  }
+}

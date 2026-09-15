@@ -50,6 +50,13 @@ class StoryViewer {
   private trench=new T.Mesh(new T.TorusGeometry(1.22,.085,8,64),new T.MeshStandardMaterial({color:'#5d8ea0',roughness:.25,metalness:.15}));
   private foam=new T.InstancedMesh(new T.BoxGeometry(.46,.012,.025),new T.MeshBasicMaterial({color:'#d8e2e0',transparent:true,opacity:.42}),80);
   private dummy=new T.Object3D();
+  /** A modelled hull for the sailing scene, fetched the first time that scene
+   * is opened and never on any other. Until it arrives — or if it never does —
+   * the lofted hull in geometry.ts is drawn instead, so the scene stands on its
+   * own and the model is an upgrade rather than a dependency. */
+  private hull:T.Group|null=null;
+  private hullAsked=false;
+  private loadHull:()=>Promise<void>;
   private id:StoryId='camp';private time=0;private playing=false;private last=0;private frame=0;
   private reduced=matchMedia('(prefers-reduced-motion: reduce)');
   private context:Record<Locale,string>={en:'',zh:''};private options:StoryId[]=[];private lastPhase=-1;private selected:Piece|null=null;
@@ -83,6 +90,34 @@ class StoryViewer {
       texture.colorSpace=T.SRGBColorSpace;texture.wrapS=texture.wrapT=T.RepeatWrapping;texture.repeat.set(5,5);texture.anisotropy=4;
       this.ground.material.map=texture;this.ground.material.needsUpdate=true;this.render();
     },undefined,()=>{/* The ochre material remains usable offline. */});
+    this.loadHull=async()=>{
+      if(this.hullAsked)return;
+      this.hullAsked=true;
+      try{
+        const {GLTFLoader}=await import('three/addons/loaders/GLTFLoader.js');
+        const gltf=await new GLTFLoader().loadAsync('/models/roman-grain-ship-v1.glb');
+        const model=gltf.scene;
+        // Fitted to the hull it replaces rather than to numbers typed here: the
+        // lofted hull runs x -2..2 and the three passengers are placed against
+        // its deck, so normalising to the same length keeps them standing on
+        // the deck instead of in the bilge.
+        const box=new T.Box3().setFromObject(model),size=box.getSize(new T.Vector3());
+        const scale=4/size.x;
+        model.scale.setScalar(scale);
+        const fitted=new T.Box3().setFromObject(model),centre=fitted.getCenter(new T.Vector3());
+        // The deck, not the keel, is what has to line up: the passengers are
+        // placed against the lofted hull's deck at .27 inside a group that
+        // rides at .13, so the model is raised until its own deck meets them.
+        // The mast and yard are most of the bounding box's height, so the deck
+        // sits low in it — about 0.38 up from the bottom. Aim that at .27,
+        // where the passengers stand inside this group.
+        model.position.set(-centre.x,.27-(fitted.min.y+size.y*scale*.38),-centre.z);
+        model.traverse(o=>{const m=o as T.Mesh;if(m.isMesh){m.castShadow=true;m.receiveShadow=true;}});
+        this.hull=new T.Group();this.hull.add(model);this.hull.visible=false;
+        this.scene.add(this.hull);
+        this.render();
+      }catch{/* The lofted hull stays on screen; nothing else depends on this. */}
+    };
     this.controls=new OrbitControls(this.camera,this.renderer.domElement);this.controls.enableDamping=false;this.controls.enablePan=false;
     this.controls.minDistance=6;this.controls.maxDistance=24;this.controls.maxPolarAngle=Math.PI*.48;this.controls.target.set(0,1,0);
     this.controls.addEventListener('change',()=>{if(!this.playing)this.render();});
@@ -161,8 +196,11 @@ class StoryViewer {
     const t=this.time,p=phaseIndex(this.id,t),motion=this.reduced.matches?0:t,b=this.batch;
     b.begin();this.water.visible=this.id==='sailing';this.foam.visible=this.water.visible;this.trench.visible=false;
     b.group.rotation.set(0,0,0);b.group.position.set(0,0,0);
+    if(this.hull)this.hull.visible=false;
     if(this.id==='sailing'){
-      b.ship(motion);b.group.position.y=.13+Math.sin(motion*.85)*.035;b.group.rotation.z=Math.sin(motion*.62)*.012;
+      void this.loadHull();
+      b.ship(motion,this.hull!==null);b.group.position.y=.13+Math.sin(motion*.85)*.035;b.group.rotation.z=Math.sin(motion*.62)*.012;
+      if(this.hull){this.hull.visible=true;this.hull.position.copy(b.group.position);this.hull.rotation.copy(b.group.rotation);}
       for(let i=0;i<80;i++){
         const x=((i*2.718-motion*.22)%12+12)%12-6,z=Math.sin(i*8.7)*5.5;
         this.dummy.position.set(x,.035+Math.sin(motion+i)*.008,z);this.dummy.scale.setScalar(.6+(i%5)*.25);this.dummy.rotation.set(0,.15,0);this.dummy.updateMatrix();this.foam.setMatrixAt(i,this.dummy.matrix);

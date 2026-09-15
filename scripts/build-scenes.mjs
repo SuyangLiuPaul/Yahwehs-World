@@ -12,6 +12,9 @@ const out = {};
 let total = 0;
 for (const f of readdirSync('data/scenes').filter((n) => n.endsWith('.json'))) {
   const doc = JSON.parse(readFileSync(`data/scenes/${f}`, 'utf8'));
+  // This folder also holds provenance for assets that are not a journey's
+  // plates — the ship model's record lives here too, and has no scenes.
+  if (!doc._meta?.journey || !Array.isArray(doc.scenes)) continue;
   const id = doc._meta.journey;
   out[id] = Object.fromEntries(doc.scenes.map((s) => [s.n, {
     file: s.file, en: s.captionEn, zh: s.captionZh,

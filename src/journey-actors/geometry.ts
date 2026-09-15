@@ -156,8 +156,11 @@ export class ActorBatch {
     for(const side of [-1,1])this.put('leg',x+Math.sin(yaw)*side*.11*scale,y+.34*scale,z+Math.cos(yaw)*side*.11*scale,scale,yaw,stride*side);
     for(const side of [-1,1])this.put('arm',x+Math.sin(yaw)*side*.235*scale,y+.88*scale+bob,z+Math.cos(yaw)*side*.235*scale,scale,yaw,working?1.1+Math.sin(time*2+index)*.12:-stride*side);
   }
-  ship(time:number){
-    this.put('ship',0,0,0);this.put('sail',0,0,0,1,Math.sin(time*.8)*.035);
+  /** `hullDrawn` is true when a loaded model is standing in for the hull and
+   * sail; the passengers are still placed here so the deck is never empty if
+   * the model is the only thing that failed to arrive. */
+  ship(time:number,hullDrawn=false){
+    if(!hullDrawn){this.put('ship',0,0,0);this.put('sail',0,0,0,1,Math.sin(time*.8)*.035);}
     for(let i=0;i<3;i++)this.person(-.75+i*.7,.27,time,i,.40,.56,false);
   }
   finish(time=0){this.fire.uniforms.uTime!.value=time;this.dust.uniforms.uTime!.value=time;for(const mesh of this.meshes.values()){mesh.visible=mesh.count>0;mesh.instanceMatrix.needsUpdate=true;if(mesh.instanceColor)mesh.instanceColor.needsUpdate=true;}}
