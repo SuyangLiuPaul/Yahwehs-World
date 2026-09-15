@@ -107,20 +107,26 @@ html[lang="zh-CN"] #r-name { font-family: var(--display); font-size: var(--fs-40
   max-height: 32vh;
 }
 #r-scene-art[hidden] { display: none; }
-#r-scene-art img {
+#r-scene-art img, #r-scene-art video {
   display: block; width: 100%; height: 100%; object-fit: cover;
   opacity: 0; transition: opacity 260ms ease;
 }
-#r-scene-art[data-state="ready"] img { opacity: 1; }
+/* Only the one this scene actually is takes up space; the other is not merely
+   transparent, or it would sit over the visible one and swallow its clicks. */
+#r-scene-art[data-kind="image"] video, #r-scene-art[data-kind="video"] img { display: none; }
+#r-scene-art[data-state="ready"] img, #r-scene-art[data-state="ready"] video { opacity: 1; }
 #r-scene-art figcaption {
   position: absolute; inset: auto 0 0 0; display: flex; gap: var(--sp-2);
-  align-items: baseline; justify-content: space-between;
+  /* An epilogue's caption carries its own reference and runs to two lines; the
+     credit has to step below it rather than be written over. */
+  flex-wrap: wrap; align-items: baseline; justify-content: space-between;
   padding: var(--sp-3) var(--sp-2) var(--sp-1);
   font-family: var(--ui); font-size: var(--fs-100); line-height: var(--lh-snug);
   color: var(--ink); text-shadow: 0 1px 3px #000c;
   background: linear-gradient(to top, #000000b8, #00000000);
 }
-.r-scene-credit { flex: none; color: var(--ink-3); font-variant: small-caps; letter-spacing: .04em; }
+.r-scene-caption { flex: 1 1 14rem; min-width: 0; }
+.r-scene-credit { flex: none; margin-left: auto; color: var(--ink-3); font-variant: small-caps; letter-spacing: .04em; }
 @media (prefers-reduced-motion: reduce) { #r-scene-art img { transition: none; } }
 /* On a short phone the picture is the first thing to give up its height. */
 @media (max-height: 620px) { #r-scene-art { display: none; } }

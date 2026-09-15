@@ -16,11 +16,13 @@ for (const f of readdirSync('data/scenes').filter((n) => n.endsWith('.json'))) {
   // plates — the ship model's record lives here too, and has no scenes.
   if (!doc._meta?.journey || !Array.isArray(doc.scenes)) continue;
   const id = doc._meta.journey;
-  out[id] = Object.fromEntries(doc.scenes.map((s) => [s.n, {
-    file: s.file, en: s.captionEn, zh: s.captionZh,
-  }]));
-  total += doc.scenes.length;
-  console.log(`${id.padEnd(14)} ${doc.scenes.length} scenes`);
+  const slim = (s) => ({ file: s.file, en: s.captionEn, zh: s.captionZh, ...(s.ref ? { ref: s.ref } : {}) });
+  out[id] = { stops: Object.fromEntries(doc.scenes.map((s) => [s.n, slim(s)])) };
+  // An epilogue is not a stop: it belongs to a passage beyond the route, shows
+  // only once the reader has finished, and always prints its own reference.
+  if (doc.epilogue) out[id].epilogue = slim(doc.epilogue);
+  total += doc.scenes.length + (doc.epilogue ? 1 : 0);
+  console.log(`${id.padEnd(14)} ${doc.scenes.length} scenes${doc.epilogue ? ' + epilogue' : ''}`);
 }
 writeFileSync('public/data/scenes.json', JSON.stringify({
   meta: {

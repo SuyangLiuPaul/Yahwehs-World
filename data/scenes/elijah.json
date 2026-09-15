@@ -1,0 +1,25 @@
+{
+  "_meta": {
+    "journey": "elijah",
+    "what": "以利亚路线的尾声。本路线本身（王上 17—19）暂无逐站画面。",
+    "honesty": "画家的想象，不是考古复原，也不是对地点的考据主张。",
+    "whyEpilogueNotStop": "王下 2 章刻意不在本路线上——路线自己的依据里写明了原因：地名录中吉甲有两处、伯特利也有两处，王下 2:1 指的是哪一个正是各家重建彼此不一之处。所以火车火马不作为一站，而是走完全程之后出现的尾声，并始终打出自己的经文出处。",
+    "textualCare": "经文说以利亚**在旋风中**升天（王下 2:11），火车火马是把二人**隔开**，不是他乘车升天；画面里的火车是空的。外衣落下是 2:13 以利沙拾起的那件。马的数目经文没有给。",
+    "howMade": "两张静帧 + 一段动态。**首帧是动作的开始**（两人同行，尚无火车），**末帧是动作的结束**（以利亚已在旋风中）；seedance_2_0_mini 以 start_image + end_image 生成中间 5 秒（各 1 credit + 12.5 credits）。ffmpeg 转 960 宽 crf27。",
+    "generated": "2026-09-15",
+    "lessonLearned": "第一版只给了一张静帧作 start_image，而那张已经是动作的**中段**（以利亚已在半空）。图生视频只会从首帧往后编，模型无处可去，于是把他**放了下来**——五秒钟演成了降落而不是升天，与王下 2:11 正好相反。凡有明确方向的动作，必须给首尾两帧，或让首帧是动作真正的起点。video_edit（由真实录像驱动）没有这个问题。"
+  },
+  "scenes": [],
+  "epilogue": {
+    "n": "epilogue",
+    "place": "Jordan",
+    "zh": "约旦河",
+    "ref": "王下 2:11 · 不在本路线上",
+    "file": "scenes/elijah-epilogue.mp4",
+    "captionEn": "After the journey: a chariot of fire came between them, Elijah went up in the whirlwind, and the cloak fell",
+    "captionZh": "行程之后：火车火马把二人隔开，以利亚乘旋风升天，外衣落下",
+    "motionPrompt": "Painterly plate throughout, same brushwork and muted palette from first frame to last, camera almost still. The two men are walking together on the ridge. A chariot of fire drawn by horses of fire comes DOWN out of the storm and lands BETWEEN them, driving them apart — the chariot stays empty, nobody rides it. A dark whirlwind opens on the far side and the older prophet is lifted UP off the ground and carried UPWARD into it, rising higher as the shot goes on; his cloak comes loose and falls DOWNWARD toward the ground. The younger man is left standing alone on the near side of the fire, looking up. Motion is one way only: the prophet rises and never comes back down, the cloak falls and never rises. No new people, no text, no captions.",
+    "startFramePrompt": "the Jordan valley east of the river, the same stony ridge above a bend of the Jordan, dry scrub and pale rock, distant hills. Two men — an older prophet in a dark cloak and a younger companion — walk together side by side across the ridge, still talking, both firmly on the ground, close to one another. NO fire, NO chariot, NO horses, NO whirlwind anywhere in the picture. The sky above them is darkening, heavy cloud gathering, the first hard gust flattening the scrub. Cold storm light.",
+    "endFramePrompt": "the Jordan valley, two men walking together on dry stony ground east of the river. A chariot of fire drawn by horses of fire has come down BETWEEN them and driven them apart — the chariot is empty, nobody is riding it, it stands as a burning barrier separating the two figures. To one side an older prophet is being drawn up off the ground into a towering dark whirlwind that climbs into the sky; his cloak is falling away from him toward the ground. The younger man stands alone on the other side of the fire, arms raised, looking up. Storm light, the fire the only warm thing in a cold sky. Mood: separation and terror."
+  }
+}

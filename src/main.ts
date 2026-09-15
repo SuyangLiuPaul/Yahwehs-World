@@ -513,6 +513,10 @@ $('r-info').addEventListener('click',()=>{setRoutePlayback(false);$<HTMLDialogEl
 $('r-art').addEventListener('click',()=>{
   scenes.setWanted(!scenes.showing);
   $('r-art').setAttribute('aria-pressed',String(scenes.showing));
+  // The readout short-circuits on an unchanged key, and the key knows nothing
+  // about this toggle — so without clearing it the picture only ever came back
+  // on the next stop, which looks exactly like a button that does not work.
+  readoutKey='';
   updateRouteReadout();
   if(route)frameRoute(route.journey);
 });
@@ -557,7 +561,7 @@ function updateRouteReadout() {
   routeThumbnail.show(m);
   $('r-unlocated').hidden=m.lat!==null&&m.lon!==null;
   const ordinal=selectedOrdinal??m.stops[0]??m.n;
-  scenes.show(route.journey.id, ordinal, locale);
+  scenes.show(route.journey.id, ordinal, locale, ordinal >= route.journey.stopCount);
   for(const button of Array.from($('r-dots').querySelectorAll<HTMLButtonElement>('button'))){
     const n=Number(button.dataset.stop);
     button.classList.toggle('passed',n<ordinal);
