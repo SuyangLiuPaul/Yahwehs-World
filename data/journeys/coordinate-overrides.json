@@ -1,0 +1,15 @@
+{
+  "source": "Authored corrections for journey waypoints; never edits the shared gazetteer.",
+  "overrides": [
+    {
+      "journey": "exodus-wilderness",
+      "stop": 7,
+      "place": "Red Sea",
+      "unlocated": true,
+      "ref": "Numbers 33:10",
+      "sourceUrl": "https://biblehub.com/bsb/numbers/33.htm",
+      "reasonEn": "The passage locates a camp beside the Red Sea, not at the representative coordinate of the sea itself. The gazetteer's water-body point cannot establish the camp's position. Keep the stop unlocated and break the line on either side.",
+      "reasonZh": "经文记载在红海边安营，未确定营地位置。地名录中代表红海水域的坐标不能用作岸边营地的位置；保留此站为未定位，并断开两侧连线。"
+    }
+  ]
+}

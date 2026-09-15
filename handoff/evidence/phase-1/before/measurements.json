@@ -1,0 +1,328 @@
+[
+  {
+    "name": "phone",
+    "locale": "en",
+    "route": "exodus-wilderness",
+    "labels": 8,
+    "overlaps": [],
+    "camera": [
+      98.096193267164,
+      64.45502825458142,
+      -66.5377520769598
+    ],
+    "card": {
+      "x": 12,
+      "y": 613.0625,
+      "width": 351,
+      "height": 122.9375,
+      "top": 613.0625,
+      "right": 363,
+      "bottom": 736,
+      "left": 12
+    }
+  },
+  {
+    "name": "phone",
+    "locale": "en",
+    "route": "paul-1",
+    "labels": 7,
+    "overlaps": [],
+    "camera": [
+      90.38230248766627,
+      76.98233687810732,
+      -58.35176646411146
+    ],
+    "card": {
+      "x": 12,
+      "y": 613.0625,
+      "width": 351,
+      "height": 122.9375,
+      "top": 613.0625,
+      "right": 363,
+      "bottom": 736,
+      "left": 12
+    }
+  },
+  {
+    "name": "phone",
+    "locale": "zh",
+    "route": "exodus-wilderness",
+    "labels": 8,
+    "overlaps": [],
+    "camera": [
+      98.1138127966231,
+      64.41585976337744,
+      -66.54970324289006
+    ],
+    "card": {
+      "x": 12,
+      "y": 613.0625,
+      "width": 351,
+      "height": 122.9375,
+      "top": 613.0625,
+      "right": 363,
+      "bottom": 736,
+      "left": 12
+    }
+  },
+  {
+    "name": "phone",
+    "locale": "zh",
+    "route": "paul-1",
+    "labels": 7,
+    "overlaps": [],
+    "camera": [
+      90.40205558883139,
+      76.94946834686233,
+      -58.36451927427898
+    ],
+    "card": {
+      "x": 12,
+      "y": 613.0625,
+      "width": 351,
+      "height": 122.9375,
+      "top": 613.0625,
+      "right": 363,
+      "bottom": 736,
+      "left": 12
+    }
+  },
+  {
+    "name": "tablet",
+    "locale": "en",
+    "route": "exodus-wilderness",
+    "labels": 16,
+    "overlaps": [
+      [
+        "1Rameses起",
+        "2Succoth"
+      ],
+      [
+        "2Succoth",
+        "3Etham"
+      ],
+      [
+        "20Mount Shepher",
+        "33Kadesh"
+      ]
+    ],
+    "camera": [
+      88.11106841575581,
+      59.91431879566116,
+      -59.76493307458491
+    ],
+    "card": {
+      "x": 12,
+      "y": 825.0625,
+      "width": 744,
+      "height": 122.9375,
+      "top": 825.0625,
+      "right": 756,
+      "bottom": 948,
+      "left": 12
+    }
+  },
+  {
+    "name": "tablet",
+    "locale": "en",
+    "route": "paul-1",
+    "labels": 8,
+    "overlaps": [],
+    "camera": [
+      81.52299038042956,
+      71.42674840484324,
+      -52.63210125437977
+    ],
+    "card": {
+      "x": 12,
+      "y": 825.0625,
+      "width": 744,
+      "height": 122.9375,
+      "top": 825.0625,
+      "right": 756,
+      "bottom": 948,
+      "left": 12
+    }
+  },
+  {
+    "name": "tablet",
+    "locale": "zh",
+    "route": "exodus-wilderness",
+    "labels": 16,
+    "overlaps": [
+      [
+        "1兰塞起",
+        "2疏割"
+      ],
+      [
+        "2疏割",
+        "3以倘"
+      ],
+      [
+        "20沙斐山",
+        "33加低斯"
+      ]
+    ],
+    "camera": [
+      88.11106841575581,
+      59.91431879566116,
+      -59.76493307458491
+    ],
+    "card": {
+      "x": 12,
+      "y": 825.0625,
+      "width": 744,
+      "height": 122.9375,
+      "top": 825.0625,
+      "right": 756,
+      "bottom": 948,
+      "left": 12
+    }
+  },
+  {
+    "name": "tablet",
+    "locale": "zh",
+    "route": "paul-1",
+    "labels": 8,
+    "overlaps": [],
+    "camera": [
+      81.52299038042956,
+      71.42674840484324,
+      -52.63210125437977
+    ],
+    "card": {
+      "x": 12,
+      "y": 825.0625,
+      "width": 744,
+      "height": 122.9375,
+      "top": 825.0625,
+      "right": 756,
+      "bottom": 948,
+      "left": 12
+    }
+  },
+  {
+    "name": "desktop",
+    "locale": "en",
+    "route": "exodus-wilderness",
+    "labels": 6,
+    "overlaps": [
+      [
+        "1Rameses起",
+        "4Pi-hahiroth"
+      ],
+      [
+        "5Marah",
+        "8Sin"
+      ]
+    ],
+    "camera": [
+      129.3841755497221,
+      59.28525229966613,
+      -87.76010473681596
+    ],
+    "card": {
+      "x": 24,
+      "y": 66,
+      "width": 268,
+      "height": 206.8125,
+      "top": 66,
+      "right": 292,
+      "bottom": 272.8125,
+      "left": 24
+    }
+  },
+  {
+    "name": "desktop",
+    "locale": "en",
+    "route": "paul-1",
+    "labels": 5,
+    "overlaps": [
+      [
+        "5Perga",
+        "8Lystra"
+      ],
+      [
+        "6Antioch in Pisidia",
+        "8Lystra"
+      ]
+    ],
+    "camera": [
+      119.80499882986629,
+      77.1645065564033,
+      -77.347369125803
+    ],
+    "card": {
+      "x": 24,
+      "y": 66,
+      "width": 268,
+      "height": 186.8125,
+      "top": 66,
+      "right": 292,
+      "bottom": 252.8125,
+      "left": 24
+    }
+  },
+  {
+    "name": "desktop",
+    "locale": "zh",
+    "route": "exodus-wilderness",
+    "labels": 6,
+    "overlaps": [
+      [
+        "1兰塞起",
+        "4比哈希录"
+      ],
+      [
+        "5玛拉",
+        "8汛"
+      ]
+    ],
+    "camera": [
+      129.3841755497221,
+      59.28525229966613,
+      -87.76010473681596
+    ],
+    "card": {
+      "x": 24,
+      "y": 66,
+      "width": 268,
+      "height": 186.8125,
+      "top": 66,
+      "right": 292,
+      "bottom": 252.8125,
+      "left": 24
+    }
+  },
+  {
+    "name": "desktop",
+    "locale": "zh",
+    "route": "paul-1",
+    "labels": 5,
+    "overlaps": [
+      [
+        "5别加",
+        "8路司得"
+      ],
+      [
+        "6彼西底的安提阿",
+        "8路司得"
+      ]
+    ],
+    "camera": [
+      119.80499882986629,
+      77.1645065564033,
+      -77.347369125803
+    ],
+    "card": {
+      "x": 24,
+      "y": 66,
+      "width": 268,
+      "height": 186.8125,
+      "top": 66,
+      "right": 292,
+      "bottom": 252.8125,
+      "left": 24
+    }
+  }
+]

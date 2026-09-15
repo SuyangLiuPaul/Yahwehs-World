@@ -89,7 +89,7 @@ kbd {
    Where you are, in a space built of nested rectangles: the plan answers that
    faster than any label, and the label says which verse defines the place. */
 #hud {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; pointer-events: none;
+  position: fixed; left: 0; right: 0; bottom: 40px; z-index: 5; pointer-events: none;
   padding: var(--sp-4) var(--sp-5);
   background: linear-gradient(180deg, transparent, #050b13e6 58%);
   display: grid; grid-template-columns: auto 1fr auto; align-items: end; gap: var(--sp-4);

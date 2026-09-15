@@ -1,0 +1,37 @@
+{
+  "source": "Scripture references establish narrative order, not modern coordinates. Rendering notes checked against this repository's coordinate fallback on 2026-09-15.",
+  "journeys": {
+    "exodus-wilderness": {
+      "ref": "Numbers 33:1–49",
+      "sourceUrl": "https://biblehub.com/bsb/numbers/33.htm",
+      "basisZh": "本路线的42站及其次序来自民数记33章；33:2记摩西奉雅伟的吩咐写下行程。经文次序明确，不等于每处营地的现代位置已经确定。地图沿用SeekSparks地名录与OpenBible参考坐标；许多营站仅能落在共用区域，连续共点的营站合并显示，但每站经文仍可单独查看。未定位营站处断开连线。所有连线只示意叙事次序，不代表已考定的古道、渡海地点或实地行程；本页不据此推算迁徙天数。",
+      "basisEn": "The 42 stages and their order come from Numbers 33; verse 2 records that Moses wrote the itinerary at Yahweh's command. An attested order does not establish every camp's modern location. This map uses reference coordinates from SeekSparks and OpenBible. Consecutive camps sharing a regional point are grouped on the map, while every stage retains its own scripture reference and selector. Unlocated stages break the line. Connections illustrate narrative order, not verified ancient roads, the sea-crossing site or a surveyed itinerary. This page does not infer migration days from those lines."
+    }
+  },
+  "stops": [
+    {
+      "journey": "exodus-wilderness", "stop": 4, "place": "Pi-hahiroth", "ref": "Numbers 33:7–8",
+      "sourceUrl": "https://biblehub.com/bsb/numbers/33.htm",
+      "noteZh": "经文记他们转回比哈希录，对着巴力洗分、在密夺前安营，随后经过海中。本图沿用OpenBible参考坐标示意比哈希录，不表示已确定营地或渡海地点。连线只表达经文次序，不是已考定的道路。",
+      "noteEn": "The account turns back to Pi-hahiroth, opposite Baal-zephon and before Migdol, then describes passage through the sea. This marker uses an OpenBible reference coordinate; it does not establish the camp or crossing site. Connections indicate narrative order, not a verified road."
+    },
+    {
+      "journey": "exodus-wilderness", "stop": 29, "place": "Hor-haggidgad", "ref": "Numbers 33:32",
+      "sourceUrl": "https://biblehub.com/bsb/numbers/33.htm",
+      "noteZh": "民数记33:32记此站。SeekSparks地名录未提供坐标；本图采用OpenBible备用参考坐标作示意，并非确认古营地的位置。",
+      "noteEn": "Numbers 33:32 records this stage. SeekSparks supplies no coordinate; this map uses OpenBible's fallback reference point for illustration, not confirmation of the ancient camp's position."
+    },
+    {
+      "journey": "jacob", "stop": 4, "place": "Mahanaim", "ref": "Genesis 32:2",
+      "sourceUrl": "https://biblehub.com/bsb/genesis/32.htm",
+      "noteZh": "雅各给那地方起名玛哈念。SeekSparks地名录未提供坐标；本图采用OpenBible备用参考坐标，连线仅示意行程次序，不确定约旦河渡口。",
+      "noteEn": "Jacob names the place Mahanaim. SeekSparks supplies no coordinate; this map uses an OpenBible fallback point. Connections illustrate the sequence and do not establish a Jordan crossing."
+    },
+    {
+      "journey": "ark", "stop": 7, "place": "Kiriath-jearim", "ref": "1 Samuel 7:1–2",
+      "sourceUrl": "https://biblehub.com/bsb/1_samuel/7.htm",
+      "noteZh": "撒母耳记上7:1–2记基列耶琳人将约柜接到亚比拿达家，并提及二十年。SeekSparks地名录未提供坐标；本图使用OpenBible备用参考坐标，连线为次序示意，并非实地路线。",
+      "noteEn": "1 Samuel 7:1–2 records the ark being brought to Abinadab's house in Kiriath-jearim and mentions twenty years. SeekSparks supplies no coordinate; the map uses an OpenBible fallback point and schematic connections, not a surveyed route."
+    }
+  ]
+}

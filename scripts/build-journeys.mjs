@@ -17,6 +17,8 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { makeZhResolver, makeProseNormaliser, makeEnNormaliser } from './lib/zh-names.mjs';
 
 const journeys = JSON.parse(readFileSync('../SeekSparks/assets/bible_journeys.json', 'utf8'));
+const coordinateOverrides = JSON.parse(readFileSync('data/journeys/coordinate-overrides.json', 'utf8')).overrides;
+const narrativeOverrides = JSON.parse(readFileSync('data/journeys/narrative-overrides.json', 'utf8'));
 
 /** Inherited prose → the edition's spellings and divine name (see lib/zh-names). */
 const yhwh = makeProseNormaliser();
@@ -49,13 +51,18 @@ function locate(name) {
 const out = journeys.journeys.map((j) => {
   const stops = j.stops.map((s, i) => {
     const loc = locate(s.place);
+    const correction = coordinateOverrides.find(c => c.journey === j.id && c.stop === i + 1);
+    const narrative = narrativeOverrides.stops.find(c => c.journey === j.id && c.stop === i + 1);
+    if (correction && correction.place !== s.place) throw new Error(`Stale coordinate correction: ${j.id} stop ${i + 1}`);
+    if (narrative && narrative.place !== s.place) throw new Error(`Stale narrative correction: ${j.id} stop ${i + 1}`);
+    const noteEn = correction?.reasonEn ?? narrative?.noteEn ?? (['exodus-wilderness', 'paul-1'].includes(j.id) ? s.note?.en : undefined);
     return {
       n: i + 1,
       place: en.placeName(s.place),
       zh: loc?.zh || s.place,
-      lat: loc?.lat ?? null,
-      lon: loc?.lon ?? null,
-      coordFrom: loc?.from ?? null,
+      lat: correction?.unlocated ? null : loc?.lat ?? null,
+      lon: correction?.unlocated ? null : loc?.lon ?? null,
+      coordFrom: correction ? `correction: ${correction.ref}` : loc?.from ?? null,
       ref: `${s.book} ${s.chapter}:${s.verse}`,
       leg: s.leg ?? null,
       // The text does not place the travellers here at all.
@@ -63,7 +70,8 @@ const out = journeys.journeys.map((j) => {
       // Named by the narrative but never reached — aimed at and missed, feared
       // and avoided. Drawn detached, taking no ordinal in the line.
       aside: s.kind === 'aside',
-      note: yhwh(s.note?.['zh-Hans'] ?? ''),
+      note: yhwh(correction?.reasonZh ?? narrative?.noteZh ?? s.note?.['zh-Hans'] ?? ''),
+      ...(noteEn ? {noteEn: en.prose(noteEn)} : {}),
     };
   });
 
@@ -106,7 +114,8 @@ const out = journeys.journeys.map((j) => {
     // The shared asset's Chinese prose writes the divine name 耶和华; this
     // project reads the 雅伟 edition throughout, and a route's own note should
     // not be the one place on the site that says otherwise.
-    basis: yhwh(j.basis['zh-Hans']), basisEn: en.prose(j.basis.en),
+    basis: yhwh(narrativeOverrides.journeys[j.id]?.basisZh ?? j.basis['zh-Hans']),
+    basisEn: en.prose(narrativeOverrides.journeys[j.id]?.basisEn ?? j.basis.en),
     style: j.style, mark: j.mark,
     stopCount: stops.length,
     markers, segments,

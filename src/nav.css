@@ -50,6 +50,13 @@
   transition: background .18s, color .18s, border-color .18s;
 }
 .lang-switch:hover { background: #c9a2271a; color: var(--gold-bright); border-color: var(--gold); }
+.source-credit {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 20;
+  height: 40px; display: flex; align-items: center; padding: var(--sp-1) var(--sp-3);
+  background: var(--ground); color: var(--ink-2); font: var(--fs-100)/var(--lh-snug) var(--ui);
+}
+.source-credit p { margin: 0; }
+.source-credit a { color: inherit; }
 .lang-switch:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 /* Reaching a 44pt target without growing the bar. */
 .lang-switch::after {

@@ -28,6 +28,7 @@ const FAR = 2.45;
 
 export class Terrain {
   readonly mesh: THREE.Mesh;
+  readonly ready: Promise<void>;
   private readonly material: THREE.MeshBasicMaterial;
   private target = 0;
 
@@ -45,7 +46,9 @@ export class Terrain {
     );
 
     const loader = new THREE.TextureLoader();
-    const map = loader.load('data/terrain-color.webp');
+    let loaded!: () => void;
+    this.ready = new Promise<void>(resolve => { loaded=resolve; });
+    const map = loader.load('data/terrain-color.webp', loaded, undefined, loaded);
     map.colorSpace = THREE.SRGBColorSpace;
     map.anisotropy = 16;
 

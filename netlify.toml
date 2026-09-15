@@ -7,13 +7,12 @@
 [build.environment]
   NODE_VERSION = "22"
 
-# The globe ships ~6 MB of geography and a place bundle that change only when
-# the data is rebuilt, so they are safe to pin for a year and cheap to bust:
-# a rebuild writes new content, and the filename-hashed bundles carry the code.
+# Public data filenames are stable. Revalidate them so source corrections
+# reach returning readers; only Vite's content-hashed assets are immutable.
 [[headers]]
   for = "/data/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
   for = "/assets/*"

@@ -32,12 +32,14 @@ export class Markers {
    *  beach balls the moment the camera drops to terrain height, so the world
    *  size tracks camera distance and the screen size stays put. */
   private zoomK = 1;
+  private routePlaces = new Set<string>();
+  private routeActive = false;
   /** Places named by the verse the cursor is sitting on. */
   activeIndices: number[] = [];
 
   constructor(readonly places: Place[], readonly events: BibleEvent[]) {
     const geo = new THREE.SphereGeometry(BASE_RADIUS, 10, 8);
-    const mat = new THREE.MeshStandardMaterial({ roughness: 0.4, metalness: 0.25 });
+    const mat = new THREE.MeshStandardMaterial({ roughness: 0.4, metalness: 0.25, transparent: true });
     this.mesh = new THREE.InstancedMesh(geo, mat, places.length);
     this.mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
 
@@ -79,13 +81,13 @@ export class Markers {
         visible++;
         const age = clamped - seen;
         // Warm just after being named, settling to the visited floor.
-        const heat = age === 0 ? 1 : Math.max(0, 1 - age / AFTERGLOW);
+        const heat = this.routeActive ? 0 : age === 0 ? 1 : Math.max(0, 1 - age / AFTERGLOW);
         const brightness = VISITED + (1 - VISITED) * heat;
         this.curScale[i] = this.baseScale[i]! * (1 + heat * 0.85);
         this.scratch.copy(this.baseColor[i]!).multiplyScalar(brightness);
         // The verse's own places get lifted toward gold so the eye lands on
         // what is being read right now, not merely on what is bright.
-        if (age === 0) this.scratch.lerp(GOLD, 0.55);
+        if (age === 0 && !this.routeActive) this.scratch.lerp(GOLD, 0.55);
         this.mesh.setColorAt(i, this.scratch);
       }
     }
@@ -100,7 +102,8 @@ export class Markers {
    *  re-run the 8,700-write event replay on every frame. */
   private writeMatrices() {
     for (let i = 0; i < this.places.length; i++) {
-      this.dummy.scale.setScalar(this.curScale[i]! * this.zoomK);
+      const scale=this.routeActive?Math.min(1.4,this.baseScale[i]!):this.curScale[i]!;
+      this.dummy.scale.setScalar(this.routePlaces.has(this.places[i]!.name) ? 0 : scale * this.zoomK);
       // Lift with the zoom too, so a marker never sinks into the relief.
       this.dummy.position.copy(
         lonLatToVec3(this.places[i]!.lon, this.places[i]!.lat, 0.35 + 0.5 * this.zoomK));
@@ -114,17 +117,27 @@ export class Markers {
   /** Screen-size compensation. The markers were tuned at the opening distance
    *  of four radii; world size tracks distance from there, floored so they do
    *  not vanish entirely when the camera is right down on the ground. */
-  setZoom(cameraDistance: number, globeRadius: number) {
+  setZoom(cameraDistance: number, globeRadius: number, dt = 1/60, screenHeight=800, fov=42) {
+    const material=this.mesh.material as THREE.MeshStandardMaterial;
+    const target=this.routeActive ? THREE.MathUtils.lerp(.25,1,THREE.MathUtils.clamp((cameraDistance/globeRadius-1.8)/.5,0,1)) : 1;
+    material.opacity+=(target-material.opacity)*(1-Math.exp(-dt*8));
     // Slightly faster than linear: at terrain height the markers should be
     // dots the labels hang off, not spheres the map hangs off.
     const t = cameraDistance / (globeRadius * 4);
-    const k = THREE.MathUtils.clamp(Math.pow(t, 1.5), 0.075, 1.15);
-    if (Math.abs(k - this.zoomK) < 0.004) return;
+    const k = this.routeActive ? 2*Math.max(1,cameraDistance-globeRadius)*Math.tan(fov*Math.PI/360)/screenHeight/BASE_RADIUS
+      : THREE.MathUtils.clamp(Math.pow(t, 1.5), 0.075, 1.15);
+    if (Math.abs(k - this.zoomK) < 0.0001) return;
     this.zoomK = k;
     this.writeMatrices();
   }
 
   get visibleCount() { return this.visibleCountCache; }
+
+  setRoute(names: string[] | null) {
+    this.routeActive=names!==null;
+    this.routePlaces=new Set(names??[]);
+    this.setCursor(this.events.length-1);
+  }
 
   isVisible(index: number) { return this.lastSeen[index]! >= 0; }
 }

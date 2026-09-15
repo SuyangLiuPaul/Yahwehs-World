@@ -1,4 +1,4 @@
-# 11 · Known bugs and open questions (as of `6b3471b`)
+# 11 · Known bugs and open questions (updated 2026-09-15; see `BATCH-1.md`)
 
 ## Bugs
 
@@ -36,9 +36,10 @@ verified (`ls`, `git ls-files`). Nothing references it.
 **B7 — Structures card bodies are Chinese-only** (`specs.ts` `textZh`,
 `punchZh`, `unstated`). English parity needed (`08` Phase 9).
 
-**B8 — Route declutter is centre-point based**; wide pills can still overlap
-when two markers are 90 px apart. Replace with measured boxes without changing
-label density (`06-L3`).
+**B8 — FIXED (Phase 1).** Measured fixed-position boxes and leaders replace
+centre-point tests. Phone Exodus labels increase from 8 to 13 in both
+locales; tablet retains 16 while eliminating three overlapping pairs. Labels
+and markers stay outside navigation/player controls.
 
 **B9 — SUPERSEDED, then CLEARED.** The event layer is 1,443 candidates over
 all 66 books (`ALL-EVENTS.md`); the 35 Genesis candidates are a subset. On
@@ -47,7 +48,9 @@ review (`all-events.json` `meta.candidatesCleared`). They are not a bottleneck.
 Per-event `status` stays `candidate` because no one has read them one at a time;
 see `07` · Review gate for what that does and does not mean.
 
-**B10 — Markers at close zoom are noise around a route** (`06-L7`).
+**B10 — FIXED (Phase 1).** Route stops use flat discs. Other places lose their
+afterglow, shrink to background dots and fade to 25% below 1.8R; duplicate
+named route places are removed from that background layer.
 
 **B11 — FIXED.** The route card and the journey menu spoke the wrong language.
 The menu listed the ten journeys by their Chinese names with a Chinese stop
@@ -131,6 +134,36 @@ the same boundary line described from Judah's side; Ephron 2 is 2 Chronicles
 以弗仑 is right for the first and 以法拉音 for the second. All three are recorded
 in `gazetteer-corrections.json` under `refCorrections`, with `nameAttestedAt`
 for the case where the name and the location live in different verses.
+
+**B19 — FIXED (Phase 1).** The route head, line and readout used different
+progress measures; return visits could be confused with the initial visit.
+One distance path now drives all three. Gaps are not interpolated; explicit
+stop selection resolves their shared distance parameters.
+
+**B20 — FIXED (Phase 1).** Verse playback could move a journey's camera.
+Route entry stops it; playback, locale and mobile height changes never
+reframe. Fit is explicit. Measured footer spacing also fixes the old phone
+route trigger being blocked by timeline controls.
+
+**B21 — FIXED (Phase 1).** The Red Sea shore camp was plotted at the sea's
+representative point. It is retained as unlocated, without either connecting
+leg. Four stale missing-coordinate notes and the Exodus basis now reflect
+actual fallback behavior; see authored journey overrides and their sources.
+
+**B22 — FIXED (Phase 1).** Year-immutable stable JSON URLs could hide data
+corrections from returning readers. Revalidation plus a one-time request
+version bypasses those old responses; hashed assets stay immutable.
+
+**B23 — FIXED (Phase 1).** Structures/tabernacle lacked source attribution;
+reserved footers now preserve it. The tabernacle introduction also mislabeled
+lampstand dimensions as scriptural; illustrative proportions and scenery are
+now distinguished from the specifications in Exodus 25:31–40.
+
+**B24 — Structure detail and framing remain unfinished.** At 1440×900 the
+ark sits partly behind its reading card. Its box-like geometry and the
+tabernacle's procedural environment are not the requested detailed mature
+scenes. `evidence/phase-1/navigation/` verifies footer/navigation only, not
+3D completion. See Phase 7 and B7.
 
 ## Open questions for the owner
 - Q1: Should the repo become public once SeekSparks-derived assets are

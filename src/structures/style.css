@@ -12,13 +12,13 @@ body {
 .card {
   min-height: 100svh; scroll-snap-align: start;
   display: grid; align-items: end;
-  padding: 2rem var(--sp-5) 7.5rem;
+  padding: 2rem var(--sp-5) 10rem;
 }
 /* Above this width the model gets its own half of the screen and the reading
    panel stops sitting on top of it — the whole point of the card is that the
    verse and the thing it describes are visible at the same time. */
 @media (min-width: 900px) {
-  .card { align-items: center; padding: 2rem 2.5rem 7.5rem; }
+  .card { align-items: center; padding: 2rem 2.5rem 10rem; }
   .inner { max-width: 25rem; }
 }
 .inner {
@@ -68,7 +68,7 @@ details.unstated ul { margin: var(--sp-2) 0 0; padding-left: var(--sp-4); font-s
 details.unstated li { margin-bottom: var(--sp-1); }
 
 #cubit {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 3;
+  position: fixed; left: 0; right: 0; bottom: 40px; z-index: 3;
   padding: var(--sp-3) var(--sp-5) var(--sp-4);
   background: linear-gradient(180deg, transparent, #050b13f2 30%);
   display: grid; gap: var(--sp-1); justify-items: start;
@@ -86,7 +86,7 @@ details.unstated li { margin-bottom: var(--sp-1); }
   .inner { max-height: 46svh; overflow-y: auto; }
 }
 @media (max-width: 640px) {
-  .card { padding: var(--sp-5) var(--sp-4) 8.5rem; }
+  .card { padding: var(--sp-5) var(--sp-4) 11rem; }
   .inner { padding: var(--sp-4) var(--sp-4) var(--sp-5); }
   h1 { font-size: var(--fs-600); }
 }

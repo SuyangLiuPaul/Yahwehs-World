@@ -9,7 +9,11 @@ updated.
 B1–B6 and B11–B18 fixed; orphan deleted; manifest rows present; audit at zero.
 Nothing to send Astra here.
 
-## Phase 1 — Route experience to the standard (L3, L4, L5, L7) (3–4 days)
+## Phase 1 — Route experience to the standard (L3, L4, L5, L7) — IMPLEMENTED 2026-09-15
+
+Local acceptance passes. Measurements, source corrections, limitations and
+deployment status: `BATCH-1.md`; screenshots: `evidence/phase-1/`.
+
 - Measured-box declutter + leaders; pills never under the card.
 - Player card: thumbnail, dots, swipe, localisation.
 - Scale bar + north arrow.

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import './style.css';
+import './route-ui.css';
 import { paintBasemap } from './basemap.ts';
 import { createGlobe, createLighting, GLOBE_RADIUS, lonLatToVec3 } from './globe.ts';
 import { Terrain } from './terrain.ts';
@@ -10,6 +11,8 @@ import { bookName, bookOf, localiseRef } from './books.ts';
 import { precisionOf, precisionStyle } from './theme.ts';
 import { Route, type Journey } from './routes.ts';
 import { RouteLabels } from './labels.ts';
+import { RouteThumbnail } from './route-thumbnail.ts';
+import { Cartography, measureMap } from './cartography.ts';
 import { applyStatic, bindSwitch, locale as currentLocale, onLocale } from './locale.ts';
 import type { GeoJson, Place, PlacesBundle } from './types.ts';
 
@@ -54,7 +57,10 @@ const T = {
 };
 
 // ── data ──────────────────────────────────────────────────────────────────
-const j = <T,>(u: string) => fetch(u).then((r) => {
+// One-time migration away from the former year-long immutable /data cache.
+// New responses revalidate via Netlify; returning readers must also leave
+// their already-cached, pre-correction URL behind.
+const j = <T,>(u: string) => fetch(`${u}?v=2026-09-15`).then((r) => {
   if (!r.ok) throw new Error(`${u} → ${r.status}`);
   return r.json() as Promise<T>;
 });
@@ -206,6 +212,11 @@ let route: Route | null = null;
 let routePlaying = false;
 let routeT = 0;
 const routeLabels = new RouteLabels(document.body);
+const routeThumbnail = new RouteThumbnail(renderer, globe, terrain, $<HTMLCanvasElement>('r-thumbnail'));
+const cartography = new Cartography();
+let selectedOrdinal: number | null = null;
+let readoutKey = '';
+let safeBand = { top: 48, height: innerHeight - 160 };
 
 const routesEl = $('routes');
 const rlist = $('rlist');
@@ -237,16 +248,23 @@ function clearRoute() {
   // Leaving a route restores the world's own up, or the globe stays tilted.
   camera.up.set(0, 1, 0);
   routePlaying = false; routeT = 0;
+  selectedOrdinal=null; readoutKey='';
+  document.body.classList.remove('route-active');
+  $('map-tools').hidden=true;
   routeLabels.clear();
+  routeThumbnail.clear();
   rCard.hidden = true;
   rBasis.textContent = '';
   rToggle.textContent = '▶';
   setRoutesState('closed');
   markers.mesh.visible = true;
+  markers.setRoute(null);
   applyCursor();
+  updateLayout();
 }
 
 function openRoute(id: string) {
+  stop();
   clearRoute();
   const jr = journeyData.journeys.find((x) => x.id === id);
   if (!jr) return;
@@ -255,7 +273,9 @@ function openRoute(id: string) {
   globe.add(route.group);
   routeLabels.build(route.markerObjects, locale);
   // The place field would otherwise sit under the route as visual noise.
-  markers.mesh.visible = false;
+  markers.setRoute(jr.markers.flatMap(m=>m.places??[m.place]));
+  document.body.classList.add('route-active');
+  $('map-tools').hidden=false;
   closePanel();
   rCard.hidden = false;
   setRoutesState('active');
@@ -265,10 +285,11 @@ function openRoute(id: string) {
   // beside the stop count means a reader meets it before the animation, not
   // after wondering why 42 stops drew 23 dots.
   renderRouteStats(jr);
-
+  renderStops();
+  updateLayout();
   frameRoute(jr);
-  routeT = 0; routePlaying = true;
-  rToggle.textContent = '❚❚';
+  routeT = 0;
+  setRoutePlayback(false);
   updateRouteReadout();
 }
 
@@ -279,6 +300,7 @@ function openRoute(id: string) {
  *  at whatever zoom the reader happened to leave the globe on, both are a
  *  single dot. The altitude comes from the route's own angular extent. */
 function frameRoute(jr: Journey) {
+  const wasDamping=controls.enableDamping; controls.enableDamping=false; controls.update(); controls.enableDamping=wasDamping;
   const pts = jr.markers
     .filter((m) => m.lat !== null && m.lon !== null)
     .map((m) => lonLatToVec3(m.lon!, m.lat!, 0).normalize());
@@ -352,7 +374,35 @@ function frameRoute(jr: Journey) {
     }
   }
 
-  controls.update();
+  // Use projected extents to use the long dimension of a phone. A circular
+  // spread wastes half the available vertical space on a north/south route.
+  const projectedBounds = () => {
+    camera.lookAt(0,0,0); camera.updateMatrixWorld(true);
+    const points=pts.map(p=>p.clone().multiplyScalar(GLOBE_RADIUS).project(camera));
+    const left=(1+Math.min(...points.map(p=>p.x)))*innerWidth/2;
+    const right=(1+Math.max(...points.map(p=>p.x)))*innerWidth/2;
+    const top=(1-Math.max(...points.map(p=>p.y)))*innerHeight/2;
+    const bottom=(1-Math.min(...points.map(p=>p.y)))*innerHeight/2;
+    return {width:right-left,height:bottom-top,x:(left+right)/2,y:(top+bottom)/2};
+  };
+  const fitAxis=new THREE.Vector3().crossVectors(centre,camera.up).normalize();
+  const horizontalPadding = innerWidth <= 520 ? 40 : 64;
+  for(let i=0;i<8;i++){
+    const bounds=projectedBounds();
+    const ratio=Math.max(bounds.width/Math.max(100,innerWidth-horizontalPadding),bounds.height/Math.max(100,band.height-32));
+    const next=THREE.MathUtils.clamp(GLOBE_RADIUS+(camera.position.length()-GLOBE_RADIUS)*ratio,GLOBE_RADIUS*1.09,GLOBE_RADIUS*5);
+    camera.position.setLength(next);
+    // Centre the projected bounds, not the mean of the stops: clusters in
+    // Moab otherwise push the southernmost camp underneath the player.
+    for(const [axis,key,want] of [[fitAxis,'y',band.top+band.height/2],[camera.up,'x',innerWidth/2]] as const){
+      const at=projectedBounds()[key];camera.position.applyAxisAngle(axis,.001);
+      const slope=(projectedBounds()[key]-at)/.001;camera.position.applyAxisAngle(axis,-.001);
+      if(Math.abs(slope)>1)camera.position.applyAxisAngle(axis,(want-at)/slope);
+    }
+  }
+  // Drain inertial drag before a deliberate fit; it must not move the new view.
+  const damping=controls.enableDamping; controls.enableDamping=false; controls.update(); controls.enableDamping=damping;
+  camera.lookAt(0,0,0);camera.updateMatrixWorld(true);
 }
 
 /** The strip of screen the map actually shows through, measured from the DOM
@@ -361,7 +411,8 @@ function frameRoute(jr: Journey) {
 function visibleBand() {
   const h = Math.max(1, innerHeight);
   const navEl = document.querySelector('.sitenav') as HTMLElement | null;
-  const top = navEl ? navEl.getBoundingClientRect().bottom : 0;
+  const top = Math.max(navEl ? navEl.getBoundingClientRect().bottom : 0,
+    route ? $('map-tools').getBoundingClientRect().bottom : 0);
 
   let bottom = h;
   for (const el of [rCard, $('timeline')]) {
@@ -372,16 +423,124 @@ function visibleBand() {
   return { top, height: Math.max(h * 0.25, bottom - top) };
 }
 
+function updateLayout() {
+  document.body.style.setProperty('--footer-height',$('timeline').getBoundingClientRect().height+'px');
+  safeBand=visibleBand();
+  document.body.style.setProperty('--map-bottom',(safeBand.top+safeBand.height-10)+'px');
+}
+
+function setRoutePlayback(value: boolean) {
+  routePlaying=value;
+  rToggle.textContent=value?'❚❚':routeT>=1?'↻':'▶';
+  rToggle.classList.toggle('playing',value);
+  const text=locale==='zh'?(value?'暂停路线':routeT>=1?'重新播放':'播放路线'):(value?'Pause journey':routeT>=1?'Replay journey':'Play journey');
+  rToggle.setAttribute('aria-label',text);rToggle.title=text;
+}
+
+function renderStops() {
+  if(!route)return;
+  $('r-dots').replaceChildren();$('r-source-stops').replaceChildren();
+  const labels:Record<string,[string,string]>={
+    'r-clear':['Close journey','退出路线'],'r-prev':['Previous stop','上一站'],
+    'r-next':['Next stop','下一站'],'r-sources-close':['Close sources','关闭依据'],
+    'map-in':['Zoom in','放大'],'map-out':['Zoom out','缩小'],
+    'r-thumbnail':['Terrain near this stop','本站附近的地形'],'r-dots':['Journey stops','行程各站'],
+  };
+  for(const [id,words] of Object.entries(labels))$(id).setAttribute('aria-label',words[locale==='en'?0:1]!);
+  for(const m of route.journey.markers){
+    m.stops.forEach((n,i)=>{
+      const name=placeLabel(m.places?.[i]??m.place,m.zhAll?.[i]??m.zh,locale);
+      const ref=m.refs?.[i]??m.ref;
+      const button=document.createElement('button');button.type='button';button.className='r-step';button.dataset.stop=String(n);
+      button.setAttribute('aria-label',T.stop[locale](n)+' · '+name);button.title=button.getAttribute('aria-label')!;
+      const ordinal=document.createElement('span');ordinal.textContent=String(n);button.appendChild(ordinal);
+      button.addEventListener('click',()=>seekStop(n));$('r-dots').appendChild(button);
+      const li=document.createElement('li');li.value=n;li.append(document.createTextNode(name+' · '));
+      const link=document.createElement('a');link.textContent=localiseRef(ref,locale);
+      const match=ref.match(/^(.+) (\d+):(\d+)/);
+      if(match){link.href='https://biblehub.com/bsb/'+match[1]!.toLowerCase().replaceAll(' ','_')+'/'+match[2]+'.htm';link.target='_blank';link.rel='noopener';}
+      li.appendChild(link);
+      const note=document.createElement('small');
+      const remarks:string[]=[];
+      if(m.stops.length>1)remarks.push(locale==='zh'?'与其他营站共用区域坐标，实际位置未定。':'Shares a regional coordinate with other camps; exact site uncertain.');
+      if(m.aside)remarks.push(locale==='zh'?'经文提名；未记载到达，不连接路线。':'Named in the account; arrival is not recorded. Not connected to the route.');
+      if(!m.attested)remarks.push(locale==='zh'?'推定的中间地点，非经文明确记载的停站。':'Inferred waypoint, not an explicitly recorded stop.');
+      if(m.lat===null||m.lon===null)remarks.push(locale==='zh'?'位置未定；此处不连线。':'Unlocated; the route breaks here.');
+      if(locale==='zh'&&m.note)remarks.push(m.note);
+      if(locale==='en'&&m.noteEn)remarks.push(m.noteEn);
+      note.textContent=remarks.join(' ');if(remarks.length)li.appendChild(note);
+      $('r-source-stops').appendChild(li);
+    });
+  }
+}
+
+function seekStop(n: number) {
+  if(!route)return;
+  const index=route.journey.markers.findIndex(m=>m.stops.includes(n));
+  if(index<0)return;
+  selectedOrdinal=n;
+  const at=route.progressAt(index);
+  if(at!==undefined&&Number.isFinite(at)){routeT=at;route.setProgress(routeT);}
+  route.focusMarker(index);
+  setRoutePlayback(false);
+  updateRouteReadout();
+}
+function stepStop(delta:number){
+  if(!route)return;
+  const n=selectedOrdinal??route.markerAt(routeT)?.stops[0]??1;
+  seekStop(THREE.MathUtils.clamp(n+delta,1,route.journey.stopCount));
+}
+$('r-prev').addEventListener('click',()=>stepStop(-1));
+$('r-next').addEventListener('click',()=>stepStop(1));
+$('r-info').addEventListener('click',()=>{setRoutePlayback(false);$<HTMLDialogElement>('r-sources').showModal();});
+$('r-sources-close').addEventListener('click',()=>$<HTMLDialogElement>('r-sources').close());
+$('map-fit').addEventListener('click',()=>{if(route)frameRoute(route.journey);});
+for(const [id,factor] of [['map-in',.75],['map-out',1.3]] as const){
+  $(id).addEventListener('click',()=>{
+    const distance=THREE.MathUtils.clamp(GLOBE_RADIUS+(camera.position.length()-GLOBE_RADIUS)*factor,controls.minDistance,controls.maxDistance);
+    camera.position.setLength(distance);controls.update();
+  });
+}
+let swipe:{x:number;y:number}|null=null;
+$('rplay').addEventListener('pointerdown',e=>{if(e.pointerType==='touch'&&!(e.target as HTMLElement).closest('button'))swipe={x:e.clientX,y:e.clientY};});
+$('rplay').addEventListener('pointerup',e=>{
+  if(swipe){const dx=e.clientX-swipe.x,dy=e.clientY-swipe.y;if(Math.abs(dx)>44&&Math.abs(dx)>Math.abs(dy)*1.5)stepStop(dx<0?1:-1);}
+  swipe=null;
+});
+$('rplay').addEventListener('pointercancel',()=>{swipe=null;});
+rCard.addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();stepStop(e.key==='ArrowLeft'?-1:1);}
+});
+
 function updateRouteReadout() {
   if (!route) return;
-  const m = route.markerAt(routeT);
+  const m = selectedOrdinal===null ? route.markerAt(routeT) : route.journey.markers.find(m=>m.stops.includes(selectedOrdinal!));
   if (!m) { rStop.textContent = ''; return; }
+  const key=route.journey.id+':'+m.n+':'+selectedOrdinal+':'+locale;
+  if(key===readoutKey)return;
+  readoutKey=key;
+  const sub=selectedOrdinal===null ? 0 : Math.max(0,m.stops.indexOf(selectedOrdinal));
+  const selectedName=placeLabel(m.places?.[sub]??m.place,m.zhAll?.[sub]??m.zh,locale);
   const label = m.stops.length > 1
     // A merged marker says so outright: these camps share one coordinate
     // because nobody knows where they were.
-    ? T.stopsMerged[locale](m.stops[0]!, m.stops[m.stops.length - 1]!, m.stops.length)
+    ? selectedOrdinal===null ? T.stopsMerged[locale](m.stops[0]!, m.stops[m.stops.length - 1]!, m.stops.length) : `${T.stop[locale](selectedOrdinal)} · ${selectedName}`
     : `${T.stop[locale](m.n)} · ${placeLabel(m.place, m.zh, locale)}`;
   rStop.textContent = label;
+  rStop.title=label;
+  $('r-ref').textContent=localiseRef(m.refs?.[sub]??m.ref,locale);
+  routeThumbnail.show(m);
+  $('r-unlocated').hidden=m.lat!==null&&m.lon!==null;
+  const ordinal=selectedOrdinal??m.stops[0]??m.n;
+  for(const button of Array.from($('r-dots').querySelectorAll<HTMLButtonElement>('button'))){
+    const n=Number(button.dataset.stop);
+    button.classList.toggle('passed',n<ordinal);
+    if(n===ordinal)button.setAttribute('aria-current','step');else button.removeAttribute('aria-current');
+  }
+  const dot=$('r-dots').querySelector<HTMLElement>('[aria-current="step"]');
+  if(dot) $('r-dots').scrollLeft=dot.offsetLeft-$('r-dots').offsetLeft-$('r-dots').clientWidth/2+22;
+  $<HTMLButtonElement>('r-prev').disabled=ordinal<=1;
+  $<HTMLButtonElement>('r-next').disabled=ordinal>=route.journey.stopCount;
   // Marker refs are stored in English; the book name is the only part of a
   // reference that is language at all, so it is swapped on the way out.
   $('t-ref').textContent = localiseRef(m.refs?.[0] ?? m.ref, locale);
@@ -410,20 +569,21 @@ addEventListener('keydown', (e) => {
 });
 rToggle.addEventListener('click', () => {
   if (!route) return;
-  if (routeT >= 1) routeT = 0;
-  routePlaying = !routePlaying;
-  rToggle.textContent = routePlaying ? '❚❚' : '▶';
+  if (routeT >= 1) { routeT=0;route.setProgress(0); }
+  selectedOrdinal=null;
+  setRoutePlayback(!routePlaying);
+  updateRouteReadout();
 });
 $('r-clear').addEventListener('click', clearRoute);
 
-/** Walks the route and eases the camera along with it. */
+/** Advances the path only; the camera belongs to the reader. */
 function advanceRoute(dt: number) {
   if (!route || !routePlaying) return;
   // Slow enough to read each stop; the wilderness is forty years, not a lap.
-  routeT = Math.min(1, routeT + dt * 0.055);
+  routeT = Math.min(1, routeT + dt / Math.max(24,route.journey.stopCount*1.6));
   route.setProgress(routeT);
   updateRouteReadout();
-  if (routeT >= 1) { routePlaying = false; rToggle.textContent = '▶'; }
+  if (routeT >= 1) setRoutePlayback(false);
 
   // The camera deliberately does NOT follow. It frames the whole route once
   // when the route opens and then stays put: a camera that chases the head
@@ -457,7 +617,7 @@ function applyCursor() {
   $('t-count').textContent = T.places[locale](markers.visibleCount);
   if (selected && !markers.isVisible(bundle.places.indexOf(selected))) closePanel();
 }
-range.addEventListener('input', () => { stop(); applyCursor(); });
+range.addEventListener('input', () => { if(route)clearRoute(); stop(); applyCursor(); });
 
 // ── playback ──────────────────────────────────────────────────────────────
 const VERSES_PER_SECOND = 7;
@@ -466,6 +626,7 @@ let carry = 0;
 const playBtn = $('t-play');
 
 function play() {
+  if(route)clearRoute();
   // Restarting from the end would show nothing move, so rewind first.
   if (Number(range.value) >= bundle.events.length - 1) { range.value = '0'; applyCursor(); }
   playing = true; carry = 0;
@@ -500,7 +661,7 @@ controls.addEventListener('end', () => { userDriving = false; });
 
 const followTarget = new THREE.Vector3();
 function follow(dt: number) {
-  if (!playing || userDriving || markers.activeIndices.length === 0) return;
+  if (route || !playing || userDriving || markers.activeIndices.length === 0) return;
   let lon = 0, lat = 0;
   for (const n of markers.activeIndices) {
     lon += bundle.places[n]!.lon; lat += bundle.places[n]!.lat;
@@ -514,8 +675,9 @@ function follow(dt: number) {
 function renderRouteStats(jr: Journey) {
   const stats: [number, string, boolean][] = [
     [jr.stopCount, T.statStops[locale], false],
-    [jr.markers.length, T.statMarkers[locale], false],
+    [jr.markers.filter(m=>m.lat!==null&&m.lon!==null).length, T.statMarkers[locale], false],
   ];
+  if(jr.unlocated)stats.push([jr.unlocated,locale==='zh'?'未定位':'unlocated',false]);
   if (jr.merged > 0) stats.push([jr.merged, T.statMerged[locale], true]);
   $('r-stats').innerHTML = stats
     .map(([n, label, caveat]) =>
@@ -547,12 +709,15 @@ onLocale((l) => {
     renderRouteHeader(route.journey);
     renderRouteStats(route.journey);
     routeLabels.build(route.markerObjects, locale);
+    renderStops();
+    setRoutePlayback(routePlaying);
     // applyCursor() has just overwritten the readout with timeline text, and
     // nothing else put the route's own back, so switching language with a
     // route open left the stop line in the language you just left.
     updateRouteReadout();
   }
   if (selected) renderPanel();
+  updateLayout();
 });
 
 // ── loop ──────────────────────────────────────────────────────────────────
@@ -564,13 +729,13 @@ function fitToViewport() {
 }
 addEventListener('resize', () => {
   fitToViewport();
-  // A phone turning from portrait to landscape changes which field binds, so
-  // a route framed for one orientation has to be re-framed for the other.
-  if (route) frameRoute(route.journey);
+  updateLayout();
 });
 // Catches the transition from zero size to real size, which fires no resize
 // event of its own when the page was laid out hidden from the start.
-new ResizeObserver(fitToViewport).observe(document.body);
+new ResizeObserver(()=>{fitToViewport();updateLayout();}).observe(document.body);
+const chromeObserver=new ResizeObserver(updateLayout);
+chromeObserver.observe($('timeline'));chromeObserver.observe(rCard);
 
 const clock = new THREE.Clock();
 renderer.setAnimationLoop(() => {
@@ -579,14 +744,16 @@ renderer.setAnimationLoop(() => {
   advance(dt);
   follow(dt);
   advanceRoute(dt);
+  controls.update();
+  camera.updateMatrixWorld(true); globe.updateMatrixWorld(true);
   if (route) {
     route.faceCamera(camera.position.length(), GLOBE_RADIUS, innerHeight, camera.fov);
     route.setResolution(renderer.domElement.width, renderer.domElement.height);
-    routeLabels.update(camera, globe, route.reachedIndex(routeT), innerWidth, innerHeight);
+    routeLabels.update(camera, globe, route.reachedIndex(routeT), innerWidth, innerHeight, safeBand, route.highlightedIndex(routeT));
   }
-  controls.update();
   terrain.update(camera.position.length(), dt);
-  markers.setZoom(camera.position.length(), GLOBE_RADIUS);
+  markers.setZoom(camera.position.length(), GLOBE_RADIUS, dt, innerHeight, camera.fov);
+  cartography.update(camera,innerWidth,innerHeight,locale);
   // The selection ring breathes so the eye can find it again after orbiting.
   if (selectionRing.visible) selectionRing.scale.setScalar(1 + Math.sin(t * 2.4) * 0.12);
   renderer.render(scene, camera);
@@ -596,6 +763,7 @@ fitToViewport();
 applyStatic();
 renderLegend();
 applyCursor();
+updateLayout();
 $('loading').classList.add('done');
 console.info(
   `%c雅伟之界 · 圣经世界%c  ${bundle.meta.located} located / ${bundle.meta.unlocated} unlocated  ·  ${bundle.meta.source} (${bundle.meta.license})`,
@@ -607,7 +775,8 @@ console.info(
 // Guarded by import.meta.env.DEV, so it is dropped from a production build.
 if (import.meta.env.DEV) {
   (globalThis as unknown as Record<string, unknown>).__globe = {
-    scene, camera, controls, markers, globe, bundle,
+    scene, camera, controls, markers, globe, bundle, renderer,
+    measureMap, visibleBand, frameRoute, seekStop,
     /** Screen-space position of a place, for synthetic pointer events. */
     screenOf(place: Place) {
       const v = lonLatToVec3(place.lon, place.lat, 0.5).applyMatrix4(globe.matrixWorld).project(camera);
@@ -627,10 +796,11 @@ if (import.meta.env.DEV) {
       controls.update(); camera.updateMatrixWorld(true); globe.updateMatrixWorld(true);
       route.faceCamera(camera.position.length(), GLOBE_RADIUS, innerHeight, camera.fov);
       route.setResolution(renderer.domElement.width, renderer.domElement.height);
-      routeLabels.update(camera, globe, route.reachedIndex(routeT), innerWidth, innerHeight);
+      routeLabels.update(camera, globe, route.reachedIndex(routeT), innerWidth, innerHeight, visibleBand(), route.highlightedIndex(routeT));
       renderer.render(scene, camera);
     },
     get routeT() { return routeT; },
+    get routePlaying() { return routePlaying; },
     /** Renders one frame at an arbitrary size, for inspection where the page
      *  is not being painted. */
     snapshot(w = 1400, h = 900) {

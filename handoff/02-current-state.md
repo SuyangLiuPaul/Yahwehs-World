@@ -1,5 +1,12 @@
 # 02 · Current state (measured 2026-09-15, commit `6b3471b`)
 
+Phase 1 update, 2026-09-15: `BATCH-1.md` supersedes the route behavior and
+payload/cache measurements below. Exodus keeps all 42 stages, with 22
+plotted markers and one explicitly unlocated camp. New modules:
+`route-path.ts`, `route-thumbnail.ts`, `cartography.ts`, `route-ui.css`.
+Stable data now revalidates; three-viewport bilingual evidence is committed
+under `evidence/phase-1/`. The historical measurements below are retained.
+
 ## Pages
 
 | URL | Module | What it does | State |
