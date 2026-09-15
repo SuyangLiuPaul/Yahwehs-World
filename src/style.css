@@ -28,8 +28,8 @@ body {
 }
 
 #stage { display: block; width: 100vw; height: 100vh; cursor: grab; }
-#stage.dragging { cursor: grabbing; }
 #stage.over-place { cursor: pointer; }
+#stage.dragging { cursor: grabbing; }
 
 /* ── loading ─────────────────────────────────────────────────────────── */
 #loading {

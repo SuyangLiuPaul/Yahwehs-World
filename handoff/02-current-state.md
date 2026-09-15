@@ -1,6 +1,11 @@
 # 02 · Current state (measured 2026-09-15, commit `6b3471b`)
 
-Latest interaction pass: `BATCH-4.md`. Route actors now follow journey progress;
+Latest interaction repair: `BATCH-5.md`. Globe drag sensitivity follows camera
+altitude instead of a fixed angle; no release inertia. Mouse/touch gesture
+tracking preserves real taps without selecting on returning drags or pinches.
+Camera framing, data and other pages' independent controls are unchanged.
+
+Previous interaction pass: `BATCH-4.md`. Route actors now follow journey progress;
 Exodus has 42 camp/departure stages and an unlocated-stage safeguard. A lazy
 `3D scene` inspector supplies five short bilingual, explicitly interpretive
 demonstrations. No new event coordinates, dates, approvals or full-canon scene

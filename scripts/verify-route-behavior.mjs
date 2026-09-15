@@ -1,6 +1,9 @@
 import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
-import { writeFile } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
+
+const dir=process.env.EVIDENCE_DIR??'handoff/evidence/phase-1/after';
+await mkdir(dir,{recursive:true});
 
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const context=await browser.newContext({viewport:{width:375,height:812},deviceScaleFactor:2,hasTouch:true});
@@ -83,14 +86,14 @@ try{
     if(n===7){
       await page.waitForTimeout(100);
       assert.equal(await page.locator('.rlab.now').count(),0,'An unlocated camp must not highlight a different location');
-      await page.screenshot({path:'handoff/evidence/phase-1/after/phone-en-unlocated-stop-7.png'});
+      await page.screenshot({path:`${dir}/phone-en-unlocated-stop-7.png`});
       await page.click('.lang-switch');
-      await page.screenshot({path:'handoff/evidence/phase-1/after/phone-zh-unlocated-stop-7.png'});
+      await page.screenshot({path:`${dir}/phone-zh-unlocated-stop-7.png`});
       await page.click('#r-info');
       await page.locator('#r-source-stops li').nth(6).scrollIntoViewIfNeeded();
       const close=await page.locator('#r-sources-close').boundingBox();
       assert.ok(close.y>=0 && close.y+close.height<812,'Sources close control disappeared while scrolling');
-      await page.screenshot({path:'handoff/evidence/phase-1/after/phone-zh-unlocated-source.png'});
+      await page.screenshot({path:`${dir}/phone-zh-unlocated-source.png`});
       await page.click('#r-sources-close');await page.click('.lang-switch');
     }
   }
@@ -98,9 +101,8 @@ try{
   // The user's view survives zooming, mobile toolbar resize and locale changes.
   await page.click('#map-in');
   await page.mouse.move(180,350);await page.mouse.down();await page.mouse.move(210,370,{steps:10});await page.mouse.up();
-  // Let the deliberately enabled manual drag inertia settle before testing
-  // resize. Its decay is user input, not a resize-triggered camera fit.
-  await page.waitForTimeout(4500);
+  // Direct map dragging now has no inertia to drain on release.
+  await page.waitForTimeout(100);
   const moved=await position();
   await page.setViewportSize({width:375,height:740});await page.waitForTimeout(200);
   same(moved,await position(),'Mobile resize reframed the route');
@@ -149,6 +151,6 @@ try{
   assert.deepEqual(errors,[]);
   console.log(JSON.stringify(report,null,2));
 } finally {
-  await writeFile('handoff/evidence/phase-1/after/behavior.json',JSON.stringify({...report,errors},null,2)+'\n');
+  await writeFile(`${dir}/behavior.json`,JSON.stringify({...report,errors},null,2)+'\n');
   await browser.close();
 }

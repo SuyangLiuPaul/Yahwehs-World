@@ -1,0 +1,12 @@
+{
+  "checks": [
+    "Mouse distance is independent of event count",
+    "Returning drag does not close/open a place panel",
+    "Pinch zoom, one-finger transition, no release jump or accidental tap",
+    "Cancelled touch clears gesture state without selecting",
+    "Zoom buttons and wheel update drag gain; both zoom bounds hold",
+    "Extreme latitudes and the date line remain finite and on the same orbit",
+    "Genuine mouse and touch taps still open place details"
+  ],
+  "errors": []
+}

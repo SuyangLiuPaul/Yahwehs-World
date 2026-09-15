@@ -1,0 +1,247 @@
+{
+  "baseline": true,
+  "environment": "Desktop Chrome; touch input is CDP-emulated, not physical iOS/Android",
+  "measurements": [
+    {
+      "name": "phone",
+      "locale": "en",
+      "radius": 108,
+      "axis": "x",
+      "input": "mouse",
+      "gain": 34.067424388644035,
+      "releaseDriftPx": 605.5682164556325,
+      "speed": 0.42
+    },
+    {
+      "name": "phone",
+      "locale": "en",
+      "radius": 108,
+      "axis": "y",
+      "input": "mouse",
+      "gain": 38.73940941352382,
+      "releaseDriftPx": 671.9358587101704,
+      "speed": 0.42
+    },
+    {
+      "name": "phone",
+      "locale": "en",
+      "radius": 125,
+      "axis": "x",
+      "input": "mouse",
+      "gain": 11.461491971506115,
+      "releaseDriftPx": 212.67301440399694,
+      "speed": 0.42
+    },
+    {
+      "name": "phone",
+      "locale": "en",
+      "radius": 125,
+      "axis": "y",
+      "input": "mouse",
+      "gain": 13.255688297487556,
+      "releaseDriftPx": 243.85612214798925,
+      "speed": 0.42
+    },
+    {
+      "name": "phone",
+      "locale": "en",
+      "radius": 200,
+      "axis": "x",
+      "input": "mouse",
+      "gain": 2.9182737746223895,
+      "releaseDriftPx": 54.968949502152476,
+      "speed": 0.42
+    },
+    {
+      "name": "phone",
+      "locale": "en",
+      "radius": 200,
+      "axis": "y",
+      "input": "mouse",
+      "gain": 3.3970081369314444,
+      "releaseDriftPx": 63.78677269389476,
+      "speed": 0.42
+    },
+    {
+      "name": "phone",
+      "locale": "en",
+      "radius": 400,
+      "axis": "x",
+      "input": "mouse",
+      "gain": 0.9767652873759545,
+      "releaseDriftPx": 18.45977419632349,
+      "speed": 0.42
+    },
+    {
+      "name": "phone",
+      "locale": "en",
+      "radius": 400,
+      "axis": "y",
+      "input": "mouse",
+      "gain": 1.1386802205733404,
+      "releaseDriftPx": 21.47861812226904,
+      "speed": 0.42
+    },
+    {
+      "name": "tablet",
+      "locale": "en",
+      "radius": 108,
+      "axis": "x",
+      "input": "mouse",
+      "gain": 35.03655990131255,
+      "releaseDriftPx": 637.8463803709337,
+      "speed": 0.42
+    },
+    {
+      "name": "tablet",
+      "locale": "en",
+      "radius": 108,
+      "axis": "y",
+      "input": "mouse",
+      "gain": 40.20087794538408,
+      "releaseDriftPx": 720.7962823022826,
+      "speed": 0.42
+    },
+    {
+      "name": "tablet",
+      "locale": "en",
+      "radius": 125,
+      "axis": "x",
+      "input": "mouse",
+      "gain": 11.577255796454155,
+      "releaseDriftPx": 216.50272790295054,
+      "speed": 0.42
+    },
+    {
+      "name": "tablet",
+      "locale": "en",
+      "radius": 125,
+      "axis": "y",
+      "input": "mouse",
+      "gain": 13.432006453700435,
+      "releaseDriftPx": 249.83817705273532,
+      "speed": 0.42
+    },
+    {
+      "name": "tablet",
+      "locale": "en",
+      "radius": 200,
+      "axis": "x",
+      "input": "mouse",
+      "gain": 2.9280083600151388,
+      "releaseDriftPx": 55.274236370570314,
+      "speed": 0.42
+    },
+    {
+      "name": "tablet",
+      "locale": "en",
+      "radius": 200,
+      "axis": "y",
+      "input": "mouse",
+      "gain": 3.41113333877058,
+      "releaseDriftPx": 64.26847668656819,
+      "speed": 0.42
+    },
+    {
+      "name": "tablet",
+      "locale": "en",
+      "radius": 400,
+      "axis": "x",
+      "input": "mouse",
+      "gain": 0.9785342740016219,
+      "releaseDriftPx": 18.51118977781528,
+      "speed": 0.42
+    },
+    {
+      "name": "tablet",
+      "locale": "en",
+      "radius": 400,
+      "axis": "y",
+      "input": "mouse",
+      "gain": 1.1410565084553697,
+      "releaseDriftPx": 21.55974951282701,
+      "speed": 0.42
+    },
+    {
+      "name": "desktop",
+      "locale": "en",
+      "radius": 108,
+      "axis": "x",
+      "input": "mouse",
+      "gain": 34.546355435967385,
+      "releaseDriftPx": 621.4886284001311,
+      "speed": 0.42
+    },
+    {
+      "name": "desktop",
+      "locale": "en",
+      "radius": 108,
+      "axis": "y",
+      "input": "mouse",
+      "gain": 39.4583620477786,
+      "releaseDriftPx": 695.910346853944,
+      "speed": 0.42
+    },
+    {
+      "name": "desktop",
+      "locale": "en",
+      "radius": 125,
+      "axis": "x",
+      "input": "mouse",
+      "gain": 11.519221912425156,
+      "releaseDriftPx": 214.58156853473386,
+      "speed": 0.42
+    },
+    {
+      "name": "desktop",
+      "locale": "en",
+      "radius": 125,
+      "axis": "y",
+      "input": "mouse",
+      "gain": 13.343476211651469,
+      "releaseDriftPx": 246.83212331191714,
+      "speed": 0.42
+    },
+    {
+      "name": "desktop",
+      "locale": "en",
+      "radius": 200,
+      "axis": "x",
+      "input": "mouse",
+      "gain": 2.9231447474599803,
+      "releaseDriftPx": 55.12167087748277,
+      "speed": 0.42
+    },
+    {
+      "name": "desktop",
+      "locale": "en",
+      "radius": 200,
+      "axis": "y",
+      "input": "mouse",
+      "gain": 3.404073138787061,
+      "releaseDriftPx": 64.02765286764566,
+      "speed": 0.42
+    },
+    {
+      "name": "desktop",
+      "locale": "en",
+      "radius": 400,
+      "axis": "x",
+      "input": "mouse",
+      "gain": 0.9776511464045399,
+      "releaseDriftPx": 18.485517458733067,
+      "speed": 0.42
+    },
+    {
+      "name": "desktop",
+      "locale": "en",
+      "radius": 400,
+      "axis": "y",
+      "input": "mouse",
+      "gain": 1.1398700260731176,
+      "releaseDriftPx": 21.51923688340929,
+      "speed": 0.42
+    }
+  ],
+  "errors": []
+}

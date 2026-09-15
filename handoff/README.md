@@ -12,7 +12,9 @@ from the repository on 2026-09-14.
 
 ## Reading order
 
-Latest implemented batch: `BATCH-4.md` (2026-09-15), route-linked people and
+Latest implemented batch: `BATCH-5.md` (2026-09-15), altitude-scaled globe
+dragging, immediate release stop and gesture/tap separation. `BATCH-4.md`
+provides route-linked people and
 ships, the 42-stage Exodus camp cycle, and five inspectable story demonstrations.
 `BATCH-3.md` remains the current tabernacle material/environment pass. Neither
 marks the full 1,443-event product or photographic visual target complete.

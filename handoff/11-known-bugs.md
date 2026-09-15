@@ -192,6 +192,14 @@ generated to make false archaeological claims. Full ~40 region labels,
 tents/birds, richer historically researched object detail and physical-device
 GPU/memory validation remain. Do not describe the reference-image bar as passed.
 
+**B29 — FIXED (Batch 5).** Globe dragging raced across nearby terrain because
+the same 0.42 angular gain was used at all camera altitudes, with a long 0.06
+damping tail. Altitude/FOV-scaled gain gives 34–40px ground travel for a 40px
+test drag around the biblical latitudes; release stops immediately. Returning
+drags and pinch releases no longer count as taps. Three-viewport bilingual
+mouse/touch evidence is in `evidence/phase-5/`; this is not a Google Maps engine
+clone or physical-device certification.
+
 ## Open questions for the owner
 
 Batch 4 update: static route decoration has been replaced with animated

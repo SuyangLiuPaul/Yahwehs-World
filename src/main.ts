@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { installGlobeNavigation } from './globe-navigation.ts';
 import './style.css';
 import './route-ui.css';
 import { paintBasemap } from './basemap.ts';
@@ -102,13 +103,11 @@ const camera = new THREE.PerspectiveCamera(42, viewport().w / viewport().h, 1, 4
 camera.position.copy(lonLatToVec3(35, 31, 300));
 
 const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
-controls.dampingFactor = 0.06;
-controls.rotateSpeed = 0.42;
 controls.minDistance = GLOBE_RADIUS * 1.08;
 controls.maxDistance = GLOBE_RADIUS * 6;
 controls.enablePan = false;
 controls.zoomSpeed = 0.7;
+const navigation = installGlobeNavigation(controls, camera, canvas, GLOBE_RADIUS);
 
 createLighting(scene);
 const globe = createGlobe(paintBasemap({ land, coastline, lakes, rivers }));
@@ -149,16 +148,14 @@ function pick(ev: PointerEvent): number {
 }
 
 canvas.addEventListener('pointermove', (ev) => {
+  if (navigation.active || ev.pointerType === 'touch') return;
   hovered = pick(ev);
   canvas.classList.toggle('over-place', hovered >= 0);
 });
 
-// Distinguishes a click from the end of a drag, so orbiting the globe past a
-// marker does not fling the panel open.
-let downAt = { x: 0, y: 0 };
-canvas.addEventListener('pointerdown', (ev) => { downAt = { x: ev.clientX, y: ev.clientY }; });
+// A completed tap, not a drag returning to its origin or a pinch release.
 canvas.addEventListener('pointerup', (ev) => {
-  if (Math.hypot(ev.clientX - downAt.x, ev.clientY - downAt.y) > 5) return;
+  if (!navigation.consumeTap(ev)) return;
   pointer.set((ev.clientX/innerWidth)*2-1,1-(ev.clientY/innerHeight)*2);
   raycaster.setFromCamera(pointer,camera);
   if(route&&storyOptions(route.journey.id).length&&staffage.hit(raycaster)){$('r-scene').click();return;}
