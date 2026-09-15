@@ -144,6 +144,18 @@ const ZONES: { test: (x: number, z: number) => boolean; zh: string; en: string; 
 ];
 
 const gateEl = document.getElementById('gate')!;
+
+/** display:none does not pause a video — it keeps decoding, and a looping clip
+ * decoding behind a WebGL walk costs enough frames that the controls feel
+ * unresponsive and the visitor reads it as being stuck. Every place that shows
+ * or hides the gate goes through here so the film cannot be left running. */
+const film = document.querySelector<HTMLVideoElement>('#gate-film video');
+function setGate(visible: boolean) {
+  gateEl.classList.toggle('hidden', !visible);
+  if (!film) return;
+  if (visible) void film.play().catch(() => {/* autoplay refused; poster stands */});
+  else film.pause();
+}
 const hud = document.getElementById('hud')!;
 const whereEl = document.getElementById('where')!;
 const verseEl = document.getElementById('verse')!;
@@ -176,8 +188,12 @@ if (touchOnly) {
 document.getElementById('enter')!.addEventListener('click', () => {
   if (touchOnly) walker.enterTouch(); else canvas.click();
 });
+// The gate is up at load; ask once, since a muted autoplay is refused often
+// enough that leaving it to the attribute shows a still where a clip was meant.
+setGate(true);
+
 walker.onLockChange = (locked) => {
-  gateEl.classList.toggle('hidden', locked);
+  setGate(!locked);
   hud.hidden = !locked;
 };
 
@@ -215,7 +231,7 @@ tour.onEnd = () => {
 walker.onManualInput = () => { if (tour.running||tour.paused) endTour(); };
 
 function startTour() {
-  gateEl.classList.add('hidden');
+  setGate(false);
   hud.hidden = false;
   tourBar.hidden = false;
   tourToggle.hidden = false;
@@ -248,7 +264,7 @@ function inspectStop(index:number){
 stopSelect.addEventListener('change',()=>inspectStop(Number(stopSelect.value)));
 document.getElementById('tour-prev')!.addEventListener('click',()=>inspectStop(tour.currentIndex-1));
 document.getElementById('tour-next')!.addEventListener('click',()=>inspectStop(tour.currentIndex+1));
-function exitWalk(){endTour();walker.exit();gateEl.classList.remove('hidden');hud.hidden=true;}
+function exitWalk(){endTour();walker.exit();setGate(true);hud.hidden=true;}
 document.getElementById('walk-exit')!.addEventListener('click',exitWalk);
 addEventListener('keydown',e=>{if(e.code==='Escape')exitWalk();});
 document.getElementById('model-info')!.addEventListener('click',()=>{
