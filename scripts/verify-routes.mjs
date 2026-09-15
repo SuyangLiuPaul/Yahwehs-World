@@ -28,6 +28,9 @@ try {
         check(await page.locator('.r-step').count()===count,'Every narrated stop must be selectable');
         // Real clicks, no force: viewport and hit testing are part of the test.
         await page.locator('.r-step').last().click();
+        // Production terrain arrives over a network; wait for its real state,
+        // not an arbitrary delay that only works against localhost.
+        await page.waitForFunction(()=>document.querySelector('#r-thumbnail').dataset.state==='ready');
         await page.waitForTimeout(650);
         const data=await page.evaluate(()=>{
           const labels=[...document.querySelectorAll('.rlab')].filter(e=>e.style.display!=='none').map(e=>({text:e.textContent,box:e.getBoundingClientRect().toJSON()}));

@@ -68,14 +68,17 @@ try{
   for(let n=1;n<=42;n++){
     await page.locator(`.r-step[data-stop="${n}"]`).click();
     const row=await page.evaluate(async()=>{
+      await new Promise(requestAnimationFrame);
       const n=Number(document.querySelector('.r-step[aria-current="step"]').dataset.stop);
       const r=window.__globe.route,m=r.journey.markers.find(m=>m.stops.includes(n));
       const {lonLatToVec3}=await import('/src/globe.ts');
       return {n:String(n),ref:document.querySelector('#r-ref').textContent,text:document.querySelector('#r-stop').textContent,
+        futureLabels:[...document.querySelectorAll('.rlab')].filter(el=>el.style.display!=='none'&&Number(el.dataset.marker)>r.journey.markers.indexOf(m)).length,
         error:m.lon===null?0:r.headPosition.distanceTo(lonLatToVec3(m.lon,m.lat,.16)),unlocated:!document.querySelector('#r-unlocated').hidden};
     });
     if(row.n!==String(n)||!row.ref.startsWith('Numbers 33:'))stopFailures.push({n,row});
     assert.ok(row.error<1e-7,'Selected stop does not agree with its map position');
+    assert.equal(row.futureLabels,0,'Selecting a stop marked a later camp as reached');
     assert.equal(row.unlocated,n===7,'Only the corrected Red Sea camp should be unlocated');
     if(n===7){
       await page.waitForTimeout(100);

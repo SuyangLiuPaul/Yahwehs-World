@@ -9,7 +9,7 @@
     "build": "tsc --noEmit && vite build",
     "check": "tsc --noEmit",
     "preview": "vite preview",
-    "test:routes": "node scripts/verify-routes.mjs && node scripts/verify-route-behavior.mjs",
+    "test:routes": "node scripts/verify-routes.mjs && node scripts/verify-route-behavior.mjs && node scripts/verify-route-network.mjs",
     "data": "node scripts/build-places.mjs"
   },
   "dependencies": {

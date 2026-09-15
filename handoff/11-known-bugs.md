@@ -165,6 +165,12 @@ tabernacle's procedural environment are not the requested detailed mature
 scenes. `evidence/phase-1/navigation/` verifies footer/navigation only, not
 3D completion. See Phase 7 and B7.
 
+**B25 — FIXED (Phase 1 follow-up).** A cold network could leave the thumbnail
+blank or showing the previous site while waiting. Loading/unavailable states
+now make this explicit; failed terrain leaves the base globe visible. Tests
+hold and abort the image request. Selecting an unlocated stage also no longer
+reveals the following camp as reached simply because their path parameters match.
+
 ## Open questions for the owner
 - Q1: Should the repo become public once SeekSparks-derived assets are
   replaced or licensed? (Today private for that reason.)

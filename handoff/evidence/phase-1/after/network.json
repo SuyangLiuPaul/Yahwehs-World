@@ -1,0 +1,14 @@
+[
+  {
+    "mode": "delayed",
+    "navigationResponsive": true,
+    "cameraStationary": true,
+    "thumbnail": "ready after release"
+  },
+  {
+    "mode": "failed",
+    "navigationResponsive": true,
+    "cameraStationary": true,
+    "thumbnail": "explicit unavailable state"
+  }
+]

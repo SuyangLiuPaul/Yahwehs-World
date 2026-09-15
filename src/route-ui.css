@@ -28,6 +28,8 @@ html[lang="zh-CN"] #r-name { font-family: var(--display); font-size: var(--fs-40
 .r-preview { position: relative; flex: none; }
 #r-unlocated { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; color: var(--ink-2); background: var(--sea); font-size: var(--fs-100); }
 #r-unlocated[hidden] { display: none; }
+.r-loading, .r-error { position: absolute; inset: 0; display: none; place-items: center; text-align: center; background: var(--sea); color: var(--ink-2); font-size: var(--fs-100); line-height: var(--lh-snug); }
+#r-thumbnail[data-state="loading"] ~ .r-loading, #r-thumbnail[data-state="error"] ~ .r-error { display: grid; }
 .r-reading { display: grid; gap: var(--sp-1); flex: 1; min-width: 0; }
 #r-stop { font-family: var(--ui); font-size: var(--fs-300); line-height: var(--lh-snug); letter-spacing: 0; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; color: var(--ink); }
 #r-ref { font-family: var(--mono); font-size: var(--fs-100); color: var(--gold); }

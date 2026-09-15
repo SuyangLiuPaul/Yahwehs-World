@@ -112,11 +112,11 @@ measurement checks the 200km scale within 0.001%; a 30° rotation yields a
 layout on the other two pages at all sizes/locales, not all their geometry
 or all nine tabernacle tour stops.
 
-Performance: 60.17fps, p95 frame interval 16.8ms, 57 draw calls, 280,368
+Performance: 60.16fps, p95 frame interval 16.8ms, 57 draw calls, 280,368
 triangles over five seconds of Paul's journey in headless Chrome/macOS,
 375×812, DPR 2, 4× CPU throttle. **Not a physical Android/mobile GPU test.**
 Build passes; the existing ~561KB shared Three.js chunk still emits Vite's
-size warning. Uncompressed dist: 8,249,210 → 8,278,216 bytes (+29,006 bytes).
+size warning. Uncompressed dist: 8,249,210 → 8,279,021 bytes (+29,811 bytes).
 Evidence screenshots are not shipped in the web payload.
 
 Reproduce with Chrome installed and the dev server on 127.0.0.1:5175:
@@ -133,6 +133,17 @@ must move clear of its reading card. This batch is not cinematic 3D quality.
 Higgsfield was inspected; no model/image was generated, no generation credits
 were consumed and no new third-party visual assets were introduced.
 
-### Deployment
+### Release follow-up
 
-Pending push and live verification; local tests alone are not a deploy.
+The first live build served the expected code/data hashes. A cold-network
+check exposed that a fixed 650ms screenshot wait was too short for terrain
+delivery. Thumbnails now expose loading/ready/error states, clear stale site
+images while waiting, and preserve the base map if terrain fails. Tests
+deliberately hold/fail the texture request and verify navigation and the
+stationary camera still work (`after/network.json`). A missing stage also
+no longer reveals the camp after the gap as already reached; all 42 manual
+selections check that no later camp is labeled reached.
+
+Final production verification is pending for this follow-up. `scripts/verify-release.mjs`
+checks all three pages' build references, downloaded asset/data SHA-256 hashes
+and data cache headers; the live browser matrix uses `verify-routes.mjs`.

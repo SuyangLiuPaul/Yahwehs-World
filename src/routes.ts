@@ -125,8 +125,14 @@ export class Route {
   }
   markerAt(t: number): RouteMarker | null { return this.journey.markers[this.path.reached(t)] ?? null; }
   reachedIndex(t: number) {
-    const focused=this.focusedMarker===null ? -1 : this.markerMeshes.findIndex(m=>m.userData.index===this.focusedMarker);
-    return focused>=0 ? focused : this.markerMeshes.findIndex(m=>m.userData.index===this.path.reached(t));
+    if(this.focusedMarker!==null){
+      // The two sides of an unlocated stage share a distance parameter,
+      // but selecting the missing stage must not reveal the next camp.
+      let last=-1;
+      this.markerMeshes.forEach((m,i)=>{if(m.userData.index<=this.focusedMarker!)last=i;});
+      return last;
+    }
+    return this.markerMeshes.findIndex(m=>m.userData.index===this.path.reached(t));
   }
   highlightedIndex(t: number) {
     return this.focusedMarker===null ? this.reachedIndex(t) : this.markerMeshes.findIndex(m=>m.userData.index===this.focusedMarker);
@@ -135,18 +141,15 @@ export class Route {
     const marker=this.journey.markers[index];
     if(!marker)return;
     this.focusedMarker=index;
-    if(marker.lon===null||marker.lat===null){
-      this.head.visible=false;
-      for(const group of this.markerMeshes){const face=group.children[0] as THREE.Mesh;if(face.material===this.nowMat)face.material=this.reachedMat;}
-      return;
-    }
-    this.head.position.copy(lonLatToVec3(marker.lon,marker.lat,ROUTE_LIFT));
     this.head.visible=false;
+    if(marker.lon!==null&&marker.lat!==null)this.head.position.copy(lonLatToVec3(marker.lon,marker.lat,ROUTE_LIFT));
     for(const group of this.markerMeshes){
       const face=group.children[0] as THREE.Mesh;
-      const isCurrent=group.userData.index===index;
-      if(isCurrent)face.material=this.nowMat;
-      else if(face.material===this.nowMat)face.material=this.reachedMat;
+      const at=group.userData.index as number;
+      const m=group.userData.marker as RouteMarker;
+      face.material=at===index ? this.nowMat
+        : m.stops.length>1||m.aside||!m.attested ? this.uncertainMat
+        : at<index ? this.reachedMat : this.pendingMat;
     }
   }
   progressAt(index: number) { return this.path.markerT[index]; }

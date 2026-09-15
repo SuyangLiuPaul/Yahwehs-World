@@ -28,7 +28,8 @@ const FAR = 2.45;
 
 export class Terrain {
   readonly mesh: THREE.Mesh;
-  readonly ready: Promise<void>;
+  readonly ready: Promise<boolean>;
+  private loadFailed = false;
   private readonly material: THREE.MeshBasicMaterial;
   private target = 0;
 
@@ -46,9 +47,9 @@ export class Terrain {
     );
 
     const loader = new THREE.TextureLoader();
-    let loaded!: () => void;
-    this.ready = new Promise<void>(resolve => { loaded=resolve; });
-    const map = loader.load('data/terrain-color.webp', loaded, undefined, loaded);
+    let loaded!: (success: boolean) => void;
+    this.ready = new Promise<boolean>(resolve => { loaded=resolve; });
+    const map = loader.load('data/terrain-color.webp', () => loaded(true), undefined, () => { this.loadFailed=true; loaded(false); });
     map.colorSpace = THREE.SRGBColorSpace;
     map.anisotropy = 16;
 
@@ -86,7 +87,7 @@ export class Terrain {
   /** Called every frame with the camera's distance from the globe centre. */
   update(cameraDistance: number, dt: number) {
     const r = cameraDistance / GLOBE_RADIUS;
-    this.target = THREE.MathUtils.clamp((FAR - r) / (FAR - NEAR), 0, 1);
+    this.target = this.loadFailed ? 0 : THREE.MathUtils.clamp((FAR - r) / (FAR - NEAR), 0, 1);
     const k = 1 - Math.exp(-dt * 6);   // frame-rate independent ease
     this.material.opacity += (this.target - this.material.opacity) * k;
     this.mesh.visible = this.material.opacity > 0.01;

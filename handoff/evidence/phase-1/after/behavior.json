@@ -34,8 +34,8 @@
   "performance": {
     "environment": "Headless Chrome on macOS, 4x CPU throttle, 375x812 at DPR 2; not a physical Android",
     "frames": 301,
-    "elapsedMs": 5002.599999976159,
-    "fps": 60.16871226990655,
+    "elapsedMs": 5003.299999999999,
+    "fps": 60.160294205824165,
     "p95FrameMs": 16.799999999999272,
     "drawCalls": 57,
     "triangles": 280368

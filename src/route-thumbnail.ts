@@ -23,20 +23,27 @@ export class RouteThumbnail {
     this.scene.add(surface);
     this.target.texture.colorSpace=THREE.SRGBColorSpace;
   }
-  clear(){ this.requested++; this.lastKey=''; this.canvas.getContext('2d')?.clearRect(0,0,160,90); }
+  private state(value:'empty'|'loading'|'ready'|'error') {
+    this.canvas.dataset.state=value;
+    this.canvas.setAttribute('aria-busy',String(value==='loading'));
+  }
+  clear(){ this.requested++; this.lastKey=''; this.state('empty');this.canvas.getContext('2d')?.clearRect(0,0,160,90); }
   show(marker: RouteMarker) {
     const key=marker.lon+','+marker.lat;
     if(key===this.lastKey)return;
     this.lastKey=key;
     const request=++this.requested;
-    if(marker.lon===null||marker.lat===null){this.canvas.getContext('2d')?.clearRect(0,0,160,90);return;}
+    this.canvas.getContext('2d')?.clearRect(0,0,160,90);
+    if(marker.lon===null||marker.lat===null){this.state('empty');return;}
     const cached=this.cache.get(key);
-    if(cached){this.canvas.getContext('2d')?.putImageData(cached,0,0);return;}
-    void this.draw(marker,key,request).catch(()=>{if(request===this.requested)this.lastKey='';});
+    if(cached){this.cache.delete(key);this.cache.set(key,cached);this.canvas.getContext('2d')?.putImageData(cached,0,0);this.state('ready');return;}
+    this.state('loading');
+    void this.draw(marker,key,request).catch(()=>{if(request===this.requested){this.state('error');this.lastKey='';}});
   }
   private async draw(m:RouteMarker,key:string,request:number){
-    await this.terrain.ready;
+    const loaded=await this.terrain.ready;
     if(request!==this.requested)return;
+    if(!loaded)throw new Error('Terrain unavailable');
     const at=lonLatToVec3(m.lon!,m.lat!);
     this.camera.position.copy(at).multiplyScalar(1.09);
     this.camera.lookAt(at);this.camera.updateMatrixWorld(true);
@@ -49,6 +56,6 @@ export class RouteThumbnail {
     for(let y=0;y<90;y++)image.data.set(pixels.subarray((89-y)*640,(90-y)*640),y*640);
     if(this.cache.size>=48)this.cache.delete(this.cache.keys().next().value!);
     this.cache.set(key,image);
-    if(request===this.requested)this.canvas.getContext('2d')?.putImageData(image,0,0);
+    if(request===this.requested){this.canvas.getContext('2d')?.putImageData(image,0,0);this.state('ready');}
   }
 }
