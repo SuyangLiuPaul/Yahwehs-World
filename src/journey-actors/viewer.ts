@@ -7,6 +7,28 @@ import {localiseRef} from '../books.ts';
 import './viewer.css';
 
 const $=<E extends HTMLElement>(id:string)=>document.getElementById(id) as E;
+
+/** A sky, not a flat fill. Painted once into a 2×256 strip and mapped around
+ * the scene, so orbiting moves the horizon the way the eye expects and the
+ * disc of ground dissolves into haze instead of ending at an edge. Warm low
+ * gold at the horizon grading up through the site's indigo — the same light
+ * the painted plates were generated under. */
+function skyTexture(){
+  const canvas=document.createElement('canvas');canvas.width=2;canvas.height=256;
+  const ctx=canvas.getContext('2d')!;
+  // v runs zenith (0) to nadir (1) on an equirectangular map, so the warm band
+  // belongs at 0.5 — the horizon. Putting it near 1.0 aims the sunset at the
+  // reader's feet, where the water disc hides it and the scene reads black.
+  const g=ctx.createLinearGradient(0,0,0,256);
+  g.addColorStop(0,'#0a1a2e');g.addColorStop(.34,'#1b3550');
+  g.addColorStop(.46,'#6f8091');g.addColorStop(.50,'#e0bc85');
+  g.addColorStop(.55,'#42566a');g.addColorStop(1,'#0e2033');
+  ctx.fillStyle=g;ctx.fillRect(0,0,2,256);
+  const texture=new T.CanvasTexture(canvas);
+  texture.mapping=T.EquirectangularReflectionMapping;
+  texture.colorSpace=T.SRGBColorSpace;
+  return texture;
+}
 const tr=(en:string,zh:string)=>locale()==='en'?en:zh;
 let singleton:StoryViewer|undefined;
 export function openStory(id:StoryId,options:StoryId[],context:Record<Locale,string>){
@@ -23,10 +45,10 @@ class StoryViewer {
   private camera=new T.PerspectiveCamera(38,1,.1,80);
   private controls:OrbitControls;
   private batch=new ActorBatch(new T.MeshStandardMaterial({vertexColors:true,roughness:.88,side:T.DoubleSide}));
-  private ground=new T.Mesh(new T.CylinderGeometry(7,7.15,.28,96),new T.MeshStandardMaterial({color:'#c7ac7e',roughness:1}));
-  private water=new T.Mesh(new T.CircleGeometry(6.98,96),new T.MeshStandardMaterial({color:'#267284',roughness:.38,metalness:.25}));
-  private trench=new T.Mesh(new T.TorusGeometry(1.22,.085,8,64),new T.MeshStandardMaterial({color:'#6c9d9e',roughness:.25,metalness:.15}));
-  private foam=new T.InstancedMesh(new T.BoxGeometry(.46,.012,.025),new T.MeshBasicMaterial({color:'#bbd8d4',transparent:true,opacity:.45}),80);
+  private ground=new T.Mesh(new T.CylinderGeometry(7,7.15,.28,96),new T.MeshStandardMaterial({color:'#c6b189',roughness:1}));
+  private water=new T.Mesh(new T.CircleGeometry(6.98,96),new T.MeshStandardMaterial({color:'#1d5a76',roughness:.26,metalness:.3}));
+  private trench=new T.Mesh(new T.TorusGeometry(1.22,.085,8,64),new T.MeshStandardMaterial({color:'#5d8ea0',roughness:.25,metalness:.15}));
+  private foam=new T.InstancedMesh(new T.BoxGeometry(.46,.012,.025),new T.MeshBasicMaterial({color:'#d8e2e0',transparent:true,opacity:.42}),80);
   private dummy=new T.Object3D();
   private id:StoryId='camp';private time=0;private playing=false;private last=0;private frame=0;
   private reduced=matchMedia('(prefers-reduced-motion: reduce)');
@@ -40,11 +62,17 @@ class StoryViewer {
     document.body.append(this.dialog);
     this.renderer=new T.WebGLRenderer({canvas:$<HTMLCanvasElement>('story-canvas'),antialias:true});
     this.renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));this.renderer.outputColorSpace=T.SRGBColorSpace;
-    this.renderer.toneMapping=T.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.15;
+    this.renderer.toneMapping=T.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.32;
     this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=T.PCFSoftShadowMap;
-    this.scene.background=new T.Color('#18333c');
-    this.scene.add(new T.HemisphereLight('#e6eff1','#8c7554',2.1));
-    const sun=new T.DirectionalLight('#fff0d2',3.2);sun.position.set(-6,12,8);sun.castShadow=true;
+    // Lit like the painted plates beside it, not like a product shot. Those
+    // are raking low sun, deep indigo water, parchment stone; this was a high
+    // white key over teal, and the two read as two different worlds sitting in
+    // one card. The palette is the site's own tokens, so the change is a match
+    // rather than a new taste: --sea #0b1a2b, --ink #ece2cd, --gold #c9a227.
+    this.scene.background=skyTexture();
+    this.scene.fog=new T.Fog('#33485c',18,46);
+    this.scene.add(new T.HemisphereLight('#dbe4ea','#42586b',1.85));
+    const sun=new T.DirectionalLight('#ffd9a0',3.4);sun.position.set(-9,4.2,6);sun.castShadow=true;
     sun.shadow.mapSize.set(1024,1024);Object.assign(sun.shadow.camera,{left:-8,right:8,top:8,bottom:-8,near:1,far:35});sun.shadow.bias=-.0003;sun.shadow.normalBias=.025;this.scene.add(sun);
     this.ground.position.y=-.17;this.ground.receiveShadow=true;this.scene.add(this.ground);
     this.water.rotation.x=-Math.PI/2;this.water.position.y=.01;this.water.receiveShadow=true;this.scene.add(this.water);
