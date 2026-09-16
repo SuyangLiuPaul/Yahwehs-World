@@ -66,6 +66,27 @@ function clampMetalness(root: T.Object3D) {
   });
 }
 
+/** Settles both legs from their walk-cycle bind pose into a compact, seated
+ * knee-bend, for the one marker a journey only ever visits once: its last.
+ * A full thigh-horizontal sit (`UpLeg` at identity, the first thing tried)
+ * reads fine face-on, but this map is never viewed face-on — the camera
+ * sits close to overhead (see the per-frame lean in staffage.ts) — and
+ * a horizontal thigh splays out flat under that view instead of reading as
+ * a seated silhouette. A shallow hip bend plus a sharp knee fold keeps the
+ * figure's footprint close to its standing one (legible from the same
+ * near-top-down angle a walker already is) while still visibly departing
+ * from mid-stride. Found by hand against this specific rig (traveller and
+ * shepherd share the same bone names) — a future model swap would need
+ * this checked again, the way FACING_CORRECTION already has to be. */
+function poseSitting(root: T.Object3D) {
+  const hip = new T.Quaternion().setFromAxisAngle(new T.Vector3(1, 0, 0), T.MathUtils.degToRad(20));
+  const knee = new T.Quaternion().setFromAxisAngle(new T.Vector3(1, 0, 0), T.MathUtils.degToRad(-130));
+  root.traverse((o) => {
+    if (o.name === 'LeftUpLeg' || o.name === 'RightUpLeg') o.quaternion.copy(hip);
+    if (o.name === 'LeftLeg' || o.name === 'RightLeg') o.quaternion.copy(knee);
+  });
+}
+
 /** A rigged character's real height lives in its skeleton, not its geometry
  * box: Meshy exports the mesh in metres on a node scaled ×0.01, with the
  * bones in centimetres. Skinning composes the two correctly, so the figure
@@ -160,24 +181,30 @@ export class ActorModels {
    * scaled to stand as tall as one procedural person at `scale=1` and facing
    * the way the stage calls forward. Wrapped in an empty group so a caller
    * can drive the per-instance display scale (matching `batch.person`'s own
-   * `scale` argument) without disturbing the height fit baked in here. */
-  spawnWalker(seed: number): { group: T.Object3D; mixer: T.AnimationMixer } | null {
+   * `scale` argument) without disturbing the height fit baked in here.
+   * `seated` skips the walk-cycle mixer entirely and poses the thighs level
+   * instead (see `poseSitting`) — for a journey's last stop, arrived rather
+   * than still travelling. */
+  spawnWalker(seed: number, seated = false): { group: T.Object3D; mixer: T.AnimationMixer } | null {
     if (!this.walkers.length) return null;
     const asset = this.walkers[seed % this.walkers.length]!;
     const inner = SkeletonUtils.clone(asset.template);
     inner.scale.setScalar(asset.scale);
     const group = new T.Group(); group.add(inner);
     const mixer = new T.AnimationMixer(inner);
-    const action = mixer.clipAction(asset.clip);
-    // The canned Casual_Walk clip at its native rate reads as marching, not
-    // travelling — reported directly against this. The voyage-demo close
-    // scene (src/voyage-demo/main.ts) carries the same constant.
-    action.timeScale = WALK_RATE;
-    action.play();
-    // Stagger the phase the way the procedural gait already does
-    // (`index*.9` in ActorBatch.person), so cloned figures do not all step
-    // in lockstep.
-    mixer.update((seed * 0.9) % asset.clip.duration);
+    if (seated) {
+      poseSitting(inner);
+    } else {
+      const action = mixer.clipAction(asset.clip);
+      // The canned Casual_Walk clip at its native rate reads as marching, not
+      // travelling — reported directly against this.
+      action.timeScale = WALK_RATE;
+      action.play();
+      // Stagger the phase the way the procedural gait already does
+      // (`index*.9` in ActorBatch.person), so cloned figures do not all step
+      // in lockstep.
+      mixer.update((seed * 0.9) % asset.clip.duration);
+    }
     return { group, mixer };
   }
 

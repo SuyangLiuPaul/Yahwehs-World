@@ -53,6 +53,11 @@ export class Staffage {
   // it finishes. See journey-actors/models.ts for why each is safe to fail.
   private models=new ActorModels();
   private walkerSlots:{group:T.Object3D;mixer:T.AnimationMixer}[]=[];
+  // A journey's last stop poses its figures seated rather than walking (see
+  // placeSeatedFigures) — a separate pool from walkerSlots because those are
+  // already mid-walk-cycle clones; reusing one would mean un-posing a walker
+  // back to neutral rather than ever actually needing to.
+  private seatedSlots:{group:T.Object3D;mixer:T.AnimationMixer}[]=[];
   private shipSlot:T.Object3D|null=null;
   private opacity=0;private time=0;private key='';private water=false;private maskAge=1;
   private p=new T.Vector3();private normal=new T.Vector3();private tangent=new T.Vector3();private side=new T.Vector3();private basis=new T.Matrix4();
@@ -127,6 +132,14 @@ export class Staffage {
       this.walkerSlots.push(spawned);
     }
   }
+  private ensureSeatedSlots(n:number){
+    while(this.seatedSlots.length<n){
+      const spawned=this.models.spawnWalker(this.seatedSlots.length,true);
+      if(!spawned)return;
+      this.batch.group.add(spawned.group);
+      this.seatedSlots.push(spawned);
+    }
+  }
   private ensureShipSlot(){
     if(this.shipSlot)return;
     const ship=this.models.spawnShip();
@@ -153,6 +166,23 @@ export class Staffage {
       }
     }
   }
+  /** Same placement as placeFigures, posed seated (see poseSitting) instead
+   * of walking — for a journey's last stop. The procedural fallback has no
+   * seated pose to offer, so it stands at rest instead: arrived is still
+   * closer to the truth than mid-stride, even without the loaded model. */
+  private placeSeatedFigures(count:number,posFn:(i:number)=>[number,number,number],scale:number){
+    if(this.models.walkersReady)this.ensureSeatedSlots(count);
+    const useModels=this.models.walkersReady&&this.seatedSlots.length>=count;
+    for(let i=0;i<count;i++){
+      const [x,y,z]=posFn(i);
+      if(useModels){
+        const slot=this.seatedSlots[i]!;
+        slot.group.visible=true;slot.group.position.set(x,y,z);slot.group.scale.setScalar(scale);
+      }else{
+        this.batch.person(x,z,this.time,i,scale,y,false);
+      }
+    }
+  }
   update(route:Route|null,camera:T.PerspectiveCamera,dt:number,progress=0,playing=false,ordinal:number|null=null,campPhase:CampPhase='rest',tentScale=1){
     const key=route?.journey.id??'';
     if(key!==this.key){this.key=key;this.time=0;this.opacity=0;this.maskAge=1;}
@@ -165,6 +195,7 @@ export class Staffage {
     this.opacity+=(target-this.opacity)*(1-Math.exp(-dt*10));this.material.opacity=this.opacity;
     this.batch.begin();this.state.mode='hidden';this.state.people=0;this.state.tents=0;this.state.ship=0;this.state.phase=campPhase;
     for(const slot of this.walkerSlots)slot.group.visible=false;
+    for(const slot of this.seatedSlots)slot.group.visible=false;
     if(this.shipSlot)this.shipSlot.visible=false;
     this.group.visible=valid&&this.opacity>.01;
     if(!this.group.visible||!route||!marker){this.batch.finish();return;}
@@ -238,12 +269,19 @@ export class Staffage {
     }else if(!isSeaLeg||ordinal!==null||exodus||progress===0||progress>=1||inSeaMargin){
       const count=exodus?12:route.journey.id==='elijah'?1:3;
       const camping=exodus&&campPhase!=='travel'&&(ordinal!==null||!playing);
+      // The journey's own last stop, not just any reason this branch fired
+      // (a land leg mid-route, the sea-margin either side of a harbour):
+      // arrived, not still travelling, so the figures sit rather than walk.
+      // Exodus keeps its own camp/muster distinction instead.
+      const isFinalStop=!exodus&&(ordinal!==null?marker.stops.includes(route.journey.stopCount):progress>=1);
       if(exodus){
         for(let i=0;i<count;i++){
           const x=camping?(i%4-1.5)*.75:-(i%6)*.65;
           const z=camping?1.6+Math.floor(i/4)*.58:(Math.floor(i/6)-.5)*.85;
           this.batch.person(x,z,this.time,i,PERSON_SCALE,0,playing&&!camping);
         }
+      }else if(isFinalStop){
+        this.placeSeatedFigures(count,(i)=>[-(i%6)*.65,0,(Math.floor(i/6)-.5)*.85],PERSON_SCALE);
       }else{
         // Paul-style land travel: a loaded character wherever it has finished
         // loading, the procedural miniature otherwise (D19). The exodus's
@@ -253,7 +291,7 @@ export class Staffage {
         this.placeFigures(count,(i)=>[-(i%6)*.65,0,(Math.floor(i/6)-.5)*.85],PERSON_SCALE,playing&&!reducedMotion,dt);
       }
       if(camping){for(let i=0;i<3;i++)this.batch.put('tent',(i-1)*2.05,0,-1,.65,0,0,Math.max(.03,tentScale));this.state.tents=3;}
-      this.state.mode=camping?'camp':'walking';this.state.people=count;
+      this.state.mode=camping?'camp':isFinalStop?'arrived':'walking';this.state.people=count;
       if(route.journey.id==='elijah'&&marker.stops.includes(4)&&ordinal===4){
         for(let i=0;i<12;i++){const a=i%4*Math.PI/2;this.batch.put('stone',1.5+Math.cos(a)*.48,.2+Math.floor(i/4)*.33,Math.sin(a)*.48,1.1,i);}
         this.batch.put('wood',1.5,1.2,0,.8);this.batch.put('offering',1.5,1.4,0,.8);
