@@ -145,3 +145,18 @@ html[lang="zh-CN"] #r-name { font-family: var(--display); font-size: var(--fs-40
 .r-scene-more[hidden] { display: none; }
 .r-scene-more:hover { background: var(--surface-hi); }
 .r-scene-more:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+
+/* ── place names on the globe ──────────────────────────────────────────────
+   Settlement names, thinned by camera distance in place-labels.ts. Quieter
+   than a region label and upright rather than tracked out: a region is a
+   territory written across country, a place is a point with a name beside it.
+   `visibility` rather than `display` for the ones that lose their ground, so a
+   dropped label keeps its measured width for the next pass. */
+#place-labels { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+#place-labels[hidden] { display: none; }
+.place-label {
+  position: absolute; top: 0; left: 0; white-space: nowrap;
+  font: 500 var(--fs-300) var(--display); letter-spacing: .04em;
+  color: #f0e4c6; text-shadow: 0 1px 3px #161b17f2, 0 0 7px #161b17cc;
+}
+@media (max-width: 640px) { .place-label { font-size: var(--fs-200); } }

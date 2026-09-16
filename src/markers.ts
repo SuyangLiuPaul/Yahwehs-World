@@ -13,6 +13,11 @@ const BASE_RADIUS = 0.62;
  *  that the map does not saturate by the time Joshua finishes campaigning. */
 const AFTERGLOW = 55;
 
+/** Screen radius, in pixels, of a marker whose `baseScale` is 1. Everything is
+ *  measured from here: the least-named place is about 2px across, Jerusalem
+ *  about 8. Matched to what the whole-globe view already looked like. */
+const DOT_PX = 2.05;
+
 /** Floor brightness for somewhere the narrative has already been. Visited
  *  places never disappear — the point of the timeline is accumulation. */
 const VISITED = 0.3;
@@ -34,6 +39,10 @@ export class Markers {
   private zoomK = 1;
   private routePlaces = new Set<string>();
   private routeActive = false;
+  /** Which places survive the screen-space thinning in `PlaceLabels`. Owned
+   *  there, read here: a place the map has decided not to draw a name for at
+   *  this distance should not leave a nameless dot behind either. */
+  private mask: Uint8Array | null = null;
   /** Places named by the verse the cursor is sitting on. */
   activeIndices: number[] = [];
 
@@ -109,7 +118,9 @@ export class Markers {
   private writeMatrices() {
     for (let i = 0; i < this.places.length; i++) {
       const scale=this.routeActive?Math.min(1.4,this.baseScale[i]!):this.curScale[i]!;
-      this.dummy.scale.setScalar(this.routePlaces.has(this.places[i]!.name) ? 0 : scale * this.zoomK);
+      const thinned = this.mask !== null && this.mask[i] === 0;
+      this.dummy.scale.setScalar(
+        thinned || this.routePlaces.has(this.places[i]!.name) ? 0 : scale * this.zoomK);
       // Lift with the zoom too, so a marker never sinks into the relief.
       this.dummy.position.copy(
         lonLatToVec3(this.places[i]!.lon, this.places[i]!.lat, 0.35 + 0.5 * this.zoomK));
@@ -127,17 +138,38 @@ export class Markers {
     const material=this.mesh.material as THREE.MeshBasicMaterial;
     const target=this.routeActive ? THREE.MathUtils.lerp(.25,1,THREE.MathUtils.clamp((cameraDistance/globeRadius-1.8)/.5,0,1)) : 1;
     material.opacity+=(target-material.opacity)*(1-Math.exp(-dt*8));
-    // Slightly faster than linear: at terrain height the markers should be
-    // dots the labels hang off, not spheres the map hangs off.
-    const t = cameraDistance / (globeRadius * 4);
-    const k = this.routeActive ? 2*Math.max(1,cameraDistance-globeRadius)*Math.tan(fov*Math.PI/360)/screenHeight/BASE_RADIUS
-      : THREE.MathUtils.clamp(Math.pow(t, 1.5), 0.075, 1.15);
+    // One world unit per screen pixel at the surface, so a marker's size on
+    // screen is exactly its `baseScale` and does not move with the camera.
+    //
+    // The old curve was `distance^1.5`, tuned by eye at the whole-globe view. It
+    // undershoots badly on approach: by the time the camera is at 1.1 radii the
+    // same marker covers four times the screen it did far out, and Jerusalem —
+    // the largest, because the text names it 955 times — becomes a 70px balloon
+    // sitting on the country it is supposed to mark. DOT_PX is chosen so the
+    // whole-globe view is unchanged; everything nearer than that is the fix.
+    const perPixel = 2*Math.max(1,cameraDistance-globeRadius)*Math.tan(fov*Math.PI/360)/screenHeight;
+    const k = perPixel*(this.routeActive ? 1 : DOT_PX)/BASE_RADIUS;
     if (Math.abs(k - this.zoomK) < 0.0001) return;
     this.zoomK = k;
     this.writeMatrices();
   }
 
+  /** World-space radius of a marker as currently drawn, so a label can be set
+   *  down beside its dot instead of underneath it. The active place swells to
+   *  nearly twice its base size, which at terrain height is wider than the name
+   *  it belongs to. */
+  worldRadius(i: number) {
+    const scale = this.routeActive ? Math.min(1.4, this.baseScale[i]!) : this.curScale[i]!;
+    return scale * this.zoomK * BASE_RADIUS;
+  }
+
   get visibleCount() { return this.visibleCountCache; }
+
+  /** Adopt the thinning mask, and redraw only when it has actually moved.
+   *  `visibleCount` is deliberately left alone: the counter under the timeline
+   *  reports how much of the canon has been read, not how much of it the
+   *  current camera distance has room to print. */
+  setMask(mask: Uint8Array) { this.mask = mask; this.writeMatrices(); }
 
   setRoute(names: string[] | null) {
     this.routeActive=names!==null;

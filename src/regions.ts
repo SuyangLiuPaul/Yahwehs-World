@@ -19,6 +19,11 @@ const ANCHORS:[string,number,number,'land'|'water'][]=[
  ['Macedonia',23,41,'land'],['Achaia',22.5,38,'land'],
  ['Italy',13.2,42.5,'land'],['Adriatic Sea',18,39.8,'water'],
 ];
+/** The places this layer already names. The point layer skips them: a region
+ *  is a territory, and printing its name twice — once across the country and
+ *  once beside a dot at its centroid — says there are two of it. */
+export const REGION_NAMES=new Set(ANCHORS.map(([name])=>name));
+
 const overlap=(a:DOMRect,b:DOMRect)=>a.left<b.right+6&&a.right>b.left-6&&a.top<b.bottom+4&&a.bottom>b.top-4;
 export class RegionLabels{
  private readonly root=document.createElement('div');
@@ -39,7 +44,7 @@ export class RegionLabels{
   this.root.hidden=dist>3||dist<1.08;if(this.root.hidden)return;
   if(this.last!==locale){this.labels.forEach(l=>l.el.textContent=placeLabel(l.place.name,l.place.zh,locale));this.last=locale;}
   this.root.style.opacity=String(Math.min(1,(3-dist)/.5));
-  const occupied=Array.from(document.querySelectorAll<HTMLElement>('.rlab')).filter(e=>e.style.display!=='none').map(e=>e.getBoundingClientRect());
+  const occupied=Array.from(document.querySelectorAll<HTMLElement>('.rlab,.place-label')).filter(e=>e.style.display!=='none'&&e.style.visibility!=='hidden').map(e=>e.getBoundingClientRect()).filter(r=>r.width>0);
   if(actorBox)occupied.push(actorBox);
   const cameraLocal=globe.worldToLocal(camera.position.clone());
   for(const label of this.labels){

@@ -15,6 +15,7 @@ import { bookName, bookOf, localiseRef } from './books.ts';
 import { precisionOf, precisionStyle } from './theme.ts';
 import { Route, type Journey } from './routes.ts';
 import { RouteLabels } from './labels.ts';
+import { PlaceLabels } from './place-labels.ts';
 import { RouteThumbnail } from './route-thumbnail.ts';
 import { Scenes } from './scenes.ts';
 import { Cartography, measureMap } from './cartography.ts';
@@ -121,6 +122,11 @@ const staffage=new Staffage(land);globe.add(staffage.group);
 
 const markers = new Markers(bundle.places, bundle.events);
 globe.add(markers.mesh);
+
+// Decides which places the camera is close enough to print, and hands the
+// answer to the markers so a thinned-away name leaves no orphan dot.
+const placeLabels = new PlaceLabels(bundle.places);
+markers.setMask(placeLabels.shown);
 
 // A ring that snaps to the selected place — cheaper and clearer than
 // re-colouring an instance, and it survives the timeline hiding things.
@@ -798,6 +804,14 @@ renderer.setAnimationLoop(() => {
   }
   terrain.update(camera.position.length(), dt);
   staffage.update(route,camera,dt,routeT,routePlaying,selectedOrdinal,campPlayback?.phase??'rest',campPlayback?.tentScale??1);
+  // Before the region labels, which dodge these: a named point outranks a
+  // territory anchor when both want the same pixels. Before setZoom too, so a
+  // mask change and a zoom change cost one matrix rewrite between them.
+  placeLabels.update(camera, globe, locale, (i) => markers.isVisible(i),
+    { top: safeBand.top, bottom: safeBand.top + safeBand.height }, dt,
+    selected ? bundle.places.indexOf(selected) : -1, route !== null,
+    (i) => markers.worldRadius(i));
+  if (placeLabels.consumeMaskChange()) markers.setMask(placeLabels.shown);
   regionLabels.update(camera,globe,locale,safeBand.top,safeBand.top+safeBand.height,dt,staffage.screenBox(camera));
   markers.setZoom(camera.position.length(), GLOBE_RADIUS, dt, innerHeight, camera.fov);
   cartography.update(camera,innerWidth,innerHeight,locale);
