@@ -7,8 +7,13 @@ import type { GeoJson } from './types.ts';
 // coastlines, lakes and rivers are just strokes and fills, the projection is
 // one multiply, and the whole basemap costs one texture instead of tens of
 // thousands of triangles.
-const W = 4096;
-const H = 2048;
+// Exported so any other consumer of the same `land` GeoJSON — the sea/land
+// mask in staffage.ts, notably — rasterizes at the same fidelity this paints
+// at. A mask coarser than the coastline it's checking against silently
+// smooths away real headlands and inlets, reading as "water" a little past
+// where the drawn coastline actually ends.
+export const W = 4096;
+export const H = 2048;
 
 const project = (lon: number, lat: number): [number, number] => [
   ((lon + 180) / 360) * W,

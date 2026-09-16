@@ -32,15 +32,21 @@ const WALK_RATE = 0.62;
 
 /** How much bigger the loaded hull is drawn than the procedural one it
  * replaces. 1.0 (an exact swap) was reported as unreadable on the actual
- * map — a ship a couple of pixels long shows a colour, not a shape. */
+ * map — a ship a couple of pixels long shows a colour, not a shape. Left at
+ * 2.0 (not raised alongside WALKER_LEGIBILITY): the size complaint here was
+ * already resolved, and a bigger hull only needs a wider margin from the
+ * coast it's already prone to overhanging (see staffage.ts's harbour
+ * margin) — raising it further would fight that fix, not help legibility. */
 const SHIP_LEGIBILITY = 2.0;
 
 /** Same idea, for the walking figures — reported right after the ship fix,
  * for the same reason. Kept as its own constant rather than reusing
  * SHIP_LEGIBILITY: a person and a hull are different shapes at different
  * base sizes, and there is no reason the two would want the same number
- * just because they were raised for the same complaint. */
-const WALKER_LEGIBILITY = 2.0;
+ * just because they were raised for the same complaint. Raised alongside
+ * SHIP_LEGIBILITY for the same measured reason (see its comment) — 2x
+ * still rendered as an indistinct blob at the map's closest real zoom. */
+const WALKER_LEGIBILITY = 6.0;
 
 interface WalkerAsset { template: T.Object3D; clip: T.AnimationClip; scale: number; }
 

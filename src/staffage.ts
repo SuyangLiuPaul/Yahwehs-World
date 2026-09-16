@@ -1,26 +1,39 @@
 import * as T from 'three';
-import {sampleLeg} from './route-path.ts';
+import {sampleLeg, type PathLeg} from './route-path.ts';
 import {lonLatToVec3} from './globe.ts';
 import type {Route} from './routes.ts';
 import type {GeoJson} from './types.ts';
 import {ActorBatch} from './journey-actors/geometry.ts';
 import {ActorModels} from './journey-actors/models.ts';
 import type {CampPhase} from './journey-actors/camp-playback.ts';
+import {W as MASK_W, H as MASK_H} from './basemap.ts';
 
-/** Modern land is a visual exclusion mask, NOT ancient navigability. */
+/** Modern land is a visual exclusion mask, NOT ancient navigability.
+ *
+ * Rasterized at the basemap's own resolution (imported, not duplicated) —
+ * this used to run at a fixed 1440x720 (4px/degree, ~28km/pixel) while the
+ * coastline actually drawn on screen is painted at 4096x2048 (~10km/pixel).
+ * That gap is exactly wide enough to smooth away a real headland or inlet:
+ * reported directly against the Levantine coast near Caesarea, where the
+ * ship rendered visibly inland of the coastline the player can see, because
+ * the coarse mask called that stretch "water" several kilometres before the
+ * fine-grained coastline actually does. Matching resolutions doesn't fix
+ * every case — a mask can only be as good as the polygon data underneath it
+ * — but it stops the mask from being wrong in a way the basemap already
+ * proves it doesn't have to be. */
 function landMask(land:GeoJson){
-  const canvas=document.createElement('canvas');canvas.width=1440;canvas.height=720;
+  const canvas=document.createElement('canvas');canvas.width=MASK_W;canvas.height=MASK_H;
   const ctx=canvas.getContext('2d',{willReadFrequently:true})!;
   for(const f of land.features){
     const g=f.geometry;if(!g)continue;
     const polys=g.type==='Polygon'?[g.coordinates as number[][][]]:g.type==='MultiPolygon'?g.coordinates as number[][][][]:[];
-    for(const poly of polys){ctx.beginPath();for(const ring of poly){ring.forEach(([lon,lat],i)=>{const x=(lon!+180)*4,y=(90-lat!)*4;i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.closePath();}ctx.fill('evenodd');}
+    for(const poly of polys){ctx.beginPath();for(const ring of poly){ring.forEach(([lon,lat],i)=>{const x=(lon!+180)/360*MASK_W,y=(90-lat!)/180*MASK_H;i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.closePath();}ctx.fill('evenodd');}
   }
-  const pixels=ctx.getImageData(0,0,1440,720).data;
+  const pixels=ctx.getImageData(0,0,MASK_W,MASK_H).data;
   return (p:T.Vector3)=>{
     const lon=Math.atan2(-p.z,p.x)*180/Math.PI,lat=Math.asin(p.y/p.length())*180/Math.PI;
-    const x=T.MathUtils.clamp(Math.floor((lon+180)*4),0,1439),y=T.MathUtils.clamp(Math.floor((90-lat)*4),0,719);
-    return pixels[(y*1440+x)*4+3]!>128;
+    const x=T.MathUtils.clamp(Math.floor((lon+180)/360*MASK_W),0,MASK_W-1),y=T.MathUtils.clamp(Math.floor((90-lat)/180*MASK_H),0,MASK_H-1);
+    return pixels[(y*MASK_W+x)*4+3]!>128;
   };
 }
 export class Staffage {
@@ -38,6 +51,39 @@ export class Staffage {
   private opacity=0;private time=0;private key='';private water=false;private maskAge=1;
   private p=new T.Vector3();private normal=new T.Vector3();private tangent=new T.Vector3();private side=new T.Vector3();private basis=new T.Matrix4();
   private onLand:(p:T.Vector3)=>boolean;
+  /** Sea legs whose path is confidently open water, not a coastal hop that
+   * happens to be tagged `sea` in the source text. A `sea` leg is a claim
+   * about how the text says the travellers went, not about the geometry of
+   * the great-circle chord `RoutePath` draws between its two endpoints —
+   * and for a short hop between two ports on the same coast (Caesarea up
+   * the Levantine shore, say), that chord can run so close to the coastline
+   * for its whole length that the ship reads as beached, not sailing,
+   * however the harbour-margin or mask fidelity is tuned. Sample a leg's
+   * interior against the mask once and only trust it for 'sailing' if most
+   * of those samples land in open water — measured directly against this
+   * app's own journeys, a leg is either comfortably past that bar
+   * (paul-rome's Crete-to-Malta run, sampled fully open) or well under it
+   * (this same journey's first hop out of Caesarea, barely a third) —
+   * nothing sits close enough to the line to make the threshold fragile.
+   * Memoized per `PathLeg` object, lazily, rather than keyed to the route's
+   * own id and computed on change: `Staffage` already tracked a route
+   * change by comparing `route.journey.id`, a string that stays the same
+   * across two separate opens of the same journey even though `RoutePath`
+   * builds fresh `PathLeg` objects each time — reusing that string as this
+   * cache's invalidation signal would silently serve stale verdicts (or
+   * `false` for a leg it had never actually checked) against the new
+   * objects. A plain per-object cache sidesteps the question entirely. */
+  private navigableLegs=new WeakMap<PathLeg,boolean>();
+  private isNavigable(leg:PathLeg){
+    let known=this.navigableLegs.get(leg);
+    if(known===undefined){
+      const tmp=new T.Vector3();let open=0,samples=0;
+      for(let f=.15;f<=.85+1e-9;f+=.1){sampleLeg(leg,f,tmp);samples++;if(!this.onLand(tmp))open++;}
+      known=open/samples>=.5;
+      this.navigableLegs.set(leg,known);
+    }
+    return known;
+  }
   readonly state={mode:'hidden',people:0,tents:0,ship:0,anchor:[0,0,0],phase:'rest'};
   hit(ray:T.Raycaster){
     if(!this.group.visible||this.opacity<.2)return false;
@@ -144,8 +190,13 @@ export class Staffage {
     const legKm=leg?leg.angle*6371.0088:0;
     const marginFrac=leg&&legKm>0?Math.min(.35,HARBOR_BUFFER_KM/legKm):0;
     const seaMargin=leg?(leg.to-leg.from)*marginFrac:0;
-    const inSeaMargin=!!(leg?.sea&&ordinal===null&&(progress<=leg.from+seaMargin||progress>=leg.to-seaMargin));
-    if(leg?.sea&&ordinal===null&&!inSeaMargin&&progress>leg.from&&progress<leg.to){
+    // A leg tagged `sea` in the source text but not `navigableLegs` (see its
+    // own comment) is a coastal hop the mask can't confidently place at open
+    // water anywhere along its length — treated as a land leg throughout,
+    // same as a leg that was never `sea` to begin with.
+    const isSeaLeg=!!leg&&leg.sea&&this.isNavigable(leg);
+    const inSeaMargin=!!(isSeaLeg&&ordinal===null&&(progress<=leg!.from+seaMargin||progress>=leg!.to-seaMargin));
+    if(isSeaLeg&&ordinal===null&&!inSeaMargin&&progress>leg!.from&&progress<leg!.to){
       this.maskAge+=dt;if(this.maskAge>.1){this.water=!this.onLand(this.p);this.maskAge=0;}
       if(this.water){
         const hullDrawn=this.models.shipReady;
@@ -154,7 +205,7 @@ export class Staffage {
         if(this.models.walkersReady)this.placeFigures(3,(i)=>[-.75+i*.7,this.models.shipDeckY,.27],.40,false,dt);
         this.state.mode='sailing';this.state.ship=1;this.state.people=3;
       }
-    }else if(!leg?.sea||ordinal!==null||exodus||progress===0||progress>=1||inSeaMargin){
+    }else if(!isSeaLeg||ordinal!==null||exodus||progress===0||progress>=1||inSeaMargin){
       const count=exodus?12:route.journey.id==='elijah'?1:3;
       const camping=exodus&&campPhase!=='travel'&&(ordinal!==null||!playing);
       if(exodus){
