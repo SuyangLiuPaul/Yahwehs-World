@@ -193,6 +193,53 @@ function shoreHeight(x: number, z: number) {
   const grain = (N(wx * 0.16, wz * 0.16, 8) * 0.5 + 0.5) * 0.5;
   return rise * (0.5 + dune + grain) - (1 - rise) * 1.4;
 }
+
+// ── what actually makes a hull read as sailing, not anchored ──────────────
+// Three things, none of which needed Blender: a real draft (part of the hull
+// below the waterline, not the whole thing perched on top of it), an actual
+// heading and forward progress instead of bobbing in place, and a wake — the
+// visual cue that a moving hull is parting water, which does more for the
+// read than the hull's own motion does.
+//
+// Water.js never displaces its own mesh — the ripples are shading, not
+// geometry — so there is no real wave height to sample from the water object
+// itself. This is a second, independent analytic wave field for the hull to
+// physically respond to. It is not claimed to line up pixel-for-pixel with
+// the shader's own scroll; it only has to feel like the same sea.
+function waveHeight(x: number, z: number, t: number): number {
+  return 0.10 * Math.sin(x * 0.05 + z * 0.03 + t * 1.1)
+       + 0.06 * Math.sin(x * 0.09 - z * 0.07 + t * 1.7 + 1.3)
+       + 0.03 * Math.sin(x * 0.16 + z * 0.14 - t * 2.3 + 2.7);
+}
+
+/** A soft trailing foam strip: bright near the stern, fading over its length
+ * and tapering at the edges. Cheap — one plane, one canvas texture — and it
+ * carries more of "this hull is moving" than the hull's own animation does. */
+function makeWakeTexture(): THREE.CanvasTexture {
+  const size = 128;
+  const canvas = document.createElement('canvas');
+  canvas.width = size; canvas.height = size;
+  const ctx = canvas.getContext('2d')!;
+  const img = ctx.createImageData(size, size);
+  for (let y = 0; y < size; y++) {
+    const along = Math.pow(1 - y / size, 1.4); // 1 at the stern, 0 at the tail
+    for (let x = 0; x < size; x++) {
+      const u = (x / size) * 2 - 1;
+      const across = Math.max(0, 1 - Math.abs(u) * 1.3);
+      const i = (y * size + x) * 4;
+      img.data[i] = 255; img.data[i + 1] = 255; img.data[i + 2] = 255;
+      // 190 read as barely there against the water's own pale tone — measured
+      // by sampling a top-down render, not judged from the angled view where
+      // the difference is easy to miss. 250 is close to opaque at the ship
+      // end and still tapers to nothing by the tail.
+      img.data[i + 3] = Math.round(along * across * 250);
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+  const tex = new THREE.CanvasTexture(canvas);
+  return tex;
+}
+
 const shoreGeo = new THREE.PlaneGeometry(260, 260, 220, 220);
 shoreGeo.rotateX(-Math.PI / 2);
 {
@@ -362,14 +409,36 @@ function spawnWalker(asset: { template: THREE.Object3D; clip: THREE.AnimationCli
   const shipSize = shipBox.getSize(new THREE.Vector3());
   const shipScale = SHIP_LENGTH / (shipSize.x || 1);
   shipGltf.scene.scale.setScalar(shipScale);
-  shipGltf.scene.position.y = -shipBox.min.y * shipScale;
+  // A real draft, not the whole hull perched on the surface: ~0.9 m for a
+  // 22 m coastal grain vessel is a plausible ratio for a shallow-draft
+  // merchant hull, scaled with everything else. Lower than the pure
+  // keel-at-zero placement by that amount so the waterline actually cuts
+  // across the planking instead of sitting under it.
+  const DRAFT = 0.9 * CUTE_SCALE;
+  shipGltf.scene.position.y = -shipBox.min.y * shipScale - DRAFT;
   const shipGroup = new THREE.Group();
   shipGroup.add(shipGltf.scene);
   addStaticOutline(shipGltf.scene, 1.02);
-  shipGroup.position.set(-2, 0, -26);
-  shipGroup.rotation.y = 0.5;
   scene.add(shipGroup);
-  const shipDeckY = (0.36) * (shipSize.y) * shipScale; // conservative deck estimate for this fixed camera angle
+  const shipDeckY = (0.36) * (shipSize.y) * shipScale - DRAFT; // conservative deck estimate for this fixed camera angle
+
+  // A slow loop just offshore rather than a fixed anchor point — the hull
+  // needs an actual heading and forward progress to read as sailing, not
+  // just a place to bob. Radii chosen to stay clear of the shore's rise
+  // (shoreHeight starts climbing at z > -4) and in the demo's own framing.
+  const shipAnchor = new THREE.Vector2(-2, -26);
+  const shipPath = (t: number): [number, number] => {
+    const a = t * 0.07;
+    return [shipAnchor.x + Math.cos(a) * 11, shipAnchor.y + Math.sin(a) * 5];
+  };
+
+  const wakeTexture = makeWakeTexture();
+  const wake = new THREE.Mesh(
+    new THREE.PlaneGeometry(1, 1),
+    new THREE.MeshBasicMaterial({ map: wakeTexture, transparent: true, depthWrite: false }),
+  );
+  wake.rotation.x = -Math.PI / 2;
+  scene.add(wake);
 
   // One sailor standing on deck — static, matching how the globe already
   // treats a passenger riding a moving vessel (no canned rowing/paddling clip
@@ -438,9 +507,38 @@ function spawnWalker(asset: { template: THREE.Object3D; clip: THREE.AnimationCli
         const [x2, z2] = w.path(t + 0.05);
         w.group.rotation.y = Math.atan2(x2 - x, z2 - z);
       }
-      shipGroup.position.y = Math.sin(t * 0.7) * 0.16;
-      shipGroup.rotation.z = Math.sin(t * 0.55) * 0.028;
-      shipGroup.rotation.x = Math.sin(t * 0.41 + 1.4) * 0.018 + 0.0;
+      // Heading from the path's own tangent — the same technique the beach
+      // walkers use above, and the globe's own route-following in
+      // staffage.ts: never a hand-set angle, always the derivative of where
+      // the thing is actually going.
+      const [sx, sz] = shipPath(t);
+      const [sx2, sz2] = shipPath(t + 0.08);
+      const heading = Math.atan2(sx2 - sx, sz2 - sz);
+      shipGroup.position.x = sx; shipGroup.position.z = sz;
+      shipGroup.rotation.y = heading;
+
+      // Heave and pitch from the same wave field the water's normal map is
+      // built from — sampled at the bow and stern so the hull actually
+      // responds to passing swell instead of oscillating on its own clock.
+      // This nudges rotation.x/.z directly after the heading is set rather
+      // than composing a proper rigid-body basis (the way staffage.ts's
+      // makeBasis does for the globe's actors) — correct for small angles,
+      // and the pitch/roll here stay small; a version of this that needs to
+      // survive a hard turn should build the basis properly instead.
+      const half = SHIP_LENGTH * 0.42;
+      const fx = Math.sin(heading), fz = Math.cos(heading);
+      const bow = waveHeight(sx + fx * half, sz + fz * half, t);
+      const stern = waveHeight(sx - fx * half, sz - fz * half, t);
+      shipGroup.position.y = (bow + stern) / 2;
+      shipGroup.rotation.x = Math.atan2(bow - stern, SHIP_LENGTH * 0.85);
+      shipGroup.rotation.z = Math.sin(t * 0.5) * 0.018;
+
+      // The wake: a strip trailing from the stern along the current heading,
+      // just proud of the water plane so it never z-fights it.
+      const wakeLength = SHIP_LENGTH * 2.1, wakeWidth = SHIP_LENGTH * 0.5;
+      wake.position.set(sx - fx * half, 0.02, sz - fz * half);
+      wake.rotation.y = heading;
+      wake.scale.set(wakeWidth, wakeLength, 1);
     }
     controls.update();
     renderer.render(scene, camera);
