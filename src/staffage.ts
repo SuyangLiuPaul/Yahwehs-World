@@ -42,6 +42,16 @@ function landMask(land:GeoJson){
  * size — reported directly against the map, where the ship crew stood out
  * as visibly smaller than the very same figures a moment earlier on land. */
 const PERSON_SCALE = .72;
+/** How wide a band of "land" along a sea leg still counts as sea. The route
+ * line is a great-circle chord between two ports, not a pilot's course, so
+ * it clips islets and headlands the real voyage sailed around — measured
+ * across Paul's four journeys, those clipped spans run 1-31km, while a leg
+ * that genuinely crosses a landmass (the 914km run on the second journey)
+ * stays on land for 302km without a break. Anything narrower than this is
+ * the chord cutting a corner, and blanking the ship for it just made the
+ * hull blink out mid-voyage; anything wider is real ground, and a ship
+ * drawn over it is the beached hull reported earlier. */
+const SEA_GAP_KM = 50;
 export class Staffage {
   readonly group=new T.Group();
   private material=new T.MeshBasicMaterial({vertexColors:true,side:T.DoubleSide,transparent:true,opacity:0,depthWrite:false});
@@ -62,6 +72,7 @@ export class Staffage {
   private opacity=0;private time=0;private key='';private water=false;private maskAge=1;
   private p=new T.Vector3();private normal=new T.Vector3();private tangent=new T.Vector3();private side=new T.Vector3();private basis=new T.Matrix4();
   private camLocal=new T.Vector3();private tiltAxis=new T.Vector3();private invQuat=new T.Quaternion();
+  private probe=new T.Vector3();
   private onLand:(p:T.Vector3)=>boolean;
   /** Sea legs whose path is confidently open water, not a coastal hop that
    * happens to be tagged `sea` in the source text. A `sea` leg is a claim
@@ -95,6 +106,28 @@ export class Staffage {
       this.navigableLegs.set(leg,known);
     }
     return known;
+  }
+  /** Whether the ship belongs at `progress` along `leg`. A single mask
+   * lookup is not enough on its own: the chord clips islets and headlands,
+   * and treating each one as shore blinked the hull out and left nothing but
+   * the route's own progress dot moving. So when the point reads as land,
+   * probe half a SEA_GAP_KM to either side along the same leg — if open
+   * water lies on both sides, this is a sliver the chord cut across and the
+   * ship sails on; if either probe is also land, it is a real crossing, and
+   * the caller shows the party on foot rather than a hull aground. */
+  private isOpenWater(leg:PathLeg,progress:number){
+    if(!this.onLand(this.p))return true;
+    const legKm=leg.angle*6371.0088;
+    if(legKm<=0)return false;
+    const span=leg.to-leg.from;
+    if(span<=0)return false;
+    const half=(SEA_GAP_KM/2)/legKm;
+    const f=(progress-leg.from)/span;
+    for(const d of [-half,half]){
+      sampleLeg(leg,T.MathUtils.clamp(f+d,0,1),this.probe);
+      if(this.onLand(this.probe))return false;
+    }
+    return true;
   }
   readonly state={mode:'hidden',people:0,tents:0,ship:0,anchor:[0,0,0],phase:'rest'};
   hit(ray:T.Raycaster){
@@ -190,7 +223,17 @@ export class Staffage {
     if(playing&&!reducedMotion)this.time+=dt;
     const dist=camera.position.length();
     const marker=route&&(ordinal===null?route.markerAt(progress):route.journey.markers.find(m=>m.stops.includes(ordinal)));
-    const valid=!!marker&&marker.lat!==null&&marker.lon!==null&&!marker.aside&&marker.attested;
+    // `aside` and a missing coordinate are structural — there is nowhere to
+    // stand the miniature. `attested` is not: an unattested marker is an
+    // inferred waypoint that still has a coordinate and still sits on a drawn
+    // leg, and the uncertainty is already carried twice over (the marker
+    // draws in `uncertainMat`, and the card says "inferred waypoint, not an
+    // explicitly recorded stop"). Gating the figures on it too suppressed
+    // them for whole legs at a time — 37% of Paul's second journey, where
+    // `markerAt` holds an unattested Iconium or Jerusalem for the entire
+    // stretch that follows it — which reads as the people vanishing, not as
+    // a claim being withheld.
+    const valid=!!marker&&marker.lat!==null&&marker.lon!==null&&!marker.aside;
     const target=route&&valid?T.MathUtils.clamp((2.2-dist/100)/.3,0,1):0;
     this.opacity+=(target-this.opacity)*(1-Math.exp(-dt*10));this.material.opacity=this.opacity;
     this.batch.begin();this.state.mode='hidden';this.state.people=0;this.state.tents=0;this.state.ship=0;this.state.phase=campPhase;
@@ -257,16 +300,18 @@ export class Staffage {
     // same as a leg that was never `sea` to begin with.
     const isSeaLeg=!!leg&&leg.sea&&this.isNavigable(leg);
     const inSeaMargin=!!(isSeaLeg&&ordinal===null&&(progress<=leg!.from+seaMargin||progress>=leg!.to-seaMargin));
+    let sailing=false;
     if(isSeaLeg&&ordinal===null&&!inSeaMargin&&progress>leg!.from&&progress<leg!.to){
-      this.maskAge+=dt;if(this.maskAge>.1){this.water=!this.onLand(this.p);this.maskAge=0;}
-      if(this.water){
-        const hullDrawn=this.models.shipReady;
-        if(hullDrawn){this.ensureShipSlot();if(this.shipSlot){this.shipSlot.visible=true;this.shipSlot.rotation.z=Math.sin(this.time*.8)*.035;}}
-        this.batch.ship(this.time,hullDrawn,this.models.walkersReady,this.models.shipDeckY);
-        if(this.models.walkersReady)this.placeFigures(3,(i)=>[-.75+i*.7,this.models.shipDeckY,.27],PERSON_SCALE,false,dt);
-        this.state.mode='sailing';this.state.ship=1;this.state.people=3;
-      }
-    }else if(!isSeaLeg||ordinal!==null||exodus||progress===0||progress>=1||inSeaMargin){
+      this.maskAge+=dt;if(this.maskAge>.1){this.water=this.isOpenWater(leg!,progress);this.maskAge=0;}
+      sailing=this.water;
+    }
+    if(sailing){
+      const hullDrawn=this.models.shipReady;
+      if(hullDrawn){this.ensureShipSlot();if(this.shipSlot){this.shipSlot.visible=true;this.shipSlot.rotation.z=Math.sin(this.time*.8)*.035;}}
+      this.batch.ship(this.time,hullDrawn,this.models.walkersReady,this.models.shipDeckY);
+      if(this.models.walkersReady)this.placeFigures(3,(i)=>[-.75+i*.7,this.models.shipDeckY,.27],PERSON_SCALE,false,dt);
+      this.state.mode='sailing';this.state.ship=1;this.state.people=3;
+    }else{
       const count=exodus?12:route.journey.id==='elijah'?1:3;
       const camping=exodus&&campPhase!=='travel'&&(ordinal!==null||!playing);
       // The journey's own last stop, not just any reason this branch fired
