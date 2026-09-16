@@ -637,10 +637,43 @@ function advanceRoute(dt: number) {
 
 // ── timeline ──────────────────────────────────────────────────────────────
 // One step per verse that names a place: 5,582 of them, in canonical order.
-// Playing it start to finish walks the entire biblical world.
+// The slider below scrubs every one of them at full precision — that stays
+// exact. Autoplay is a different question and used to walk the same raw
+// list at a fixed 7 verses/second: reported directly against the live map
+// as the camera "moving back and forth" for no legible reason. The actual
+// mechanism was `follow()` chasing the average position of whatever the
+// cursor sat on, recomputed every frame — when a stretch of consecutive
+// verses names scattered places (a genealogy, an oracle against a foreign
+// nation, an epistle's greetings), that average itself jitters, and a
+// camera lerping toward a jittering target never arrives anywhere.
+//
+// The fix is two changes, not one. Autoplay now stops only at a verse that
+// names a place for the first time in canonical order — 874 of the 5,582
+// (measured), still touching every one of the atlas's 1,332 places exactly
+// once, but skipping the repeat mentions that were producing motion with
+// nothing new to look at. And the camera no longer chases a moving target
+// at all: each stop commits to one destination and flies an eased great-
+// circle arc to it once, the way `Camera.flyTo` works in Cesium or Mapbox,
+// rather than an unbounded per-frame lerp that only ever approaches.
 const range = $<HTMLInputElement>('t-range');
 range.max = String(bundle.events.length - 1);
 range.value = range.max;
+
+/** Every event index that names a place the canon has not named before this
+ *  point. Computed once, off the same `bundle.events` the slider already
+ *  scrubs — not a separate curated list, so it can never drift out of sync
+ *  with the underlying data the way a hand-maintained "highlights" file
+ *  would the next time SeekSparks regenerates it. */
+const firstMentionStops: number[] = (() => {
+  const named = new Uint8Array(bundle.places.length);
+  const stops: number[] = [];
+  bundle.events.forEach((ev, i) => {
+    let isNew = false;
+    for (const p of ev.p) { if (!named[p]) { named[p] = 1; isNew = true; } }
+    if (isNew) stops.push(i);
+  });
+  return stops;
+})();
 
 function applyCursor() {
   const i = Number(range.value);
@@ -662,16 +695,22 @@ function applyCursor() {
 range.addEventListener('input', () => { if(route)clearRoute(); stop(); applyCursor(); });
 
 // ── playback ──────────────────────────────────────────────────────────────
-const VERSES_PER_SECOND = 7;
+/** Seconds spent sitting at a stop before the next flight departs — long
+ *  enough to actually read `t-ref`/`t-here` before the camera moves again. */
+const DWELL_S = .6;
+/** Flight duration is proportional to how far the camera has to turn, inside
+ *  these bounds: a neighbouring stop should not get the same travel time as
+ *  a jump clear across the map, but nothing should snap instantly either. */
+const MIN_FLIGHT_S = .5, MAX_FLIGHT_S = 2.6;
 let playing = false;
-let carry = 0;
+let dwell = 0;
 const playBtn = $('t-play');
 
 function play() {
   if(route)clearRoute();
   // Restarting from the end would show nothing move, so rewind first.
   if (Number(range.value) >= bundle.events.length - 1) { range.value = '0'; applyCursor(); }
-  playing = true; carry = 0;
+  playing = true; dwell = 0; flying = false;
   playBtn.textContent = '❚❚';
   playBtn.classList.add('playing');
 }
@@ -682,35 +721,69 @@ function stop() {
 }
 playBtn.addEventListener('click', () => (playing ? stop() : play()));
 
-function advance(dt: number) {
-  if (!playing) return;
-  carry += dt * VERSES_PER_SECOND;
-  const steps = Math.floor(carry);
-  if (steps < 1) return;
-  carry -= steps;
-  const next = Number(range.value) + steps;
-  if (next >= bundle.events.length - 1) { range.value = String(bundle.events.length - 1); stop(); }
-  else range.value = String(next);
-  applyCursor();
+/** The next `firstMentionStops` entry strictly after wherever the cursor
+ *  currently sits — a binary search, not an indexed pointer, so scrubbing
+ *  the slider by hand while paused and then pressing play resumes from
+ *  there rather than from wherever autoplay last left off. */
+function nextStop(afterIndex: number): number | null {
+  let lo = 0, hi = firstMentionStops.length;
+  while (lo < hi) { const mid = (lo + hi) >> 1; if (firstMentionStops[mid]! <= afterIndex) lo = mid + 1; else hi = mid; }
+  return lo < firstMentionStops.length ? firstMentionStops[lo]! : null;
 }
 
-// The canon ranges from Tarshish to Persia, so without this half of the
-// playback would happen on the far side of the globe. The camera eases toward
-// whatever is being read, and yields the moment the user grabs the globe.
+function advance(dt: number) {
+  if (!playing || flying) return;
+  dwell -= dt;
+  if (dwell > 0) return;
+  const next = nextStop(Number(range.value));
+  if (next === null) { stop(); return; }
+  range.value = String(next);
+  applyCursor();
+  beginFlight();
+}
+
+// The canon ranges from Tarshish to Persia, so without a following camera
+// half of playback would happen on the far side of the globe. It yields the
+// moment the user grabs the globe, and never overrides a manually open route.
 let userDriving = false;
 controls.addEventListener('start', () => { userDriving = true; });
 controls.addEventListener('end', () => { userDriving = false; });
 
-const followTarget = new THREE.Vector3();
-function follow(dt: number) {
-  if (route || !playing || userDriving || markers.activeIndices.length === 0) return;
+let flying = false;
+let flightT = 0, flightDuration = 0;
+const flightFrom = new THREE.Vector3(), flightTo = new THREE.Vector3();
+const flightAxis = new THREE.Vector3();
+let flightAngle = 0;
+
+function easeInOutCubic(t: number) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+
+/** Commits to a single flight toward the average of the places the cursor
+ *  just landed on, over the sphere (a great-circle arc, via slerp — not a
+ *  lerp through the globe's interior) rather than retargeting every frame. */
+function beginFlight() {
+  if (markers.activeIndices.length === 0) { dwell = DWELL_S; return; }
   let lon = 0, lat = 0;
-  for (const n of markers.activeIndices) {
-    lon += bundle.places[n]!.lon; lat += bundle.places[n]!.lat;
-  }
+  for (const n of markers.activeIndices) { lon += bundle.places[n]!.lon; lat += bundle.places[n]!.lat; }
   lon /= markers.activeIndices.length; lat /= markers.activeIndices.length;
-  followTarget.copy(lonLatToVec3(lon, lat, camera.position.length() - GLOBE_RADIUS));
-  camera.position.lerp(followTarget, Math.min(1, dt * 1.1));
+  const altitude = camera.position.length() - GLOBE_RADIUS;
+  flightFrom.copy(camera.position).normalize();
+  flightTo.copy(lonLatToVec3(lon, lat, altitude)).normalize();
+  const dot = THREE.MathUtils.clamp(flightFrom.dot(flightTo), -1, 1);
+  flightAngle = Math.acos(dot);
+  if (flightAngle < 1e-4) { dwell = DWELL_S; return; } // already there — just read it
+  flightAxis.crossVectors(flightFrom, flightTo).normalize();
+  flightDuration = THREE.MathUtils.clamp(flightAngle / Math.PI * MAX_FLIGHT_S, MIN_FLIGHT_S, MAX_FLIGHT_S);
+  flightT = 0; flying = true;
+}
+
+function follow(dt: number) {
+  if (route || !playing || userDriving) { flying = false; return; }
+  if (!flying) return;
+  flightT = Math.min(1, flightT + dt / flightDuration);
+  const angle = flightAngle * easeInOutCubic(flightT);
+  const dir = flightFrom.clone().applyAxisAngle(flightAxis, angle);
+  camera.position.copy(dir.multiplyScalar(camera.position.length()));
+  if (flightT >= 1) { flying = false; dwell = DWELL_S; }
 }
 
 // ── legend & i18n ─────────────────────────────────────────────────────────

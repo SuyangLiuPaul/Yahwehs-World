@@ -189,3 +189,26 @@ still suppress, because those are structural — there is nowhere to stand a
 figure. At a journey's own last stop the figures are posed seated rather
 than walking, so arriving differs from passing through, on every journey
 rather than by special case.
+
+**D25 — Canon-wide autoplay stops at first mentions, and flies once per stop
+rather than chasing every frame.** Reported directly: the bottom timeline's
+play button made the map "move back and forth" for no legible reason. Root
+cause was `follow()` lerping the camera toward the average position of
+whatever the cursor sat on, recomputed every frame at 7 raw verses/second —
+when consecutive verses name scattered places (a genealogy, an oracle
+against a foreign nation, an epistle's greeting), that average itself
+jitters, and a camera lerping toward a moving target never arrives anywhere.
+Two changes, not one: autoplay now stops only at a verse naming a place for
+the first time in canonical order (874 of 5,582 events, measured — still
+touching all 1,332 places exactly once), and each stop commits to one
+destination and flies an eased great-circle arc to it via `Vector3.
+applyAxisAngle` slerp, the way `Camera.flyTo` works in Cesium or Mapbox,
+rather than an unbounded per-frame lerp. The manual slider is untouched —
+scrubbing by hand still walks all 5,582 raw events at full precision; only
+autoplay's cadence changed. `markers.setCursor` already replays the full
+history honestly from whatever index it is given, so skipping ahead to a
+first-mention index costs nothing in correctness. A full autoplay now runs
+roughly 15-26 minutes (measured against 874 stops' dwell and flight time),
+longer than the old raw scrub's 13 minutes — expected and not a regression:
+nothing was ever going to be watched start to finish in one sitting, and
+what changed is that each stop now holds long enough to read.
