@@ -32,9 +32,15 @@ const WALK_RATE = 0.62;
 
 /** How much bigger the loaded hull is drawn than the procedural one it
  * replaces. 1.0 (an exact swap) was reported as unreadable on the actual
- * map — a ship a couple of pixels long shows a colour, not a shape. This
- * does not touch the walkers: the complaint was the ship specifically. */
+ * map — a ship a couple of pixels long shows a colour, not a shape. */
 const SHIP_LEGIBILITY = 2.0;
+
+/** Same idea, for the walking figures — reported right after the ship fix,
+ * for the same reason. Kept as its own constant rather than reusing
+ * SHIP_LEGIBILITY: a person and a hull are different shapes at different
+ * base sizes, and there is no reason the two would want the same number
+ * just because they were raised for the same complaint. */
+const WALKER_LEGIBILITY = 2.0;
 
 interface WalkerAsset { template: T.Object3D; clip: T.AnimationClip; scale: number; }
 
@@ -101,7 +107,10 @@ export class ActorModels {
   }
 
   private prepareWalkers(loaded: GLTF[]) {
-    const target = personStandingHeight();
+    // Same complaint as the ship, same fix: matched exactly to the
+    // procedural figure's own height, the real model was just as easy to
+    // miss as the low-poly stand-in it replaced.
+    const target = personStandingHeight() * WALKER_LEGIBILITY;
     this.walkers = loaded.flatMap((gltf) => {
       const clip = gltf.animations[0];
       if (!clip) return [];
