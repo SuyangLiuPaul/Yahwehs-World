@@ -1,6 +1,8 @@
 // The canonical key in the data is bbbcccvvv, so book number is key / 1e6.
 // Numbering is the 66-book Protestant order (2 Kings = 12, matching the
 // dataset's own `sort` values). Chinese names follow 和合本.
+
+import { hant } from './locale.ts';
 export const BOOKS: { en: string; zh: string }[] = [
   { en: 'Genesis', zh: '创世记' }, { en: 'Exodus', zh: '出埃及记' },
   { en: 'Leviticus', zh: '利未记' }, { en: 'Numbers', zh: '民数记' },
@@ -38,8 +40,10 @@ export const BOOKS: { en: string; zh: string }[] = [
 ];
 
 export const bookOf = (sortKey: number) => Math.floor(sortKey / 1_000_000);
-export const bookName = (n: number, locale: 'en' | 'zh') =>
-  BOOKS[n - 1]?.[locale] ?? '';
+export const bookName = (n: number, locale: 'en' | 'zh') => {
+  const name = BOOKS[n - 1]?.[locale] ?? '';
+  return locale === 'zh' ? hant(name) : name;
+};
 /** Canonical key just past the end of book `n` — the timeline steps in books. */
 export const endOfBook = (n: number) => n * 1_000_000 + 999_999;
 
@@ -71,7 +75,10 @@ const ANY_BOOK = new RegExp(
 );
 
 export function localiseRef(ref: string, locale: 'en' | 'zh'): string {
-  let out = ref.replace(ANY_BOOK, (m) => BOOKS[NAME_TO_INDEX.get(m)!]![locale]);
+  let out = ref.replace(ANY_BOOK, (m) => {
+    const name = BOOKS[NAME_TO_INDEX.get(m)!]![locale];
+    return locale === 'zh' ? hant(name) : name;
+  });
   // 「4章」 is how Chinese cites a whole chapter; English just gives the number.
   if (locale === 'en') out = out.replace(/(\d+)\s*章/g, '$1');
   return out;

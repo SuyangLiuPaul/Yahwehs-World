@@ -4,7 +4,7 @@ import { CUBITS, STRUCTURES, metres, type Structure } from './specs.ts';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { buildStructure, footprint, humanFigure } from './build.ts';
 import type { BranchForm } from './menorah.ts';
-import { applyStatic, bindSwitch, onLocale } from '../locale.ts';
+import { applyStatic, bindSwitch, hant, onLocale } from '../locale.ts';
 
 // One WebGL context behind a scroll-snapped feed. Each card owns a structure;
 // scrolling swaps what the single scene holds, which keeps one context no
@@ -156,7 +156,10 @@ function cardHtml(s: Structure, cubitM: number) {
 
 function renderFeed() {
   const cubitM = CUBITS[Number(cubitRange.value)]!.m;
-  feed.innerHTML = STRUCTURES.map((s) => cardHtml(s, cubitM)).join('');
+  // This page is written in Chinese whatever the interface language, so the
+  // whole card is converted here rather than string by string. hant() looks
+  // up each run of Chinese in the markup, leaving the tags alone.
+  feed.innerHTML = hant(STRUCTURES.map((s) => cardHtml(s, cubitM)).join(''));
   observeCards();
 }
 
@@ -177,8 +180,8 @@ function observeCards() {
 
 function applyCubit() {
   const c = CUBITS[Number(cubitRange.value)]!;
-  cubitVal.textContent = `${(c.m * 100).toFixed(1)} 厘米 · ${c.zh}`;
-  cubitNote.textContent = c.note;
+  cubitVal.textContent = hant(`${(c.m * 100).toFixed(1)} 厘米 · ${c.zh}`);
+  cubitNote.textContent = hant(c.note);
   const keep = current;
   renderFeed();
   if (keep >= 0) show(keep, c.m);
@@ -258,7 +261,9 @@ renderer.setAnimationLoop(() => {
 // are bilingual.
 bindSwitch(document.querySelector('.lang-switch') as HTMLElement);
 applyStatic();
-onLocale(() => applyStatic());
+// 简体 → 繁體 changes every Chinese string on this page, not just the
+// data-en/data-zh pairs applyStatic() handles.
+onLocale(() => { applyStatic(); applyCubit(); });
 
 fit();
 frameCamera();

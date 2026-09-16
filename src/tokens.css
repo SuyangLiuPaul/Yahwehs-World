@@ -50,11 +50,58 @@
   --radius: 2px;
   --shadow: 0 12px 40px #00000073;
 
+  /* The scrim the fixed nav lays over whatever is behind it. A gradient, not
+     a flat bar: the globe has to keep showing through. */
+  --scrim: linear-gradient(180deg, #060d16e6 0%, #060d16a6 58%, transparent 100%);
+  /* A wash of the accent, for hover and pressed states on both grounds. */
+  --gold-wash: #c9a2271a;
+  --tab-hover: #0d1a2899;
+  --rbtn-hover: #11202fdd;
+
   --ui:      'Noto Sans SC', 'PingFang SC', system-ui, -apple-system, sans-serif;
   --display: 'Noto Serif SC', 'Songti SC', Georgia, serif;
   --latin:   'Spectral', Georgia, serif;
   --mono:    'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
 
-  color-scheme: dark;
+  color-scheme: light dark;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Light, following the reader's system. THE GLOBE DOES NOT CHANGE: the
+   dark sea, the parchment land and the gilded coast are the thing this
+   atlas looks like, and a map that repaints itself to match a system
+   setting is a different map. What changes is the chrome around it —
+   nav, panels, dialogs, the timeline — which is why the palette below
+   only restates the surface and ink tokens.
+
+   Anything drawn ON the globe is pinned back to its dark-ground values
+   further down: it sits over the same dark sea in both themes, so it
+   needs the same colours in both. Losing that is how a route label ends
+   up as dark ink on a dark sea.
+   ═══════════════════════════════════════════════════════════════════════ */
+@media (prefers-color-scheme: light) {
+  :root {
+    --ground:       #efe8da;
+    --surface:      #fbf7ef;
+    --surface-hi:   #f1e9d9;
+
+    --gold:         #8a6c1c;
+    --gold-bright:  #6d5412;
+    --gold-dim:     #a68e48;
+
+    --ink:          #1d1710;
+    --ink-2:        #4c4437;
+    --ink-3:        #6d6454;
+    --ink-4:        #9c9481;
+
+    --line:         #ddd3bd;
+    --line-gold:    #8a6c1c40;
+
+    --shadow:       0 12px 40px #2a200f2e;
+    --scrim: linear-gradient(180deg, #efe8daf0 0%, #efe8daa6 58%, transparent 100%);
+    --gold-wash:    #8a6c1c1f;
+    --tab-hover:    #00000010;
+    --rbtn-hover:   #0000000d;
+  }
 }
 

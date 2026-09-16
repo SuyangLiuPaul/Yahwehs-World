@@ -16,6 +16,7 @@
  * and loops: it is a plate that moves, not a film with a soundtrack, and it
  * must never start talking over a reader.
  */
+import { hant } from './locale.ts';
 type Scene = { file: string; en: string; zh: string; ref?: string };
 /** `stops` is keyed by stop number. `epilogue` is shown once the reader reaches
  *  the last stop and belongs to a passage the route deliberately does not
@@ -118,8 +119,8 @@ export class Scenes {
     const canGo = Boolean(epilogue) && scene !== epilogue;
     this.more.hidden = !(canGo || this.inEpilogue);
     this.more.textContent = this.inEpilogue
-      ? (locale === 'zh' ? '← 回到本站' : '\u2190 Back to the stop')
-      : (locale === 'zh' ? '行程之后 →' : 'After the journey \u2192');
+      ? (locale === 'zh' ? hant('← 回到本站') : '\u2190 Back to the stop')
+      : (locale === 'zh' ? hant('行程之后 →') : 'After the journey \u2192');
     const key = `${journeyId}:${scene.file}`;
     this.fig.hidden = false;
     this.cap.textContent = scene.ref ? `${scene[locale]}　${scene.ref}` : scene[locale];

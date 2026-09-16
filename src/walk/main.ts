@@ -4,7 +4,7 @@ import './style.css';
 import { buildTabernacle } from './tabernacle.ts';
 import { Walker } from './controls.ts';
 import { Tour, TOUR } from './tour.ts';
-import { applyStatic, bindSwitch, onLocale, t } from '../locale.ts';
+import { applyStatic, bindSwitch, hant, onLocale, t } from '../locale.ts';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
@@ -170,7 +170,7 @@ const TALLY: [number, string, string, string][] = [
 ];
 function renderTally() {
   document.getElementById('tally')!.innerHTML = TALLY
-    .map(([n, en, zh, ref]) => `<div><b>${n}</b><span>${t(en, zh)}</span><i>${ref}</i></div>`)
+    .map(([n, en, zh, ref]) => `<div><b>${n}</b><span>${t(en, zh)}</span><i>${hant(ref)}</i></div>`)
     .join('');
 }
 

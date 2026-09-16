@@ -54,7 +54,7 @@ body {
   letter-spacing: var(--tr-caps); cursor: pointer; flex: none;
   transition: background .18s, color .18s, border-color .18s;
 }
-#lang:hover { background: #c9a2271a; color: var(--gold-bright); border-color: var(--gold); }
+#lang:hover { background: var(--gold-wash); color: var(--gold-bright); border-color: var(--gold); }
 #lang:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 /* ── place panel ─────────────────────────────────────────────────────── */
@@ -88,8 +88,16 @@ body {
   font-size: var(--fs-100); letter-spacing: var(--tr-cjk);
   padding: 3px var(--sp-2); border: 1px solid currentColor;
   border-radius: var(--radius); line-height: 1.4;
+  color: var(--badge, currentColor);
 }
-.badge.disputed { color: #d98a5a; }
+.badge.disputed { --badge: #d98a5a; }
+/* The accent comes from the marker palette, which is mixed for the dark sea:
+   on parchment the gilded end of it is all but invisible. Mixing each one
+   toward the ink keeps the badge the colour of its own marker while it
+   stays readable — one rule rather than a second hand-picked palette. */
+@media (prefers-color-scheme: light) {
+  .badge { color: color-mix(in srgb, var(--badge, currentColor) 52%, #1d1710); }
+}
 #p-meta {
   margin: 0 0 var(--sp-4); display: grid; grid-template-columns: auto 1fr;
   gap: var(--sp-2) var(--sp-4); font-size: var(--fs-200);
@@ -145,7 +153,7 @@ body {
   font-style: normal; font-family: var(--mono); font-size: var(--fs-100);
   color: var(--ink-4); letter-spacing: 0; flex: none;
 }
-.rbtn:hover { color: var(--ink); border-color: var(--line-gold); background: #11202fdd; }
+.rbtn:hover { color: var(--ink); border-color: var(--line-gold); background: var(--rbtn-hover); }
 .rbtn:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
 
 /* ── the running route ───────────────────────────────────────────────── */
@@ -191,7 +199,7 @@ body {
   font-size: var(--fs-100); cursor: pointer; display: grid; place-content: center;
   transition: color .16s, background .16s;
 }
-#r-toggle:hover { color: var(--gold-bright); background: #c9a2271a; }
+#r-toggle:hover { color: var(--gold-bright); background: var(--gold-wash); }
 #r-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 #r-stop {
   flex: 1; min-width: 0; font-size: var(--fs-200); color: var(--ink);
@@ -311,12 +319,12 @@ body {
 }
 #t-range::-webkit-slider-thumb {
   appearance: none; width: 12px; height: 12px; border-radius: 50%;
-  background: var(--gold-bright); border: 2px solid var(--sea); cursor: grab;
+  background: var(--gold-bright); border: 2px solid var(--surface); cursor: grab;
   box-shadow: 0 0 0 1px #c9a2278c, 0 0 12px #e8c55a5c;
 }
 #t-range::-moz-range-thumb {
   width: 12px; height: 12px; border-radius: 50%; background: var(--gold-bright);
-  border: 2px solid var(--sea); cursor: grab;
+  border: 2px solid var(--surface); cursor: grab;
 }
 #t-range:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
 

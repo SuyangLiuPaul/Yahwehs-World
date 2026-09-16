@@ -16,7 +16,7 @@ body.route-active #timeline { padding: var(--sp-2) var(--sp-4); }
 #r-scene[aria-busy="true"] { opacity:.6; }
 #r-scene-message { margin:0; font:var(--fs-100)/var(--lh-snug) var(--ui); color:var(--gold); }
 #r-name { font-size: var(--fs-500); font-family: var(--latin); letter-spacing: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-html[lang="zh-CN"] #r-name { font-family: var(--display); font-size: var(--fs-400); }
+html[lang^="zh"] #r-name { font-family: var(--display); font-size: var(--fs-400); }
 #r-stats { display: flex; flex-wrap: nowrap; gap: var(--sp-2); }
 #r-stats div { display: flex; align-items: baseline; gap: var(--sp-1); }
 #r-stats b, #r-stats span { font-size: var(--fs-100); line-height: var(--lh-snug); color: var(--ink-2); }
@@ -81,8 +81,9 @@ html[lang="zh-CN"] #r-name { font-family: var(--display); font-size: var(--fs-40
 #settings-status { margin: var(--sp-2) 0 0; font: var(--fs-200)/var(--lh-snug) var(--ui); color: var(--ink-2); }
 #settings-status[data-state="update"] { color: var(--gold-bright); }
 #settings-status[data-state="error"] { color: #d99; }
+@media (prefers-color-scheme: light) { #settings-status[data-state="error"] { color: #9c3a3a; } }
 #settings-download { display: inline-block; margin: var(--sp-2) 0 0; padding: var(--sp-1) var(--sp-3); border: 1px solid var(--line-gold); border-radius: var(--radius); color: var(--gold-bright); font: var(--fs-200) var(--ui); text-decoration: none; }
-#settings-download:hover { background: #c9a2271a; border-color: var(--gold); }
+#settings-download:hover { background: var(--gold-wash); border-color: var(--gold); }
 #settings-download[hidden] { display: none; }
 #settings-check-mode { margin: var(--sp-5) 0 0; padding: 0; border: 0; }
 #settings-check-mode legend { padding: 0 0 var(--sp-2); font: var(--fs-200) var(--ui); letter-spacing: var(--tr-caps); text-transform: uppercase; color: var(--ink-3); }
@@ -90,7 +91,7 @@ html[lang="zh-CN"] #r-name { font-family: var(--display); font-size: var(--fs-40
 #settings-check-mode input { accent-color: var(--gold); }
 .settings-note { margin: var(--sp-3) 0 0; padding: var(--sp-2) var(--sp-3); border-left: 2px solid var(--gold-dim); color: var(--ink-2); background: var(--surface-hi); font: var(--fs-100)/var(--lh-snug) var(--ui); }
 #settings-check-now { margin: var(--sp-4) 0 0; padding: var(--sp-1) var(--sp-4); min-height: 44px; border: 1px solid var(--line-gold); border-radius: var(--radius); background: transparent; color: var(--gold-bright); font: var(--fs-200) var(--ui); cursor: pointer; }
-#settings-check-now:hover { background: #c9a2271a; border-color: var(--gold); }
+#settings-check-now:hover { background: var(--gold-wash); border-color: var(--gold); }
 #settings-check-now:disabled { opacity: .5; cursor: default; }
 #settings button:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: -3px; }
 .route-labels { z-index: 5; pointer-events: none; }
@@ -104,7 +105,7 @@ html[lang="zh-CN"] #r-name { font-family: var(--display); font-size: var(--fs-40
 .route-leaders line { stroke: var(--gold); stroke-width: 1; }
 #map-tools { position: fixed; top: 72px; left: var(--sp-4); z-index: 15; display: flex; gap: var(--sp-1); width: max-content; }
 #map-tools[hidden], #cartography[hidden], #map-north[hidden] { display: none; }
-#map-tools button { min-width: 44px; height: 44px; background: var(--sea); color: var(--ink); border: 1px solid var(--line-gold); border-radius: var(--radius); cursor: pointer; font: var(--fs-400) var(--ui); }
+#map-tools button { min-width: 44px; height: 44px; background: var(--surface); color: var(--ink); border: 1px solid var(--line-gold); border-radius: var(--radius); cursor: pointer; font: var(--fs-400) var(--ui); }
 #map-tools #map-fit { font-size: var(--fs-100); padding: 0 var(--sp-2); }
 #cartography { position: fixed; left: var(--sp-4); top: var(--map-bottom, 60%); transform: translateY(-100%); z-index: 10; display: flex; align-items: end; gap: var(--sp-4); pointer-events: none; color: var(--ink); filter: drop-shadow(0 1px 2px var(--ground)); }
 #map-scale { width: 120px; }
@@ -120,6 +121,23 @@ html[lang="zh-CN"] #r-name { font-family: var(--display); font-size: var(--fs-40
   #r-thumbnail { width: 64px; height: 36px; }
   #map-tools { top: 50px; left: var(--sp-3); }
 }
+/* ── what sits ON the globe ───────────────────────────────────────────────
+   The globe does not follow the system theme (see src/tokens.css): its sea
+   is dark in both. Anything drawn over that sea therefore has to keep its
+   dark-ground colours in light mode, or it inherits the light palette's
+   dark ink and disappears into the water. The thumbnail overlays are here
+   for the same reason — they sit over a canvas painted with the same sea. */
+@media (prefers-color-scheme: light) {
+  .rlab { color: #ece2cd; background: #0b1a2b; border-color: #c9a2273d; }
+  .rlab b { color: #c9a227; }
+  .rlab.now { color: #0b1a2b; background: #e8c55a; border-color: #e8c55a; }
+  .rlab.now b { color: #0b1a2b; }
+  .route-leaders line { stroke: #c9a227; }
+  #cartography { color: #ece2cd; filter: drop-shadow(0 1px 2px #060d16); }
+  .scale-rule { border-color: #ece2cd; background: linear-gradient(90deg, #ece2cd 50%, #0b1a2b 50%); }
+  #r-unlocated, .r-loading, .r-error { color: #a8b4c2; }
+}
+
 #region-labels{position:fixed;inset:0;pointer-events:none;z-index:1;}
 #region-labels[hidden]{display:none;}
 .region-label{position:absolute;transform:translate(-50%,-50%);max-width:110px;text-align:center;font:600 var(--fs-400) var(--display);letter-spacing:.12em;color:#e3d2aa;text-shadow:0 1px 3px #1c221df0,0 0 8px #1a201aaa;}

@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLOBE_RADIUS } from './globe.ts';
+import { fullLocale, hant } from './locale.ts';
 
 const EARTH_KM=6371.0088;
 /** Project a measured great-circle distance in the screen's horizontal
@@ -30,17 +31,17 @@ export class Cartography {
   private readonly root=document.getElementById('cartography')!;
   private lastKey='';
   update(camera:THREE.PerspectiveCamera,w:number,h:number,locale:'en'|'zh'){
-    const key=[w,h,...camera.matrixWorld.elements,...camera.projectionMatrix.elements].map(v=>v.toFixed(5)).join(',')+locale;
+    const key=[w,h,...camera.matrixWorld.elements,...camera.projectionMatrix.elements].map(v=>v.toFixed(5)).join(',')+fullLocale();
     if(key===this.lastKey)return;
     this.lastKey=key;
     if(camera.position.length()>GLOBE_RADIUS*3){this.root.hidden=true;return;}
     const measured=measureMap(camera,w,h);
     if(!measured){this.root.hidden=true;return;}
     this.root.hidden=false;
-    this.root.setAttribute('aria-label',locale==='zh'?'屏幕中心的局部比例尺':'Local scale at screen centre');
+    this.root.setAttribute('aria-label',locale==='zh'?hant('屏幕中心的局部比例尺'):'Local scale at screen centre');
     document.getElementById('map-scale')!.style.width=measured.pixels+'px';
     document.getElementById('scale-mid')!.textContent=String(measured.km/2);
-    document.getElementById('scale-end')!.textContent=measured.km+(locale==='zh'?' 公里':' km');
+    document.getElementById('scale-end')!.textContent=measured.km+(locale==='zh'?hant(' 公里'):' km');
     const north=document.getElementById('map-north')!;
     north.hidden=Math.abs(measured.bearing)<5;
     north.querySelector<HTMLElement>('.north-arrow')!.style.transform='rotate('+measured.bearing+'deg)';

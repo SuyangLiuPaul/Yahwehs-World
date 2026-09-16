@@ -19,7 +19,7 @@ import { PlaceLabels } from './place-labels.ts';
 import { RouteThumbnail } from './route-thumbnail.ts';
 import { Scenes } from './scenes.ts';
 import { Cartography, measureMap } from './cartography.ts';
-import { applyStatic, bindSwitch, locale as currentLocale, onLocale } from './locale.ts';
+import { applyStatic, bindSwitch, fullLocale, hant, localized, locale as currentLocale, onLocale } from './locale.ts';
 import { installUpdateChecker } from './updates.ts';
 import type { GeoJson, Place, PlacesBundle } from './types.ts';
 
@@ -33,7 +33,7 @@ const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as 
  *  commentary calls the place, and a reader cross-referencing needs both. */
 const placeName = (p: Place) => placeLabel(p.name, p.zh, locale);
 
-const T = {
+const T = localized({
   loading:   { zh: '正在绘制世界…', en: 'Drawing the world…' },
   places:    { zh: (n: number) => `${n} 处地名`, en: (n: number) => `${n} places` },
   through:   { zh: '读到', en: 'Through' },
@@ -61,7 +61,7 @@ const T = {
   statStops:   { zh: '站', en: 'stops' },
   statMarkers: { zh: '个标记', en: 'markers' },
   statMerged:  { zh: '组共用坐标', en: 'shared coordinates' },
-};
+});
 
 // ── data ──────────────────────────────────────────────────────────────────
 // One-time migration away from the former year-long immutable /data cache.
@@ -197,10 +197,10 @@ function renderPanel() {
   $('p-modern').textContent = [alt, modern].filter(Boolean).join('　·　');
 
   const prec = precisionOf(p.precision);
-  const badges = [`<span class="badge" style="color:${prec.color}">${locale === 'zh' ? prec.labelZh : prec.label}</span>`];
+  const badges = [`<span class="badge" style="--badge:${prec.color}">${locale === 'zh' ? hant(prec.labelZh) : prec.label}</span>`];
   badges.push(p.rivals > 1
     ? `<span class="badge disputed">${T.disputed[locale](p.rivals)}</span>`
-    : `<span class="badge" style="color:#7f9c7a">${T.settled[locale]}</span>`);
+    : `<span class="badge" style="--badge:#7f9c7a">${T.settled[locale]}</span>`);
   $('p-badges').innerHTML = badges.join('');
 
   const first = p.first !== null ? bookName(bookOf(p.first), locale) : '—';
@@ -247,7 +247,7 @@ const rBasis = $('r-basis');
 function renderRouteList() {
   rlist.innerHTML = journeyData.journeys.map((jr) => `
     <button class="rbtn" type="button" data-id="${jr.id}">
-      <span>${jr[locale]}</span><i>${T.stops[locale](jr.stopCount)}</i>
+      <span>${locale === 'zh' ? hant(jr.zh) : jr.en}</span><i>${T.stops[locale](jr.stopCount)}</i>
     </button>`).join('');
 }
 renderRouteList();
@@ -451,7 +451,7 @@ function setRoutePlayback(value: boolean) {
   routePlaying=value;
   rToggle.textContent=value?'❚❚':routeT>=1?'↻':'▶';
   rToggle.classList.toggle('playing',value);
-  const text=locale==='zh'?(value?'暂停路线':routeT>=1?'重新播放':'播放路线'):(value?'Pause journey':routeT>=1?'Replay journey':'Play journey');
+  const text=locale==='zh'?hant(value?'暂停路线':routeT>=1?'重新播放':'播放路线'):(value?'Pause journey':routeT>=1?'Replay journey':'Play journey');
   rToggle.setAttribute('aria-label',text);rToggle.title=text;
 }
 
@@ -465,7 +465,7 @@ function renderStops() {
     'r-thumbnail':['Terrain near this stop','本站附近的地形'],'r-dots':['Journey stops','行程各站'],
     'r-art':['Show or hide the painted scene','显示或收起画面'],
   };
-  for(const [id,words] of Object.entries(labels))$(id).setAttribute('aria-label',words[locale==='en'?0:1]!);
+  for(const [id,words] of Object.entries(labels))$(id).setAttribute('aria-label',locale==='en'?words[0]!:hant(words[1]!));
   for(const m of route.journey.markers){
     m.stops.forEach((n,i)=>{
       const name=placeLabel(m.places?.[i]??m.place,m.zhAll?.[i]??m.zh,locale);
@@ -481,11 +481,11 @@ function renderStops() {
       li.appendChild(link);
       const note=document.createElement('small');
       const remarks:string[]=[];
-      if(m.stops.length>1)remarks.push(locale==='zh'?'与其他营站共用区域坐标，实际位置未定。':'Shares a regional coordinate with other camps; exact site uncertain.');
-      if(m.aside)remarks.push(locale==='zh'?'经文提名；未记载到达，不连接路线。':'Named in the account; arrival is not recorded. Not connected to the route.');
-      if(!m.attested)remarks.push(locale==='zh'?'推定的中间地点，非经文明确记载的停站。':'Inferred waypoint, not an explicitly recorded stop.');
-      if(m.lat===null||m.lon===null)remarks.push(locale==='zh'?'位置未定；此处不连线。':'Unlocated; the route breaks here.');
-      if(locale==='zh'&&m.note)remarks.push(m.note);
+      if(m.stops.length>1)remarks.push(locale==='zh'?hant('与其他营站共用区域坐标，实际位置未定。'):'Shares a regional coordinate with other camps; exact site uncertain.');
+      if(m.aside)remarks.push(locale==='zh'?hant('经文提名；未记载到达，不连接路线。'):'Named in the account; arrival is not recorded. Not connected to the route.');
+      if(!m.attested)remarks.push(locale==='zh'?hant('推定的中间地点，非经文明确记载的停站。'):'Inferred waypoint, not an explicitly recorded stop.');
+      if(m.lat===null||m.lon===null)remarks.push(locale==='zh'?hant('位置未定；此处不连线。'):'Unlocated; the route breaks here.');
+      if(locale==='zh'&&m.note)remarks.push(hant(m.note));
       if(locale==='en'&&m.noteEn)remarks.push(m.noteEn);
       note.textContent=remarks.join(' ');if(remarks.length)li.appendChild(note);
       $('r-source-stops').appendChild(li);
@@ -551,7 +551,11 @@ function updateRouteReadout() {
   if (!route) return;
   const m = selectedOrdinal===null ? route.markerAt(routeT) : route.journey.markers.find(m=>m.stops.includes(selectedOrdinal!));
   if (!m) { rStop.textContent = ''; return; }
-  const key=route.journey.id+':'+m.n+':'+selectedOrdinal+':'+locale;
+  // fullLocale(), not locale: 简体 and 繁體 are both 'zh', so a key built
+  // from the language alone matches across a script change and this
+  // returns early, leaving the readout in the script just switched away
+  // from.
+  const key=route.journey.id+':'+m.n+':'+selectedOrdinal+':'+fullLocale();
   if(key===readoutKey)return;
   readoutKey=key;
   const sub=selectedOrdinal===null ? 0 : Math.max(0,m.stops.indexOf(selectedOrdinal));
@@ -766,7 +770,7 @@ function renderRouteStats(jr: Journey) {
     [jr.stopCount, T.statStops[locale], false],
     [jr.markers.filter(m=>m.lat!==null&&m.lon!==null).length, T.statMarkers[locale], false],
   ];
-  if(jr.unlocated)stats.push([jr.unlocated,locale==='zh'?'未定位':'unlocated',false]);
+  if(jr.unlocated)stats.push([jr.unlocated,locale==='zh'?hant('未定位'):'unlocated',false]);
   if (jr.merged > 0) stats.push([jr.merged, T.statMerged[locale], true]);
   $('r-stats').innerHTML = stats
     .map(([n, label, caveat]) =>
@@ -775,15 +779,15 @@ function renderRouteStats(jr: Journey) {
 }
 
 function renderRouteHeader(jr: Journey) {
-  $('r-name').textContent = jr[locale];
-  $('r-range').textContent = locale === 'zh' ? jr.range : jr.rangeEn;
-  rBasis.textContent = locale === 'zh' ? jr.basis : jr.basisEn;
+  $('r-name').textContent = locale === 'zh' ? hant(jr.zh) : jr.en;
+  $('r-range').textContent = locale === 'zh' ? hant(jr.range) : jr.rangeEn;
+  rBasis.textContent = locale === 'zh' ? hant(jr.basis) : jr.basisEn;
 }
 
 function renderLegend() {
   $('legend').innerHTML = Object.entries(precisionStyle)
     .filter(([k]) => k !== 'unknown')
-    .map(([, v]) => `<span><i style="background:${v.color}"></i>${locale === 'zh' ? v.labelZh : v.label}</span>`)
+    .map(([, v]) => `<span><i style="background:${v.color}"></i>${locale === 'zh' ? hant(v.labelZh) : v.label}</span>`)
     .join('');
 }
 

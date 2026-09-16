@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { GLOBE_RADIUS } from './globe.ts';
 import type { RouteMarker } from './routes.ts';
 import { placeLabel } from './names.ts';
+import { hant } from './locale.ts';
 
 export interface SafeBand { top: number; height: number }
 interface LabelItem {
@@ -37,11 +38,11 @@ export class RouteLabels {
       el.append(ord,name);
       if(i===0||i===markers.length-1) {
         const tag=document.createElement('u');
-        tag.textContent=locale==='zh'?(i===0?'起':'终'):(i===0?'S':'E');
-        tag.setAttribute('aria-label',locale==='zh'?(i===0?'起点':'终点'):(i===0?'Start':'End'));
+        tag.textContent=locale==='zh'?hant(i===0?'起':'终'):(i===0?'S':'E');
+        tag.setAttribute('aria-label',locale==='zh'?hant(i===0?'起点':'终点'):(i===0?'Start':'End'));
         el.appendChild(tag);
       }
-      if(m.stops.length>1)el.title=locale==='zh'?'多个营站共用区域坐标；实际位置未定':'Multiple camps share a regional coordinate; exact sites are uncertain.';
+      if(m.stops.length>1)el.title=locale==='zh'?hant('多个营站共用区域坐标；实际位置未定'):'Multiple camps share a regional coordinate; exact sites are uncertain.';
       el.style.display='none';
       this.root.appendChild(el);
       const leader=document.createElementNS(svg.namespaceURI,'line') as SVGLineElement;

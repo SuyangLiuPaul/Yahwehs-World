@@ -10,3 +10,5 @@ recordings/
 src-tauri/target/
 src-tauri/gen/
 src-tauri/icon-source.png
+.netlify/
+public/version.json

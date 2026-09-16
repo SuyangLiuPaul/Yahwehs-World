@@ -15,8 +15,8 @@
 
   <nav class="sitenav">
     <a class="brand" href="/">
-      <span class="zh">雅伟之界</span>
-      <span class="en">The Biblical Globe</span>
+      <span class="zh" data-zh-text="雅伟之界">雅伟之界</span>
+      <span class="en">Yahweh's World</span>
     </a>
     <ol>
       <li><a class="tab" href="/" data-en="Globe" data-zh="圣经世界">Globe</a></li>
@@ -24,7 +24,11 @@
       <li><a class="tab" href="/tabernacle.html" aria-current="page" data-en="Tabernacle" data-zh="走进会幕">Tabernacle</a></li>
     </ol>
     <span class="spacer"></span>
-    <button class="lang-switch" type="button">中文</button>
+    <div class="lang-switch" role="group" aria-label="Language / 语言">
+      <button type="button" data-locale="en" lang="en">EN</button>
+      <button type="button" data-locale="zh-Hans" lang="zh-Hans">简</button>
+      <button type="button" data-locale="zh-Hant" lang="zh-Hant">繁</button>
+    </div>
   </nav>
 
   <div id="gate">

@@ -11,7 +11,7 @@
      parchment right under it at any size, and tertiary grey on parchment is
      unreadable. Scoping the scrim to a phone breakpoint also left 760-900px
      with nothing at all. */
-  background: linear-gradient(180deg, #060d16e6 0%, #060d16a6 58%, transparent 100%);
+  background: var(--scrim);
 }
 .sitenav .brand {
   display: grid; gap: 1px; pointer-events: auto; text-decoration: none; flex: none;
@@ -34,22 +34,35 @@
   font-size: var(--fs-200); letter-spacing: var(--tr-cjk); color: var(--ink-3);
   transition: color .16s, border-color .16s, background .16s;
 }
-.sitenav a.tab:hover { color: var(--ink); border-color: var(--line); background: #0d1a2899; }
+.sitenav a.tab:hover { color: var(--ink); border-color: var(--line); background: var(--tab-hover); }
 .sitenav a.tab[aria-current="page"] {
-  color: var(--gold-bright); border-color: var(--line-gold); background: #c9a2271a;
+  color: var(--gold-bright); border-color: var(--line-gold); background: var(--gold-wash);
 }
 .sitenav a.tab:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
 .sitenav .spacer { flex: 1; }
+/* Three readings, all three visible. The old control was one button showing
+   the language you were NOT reading; with three that would hide two of them
+   behind a state you can only discover by pressing, and 繁體 is exactly the
+   one a 简体 reader would never go looking for. */
 .lang-switch {
-  pointer-events: auto; flex: none; position: relative;
-  background: transparent; color: var(--gold);
+  pointer-events: auto; flex: none; display: flex;
   border: 1px solid var(--line-gold); border-radius: var(--radius);
-  padding: var(--sp-1) var(--sp-3);
+  overflow: hidden;
+}
+.lang-switch button {
+  position: relative; margin: 0;
+  background: transparent; color: var(--ink-3);
+  border: 0; border-left: 1px solid var(--line-gold);
+  padding: var(--sp-1) var(--sp-2);
   font-family: var(--mono); font-size: var(--fs-100); font-weight: 500;
   letter-spacing: var(--tr-caps); cursor: pointer;
-  transition: background .18s, color .18s, border-color .18s;
+  transition: background .18s, color .18s;
 }
-.lang-switch:hover { background: #c9a2271a; color: var(--gold-bright); border-color: var(--gold); }
+.lang-switch button:first-child { border-left: 0; }
+.lang-switch button:hover { background: var(--gold-wash); color: var(--gold-bright); }
+.lang-switch button[aria-pressed="true"] { color: var(--gold-bright); background: var(--gold-wash); }
+/* 简/繁 want the Chinese face, not the mono Latin one. */
+.lang-switch button[lang^="zh"] { font-family: var(--ui); letter-spacing: 0; }
 .source-credit {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 20;
   height: 40px; display: flex; align-items: center; padding: var(--sp-1) var(--sp-3);
@@ -57,11 +70,11 @@
 }
 .source-credit p { margin: 0; }
 .source-credit a { color: inherit; }
-.lang-switch:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.lang-switch button:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
 /* Reaching a 44pt target without growing the bar. */
-.lang-switch::after {
+.lang-switch button::after {
   content: ''; position: absolute; left: 50%; top: 50%;
-  width: max(100%, 44px); height: 44px; transform: translate(-50%, -50%);
+  width: max(100%, 34px); height: 44px; transform: translate(-50%, -50%);
 }
 #settings-open {
   pointer-events: auto; flex: none; position: relative;
@@ -71,7 +84,7 @@
   font-size: var(--fs-400); line-height: 1; cursor: pointer;
   transition: background .18s, color .18s, border-color .18s;
 }
-#settings-open:hover { background: #c9a2271a; color: var(--gold-bright); border-color: var(--gold); }
+#settings-open:hover { background: var(--gold-wash); color: var(--gold-bright); border-color: var(--gold); }
 #settings-open:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 #settings-open[hidden] { display: none; }
 /* Reaching a 44pt target without growing the bar. */

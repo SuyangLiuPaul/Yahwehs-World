@@ -70,13 +70,6 @@ fi
 
 cd "$PROJECT"
 
-# public/version.json — Vite copies public/ verbatim into dist/, so this
-# lands at /version.json on every deployed site. Always the plain
-# release version, dev suffix or not: verify_site below and any future
-# post-deploy check must compare against the same clean string
-# src/updates.ts compares against.
-printf '{"version":"%s"}\n' "$APP_VERSION" >public/version.json
-
 RELEASE_VERIFY_SLEEP="${RELEASE_VERIFY_SLEEP:-5}"
 verify_site() {
   local name="$1" host="$2" served="" attempt
