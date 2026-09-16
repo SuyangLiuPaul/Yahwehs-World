@@ -63,6 +63,22 @@
   content: ''; position: absolute; left: 50%; top: 50%;
   width: max(100%, 44px); height: 44px; transform: translate(-50%, -50%);
 }
+#settings-open {
+  pointer-events: auto; flex: none; position: relative;
+  width: 30px; height: 30px; display: grid; place-items: center;
+  background: transparent; color: var(--gold);
+  border: 1px solid var(--line-gold); border-radius: 50%;
+  font-size: var(--fs-400); line-height: 1; cursor: pointer;
+  transition: background .18s, color .18s, border-color .18s;
+}
+#settings-open:hover { background: #c9a2271a; color: var(--gold-bright); border-color: var(--gold); }
+#settings-open:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+#settings-open[hidden] { display: none; }
+/* Reaching a 44pt target without growing the bar. */
+#settings-open::after {
+  content: ''; position: absolute; left: 50%; top: 50%;
+  width: 44px; height: 44px; transform: translate(-50%, -50%);
+}
 @media (max-width: 760px) {
   .sitenav { padding: var(--sp-2) var(--sp-3); gap: var(--sp-3); }
   .sitenav .brand .zh { font-size: var(--fs-300); letter-spacing: .08em; }

@@ -20,6 +20,7 @@ import { RouteThumbnail } from './route-thumbnail.ts';
 import { Scenes } from './scenes.ts';
 import { Cartography, measureMap } from './cartography.ts';
 import { applyStatic, bindSwitch, locale as currentLocale, onLocale } from './locale.ts';
+import { installUpdateChecker } from './updates.ts';
 import type { GeoJson, Place, PlacesBundle } from './types.ts';
 
 type Locale = 'zh' | 'en';
@@ -867,6 +868,7 @@ renderer.setAnimationLoop(() => {
 
 fitToViewport();
 applyStatic();
+installUpdateChecker();
 renderLegend();
 applyCursor();
 updateLayout();

@@ -13,6 +13,8 @@
     "data": "node scripts/build-places.mjs"
   },
   "dependencies": {
+    "@tauri-apps/api": "^2.11.1",
+    "@tauri-apps/plugin-opener": "^2.5.5",
     "three": "^0.185.1"
   },
   "devDependencies": {

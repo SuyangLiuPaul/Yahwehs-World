@@ -62,6 +62,37 @@ html[lang="zh-CN"] #r-name { font-family: var(--display); font-size: var(--fs-40
 #r-source-stops li { padding: var(--sp-2) 0; line-height: var(--lh-normal); }
 #r-source-stops small { display: block; font-size: var(--fs-200); color: var(--ink-2); }
 #r-source-stops a { color: var(--gold); }
+
+/* ── settings / update-check dialog — native shell only ──────────────────
+   Same dialog pattern as #r-sources: width capped, sticky header with the
+   negative-margin trick, design tokens throughout. src/updates.ts shows
+   #settings-open only when running inside Tauri, so this only ever opens
+   on a desktop/mobile build, never on the plain website. */
+#settings { width: min(420px, calc(100% - 24px)); max-height: 78dvh; padding: var(--sp-4); color: var(--ink); background: var(--surface); border: 1px solid var(--line-gold); border-radius: var(--radius); box-shadow: var(--shadow); }
+#settings::backdrop { background: color-mix(in srgb, var(--ground) 75%, transparent); }
+#settings header { position: sticky; top: calc(-1 * var(--sp-4)); z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); margin: calc(-1 * var(--sp-4)) calc(-1 * var(--sp-4)) 0; padding: var(--sp-2) var(--sp-4); background: var(--surface); border-bottom: 1px solid var(--line); }
+#settings h2 { margin: 0; font: 500 var(--fs-600) var(--latin); }
+#settings-close { min-width: 44px; width: 44px; height: 44px; margin: 0; padding: 0; display: grid; place-items: center; color: var(--ink-2); border: 1px solid transparent; background: transparent; cursor: pointer; border-radius: var(--radius); font-size: var(--fs-600); line-height: 1; }
+#settings-close:hover { color: var(--gold-bright); background: var(--surface-hi); }
+#settings-close:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: -3px; }
+#settings-version-row { display: flex; justify-content: space-between; align-items: baseline; margin: var(--sp-4) 0 0; }
+#settings-version-row dt { font: var(--fs-300) var(--ui); color: var(--ink-2); }
+#settings-version-row dd { margin: 0; font: var(--fs-300) var(--mono); color: var(--ink); }
+#settings-status { margin: var(--sp-2) 0 0; font: var(--fs-200)/var(--lh-snug) var(--ui); color: var(--ink-2); }
+#settings-status[data-state="update"] { color: var(--gold-bright); }
+#settings-status[data-state="error"] { color: #d99; }
+#settings-download { display: inline-block; margin: var(--sp-2) 0 0; padding: var(--sp-1) var(--sp-3); border: 1px solid var(--line-gold); border-radius: var(--radius); color: var(--gold-bright); font: var(--fs-200) var(--ui); text-decoration: none; }
+#settings-download:hover { background: #c9a2271a; border-color: var(--gold); }
+#settings-download[hidden] { display: none; }
+#settings-check-mode { margin: var(--sp-5) 0 0; padding: 0; border: 0; }
+#settings-check-mode legend { padding: 0 0 var(--sp-2); font: var(--fs-200) var(--ui); letter-spacing: var(--tr-caps); text-transform: uppercase; color: var(--ink-3); }
+#settings-check-mode label { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-1) 0; font: var(--fs-300) var(--ui); color: var(--ink); cursor: pointer; min-height: 44px; }
+#settings-check-mode input { accent-color: var(--gold); }
+.settings-note { margin: var(--sp-3) 0 0; padding: var(--sp-2) var(--sp-3); border-left: 2px solid var(--gold-dim); color: var(--ink-2); background: var(--surface-hi); font: var(--fs-100)/var(--lh-snug) var(--ui); }
+#settings-check-now { margin: var(--sp-4) 0 0; padding: var(--sp-1) var(--sp-4); min-height: 44px; border: 1px solid var(--line-gold); border-radius: var(--radius); background: transparent; color: var(--gold-bright); font: var(--fs-200) var(--ui); cursor: pointer; }
+#settings-check-now:hover { background: #c9a2271a; border-color: var(--gold); }
+#settings-check-now:disabled { opacity: .5; cursor: default; }
+#settings button:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: -3px; }
 .route-labels { z-index: 5; pointer-events: none; }
 .rlab { padding: 1px var(--sp-1); border: 1px solid var(--line-gold); background: var(--sea); font-family: var(--ui); font-size: var(--fs-100); line-height: var(--lh-tight); letter-spacing: 0; }
 .rlab span { font-family: var(--ui); }
