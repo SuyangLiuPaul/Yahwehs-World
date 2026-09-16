@@ -128,6 +128,48 @@ to clean it up for production ([3D AI Studio](https://www.3daistudio.com/3d-gene
 The generation is the cheap half; the cleanup is not, and nothing below assumes
 the meshes arrive usable.
 
+## Where to buy it — Higgsfield is the dearest door to the same room
+
+Checked 2026-09-16. The `image_to_3d` model used for the test reports
+`provider_name: "Meshy"`, and its animation previews are served from
+`cdn.meshy.ai`. **Higgsfield is reselling Meshy.** So the comparison is not
+between engines, it is between counters at the same engine.
+
+| | Mesh + texture | Rig + one clip | Notes |
+|---|---:|---:|---|
+| Higgsfield (`image_to_3d`) | 20 cr | **+18 cr** | measured here; Plus is $59/mo ÷ 1,200 cr ≈ **$0.05/credit**, top-ups $5/100 |
+| Meshy direct | 30 cr (20 mesh + 10 texture) | **free** | Meshy's published table; Pro $20/mo = 1,000 cr |
+
+Meshy charges nothing for auto-rigging and preset animations. That is the whole
+of Phase 2 and most of Phase 3 in the table above — the 312 credits for the clip
+set, and the 18-credit surcharge on each of the twelve characters.
+
+- **39 assets via Higgsfield** ≈ 1,450 credits ≈ **$72**, of which ~$50 is still
+  to buy against the 454.5 in hand.
+- **39 assets via Meshy** = 39 × 30 = 1,170 credits ≈ **two months of Pro, $40**,
+  and every extra animation clip after that is free.
+
+Two honest caveats before switching:
+
+1. The free-rigging figure is from Meshy's **web-app** credit guide. Meshy's API
+   is priced separately, and this project wants an API — check the API table
+   before assuming the saving survives.
+2. Higgsfield is reachable from this session as a tool; Meshy would need a key
+   and a small client. That convenience is what the ~$30 buys.
+
+**Free is also on the table for the animation half.** Mixamo still auto-rigs and
+animates humanoids for nothing, royalty-free for commercial use, and its rig is
+the same Mixamo-style skeleton the test found. It is in maintenance mode and
+browser-only — no API — so it suits a one-off library build better than a
+pipeline. Quaternius's Universal Animation Library is CC0 for the clips alone.
+
+**What ChatGPT and Gemini can and cannot do here.** Neither generates a rigged
+GLB. ChatGPT produces geometry only by writing OpenSCAD or a script, and reaches
+real meshes only by calling out to a 3D service over MCP — the same services
+below it. Gemini's "3D figurine" results are *images* of figurines. What both do
+well is the **reference image**, which is the 1-credit step and about 1% of the
+bill. Switching that saves nothing worth the change.
+
 ## Payload — the constraint that actually binds
 
 The site ships about 6 MB of data plus 2.4 MB of scenes today. Forty assets at
@@ -225,3 +267,7 @@ Stop after Phase 1 and look at it on a phone before spending Phase 2.
 - [Meshy vs Tripo — SelfCAD](https://www.selfcad.com/blog/meshy-vs-tripo)
 - [Three.js Asset Pipeline: glTF Optimisation](https://www.intelligentgraphicandcode.com/development/threejs-interfaces/asset-pipeline)
 - [Polycount Budgeting for Realtime Assets — Tripo3D](https://www.tripo3d.ai/blog/explore/polycount-budgeting-for-realtime-assets)
+- [Meshy credits guide — task costs, rigging and animation free](https://www.meshy.ai/tutorials/meshy-credits-guide)
+- [Higgsfield pricing 2026 — Plus at $59/mo for 1,200 credits](https://www.scopeful.org/blog/higgsfield-pricing-2026)
+- [Free character animation and auto-rigging: Mixamo and its alternatives (2026) — Cinevva](https://app.cinevva.com/guides/free-character-animations-rigging)
+- [Can ChatGPT create 3D models? — 3DAI Studio](https://www.3daistudio.com/blog/chatgpt-3d-models-ai-powered-alternatives)
