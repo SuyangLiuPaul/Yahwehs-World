@@ -5,6 +5,7 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 import { buildStructure, footprint, humanFigure } from './build.ts';
 import type { BranchForm } from './menorah.ts';
 import { applyStatic, bindSwitch, hant, onLocale } from '../locale.ts';
+import { installUpdateChecker } from '../updates.ts';
 
 // One WebGL context behind a scroll-snapped feed. Each card owns a structure;
 // scrolling swaps what the single scene holds, which keeps one context no
@@ -260,6 +261,7 @@ renderer.setAnimationLoop(() => {
 // chrome and the switch work, so a reader's choice carries to the pages that
 // are bilingual.
 bindSwitch(document.querySelector('.lang-switch') as HTMLElement);
+installUpdateChecker();
 applyStatic();
 // 简体 → 繁體 changes every Chinese string on this page, not just the
 // data-en/data-zh pairs applyStatic() handles.

@@ -53,6 +53,13 @@
   /* The scrim the fixed nav lays over whatever is behind it. A gradient, not
      a flat bar: the globe has to keep showing through. */
   --scrim: linear-gradient(180deg, #060d16e6 0%, #060d16a6 58%, transparent 100%);
+  /* The same job at the foot of the page, under the timeline. Without a
+     token this stayed dark while the ink above it went light, and the
+     credit line was dark-on-dark. */
+  --scrim-bottom: linear-gradient(180deg, transparent, #050b13ed 34%);
+  /* Floating panels: a gradient rather than a flat fill, so they read as
+     glass over the globe rather than as cut-outs. */
+  --panel: linear-gradient(180deg, #0e1d2ef7, #0a1622fa);
   /* A wash of the accent, for hover and pressed states on both grounds. */
   --gold-wash: #c9a2271a;
   --tab-hover: #0d1a2899;
@@ -102,6 +109,8 @@
     --gold-wash:    #8a6c1c1f;
     --tab-hover:    #00000010;
     --rbtn-hover:   #0000000d;
+    --scrim-bottom: linear-gradient(180deg, transparent, #efe8daf5 34%);
+    --panel: linear-gradient(180deg, #fbf7effa, #f4eee1fd);
   }
 }
 

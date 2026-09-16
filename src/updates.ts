@@ -1,6 +1,15 @@
 // Update check for the native shell (macOS/Windows/Android/iOS) only. The
-// plain website is always the current build — there is nothing to check —
-// so every entry point here is gated on isTauri() and no-ops on the web.
+// plain website is always the current build — there is nothing to check — so
+// this returns before touching the page unless it is running inside Tauri.
+//
+// The button and the dialog are built here rather than written into each
+// page's HTML. Three reasons, in order of how much trouble they saved: the
+// website never ships markup for a feature it cannot have; all three pages
+// get the same panel without three copies of it to keep in step; and the
+// button keeps its ⚙, which it did not when it carried data-en/data-zh —
+// applyStatic() sets textContent from those, so the glyph was replaced by
+// the word "Settings" in a 30px circle. The accessible name is an
+// aria-label now, which is what it should have been.
 //
 // Versioning contract (matches tools/release_web.sh and tools/bump_version.sh):
 //   - getVersion() (Tauri) reads tauri.conf.json's plain X.Y.Z. That is the
@@ -12,7 +21,7 @@
 import { isTauri } from '@tauri-apps/api/core';
 import { getVersion } from '@tauri-apps/api/app';
 import { openUrl } from '@tauri-apps/plugin-opener';
-import { t } from './locale.ts';
+import { applyStatic, onLocale, t } from './locale.ts';
 
 const REPO = 'SuyangLiuPaul/yahwehs-globe';
 const CHECK_KEY = 'ydh.update.mode';
@@ -62,10 +71,7 @@ function isNewer(latest: string, current: string): boolean {
   return lc > cc;
 }
 
-interface UpdateResult {
-  latest: string;
-  htmlUrl: string;
-}
+interface UpdateResult { latest: string; htmlUrl: string }
 
 async function fetchLatestRelease(): Promise<UpdateResult | null> {
   const res = await fetch(`https://api.github.com/repos/${REPO}/releases/latest`, {
@@ -73,92 +79,127 @@ async function fetchLatestRelease(): Promise<UpdateResult | null> {
   });
   if (!res.ok) return null;
   const data = await res.json() as { tag_name?: string; html_url?: string };
-  const tag = data.tag_name;
-  if (!tag) return null;
-  return { latest: tag.replace(/^v/, ''), htmlUrl: data.html_url ?? `https://github.com/${REPO}/releases` };
+  if (!data.tag_name) return null;
+  return {
+    latest: data.tag_name.replace(/^v/, ''),
+    htmlUrl: data.html_url ?? `https://github.com/${REPO}/releases`,
+  };
 }
 
-const checkingText = () => t('Checking…', '正在检查…');
-const upToDateText = () => t('You have the latest version.', '已是最新版本。');
-const errorText = () => t('Could not check for updates.', '无法检查更新。');
-const availableText = (v: string) => t(`Version ${v} is available.`, `发现新版本 ${v}。`);
+const MODE_LABELS: [CheckMode, string, string][] = [
+  ['launch', 'Every time the app opens', '每次打开时'],
+  ['daily', 'Once a day', '每天一次'],
+  ['weekly', 'Once a week', '每周一次'],
+  ['manual', 'Only when I ask', '仅手动检查时'],
+];
+
+function buildUI(mode: CheckMode) {
+  const openBtn = document.createElement('button');
+  openBtn.id = 'settings-open';
+  openBtn.type = 'button';
+  openBtn.textContent = '⚙';
+
+  const dialog = document.createElement('dialog');
+  dialog.id = 'settings';
+  dialog.innerHTML = `
+    <header>
+      <h2 id="settings-title" data-en="Settings" data-zh="设置">Settings</h2>
+      <button id="settings-close" type="button">×</button>
+    </header>
+    <dl id="settings-version-row">
+      <dt data-en="This app" data-zh="当前版本">This app</dt>
+      <dd id="settings-version"></dd>
+    </dl>
+    <p id="settings-status"></p>
+    <a id="settings-download" href="#" hidden data-en="Download the update" data-zh="下载更新">Download the update</a>
+    <fieldset id="settings-check-mode">
+      <legend data-en="Check for updates" data-zh="检查更新">Check for updates</legend>
+      ${MODE_LABELS.map(([value, en, zh]) => `
+      <label><input type="radio" name="update-mode" value="${value}"${value === mode ? ' checked' : ''}><span data-en="${en}" data-zh="${zh}">${en}</span></label>`).join('')}
+    </fieldset>
+    <p class="settings-note" data-en="Android installs still need one tap to confirm — the system will not install an update silently, even on automatic." data-zh="Android 上仍需手动点一下确认安装——即使选了自动，系统也不会静默安装。"></p>
+    <button id="settings-check-now" type="button" data-en="Check now" data-zh="立即检查">Check now</button>`;
+
+  document.querySelector('.sitenav')?.insertBefore(openBtn, document.querySelector('.lang-switch'));
+  document.body.append(dialog);
+
+  // The accessible names are not text content, so applyStatic cannot carry
+  // them; they are re-set whenever the reading changes.
+  const label = () => {
+    openBtn.setAttribute('aria-label', t('Settings', '设置'));
+    dialog.setAttribute('aria-label', t('Settings', '设置'));
+    dialog.querySelector('#settings-close')!.setAttribute('aria-label', t('Close settings', '关闭设置'));
+  };
+  label();
+  onLocale(label);
+  applyStatic(dialog);
+
+  return { openBtn, dialog };
+}
 
 export function installUpdateChecker() {
-  const openBtn = document.getElementById('settings-open');
-  if (!openBtn) return;
-  if (!isTauri()) return; // stays hidden — the website has no app to update
-
-  openBtn.hidden = false;
-
-  const dialog = document.getElementById('settings') as HTMLDialogElement | null;
-  const closeBtn = document.getElementById('settings-close');
-  const versionEl = document.getElementById('settings-version');
-  const statusEl = document.getElementById('settings-status');
-  const downloadLink = document.getElementById('settings-download') as HTMLAnchorElement | null;
-  const checkNowBtn = document.getElementById('settings-check-now') as HTMLButtonElement | null;
-  const modeInputs = Array.from(
-    document.querySelectorAll<HTMLInputElement>('#settings-check-mode input[name="update-mode"]'),
-  );
-  if (!dialog || !statusEl || !versionEl || !checkNowBtn) return;
+  if (!isTauri()) return; // the website has no app to update
+  if (document.getElementById('settings-open')) return;
 
   const mode = readMode();
-  for (const input of modeInputs) input.checked = input.value === mode;
-  for (const input of modeInputs) {
+  const { openBtn, dialog } = buildUI(mode);
+
+  const versionEl = dialog.querySelector('#settings-version') as HTMLElement;
+  const statusEl = dialog.querySelector('#settings-status') as HTMLElement;
+  const downloadLink = dialog.querySelector('#settings-download') as HTMLAnchorElement;
+  const checkNowBtn = dialog.querySelector('#settings-check-now') as HTMLButtonElement;
+
+  dialog.querySelectorAll<HTMLInputElement>('input[name="update-mode"]').forEach((input) => {
     input.addEventListener('change', () => { if (input.checked) writeMode(input.value as CheckMode); });
-  }
+  });
 
   openBtn.addEventListener('click', () => dialog.showModal());
-  closeBtn?.addEventListener('click', () => dialog.close());
+  dialog.querySelector('#settings-close')!.addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
 
-  // Tauri's WebView does not navigate an <a target="_blank"> to an external
-  // URL by itself — the release page is opened via the OS handler instead.
-  downloadLink?.addEventListener('click', (e) => {
+  // Tauri's WebView does not navigate to an external URL by itself; the
+  // release page is handed to the OS instead.
+  downloadLink.addEventListener('click', (e) => {
     e.preventDefault();
     if (downloadLink.href) void openUrl(downloadLink.href);
   });
 
   function setStatus(text: string, state?: 'update' | 'error') {
-    statusEl!.textContent = text;
-    if (state) statusEl!.dataset.state = state; else delete statusEl!.dataset.state;
-  }
-
-  async function runCheck(currentVersion: string) {
-    checkNowBtn!.disabled = true;
-    setStatus(checkingText());
-    try {
-      const result = await fetchLatestRelease();
-      stampChecked();
-      if (!result) { setStatus(upToDateText()); return; }
-      if (isNewer(result.latest, currentVersion)) {
-        setStatus(availableText(result.latest), 'update');
-        if (downloadLink) {
-          downloadLink.href = result.htmlUrl;
-          downloadLink.hidden = false;
-        }
-      } else {
-        setStatus(upToDateText());
-        if (downloadLink) downloadLink.hidden = true;
-      }
-    } catch {
-      setStatus(errorText(), 'error');
-    } finally {
-      checkNowBtn!.disabled = false;
-    }
+    statusEl.textContent = text;
+    if (state) statusEl.dataset.state = state; else delete statusEl.dataset.state;
   }
 
   let currentVersion = '';
-  checkNowBtn.addEventListener('click', () => { void runCheck(currentVersion); });
 
-  (async () => {
+  async function runCheck() {
+    checkNowBtn.disabled = true;
+    setStatus(t('Checking…', '正在检查…'));
+    try {
+      const result = await fetchLatestRelease();
+      stampChecked();
+      if (result && isNewer(result.latest, currentVersion)) {
+        setStatus(t(`Version ${result.latest} is available.`, `发现新版本 ${result.latest}。`), 'update');
+        downloadLink.href = result.htmlUrl;
+        downloadLink.hidden = false;
+      } else {
+        setStatus(t('You have the latest version.', '已是最新版本。'));
+        downloadLink.hidden = true;
+      }
+    } catch {
+      setStatus(t('Could not check for updates.', '无法检查更新。'), 'error');
+    } finally {
+      checkNowBtn.disabled = false;
+    }
+  }
+
+  checkNowBtn.addEventListener('click', () => { void runCheck(); });
+
+  void (async () => {
     currentVersion = await getVersion();
-    // VITE_DISPLAY_VERSION carries the dev-build suffix for a dev deploy and
+    // VITE_DISPLAY_VERSION carries the dev-build suffix for a dev build and
     // is absent on a release build — either way, display only, never
     // compared (see the contract note at the top of the file).
-    versionEl!.textContent = import.meta.env.VITE_DISPLAY_VERSION || currentVersion;
-
-    if (dueByMode(readMode())) {
-      await runCheck(currentVersion);
-    }
+    versionEl.textContent = import.meta.env.VITE_DISPLAY_VERSION || currentVersion;
+    if (dueByMode(readMode())) await runCheck();
   })();
 }

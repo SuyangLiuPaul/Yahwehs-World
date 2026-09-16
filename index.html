@@ -25,36 +25,12 @@
       <li><a class="tab" href="/tabernacle.html" data-en="Tabernacle" data-zh="走进会幕">Tabernacle</a></li>
     </ol>
     <span class="spacer"></span>
-    <!-- Only the native shell (macOS/Windows/Android/iOS) ever installs a
-         version that can go stale — the website is always the current
-         build. Hidden by default; src/updates.ts shows it once it has
-         confirmed via @tauri-apps/api that it is running inside Tauri. -->
-    <button id="settings-open" type="button" hidden aria-label="Settings" data-en="Settings" data-zh="设置">⚙</button>
     <div class="lang-switch" role="group" aria-label="Language / 语言">
       <button type="button" data-locale="en" lang="en">EN</button>
       <button type="button" data-locale="zh-Hans" lang="zh-Hans">简</button>
       <button type="button" data-locale="zh-Hant" lang="zh-Hant">繁</button>
     </div>
   </nav>
-
-  <dialog id="settings" aria-labelledby="settings-title">
-    <header><h2 id="settings-title" data-en="Settings" data-zh="设置">Settings</h2><button id="settings-close" type="button" aria-label="Close settings">×</button></header>
-    <dl id="settings-version-row">
-      <dt data-en="This app" data-zh="当前版本">This app</dt>
-      <dd id="settings-version"></dd>
-    </dl>
-    <p id="settings-status"></p>
-    <a id="settings-download" href="#" target="_blank" rel="noopener" hidden data-en="Download the update" data-zh="下载更新">Download the update</a>
-    <fieldset id="settings-check-mode">
-      <legend data-en="Check for updates" data-zh="检查更新">Check for updates</legend>
-      <label><input type="radio" name="update-mode" value="launch"><span data-en="Every time the app opens" data-zh="每次打开时">Every time the app opens</span></label>
-      <label><input type="radio" name="update-mode" value="daily"><span data-en="Once a day" data-zh="每天一次">Once a day</span></label>
-      <label><input type="radio" name="update-mode" value="weekly"><span data-en="Once a week" data-zh="每周一次">Once a week</span></label>
-      <label><input type="radio" name="update-mode" value="manual"><span data-en="Only when I ask" data-zh="仅手动检查时">Only when I ask</span></label>
-    </fieldset>
-    <p class="settings-note" data-en="Android installs still need one tap to confirm — the system will not install an update silently, even on automatic." data-zh="Android 上仍需手动点一下确认安装——即使选了自动，系统也不会静默安装。">Android installs still need one tap to confirm — the system will not install an update silently, even on automatic.</p>
-    <button id="settings-check-now" type="button" data-en="Check now" data-zh="立即检查">Check now</button>
-  </dialog>
 
   <aside id="panel" hidden>
     <button id="panel-close" type="button" aria-label="close">×</button>

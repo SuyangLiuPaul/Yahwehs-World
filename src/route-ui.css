@@ -136,6 +136,9 @@ html[lang^="zh"] #r-name { font-family: var(--display); font-size: var(--fs-400)
   #cartography { color: #ece2cd; filter: drop-shadow(0 1px 2px #060d16); }
   .scale-rule { border-color: #ece2cd; background: linear-gradient(90deg, #ece2cd 50%, #0b1a2b 50%); }
   #r-unlocated, .r-loading, .r-error { color: #a8b4c2; }
+  /* The caption lies on the painting itself, over its own dark gradient —
+     a caption on a picture is light-on-dark whatever the page around it is. */
+  #r-scene-art figcaption { color: #ece2cd; }
 }
 
 #region-labels{position:fixed;inset:0;pointer-events:none;z-index:1;}

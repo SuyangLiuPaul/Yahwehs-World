@@ -5,6 +5,7 @@ import { buildTabernacle } from './tabernacle.ts';
 import { Walker } from './controls.ts';
 import { Tour, TOUR } from './tour.ts';
 import { applyStatic, bindSwitch, hant, onLocale, t } from '../locale.ts';
+import { installUpdateChecker } from '../updates.ts';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
@@ -317,6 +318,7 @@ fit();
 
 // ── language ──────────────────────────────────────────────────────────────
 bindSwitch(document.querySelector('.lang-switch') as HTMLElement);
+installUpdateChecker();
 function applyLocale() {
   applyStatic();
   renderTally();
