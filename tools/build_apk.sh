@@ -149,6 +149,12 @@ for values, label in [("values", '"Yahweh\'s World"'), ("values-zh", '"雅伟之
     print(f"   {values}/strings.xml -> {label}")
 PY
 
+# Android's mipmaps live in the gitignored gen/ tree, so a fresh
+# `android init` would put Tauri's default icon back. Regenerated here
+# from the one master in brand/.
+echo "==> regenerating the app icons"
+cargo tauri icon "$PROJECT/brand/icon-1024.png" >/dev/null
+
 echo "==> building the release APK"
 cargo tauri android build --apk
 
