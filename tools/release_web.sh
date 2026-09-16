@@ -99,7 +99,12 @@ deploy_sites() {
   for entry in "$@"; do
     IFS=':' read -r id name host <<<"$entry"
     echo "==> deploying $name ($id)"
-    "$NETLIFY" deploy --prod --site "$id" --dir dist \
+    # --no-build is LOAD-BEARING. Without it the CLI runs netlify.toml's
+    # own `npm run build` and uploads THAT, discarding the bundle built
+    # above — and with it VITE_DISPLAY_VERSION, which only exists in this
+    # shell. The first run of this script deployed a bundle with no dev
+    # version in it and still reported success.
+    "$NETLIFY" deploy --prod --no-build --site "$id" --dir dist \
       --message "v$APP_VERSION $name" &
     pids+=("$!")
     names+=("$name")
