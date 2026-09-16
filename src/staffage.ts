@@ -36,6 +36,12 @@ function landMask(land:GeoJson){
     return pixels[(y*MASK_W+x)*4+3]!>128;
   };
 }
+/** A person's display scale, wherever a scene places one. One constant,
+ * not a number repeated at every call site: a passenger on the ship's deck
+ * is the same walker model as one on the road, and should read as the same
+ * size — reported directly against the map, where the ship crew stood out
+ * as visibly smaller than the very same figures a moment earlier on land. */
+const PERSON_SCALE = .72;
 export class Staffage {
   readonly group=new T.Group();
   private material=new T.MeshBasicMaterial({vertexColors:true,side:T.DoubleSide,transparent:true,opacity:0,depthWrite:false});
@@ -50,6 +56,7 @@ export class Staffage {
   private shipSlot:T.Object3D|null=null;
   private opacity=0;private time=0;private key='';private water=false;private maskAge=1;
   private p=new T.Vector3();private normal=new T.Vector3();private tangent=new T.Vector3();private side=new T.Vector3();private basis=new T.Matrix4();
+  private camLocal=new T.Vector3();private tiltAxis=new T.Vector3();private invQuat=new T.Quaternion();
   private onLand:(p:T.Vector3)=>boolean;
   /** Sea legs whose path is confidently open water, not a coastal hop that
    * happens to be tagged `sea` in the source text. A `sea` leg is a claim
@@ -101,9 +108,11 @@ export class Staffage {
   }
   constructor(land:GeoJson){
     this.onLand=landMask(land);this.group.add(this.batch.group);
-    // Cartographic miniatures have an oblique display tilt, not geographic size.
-    // Lift their display base so the tilt does not push feet under the sphere.
-    this.batch.group.rotation.x=.85;this.batch.group.position.y=1.3;
+    // Cartographic miniatures have an oblique display tilt, not geographic
+    // size — lifted so the tilt doesn't push their feet under the sphere.
+    // The tilt's own AXIS is computed per frame in update(), not fixed here:
+    // see TILT_AXIS there for why.
+    this.batch.group.position.y=1.3;
   }
   /** Grows the pool of loaded walker actors up to `n`, lazily and once — the
    * largest a scene ever asks for is 3 (Paul's land legs, the ship's deck),
@@ -168,6 +177,27 @@ export class Staffage {
     this.side.crossVectors(this.tangent,this.normal).normalize();this.tangent.crossVectors(this.normal,this.side).normalize();
     this.basis.makeBasis(this.tangent,this.normal,this.side);
     this.group.quaternion.setFromRotationMatrix(this.basis);this.group.position.copy(this.p);
+    // The oblique display tilt (see the constructor) has to lean the
+    // miniature toward whichever way the camera actually is, not toward a
+    // fixed local axis: a fixed axis is defined relative to `tangent`
+    // (direction of travel), and travel heads a different way at every
+    // marker — reported directly against Syracuse, on a leg heading roughly
+    // north, where the fixed tilt laid the figure on its side instead of
+    // leaning it forward. Rotate the camera direction into this group's own
+    // local frame, drop the vertical (normal) component to get "which way
+    // is the camera, along the ground", and tilt around the axis
+    // perpendicular to that — so the model's top always leans toward camera,
+    // whichever way it's currently facing.
+    this.invQuat.copy(this.group.quaternion).invert();
+    this.camLocal.copy(camera.position).sub(this.p).applyQuaternion(this.invQuat).normalize();
+    const groundLenSq=this.camLocal.x*this.camLocal.x+this.camLocal.z*this.camLocal.z;
+    if(groundLenSq>1e-6){
+      const s=1/Math.sqrt(groundLenSq);
+      this.tiltAxis.set(this.camLocal.z*s,0,-this.camLocal.x*s);
+      this.batch.group.quaternion.setFromAxisAngle(this.tiltAxis,.85);
+    }else{
+      this.batch.group.quaternion.identity(); // camera directly overhead: no ground direction to lean toward
+    }
     const scale=Math.max(.025,(dist-100)*2*Math.tan(T.MathUtils.degToRad(camera.fov/2))/Math.max(1,innerHeight)*16);
     this.group.scale.setScalar(scale);this.state.anchor=this.p.toArray();
     const exodus=route.journey.id==='exodus-wilderness';
@@ -202,7 +232,7 @@ export class Staffage {
         const hullDrawn=this.models.shipReady;
         if(hullDrawn){this.ensureShipSlot();if(this.shipSlot){this.shipSlot.visible=true;this.shipSlot.rotation.z=Math.sin(this.time*.8)*.035;}}
         this.batch.ship(this.time,hullDrawn,this.models.walkersReady,this.models.shipDeckY);
-        if(this.models.walkersReady)this.placeFigures(3,(i)=>[-.75+i*.7,this.models.shipDeckY,.27],.40,false,dt);
+        if(this.models.walkersReady)this.placeFigures(3,(i)=>[-.75+i*.7,this.models.shipDeckY,.27],PERSON_SCALE,false,dt);
         this.state.mode='sailing';this.state.ship=1;this.state.people=3;
       }
     }else if(!isSeaLeg||ordinal!==null||exodus||progress===0||progress>=1||inSeaMargin){
@@ -212,7 +242,7 @@ export class Staffage {
         for(let i=0;i<count;i++){
           const x=camping?(i%4-1.5)*.75:-(i%6)*.65;
           const z=camping?1.6+Math.floor(i/4)*.58:(Math.floor(i/6)-.5)*.85;
-          this.batch.person(x,z,this.time,i,.72,0,playing&&!camping);
+          this.batch.person(x,z,this.time,i,PERSON_SCALE,0,playing&&!camping);
         }
       }else{
         // Paul-style land travel: a loaded character wherever it has finished
@@ -220,7 +250,7 @@ export class Staffage {
         // 12-person camp muster above stays procedural on purpose — a dozen
         // identical rigged clones would read as a crowd of twins, not a
         // nation, and the InstancedMesh batch is what keeps that scene cheap.
-        this.placeFigures(count,(i)=>[-(i%6)*.65,0,(Math.floor(i/6)-.5)*.85],.72,playing&&!reducedMotion,dt);
+        this.placeFigures(count,(i)=>[-(i%6)*.65,0,(Math.floor(i/6)-.5)*.85],PERSON_SCALE,playing&&!reducedMotion,dt);
       }
       if(camping){for(let i=0;i<3;i++)this.batch.put('tent',(i-1)*2.05,0,-1,.65,0,0,Math.max(.03,tentScale));this.state.tents=3;}
       this.state.mode=camping?'camp':'walking';this.state.people=count;
