@@ -26,6 +26,10 @@ const SHIP_URL = 'models/roman-grain-ship-v1.glb';
  * call site to remember a correction that has nothing to do with the route. */
 const FACING_CORRECTION = Math.PI / 2;
 
+/** Playback rate for the canned Casual_Walk clip. 1.0 (its native rate) reads
+ * as marching rather than travelling — reported directly on this globe. */
+const WALK_RATE = 0.62;
+
 interface WalkerAsset { template: T.Object3D; clip: T.AnimationClip; scale: number; }
 
 function clampMetalness(root: T.Object3D) {
@@ -140,7 +144,12 @@ export class ActorModels {
     inner.scale.setScalar(asset.scale);
     const group = new T.Group(); group.add(inner);
     const mixer = new T.AnimationMixer(inner);
-    mixer.clipAction(asset.clip).play();
+    const action = mixer.clipAction(asset.clip);
+    // The canned Casual_Walk clip at its native rate reads as marching, not
+    // travelling — reported directly against this. The voyage-demo close
+    // scene (src/voyage-demo/main.ts) carries the same constant.
+    action.timeScale = WALK_RATE;
+    action.play();
     // Stagger the phase the way the procedural gait already does
     // (`index*.9` in ActorBatch.person), so cloned figures do not all step
     // in lockstep.
