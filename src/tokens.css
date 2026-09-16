@@ -82,50 +82,10 @@
   --latin:   'Spectral', Georgia, serif;
   --mono:    'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
 
-  color-scheme: light dark;
+  /* The globe is dark in both the sea and the night sky behind it, and it
+     does not repaint itself for a system setting — so neither does the
+     interface around it. A light chrome around a permanently dark map read
+     as two pale bands with a dark hole between them. The tabernacle walk
+     reached the same conclusion first, being the inside of a dark tent. */
+  color-scheme: dark;
 }
-
-/* ═══════════════════════════════════════════════════════════════════════
-   Light, following the reader's system. THE GLOBE DOES NOT CHANGE: the
-   dark sea, the parchment land and the gilded coast are the thing this
-   atlas looks like, and a map that repaints itself to match a system
-   setting is a different map. What changes is the chrome around it —
-   nav, panels, dialogs, the timeline — which is why the palette below
-   only restates the surface and ink tokens.
-
-   Anything drawn ON the globe is pinned back to its dark-ground values
-   further down: it sits over the same dark sea in both themes, so it
-   needs the same colours in both. Losing that is how a route label ends
-   up as dark ink on a dark sea.
-   ═══════════════════════════════════════════════════════════════════════ */
-@media (prefers-color-scheme: light) {
-  :root {
-    --ground:       #efe8da;
-    --surface:      #fbf7ef;
-    --surface-hi:   #f1e9d9;
-
-    --gold:         #7a5f14;
-    --gold-bright:  #6d5412;
-    --gold-dim:     #a68e48;
-
-    --ink:          #1d1710;
-    --ink-2:        #4c4437;
-    --ink-3:        #6d6454;
-    --ink-4:        #9c9481;
-
-    --line:         #ddd3bd;
-    --line-gold:    #8a6c1c40;
-
-    --shadow:       0 12px 40px #2a200f2e;
-    /* Opaque through the band the text sits in, fading only below it. The
-       dark theme can fade the whole way because its text is light against
-       a dark globe; here the text is dark and needs a ground of its own. */
-    --scrim: linear-gradient(180deg, #efe8da 0%, #efe8da 64%, #efe8da00 100%);
-    --gold-wash:    #8a6c1c1f;
-    --tab-hover:    #00000010;
-    --rbtn-hover:   #0000000d;
-    --scrim-bottom: linear-gradient(180deg, #efe8da00 0%, #efe8da 32%, #efe8da 100%);
-    --panel: linear-gradient(180deg, #fbf7effa, #f4eee1fd);
-  }
-}
-

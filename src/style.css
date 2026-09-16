@@ -91,13 +91,7 @@ body {
   color: var(--badge, currentColor);
 }
 .badge.disputed { --badge: #d98a5a; }
-/* The accent comes from the marker palette, which is mixed for the dark sea:
-   on parchment the gilded end of it is all but invisible. Mixing each one
-   toward the ink keeps the badge the colour of its own marker while it
-   stays readable — one rule rather than a second hand-picked palette. */
-@media (prefers-color-scheme: light) {
-  .badge { color: color-mix(in srgb, var(--badge, currentColor) 52%, #1d1710); }
-}
+
 #p-meta {
   margin: 0 0 var(--sp-4); display: grid; grid-template-columns: auto 1fr;
   gap: var(--sp-2) var(--sp-4); font-size: var(--fs-200);

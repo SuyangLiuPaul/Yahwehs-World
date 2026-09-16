@@ -1,5 +1,5 @@
-// Measures the contrast of every piece of text the interface actually shows,
-// in both themes, and names the ones a reader cannot comfortably read.
+// Measures the contrast of every piece of text the interface actually shows
+// and names the ones a reader cannot comfortably read.
 //
 // Light mode shipped half-done: the nav, the route card and the footer scrim
 // were checked by eye and the rest was assumed to follow. It did not — the
@@ -110,7 +110,10 @@ const measure = async (page) => page.evaluate(() => {
 
 const browser = await chromium.launch();
 let failures = 0;
-for (const scheme of ['light', 'dark']) {
+// One theme, since the app is dark throughout (src/tokens.css). Light is
+// still measured: if a light palette ever comes back, this catches the
+// half-themed state it would arrive in.
+for (const scheme of ['dark', 'light']) {
   const ctx = await browser.newContext({ colorScheme: scheme, viewport: { width: 1280, height: 800 } });
   const page = await ctx.newPage();
   for (const path of PAGES) {

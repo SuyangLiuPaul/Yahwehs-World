@@ -52,7 +52,12 @@ html[lang^="zh"] #r-name { font-family: var(--display); font-size: var(--fs-400)
 #r-card button:focus-visible, #map-tools button:focus-visible, #r-sources button:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: -3px; }
 #r-card button:hover:not(:disabled) { color: var(--gold-bright); background: var(--surface-hi); }
 #r-sources { width: min(560px, calc(100% - 24px)); max-height: 78dvh; padding: var(--sp-4); color: var(--ink); background: var(--surface); border: 1px solid var(--line-gold); border-radius: var(--radius); box-shadow: var(--shadow); }
-#r-sources::backdrop { background: color-mix(in srgb, var(--ground) 75%, transparent); }
+/* A modal dims what is behind it. In light mode --ground is parchment, so
+   this laid a pale veil over the globe and the whole map went to fog —
+   lighter, not dimmer, which reads as a rendering fault rather than a
+   dialog. The veil is dark in both themes, because what is behind it is
+   the globe, and the globe is dark in both. */
+#r-sources::backdrop { background: #060d16a8; }
 #r-sources header { position: sticky; top: calc(-1 * var(--sp-4)); z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); margin: calc(-1 * var(--sp-4)) calc(-1 * var(--sp-4)) 0; padding: var(--sp-2) var(--sp-4); background: var(--surface); border-bottom: 1px solid var(--line); }
 #r-sources h2 { margin: 0; font: 500 var(--fs-600) var(--latin); }
 #r-sources #r-range { display: block; margin: var(--sp-3) 0; }
@@ -69,7 +74,7 @@ html[lang^="zh"] #r-name { font-family: var(--display); font-size: var(--fs-400)
    #settings-open only when running inside Tauri, so this only ever opens
    on a desktop/mobile build, never on the plain website. */
 #settings { width: min(420px, calc(100% - 24px)); max-height: 78dvh; padding: var(--sp-4); color: var(--ink); background: var(--surface); border: 1px solid var(--line-gold); border-radius: var(--radius); box-shadow: var(--shadow); }
-#settings::backdrop { background: color-mix(in srgb, var(--ground) 75%, transparent); }
+#settings::backdrop { background: #060d16a8; }
 #settings header { position: sticky; top: calc(-1 * var(--sp-4)); z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); margin: calc(-1 * var(--sp-4)) calc(-1 * var(--sp-4)) 0; padding: var(--sp-2) var(--sp-4); background: var(--surface); border-bottom: 1px solid var(--line); }
 #settings h2 { margin: 0; font: 500 var(--fs-600) var(--latin); }
 #settings-close { min-width: 44px; width: 44px; height: 44px; margin: 0; padding: 0; display: grid; place-items: center; color: var(--ink-2); border: 1px solid transparent; background: transparent; cursor: pointer; border-radius: var(--radius); font-size: var(--fs-600); line-height: 1; }
@@ -81,7 +86,7 @@ html[lang^="zh"] #r-name { font-family: var(--display); font-size: var(--fs-400)
 #settings-status { margin: var(--sp-2) 0 0; font: var(--fs-200)/var(--lh-snug) var(--ui); color: var(--ink-2); }
 #settings-status[data-state="update"] { color: var(--gold-bright); }
 #settings-status[data-state="error"] { color: #d99; }
-@media (prefers-color-scheme: light) { #settings-status[data-state="error"] { color: #9c3a3a; } }
+
 #settings-download { display: inline-block; margin: var(--sp-2) 0 0; padding: var(--sp-1) var(--sp-3); border: 1px solid var(--line-gold); border-radius: var(--radius); color: var(--gold-bright); font: var(--fs-200) var(--ui); text-decoration: none; }
 #settings-download:hover { background: var(--gold-wash); border-color: var(--gold); }
 #settings-download[hidden] { display: none; }
@@ -120,25 +125,6 @@ html[lang^="zh"] #r-name { font-family: var(--display); font-size: var(--fs-400)
   #rplay { gap: var(--sp-2); }
   #r-thumbnail { width: 64px; height: 36px; }
   #map-tools { top: 50px; left: var(--sp-3); }
-}
-/* ── what sits ON the globe ───────────────────────────────────────────────
-   The globe does not follow the system theme (see src/tokens.css): its sea
-   is dark in both. Anything drawn over that sea therefore has to keep its
-   dark-ground colours in light mode, or it inherits the light palette's
-   dark ink and disappears into the water. The thumbnail overlays are here
-   for the same reason — they sit over a canvas painted with the same sea. */
-@media (prefers-color-scheme: light) {
-  .rlab { color: #ece2cd; background: #0b1a2b; border-color: #c9a2273d; }
-  .rlab b { color: #c9a227; }
-  .rlab.now { color: #0b1a2b; background: #e8c55a; border-color: #e8c55a; }
-  .rlab.now b { color: #0b1a2b; }
-  .route-leaders line { stroke: #c9a227; }
-  #cartography { color: #ece2cd; filter: drop-shadow(0 1px 2px #060d16); }
-  .scale-rule { border-color: #ece2cd; background: linear-gradient(90deg, #ece2cd 50%, #0b1a2b 50%); }
-  #r-unlocated, .r-loading, .r-error { color: #a8b4c2; }
-  /* The caption lies on the painting itself, over its own dark gradient —
-     a caption on a picture is light-on-dark whatever the page around it is. */
-  #r-scene-art figcaption { color: #ece2cd; }
 }
 
 #region-labels{position:fixed;inset:0;pointer-events:none;z-index:1;}
