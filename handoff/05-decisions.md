@@ -231,3 +231,20 @@ the way to jump precisely. `markers.setCursor`'s accumulation ("visited"
 brightness, gold highlight on what is current) does not care how the
 cursor arrived at an index, so neither removal changes what the map shows
 at any given point — only how a reader gets there.
+
+**D27 — "The last stop" means the last stop actually reached, not the
+largest stop number in the data.** Asked directly to run every journey
+through the standard set this round (measured before/after, not spot-
+checked): a full scan of all ten turned up one real gap D24/D26 had missed.
+Elijah's own two highest-numbered stops (Damascus, Abel-meholah, 1 Kings
+19:15-16) are `aside` - named as where he is told to go, never drawn as
+reached within this journey's own scope - and comparing straight against
+`journey.stopCount` pointed the arrival pose at Abel-meholah, a marker
+`valid` was already correctly refusing to draw at all. No seated figure
+ever appeared there; stepping to Elijah's own last stop card showed
+nothing, the exact bare-dot outcome D24 exists to prevent. Added
+`lastReachedStop`: the highest stop number that lands on a real,
+non-aside, coordinate-bearing marker, memoized per `Journey` object. Nine
+of the ten journeys have `lastReachedStop === stopCount` and are
+unaffected; Elijah's own arrival now lands on Horeb (stop 8), which is
+where the text actually leaves him standing.

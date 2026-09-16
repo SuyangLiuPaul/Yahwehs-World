@@ -1,7 +1,7 @@
 import * as T from 'three';
 import {sampleLeg, type PathLeg} from './route-path.ts';
 import {lonLatToVec3} from './globe.ts';
-import type {Route} from './routes.ts';
+import type {Route, Journey} from './routes.ts';
 import type {GeoJson} from './types.ts';
 import {ActorBatch} from './journey-actors/geometry.ts';
 import {ActorModels} from './journey-actors/models.ts';
@@ -104,6 +104,31 @@ export class Staffage {
       for(let f=.15;f<=.85+1e-9;f+=.1){sampleLeg(leg,f,tmp);samples++;if(!this.onLand(tmp))open++;}
       known=open/samples>=.5;
       this.navigableLegs.set(leg,known);
+    }
+    return known;
+  }
+  /** The highest stop number that actually lands on a reachable marker —
+   * not necessarily `journey.stopCount` itself, which is just the largest
+   * number in the data regardless of what kind of marker carries it.
+   * Elijah's own last two numbered stops (Damascus, Abel-meholah) are
+   * `aside`: named as where he is told to go, never shown as reached
+   * within this journey's own scope, so comparing straight against
+   * stopCount pointed the arrival pose at a marker `valid` was already
+   * correctly refusing to draw at all — no seated figure ever appeared
+   * there, contradicting the very design this was meant to serve (nothing
+   * on the route stays a bare dot; the last stop reads as arrived).
+   * Memoized per Journey object, lazily — a journey's own stops never
+   * change at runtime. */
+  private lastReachedStops=new WeakMap<Journey,number>();
+  private lastReachedStop(journey:Journey){
+    let known=this.lastReachedStops.get(journey);
+    if(known===undefined){
+      known=0;
+      for(const m of journey.markers){
+        if(m.aside||m.lat===null||m.lon===null)continue;
+        for(const s of m.stops)if(s>known)known=s;
+      }
+      this.lastReachedStops.set(journey,known);
     }
     return known;
   }
@@ -318,7 +343,7 @@ export class Staffage {
       // (a land leg mid-route, the sea-margin either side of a harbour):
       // arrived, not still travelling, so the figures sit rather than walk.
       // Exodus keeps its own camp/muster distinction instead.
-      const isFinalStop=!exodus&&(ordinal!==null?marker.stops.includes(route.journey.stopCount):progress>=1);
+      const isFinalStop=!exodus&&(ordinal!==null?marker.stops.includes(this.lastReachedStop(route.journey)):progress>=1);
       if(exodus){
         for(let i=0;i<count;i++){
           const x=camping?(i%4-1.5)*.75:-(i%6)*.65;
