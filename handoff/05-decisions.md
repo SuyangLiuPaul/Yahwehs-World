@@ -120,3 +120,72 @@ Style is fixed by one clause repeated verbatim in all sixteen prompts — muted
 indigo/parchment/gold, visible brushwork, not photorealistic, no lettering,
 figures small and distant. That repetition is the only thing making them look
 like one set; do not paraphrase it per scene.
+
+---
+
+*Added 2026-09-16, after a round of reports against the live map about the
+journey miniatures. Each of these was argued against a measurement, not a
+preference; the numbers are in the commits.*
+
+**D20 — The map's own miniatures are the close look. There is no separate
+close-up scene.** A full-screen scene — real water, a hull at human scale, a
+lit shore — was built and reachable from the ship while it sailed, then
+removed at the owner's word: zooming into a stylised close-up added nothing
+toward understanding the passage, and the prompt sitting on the map pulled
+attention off the geography. What earns its place at close range is the
+staffage itself, drawn on the map and legible there (D21). Painted scenes
+(D19) remain the way atmosphere is carried, because they are captioned as an
+artist's impression and live in the card, never on the geography.
+
+**D21 — Legibility is a screen-pixel budget, checked at the closest zoom the
+reader has.** `Staffage`'s group scale converts one local unit into a fixed
+number of screen pixels, so a figure's apparent size is the *same at every
+camera distance* — `controls.minDistance` is as close as anyone can get, and
+zooming further never makes an actor bigger. A legibility multiplier was
+raised to 2x, verified from a hand-placed debug camera at a convenient
+distance, and shipped still unreadable; the report came straight back. Any
+change to how large an actor draws is judged from a capture at
+`minDistance` with the app's real FOV, or it is not judged at all.
+
+**D22 — The oblique tilt leans toward the camera, not along the route.** The
+miniature stage is tilted so a reader sees more than the tops of heads. That
+tilt used to be a fixed rotation about the stage's local X — which is the
+direction of travel — so it leaned the figures forward on an eastbound leg
+and laid them on their side on a northbound one. The axis is now computed
+each frame from the camera's own bearing within the stage's local frame. A
+consequence worth keeping in mind: a pose is only real once judged under
+that tilt at the app's camera. A seated pose with level thighs looks right
+in an isolated side-on rig and splays out flat seen from above, which is
+where this map is actually read from.
+
+**D23 — `sea` is what the text says; the chord is not where the ship
+sailed.** A marker's `leg: "sea"` records the verb the passage uses. What
+`RoutePath` draws is a great-circle chord between two ports, which is not a
+pilot's course: it clips islets, hugs the shore for the length of a short
+coastal hop, and on one leg crosses 302 km of Asia Minor. So the hull is
+placed by geometry, never by the tag alone. A leg whose interior samples are
+mostly land is not sailed at all (Caesarea up the Levantine shore; Attalia
+to Antioch, which sits inland on the Orontes). Inside a leg that is sailed, a
+land span narrower than `SEA_GAP_KM` is the chord cutting a corner and the
+ship holds course; anything wider is real ground and the party walks it.
+Land and water are read from the same polygons the basemap paints, rasterised
+at the same resolution, so the mask can never call water what the drawn
+coastline shows as shore. A uniform coastal buffer was tried for this and
+reverted before it was committed: dilating land by even one pixel closes the
+Aegean and the Malta channel, which these routes sail.
+
+**D24 — Nothing on the route is ever a bare dot; the last stop is posed as
+arrived.** While a journey plays there is always a party on the line —
+walking, sailing, or seated. Two rules used to blank them. A sea leg whose
+current point read as land drew nothing (D23 now walks it). And any marker
+with `attested: false` suppressed the whole miniature — the larger of the
+two, because `markerAt` holds the last reached marker for the entire stretch
+that follows it, so one inferred waypoint erased the figures across 37% of
+Paul's second journey and 16% of Jesus' travels. Uncertainty about a stop is
+already carried twice, by `uncertainMat` on the marker and by the card's
+"inferred waypoint, not an explicitly recorded stop"; a third, unlabelled
+signal only reads as the people vanishing. `aside` and a missing coordinate
+still suppress, because those are structural — there is nowhere to stand a
+figure. At a journey's own last stop the figures are posed seated rather
+than walking, so arriving differs from passing through, on every journey
+rather than by special case.

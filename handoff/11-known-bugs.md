@@ -208,6 +208,23 @@ story inspectors are implemented; these do not close B28 or certify all event
 scenes. Photographic assets, full event choreography, birds/flocks and physical
 mobile testing remain open. See `BATCH-4.md` for exact reconstruction boundaries.
 
+**B30 — The "arrived" pose reads as kneeling, not sitting.** D24 poses the
+figures at a journey's last stop with a shallow hip bend and a sharp knee
+fold. A literal seated pose — thighs level, as if on a bench — was tried
+first and rejected: it reads correctly face-on but splays out flat under this
+map's near-overhead camera (D22). What ships is compact and clearly not
+mid-stride, but it is a kneel, and was reported as such rather than described
+as a sit. Open if a truer sit is wanted: it needs a pose authored against
+this camera, not against a side view.
+
+**B31 — A sailing hull may still cross a clipped sliver of land.** D23 sails
+through any land span narrower than `SEA_GAP_KM` because the great-circle
+chord clips islets and headlands the real voyage went around. Measured over
+Paul's four journeys, 6 of 301 sailing samples sit over such a sliver, each
+with open water within 25 km on both sides along the leg. Narrowing the
+constant re-introduces the blinking hull; the real fix is a sea route that
+is not a straight chord, which is a data question, not a rendering one.
+
 - Q1: Should the repo become public once SeekSparks-derived assets are
   replaced or licensed? (Today private for that reason.)
 - Q2: Year axis default — Thiele (SeekSparks) is the spine; should the UI
