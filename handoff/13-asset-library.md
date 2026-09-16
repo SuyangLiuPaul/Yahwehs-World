@@ -75,11 +75,37 @@ So a prop is **21** and a character is **39**.
 
 In three.js a skeleton and a clip are separate things: `AnimationMixer` will play
 any `AnimationClip` on any mesh whose bone names match. The rig here is a
-standard biped, so **clips should retarget across every character** — generate
-each character once, generate the clip set once, and share.
+standard biped, so clips should retarget across every character — generate each
+character once, generate the clip set once, and share.
 
-*This is not yet verified.* It is the first thing to test, because everything
-below turns on it.
+**Verified 2026-09-16. Clips retarget exactly.** Two characters were generated
+from two different reference images (a traveller, a shepherd) with
+`enable_rigging`, `enable_animation`, `animation_action_id: 30` (Casual_Walk)
+and `pose_mode: a-pose`, then compared:
+
+| | |
+|---|---|
+| Bones | 24 in both, **same names, same order, same parent chain** |
+| Naming | Mixamo-style — `Hips` `Spine` `Spine01` `Spine02` `LeftUpLeg` … `Head` |
+| Clip | `Armature\|Casual_Walk\|baselayer`, 4.233 s, 72 channels, 127 keyframes |
+| A's clip played on B's mesh | every sampled bone moves, and lands where it lands on A **to 4 dp at t = 0, 0.5 and 1.7** |
+| Heights | 1.688 m and 1.687 m |
+
+So the **1,450-credit path is the real one**: the clip set is generated once and
+shared, and a thirteenth character costs 39 credits later, not 39 plus a clip
+set. Scripts kept in the session scratchpad, not the repo — the finding is what
+matters, and it is here.
+
+Two things the test showed that the credit table does not:
+
+- The clip carries **translation, rotation and scale on all 24 bones**, so it
+  overwrites the rest pose completely. That is *why* the drift is zero — and it
+  also means **an animated character moves with the clip's proportions, not its
+  own**. Fine for twelve adults. A child archetype animated this way would walk
+  like a shrunken adult, so pose it statically instead.
+- **A-pose conversion drops held objects.** Both figures lost the staff and the
+  crook. Anything held must be a separate prop parented to the hand bone — which
+  is the better arrangement anyway, since one staff then serves every character.
 
 | | Credits |
 |---|---:|
@@ -111,7 +137,7 @@ Per-asset budgets, to be enforced in the build script and not by intention:
 
 | Class | Triangles | Texture | Target file |
 |---|---:|---:|---:|
-| Character | ≤ 4,000 | 256² atlas | **≤ 120 KB** |
+| Character | ≤ 4,000 | 256² atlas | **≤ 210 KB** |
 | Animal | ≤ 3,000 | 256² | ≤ 90 KB |
 | Vehicle | ≤ 8,000 | 512² | ≤ 200 KB |
 | Prop | ≤ 1,500 | 256² shared atlas | ≤ 50 KB |
@@ -119,8 +145,23 @@ Per-asset budgets, to be enforced in the build script and not by intention:
 
 That is ≈ 4 MB for the whole library, and nothing loads until a scene asks for
 it. `gltf-transform optimize --texture-compress webp --compress quantize
---simplify` already took the ship 5.82 MB → 869 KB; the same pass with tighter
-`--texture-size` and `--simplify-ratio` reaches these numbers.
+--simplify` already took the ship 5.82 MB → 869 KB.
+
+**The character row is now measured, and the first draft of it was wrong.** The
+traveller arrived at 7.05 MB and optimised to 293 KB — 246 KB with
+`--simplify-ratio 0.5`, not the 120 KB written here first. Where it goes:
+
+| | Bytes |
+|---|---:|
+| Mesh, skin weights, rest data | ~202 KB |
+| Animation clip | ~51 KB |
+| Texture (256² webp) | ~18 KB |
+
+The clip is a fifth of the file, and it is **the same 51 KB inside every
+character that ships with one**. So the build has to split them: one clip file
+fetched once, characters carrying mesh and skin only at ~200 KB each. Twelve
+characters plus eight clips is then ≈ 2.8 MB and the 4 MB total still holds —
+but only because of the split.
 
 **Do not use Draco.** It compresses further but downloads a wasm decoder at
 runtime; `EXT_texture_webp` and `KHR_mesh_quantization` are native to three.js
@@ -149,7 +190,7 @@ Three things already exist and should be extended rather than replaced.
 
 | Phase | What | Credits | Why first |
 |---|---|---:|---|
-| 0 | **Retarget test** — two characters, one shared clip, prove the skeletons match | 78 | Decides whether the bill is 1,450 or 2,550 |
+| 0 | ~~Retarget test~~ — **run 2026-09-16, passed** (2 reference images + 2 rigged characters) | 80 | Settled the bill at 1,450 |
 | 1 | Traveller + donkey + tent, wired into the exodus route's staffage | ~120 | 42 land stops; the highest-traffic asset in the project |
 | 2 | The 8 shared clips | 312 | Nothing else animates until these exist |
 | 3 | Remaining 9 characters | 351 | |
@@ -169,6 +210,10 @@ Stop after Phase 1 and look at it on a phone before spending Phase 2.
   value is that it is careful; a Mini-Football silhouette tells a reader it is
   not. That is the owner's call, but it should be made once, deliberately, and
   written down — not arrived at one asset at a time.
+- **Long garments tear when the leg swings.** The traveller's ankle-length robe
+  splits at the shin mid-stride: the skin weights bind the hem to the legs. It
+  reads acceptably at map distance and badly close up. Either keep robed figures
+  in the middle distance, or give the ones that walk knee-length tunics.
 - **Characters assert what the text does not say.** A face, an age, a skin tone,
   a garment. The caveat line already covers it, but the more detailed the model,
   the more the caveat is doing.
