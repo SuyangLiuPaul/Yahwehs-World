@@ -12,6 +12,11 @@ export const palette = {
   coast: '#c9a227',
   lake: '#16344d',
   river: '#2f5d7c',
+  // A band hugging every coast, lighter than the open sea. Real charts shade
+  // shallow water this way because it is where a ship actually runs aground;
+  // here it does the same job a satellite photo's turquoise shelf would, with
+  // no photograph in the loading path.
+  shallowWater: '#1f3f57',
   graticule: '#ffffff14',
 
   ink: '#1a1410',

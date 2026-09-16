@@ -52,5 +52,8 @@ export interface PlacesBundle {
 
 export interface GeoJson {
   type: string;
-  features: { geometry: { type: string; coordinates: unknown } | null }[];
+  features: {
+    geometry: { type: string; coordinates: unknown } | null;
+    properties?: Record<string, unknown>;
+  }[];
 }

@@ -43,18 +43,55 @@ function trace(ctx: CanvasRenderingContext2D, ring: number[][]) {
   }
 }
 
+/** A random value at every grid point, bilinearly sampled in between. Cheap
+ *  low-frequency noise: real parchment mottles in blotches the size of a
+ *  fingerprint, not grain the size of a pixel, and a value-noise grid several
+ *  hundred times coarser than the canvas is what makes that shape. */
+function makeValueNoise(gw: number, gh: number) {
+  const grid = new Float32Array(gw * gh);
+  for (let i = 0; i < grid.length; i++) grid[i] = Math.random() * 2 - 1;
+  return (u: number, v: number) => {
+    const gx = u * (gw - 1), gy = v * (gh - 1);
+    const x0 = Math.floor(gx), y0 = Math.floor(gy);
+    const x1 = Math.min(x0 + 1, gw - 1), y1 = Math.min(y0 + 1, gh - 1);
+    const fx = gx - x0, fy = gy - y0;
+    const a = grid[y0 * gw + x0]!, b = grid[y0 * gw + x1]!;
+    const c = grid[y1 * gw + x0]!, d = grid[y1 * gw + x1]!;
+    return (a + (b - a) * fx) * (1 - fy) + (c + (d - c) * fx) * fy;
+  };
+}
+
 /** Parchment grain. Real manuscript maps are never flat colour, and a little
- *  low-frequency noise is what keeps the land from reading as plastic. */
+ *  low-frequency mottling is what keeps the land from reading as plastic — the
+ *  old version added independent per-pixel white noise, which is closer to
+ *  television static than to a stained sheet, however small its amplitude. Two
+ *  octaves of value noise stand in for the coarse blotch a real skin has and
+ *  the finer mottling inside it. */
 function grain(ctx: CanvasRenderingContext2D) {
+  const coarse = makeValueNoise(48, 24);
+  const fine = makeValueNoise(160, 80);
   const img = ctx.getImageData(0, 0, W, H);
   const d = img.data;
-  for (let i = 0; i < d.length; i += 4) {
-    const n = (Math.random() - 0.5) * 14;
-    d[i] = Math.max(0, Math.min(255, d[i]! + n));
-    d[i + 1] = Math.max(0, Math.min(255, d[i + 1]! + n));
-    d[i + 2] = Math.max(0, Math.min(255, d[i + 2]! + n));
+  for (let y = 0; y < H; y++) {
+    const v = y / H;
+    for (let x = 0; x < W; x++) {
+      const u = x / W;
+      const n = coarse(u, v) * 11 + fine(u, v) * 5;
+      const i = (y * W + x) * 4;
+      d[i] = Math.max(0, Math.min(255, d[i]! + n));
+      d[i + 1] = Math.max(0, Math.min(255, d[i + 1]! + n));
+      d[i + 2] = Math.max(0, Math.min(255, d[i + 2]! + n));
+    }
   }
   ctx.putImageData(img, 0, 0);
+}
+
+/** Natural Earth's importance rank for a river, 1 (the Nile) to 6 (a
+ *  tributary too small to name). Lower is more important; a feature with no
+ *  rank at all is drawn at the thin end rather than dropped. */
+function riverWidth(f: GeoJson['features'][number]): number {
+  const rank = Math.min(6, Math.max(1, Number(f.properties?.scalerank ?? 6)));
+  return 2.6 + (0.6 - 2.6) * ((rank - 1) / 5);
 }
 
 export function paintBasemap(layers: {
@@ -67,7 +104,18 @@ export function paintBasemap(layers: {
   ctx.fillStyle = palette.sea;
   ctx.fillRect(0, 0, W, H);
 
-  // Land first, as solid parchment.
+  // Shallow water: three concentric strokes of the coastline, wide and faint,
+  // fading from a lighter blue into the open sea. Drawn before land so the
+  // land-side half of each stroke is simply painted over — only the seaward
+  // half of the band survives, which is the only half a chart would ever draw.
+  ctx.strokeStyle = palette.shallowWater; ctx.lineJoin = 'round';
+  for (const [width, alpha] of [[26, 0.16], [15, 0.24], [7, 0.34]] as const) {
+    ctx.lineWidth = width; ctx.globalAlpha = alpha;
+    for (const f of layers.coastline.features) eachRing(f.geometry, (ring) => { trace(ctx, ring); ctx.stroke(); });
+  }
+  ctx.globalAlpha = 1;
+
+  // Land, as solid parchment, on top of the shallow bands.
   ctx.fillStyle = palette.land;
   for (const f of layers.land.features) {
     eachRing(f.geometry, (ring) => { trace(ctx, ring); ctx.closePath(); ctx.fill(); });
@@ -78,8 +126,13 @@ export function paintBasemap(layers: {
   for (const f of layers.lakes.features) {
     eachRing(f.geometry, (ring) => { trace(ctx, ring); ctx.closePath(); ctx.fill(); });
   }
-  ctx.strokeStyle = palette.river; ctx.lineWidth = 1.6; ctx.lineJoin = 'round';
-  for (const f of layers.rivers.features) eachRing(f.geometry, (ring) => { trace(ctx, ring); ctx.stroke(); });
+  // Each river at its own width — the Nile and a nameless wadi were the same
+  // 1.6px before, which is honest about neither of them.
+  ctx.strokeStyle = palette.river; ctx.lineJoin = 'round';
+  for (const f of layers.rivers.features) {
+    ctx.lineWidth = riverWidth(f);
+    eachRing(f.geometry, (ring) => { trace(ctx, ring); ctx.stroke(); });
+  }
 
   // The gilded coast goes on last so nothing paints over it.
   ctx.strokeStyle = palette.coast; ctx.lineWidth = 2.2;
