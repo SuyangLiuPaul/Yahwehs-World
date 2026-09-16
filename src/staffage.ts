@@ -125,7 +125,27 @@ export class Staffage {
     const scale=Math.max(.025,(dist-100)*2*Math.tan(T.MathUtils.degToRad(camera.fov/2))/Math.max(1,innerHeight)*16);
     this.group.scale.setScalar(scale);this.state.anchor=this.p.toArray();
     const exodus=route.journey.id==='exodus-wilderness';
-    if(leg?.sea&&ordinal===null&&progress>leg.from&&progress<leg.to){
+    // The land mask is a coarse 0.25°/pixel raster with no margin: a point one
+    // pixel offshore already reads as water, which is not far enough for a
+    // hull twice the old procedural size (SHIP_LEGIBILITY, journey-actors/
+    // models.ts) to clear a harbour visually — reported directly against
+    // Caesarea on the live map. A uniform buffer on the mask itself was tried
+    // and reverted: dilating land by even one pixel bridges real, narrow-but-
+    // navigable sea gaps the app's own routes sail through (mid-Aegean, the
+    // Malta channel). So the fix is temporal, not spatial — soften the
+    // first/last stretch of a sea leg's own progress span, sized in real
+    // kilometres (`leg.angle` is the raw great-circle radians for just this
+    // leg, unnormalized by RoutePath's own progress scaling — see
+    // route-path.ts) rather than a flat percentage, so a 900km crossing and a
+    // 60km hop both get roughly the same physical clearance near harbour
+    // instead of wildly different ones. Capped at 35% per side so a very
+    // short sea leg still keeps a real sailing window in its middle.
+    const HARBOR_BUFFER_KM=20;
+    const legKm=leg?leg.angle*6371.0088:0;
+    const marginFrac=leg&&legKm>0?Math.min(.35,HARBOR_BUFFER_KM/legKm):0;
+    const seaMargin=leg?(leg.to-leg.from)*marginFrac:0;
+    const inSeaMargin=!!(leg?.sea&&ordinal===null&&(progress<=leg.from+seaMargin||progress>=leg.to-seaMargin));
+    if(leg?.sea&&ordinal===null&&!inSeaMargin&&progress>leg.from&&progress<leg.to){
       this.maskAge+=dt;if(this.maskAge>.1){this.water=!this.onLand(this.p);this.maskAge=0;}
       if(this.water){
         const hullDrawn=this.models.shipReady;
@@ -134,7 +154,7 @@ export class Staffage {
         if(this.models.walkersReady)this.placeFigures(3,(i)=>[-.75+i*.7,this.models.shipDeckY,.27],.40,false,dt);
         this.state.mode='sailing';this.state.ship=1;this.state.people=3;
       }
-    }else if(!leg?.sea||ordinal!==null||exodus||progress===0||progress>=1){
+    }else if(!leg?.sea||ordinal!==null||exodus||progress===0||progress>=1||inSeaMargin){
       const count=exodus?12:route.journey.id==='elijah'?1:3;
       const camping=exodus&&campPhase!=='travel'&&(ordinal!==null||!playing);
       if(exodus){
