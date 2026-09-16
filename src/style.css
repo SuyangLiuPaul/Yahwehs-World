@@ -263,19 +263,39 @@ body {
   gap: var(--sp-4); margin-bottom: var(--sp-2);
 }
 .reading { display: flex; align-items: center; gap: var(--sp-3); min-width: 0; }
-#t-play {
-  background: transparent; color: var(--gold); border: 1px solid var(--line-gold);
-  border-radius: 50%; width: 26px; height: 26px; flex: none; padding: 0;
-  font-size: var(--fs-100); cursor: pointer; display: grid; place-content: center;
-  transition: background .18s, color .18s;
-}
-#t-play:hover { background: #c9a2271a; color: var(--gold-bright); }
-#t-play.playing { color: var(--gold-bright); border-color: #e8c55a80; }
-#t-play:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 #t-ref {
   flex: none; font-family: var(--display); font-size: var(--fs-500);
   font-weight: 600; letter-spacing: .06em; line-height: var(--lh-tight);
 }
+
+#t-goto-open {
+  flex: none; background: transparent; color: var(--ink-3);
+  border: 1px solid var(--line-gold); border-radius: 999px;
+  padding: 3px var(--sp-2); font-size: var(--fs-100); letter-spacing: var(--tr-cjk);
+  cursor: pointer; transition: color .18s, border-color .18s;
+}
+#t-goto-open:hover, #t-goto-open[aria-expanded="true"] { color: var(--gold-bright); border-color: var(--gold); }
+#t-goto-open:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* A compact book/chapter/verse picker, not the routes nav's open/active
+   states — this only ever has one thing to do: pick a verse and jump. */
+#t-goto {
+  display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap;
+  margin: var(--sp-2) 0; padding: var(--sp-2) var(--sp-3);
+  background: #0e1d2ec0; border: 1px solid var(--line-gold); border-radius: var(--radius);
+}
+#t-goto[hidden] { display: none; }
+#t-goto select {
+  background: #050b13; color: var(--ink); border: 1px solid var(--line-gold);
+  border-radius: 4px; padding: 3px var(--sp-2); font: var(--fs-200) var(--ui);
+  letter-spacing: var(--tr-cjk); max-width: 40vw;
+}
+#t-goto select:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+#t-goto-close {
+  margin-left: auto; background: transparent; color: var(--ink-3); border: none;
+  font-size: var(--fs-400); line-height: 1; cursor: pointer; padding: 0 var(--sp-1);
+}
+#t-goto-close:hover { color: var(--gold-bright); }
 #t-here {
   color: var(--ink-2); font-size: var(--fs-200); min-width: 0;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
@@ -334,8 +354,8 @@ body {
 
   /* Touch targets. The visual sizes are right for the type; the hit areas were
      not — 19px for the route's close control is a miss waiting to happen. */
-  #lang, #r-toggle, #t-play, #r-open { position: relative; }
-  #lang::after, #r-toggle::after, #t-play::after, #r-open::after {
+  #lang, #r-toggle, #r-open { position: relative; }
+  #lang::after, #r-toggle::after, #r-open::after {
     content: ''; position: absolute; left: 50%; top: 50%;
     width: max(100%, 44px); height: 44px; transform: translate(-50%, -50%);
   }

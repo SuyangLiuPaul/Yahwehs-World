@@ -27,7 +27,8 @@ set -o pipefail; npm run build   # tsc --noEmit && vite build; pipefail or a pip
 - DEV: `window.__globe.openRoute('paul-1')`, `window.__globe.tickRoute(0.05)`,
   `window.__walk.tour.stop()` then set a pose; `window.__structures.show(i, m)`.
 - PROD (no handles): `document.querySelector('[data-id="paul-1"]').click()`,
-  the language button (text 中文/EN), `#rplay`, `#t-play`.
+  the language button (text 中文/EN), `#rplay`, `#t-goto-open`/`#t-goto-book`/
+  `#t-goto-chapter`/`#t-goto-verse` for the reference picker.
 - Journeys ids: `paul-1 paul-2 paul-3 paul-rome exodus-wilderness jesus-mark jacob abraham ark elijah`.
 
 ## The bar a fix has to clear

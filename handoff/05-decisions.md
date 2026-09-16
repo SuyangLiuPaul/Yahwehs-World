@@ -212,3 +212,22 @@ roughly 15-26 minutes (measured against 874 stops' dwell and flight time),
 longer than the old raw scrub's 13 minutes — expected and not a regression:
 nothing was ever going to be watched start to finish in one sitting, and
 what changed is that each stop now holds long enough to read.
+
+**D26 — The canon-wide autoplay is gone; `t-goto` (book/chapter/verse) is
+how a reader gets to a specific place in the timeline.** D25 fixed the
+autoplay camera's jitter and made it stop only at first mentions — real
+work, and the fix stands as the record of what was actually wrong with
+`follow()`. But once it stopped jittering, the underlying question surfaced
+plainly: a 15-26 minute unattended pan through the whole canon was never
+going to be watched, and reported as such directly. What a reader actually
+wants from this bar is to get to a specific verse, not to watch one. Added
+`t-goto`: three selects (book, chapter, verse) built off the same
+`bundle.events` the slider scrubs, offering only combinations that actually
+carry a place, so no choice ever leads nowhere. Removed `#t-play` and every
+line that existed only to serve it — `firstMentionStops`, `beginFlight`,
+`follow`, the whole flight/dwell state machine, `userDriving`. The manual
+slider is untouched and is now the only way to scrub freely; `t-goto` is
+the way to jump precisely. `markers.setCursor`'s accumulation ("visited"
+brightness, gold highlight on what is current) does not care how the
+cursor arrived at an index, so neither removal changes what the map shows
+at any given point — only how a reader gets there.

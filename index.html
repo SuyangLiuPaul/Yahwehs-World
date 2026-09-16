@@ -96,13 +96,19 @@
   <footer id="timeline">
     <div class="readout">
       <div class="reading">
-        <button id="t-play" type="button" aria-label="play">▶</button>
+        <button id="t-goto-open" type="button" data-en="Go to…" data-zh="经文定位…" aria-haspopup="true" aria-expanded="false"></button>
         <span id="t-ref"></span>
         <span id="t-here"></span>
       </div>
       <span id="t-count"></span>
     </div>
     <input id="t-range" type="range" min="0" max="1" value="1" step="1">
+    <div id="t-goto" hidden>
+      <select id="t-goto-book" aria-label="Book"></select>
+      <select id="t-goto-chapter" aria-label="Chapter"></select>
+      <select id="t-goto-verse" aria-label="Verse"></select>
+      <button id="t-goto-close" type="button" aria-label="Close">×</button>
+    </div>
     <div class="legend" id="legend"></div>
     <p class="credit">
       <span data-en="Place data" data-zh="地名数据">Place data</span>

@@ -280,7 +280,6 @@ function clearRoute() {
 }
 
 function openRoute(id: string) {
-  stop();
   clearRoute();
   const jr = journeyData.journeys.find((x) => x.id === id);
   if (!jr) return;
@@ -637,43 +636,18 @@ function advanceRoute(dt: number) {
 
 // ── timeline ──────────────────────────────────────────────────────────────
 // One step per verse that names a place: 5,582 of them, in canonical order.
-// The slider below scrubs every one of them at full precision — that stays
-// exact. Autoplay is a different question and used to walk the same raw
-// list at a fixed 7 verses/second: reported directly against the live map
-// as the camera "moving back and forth" for no legible reason. The actual
-// mechanism was `follow()` chasing the average position of whatever the
-// cursor sat on, recomputed every frame — when a stretch of consecutive
-// verses names scattered places (a genealogy, an oracle against a foreign
-// nation, an epistle's greetings), that average itself jitters, and a
-// camera lerping toward a jittering target never arrives anywhere.
-//
-// The fix is two changes, not one. Autoplay now stops only at a verse that
-// names a place for the first time in canonical order — 874 of the 5,582
-// (measured), still touching every one of the atlas's 1,332 places exactly
-// once, but skipping the repeat mentions that were producing motion with
-// nothing new to look at. And the camera no longer chases a moving target
-// at all: each stop commits to one destination and flies an eased great-
-// circle arc to it once, the way `Camera.flyTo` works in Cesium or Mapbox,
-// rather than an unbounded per-frame lerp that only ever approaches.
+// The slider scrubs every one of them at full precision. There used to also
+// be an autoplay that walked the canon on its own — first at a raw 7
+// verses/second (reported as the camera "moving back and forth" for no
+// legible reason, since consecutive verses often name scattered places and
+// a camera lerping toward their jittering average never arrives anywhere),
+// then reworked to stop only at first mentions and fly a single eased arc
+// per stop. Removed rather than tuned further: reported directly that
+// nobody was going to sit through it, and `t-goto` below (pick a verse and
+// jump straight to it) is the actual thing a reader wants from this bar.
 const range = $<HTMLInputElement>('t-range');
 range.max = String(bundle.events.length - 1);
 range.value = range.max;
-
-/** Every event index that names a place the canon has not named before this
- *  point. Computed once, off the same `bundle.events` the slider already
- *  scrubs — not a separate curated list, so it can never drift out of sync
- *  with the underlying data the way a hand-maintained "highlights" file
- *  would the next time SeekSparks regenerates it. */
-const firstMentionStops: number[] = (() => {
-  const named = new Uint8Array(bundle.places.length);
-  const stops: number[] = [];
-  bundle.events.forEach((ev, i) => {
-    let isNew = false;
-    for (const p of ev.p) { if (!named[p]) { named[p] = 1; isNew = true; } }
-    if (isNew) stops.push(i);
-  });
-  return stops;
-})();
 
 function applyCursor() {
   const i = Number(range.value);
@@ -692,99 +666,98 @@ function applyCursor() {
   $('t-count').textContent = T.places[locale](markers.visibleCount);
   if (selected && !markers.isVisible(bundle.places.indexOf(selected))) closePanel();
 }
-range.addEventListener('input', () => { if(route)clearRoute(); stop(); applyCursor(); });
+range.addEventListener('input', () => { if(route)clearRoute(); applyCursor(); });
 
-// ── playback ──────────────────────────────────────────────────────────────
-/** Seconds spent sitting at a stop before the next flight departs — long
- *  enough to actually read `t-ref`/`t-here` before the camera moves again. */
-const DWELL_S = .6;
-/** Flight duration is proportional to how far the camera has to turn, inside
- *  these bounds: a neighbouring stop should not get the same travel time as
- *  a jump clear across the map, but nothing should snap instantly either. */
-const MIN_FLIGHT_S = .5, MAX_FLIGHT_S = 2.6;
-let playing = false;
-let dwell = 0;
-const playBtn = $('t-play');
+// ── go to book / chapter / verse ─────────────────────────────────────────
+// Reported directly: scrubbing 5,582 raw events by dragging a slider to find
+// one specific verse is not really navigation. Built off the same
+// bundle.events the slider and autoplay already use, indexed book -> chapter
+// -> verse, so the three selects below can only ever offer a combination
+// that actually has a place to jump to — there is no book, chapter or verse
+// choice here that leads nowhere.
+const gotoIndex = new Map<number, Map<number, { verse: number; idx: number }[]>>();
+bundle.events.forEach((ev, i) => {
+  const book = bookOf(ev.sort);
+  const chapter = Math.floor((ev.sort % 1_000_000) / 1000);
+  const verse = ev.sort % 1000;
+  let chapters = gotoIndex.get(book);
+  if (!chapters) { chapters = new Map(); gotoIndex.set(book, chapters); }
+  let verses = chapters.get(chapter);
+  if (!verses) { verses = []; chapters.set(chapter, verses); }
+  verses.push({ verse, idx: i });
+});
 
-function play() {
-  if(route)clearRoute();
-  // Restarting from the end would show nothing move, so rewind first.
-  if (Number(range.value) >= bundle.events.length - 1) { range.value = '0'; applyCursor(); }
-  playing = true; dwell = 0; flying = false;
-  playBtn.textContent = '❚❚';
-  playBtn.classList.add('playing');
+const gotoOpenBtn = $('t-goto-open');
+const gotoPanel = $('t-goto');
+const gotoBookSel = $<HTMLSelectElement>('t-goto-book');
+const gotoChapterSel = $<HTMLSelectElement>('t-goto-chapter');
+const gotoVerseSel = $<HTMLSelectElement>('t-goto-verse');
+const gotoCloseBtn = $('t-goto-close');
+
+function fillOptions(sel: HTMLSelectElement, values: { value: string; label: string }[]) {
+  sel.innerHTML = '';
+  for (const v of values) {
+    const opt = document.createElement('option');
+    opt.value = v.value; opt.textContent = v.label;
+    sel.appendChild(opt);
+  }
 }
-function stop() {
-  playing = false;
-  playBtn.textContent = '▶';
-  playBtn.classList.remove('playing');
+function populateGotoBooks(loc: Locale = locale) {
+  fillOptions(gotoBookSel, [...gotoIndex.keys()].sort((a, b) => a - b)
+    .map((b) => ({ value: String(b), label: bookName(b, loc) })));
 }
-playBtn.addEventListener('click', () => (playing ? stop() : play()));
-
-/** The next `firstMentionStops` entry strictly after wherever the cursor
- *  currently sits — a binary search, not an indexed pointer, so scrubbing
- *  the slider by hand while paused and then pressing play resumes from
- *  there rather than from wherever autoplay last left off. */
-function nextStop(afterIndex: number): number | null {
-  let lo = 0, hi = firstMentionStops.length;
-  while (lo < hi) { const mid = (lo + hi) >> 1; if (firstMentionStops[mid]! <= afterIndex) lo = mid + 1; else hi = mid; }
-  return lo < firstMentionStops.length ? firstMentionStops[lo]! : null;
+function populateGotoChapters() {
+  const chapters = gotoIndex.get(Number(gotoBookSel.value));
+  if (!chapters) return;
+  fillOptions(gotoChapterSel, [...chapters.keys()].sort((a, b) => a - b)
+    .map((c) => ({ value: String(c), label: String(c) })));
 }
-
-function advance(dt: number) {
-  if (!playing || flying) return;
-  dwell -= dt;
-  if (dwell > 0) return;
-  const next = nextStop(Number(range.value));
-  if (next === null) { stop(); return; }
-  range.value = String(next);
+function populateGotoVerses() {
+  const verses = gotoIndex.get(Number(gotoBookSel.value))?.get(Number(gotoChapterSel.value));
+  if (!verses) return;
+  fillOptions(gotoVerseSel, verses.map((v) => ({ value: String(v.idx), label: String(v.verse) })));
+}
+function jumpToGotoSelection() {
+  if (route) clearRoute();
+  range.value = gotoVerseSel.value;
   applyCursor();
-  beginFlight();
 }
+gotoBookSel.addEventListener('change', () => { populateGotoChapters(); populateGotoVerses(); jumpToGotoSelection(); });
+gotoChapterSel.addEventListener('change', () => { populateGotoVerses(); jumpToGotoSelection(); });
+gotoVerseSel.addEventListener('change', jumpToGotoSelection);
 
-// The canon ranges from Tarshish to Persia, so without a following camera
-// half of playback would happen on the far side of the globe. It yields the
-// moment the user grabs the globe, and never overrides a manually open route.
-let userDriving = false;
-controls.addEventListener('start', () => { userDriving = true; });
-controls.addEventListener('end', () => { userDriving = false; });
-
-let flying = false;
-let flightT = 0, flightDuration = 0;
-const flightFrom = new THREE.Vector3(), flightTo = new THREE.Vector3();
-const flightAxis = new THREE.Vector3();
-let flightAngle = 0;
-
-function easeInOutCubic(t: number) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
-
-/** Commits to a single flight toward the average of the places the cursor
- *  just landed on, over the sphere (a great-circle arc, via slerp — not a
- *  lerp through the globe's interior) rather than retargeting every frame. */
-function beginFlight() {
-  if (markers.activeIndices.length === 0) { dwell = DWELL_S; return; }
-  let lon = 0, lat = 0;
-  for (const n of markers.activeIndices) { lon += bundle.places[n]!.lon; lat += bundle.places[n]!.lat; }
-  lon /= markers.activeIndices.length; lat /= markers.activeIndices.length;
-  const altitude = camera.position.length() - GLOBE_RADIUS;
-  flightFrom.copy(camera.position).normalize();
-  flightTo.copy(lonLatToVec3(lon, lat, altitude)).normalize();
-  const dot = THREE.MathUtils.clamp(flightFrom.dot(flightTo), -1, 1);
-  flightAngle = Math.acos(dot);
-  if (flightAngle < 1e-4) { dwell = DWELL_S; return; } // already there — just read it
-  flightAxis.crossVectors(flightFrom, flightTo).normalize();
-  flightDuration = THREE.MathUtils.clamp(flightAngle / Math.PI * MAX_FLIGHT_S, MIN_FLIGHT_S, MAX_FLIGHT_S);
-  flightT = 0; flying = true;
+function openGotoPanel() {
+  populateGotoBooks();
+  // Seeded from wherever the cursor already sits, so opening the picker
+  // shows "you are here" rather than always restarting at Genesis.
+  const ev = bundle.events[Number(range.value)];
+  if (ev) {
+    gotoBookSel.value = String(bookOf(ev.sort));
+    populateGotoChapters();
+    gotoChapterSel.value = String(Math.floor((ev.sort % 1_000_000) / 1000));
+    populateGotoVerses();
+    gotoVerseSel.value = range.value;
+  } else {
+    populateGotoChapters(); populateGotoVerses();
+  }
+  gotoPanel.hidden = false;
+  gotoOpenBtn.setAttribute('aria-expanded', 'true');
 }
-
-function follow(dt: number) {
-  if (route || !playing || userDriving) { flying = false; return; }
-  if (!flying) return;
-  flightT = Math.min(1, flightT + dt / flightDuration);
-  const angle = flightAngle * easeInOutCubic(flightT);
-  const dir = flightFrom.clone().applyAxisAngle(flightAxis, angle);
-  camera.position.copy(dir.multiplyScalar(camera.position.length()));
-  if (flightT >= 1) { flying = false; dwell = DWELL_S; }
+function closeGotoPanel() {
+  gotoPanel.hidden = true;
+  gotoOpenBtn.setAttribute('aria-expanded', 'false');
 }
+gotoOpenBtn.addEventListener('click', () => (gotoPanel.hidden ? openGotoPanel() : closeGotoPanel()));
+gotoCloseBtn.addEventListener('click', closeGotoPanel);
+addEventListener('keydown', (e) => { if (e.key === 'Escape' && !gotoPanel.hidden) closeGotoPanel(); });
+// Book names are localised text; re-render the open picker's options (not
+// just re-run applyStatic, which only touches [data-en] elements) when the
+// language switch is used while it happens to be open.
+// Registered ahead of the app's own onLocale below, which is what
+// actually reassigns the module `locale` variable — read `l` here
+// directly rather than through that variable, which this runs before
+// it has been updated (listeners fire in registration order).
+onLocale((l) => { if (!gotoPanel.hidden) { const book = gotoBookSel.value; populateGotoBooks(l); gotoBookSel.value = book; } });
 
 // ── legend & i18n ─────────────────────────────────────────────────────────
 function renderRouteStats(jr: Journey) {
@@ -865,8 +838,6 @@ const clock = new THREE.Clock();
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.1);
   const t = clock.getElapsedTime();
-  advance(dt);
-  follow(dt);
   advanceRoute(dt);
   controls.update();
   camera.updateMatrixWorld(true); globe.updateMatrixWorld(true);
@@ -922,8 +893,7 @@ if (import.meta.env.DEV) {
     get selected() { return selected; },
     // The render loop is parked whenever the page is hidden, so playback has
     // to be drivable without rAF to be testable at all.
-    advance, follow, advanceRoute, openRoute, clearRoute,
-    get playing() { return playing; },
+    advanceRoute, openRoute, clearRoute,
     get route() { return route; },
     /** Drives one frame of the whole route layer — path, marker sizing and
      *  labels — for inspection where rAF is parked. */
