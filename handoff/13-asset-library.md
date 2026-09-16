@@ -170,6 +170,38 @@ below it. Gemini's "3D figurine" results are *images* of figurines. What both do
 well is the **reference image**, which is the 1-credit step and about 1% of the
 bill. Switching that saves nothing worth the change.
 
+## Two things every loader of these models has to do
+
+Found on 2026-09-16 building the inspection page, both after the meshes had
+already been called "fine" on the strength of the numbers.
+
+**1 · `Box3.setFromObject` is wrong by a factor of 100 on these rigs.** Meshy
+exports the geometry in metres on a mesh node scaled by `0.01`, with the bones
+in centimetres. Skinning composes the two correctly through the bind matrix, so
+the model draws at the right size — but `Box3` only multiplies the bind-pose
+geometry box by that node's matrix, never sees the bones, and reports a
+1.7-metre man as 17mm. Any code that frames a camera, lays a figure on the
+ground, or scales a model to fit **must measure the skeleton**, not the box:
+
+```js
+obj.traverse((o) => { if (o.isSkinnedMesh)
+  for (const bone of o.skeleton.bones) box.expandByPoint(bone.getWorldPosition(v)); });
+```
+
+**2 · Every character arrives at `metalness: 1` with no metalness map.** That is
+a claim that a wool robe is polished bronze. Lit by lights alone it renders as a
+black silhouette; given an environment it blows out to white. Clamp it on load
+wherever there is no map to respect, or add the correction to the build script.
+
+Neither shows up in a triangle count or a file size, which is exactly why both
+survived to the first time anything was looked at.
+
+**Quantization is *not* a problem, contrary to the first guess here.** A
+`--compress quantize` build skins to within a millimetre of the uncompressed one
+(0.785 × 1.654 × 0.534 either way), so the 293 KB figure below stands. The
+inspection page ships the 443 KB uncompressed build only because that is what
+was loaded while the real cause — the box above — was still being found.
+
 ## Payload — the constraint that actually binds
 
 The site ships about 6 MB of data plus 2.4 MB of scenes today. Forty assets at
