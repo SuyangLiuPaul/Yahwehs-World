@@ -232,7 +232,7 @@ Three things already exist and should be extended rather than replaced.
 
 | Phase | What | Credits | Why first |
 |---|---|---:|---|
-| 0 | ~~Retarget test~~ — **run 2026-09-16, passed** (2 reference images + 2 rigged characters) | 80 | Settled the bill at 1,450 |
+| 0 | ~~Retarget test~~ — **run 2026-09-16, passed** (2 reference images + 2 rigged characters) | 78 | Settled the bill at 1,450 |
 | 1 | Traveller + donkey + tent, wired into the exodus route's staffage | ~120 | 42 land stops; the highest-traffic asset in the project |
 | 2 | The 8 shared clips | 312 | Nothing else animates until these exist |
 | 3 | Remaining 9 characters | 351 | |
