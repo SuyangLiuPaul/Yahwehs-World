@@ -37,6 +37,7 @@ marks the full 1,443-event product or photographic visual target complete.
 | — | `EVENT-GAP.md` | Per-book ledger of how many events exist and how many are missing, with the estimation method |
 | — | `ASTRA-PROMPTS.md` | Phase-by-phase execution prompts for a token-scarce executor model |
 | — | `MANIFEST-assets.md` | Provenance ledger for every non-code asset; append to it, never delete from it |
+| 13 | `13-asset-library.md` | The 39 models the map and scenes still want, what they cost (measured), the payload budget that binds, and the rule that anything the text measures is built from the measurement and never generated |
 | — | `EVENT-REVIEW.md` | Output of `node scripts/audit-events.mjs`. Regenerated, never hand-edited. Every number in it is measured — read it before believing any claim about coverage |
 
 ## Rules for whoever builds this
