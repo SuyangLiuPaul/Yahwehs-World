@@ -111,6 +111,18 @@
     </p>
   </footer>
 
+  <!-- A close scene reached by clicking the ship on an actual sailing leg,
+       not a separate page: real water, a lit shore, the same generated
+       ship and crew shown at map scale, brought up to human scale. Loaded
+       only when opened — see src/voyage-demo/scene.ts. -->
+  <button id="voyage-open" type="button" hidden data-en="Zoom in on this ship →" data-zh="放大看这艘船 →">Zoom in on this ship →</button>
+  <div id="voyage-overlay" hidden>
+    <canvas id="voyage-canvas"></canvas>
+    <p id="voyage-loading" data-en="Loading the ship and crew…" data-zh="正在加载船与人物…">Loading the ship and crew…</p>
+    <button id="voyage-close" type="button" aria-label="Close">×</button>
+    <p id="voyage-caption" data-en="Artist's impression — a close scene, not this route's actual sea or coast." data-zh="艺术示意——一个近景场景，不是这条航线真实的海域或海岸。">Artist's impression — a close scene, not this route's actual sea or coast.</p>
+  </div>
+
   <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

@@ -21,6 +21,7 @@ import { Scenes } from './scenes.ts';
 import { Cartography, measureMap } from './cartography.ts';
 import { applyStatic, bindSwitch, locale as currentLocale, onLocale } from './locale.ts';
 import type { GeoJson, Place, PlacesBundle } from './types.ts';
+import type { VoyageHandle } from './voyage-demo/scene.ts';
 
 type Locale = 'zh' | 'en';
 let locale: Locale = currentLocale();
@@ -788,6 +789,43 @@ const chromeObserver=new ResizeObserver(()=>{
 });
 chromeObserver.observe($('timeline'));chromeObserver.observe(rCard);
 
+// ── the voyage close scene ───────────────────────────────────────────────
+// Reached by clicking the ship while it is actually sailing on the map, not
+// sent to a separate page: an overlay on this same page, opened and closed
+// without a navigation. The module itself (src/voyage-demo/scene.ts) is
+// fetched only on that click, so nobody pays for Water.js or the GLBs it
+// loads until they actually ask to see it.
+const voyageOpenBtn = $('voyage-open');
+const voyageOverlay = $('voyage-overlay');
+const voyageCanvas = $<HTMLCanvasElement>('voyage-canvas');
+const voyageLoading = $('voyage-loading');
+const voyageCloseBtn = $('voyage-close');
+let voyageHandle: VoyageHandle | null = null;
+async function openVoyage() {
+  voyageOverlay.hidden = false;
+  if (!voyageHandle) {
+    voyageLoading.hidden = false;
+    const { mountVoyage } = await import('./voyage-demo/scene.ts');
+    voyageHandle = mountVoyage(voyageCanvas);
+    voyageHandle.resize(innerWidth, innerHeight);
+    await voyageHandle.ready;
+    voyageLoading.hidden = true;
+  } else {
+    // Kept warm rather than torn down and rebuilt: reopening is instant and
+    // the GLBs are never re-fetched. See VoyageHandle.active's own comment.
+    voyageHandle.active = true;
+    voyageHandle.resize(innerWidth, innerHeight);
+  }
+}
+function closeVoyage() {
+  voyageOverlay.hidden = true;
+  if (voyageHandle) voyageHandle.active = false;
+}
+voyageOpenBtn.addEventListener('click', () => { void openVoyage(); });
+voyageCloseBtn.addEventListener('click', closeVoyage);
+addEventListener('keydown', (e) => { if (e.key === 'Escape' && !voyageOverlay.hidden) closeVoyage(); });
+addEventListener('resize', () => { if (voyageHandle && !voyageOverlay.hidden) voyageHandle.resize(innerWidth, innerHeight); });
+
 const clock = new THREE.Clock();
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.1);
@@ -812,7 +850,13 @@ renderer.setAnimationLoop(() => {
     selected ? bundle.places.indexOf(selected) : -1, route !== null,
     (i) => markers.worldRadius(i));
   if (placeLabels.consumeMaskChange()) markers.setMask(placeLabels.shown);
-  regionLabels.update(camera,globe,locale,safeBand.top,safeBand.top+safeBand.height,dt,staffage.screenBox(camera));
+  const actorBox = staffage.screenBox(camera);
+  regionLabels.update(camera,globe,locale,safeBand.top,safeBand.top+safeBand.height,dt,actorBox);
+  if (staffage.state.mode === 'sailing' && actorBox) {
+    voyageOpenBtn.hidden = false;
+    voyageOpenBtn.style.left = `${actorBox.left + actorBox.width / 2}px`;
+    voyageOpenBtn.style.top = `${actorBox.top}px`;
+  } else voyageOpenBtn.hidden = true;
   markers.setZoom(camera.position.length(), GLOBE_RADIUS, dt, innerHeight, camera.fov);
   cartography.update(camera,innerWidth,innerHeight,locale);
   // The selection ring breathes so the eye can find it again after orbiting.

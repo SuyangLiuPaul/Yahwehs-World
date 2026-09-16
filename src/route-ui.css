@@ -160,3 +160,49 @@ html[lang="zh-CN"] #r-name { font-family: var(--display); font-size: var(--fs-40
   color: #f0e4c6; text-shadow: 0 1px 3px #161b17f2, 0 0 7px #161b17cc;
 }
 @media (max-width: 640px) { .place-label { font-size: var(--fs-200); } }
+
+/* ── the voyage close scene ──────────────────────────────────────────────
+   A prompt that tracks the ship on the map, and the full-screen overlay it
+   opens — reached and closed without ever changing the page. */
+#voyage-open {
+  position: fixed; z-index: 20; transform: translate(-50%, -100%);
+  display: flex; align-items: center; gap: var(--sp-1);
+  padding: var(--sp-2) var(--sp-3); margin-top: -10px;
+  background: var(--sea); color: var(--gold-bright);
+  border: 1px solid var(--line-gold); border-radius: var(--radius);
+  font: 500 var(--fs-300) var(--ui); letter-spacing: var(--tr-cjk);
+  cursor: pointer; white-space: nowrap; box-shadow: var(--shadow);
+}
+#voyage-open[hidden] { display: none; }
+#voyage-open:hover { border-color: var(--gold); }
+#voyage-open:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+
+#voyage-overlay {
+  position: fixed; inset: 0; z-index: 60; background: #0a1420;
+}
+#voyage-overlay[hidden] { display: none; }
+#voyage-canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+#voyage-loading {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  margin: 0; font: 500 var(--fs-500) var(--display); color: var(--ink-3);
+  background: #0a1420; pointer-events: none; transition: opacity .4s ease;
+}
+#voyage-loading[hidden] { opacity: 0; }
+#voyage-close {
+  position: absolute; top: var(--sp-4); right: var(--sp-4);
+  width: 40px; height: 40px; display: grid; place-items: center;
+  background: #0e1d2ec0; color: var(--ink); border: 1px solid var(--line-gold);
+  border-radius: 50%; font-size: var(--fs-600); line-height: 1; cursor: pointer;
+}
+#voyage-close:hover { color: var(--gold-bright); border-color: var(--gold); }
+#voyage-close:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+#voyage-caption {
+  position: absolute; left: var(--sp-4); bottom: var(--sp-4); z-index: 1;
+  margin: 0; padding: var(--sp-1) var(--sp-3);
+  font: var(--fs-200) var(--ui); letter-spacing: var(--tr-cjk); color: var(--ink-2);
+  background: #0a1420b0; border-radius: var(--radius); pointer-events: none;
+}
+@media (max-width: 520px) {
+  #voyage-close { top: var(--sp-3); right: var(--sp-3); width: 36px; height: 36px; }
+  #voyage-caption { left: var(--sp-3); right: var(--sp-3); bottom: var(--sp-3); }
+}
