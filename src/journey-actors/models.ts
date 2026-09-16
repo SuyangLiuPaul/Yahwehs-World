@@ -30,6 +30,12 @@ const FACING_CORRECTION = Math.PI / 2;
  * as marching rather than travelling — reported directly on this globe. */
 const WALK_RATE = 0.62;
 
+/** How much bigger the loaded hull is drawn than the procedural one it
+ * replaces. 1.0 (an exact swap) was reported as unreadable on the actual
+ * map — a ship a couple of pixels long shows a colour, not a shape. This
+ * does not touch the walkers: the complaint was the ship specifically. */
+const SHIP_LEGIBILITY = 2.0;
+
 interface WalkerAsset { template: T.Object3D; clip: T.AnimationClip; scale: number; }
 
 function clampMetalness(root: T.Object3D) {
@@ -110,8 +116,11 @@ export class ActorModels {
     const size = box.getSize(new T.Vector3());
     // Fit to the procedural hull's own length, measured, rather than a
     // hand-picked number — so redrawing either model keeps them the same size
-    // on the map without this file changing.
-    const scale = shipHullLength() / (size.x || 1);
+    // on the map without this file changing. SHIP_LEGIBILITY then scales that
+    // up further: matched 1:1 to the old procedural hull, the real model read
+    // as a small dark smear rather than a ship — reported directly against
+    // the live map, not tuned by eye here.
+    const scale = (shipHullLength() * SHIP_LEGIBILITY) / (size.x || 1);
 
     // Where a passenger's feet belong: raycast straight down through the raw
     // mesh at the same footprint the procedural passengers already use
