@@ -117,6 +117,38 @@ print("   patched")
 PY
 fi
 
+# The launcher name. Tauri writes strings.xml from productName at init time
+# and there is no localised variant in what it generates, so a reader on a
+# Chinese system would get the English name. Both are written here, and
+# re-written on every run because `tauri android init` regenerates the file.
+echo "==> setting the launcher name"
+python3 - "$ANDROID_DIR" <<'PY'
+import pathlib, re, sys
+res = pathlib.Path(sys.argv[1]) / "app/src/main/res"
+# The value is wrapped in double quotes, which is how an Android string
+# resource carries a literal apostrophe — Tauri writes its own the same way.
+# &apos; is valid XML and AAPT still refuses it: "Invalid unicode escape
+# sequence in string", and the whole resource merge fails.
+for values, label in [("values", '"Yahweh\'s World"'), ("values-zh", '"雅伟之界"')]:
+    d = res / values
+    d.mkdir(parents=True, exist_ok=True)
+    f = d / "strings.xml"
+    if f.exists():
+        text = f.read_text()
+        new = text
+        for key in ("app_name", "main_activity_title"):
+            if f'name="{key}"' in new:
+                new = re.sub(rf'(<string name="{key}">).*?(</string>)', lambda m: m.group(1) + label + m.group(2), new)
+            else:
+                new = new.replace('</resources>', f'    <string name="{key}">{label}</string>\n</resources>')
+        f.write_text(new)
+    else:
+        f.write_text('<?xml version="1.0" encoding="utf-8"?>\n<resources>\n'
+                     f'    <string name="app_name">{label}</string>\n'
+                     f'    <string name="main_activity_title">{label}</string>\n</resources>\n')
+    print(f"   {values}/strings.xml -> {label}")
+PY
+
 echo "==> building the release APK"
 cargo tauri android build --apk
 

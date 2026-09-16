@@ -21,6 +21,7 @@ set -euo pipefail
 PROJECT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PACKAGE_JSON="$PROJECT/package.json"
 TAURI_CONF="$PROJECT/src-tauri/tauri.conf.json"
+CARGO_TOML="$PROJECT/src-tauri/Cargo.toml"
 
 current_version() {
   awk -F'"' '/^[[:space:]]*"version":/ {print $4; exit}' "$PACKAGE_JSON"
@@ -59,4 +60,14 @@ for f in "$PACKAGE_JSON" "$TAURI_CONF"; do
   mv "$TMP" "$f"
 done
 
-echo "✓ package.json + tauri.conf.json now at $NEW"
+# The crate version is not what the app reports — getVersion() reads
+# tauri.conf.json — but a crate that says 0.1.0 while the app ships 0.1.4 is
+# the drift this script exists to prevent, and it is one line to keep true.
+TMP="$(mktemp)"
+awk -v new="$NEW" '
+  !done && /^version[[:space:]]*=/ { print "version = \"" new "\""; done = 1; next }
+  { print }
+' "$CARGO_TOML" >"$TMP"
+mv "$TMP" "$CARGO_TOML"
+
+echo "✓ package.json + tauri.conf.json + Cargo.toml now at $NEW"
