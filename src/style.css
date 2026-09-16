@@ -124,7 +124,7 @@ body {
 #r-open {
   display: grid; grid-template-columns: auto 1fr auto; align-items: center;
   gap: var(--sp-3); width: 100%; cursor: pointer; text-align: left;
-  background: #0d1a28d9; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
   padding: var(--sp-2) var(--sp-3); color: var(--ink-2);
   font-family: var(--ui); font-size: var(--fs-200); letter-spacing: var(--tr-cjk);
   backdrop-filter: blur(10px); transition: border-color .16s, color .16s;
@@ -133,7 +133,7 @@ body {
 #r-open:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
 #r-open .rlabel { color: var(--gold); }
 .r-open-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.r-chev { color: var(--ink-4); font-size: var(--fs-100); transition: transform .2s; }
+.r-chev { color: var(--ink-3); font-size: var(--fs-100); transition: transform .2s; }
 #routes[data-state="open"] .r-chev { transform: rotate(180deg); }
 /* With a route running the trigger is redundant — the card names it. */
 #routes[data-state="active"] #r-open { display: none; }
@@ -334,8 +334,8 @@ body {
   font-size: var(--fs-100); color: var(--ink-3); letter-spacing: var(--tr-cjk);
 }
 .legend i { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
-.credit { margin: 0; font-size: var(--fs-100); color: var(--ink-4); letter-spacing: 0; }
-.credit a { color: var(--ink-3); text-decoration-color: var(--ink-4); }
+.credit { margin: 0; font-size: var(--fs-100); color: var(--ink-3); letter-spacing: 0; }
+.credit a { color: var(--ink-2); text-decoration-color: var(--ink-3); }
 .credit a:hover { color: var(--gold); }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }

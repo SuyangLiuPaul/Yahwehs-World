@@ -17,7 +17,7 @@
 
   --ink:          #ece2cd;   /* primary text */
   --ink-2:        #a8b4c2;   /* secondary text */
-  --ink-3:        #74808e;   /* tertiary, captions */
+  --ink-3:        #838f9e;   /* tertiary, captions */
   --ink-4:        #4d5865;   /* disabled, hairlines on dark */
 
   --line:         #22334a;
@@ -92,7 +92,7 @@
     --surface:      #fbf7ef;
     --surface-hi:   #f1e9d9;
 
-    --gold:         #8a6c1c;
+    --gold:         #7a5f14;
     --gold-bright:  #6d5412;
     --gold-dim:     #a68e48;
 
@@ -105,11 +105,14 @@
     --line-gold:    #8a6c1c40;
 
     --shadow:       0 12px 40px #2a200f2e;
-    --scrim: linear-gradient(180deg, #efe8daf0 0%, #efe8daa6 58%, transparent 100%);
+    /* Opaque through the band the text sits in, fading only below it. The
+       dark theme can fade the whole way because its text is light against
+       a dark globe; here the text is dark and needs a ground of its own. */
+    --scrim: linear-gradient(180deg, #efe8da 0%, #efe8da 64%, #efe8da00 100%);
     --gold-wash:    #8a6c1c1f;
     --tab-hover:    #00000010;
     --rbtn-hover:   #0000000d;
-    --scrim-bottom: linear-gradient(180deg, transparent, #efe8daf5 34%);
+    --scrim-bottom: linear-gradient(180deg, #efe8da00 0%, #efe8da 32%, #efe8da 100%);
     --panel: linear-gradient(180deg, #fbf7effa, #f4eee1fd);
   }
 }

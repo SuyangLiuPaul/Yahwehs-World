@@ -70,7 +70,7 @@ details.unstated li { margin-bottom: var(--sp-1); }
 #cubit {
   position: fixed; left: 0; right: 0; bottom: 40px; z-index: 3;
   padding: var(--sp-3) var(--sp-5) var(--sp-4);
-  background: linear-gradient(180deg, transparent, #050b13f2 30%);
+  background: var(--scrim-bottom);
   display: grid; gap: var(--sp-1); justify-items: start;
 }
 #cubit label { font-size: var(--fs-300); letter-spacing: .06em; }
@@ -102,7 +102,7 @@ details.unstated li { margin-bottom: var(--sp-1); }
   transition: border-color .18s, color .18s, background .18s;
 }
 .vbtn b { font-size: var(--fs-300); font-weight: 600; color: var(--ink); }
-.vbtn span { font-size: var(--fs-100); color: var(--ink-3); line-height: 1.5; }
+.vbtn span { font-size: var(--fs-100); color: var(--ink-2); line-height: 1.5; }
 .vbtn:hover { border-color: #c9a22766; }
 .vbtn.on { border-color: var(--gold); background: #c9a2271a; }
 .vbtn.on b { color: var(--gold-bright); }
