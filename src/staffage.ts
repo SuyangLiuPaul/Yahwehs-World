@@ -4,6 +4,7 @@ import {lonLatToVec3} from './globe.ts';
 import type {Route} from './routes.ts';
 import type {GeoJson} from './types.ts';
 import {ActorBatch} from './journey-actors/geometry.ts';
+import {ActorModels} from './journey-actors/models.ts';
 import type {CampPhase} from './journey-actors/camp-playback.ts';
 
 /** Modern land is a visual exclusion mask, NOT ancient navigability. */
@@ -26,6 +27,14 @@ export class Staffage {
   readonly group=new T.Group();
   private material=new T.MeshBasicMaterial({vertexColors:true,side:T.DoubleSide,transparent:true,opacity:0,depthWrite:false});
   private batch=new ActorBatch(this.material,4);
+  // Loaded characters and ship, standing in for the procedural miniature
+  // wherever the text gives no measurement to draw from instead (D19).
+  // Loading happens once, in the background, starting at construction; every
+  // call site below falls back to the procedural piece until — and unless —
+  // it finishes. See journey-actors/models.ts for why each is safe to fail.
+  private models=new ActorModels();
+  private walkerSlots:{group:T.Object3D;mixer:T.AnimationMixer}[]=[];
+  private shipSlot:T.Object3D|null=null;
   private opacity=0;private time=0;private key='';private water=false;private maskAge=1;
   private p=new T.Vector3();private normal=new T.Vector3();private tangent=new T.Vector3();private side=new T.Vector3();private basis=new T.Matrix4();
   private onLand:(p:T.Vector3)=>boolean;
@@ -50,16 +59,58 @@ export class Staffage {
     // Lift their display base so the tilt does not push feet under the sphere.
     this.batch.group.rotation.x=.85;this.batch.group.position.y=1.3;
   }
+  /** Grows the pool of loaded walker actors up to `n`, lazily and once — the
+   * largest a scene ever asks for is 3 (Paul's land legs, the ship's deck),
+   * so the pool never needs to grow again after its first two calls. Does
+   * nothing once `ActorModels` has nothing left to hand out, which is also
+   * the correct behaviour before the model has finished loading. */
+  private ensureWalkerSlots(n:number){
+    while(this.walkerSlots.length<n){
+      const spawned=this.models.spawnWalker(this.walkerSlots.length);
+      if(!spawned)return;
+      this.batch.group.add(spawned.group);
+      this.walkerSlots.push(spawned);
+    }
+  }
+  private ensureShipSlot(){
+    if(this.shipSlot)return;
+    const ship=this.models.spawnShip();
+    if(!ship)return;
+    this.batch.group.add(ship);
+    this.shipSlot=ship;
+  }
+  /** Places `count` figures at `posFn(i)`: a loaded character wherever the
+   * model has finished loading, the procedural miniature otherwise — the
+   * substitution the ship's hull already made, extended to the people next
+   * to it. `walking` drives the walk-cycle mixer; false leaves a spawned
+   * figure at rest, for a passenger standing on a moving deck. */
+  private placeFigures(count:number,posFn:(i:number)=>[number,number,number],scale:number,walking:boolean,dt:number){
+    if(this.models.walkersReady)this.ensureWalkerSlots(count);
+    const useModels=this.models.walkersReady&&this.walkerSlots.length>=count;
+    for(let i=0;i<count;i++){
+      const [x,y,z]=posFn(i);
+      if(useModels){
+        const slot=this.walkerSlots[i]!;
+        slot.group.visible=true;slot.group.position.set(x,y,z);slot.group.scale.setScalar(scale);
+        if(walking)slot.mixer.update(dt);
+      }else{
+        this.batch.person(x,z,this.time,i,scale,y,walking);
+      }
+    }
+  }
   update(route:Route|null,camera:T.PerspectiveCamera,dt:number,progress=0,playing=false,ordinal:number|null=null,campPhase:CampPhase='rest',tentScale=1){
     const key=route?.journey.id??'';
     if(key!==this.key){this.key=key;this.time=0;this.opacity=0;this.maskAge=1;}
-    if(playing&&!matchMedia('(prefers-reduced-motion: reduce)').matches)this.time+=dt;
+    const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(playing&&!reducedMotion)this.time+=dt;
     const dist=camera.position.length();
     const marker=route&&(ordinal===null?route.markerAt(progress):route.journey.markers.find(m=>m.stops.includes(ordinal)));
     const valid=!!marker&&marker.lat!==null&&marker.lon!==null&&!marker.aside&&marker.attested;
     const target=route&&valid?T.MathUtils.clamp((2.2-dist/100)/.3,0,1):0;
     this.opacity+=(target-this.opacity)*(1-Math.exp(-dt*10));this.material.opacity=this.opacity;
     this.batch.begin();this.state.mode='hidden';this.state.people=0;this.state.tents=0;this.state.ship=0;this.state.phase=campPhase;
+    for(const slot of this.walkerSlots)slot.group.visible=false;
+    if(this.shipSlot)this.shipSlot.visible=false;
     this.group.visible=valid&&this.opacity>.01;
     if(!this.group.visible||!route||!marker){this.batch.finish();return;}
     const leg=route.path.legs.find(l=>progress<l.to-1e-10)??route.path.legs.at(-1);
@@ -76,14 +127,29 @@ export class Staffage {
     const exodus=route.journey.id==='exodus-wilderness';
     if(leg?.sea&&ordinal===null&&progress>leg.from&&progress<leg.to){
       this.maskAge+=dt;if(this.maskAge>.1){this.water=!this.onLand(this.p);this.maskAge=0;}
-      if(this.water){this.batch.ship(this.time);this.state.mode='sailing';this.state.ship=1;this.state.people=3;}
+      if(this.water){
+        const hullDrawn=this.models.shipReady;
+        if(hullDrawn){this.ensureShipSlot();if(this.shipSlot){this.shipSlot.visible=true;this.shipSlot.rotation.z=Math.sin(this.time*.8)*.035;}}
+        this.batch.ship(this.time,hullDrawn,this.models.walkersReady,this.models.shipDeckY);
+        if(this.models.walkersReady)this.placeFigures(3,(i)=>[-.75+i*.7,this.models.shipDeckY,.27],.40,false,dt);
+        this.state.mode='sailing';this.state.ship=1;this.state.people=3;
+      }
     }else if(!leg?.sea||ordinal!==null||exodus||progress===0||progress>=1){
       const count=exodus?12:route.journey.id==='elijah'?1:3;
       const camping=exodus&&campPhase!=='travel'&&(ordinal!==null||!playing);
-      for(let i=0;i<count;i++){
-        const x=camping?(i%4-1.5)*.75:-(i%6)*.65;
-        const z=camping?1.6+Math.floor(i/4)*.58:(Math.floor(i/6)-.5)*.85;
-        this.batch.person(x,z,this.time,i,.72,0,playing&&!camping);
+      if(exodus){
+        for(let i=0;i<count;i++){
+          const x=camping?(i%4-1.5)*.75:-(i%6)*.65;
+          const z=camping?1.6+Math.floor(i/4)*.58:(Math.floor(i/6)-.5)*.85;
+          this.batch.person(x,z,this.time,i,.72,0,playing&&!camping);
+        }
+      }else{
+        // Paul-style land travel: a loaded character wherever it has finished
+        // loading, the procedural miniature otherwise (D19). The exodus's
+        // 12-person camp muster above stays procedural on purpose — a dozen
+        // identical rigged clones would read as a crowd of twins, not a
+        // nation, and the InstancedMesh batch is what keeps that scene cheap.
+        this.placeFigures(count,(i)=>[-(i%6)*.65,0,(Math.floor(i/6)-.5)*.85],.72,playing&&!reducedMotion,dt);
       }
       if(camping){for(let i=0;i<3;i++)this.batch.put('tent',(i-1)*2.05,0,-1,.65,0,0,Math.max(.03,tentScale));this.state.tents=3;}
       this.state.mode=camping?'camp':'walking';this.state.people=count;

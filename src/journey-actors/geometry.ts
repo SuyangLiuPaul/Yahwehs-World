@@ -4,6 +4,11 @@ import {effectMaterial} from './effects.ts';
 
 export type Piece = 'person'|'leg'|'arm'|'ship'|'sail'|'tent'|'bundle'|'horse'|'chariot'|'stone'|'wood'|'offering'|'flame'|'whirl'|'cloak'|'jar'|'water';
 const cache = new Map<Piece,T.BufferGeometry>();
+/** Vertical offset `person()` adds under the torso to seat the legs. Pulled
+ * out as a constant, rather than left as a literal `.34` in two places,
+ * because `personStandingHeight()` below has to reproduce the same placement
+ * to measure a figure it never actually assembles. */
+const LEG_Y_OFFSET = .34;
 /** Original story miniatures. Dimensions, faces, dress and vessel construction
  * are illustrative, never archaeological reconstructions. Local +X is forward. */
 export function geometry(kind:Piece) {
@@ -132,6 +137,28 @@ export function geometry(kind:Piece) {
   const g=mergeGeometries(parts)!;parts.forEach(p=>p.dispose());g.computeBoundingSphere();cache.set(kind,g);return g;
 }
 
+/** Foot-to-crown height of one procedural person at `scale=1`, so a loaded
+ * character model can be scaled to stand exactly as tall as the miniature it
+ * replaces without a second, independently-guessed number living in
+ * `journey-actors/models.ts`. Measured off the real merged geometry — not
+ * hand-derived from the vertex math above, which would go stale silently if
+ * the art ever changed. */
+export function personStandingHeight(): number {
+  const person=geometry('person'), leg=geometry('leg');
+  if(!person.boundingBox)person.computeBoundingBox();
+  if(!leg.boundingBox)leg.computeBoundingBox();
+  const legTop=leg.boundingBox!.max.y+LEG_Y_OFFSET, legBottom=leg.boundingBox!.min.y+LEG_Y_OFFSET;
+  return Math.max(person.boundingBox!.max.y,legTop)-Math.min(person.boundingBox!.min.y,legBottom);
+}
+
+/** Bow-to-stern length of the procedural hull at `scale=1` — the ruler a
+ * loaded ship model is fitted against, for the same reason as above. */
+export function shipHullLength(): number {
+  const hull=geometry('ship');
+  if(!hull.boundingBox)hull.computeBoundingBox();
+  return hull.boundingBox!.max.x-hull.boundingBox!.min.x;
+}
+
 /** One draw per piece, shared by the globe and the inspectable story stage. */
 export class ActorBatch {
   readonly group=new T.Group();
@@ -153,15 +180,17 @@ export class ActorBatch {
     const bob=walk?Math.abs(Math.sin(time*7+index*.9))*.025:0;
     const colors=['#ffffff','#e1d2b0','#b6cbd0','#e5b7a0','#bfc7a4'];
     this.put('person',x,y+bob,z,scale,yaw,0,1,colors[index%colors.length]);
-    for(const side of [-1,1])this.put('leg',x+Math.sin(yaw)*side*.11*scale,y+.34*scale,z+Math.cos(yaw)*side*.11*scale,scale,yaw,stride*side);
+    for(const side of [-1,1])this.put('leg',x+Math.sin(yaw)*side*.11*scale,y+LEG_Y_OFFSET*scale,z+Math.cos(yaw)*side*.11*scale,scale,yaw,stride*side);
     for(const side of [-1,1])this.put('arm',x+Math.sin(yaw)*side*.235*scale,y+.88*scale+bob,z+Math.cos(yaw)*side*.235*scale,scale,yaw,working?1.1+Math.sin(time*2+index)*.12:-stride*side);
   }
   /** `hullDrawn` is true when a loaded model is standing in for the hull and
-   * sail; the passengers are still placed here so the deck is never empty if
-   * the model is the only thing that failed to arrive. */
-  ship(time:number,hullDrawn=false){
+   * sail. `passengersDrawn` is true when a caller is placing loaded walker
+   * models on the deck itself, at `deckY`, instead of the three procedural
+   * passengers this method would otherwise put there — so the deck is never
+   * empty if either half of the substitution failed to arrive. */
+  ship(time:number,hullDrawn=false,passengersDrawn=false,deckY=.56){
     if(!hullDrawn){this.put('ship',0,0,0);this.put('sail',0,0,0,1,Math.sin(time*.8)*.035);}
-    for(let i=0;i<3;i++)this.person(-.75+i*.7,.27,time,i,.40,.56,false);
+    if(!passengersDrawn)for(let i=0;i<3;i++)this.person(-.75+i*.7,.27,time,i,.40,deckY,false);
   }
   finish(time=0){this.fire.uniforms.uTime!.value=time;this.dust.uniforms.uTime!.value=time;for(const mesh of this.meshes.values()){mesh.visible=mesh.count>0;mesh.instanceMatrix.needsUpdate=true;if(mesh.instanceColor)mesh.instanceColor.needsUpdate=true;}}
   dispose(){for(const m of this.meshes.values())m.dispose();this.material.dispose();this.fire.dispose();this.dust.dispose();this.group.clear();}

@@ -1,0 +1,24 @@
+{
+  "_meta": {
+    "what": "地球上路线场景里，走路的旅人和牧人两个模型的来历——用来替换保罗式陆路行程里那些低多边形小人偶。",
+    "honesty": "艺术示意：一件不染色的长袍、一根杖、一个背卷，经文只说人走了多远，没有说他穿什么、长什么样。这两个模型标注在 handoff/13-asset-library.md，不是任何具体人物的复原。",
+    "pipeline": [
+      "gpt_image_2_5 出一张单体参考图（下方 referencePrompt），1 credit/张",
+      "image_to_3d，should_texture / enable_rigging / enable_animation 全开，animation_action_id 30（Casual_Walk），pose_mode a-pose，38 credits/个",
+      "npx @gltf-transform/cli optimize --texture-compress webp --texture-size 256 --compress quantize → traveller 7.05 MB→293 KB，shepherd 7.23 MB→309 KB"
+    ],
+    "retargetTest": "两个角色共用同一个 Casual_Walk 动作片段做过复用测试：24 根骨头名字/顺序/父子链完全一致，世界坐标在 t=0/0.5/1.7 三个时刻对到小数点后 4 位。所以两个模型的动画片段是可复用的同一套骨架，详见 handoff/13-asset-library.md。",
+    "knownIssues": [
+      "Meshy 返回的材质 metalness=1 且无 metalnessMap——等于说羊毛长袍是抛光青铜，运行时按 models.ts 里的 clampMetalness() 钳到 ≤0.06。",
+      "Box3.setFromObject 在这类骨骼模型上量出来的高度差 100 倍（bug 见 handoff/13-asset-library.md）；渲染前必须量骨架，不能量包围盒，运行时用 models.ts 的 skeletonHeight()。",
+      "转 A-pose 会把手上的东西（杖、牧羊杖）丢掉——目前旅人/牧人在网站上不再拿着杖，这是已知的、可接受的简化。",
+      "旅人的及踝长袍走路时在小腿处会裂开（蒙皮把下摆绑到腿上），地球视角下人物本来就很小，这个问题不明显。"
+    ],
+    "referencePrompts": {
+      "traveller": "A single full-body figure, front view, standing upright with arms held slightly away from the sides and feet shoulder-width apart, on a plain flat light-grey background with even soft lighting and no cast shadow. Stylised low-poly 3D character render, simple clean forms, matte earth-tone colours, no text and no border. Subject: an ancient Near Eastern traveller on foot — a bearded middle-aged man in an ankle-length undyed wool robe with a rope belt, a cloth head covering, leather sandals, a plain wooden walking staff held upright in his right hand, and a small rolled cloth bundle strapped to his back.",
+      "shepherd": "A single full-body figure, front view, standing upright with arms held slightly away from the sides and feet shoulder-width apart, on a plain flat light-grey background with even soft lighting and no cast shadow. Stylised low-poly 3D character render, simple clean forms, matte earth-tone colours, no text and no border. Subject: an ancient Near Eastern shepherd — a younger man in a short knee-length tunic with a rough sheepskin cloak over one shoulder, a cloth head covering, bare legs and sandals, a curved wooden shepherd's crook held upright in his left hand, and a leather sling tucked into his belt."
+    },
+    "usedWhere": "src/journey-actors/models.ts + src/staffage.ts — replaces the procedural walking figure on any land leg (Paul's four journeys, Jesus' Galilee route, Elijah's route, Jacob's/Abraham's journeys) whenever the model has finished loading; the exodus's 12-person camp muster stays procedural on purpose (see the comment in staffage.ts).",
+    "generated": "2026-09-16"
+  }
+}
