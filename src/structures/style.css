@@ -68,7 +68,7 @@ details.unstated ul { margin: var(--sp-2) 0 0; padding-left: var(--sp-4); font-s
 details.unstated li { margin-bottom: var(--sp-1); }
 
 #cubit {
-  position: fixed; left: 0; right: 0; bottom: 40px; z-index: 3;
+  position: fixed; left: 0; right: 0; bottom: calc(40px + var(--safe-bottom)); z-index: 3;
   padding: var(--sp-3) var(--sp-5) var(--sp-4);
   background: var(--scrim-bottom);
   display: grid; gap: var(--sp-1); justify-items: start;

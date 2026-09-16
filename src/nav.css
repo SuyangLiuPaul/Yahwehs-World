@@ -4,7 +4,8 @@
 .sitenav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 40;
   display: flex; align-items: center; gap: var(--sp-4);
-  padding: var(--sp-3) var(--sp-5) var(--sp-4);
+  padding: calc(var(--sp-3) + var(--safe-top)) calc(var(--sp-5) + var(--safe-right))
+           var(--sp-4) calc(var(--sp-5) + var(--safe-left));
   pointer-events: none;
   /* The nav needs its own ground at every width. The globe at rest leaves dark
      space behind this bar, but a route framed onto the Levant puts pale
@@ -93,7 +94,8 @@
   width: 44px; height: 44px; transform: translate(-50%, -50%);
 }
 @media (max-width: 760px) {
-  .sitenav { padding: var(--sp-2) var(--sp-3); gap: var(--sp-3); }
+  .sitenav { padding: calc(var(--sp-2) + var(--safe-top)) calc(var(--sp-3) + var(--safe-right))
+                     var(--sp-2) calc(var(--sp-3) + var(--safe-left)); gap: var(--sp-3); }
   .sitenav .brand .zh { font-size: var(--fs-300); letter-spacing: .08em; }
   .sitenav .brand .en { display: none; }
   /* One row that scrolls rather than a row that wraps: a wrapped tab strip

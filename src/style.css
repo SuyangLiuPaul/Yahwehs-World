@@ -263,7 +263,8 @@ body {
 /* ── timeline ────────────────────────────────────────────────────────── */
 #timeline {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
-  padding: var(--sp-4) var(--sp-5) var(--sp-4);
+  padding: var(--sp-4) calc(var(--sp-5) + var(--safe-right))
+           calc(var(--sp-4) + var(--safe-bottom)) calc(var(--sp-5) + var(--safe-left));
   background: var(--scrim-bottom);
 }
 .readout {

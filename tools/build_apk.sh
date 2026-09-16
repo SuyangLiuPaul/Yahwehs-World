@@ -179,6 +179,18 @@ echo "✓ $APK"
 ls -lh "$APK" | awk '{print "  " $5}'
 
 if [ "$INSTALL" = "1" ]; then
-  echo "==> installing on the attached device"
-  adb install -r "$APK"
+  # With an emulator also running, a bare `adb install` fails with "more than
+  # one device". Prefer a real device — an emulator is not what anyone means
+  # by "install it on my tablet" — unless ANDROID_SERIAL names one.
+  TARGET="${ANDROID_SERIAL:-$(adb devices | awk '$2=="device" && $1 !~ /^emulator-/ {print $1; exit}')}"
+  if [ -z "$TARGET" ]; then
+    echo "!!! no device attached to install on (emulators are skipped)." >&2
+    echo "!!! the APK above is built and signed; attach a device and run:" >&2
+    echo "!!!   adb install -r $APK" >&2
+    exit 1
+  fi
+  echo "==> installing on $TARGET"
+  # MIUI refuses adb installs unless "USB 安装" is on in developer options,
+  # and reports it as INSTALL_FAILED_USER_RESTRICTED / "canceled by user".
+  adb -s "$TARGET" install -r "$APK"
 fi

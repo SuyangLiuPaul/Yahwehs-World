@@ -47,6 +47,18 @@
   --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
   --sp-5: 24px; --sp-6: 32px; --sp-7: 48px;
 
+  /* The system's own furniture — the status bar above, the gesture bar
+     below, a notch at the side in landscape. The pages carry
+     viewport-fit=cover, and an app targeting a recent Android draws
+     edge-to-edge whether it asks to or not: on the tablet the wordmark came
+     out underneath the clock and the settings button sat beneath the status
+     bar, where a tap reaches the system and never the page. Every fixed
+     edge adds these. */
+  --safe-top:    env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left:   env(safe-area-inset-left, 0px);
+  --safe-right:  env(safe-area-inset-right, 0px);
+
   --radius: 2px;
   --shadow: 0 12px 40px #00000073;
 
