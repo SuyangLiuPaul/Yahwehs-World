@@ -5,3 +5,8 @@ dist/
 
 # Canvas recordings handed back by the dev-only /__capture endpoint.
 recordings/
+
+# Tauri native shells: build output and generated mobile projects, not source.
+src-tauri/target/
+src-tauri/gen/
+src-tauri/icon-source.png
