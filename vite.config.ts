@@ -49,11 +49,6 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         structures: resolve(__dirname, 'structures.html'),
         tabernacle: resolve(__dirname, 'tabernacle.html'),
-        // Not linked from the site nav yet — a scoped demo of a "football
-        // mini"-detailed close scene (real water, a bigger and cuter ship and
-        // crew), built before deciding whether it earns a place in the
-        // production build. Remove this line if the demo is dropped.
-        voyageDemo: resolve(__dirname, 'voyage-demo.html'),
       },
     },
   },
