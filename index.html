@@ -108,6 +108,18 @@
       <span id="t-count"></span>
     </div>
     <input id="t-range" type="range" min="0" max="1" value="1" step="1">
+    <!-- The events track (C1/P4). A second scale under the verse slider: all
+         1,443 events as bands. Drawn to a canvas rather than 1,443 elements,
+         and populated by src/events-track.ts once the payload arrives — the
+         globe paints first. -->
+    <div id="t-events" hidden>
+      <canvas id="t-events-canvas" role="img"></canvas>
+      <div class="t-events-bar">
+        <button id="t-axis" type="button" aria-pressed="false"
+                data-en="Years" data-zh="按年代" data-zh-narrow="年代"></button>
+        <span id="t-events-note"></span>
+      </div>
+    </div>
     <div id="t-goto" hidden>
       <select id="t-goto-book" aria-label="Book"></select>
       <select id="t-goto-chapter" aria-label="Chapter"></select>

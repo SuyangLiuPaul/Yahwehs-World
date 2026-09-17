@@ -6,12 +6,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run zh && node scripts/build-version.mjs && tsc --noEmit && vite build",
+    "build": "npm run zh && npm run events && node scripts/build-version.mjs && tsc --noEmit && vite build",
     "check": "tsc --noEmit",
     "preview": "vite preview",
     "test:routes": "node scripts/verify-routes.mjs && node scripts/verify-route-behavior.mjs && node scripts/verify-route-network.mjs",
     "data": "node scripts/build-places.mjs",
-    "zh": "node scripts/build-zh-hant.mjs"
+    "zh": "node scripts/build-zh-hant.mjs",
+    "events": "node scripts/build-events-payload.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.11.1",

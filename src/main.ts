@@ -19,8 +19,9 @@ import { PlaceLabels } from './place-labels.ts';
 import { RouteThumbnail } from './route-thumbnail.ts';
 import { Scenes } from './scenes.ts';
 import { Cartography, measureMap } from './cartography.ts';
-import { applyStatic, bindSwitch, fullLocale, hant, localized, locale as currentLocale, onLocale } from './locale.ts';
+import { applyStatic, bindSwitch, fullLocale, hant, localized, locale as currentLocale, onLocale, t } from './locale.ts';
 import { installUpdateChecker } from './updates.ts';
+import { EventsTrack, type TrackEvent } from './events-track.ts';
 import type { GeoJson, Place, PlacesBundle } from './types.ts';
 
 type Locale = 'zh' | 'en';
@@ -317,11 +318,24 @@ function openRoute(id: string) {
  *  at whatever zoom the reader happened to leave the globe on, both are a
  *  single dot. The altitude comes from the route's own angular extent. */
 function frameRoute(jr: Journey) {
+  // Paul's journeys carry the moving ship, which needs more room beside them.
+  framePoints(
+    jr.markers.filter((m) => m.lat !== null && m.lon !== null)
+      .map((m) => ({ lat: m.lat!, lon: m.lon! })),
+    jr.id.startsWith('paul-') ? 80 : 40,
+  );
+}
+
+/** Put the camera where this set of points all fit. Extracted from
+ *  frameRoute unchanged: the events layer frames an event's places with the
+ *  same manoeuvre, and the awkward parts of it — fitting the horizontal field
+ *  on a portrait phone, aiming at the visible band rather than the viewport,
+ *  measuring the rotation correction instead of deriving it — were each paid
+ *  for once already and should not be paid for twice. */
+function framePoints(coords: { lat: number; lon: number }[], phonePad = 40): boolean {
   const wasDamping=controls.enableDamping; controls.enableDamping=false; controls.update(); controls.enableDamping=wasDamping;
-  const pts = jr.markers
-    .filter((m) => m.lat !== null && m.lon !== null)
-    .map((m) => lonLatToVec3(m.lon!, m.lat!, 0).normalize());
-  if (!pts.length) return;
+  const pts = coords.map((m) => lonLatToVec3(m.lon, m.lat, 0).normalize());
+  if (!pts.length) return false;
 
   const centre = pts
     .reduce((a, v) => a.add(v), new THREE.Vector3())
@@ -404,7 +418,7 @@ function frameRoute(jr: Journey) {
   };
   const fitAxis=new THREE.Vector3().crossVectors(centre,camera.up).normalize();
   // Leave room for the moving miniature at coastal/end-point stops too.
-  const horizontalPadding = innerWidth <= 520 ? (jr.id.startsWith('paul-') ? 80 : 40) : 64;
+  const horizontalPadding = innerWidth <= 520 ? phonePad : 64;
   for(let i=0;i<8;i++){
     const bounds=projectedBounds();
     const ratio=Math.max(bounds.width/Math.max(100,innerWidth-horizontalPadding),bounds.height/Math.max(100,band.height-32));
@@ -421,6 +435,7 @@ function frameRoute(jr: Journey) {
   // Drain inertial drag before a deliberate fit; it must not move the new view.
   const damping=controls.enableDamping; controls.enableDamping=false; controls.update(); controls.enableDamping=damping;
   camera.lookAt(0,0,0);camera.updateMatrixWorld(true);
+  return true;
 }
 
 /** The strip of screen the map actually shows through, measured from the DOM
@@ -655,13 +670,24 @@ range.max = String(bundle.events.length - 1);
 range.value = range.max;
 
 function applyCursor() {
-  const i = Number(range.value);
+  const raw = Number(range.value);
+  // In year mode the slider IS a year; the globe still reveals by canonical
+  // progress, so the year is mapped onto the verse cursor.
+  const byYear = eventsTrack?.isByYear ?? false;
+  const i = byYear ? eventsTrack.yearToIndex(raw) : raw;
+  eventsTrack?.setCursor(raw);
   markers.setCursor(i);
   const ev = bundle.events[i];
-  if (ev) {
+  // An opened event owns the readout. applyCursor still runs — the cursor,
+  // the markers and the count all still move — it just does not overwrite the
+  // line the reader opened, which is what it did to the route readout too.
+  if (openEvent) { renderOpenEvent(); }
+  else if (ev) {
     const book = bookName(bookOf(ev.sort), locale);
     const cv = ev.readable.replace(/^.*?(\d+:\d+.*)$/, '$1');
-    $('t-ref').textContent = locale === 'zh' ? `${book} ${cv}` : ev.readable;
+    $('t-ref').textContent = byYear
+      ? (raw < 0 ? t(`${-raw} BC`, `公元前 ${-raw} 年`) : t(`AD ${raw}`, `公元 ${raw} 年`))
+      : locale === 'zh' ? `${book} ${cv}` : ev.readable;
     $('t-here').textContent = markers.activeIndices
       .map((n) => placeName(bundle.places[n]!)).join(' · ');
   } else {
@@ -671,7 +697,82 @@ function applyCursor() {
   $('t-count').textContent = T.places[locale](markers.visibleCount);
   if (selected && !markers.isVisible(bundle.places.indexOf(selected))) closePanel();
 }
-range.addEventListener('input', () => { if(route)clearRoute(); applyCursor(); });
+range.addEventListener('input', () => {
+  if (route) clearRoute();
+  if (openEvent) { openEvent = null; eventsTrack?.open(null); }
+  applyCursor();  // openEvent is null, so this repaints the verse line
+});
+
+// ── events layer (C1 / P4) ───────────────────────────────────────────────
+// A second scale under the verse slider. The payload is fetched after the
+// globe has painted — 158 kB gzipped is not worth delaying first paint for,
+// and the track simply appears when it lands.
+const eventKeys = bundle.events.map((e) => e.sort);
+const indexOfKey = (key: number) => {
+  // First verse-mention at or after this canonical key.
+  let lo = 0, hi = eventKeys.length - 1, ans = eventKeys.length - 1;
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1;
+    if (eventKeys[mid]! >= key) { ans = mid; hi = mid - 1; } else lo = mid + 1;
+  }
+  return ans;
+};
+const placeById = new Map(bundle.places.map((p, i) => [p.id ?? String(i), p]));
+
+let openEvent: TrackEvent | null = null;
+
+const eventsTrack = new EventsTrack({
+  indexOfKey,
+  verseSteps: () => bundle.events.length - 1,
+  framePlaces: (ids) => framePoints(
+    ids.map((id) => placeById.get(id))
+      .filter((p): p is Place => !!p && p.lat !== null && p.lon !== null)
+      .map((p) => ({ lat: p.lat as number, lon: p.lon as number })),
+  ),
+  setVerseCursor: (index) => { range.value = String(index); applyCursor(); },
+  showEvent: (ev) => { openEvent = ev; renderOpenEvent(); },
+  axisChanged: (byYear) => {
+    // One slider, two scales. Re-range it and carry the reader's position
+    // across rather than dropping them back at the start of the canon.
+    const i = Number(range.value);
+    if (byYear) {
+      const { min, max } = eventsTrack.years;
+      const year = eventsTrack.indexToYear(i);
+      range.min = String(min); range.max = String(max); range.value = String(year);
+    } else {
+      const index = eventsTrack.yearToIndex(Number(range.value));
+      range.min = '0'; range.max = String(bundle.events.length - 1);
+      range.value = String(index);
+    }
+    applyCursor();
+  },
+});
+
+/** The opened event takes over the readout — it is what the reader just asked
+ *  about, and the verse line underneath is still true of the same moment. */
+function renderOpenEvent() {
+  if (!openEvent) return;
+  const name = locale === 'zh' ? hant(openEvent.zh) : openEvent.en;
+  const ref = locale === 'zh' ? hant(openEvent.refZh) : openEvent.ref;
+  $('t-ref').textContent = `${name} · ${ref}`;
+  // summaryZh in Chinese; in English the title is all the data has, and
+  // inventing an English summary here would be authoring.
+  $('t-here').textContent = locale === 'zh'
+    ? hant(openEvent.sum)
+    : [...new Set(openEvent.p.map((id) => placeById.get(id)).filter(Boolean)
+        .map((p) => placeName(p as Place)))].join(' · ');
+}
+
+void eventsTrack.load('/data/events.json')
+  .then(() => {
+    eventsTrack.setCursor(Number(range.value));
+    console.info(
+      `events layer: ${eventsTrack.count} events loaded, ` +
+      `${eventsTrack.drawnCount} bands drawn on the verse axis, ` +
+      `${eventsTrack.datedCount} of them dated (the year axis shows those)`,
+    );
+  })
+  .catch((err) => { console.warn('events layer unavailable:', err); });
 
 // ── go to book / chapter / verse ─────────────────────────────────────────
 // Reported directly: scrubbing 5,582 raw events by dragging a slider to find

@@ -8,7 +8,7 @@ None.
 
 ## The divine name and modern spellings in what ships
 
-None. `public/data/places.json` and `public/data/journeys.json` are clean.
+None. `public/data/events.json`, `public/data/inventory.json`, `public/data/journeys.json`, `public/data/places.json`, `public/data/scenes.json` are clean.
 
 
 ## Place names the Union Version never uses at that place

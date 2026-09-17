@@ -9,7 +9,7 @@
 // whether a contested identification is one this project wants to endorse.
 //
 // Run from the repo root. Writes a report; changes nothing.
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 
 const A = '../SeekSparks/assets';
 const verses = JSON.parse(readFileSync(`${A}/cuvs-yhwh.json`, 'utf8'));
@@ -184,7 +184,18 @@ const sweep = (o, hits, path = '') => {
   } else if (Array.isArray(o)) o.forEach((v, i) => sweep(v, hits, `${path}[${i}]`));
   else if (o && typeof o === 'object') for (const [k, v] of Object.entries(o)) sweep(v, hits, `${path}.${k}`);
 };
-for (const f of ['public/data/places.json', 'public/data/journeys.json']) {
+// Every JSON the browser downloads, not a list written once and left behind.
+// The whole point of this check is that nothing reaches a reader with the
+// divine name or a modern spelling in it, and a payload added later is exactly
+// how that guarantee goes quietly false — events.json (P4) was shipping for a
+// day before it was listed here. Anything dropped into public/data is swept.
+const SHIPPED = readdirSync('public/data')
+  .filter((f) => f.endsWith('.json'))
+  // Generated lookup tables, not prose: zh-hant.json is keyed BY simplified
+  // strings, so it necessarily contains whatever the other files contain.
+  .filter((f) => f !== 'zh-hant.json' && f !== 'version.json')
+  .map((f) => `public/data/${f}`);
+for (const f of SHIPPED) {
   const hits = new Map();
   sweep(JSON.parse(readFileSync(f, 'utf8')), hits);
   for (const [needle, n] of hits) shipped.push([`${f} · ${needle}`, n]);
@@ -206,7 +217,7 @@ for (const k of kinds) {
   lines.push('');
 }
 lines.push('## The divine name and modern spellings in what ships', '');
-if (!shipped.length) lines.push('None. `public/data/places.json` and `public/data/journeys.json` are clean.', '');
+if (!shipped.length) lines.push(`None. ${SHIPPED.map((f) => `\`${f}\``).join(', ')} are clean.`, '');
 for (const [f, n] of shipped) lines.push(`- **${f} — ${n} occurrences.** This edition reads 雅伟 and the Union Version spellings (D16).`);
 lines.push('');
 lines.push(`## Place names the Union Version never uses at that place`, '');
