@@ -50,6 +50,7 @@ export default defineConfig({
         structures: resolve(__dirname, 'structures.html'),
         tabernacle: resolve(__dirname, 'tabernacle.html'),
         temple: resolve(__dirname, 'temple.html'),
+        plan: resolve(__dirname, 'plan.html'),
       },
     },
   },

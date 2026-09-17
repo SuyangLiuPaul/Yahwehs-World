@@ -1,0 +1,41 @@
+@import './tokens.css';
+@import './nav.css';
+/* The plan page: a table of the whole canon, its depths and its gaps. No
+   WebGL here — this page is a menu, and a menu should paint immediately. */
+body { margin: 0; background: var(--ground); color: var(--ink); font: var(--fs-300)/1.7 var(--ui); }
+#plan { max-width: 1040px; margin: 0 auto; padding: 88px 20px 96px; }
+#plan > header { border-bottom: 1px solid var(--line); padding-bottom: 20px; margin-bottom: 8px; }
+#plan h1 { font-family: var(--display); font-size: var(--fs-600); margin: 0 0 10px; }
+#plan .lede { color: var(--ink-2); max-width: 62ch; }
+#ladder { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 6px; }
+#ladder .rung { border: 1px solid var(--line); padding: 8px 12px; min-width: 150px; flex: 1 1 150px; }
+#ladder .rung b { display: block; font-family: var(--display); color: var(--gold-bright); }
+#ladder .rung span { color: var(--ink-3); font-size: var(--fs-200); }
+#ladder .rung i { font-style: normal; font-family: var(--mono); color: var(--ink-2); }
+#tally-line { font-family: var(--mono); color: var(--ink-2); font-size: var(--fs-200); margin: 14px 0 0; }
+#bar { height: 8px; border: 1px solid var(--line); display: flex; margin: 10px 0 26px; }
+#bar i { display: block; height: 100%; }
+#bar .b-walk { background: var(--gold-bright); }
+#bar .b-route { background: var(--gold); }
+#bar .b-map { background: var(--gold-dim); }
+#bar .b-verse { background: #ffffff1f; }
+.unit { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.unit h2 { font-family: var(--display); font-size: var(--fs-400); margin: 0; font-weight: 600; }
+.unit .where { grid-column: 1; color: var(--ink-3); font-family: var(--mono); font-size: var(--fs-200); }
+.unit .counts { grid-column: 2; grid-row: 1 / span 2; text-align: right; color: var(--ink-3); font-family: var(--mono); font-size: var(--fs-200); white-space: nowrap; }
+.unit .counts b { display: block; color: var(--ink); font-size: var(--fs-400); font-weight: 500; }
+.unit .chips { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); padding: 5px 10px; font-size: var(--fs-200); color: var(--ink-2); text-decoration: none; min-height: 32px; }
+a.chip:hover { border-color: var(--line-gold); color: var(--ink); }
+.chip.live { border-color: var(--line-gold); color: var(--gold-bright); }
+.chip.walk.live { background: #c9a2271f; }
+.chip.building { border-style: dashed; border-color: var(--line-gold); color: var(--gold); }
+.chip.planned { border-style: dashed; color: var(--ink-3); }
+.chip em { font-style: normal; font-family: var(--mono); font-size: var(--fs-100); opacity: .8; }
+#plan footer.note { margin-top: 28px; color: var(--ink-3); font-size: var(--fs-200); max-width: 70ch; }
+@media (max-width: 640px) {
+  #plan { padding: 76px 14px 72px; }
+  .unit { grid-template-columns: 1fr; }
+  .unit .counts { grid-column: 1; grid-row: auto; text-align: left; }
+  .unit .counts b { display: inline; font-size: var(--fs-300); }
+}

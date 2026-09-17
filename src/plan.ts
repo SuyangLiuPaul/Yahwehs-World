@@ -1,0 +1,192 @@
+import './plan.css';
+import { applyStatic, bindSwitch, hant, onLocale, t } from './locale.ts';
+import { installUpdateChecker } from './updates.ts';
+import { UNITS, unitFor, type Depth, type Status, type Unit } from './plan-units.ts';
+import { journeySpan } from './bridges.ts';
+import { STRUCTURES } from './structures/specs.ts';
+import { refKey } from './books.ts';
+import type { Journey } from './routes.ts';
+
+// The plan, as a page rather than as a promise.
+//
+// Everything counted here is counted from the payloads the app already ships:
+// which unit each of the 1,443 events falls in, how many of them the text
+// locates, which journeys' own cited verses fall inside a unit, which
+// structures' measurement verses do. The only authored parts are the units
+// themselves (src/plan-units.ts) and what is planned but not built — and the
+// planned things are drawn as dashed and say "under development", because a
+// plan that looks like a feature list is a lie told in CSS.
+
+interface RawEvent { id: string; s: number; e: number; p: unknown[]; ref: string; refZh: string }
+
+const $ = (id: string) => document.getElementById(id)!;
+
+const DEPTHS: { key: Depth; zh: string; en: string; zhWhat: string; enWhat: string }[] = [
+  { key: 'verse', zh: '经文', en: 'Passage', zhWhat: '记载、摘要，以及年代的依据。1,443 个事件全都有。', enWhat: 'The passage, its summary and the basis for its date. All 1,443 have it.' },
+  { key: 'map', zh: '地图', en: 'On the map', zhWhat: '事件发生的地点，落在地球上。只在经文指明地点时才有。', enWhat: 'The place, on the globe — only where the text names one.' },
+  { key: 'route', zh: '路线', en: 'Route', zhWhat: '一站一站画在地形上的行程，每站注明出处经文。', enWhat: 'A journey across the terrain, every stop citing its verse.' },
+  { key: 'measure', zh: '尺寸', en: 'Measures', zhWhat: '照经文所记的尺寸做的卡片。', enWhat: 'A card built to the measurements the text states.' },
+  { key: 'walk', zh: '走进去', en: 'Walk in', zhWhat: '可以自己走进去的建筑。', enWhat: 'A building you can walk into on your own feet.' },
+];
+
+const STATUS: Record<Status, { zh: string; en: string }> = {
+  live: { zh: '已上线', en: 'Live' },
+  building: { zh: '开发中', en: 'Under development' },
+  planned: { zh: '计划中', en: 'Planned' },
+};
+
+type Row = {
+  unit: Unit;
+  events: number;
+  placed: number;
+  journeys: Journey[];
+  structures: { id: string; zh: string; en: string }[];
+  /** The span this unit turned out to cover, in both languages: the first
+   *  event's citation opening and the last one's ending. Read off the data,
+   *  so a unit's printed passage can never disagree with its contents. */
+  span: { en: [string, string]; zh: [string, string] } | null;
+  /** The first citation in the unit, for the link back to the globe. */
+  ref: string | null;
+};
+
+const rows: Row[] = [];
+let total = 0;
+
+const chip = (cls: string, label: string, note: string, href?: string) => {
+  const inner = `${label}${note ? ` <em>${note}</em>` : ''}`;
+  return href
+    ? `<a class="chip ${cls}" href="${href}">${inner}</a>`
+    : `<span class="chip ${cls}">${inner}</span>`;
+};
+
+function render() {
+  $('plan-title').textContent = t('The whole plan', '完整的计划');
+  $('plan-lede').innerHTML = t(
+    'Every event in the canon, in the order it is read, cut into the units this app presents. Each unit shows how deep it goes today — the passage, the place, a route, the measurements, a building you can walk into — and what is still to be built. Dashed means it does not exist yet.',
+    '圣经里的每一个事件，按阅读的次序，分成本站呈现的单元。每个单元写明它现在做到哪一层——经文、地点、路线、尺寸、可以走进去的建筑——以及还没做的部分。虚线框的，是还没有做出来的。');
+
+  $('ladder').innerHTML = DEPTHS.map((d) => `
+    <div class="rung">
+      <b>${t(d.en, d.zh)}</b>
+      <span>${t(d.enWhat, d.zhWhat)}</span>
+    </div>`).join('');
+
+  // What fraction of the canon's events sit in a unit that has reached each
+  // depth. Counted, never claimed.
+  const reach = { walk: 0, route: 0, map: 0, verse: 0 };
+  for (const r of rows) {
+    // Exclusive buckets, counted per EVENT and not per unit: a unit with one
+    // located place does not make all of its events mapped, and saying it did
+    // turned 55% into 84% on the first draft of this bar.
+    if (r.unit.walk) reach.walk += r.events;
+    else if (r.journeys.length) reach.route += r.events;
+    else { reach.map += r.placed; reach.verse += r.events - r.placed; }
+  }
+  const pc = (n: number) => `${((n / Math.max(1, total)) * 100).toFixed(0)}%`;
+  $('bar').innerHTML = (['walk', 'route', 'map', 'verse'] as const)
+    .map((k2) => `<i class="b-${k2}" style="width:${pc(reach[k2])}"></i>`).join('');
+  $('tally-line').textContent = t(
+    `${total.toLocaleString()} events · ${UNITS.length} units · walk-in ${pc(reach.walk)} · route ${pc(reach.route)} · mapped ${pc(reach.map)} · passage only ${pc(reach.verse)}`,
+    `${total.toLocaleString()} 个事件 · ${UNITS.length} 个单元 · 可走进 ${pc(reach.walk)} · 有路线 ${pc(reach.route)} · 有地点 ${pc(reach.map)} · 只有经文 ${pc(reach.verse)}`);
+
+  $('units').innerHTML = rows.map((r) => {
+    const chips: string[] = [];
+    const first = r.ref;
+    chips.push(chip('live', t('Passage', '经文'), t(`${r.events} events`, `${r.events} 个事件`),
+      first ? `/#ref=${encodeURIComponent(first)}` : '/'));
+    if (r.placed) {
+      chips.push(chip('live', t('On the map', '地图'),
+        t(`${r.placed} located`, `${r.placed} 处有地点`),
+        first ? `/#ref=${encodeURIComponent(first)}` : '/'));
+    }
+    for (const jr of r.journeys) {
+      chips.push(chip('live', t('Route', '路线'), t(jr.en, jr.zh), `/#journey=${jr.id}`));
+    }
+    for (const st of r.structures) {
+      chips.push(chip('live', t('Measures', '尺寸'), t(st.en, st.zh), `/structures.html#${st.id}`));
+    }
+    if (r.unit.walk) {
+      chips.push(chip('walk live', t('Walk in', '走进去'), t(r.unit.walk.en, r.unit.walk.zh), r.unit.walk.href));
+    }
+    for (const p of r.unit.plan ?? []) {
+      const depth = DEPTHS.find((d) => d.key === p.depth)!;
+      chips.push(chip(p.status, `${t(depth.en, depth.zh)} · ${t(STATUS[p.status].en, STATUS[p.status].zh)}`,
+        t(p.en, p.zh)));
+    }
+    return `
+      <article class="unit" id="u-${r.unit.id}">
+        <h2>${t(r.unit.en, r.unit.zh)}</h2>
+        <p class="where">${hant(passageOf(r))}</p>
+        <p class="counts"><b>${r.events}</b>${t('events', '个事件')}</p>
+        <div class="chips">${chips.join('')}</div>
+      </article>`;
+  }).join('');
+
+  $('plan-note').innerHTML = t(
+    'The counts on this page are computed from the same payloads the rest of the site uses: each event is assigned to the unit its opening verse falls in, a route is listed under a unit when the verses its own stops cite fall inside it, and a measurement card when the verse it is built from does. Nothing here is a hand-kept list that can drift out of date — if a journey is added, it appears.',
+    '这一页的数字是从本站其它页面用的同一份数据算出来的：每个事件按它起始的经节归入所属单元；一条路线只有在它各站所引的经节落在该单元之内时才列在那里；尺寸卡同理。这里没有手工维护的清单，不会跟数据脱节——加一条路线，它就会出现。');
+  applyStatic();
+}
+
+/** "Genesis 1:1 … Genesis 2:25", from the unit's own first and last events. */
+const opening = (ref: string) => ref.split('–')[0]!.trim();
+const ending = (ref: string) => { const p = ref.split('–'); return (p[p.length - 1] ?? ref).trim(); };
+function passageOf(r: Row): string {
+  if (!r.span) return '';
+  const [a, b] = t(r.span.en, r.span.zh);
+  return a === b ? a : `${a} – ${b}`;
+}
+
+async function load() {
+  const [{ events }, { journeys }] = await Promise.all([
+    fetch('/data/events.json').then((r) => r.json() as Promise<{ events: RawEvent[] }>),
+    fetch('/data/journeys.json').then((r) => r.json() as Promise<{ journeys: Journey[] }>),
+  ]);
+  total = events.length;
+
+  const byUnit = new Map<string, Row>();
+  for (const u of UNITS) byUnit.set(u.id, { unit: u, events: 0, placed: 0, journeys: [], structures: [], span: null, ref: null });
+
+  let unassigned = 0;
+  for (const ev of events) {
+    const u = unitFor(ev.s);
+    if (!u) { unassigned++; continue; }
+    const row = byUnit.get(u.id)!;
+    row.events++;
+    if (Array.isArray(ev.p) && ev.p.length) row.placed++;
+    if (!row.span) {
+      row.ref = ev.ref;
+      row.span = { en: [opening(ev.ref), ending(ev.ref)], zh: [opening(ev.refZh), ending(ev.refZh)] };
+    } else {
+      row.span.en[1] = ending(ev.ref);
+      row.span.zh[1] = ending(ev.refZh);
+    }
+  }
+  // An event that belongs to no unit is a hole in the plan, and the page says
+  // so rather than quietly showing a smaller total.
+  if (unassigned) {
+    const warn = document.createElement('p');
+    warn.className = 'where';
+    warn.textContent = `${unassigned} events are outside every unit.`;
+    $('plan').prepend(warn);
+  }
+
+  for (const jr of journeys) {
+    const [a] = journeySpan(jr);
+    const u = unitFor(a);
+    if (u) byUnit.get(u.id)!.journeys.push(jr);
+  }
+  for (const st of STRUCTURES) {
+    const key = refKey(st.ref ?? '');
+    const u = key === null ? null : unitFor(key);
+    if (u) byUnit.get(u.id)!.structures.push({ id: st.id, zh: st.zh, en: st.en });
+  }
+
+  rows.push(...UNITS.map((u) => byUnit.get(u.id)!));
+  render();
+}
+
+bindSwitch(document.querySelector('.lang-switch') as HTMLElement);
+installUpdateChecker();
+onLocale(() => { if (rows.length) render(); });
+void load();

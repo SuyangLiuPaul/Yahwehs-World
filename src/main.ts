@@ -838,6 +838,14 @@ function openEventFromHash() {
     if (ev) eventsTrack.open(ev);
     return;
   }
+  // A journey by name, for the plan page, which lists every one of them and
+  // has no payload of its own to hand over.
+  const journey = /(?:^|[#&])journey=([^&]+)/.exec(hash)?.[1];
+  if (journey) {
+    const id = decodeURIComponent(journey);
+    if (journeyData.journeys.some((jr) => jr.id === id)) openRoute(id);
+    return;
+  }
   const ref = /(?:^|[#&])ref=([^&]+)/.exec(hash)?.[1];
   if (!ref) return;
   const key = refKey(decodeURIComponent(ref));
