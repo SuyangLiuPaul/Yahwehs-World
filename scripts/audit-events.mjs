@@ -255,6 +255,14 @@ for (const a of walkAnchors) {
   if (key === null || !eventsAt(key)) corridors.push(['tabernacle', `${a} falls in no event`]);
 }
 
+const templeAnchorsSrc = /const TEMPLE_WALK_ANCHORS = \[([\s\S]*?)\]/.exec(readFileSync('src/bridges.ts', 'utf8'))?.[1] ?? '';
+const templeAnchors = [...templeAnchorsSrc.matchAll(/'([^']+)'/g)].map((m) => m[1]);
+if (!templeAnchors.length) corridors.push(['temple', 'no anchors found in src/bridges.ts']);
+for (const a of templeAnchors) {
+  const key = refToKey(a);
+  if (key === null || !eventsAt(key)) corridors.push(['temple', `${a} falls in no event`]);
+}
+
 // ── report ────────────────────────────────────────────────────────────────
 const byKind = {};
 for (const f of findings) (byKind[f.kind] ??= []).push(f);
@@ -291,7 +299,8 @@ if (gaps.length > 60) lines.push(`- …and ${gaps.length - 60} more runs`);
 lines.push('', `Total uncited verses: ${gaps.reduce((a, g) => a + g[2], 0)}`, '');
 lines.push(`## Corridors between the pages — ${corridors.length} broken`, '');
 lines.push('Every link in src/bridges.ts is a verse citation landing inside an event.', '');
-if (!corridors.length) lines.push('All journeys, structure measurements and tabernacle anchors land.', '');
+if (!corridors.length) lines.push('All journeys, structure measurements and walk anchors land.', '');
+else lines.push(`**${corridors.length} corridor finding(s)** — see below.`, '');
 for (const [what, why] of corridors) lines.push(`- **${what}** — ${why}`);
 lines.push('');
 lines.push('## Summaries whose words are least like the passage', '');

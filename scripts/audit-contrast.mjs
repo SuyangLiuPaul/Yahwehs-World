@@ -18,11 +18,18 @@ import { chromium } from 'playwright';
 
 const URL = process.argv[2] ?? 'http://localhost:5175';
 // WCAG AA: 4.5 for body text, 3.0 for text at 18.66px+ or bold 14px+.
-// The fourth entry is the globe with an event already open (the hash handler
-// in src/main.ts resolves the citation). Text that only exists in a state —
-// the opened event's line and the links out of it — is text a reader reads,
-// and a sweep that only ever sees the resting page cannot measure it.
-const PAGES = ['/', '/structures.html', '/tabernacle.html', '/#ref=Exodus%2025:10'];
+// Every page the site builds, taken from the Vite input map rather than
+// written out here — a hardcoded list of pages is exactly how /temple.html
+// shipped unswept, and how audit-events once stopped checking a payload that
+// had been added after its list was written. The fourth entry is the globe
+// with an event already OPEN (the hash handler in src/main.ts resolves the
+// citation): state-dependent text is text a reader reads, and a sweep that
+// only sees the resting page cannot measure it.
+const PAGES = [
+  ...[...(await import('node:fs')).readFileSync('vite.config.ts', 'utf8')
+    .matchAll(/resolve\(__dirname, '([^']+\.html)'\)/g)].map((m) => (m[1] === 'index.html' ? '/' : `/${m[1]}`)),
+  '/#ref=Exodus%2025:10',
+];
 
 const measure = async (page) => page.evaluate(() => {
   const parse = (c) => {
@@ -122,7 +129,18 @@ for (const scheme of ['dark', 'light']) {
   const page = await ctx.newPage();
   for (const path of PAGES) {
     await page.goto(URL + path, { waitUntil: 'networkidle' });
-    await page.waitForTimeout(2500);
+    // Wait for the design system to actually be in force, not for a guess at
+    // how long that takes. In dev Vite injects CSS through the page's JS, so a
+    // page whose module is still being transformed renders with the browser's
+    // own defaults — and this sweep measured /temple.html in exactly that
+    // state and reported its nav as 2.08:1, which is the contrast of an
+    // unstyled <a> (#0000EE) and not a fact about the product. A fixed sleep
+    // can hide a real failure just as easily as it can invent one.
+    await page.waitForFunction(
+      () => getComputedStyle(document.documentElement).getPropertyValue('--ink-3').trim() !== '',
+      null, { timeout: 30_000 },
+    );
+    await page.waitForTimeout(1200);
     const rows = (await measure(page)).filter((r) => !r.pass);
     // One line per distinct selector; the same rule failing in ten places is
     // one thing to fix, not ten.

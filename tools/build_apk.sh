@@ -129,7 +129,18 @@ res = pathlib.Path(sys.argv[1]) / "app/src/main/res"
 # resource carries a literal apostrophe — Tauri writes its own the same way.
 # &apos; is valid XML and AAPT still refuses it: "Invalid unicode escape
 # sequence in string", and the whole resource merge fails.
-for values, label in [("values", '"Yahweh\'s World"'), ("values-zh", '"雅伟之界"')]:
+# Android picks the folder by the DEVICE's language, which is the whole
+# point: a reader whose phone is in Chinese should see 雅伟之界 on the home
+# screen without asking. What it does NOT do is fall back from zh-TW/zh-HK to
+# values-zh — measured on the 0.1.5 APK, which reported
+# application-label-zh-TW:'Yahweh's World' while zh-CN got 雅伟之界. So 繁體
+# gets its own two folders, in 繁體, the way the app itself reads.
+for values, label in [
+    ("values", '"Yahweh\'s World"'),
+    ("values-zh", '"雅伟之界"'),
+    ("values-zh-rTW", '"雅偉之界"'),
+    ("values-zh-rHK", '"雅偉之界"'),
+]:
     d = res / values
     d.mkdir(parents=True, exist_ok=True)
     f = d / "strings.xml"
