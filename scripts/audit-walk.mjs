@@ -46,8 +46,11 @@ const report = async (path, handle, probes) => {
     const EYE = 1.65, R = 0.32, STEP = 0.62, HEAD = 1.78;
     const solids = () => W.colliders;
     const surfaces = () => [...W.colliders, ...W.platforms];
+    // The ground is a height field on a page whose house stands on a mountain,
+    // and a number on one whose tent stands on the flat.
+    const ground = typeof W.floorY === 'function' ? W.floorY : () => (W.floorY ?? 0);
     const supportAt = (x, z, limit) => {
-      let top = W.floorY ?? 0;
+      let top = ground(x, z);
       for (const c of surfaces())
         if (!(c.max.y > limit || x + R < c.min.x || x - R > c.max.x ||
               z + R < c.min.z || z - R > c.max.z)) top = Math.max(top, c.max.y);
@@ -117,6 +120,7 @@ const SHOW = (rows, title) => {
     if (!ok) bad++;
     console.log(`${ok ? '   ' : '  ✗'} ${r.name.padEnd(34)} ${String(r.speed).padStart(5)} m/s   ` +
       `rose ${String(r.rise).padStart(5)} m (${r.riseCubits} cubits)` +
+      (r.sank > 0.3 ? `   fell ${r.sank} m` : '') +
       (r.reached === null ? '' : `   top in ${r.reached} s`));
   }
 };
@@ -141,6 +145,12 @@ const temple = await report('/temple.html', '__temple', [
   // of the side chambers at fifteen cubits.
   { name: 'up the winding stair (6:8)', from: [-2.6, -19], face: Math.PI, keys: ['KeyW'],
     seconds: 25, ceiling: 0.5, climb: true, target: 14, want: (r) => r.riseCubits >= 14 },
+  // The mount. 2 Chr 3:1 puts the house on a mountain, so there has to be a
+  // way down off it and a side that turns you back.
+  { name: 'down the road to the valley', from: [92, -81], face: -0.185, keys: ['KeyW'],
+    seconds: 34, ceiling: 0.5, want: (r) => r.sank > 20 },
+  { name: 'the east scarp turns you back', from: [236, 0], face: Math.PI / 2, keys: ['KeyW'],
+    seconds: 12, ceiling: 0.5, want: (r) => r.rise < 12 },
 ]);
 SHOW(temple, '/temple.html — what a visitor can do on their own feet');
 

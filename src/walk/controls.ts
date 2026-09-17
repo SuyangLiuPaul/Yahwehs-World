@@ -48,6 +48,10 @@ const JUMP = 5.4;           // m/s at the toes → an apex of about 0.77 m
 const ACCEL = 14;
 const DAMP = 10;
 const AIR_CONTROL = 0.35;   // you steer in the air, you do not walk in it
+// The steepest ground that can be climbed, as a gradient. Without it the
+// step-height rule alone lets a walker stroll up a cliff: at 4.7 m/s a frame
+// advances 8 cm, so even a vertical face rises less than a step per frame.
+const MAX_CLIMB = 1.0;      // 45°
 const TURN = 2.2;           // rad/s, for the arrow keys and a pad's right stick
 const PAD_LOOK = 2.6;       // rad/s at full deflection
 const DEAD = 0.18;          // a stick at rest is never exactly at rest
@@ -84,18 +88,21 @@ export class Walker {
   private grounded = true;
   /** Treads and ramps: they support the walker and never block them. */
   private platforms: THREE.Box3[] = [];
-  /** Where the ground is where nothing else holds you up — 0 for a tent
-   *  pitched on the sand, the paving level for a temple on a platform. */
-  private floorY = 0;
+  /** Where the ground is where nothing else holds you up: a number for a tent
+   *  pitched on the flat, or a height field for a house on a mountain. */
+  private floor: number | ((x: number, z: number) => number) = 0;
+  private groundAt(x: number, z: number) {
+    return typeof this.floor === 'number' ? this.floor : this.floor(x, z);
+  }
 
   constructor(
     camera: THREE.PerspectiveCamera,
     dom: HTMLElement,
     private colliders: THREE.Box3[],
-    options: { platforms?: THREE.Box3[]; floorY?: number } = {},
+    options: { platforms?: THREE.Box3[]; floorY?: number | ((x: number, z: number) => number) } = {},
   ) {
     this.platforms = options.platforms ?? [];
-    this.floorY = options.floorY ?? 0;
+    this.floor = options.floorY ?? 0;
     this.yaw.add(this.pitch);
     this.pitch.add(camera);
     camera.position.set(0, 0, 0);
@@ -319,7 +326,7 @@ export class Walker {
   /** The highest surface under the walker's footprint at or below `limit` —
    *  a tread, a ramp, the top of a wall, or the ground itself. */
   private supportAt(x: number, z: number, limit: number): number {
-    let top = this.floorY;
+    let top = this.groundAt(x, z);
     const test = (c: THREE.Box3) => {
       if (c.max.y > limit || c.max.y <= top) return;
       if (x + RADIUS < c.min.x || x - RADIUS > c.max.x) return;
@@ -337,7 +344,7 @@ export class Walker {
    *  platform, where every direction is inside the platform and nothing moves.
    *  Used when placing the walker, never in the movement loop. */
   private standingHeightAt(x: number, z: number, ceiling = Infinity): number {
-    const tops = [this.floorY];
+    const tops = [this.groundAt(x, z)];
     const gather = (c: THREE.Box3) => {
       if (c.max.y > ceiling) return;
       if (x + RADIUS < c.min.x || x - RADIUS > c.max.x) return;
@@ -347,12 +354,20 @@ export class Walker {
     for (const c of this.colliders) gather(c);
     for (const c of this.platforms) gather(c);
     tops.sort((a, b) => b - a);
-    return tops.find((t) => !this.blocked(x, z, t)) ?? this.floorY;
+    return tops.find((t) => !this.blocked(x, z, t)) ?? this.groundAt(x, z);
   }
 
   /** Moves to (x, z) if the way is clear, stepping up onto anything no taller
    *  than STEP. Returns false when a wall is in the way. */
   private tryMove(x: number, z: number): boolean {
+    // Ground too steep to climb is a wall. Measured as a gradient against the
+    // distance actually moved, so it does not depend on the frame rate.
+    const p = this.yaw.position;
+    const rise = this.groundAt(x, z) - this.groundAt(p.x, p.z);
+    if (rise > 0) {
+      const run = Math.hypot(x - p.x, z - p.z);
+      if (rise > MAX_CLIMB * run + 1e-4) return false;
+    }
     if (!this.blocked(x, z, this.feet)) return true;
     if (!this.grounded) return false;
     const top = this.supportAt(x, z, this.feet + STEP);

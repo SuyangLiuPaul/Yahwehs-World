@@ -70,9 +70,20 @@ const T = localized({
 // One-time migration away from the former year-long immutable /data cache.
 // New responses revalidate via Netlify; returning readers must also leave
 // their already-cached, pre-correction URL behind.
+// How far the opening screen has got. Six payloads, then the scene, then the
+// first frame: eight steps, counted as they happen. A progress bar that is
+// really a timer is a lie with a nice easing curve.
+const STEPS = 8;
+let stepsDone = 0;
+function step() {
+  stepsDone++;
+  const bar = document.getElementById('loading-bar');
+  if (bar) bar.style.width = `${Math.min(100, (stepsDone / STEPS) * 100)}%`;
+}
+
 const j = <T,>(u: string) => fetch(`${u}?v=2026-09-15`).then((r) => {
   if (!r.ok) throw new Error(`${u} → ${r.status}`);
-  return r.json() as Promise<T>;
+  return (r.json() as Promise<T>).then((v) => { step(); return v; });
 });
 
 const [bundle, journeyData, land, coastline, lakes, rivers] = await Promise.all([
@@ -1078,6 +1089,8 @@ installUpdateChecker();
 renderLegend();
 applyCursor();
 updateLayout();
+step();                       // the scene is built
+step();                       // …and this is the frame that shows it
 $('loading').classList.add('done');
 console.info(
   `%c雅伟之界 · 圣经世界%c  ${bundle.meta.located} located / ${bundle.meta.unlocated} unlocated  ·  ${bundle.meta.source} (${bundle.meta.license})`,

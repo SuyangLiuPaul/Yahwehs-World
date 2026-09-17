@@ -37,6 +37,12 @@ for (const { path, handle } of PAGES) {
     // through a wall on the way down, so the eye's own height is interpolated
     // along the leg exactly as the Tour interpolates it.
     const eyeOf = (s) => (s.y === undefined ? EYE : s.y * cubit);
+    // A house on a mountain gives the camera a second way to be inside
+    // something solid, and the colliders know nothing about it: the ground
+    // itself. Every sample is also tested against the height field the walker
+    // stands on — three of my own first framings of the mount were taken from
+    // inside the hill, which is how this check came to exist.
+    const ground = typeof W.floorY === 'function' ? W.floorY : null;
     const legs = [];
     for (let i = 1; i < stops.length; i++) {
       const prev = stops[i - 1], s = stops[i];
@@ -52,7 +58,7 @@ for (const { path, handle } of PAGES) {
         seg.push(d); total += d;
       }
       let done = 0;
-      let hits = 0, samples = 0, lowest = Infinity, highest = -Infinity;
+      let hits = 0, samples = 0, lowest = Infinity, highest = -Infinity, buried = 0;
       for (let k = 1; k < pts.length; k++) {
         const [ax, az] = pts[k - 1], [bx, bz] = pts[k];
         const n = Math.max(2, Math.ceil(Math.hypot(bx - ax, bz - az) / 0.15));
@@ -68,11 +74,12 @@ for (const { path, handle } of PAGES) {
             z >= c.min.z - 0.15 && z <= c.max.z + 0.15 &&
             y >= c.min.y && y <= c.max.y);
           if (inside) hits++;
+          if (ground && y < ground(x, z) + 0.3) buried++;
         }
         done += seg[k - 1];
       }
       legs.push({
-        leg: `${i} → ${s.en.slice(0, 40)}`, samples, hits, via: (s.via ?? []).length,
+        leg: `${i} → ${s.en.slice(0, 40)}`, samples, hits: hits + buried, buried, via: (s.via ?? []).length,
         eye: highest - lowest < 0.05 ? `${lowest.toFixed(1)} m` : `${lowest.toFixed(1)}–${highest.toFixed(1)} m`,
       });
     }
@@ -82,7 +89,7 @@ for (const { path, handle } of PAGES) {
   console.log(`\n${path} — tour runs ${Math.round(report.seconds)} s`);
   for (const l of report.legs) {
     const flag = l.hits ? '  ✗' : '   ';
-    console.log(`${flag} ${l.leg.padEnd(46)} ${String(l.hits).padStart(3)} / ${String(l.samples).padStart(3)} inside a collider   eye ${l.eye.padEnd(12)}${l.via ? `(via ${l.via})` : ''}`);
+    console.log(`${flag} ${l.leg.padEnd(46)} ${String(l.hits).padStart(3)} / ${String(l.samples).padStart(3)} inside${l.buried ? ` (${l.buried} in the ground)` : ' a collider'}   eye ${l.eye.padEnd(12)}${l.via ? `(via ${l.via})` : ''}`);
     if (l.hits) bad++;
   }
 }

@@ -19,12 +19,13 @@ import type { Stop } from './tour.ts';
 // And the eye is no longer always at 1.65 m. Every stop stood at a person's
 // height, so a visitor was walked round a building 30 cubits tall and never
 // saw it: no view of the whole enclosure, and no sight of a roof at all.
-// The owner said exactly that. Four stops now stand above head height —
-// the approach, the roof of the house, and a closing pass from the west —
-// and the Evidence dialog says plainly that nobody ever stood there.
+// The owner said exactly that. The walk now begins below the mount and rises
+// over it, and three more stops stand above head height — the whole precinct,
+// the roof from the south, and a closing pass from the west. The Evidence
+// dialog says plainly that nobody ever stood in any of them.
 //
-// Pacing: 109 s at first, 64 s after the last pass, ~80 s now with the
-// three aerials. Every stop can be revisited from the list at any length.
+// Pacing: 109 s at first, 64 s after the last pass, ~88 s now that it begins
+// in the valley. Every stop can be revisited from the list at any length.
 
 // Landmarks in cubits, matching buildTemple's placement.
 const HOUSE = { x: 0, z: 0 };
@@ -38,15 +39,22 @@ const VEIL = { x: -10, z: 0 };
 const ROOF = { x: -4, z: -10 };
 
 export const TEMPLE_TOUR: Stop[] = [
-  // The whole thing at once, before any of its parts: high to the south-east,
-  // where the house, its three storeys of chambers, the court, the altar and
-  // the sea are all in one frame.
-  { x: 106, z: 62, y: 42, at: HOUSE, atY: 10, travel: 0, dwell: 4.5,
+  // From the valley, looking up. 2 Chr 3:1 puts the house on Mount Moriah and
+  // the psalms speak of going UP to it; the walk now begins where a person
+  // coming to it would have begun, below it.
+  { x: 150, z: -230, y: -50, at: HOUSE, atY: 22, travel: 0, dwell: 4,
+    zh: '从山下望 · 殿建在摩利亚山上',
+    en: 'From below — the house stands on Mount Moriah',
+    ref: '代下 3:1；诗 24:3 · 2 Chr 3:1; Ps 24:3' },
+  // Up and over the shoulder of the mount: the whole precinct at once, the
+  // house, its three storeys of chambers, the court, the altar and the sea.
+  { x: 170, z: 112, y: 62, at: HOUSE, atY: 4, travel: 5, dwell: 4,
+    via: [{ x: 235, z: -150 }, { x: 235, z: 30 }],
     zh: '全景 · 殿、旁屋、院子、铜坛与铜海',
     en: 'The whole house — chambers, court, altar and sea in one view',
     ref: '王上 6:1–3；代下 3:1 · 1 Kgs 6:1–3; 2 Chr 3:1' },
   // Down into the court, on the ground, where a person would have stood.
-  { x: 64, z: 27, at: { x: 34, z: 0 }, atY: 14, travel: 4, dwell: 2.5,
+  { x: 64, z: 27, at: { x: 34, z: 0 }, atY: 14, travel: 4.5, dwell: 2.5,
     zh: '下到院内 · 廊与铜柱在殿前',
     en: 'Down into the court — the porch and the pillars before the house',
     ref: '王上 6:3、7:21 · 1 Kgs 6:3, 7:21' },

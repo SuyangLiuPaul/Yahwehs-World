@@ -9,7 +9,7 @@ import {
 } from './textures.ts';
 import { bevelBox, hanging, batchStatic, altarHorn } from './craft.ts';
 import { detailedSurface } from './materials.ts';
-import { buildDesert } from './environment.ts';
+import { buildDesert, buildMount } from './environment.ts';
 
 // Solomon's temple, generated from the counts the text states.
 //
@@ -104,9 +104,10 @@ export interface Temple {
    *  altar ramp and the winding stair of 6:8 are made of these — see
    *  src/walk/controls.ts for why a stair cannot be made of walls. */
   platforms: THREE.Box3[];
-  /** The ground outside the platform, so stepping off its edge is a drop of
-   *  the platform's own height and not a fall out of the world. */
-  floorY: number;
+  /** The ground under the walker wherever the built work does not hold them
+   *  up: the mount's own height field, so what a visitor stands on and what
+   *  they can see are the same surface. */
+  floorY: (x: number, z: number) => number;
   /** The veil's woven face, for a page that wants the crossing into the
    *  oracle to look like cloth rather than like a dissolve to black. */
   veilCanvas: HTMLCanvasElement;
@@ -267,23 +268,33 @@ export function buildTemple(cubit: number): Temple {
   const panel = M.panel();
   const olive = M.olive();
 
-  // ── the site: Mount Moriah, 2 Chr 3:1 ─────────────────────────────────
-  // A dressed platform standing proud of the highland round it. The text
-  // gives the threshing floor, not a terrace plan: the platform is sized to
-  // hold the house and what the text sets round it, and the highland is the
-  // same generic arid set the tabernacle stands in — not a survey.
-  const platW = C(160), platD = C(120), platH = C(3);
+  // ── the site: MOUNT Moriah, 2 Chr 3:1 ─────────────────────────────────
+  // The house stood on a mountain, at a threshing floor, and the canon speaks
+  // of going UP to it. It used to stand on a slab in a flat plain, which is
+  // the one thing 2 Chr 3:1 rules out. The mount is generated in
+  // environment.ts, which explains what of its shape is the text's and what
+  // is not; here the summit is levelled for the court, the paving is laid on
+  // it, and the road comes up the south ridge.
+  // The paving is cut close round the court — 164 × 96 cubits against the
+  // court's 144 × 76 — and the rock of the summit runs four metres further.
+  // A broader apron read as a plain: from anywhere a visitor stands, the fall
+  // must start close enough to be seen, or the mountain is a rumour.
+  const platW = C(164), platD = C(96), platH = C(3);
+  const mount = buildMount(platW / 2 + 4.5, platD / 2 + 4.5);
+  g.add(mount.group);
   const platform = new THREE.Mesh(new THREE.BoxGeometry(platW, platH, platD), M.paving());
   platform.position.y = -platH / 2;
   platform.receiveShadow = true;
   platform.userData.noCast = true;
   g.add(platform);
-  // Standing on the paving is now a fact about the world rather than an
-  // assumption in the camera: the walker has a vertical axis, so the platform
-  // has to hold them up, and its edge has to be an edge.
+  // Standing on the paving is a fact about the world rather than an assumption
+  // in the camera: the walker has a vertical axis, so the paving has to hold
+  // them up.
   addCollider(platform);
-  const desert = buildDesert((x, z) => Math.abs(x) < platW / 2 + 3 && Math.abs(z) < platD / 2 + 3);
-  desert.position.y = -platH + C(0.2);
+  // The far hills start beyond the mount, and the ground they stand on is the
+  // valley the mount falls to.
+  const desert = buildDesert(() => true, 190);   // the mount carries its own rock
+  desert.position.y = mount.valleyY - 0.06;
   g.add(desert);
 
   // ── house massing, 1 Kgs 6:2 ──────────────────────────────────────────
@@ -911,7 +922,7 @@ export function buildTemple(cubit: number): Temple {
   };
   return {
     group: g, colliders, platforms, counts, anchors,
-    floorY: -platH + C(0.2),
+    floorY: mount.heightAt,
     veilCanvas: TEX.veil.map.image as HTMLCanvasElement,
   };
 }
