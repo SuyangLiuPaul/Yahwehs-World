@@ -124,10 +124,16 @@ ao.blendIntensity = 0.85;
 composer.addPass(ao);
 composer.addPass(new OutputPass());
 
-// Standing east of the court gate, looking in — the way anyone approaching
-// the temple would have come to it. One place, named once: the free walk
-// starts here and every handover from the tour comes back here.
-const SPAWN = { x: CUBIT * 74, z: 0, facing: Math.PI / 2 };
+// Inside the gate and north of the axis, looking at the porch. One place,
+// named once: the free walk starts here and every handover from the tour
+// comes back here.
+//
+// NOT on the axis, which is where it used to be. The bronze altar is twenty
+// cubits square and stands in the court directly before the house, so a
+// visitor set down on the centre line opens their eyes two cubits from a wall
+// of bronze and sees nothing else at all. Off the corner of the altar, the
+// first frame is the porch, the two pillars and the house behind them.
+const SPAWN = { x: CUBIT * 64, z: CUBIT * 27, facing: Math.atan2(30, 27) };
 const spawn = () => walker.moveTo(SPAWN.x, SPAWN.z, SPAWN.facing);
 spawn();
 
