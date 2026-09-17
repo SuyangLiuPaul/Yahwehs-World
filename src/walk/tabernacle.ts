@@ -49,6 +49,9 @@ export interface Tabernacle {
   colliders: THREE.Box3[];
   counts: TabernacleCounts;
   ready: Promise<boolean>;
+  /** The veil of 26:31 and the plane it hangs in, so the page can press the
+   *  cloth as the camera goes through it — see pressCloth in craft.ts. */
+  veil: { group: THREE.Group; x: number };
 }
 
 // Textures are generated once and shared: a hundred boards carrying a hundred
@@ -398,15 +401,56 @@ export function buildTabernacle(cubit: number): Tabernacle {
   // These are the CEILING seen from inside; from outside they lie under three
   // more layers.
   const ceiling=M.veil([1,4]);ceiling.map=ceiling.map!.clone();ceiling.map.repeat.set(1,4);ceiling.map.wrapS=ceiling.map.wrapT=THREE.RepeatWrapping;
+  // A curtain laid over the frame. The first version drew the coverings as a
+  // flat-topped box with square corners — the owner saw the whole tent from
+  // above and said so, and it was right: cloth 10 cubits across, carried on
+  // boards and nothing else, does not hold a plane. So the section is a real
+  // one: it sags across the span, turns the corner over a radius instead of a
+  // right angle, falls down the side in folds, and stops at the ground.
+  //
+  // What the text fixes and this keeps: the linen is 28 across (26:2), so it
+  // reaches 9 cubits down each side and leaves the last cubit of the boards
+  // showing; the goats' hair is 30 (26:8), so it reaches the ground; 44 cubits
+  // of it run along a 30-cubit house, and the remainder hangs over the back
+  // (26:12). The sag, the corner radius and the folds are not measured — they
+  // are what cloth does, and the card says so.
+  const SAG = .62;                     // cubits, at mid-span
+  /** Height and half-width of the cloth's section at `a` cubits from the
+   *  centre line: over the boards to their edge, then down.
+   *
+   *  An earlier version rounded the eave with a fillet drawn INSIDE the
+   *  corner, which put the cloth below the top of the boards for the last
+   *  cubit — so the gold tops showed through the outermost hide along the
+   *  whole length. Cloth laid over a square edge creases on it; the softness
+   *  belongs in the sag and in the bow of what hangs free, not in the corner. */
+  function section(a:number){
+    if(a<=5)return{y:10,z:a};
+    const d=a-5;
+    return{y:10-d,z:5+.22*Math.exp(-d/1.1)};
+  }
   function drape(length:number,width:number,offset:number,material:THREE.Material,raise:number){
-    const geo=new THREE.PlaneGeometry(C(length),C(width),16,64);
+    const geo=new THREE.PlaneGeometry(C(length),C(width),24,96);
     const p=geo.attributes.position as THREE.BufferAttribute;
     for(let i=0;i<p.count;i++){
       const along=p.getX(i)/cubit+length/2+offset, across=p.getY(i)/cubit;
-      const drop=Math.max(0,Math.abs(across)-5);
-      p.setXYZ(i,C(-5-Math.min(along,30))-raise*.15,
-        Math.max(.03,C(10-drop-Math.max(0,along-30)))+raise+Math.sin(across*5)*.017,
-        C(Math.max(-5,Math.min(5,across)))+Math.sign(across)*raise);
+      const a=Math.abs(across), side=Math.sign(across)||1;
+      const s=section(a);
+      // Sag across the span, and a little along it between the boards.
+      const span=Math.min(1,a/5);
+      const sag=(1-span*span)*SAG*(.75+.25*Math.cos(Math.min(1,along/30)*Math.PI*3));
+      // Vertical folds down the sides, deepest where the cloth hangs free.
+      const hang=Math.max(0,a-5);
+      // Outward only. A fold that swings both ways puts the cloth INSIDE the
+      // boards for half of every wave, and the gold shows through the hide in
+      // stripes down the whole side.
+      const fold=((Math.sin(along*1.35)*.5+.5)*.12+(Math.sin(along*3.1+1.7)*.5+.5)*.05)
+        *Math.min(1,hang/1.5);
+      const nose=Math.max(0,along-30);            // what hangs over the back
+      p.setXYZ(i,
+        C(-5-Math.min(along,30))-raise*.15-C(nose*.06),
+        // The hem is cloth, not a cut edge.
+        Math.max(.03,C(s.y-sag-nose+(hang>0?Math.sin(along*2.6+.9)*.09*Math.min(1,hang/3):0)))+raise,
+        C(s.z+fold)*side+side*raise);
     }
     geo.computeVertexNormals();return new THREE.Mesh(geo,material);
   }
@@ -445,6 +489,8 @@ export function buildTabernacle(cubit: number): Tabernacle {
   const veil = hanging(tentW,boardH*.985,M.veil());
   veil.rotation.y = Math.PI / 2;
   veil.position.set(veilX, 0, 0);
+  // Kept out of the static batch so the crossing can deform it.
+  veil.traverse((o) => { o.userData.dynamic = true; });
   g.add(veil);
   addCollider(veil);
   // A pillar with its socket and its hook — the veil's four stand in silver
@@ -627,5 +673,5 @@ export function buildTabernacle(cubit: number): Tabernacle {
 
   g.add(buildDesert());
   batchStatic(g);
-  return { group: g, colliders, counts, ready };
+  return { group: g, colliders, counts, ready, veil: { group: veil, x: veilX } };
 }

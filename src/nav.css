@@ -69,8 +69,11 @@
   height: 40px; display: flex; align-items: center; padding: var(--sp-1) var(--sp-3);
   background: var(--ground); color: var(--ink-2); font: var(--fs-100)/var(--lh-snug) var(--ui);
 }
+/* The bar is a caption, not a surface: only its link takes the pointer, so it
+   can never swallow a click meant for what is behind it. */
+.source-credit { pointer-events: none; }
 .source-credit p { margin: 0; }
-.source-credit a { color: inherit; }
+.source-credit a { color: inherit; pointer-events: auto; }
 .lang-switch button:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
 /* Reaching a 44pt target without growing the bar. */
 .lang-switch button::after {

@@ -114,6 +114,9 @@ export interface Temple {
   /** Half the paved summit, in metres. A visitor outside this is off the
    *  mount's top and may have no way back up. */
   summit: { halfX: number; halfZ: number };
+  /** The veil of 2 Chr 3:14, and the plane it hangs in, so the page can press
+   *  it as the camera goes through it. */
+  veil: { group: THREE.Group; x: number };
   counts: TempleCounts;
   /** Named places the HUD can report, in metres after cubit is applied. */
   anchors: {
@@ -449,6 +452,9 @@ export function buildTemple(cubit: number): Temple {
   const veil = hanging(oracleDoorW, oracleDoorH * 0.98, M.veil());
   veil.rotation.y = Math.PI / 2;
   veil.position.set(debirFrontX - partT / 2 - C(0.1), 0, 0);
+  // Kept out of the static batch: the page presses this cloth as the tour
+  // crosses it, and a merged mesh cannot be deformed.
+  veil.traverse((o) => { o.userData.dynamic = true; });
   g.add(veil);
   // No free walk through the veil; the tour cuts past it. A collider keeps
   // WASD out.
@@ -927,6 +933,7 @@ export function buildTemple(cubit: number): Temple {
     group: g, colliders, platforms, counts, anchors,
     floorY: mount.heightAt,
     summit: { halfX: platW / 2, halfZ: platD / 2 },
+    veil: { group: veil, x: veil.position.x },
     veilCanvas: TEX.veil.map.image as HTMLCanvasElement,
   };
 }

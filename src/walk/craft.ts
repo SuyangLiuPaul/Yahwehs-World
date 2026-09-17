@@ -57,8 +57,40 @@ export function hanging(width:number,height:number,material:THREE.Material,openi
       p.setXYZ(i,x,p.getY(i)+.018*Math.cos(u*half*18)*(1-v),waves*(.7+.3*v));
     }
     geo.computeVertexNormals();const panel=new THREE.Mesh(geo,material);panel.position.y=height/2;g.add(panel);
+    // Keep the rest shape, so anything that deforms this cloth can let go of
+    // it again.
+    panel.userData.rest=(geo.attributes.position as THREE.BufferAttribute).array.slice();
   }
   return g;
+}
+
+/** Presses a hanging toward the viewer, as a hand or a lens pressed into it
+ *  would: a bell of displacement along the cloth's own facing, centred on the
+ *  point of contact and falling away from it.
+ *
+ *  Passing the veil used to be a picture of cloth faded over the screen, which
+ *  is what a scene change looks like and not what a curtain looks like. The
+ *  camera now goes THROUGH the cloth, and the cloth gives where it meets it —
+ *  it does not part, because 幔子 is a barrier the text keeps shut (Lev 16:2),
+ *  and a curtain that opens by itself for a visitor says something the text
+ *  does not. */
+export function pressCloth(group:THREE.Group,atY:number,atZ:number,depth:number,radius=.55){
+  group.traverse(o=>{
+    if(!(o instanceof THREE.Mesh))return;
+    const rest=o.userData.rest as Float32Array|undefined;
+    if(!rest)return;
+    const p=o.geometry.attributes.position as THREE.BufferAttribute;
+    const local=atY-o.position.y;
+    for(let i=0;i<p.count;i++){
+      const y=rest[i*3+1]!,x=rest[i*3]!;
+      // The panel is built in its own XY plane and turned into place by the
+      // group, so "across" is x and "up" is y; the bulge runs along z.
+      const d2=((y-local)/radius)**2+((x-atZ)/radius)**2;
+      p.setZ(i,rest[i*3+2]!+depth*Math.exp(-d2));
+    }
+    p.needsUpdate=true;
+    o.geometry.computeVertexNormals();
+  });
 }
 
 /** Static authored meshes become one GPU draw per material. Colliders and

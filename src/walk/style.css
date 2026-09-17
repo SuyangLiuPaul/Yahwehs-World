@@ -9,9 +9,15 @@ body { margin: 0; background: #060d16; color: var(--ink); font-family: var(--ui)
    A title card, not a wall of text. The tally is the hook — the passage
    numbers everything it builds, and seeing 96 sockets before entering is what
    makes the room mean something once you are in it. */
+/* The credit bar is fixed to the bottom and 40 px tall, so the gate's own
+   controls must clear it. In a 600 px-tall window the "walk me through"
+   button sat underneath it and could not be clicked at all — found by a
+   screenshot script that could not start the tour. The panel scrolls when
+   the window is too short for it rather than hiding what is below. */
 #gate {
   position: fixed; inset: 0; z-index: 10; display: grid; align-content: center;
-  padding: var(--sp-7) clamp(var(--sp-5), 7vw, 96px);
+  padding: var(--sp-7) clamp(var(--sp-5), 7vw, 96px) 56px;
+  overflow-y: auto; overscroll-behavior: contain;
   background: linear-gradient(100deg, #060d16f5 0%, #060d16e0 46%, #060d1633 100%);
   backdrop-filter: blur(3px);
 }

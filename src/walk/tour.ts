@@ -58,41 +58,57 @@ const ARK = { x: -30, z: 0 };
 // top of an object fills a phone screen with one texture, which is how a
 // guided walk turns into a tour of walls.
 export const TOUR: Stop[] = [
-  { x: 74, z: 0, at: { x: 50, z: 0 }, pitch: 0.02, travel: 0, dwell: 3.5,
+  // The whole enclosure first. 27:9–18 gives the court as 100 × 50 cubits,
+  // and a hundred cubits of linen is a thing you cannot see the shape of from
+  // inside it — the walk used to begin at the gate and never once show what
+  // the visitor was standing in.
+  { x: 108, z: 66, y: 40, at: { x: -12, z: 0 }, atY: 4, travel: 0, dwell: 4,
+    zh: '全景 · 院子一百肘长、五十肘宽',
+    en: 'The whole court — a hundred cubits by fifty',
+    ref: '出 27:9–18 · Ex 27:9–18' },
+  // The coverings, which are four and are only ever seen from outside:
+  // ten curtains of fine twined linen, eleven of goats' hair over them,
+  // rams' skins dyed red, and a fourth the text names and does not describe.
+  { x: 10, z: 40, y: 26, at: { x: -22, z: 0 }, atY: 7, travel: 4.5, dwell: 4,
+    zh: '四层罩棚 · 细麻、山羊毛、染红公羊皮，和第四层',
+    en: 'The four coverings — linen, goats\' hair, rams\' skins, and a fourth',
+    ref: '出 26:1–14 · Ex 26:1–14' },
+  { x: 74, z: 0, at: { x: 50, z: 0 }, pitch: 0.02, travel: 4, dwell: 3,
     zh: '院门之外', en: 'Outside the gate',
     ref: '出 27:16 · Ex 27:16' },
-  { x: 42, z: 0, at: { x: -5, z: 0 }, pitch: 0.0, travel: 5, dwell: 3,
+  { x: 42, z: 0, at: { x: -5, z: 0 }, pitch: 0.0, travel: 4, dwell: 3,
     zh: '进了门帘，院内', en: 'Through the screen, into the court',
     ref: '出 27:18 · Ex 27:18' },
-  { x: 36, z: 7, at: ALTAR, atY: 1.6, travel: 4.5, dwell: 6,
+  { x: 36, z: 7, at: ALTAR, atY: 1.6, travel: 3.5, dwell: 4,
     zh: '铜坛 · 五肘见方，四角有角', en: 'The bronze altar — five cubits square, horned',
     ref: '出 27:1–2 · Ex 27:1–2' },
   // Far enough back that the tent reads as a building rather than as a
   // rectangle of cloth: at seven metres a four-metre screen fills a portrait
   // phone completely, which is a tour of a wall.
-  { x: 21, z: 5, at: {x:14,z:0}, atY:1.6, travel:5,dwell:6,
+  { x: 21, z: 5, at: {x:14,z:0}, atY:1.6, travel:4,dwell:3.5,
     zh:'洗濯盆 · 铜盆与铜座，尺寸未记载',en:'The bronze basin — its dimensions are not recorded',
     ref:'出 30:18、38:8 · Ex 30:18, 38:8'},
-  { x: 18, z: 4, at: DOOR, atY: 5, travel: 5.5, dwell: 5,
+  { x: 18, z: 4, at: DOOR, atY: 5, travel: 4.5, dwell: 3.5,
     zh: '帐幕门口 · 五根柱子与门帘', en: 'The door of the tent — five pillars and its screen',
     ref: '出 26:36–37 · Ex 26:36–37' },
-  { x: -9, z: 1.2, at: LAMP, atY: 1.7, travel: 7, dwell: 7,
+  { x: -9, z: 1.2, at: LAMP, atY: 1.7, travel: 5.5, dwell: 4,
     zh: '圣所南面 · 金灯台', en: 'The south side — the lampstand',
     ref: '出 25:31、26:35 · Ex 25:31, 26:35' },
-  { x: -11, z: -2.6, at: TABLE, atY: 1.5, travel: 5, dwell: 6,
+  { x: -11, z: -2.6, at: TABLE, atY: 1.5, travel: 4, dwell: 3.5,
     zh: '圣所北面 · 陈设饼的桌子', en: 'The north side — the table of the Presence',
     ref: '出 25:23、26:35 · Ex 25:23, 26:35' },
-  { x: -18, z: 2.8, at: INCENSE, atY: 2, travel: 6, dwell: 6,
+  { x: -18, z: 2.8, at: INCENSE, atY: 2, travel: 4.5, dwell: 3.5,
     zh: '香坛 · 一肘见方，高二肘', en: 'The altar of incense — a cubit square, two high',
     ref: '出 30:1–6 · Ex 30:1–6' },
-  { x: -13, z: 1.5, at: VEIL, atY: 5, travel: 4, dwell: 6,
-    zh: '幔子之前 · 里面是至圣所', en: 'Before the veil — beyond it, the most holy place',
+  { x: -13, z: 1.5, at: VEIL, atY: 3.2, travel: 3.5, dwell: 4,
+    zh: '幔子之前 · 蓝色紫色朱红色细麻，绣着基路伯',
+    en: 'Before the veil — blue, purple, scarlet, with cherubim worked in it',
     ref: '出 26:31–33 · Ex 26:31–33' },
   // Past the veil. The text admits one man, once a year (Leviticus 16); the
   // walk goes where he went, because leaving the visitor outside the only room
   // the whole building exists for is a tour that ends before its subject.
-  { x: -26.2, z: 3.4, at: ARK, atY: 1.35, travel: .8, dwell: 9, cut:true,
-    zh: '至圣所 · 约柜（教学剖视，非自由进出）', en: 'The ark — an educational view beyond the veil',
+  { x: -26.2, z: 3.4, at: ARK, atY: 1.35, travel: 2.6, dwell: 7, cut: true, through: 'veil',
+    zh: '过了幔子 · 约柜（教学剖视，非自由进出）', en: 'Through the veil — the ark',
     ref: '出 25:10–22；利 16:2 · Ex 25:10–22; Lev 16:2' },
 ];
 

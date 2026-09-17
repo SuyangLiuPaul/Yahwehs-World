@@ -3,6 +3,7 @@ import { desertSky } from './textures.ts';
 import './style.css';
 import { buildTabernacle } from './tabernacle.ts';
 import { Walker } from './controls.ts';
+import { pressCloth } from './craft.ts';
 import { bindInputUi } from './hud-input.ts';
 import { Tour, TOUR } from './tour.ts';
 import { applyStatic, bindSwitch, hant, onLocale, t } from '../locale.ts';
@@ -73,7 +74,7 @@ scene.add(sun);
 // a floor under the shadows to keep them from going black.
 scene.add(new THREE.HemisphereLight(0x9fc2e0, 0xb9a377, 0.25));
 
-const { group, colliders, counts, ready } = buildTabernacle(CUBIT);
+const { group, colliders, counts, ready, veil } = buildTabernacle(CUBIT);
 group.traverse((o) => {
   if (!(o as THREE.Mesh).isMesh) return;
   o.receiveShadow = true;
@@ -128,7 +129,11 @@ composer.addPass(ao);composer.addPass(new OutputPass());
 // Standing outside the eastern gate, looking in — the way anyone approaching
 // the tabernacle would have come to it. A yaw of +PI/2 turns the camera's own
 // -Z toward -X, which is where the court lies; -PI/2 faces the empty desert.
-walker.moveTo(CUBIT * 62, 0, Math.PI / 2);
+// One place, named once: the free walk starts outside the gate and every
+// handover from the tour comes back here.
+const SPAWN = { x: CUBIT * 62, z: 0, facing: Math.PI / 2 };
+const spawn = () => walker.moveTo(SPAWN.x, SPAWN.z, SPAWN.facing);
+spawn();
 
 // ── where you are ─────────────────────────────────────────────────────────
 // Named zones rather than coordinates, each carrying the verse that defines it.
@@ -214,6 +219,25 @@ const tourToggle = document.getElementById('tour-toggle')!;
 const stopSelect=document.getElementById('tour-stop') as HTMLSelectElement;
 const veilFade=document.getElementById('view-transition')!;
 
+// Going in past the veil. The camera goes THROUGH the cloth — it slows to a
+// walk, the weave fills the lens, and the veil gives where the lens presses
+// into it, then springs back. The cloth does not part: 26:33 hangs it to
+// divide the holy from the most holy and Lev 16:2 keeps it shut, so a curtain
+// that opened by itself for a visitor would say what the text does not.
+// See pressCloth in craft.ts, and the same crossing on /temple.html.
+let pressed = false;
+function crossVeil(fade: number) {
+  const depth = 0.42 * Math.exp(-(((walker.position.x - veil.x) / 0.55) ** 2));
+  pressCloth(veil.group, walker.position.y, -walker.position.z, depth);
+  pressed = depth > 0.002;
+  // Only while the lens is inside the weave, where no polygon can be drawn.
+  veilFade.style.opacity = String(
+    Math.max(0, 1 - Math.abs(walker.position.x - veil.x) / 0.12) * 0.9 * fade);
+}
+function releaseVeil() {
+  if (pressed) { pressCloth(veil.group, 0, 0, 0); pressed = false; }
+}
+
 let tourCaption: { zh: string; en: string; ref: string } | null = null;
 
 tour.onStop = (stop, i, total) => {
@@ -249,6 +273,9 @@ function startTour() {
 }
 function endTour() {
   tour.stop();
+  // The walk now has stops above head height. Handing a visitor back a camera
+  // eighteen metres up and letting gravity have it is not a handover.
+  if (walker.position.y > 3) spawn();
   tourCaption = null;
   tourToggle.hidden = true;
   tourBar.hidden = true;
@@ -343,7 +370,8 @@ renderer.setAnimationLoop(() => {
   const pose = tour.update(dt);
   // The tour owns the camera while it runs; otherwise the walker does.
   if (pose) walker.setPose(pose); else if (!tour.paused) walker.update(dt);
-  veilFade.style.opacity=String(tour.fade);
+  if (tour.crossing === 'veil') crossVeil(tour.fade);
+  else { veilFade.style.opacity = String(tour.fade); releaseVeil(); }
   updateHud();
   renderer.info.reset();composer.render();
 });
@@ -352,6 +380,7 @@ if (import.meta.env.DEV) {
   (globalThis as unknown as Record<string, unknown>).__walk = {
     scene, camera, renderer, walker, counts, colliders, CUBIT, updateHud,
     tour, startTour, endTour, TOUR, ready, materialsReady: sceneReady, inspectStop,
+    veilX: veil.x,
     /** Renders one frame at an arbitrary size and returns it, so the scene can
      *  be inspected where the page is not being painted. */
     snapshot(w = 1400, h = 900) {

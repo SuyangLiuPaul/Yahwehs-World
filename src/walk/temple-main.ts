@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { desertSky } from './textures.ts';
 import './style.css';
 import { buildTemple } from './temple.ts';
+import { pressCloth } from './craft.ts';
 import { Walker } from './controls.ts';
 import { bindInputUi } from './hud-input.ts';
 import { Tour } from './tour.ts';
@@ -67,7 +68,7 @@ sun.shadow.radius = 3;
 scene.add(sun);
 scene.add(new THREE.HemisphereLight(0x9fc2e0, 0xb9a377, 0.28));
 
-const { group, colliders, platforms, floorY, counts, veilCanvas, summit } = buildTemple(CUBIT);
+const { group, colliders, platforms, floorY, counts, veilCanvas, summit, veil } = buildTemple(CUBIT);
 const ready = Promise.resolve(true);
 group.traverse((o) => {
   if (!(o as THREE.Mesh).isMesh) return;
@@ -219,30 +220,38 @@ const tourToggle = document.getElementById('tour-toggle')!;
 const stopSelect = document.getElementById('tour-stop') as HTMLSelectElement;
 const veilFade = document.getElementById('view-transition')!;
 
-// Crossing into the most holy place used to be a dissolve to near-black: the
-// owner walked it and said it did not feel like a veil at all, which is fair —
-// a black screen is what a scene change looks like, not what a curtain looks
-// like. The screen now fills with the veil's own woven face (2 Chr 3:14: blue,
-// purple, crimson and fine linen, with cherubim worked in it) and the weave
-// swells as the camera passes through it, while the tour keeps the camera
-// moving along the line rather than standing still behind a fade.
-let veilDressed = false;
+// Crossing into the most holy place was a dissolve to near-black, and then a
+// picture of cloth faded over the screen. Both are what a SCENE CHANGE looks
+// like; neither is what a curtain looks like. The camera now goes through the
+// cloth itself: it slows to a walk, the weave fills the lens, the veil gives
+// where the lens presses into it and springs back once the camera is through.
+// The cloth does not part — 幔子 is a barrier the text keeps shut (Lev 16:2),
+// and a curtain that opens by itself for a visitor says something the text
+// does not.
+//
+// veilCanvas is still the fallback tint for the instant the lens is inside the
+// weave, where a polygon cannot be drawn at all.
 let veilUrl = '';
-function dressVeil(fade: number) {
-  if (!veilDressed) {
-    veilUrl ||= veilCanvas.toDataURL('image/png');
+let pressed = false;
+function crossVeil(fade: number) {
+  const depth = 0.42 * Math.exp(-(((walker.position.x - veil.x) / 0.55) ** 2));
+  // The panel's own across-axis runs opposite the world's z, so the point of
+  // contact is −z.
+  pressCloth(veil.group, walker.position.y, -walker.position.z, depth);
+  pressed = depth > 0.002;
+  if (!veilUrl) {
+    veilUrl = veilCanvas.toDataURL('image/png');
     veilFade.style.backgroundImage = `url(${veilUrl})`;
     veilFade.style.backgroundColor = '#241c3d';
-    veilDressed = true;
+    veilFade.style.backgroundSize = '260%';
+    veilFade.style.backgroundPosition = 'center';
   }
-  veilFade.style.backgroundSize = `${(170 + 190 * fade).toFixed(0)}%`;
-  veilFade.style.backgroundPosition = 'center';
+  // Only while the lens is actually inside the cloth, and never to black.
+  veilFade.style.opacity = String(Math.max(0, 1 - Math.abs(walker.position.x - veil.x) / 0.12) * 0.9 * fade);
 }
-function undressVeil() {
-  if (!veilDressed) return;
-  veilFade.style.backgroundImage = '';
-  veilFade.style.backgroundColor = '';
-  veilDressed = false;
+function releaseVeil() {
+  if (pressed) { pressCloth(veil.group, 0, 0, 0); pressed = false; }
+  veilFade.style.opacity = '0';
 }
 
 let tourCaption: { zh: string; en: string; ref: string } | null = null;
@@ -389,8 +398,8 @@ renderer.setAnimationLoop(() => {
   // aerial views were first photographed from the floor.
   if (pose) walker.setPose(pose); else if (!tour.paused) walker.update(dt);
   const fade = tour.fade;
-  veilFade.style.opacity = String(fade);
-  if (fade > 0 && tour.crossing === 'veil') dressVeil(fade); else if (fade === 0) undressVeil();
+  if (tour.crossing === 'veil') crossVeil(fade);
+  else { veilFade.style.opacity = String(fade); releaseVeil(); }
   updateHud();
   renderer.info.reset();
   composer.render();
@@ -399,6 +408,7 @@ renderer.setAnimationLoop(() => {
 if (import.meta.env.DEV) {
   (globalThis as unknown as Record<string, unknown>).__temple = {
     scene, camera, renderer, walker, counts, colliders, platforms, floorY, CUBIT, updateHud,
+    veilX: veil.x,
     tour, startTour, endTour, TOUR: TEMPLE_TOUR, ready, materialsReady: sceneReady, inspectStop,
     snapshot(w = 1400, h = 900) {
       const prev = { w: renderer.domElement.width, h: renderer.domElement.height };
