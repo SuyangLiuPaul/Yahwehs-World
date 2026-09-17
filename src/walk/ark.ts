@@ -568,14 +568,14 @@ export function buildArk(cubit: number): Ark {
       for (let i = 0; i < 14; i++) {
         const male = i < 7;
         const n = (male ? i : i - 7) + 12;
-        g.add(place(ox, room(n), deckT, C(male ? 13 : -13), male ? -Math.PI / 2 : Math.PI / 2));
+        g.add(place(ox, room(n), deckT, C(male ? 13 : -13), male ? -Math.PI / 2 : Math.PI / 2, i));
         counts.clean++;
       }
       // One male and one female of a kind that is not clean (7:2; Lev 11:4
       // names the camel among those that are not).
       for (let i = 0; i < 2; i++) {
         g.add(place(camel, room(26 + i * 2), deckT, C(i === 0 ? 14 : -14),
-          i === 0 ? -Math.PI / 2 : Math.PI / 2));
+          i === 0 ? -Math.PI / 2 : Math.PI / 2, i));
         counts.unclean++;
       }
       // Fourteen of the fowls of the air on the second deck's rails (7:3),
@@ -583,7 +583,7 @@ export function buildArk(cubit: number): Ark {
       for (let i = 0; i < 14; i++) {
         const sz = i % 2 === 0 ? 1 : -1;
         g.add(place(dove, C(16 + Math.floor(i / 2) * 7), DECK_H + deckT + RAIL, sz * C(8),
-          sz > 0 ? 0.4 : Math.PI - 0.4));
+          sz > 0 ? 0.4 : Math.PI - 0.4, i));
         counts.birds++;
       }
       g.add(place(raven, C(70), DECK_H + deckT + RAIL, C(8), 0.6));
@@ -601,7 +601,7 @@ export function buildArk(cubit: number): Ark {
         [-0.6, -2.8, -0.12], [3.4, -4.6, 0.46],
       ];
       EIGHT.forEach(([x, z, facing], i) => {
-        g.add(place(i < 4 ? man : woman, C(x), DECK_H + deckT, C(z), facing));
+        g.add(place(i < 4 ? man : woman, C(x), DECK_H + deckT, C(z), facing, i));
         counts.people++;
       });
       return true;
