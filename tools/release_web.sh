@@ -136,7 +136,7 @@ VITE_DISPLAY_VERSION="$DISPLAY_VERSION" npm run build
 # from after the deploy, so it must be the address readers actually
 # use, not the Netlify alias.
 SITES=(
-  "20521d7e-6559-4bd1-a51e-f276f67d5986:dev:yahwehworld-dev.netlify.app"
+  "20521d7e-6559-4bd1-a51e-f276f67d5986:dev:yahwehsworld-dev.netlify.app"
 )
 if [[ "$INCLUDE_PROD" = "1" ]]; then
   echo "==> --include-prod set; build will also go to yahwehsworld prod."
