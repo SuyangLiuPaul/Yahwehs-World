@@ -174,6 +174,26 @@ APKSIGNER="$(find "$ANDROID_HOME/build-tools" -name apksigner | sort -r | head -
 echo "==> verifying the signature"
 "$APKSIGNER" verify --print-certs "$APK" | grep -E "Signer #1 certificate (DN|SHA-256)"
 
+# What the APK SAYS it is, read back off the file itself.
+#
+# This exists because a 0.1.4 APK was once uploaded to the 0.1.5 release: the
+# file was copied out of this directory while Gradle was still writing the new
+# one, and every check up to that point had looked at the build's intent rather
+# than at the artifact. A wrong version here is not cosmetic — the in-app
+# update check compares this string to the latest release tag, so a stale APK
+# would tell every reader forever that an update is available.
+AAPT2="$(find "$ANDROID_HOME/build-tools" -name aapt2 | sort -r | head -1)"
+WANT="$(awk -F'"' '/^[[:space:]]*"version":/ {print $4; exit}' "$PROJECT/src-tauri/tauri.conf.json")"
+GOT="$("$AAPT2" dump badging "$APK" | sed -n "s/.*versionName='\([^']*\)'.*/\1/p" | head -1)"
+echo "==> verifying the version"
+if [ "$WANT" != "$GOT" ]; then
+  echo "REFUSING: the APK says versionName=$GOT, tauri.conf.json says $WANT." >&2
+  echo "Do not ship this file. It is almost certainly a previous build that" >&2
+  echo "was picked up before Gradle finished writing the new one." >&2
+  exit 1
+fi
+echo "   versionName=$GOT (matches tauri.conf.json)"
+
 echo
 echo "✓ $APK"
 ls -lh "$APK" | awk '{print "  " $5}'
