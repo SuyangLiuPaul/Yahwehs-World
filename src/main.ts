@@ -21,6 +21,7 @@ import { Scenes } from './scenes.ts';
 import { Cartography, measureMap } from './cartography.ts';
 import { applyStatic, bindSwitch, fullLocale, hant, localized, locale as currentLocale, onLocale } from './locale.ts';
 import { installUpdateChecker } from './updates.ts';
+import { installSiteMenu } from './site-shell.ts';
 import { EventsTrack, type TrackEvent } from './events-track.ts';
 import { installEventsMenu, type EventsMenu } from './events-menu.ts';
 import { bridgesFor, eventsInJourney, href as bridgeHref, structureForJourney } from './bridges.ts';
@@ -1086,6 +1087,7 @@ renderer.setAnimationLoop(() => {
 fitToViewport();
 applyStatic();
 installUpdateChecker();
+installSiteMenu();
 renderLegend();
 applyCursor();
 updateLayout();

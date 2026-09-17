@@ -1,6 +1,7 @@
 import './plan.css';
 import { applyStatic, bindSwitch, hant, onLocale, t } from './locale.ts';
 import { installUpdateChecker } from './updates.ts';
+import { installSiteMenu, loadingSteps, loadingStep, pageReady } from './site-shell.ts';
 import { UNITS, unitFor, type Depth, type Status, type Unit } from './plan-units.ts';
 import { journeySpan } from './bridges.ts';
 import { STRUCTURES } from './structures/specs.ts';
@@ -194,10 +195,17 @@ async function load() {
   }
 
   rows.push(...UNITS.map((u) => byUnit.get(u.id)!));
+  loadingStep();
   render();
+  // The counts come out of the events payload, which is three quarters of a
+  // megabyte: until it lands this page is a heading and nothing else.
+  pageReady();
 }
 
 bindSwitch(document.querySelector('.lang-switch') as HTMLElement);
 installUpdateChecker();
+installSiteMenu();
+loadingSteps(2);
+loadingStep();
 onLocale(() => { if (rows.length) render(); });
 void load();

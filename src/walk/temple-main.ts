@@ -9,6 +9,7 @@ import { Tour } from './tour.ts';
 import { TEMPLE_TOUR } from './temple-tour.ts';
 import { applyStatic, bindSwitch, hant, onLocale, t } from '../locale.ts';
 import { installUpdateChecker } from '../updates.ts';
+import { installSiteMenu, loadingStep, loadingSteps, pageReady } from '../site-shell.ts';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
@@ -108,6 +109,13 @@ const sceneReady = Promise.all([materialsReady, ready]).then(([ok]) => {
   document.body.dataset.reflections = 'ready';
   return ok;
 });
+
+// Three milestones before this page is anything: the geometry is written, the
+// materials are painted, the first frame is drawn.
+loadingSteps(3);
+loadingStep();
+let handover: 'waiting' | 'ready' | 'done' = 'waiting';
+void sceneReady.then(() => { loadingStep(); handover = 'ready'; });
 renderer.shadowMap.autoUpdate = false;
 renderer.shadowMap.needsUpdate = true;
 void ready.then(() => { renderer.shadowMap.needsUpdate = true; });
@@ -367,6 +375,7 @@ fit();
 
 bindSwitch(document.querySelector('.lang-switch') as HTMLElement);
 installUpdateChecker();
+installSiteMenu();
 function applyLocale() {
   applyStatic();
   renderTally();
@@ -403,6 +412,11 @@ renderer.setAnimationLoop(() => {
   updateHud();
   renderer.info.reset();
   composer.render();
+  // The loading screen comes off when there is something behind it: after the
+  // materials and the generated figures have arrived AND one frame has
+  // actually been drawn with them. Handing over at the promise alone shows an
+  // empty frame for a moment, which is the thing this is here to prevent.
+  if (handover === 'ready') { handover = 'done'; pageReady(); }
 });
 
 if (import.meta.env.DEV) {

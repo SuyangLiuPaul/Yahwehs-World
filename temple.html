@@ -11,14 +11,30 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@500;600&family=Spectral:wght@500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <canvas id="stage"></canvas>
-  <div id="view-transition" aria-hidden="true"></div>
+  <!-- shell:start — written by scripts/build-shell.mjs. Edit that, not this. -->
+  <!-- The opening screen. It is markup rather than something the page's own
+       script draws, because the whole point of it is to be on screen BEFORE
+       that script has run. The globe is a standalone SVG turning on its own
+       CSS, so it costs no WebGL context and no module. -->
+  <div id="loading">
+    <i id="loading-bar"></i>
+    <img id="loading-globe" src="/loading-globe.svg" alt="" width="180" height="180">
+    <p id="loading-text" data-en="Building the house…" data-zh="正在建造圣殿…">Building the house…</p>
+  </div>
 
   <nav class="sitenav">
     <a class="brand" href="/">
       <span class="zh" data-zh-text="雅伟之界">雅伟之界</span>
       <span class="en">Yahweh's World</span>
     </a>
+    <!-- Everything there is, and everything there is going to be. The bar can
+         hold six destinations and the plan has fifty-six units; a bar is the
+         wrong shape for a growing app, so the bar keeps what is built and this
+         button opens the whole index. On a phone the bar drops the tabs and
+         this is the only way through — which is why it is not an afterthought
+         at the end of the row. -->
+    <button type="button" id="all-open" aria-expanded="false" aria-controls="allmenu"
+      data-en="All" data-zh="全部"><span aria-hidden="true">☰</span> <b>All</b></button>
     <ol>
       <li><a class="tab" href="/" data-en="Globe" data-en-narrow="Globe" data-zh="圣经世界" data-zh-narrow="地球">Globe</a></li>
       <li><a class="tab" href="/structures.html" data-en="Measures" data-en-narrow="Sizes" data-zh="照着经文的尺寸" data-zh-narrow="尺寸">Measures</a></li>
@@ -34,6 +50,13 @@
       <button type="button" data-locale="zh-Hant" lang="zh-Hant">繁</button>
     </div>
   </nav>
+  <!-- Filled by src/site-shell.ts from the same plan the Plan page reads. -->
+  <div id="allmenu" hidden></div>
+  <!-- shell:end -->
+
+  <canvas id="stage"></canvas>
+  <div id="view-transition" aria-hidden="true"></div>
+
 
   <div id="gate">
     <div class="gate-inner">

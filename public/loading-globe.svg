@@ -13,19 +13,64 @@
     <style>
       .turn { animation: spin 24s linear infinite; }
       @keyframes spin { from { transform: translateX(0); } to { transform: translateX(-360px); } }
-      @media (prefers-reduced-motion: reduce) { .turn { animation: none; } }
+      /* A reader who has asked for less motion gets a still globe, and a
+         still globe still needs its cage: the animated meridians are swapped
+         for a fixed pair rather than removed. */
+      .still { display: none; }
+      @media (prefers-reduced-motion: reduce) {
+        .turn { animation: none; }
+        .moving { display: none; }
+        .still { display: inline; }
+      }
     </style>
   </defs>
   <circle cx="180" cy="90" r="90" fill="#16324f"/>
   <g clip-path="url(#disc)">
     <g class="turn"><use href="#land"/><use href="#land" x="360"/></g>
     <g fill="none" stroke="#f1e8d4" stroke-opacity=".16" stroke-width=".8">
+      <!-- The parallels stand still, because on a turning globe they do. -->
       <ellipse cx="180" cy="90" rx="90" ry="30"/>
       <ellipse cx="180" cy="90" rx="90" ry="60"/>
       <line x1="90" y1="90" x2="270" y2="90"/>
-      <ellipse cx="180" cy="90" rx="30" ry="90"/>
-      <ellipse cx="180" cy="90" rx="60" ry="90"/>
-      <line x1="180" y1="0" x2="180" y2="180"/>
+      <!-- The meridians turn with the land. They did not, and the owner saw
+           it: a globe whose continents slide past a fixed cage is a cylinder.
+           A meridian in orthographic projection is an ellipse of half-width
+           R·|cos θ| — the full ellipse being the front half and the back half
+           of one great circle — so six of them, thirty degrees apart in
+           phase, are a turning cage. SMIL rather than CSS because an <img>
+           runs declarative animation but not script, and rx as a CSS property
+           is not safe on every phone this opens on. -->
+      <g class="still">
+        <ellipse cx="180" cy="90" rx="30" ry="90"/>
+        <ellipse cx="180" cy="90" rx="60" ry="90"/>
+        <line x1="180" y1="0" x2="180" y2="180"/>
+      </g>
+      <g class="moving">
+      <ellipse cx="180" cy="90" ry="90" rx="90">
+        <animate attributeName="rx" dur="24s" repeatCount="indefinite"
+          values="90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90"/>
+      </ellipse>
+      <ellipse cx="180" cy="90" ry="90" rx="77.94">
+        <animate attributeName="rx" dur="24s" repeatCount="indefinite"
+          values="77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94"/>
+      </ellipse>
+      <ellipse cx="180" cy="90" ry="90" rx="45">
+        <animate attributeName="rx" dur="24s" repeatCount="indefinite"
+          values="45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45"/>
+      </ellipse>
+      <ellipse cx="180" cy="90" ry="90" rx="0">
+        <animate attributeName="rx" dur="24s" repeatCount="indefinite"
+          values="0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0"/>
+      </ellipse>
+      <ellipse cx="180" cy="90" ry="90" rx="45">
+        <animate attributeName="rx" dur="24s" repeatCount="indefinite"
+          values="45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45"/>
+      </ellipse>
+      <ellipse cx="180" cy="90" ry="90" rx="77.94">
+        <animate attributeName="rx" dur="24s" repeatCount="indefinite"
+          values="77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94"/>
+      </ellipse>
+      </g>
     </g>
     <circle cx="180" cy="90" r="90" fill="url(#shade)"/>
   </g>

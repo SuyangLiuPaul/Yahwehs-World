@@ -161,6 +161,11 @@ const ark = await report('/ark.html', '__ark', [
   // door's full height: a ramp to the lintel is a ramp to nowhere.
   { name: 'up the ramp to the door', from: [0, -62], face: Math.PI, keys: ['KeyW'],
     seconds: 10, ceiling: 0.5, climb: true, target: 2.4, want: (r) => r.riseCubits >= 2.4 },
+  // …and in through it. The doorway was a drawing on a solid wall and a stall
+  // stood behind it, so this walks the ramp AND the threshold: a visitor who
+  // stops at the sill has travelled about 25 m; a clear one covers 38.
+  { name: 'in at the door', from: [0, -62], face: Math.PI, keys: ['KeyW'],
+    seconds: 9, ceiling: 0.5, want: (r) => r.riseCubits >= 2.4 && r.metres > 32 },
   // The forward ramp climbs from x≈145 (lower deck) to x≈119 (second deck),
   // so the walker starts at the bottom of it, on the lower deck.
   { name: 'up to the second deck', from: [143, 0], face: Math.PI / 2, keys: ['KeyW'],

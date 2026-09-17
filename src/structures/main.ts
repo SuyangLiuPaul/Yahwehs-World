@@ -6,6 +6,7 @@ import { buildStructure, footprint, humanFigure } from './build.ts';
 import type { BranchForm } from './menorah.ts';
 import { applyStatic, bindSwitch, hant, onLocale } from '../locale.ts';
 import { installUpdateChecker } from '../updates.ts';
+import { installSiteMenu, loadingSteps, loadingStep, pageReady } from '../site-shell.ts';
 
 // One WebGL context behind a scroll-snapped feed. Each card owns a structure;
 // scrolling swaps what the single scene holds, which keeps one context no
@@ -290,6 +291,9 @@ renderer.setAnimationLoop(() => {
 // are bilingual.
 bindSwitch(document.querySelector('.lang-switch') as HTMLElement);
 installUpdateChecker();
+installSiteMenu();
+loadingSteps(2);
+loadingStep();
 applyStatic();
 // 简体 → 繁體 changes every Chinese string on this page, not just the
 // data-en/data-zh pairs applyStatic() handles.
@@ -300,6 +304,8 @@ frameCamera();
 applyCubit();
 show(0, CUBITS[0]!.m);
 scrollToHash();
+loadingStep();
+pageReady();
 
 if (import.meta.env.DEV) {
   (globalThis as unknown as Record<string, unknown>).__structures = {

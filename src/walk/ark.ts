@@ -246,11 +246,31 @@ export function buildArk(cubit: number): Ark {
   }
 
   // ── the hull: a chest, because that is the only shape the text gives ──
+  //
+  // The door of 6:16 is a HOLE, so the wall it is in has to be laid in pieces
+  // around it. The first version laid one sheet three hundred cubits long and
+  // stood a frame in front of it: from outside the doorway was a drawing, and
+  // the owner said 门也没有. Its size is not given. Six cubits by eight, on
+  // the south side amidships, opening onto the lowest deck.
+  const doorW = C(6), doorH = C(8), doorZ = -(halfW - hull / 2);
+  const DOOR_SIDE = -1;                 // the door is in the south side
   const side = (sz: number) => {
-    // Below the light opening…
-    const lower = bevelBox(L, LIGHT_BOTTOM, hull, pitch, 0.02);
-    lower.position.set(0, LIGHT_BOTTOM / 2, sz * (halfW - hull / 2));
-    g.add(lower); addCollider(lower);
+    const z = sz * (halfW - hull / 2);
+    /** A piece of the wall below the light opening. */
+    const wall = (x0: number, x1: number, y0: number, y1: number) => {
+      if (x1 - x0 < 0.01 || y1 - y0 < 0.01) return;
+      const piece = bevelBox(x1 - x0, y1 - y0, hull, pitch, 0.02);
+      piece.position.set((x0 + x1) / 2, (y0 + y1) / 2, z);
+      g.add(piece); addCollider(piece);
+    };
+    // Below the light opening — around the doorway, on the side it is in.
+    if (sz === DOOR_SIDE) {
+      wall(-halfL, -doorW / 2, 0, LIGHT_BOTTOM);          // west of the door
+      wall(doorW / 2, halfL, 0, LIGHT_BOTTOM);            // east of it
+      wall(-doorW / 2, doorW / 2, doorH, LIGHT_BOTTOM);   // and over its head
+    } else {
+      wall(-halfL, halfL, 0, LIGHT_BOTTOM);
+    }
     // …the posts that leave it open, a cubit high (6:16)…
     for (let x = -halfL + C(3); x < halfL; x += C(6)) {
       const post = new THREE.Mesh(new THREE.BoxGeometry(C(0.7), C(1), hull * 1.1), beam);
@@ -259,7 +279,7 @@ export function buildArk(cubit: number): Ark {
     }
     // …and the wall above it, up to the eaves.
     const upper = bevelBox(L, eaves - LIGHT_TOP, hull, pitch, 0.02);
-    upper.position.set(0, (eaves + LIGHT_TOP) / 2, sz * (halfW - hull / 2));
+    upper.position.set(0, (eaves + LIGHT_TOP) / 2, z);
     g.add(upper); addCollider(upper);
   };
   side(1); side(-1);
@@ -275,6 +295,8 @@ export function buildArk(cubit: number): Ark {
   // like when it does.
   for (let x = -halfL + C(5); x < halfL; x += C(5)) {
     for (const sz of [-1, 1]) {
+      // …except across the doorway, where one of them stood in the opening.
+      if (sz === DOOR_SIDE && Math.abs(x) < doorW / 2 + C(0.6)) continue;
       const rib = bevelBox(C(1.2), eaves, C(0.6), beam, 0.01);
       rib.position.set(x, eaves / 2, sz * (halfW + C(0.2)));
       g.add(rib);
@@ -383,6 +405,10 @@ export function buildArk(cubit: number): Ark {
       for (let x = -halfL + hull; x < halfL - hull - PEN; x += PEN) {
         const hole = rampSpan(deckY.indexOf(y) + 1);
         if (hole && x + PEN > hole[0] && x < hole[1]) continue;   // the stair well
+        // …and nothing across the doorway: a stall stood in it, so a visitor
+        // came in at the door and walked straight into a partition.
+        if (y === deckY[0] && sz === DOOR_SIDE
+          && x + PEN > -doorW / 2 - C(1) && x < doorW / 2 + C(1)) continue;
         // The partition between this room and the next.
         const wall = bevelBox(C(0.35), C(3.2), PEN_DEEP, timber, 0.006);
         wall.position.set(x, y + C(1.6) + deckT, (backZ + frontZ) / 2);
@@ -401,16 +427,11 @@ export function buildArk(cubit: number): Ark {
   }
 
   // ── the door in the side, 6:16 ────────────────────────────────────────
-  // Its size is not given. Six cubits by eight, on the south side, amidships,
-  // opening onto the lowest deck — and standing open, because that is the
-  // only moment a visitor could walk in (7:16 shuts it).
-  const doorW = C(6), doorH = C(8), doorZ = -(halfW - hull / 2);
+  // The opening itself is cut in side() above, where the wall is laid. What
+  // is here is what frames it: jambs, a head, a sill, and the leaf standing
+  // open — because the ark is drawn between 6:16 and 7:16, and 7:16 is where
+  // Yahweh shuts the door.
   {
-    // Cut it by rebuilding the wall around the opening.
-    const cut = new THREE.Box3(
-      new THREE.Vector3(-doorW / 2, 0, doorZ - hull),
-      new THREE.Vector3(doorW / 2, doorH, doorZ + hull));
-    colliders.push(...[] as THREE.Box3[]);          // no collider for a hole
     // The jambs and the head, in timber.
     for (const sx of [-1, 1]) {
       const jamb = bevelBox(C(0.9), doorH + C(0.9), hull * 1.4, beam, 0.01);
@@ -425,31 +446,15 @@ export function buildArk(cubit: number): Ark {
     leaf.position.set(doorW / 2 + doorW * 0.48 + C(0.6), doorH / 2, doorZ - C(1.4));
     leaf.rotation.y = 0.32;
     g.add(leaf); addCollider(leaf);
-    void cut;
+    // The sill, level with the lowest deck, so the ramp lands on timber and
+    // the threshold is something a foot meets rather than an edge.
+    const sill = bevelBox(doorW + C(1.8), deckT, hull * 2.6, beam, 0.01);
+    sill.position.set(0, deckT / 2, doorZ - C(0.3));
+    g.add(sill);
+    addTread(-doorW / 2 - C(0.9), 0, doorZ - hull * 1.3 - C(0.3),
+      doorW / 2 + C(0.9), deckT, doorZ + hull * 1.3 - C(0.3));
   }
   counts.doors++;
-
-  // The wall that is left around the doorway: the side() call above laid a
-  // single sheet, so the opening is carved by putting solid pieces back and
-  // leaving the hole. Simpler and exact: a shallow recess of pitch each side
-  // of the door, and the hole itself left alone by the colliders below.
-  {
-    const gapColliders: THREE.Box3[] = [];
-    for (const c of colliders) {
-      // Split any collider that spans the doorway on the south wall.
-      const spansDoor = c.min.z <= doorZ && c.max.z >= doorZ
-        && c.min.x < doorW / 2 && c.max.x > -doorW / 2 && c.min.y < doorH;
-      if (!spansDoor) { gapColliders.push(c); continue; }
-      const west = c.clone(); west.max.x = -doorW / 2;
-      const east = c.clone(); east.min.x = doorW / 2;
-      const over = c.clone(); over.min.y = doorH;
-      for (const part of [west, east, over]) {
-        if (part.max.x > part.min.x && part.max.y > part.min.y) gapColliders.push(part);
-      }
-    }
-    colliders.length = 0;
-    colliders.push(...gapColliders);
-  }
 
   // ── the way up to the door, and between the decks ─────────────────────
   // Not described. A ramp to the door and a ramp between each pair of decks:
@@ -474,16 +479,21 @@ export function buildArk(cubit: number): Ark {
     // the lintel, which is what the owner saw and called 反的. So the rise is
     // only the cradle's height.
     const run = C(14);
-    const rise = LIFT;
+    const top = deckT;                  // the sill, which is the lowest deck
+    const rise = LIFT + top;
+    const foot = doorZ - run - C(1), head = doorZ - C(1);
     const ramp = bevelBox(doorW, C(0.6), Math.hypot(run, rise), timber, 0.01);
-    ramp.position.set(0, -LIFT / 2, doorZ - run / 2 - C(1));
-    ramp.rotation.x = Math.atan2(rise, run);
+    ramp.position.set(0, (top - LIFT) / 2, (foot + head) / 2);
+    // NEGATIVE: a positive rotation about x drops the end nearer the hull,
+    // which laid the board high at the ground and low at the door while the
+    // treads under it climbed the other way. That is the 反的 the owner saw.
+    ramp.rotation.x = -Math.atan2(rise, run);
     g.add(ramp);
-    rampTreads(0, doorZ - run - C(1), 0, doorZ - C(1), -LIFT, C(0), doorW / 2, 20);
+    rampTreads(0, foot, 0, head, -LIFT, top, doorW / 2, 20);
     for (let i = 1; i <= 2; i++) {
-      const t = i / 3;
-      const z = doorZ - C(1) - run * t;
-      const h = LIFT * (1 - t) + C(0.3);
+      const t = i / 3;                  // measured from the door
+      const z = head - run * t;
+      const h = rise * (1 - t) + C(0.3);
       const trestle = bevelBox(doorW * 0.8, h, C(0.7), beam, 0.02);
       trestle.position.set(0, -LIFT + h / 2, z);
       g.add(trestle);
@@ -579,11 +589,21 @@ export function buildArk(cubit: number): Ark {
       g.add(place(raven, C(70), DECK_H + deckT + RAIL, C(8), 0.6));
       // And the eight: Noah, his wife, his three sons and their three wives
       // (7:13; 1 Pet 3:20 counts them as eight).
-      for (let i = 0; i < 4; i++) {
-        g.add(place(man, C(-8 + i * 3.4), DECK_H + deckT, C(3.2), Math.PI));
-        g.add(place(woman, C(-8 + i * 3.4), DECK_H + deckT, C(-3.2), 0));
-        counts.people += 2;
-      }
+      //
+      // Not two ranks facing each other: eight people standing about a deck
+      // eighteen cubits wide. The offsets are fixed numbers rather than random
+      // ones so that what a reader photographs today is what they find
+      // tomorrow — and so this file stays the single answer to where they are.
+      const EIGHT: [number, number, number][] = [
+        [-9.5, 4.2, Math.PI * 0.86], [-5.0, 2.4, Math.PI * 1.15],
+        [-1.2, 4.6, Math.PI * 0.72], [2.6, 2.8, Math.PI * 1.04],
+        [-8.6, -3.0, -0.22], [-4.4, -5.0, 0.34],
+        [-0.6, -2.8, -0.12], [3.4, -4.6, 0.46],
+      ];
+      EIGHT.forEach(([x, z, facing], i) => {
+        g.add(place(i < 4 ? man : woman, C(x), DECK_H + deckT, C(z), facing));
+        counts.people++;
+      });
       return true;
     } catch {
       return false;                       // the walk still stands without them

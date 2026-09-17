@@ -32,33 +32,6 @@ body {
 #stage.dragging { cursor: grabbing; }
 
 /* ── loading ─────────────────────────────────────────────────────────── */
-/* The opening screen. It used to be a 28 px mark and 11 px of text pinned to
-   the middle of whatever the screen was, which on a tablet is a very small
-   thing alone in a very large dark field — the owner photographed it. The mark
-   and the text are now sized against the viewport's short side, so they keep
-   the same presence on a phone and on a 27-inch display, and a hairline of
-   gold under the nav says how far the loading has actually got instead of
-   leaving a pulse to imply it. */
-#loading {
-  position: fixed; inset: 0; z-index: 50;
-  display: grid; place-content: center; justify-items: center;
-  gap: clamp(12px, 2.2vmin, 28px);
-  background: var(--ground); transition: opacity .6s ease; text-align: center;
-}
-#loading.done { opacity: 0; pointer-events: none; }
-/* Sized against the WIDTH, not the short side: on a phone the short side is
-   the width anyway, and on a desktop this keeps the globe from filling the
-   screen. */
-#loading-globe { width: min(46vw, 34vh, 280px); height: auto; display: block; }
-#loading p {
-  margin: 0; font-family: var(--mono); font-size: clamp(14px, 3.6vw, 20px);
-  letter-spacing: var(--tr-caps); color: var(--ink-2);
-}
-#loading-bar {
-  position: fixed; left: 0; top: 0; height: 2px; width: 0;
-  background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
-  transition: width .35s ease; z-index: 51;
-}
 @keyframes pulse { 0%,100% { opacity: .3 } 50% { opacity: 1 } }
 
 /* The language switch rides in the shared nav. */
