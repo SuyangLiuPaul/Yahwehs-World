@@ -149,67 +149,35 @@ const loading = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="90 0 ${STRIP_W
       <stop offset="1" stop-color="#000000" stop-opacity=".5"/>
     </radialGradient>
     <g id="land" fill="#f1e8d4">${stripPaths.map((d) => `<path d="${d}"/>`).join('')}</g>
+    <!-- The meridians live in the SAME sliding strip as the land, which is the
+         whole of the fix: they are drawn in the map's own coordinates and
+         carried by the map's own transform, so they cannot fail to travel with
+         the continents. The first attempt animated six ellipses in place with
+         SMIL instead; it was still a fixed cage next to a moving map, and the
+         owner said so twice. -->
+    <g id="meridians" fill="none" stroke="#f1e8d4" stroke-opacity=".16" stroke-width=".8">
+      ${Array.from({ length: 12 }, (_, i) => `<line x1="${i * 30}" y1="0" x2="${i * 30}" y2="${STRIP_H}"/>`).join('')}
+    </g>
     <style>
       .turn { animation: spin 24s linear infinite; }
       @keyframes spin { from { transform: translateX(0); } to { transform: translateX(-${STRIP_W}px); } }
-      /* A reader who has asked for less motion gets a still globe, and a
-         still globe still needs its cage: the animated meridians are swapped
-         for a fixed pair rather than removed. */
-      .still { display: none; }
-      @media (prefers-reduced-motion: reduce) {
-        .turn { animation: none; }
-        .moving { display: none; }
-        .still { display: inline; }
-      }
+      /* A reader who has asked for less motion gets the same globe, standing
+         still: the meridians are part of the map now, so stopping the map
+         stops them too and nothing has to be swapped out. */
+      @media (prefers-reduced-motion: reduce) { .turn { animation: none; } }
     </style>
   </defs>
   <circle cx="180" cy="90" r="${DISC_R}" fill="#16324f"/>
   <g clip-path="url(#disc)">
-    <g class="turn"><use href="#land"/><use href="#land" x="${STRIP_W}"/></g>
+    <g class="turn">
+      <use href="#land"/><use href="#land" x="${STRIP_W}"/>
+      <use href="#meridians"/><use href="#meridians" x="${STRIP_W}"/>
+    </g>
+    <!-- The parallels stand still, because on a turning globe they do. -->
     <g fill="none" stroke="#f1e8d4" stroke-opacity=".16" stroke-width=".8">
-      <!-- The parallels stand still, because on a turning globe they do. -->
       <ellipse cx="180" cy="90" rx="${DISC_R}" ry="30"/>
       <ellipse cx="180" cy="90" rx="${DISC_R}" ry="60"/>
       <line x1="90" y1="90" x2="270" y2="90"/>
-      <!-- The meridians turn with the land. They did not, and the owner saw
-           it: a globe whose continents slide past a fixed cage is a cylinder.
-           A meridian in orthographic projection is an ellipse of half-width
-           R·|cos θ| — the full ellipse being the front half and the back half
-           of one great circle — so six of them, thirty degrees apart in
-           phase, are a turning cage. SMIL rather than CSS because an <img>
-           runs declarative animation but not script, and rx as a CSS property
-           is not safe on every phone this opens on. -->
-      <g class="still">
-        <ellipse cx="180" cy="90" rx="30" ry="${DISC_R}"/>
-        <ellipse cx="180" cy="90" rx="60" ry="${DISC_R}"/>
-        <line x1="180" y1="0" x2="180" y2="180"/>
-      </g>
-      <g class="moving">
-      <ellipse cx="180" cy="90" ry="${DISC_R}" rx="90">
-        <animate attributeName="rx" dur="24s" repeatCount="indefinite"
-          values="90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90"/>
-      </ellipse>
-      <ellipse cx="180" cy="90" ry="${DISC_R}" rx="77.94">
-        <animate attributeName="rx" dur="24s" repeatCount="indefinite"
-          values="77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94"/>
-      </ellipse>
-      <ellipse cx="180" cy="90" ry="${DISC_R}" rx="45">
-        <animate attributeName="rx" dur="24s" repeatCount="indefinite"
-          values="45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45"/>
-      </ellipse>
-      <ellipse cx="180" cy="90" ry="${DISC_R}" rx="0">
-        <animate attributeName="rx" dur="24s" repeatCount="indefinite"
-          values="0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0"/>
-      </ellipse>
-      <ellipse cx="180" cy="90" ry="${DISC_R}" rx="45">
-        <animate attributeName="rx" dur="24s" repeatCount="indefinite"
-          values="45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45"/>
-      </ellipse>
-      <ellipse cx="180" cy="90" ry="${DISC_R}" rx="77.94">
-        <animate attributeName="rx" dur="24s" repeatCount="indefinite"
-          values="77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94;84.57;88.63;90;88.63;84.57;77.94;68.94;57.85;45;30.78;15.63;0;15.63;30.78;45;57.85;68.94;77.94"/>
-      </ellipse>
-      </g>
     </g>
     <circle cx="180" cy="90" r="${DISC_R}" fill="url(#shade)"/>
   </g>
