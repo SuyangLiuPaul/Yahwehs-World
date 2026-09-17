@@ -94,8 +94,16 @@
   width: 44px; height: 44px; transform: translate(-50%, -50%);
 }
 @media (max-width: 760px) {
-  .sitenav { padding: calc(var(--sp-2) + var(--safe-top)) calc(var(--sp-3) + var(--safe-right))
-                     var(--sp-2) calc(var(--sp-3) + var(--safe-left)); gap: var(--sp-3); }
+  /* At phone width the bar carries the wordmark, three tabs, the settings
+     button and three language buttons. The settings button only exists in
+     the native shell, so the browser fitted and the iPhone did not — the
+     tab strip was clipped mid-word and "Tabernacle" read "Taberr", which
+     looks like a rendering fault rather than something you can scroll.
+     Everything here is tightened to buy back those ~34px. */
+  .sitenav { padding: calc(var(--sp-2) + var(--safe-top)) calc(var(--sp-2) + var(--safe-right))
+                     var(--sp-2) calc(var(--sp-2) + var(--safe-left)); gap: var(--sp-2); }
+  .lang-switch button { padding: var(--sp-1) 5px; }
+  #settings-open { width: 26px; height: 26px; font-size: var(--fs-300); }
   .sitenav .brand .zh { font-size: var(--fs-300); letter-spacing: .08em; }
   .sitenav .brand .en { display: none; }
   /* One row that scrolls rather than a row that wraps: a wrapped tab strip

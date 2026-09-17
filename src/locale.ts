@@ -185,12 +185,22 @@ export function localized<T extends Record<string, { zh: unknown; en: unknown }>
 // once as authored, so re-applying never converts an already-converted one.
 const authoredTitle = typeof document !== 'undefined' ? document.title : '';
 
+/** A phone is not a small desktop: the nav there carries the wordmark, three
+ *  tabs, the settings button and three language buttons, and 照着经文的尺寸
+ *  does not fit beside all of that. An element may offer a shorter reading
+ *  for that width in data-en-narrow / data-zh-narrow; it is used only there,
+ *  and only if it was written. */
+const narrow = typeof matchMedia === 'function'
+  ? matchMedia('(max-width: 480px)')
+  : null;
+
 /** Applies [data-en]/[data-zh] pairs anywhere in the document. */
 export function applyStatic(root: ParentNode = document) {
   if (root === document && authoredTitle) document.title = hant(authoredTitle);
+  const small = narrow?.matches ?? false;
   root.querySelectorAll<HTMLElement>('[data-en]').forEach((el) => {
-    const en = el.dataset.en ?? '';
-    const zh = el.dataset.zh ?? en;
+    const en = (small && el.dataset.enNarrow) || el.dataset.en || '';
+    const zh = (small && el.dataset.zhNarrow) || el.dataset.zh || en;
     el.textContent = t(en, zh);
   });
   // Chinese written straight into an element — the wordmark — rather than
@@ -199,3 +209,10 @@ export function applyStatic(root: ParentNode = document) {
     el.textContent = hant(el.dataset.zhText ?? '');
   });
 }
+
+// Crossing the threshold — rotating a tablet does it — has to re-render, or
+// the bar keeps the labels it was built with.
+narrow?.addEventListener('change', () => {
+  applyStatic();
+  for (const fn of listeners) fn(langOf(current));
+});

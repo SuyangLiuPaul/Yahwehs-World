@@ -93,7 +93,13 @@ const MODE_LABELS: [CheckMode, string, string][] = [
   ['manual', 'Only when I ask', '仅手动检查时'],
 ];
 
+// The note below the cadence list describes Android's installer. It was
+// appearing on iPhone too, where it is not true — iOS will not install a
+// sideloaded update at all, tap or no tap.
+const isAndroid = /android/i.test(navigator.userAgent);
+
 function buildUI(mode: CheckMode) {
+  const androidOnly = isAndroid ? '' : ' hidden';
   const openBtn = document.createElement('button');
   openBtn.id = 'settings-open';
   openBtn.type = 'button';
@@ -117,7 +123,7 @@ function buildUI(mode: CheckMode) {
       ${MODE_LABELS.map(([value, en, zh]) => `
       <label><input type="radio" name="update-mode" value="${value}"${value === mode ? ' checked' : ''}><span data-en="${en}" data-zh="${zh}">${en}</span></label>`).join('')}
     </fieldset>
-    <p class="settings-note" data-en="Android installs still need one tap to confirm — the system will not install an update silently, even on automatic." data-zh="Android 上仍需手动点一下确认安装——即使选了自动，系统也不会静默安装。"></p>
+    <p class="settings-note"${androidOnly} data-en="Android installs still need one tap to confirm — the system will not install an update silently, even on automatic." data-zh="Android 上仍需手动点一下确认安装——即使选了自动，系统也不会静默安装。"></p>
     <button id="settings-check-now" type="button" data-en="Check now" data-zh="立即检查">Check now</button>`;
 
   document.querySelector('.sitenav')?.insertBefore(openBtn, document.querySelector('.lang-switch'));
@@ -164,29 +170,53 @@ export function installUpdateChecker() {
     if (downloadLink.href) void openUrl(downloadLink.href);
   });
 
-  function setStatus(text: string, state?: 'update' | 'error') {
-    statusEl.textContent = text;
+  // The status is written by this module, not from data-en/data-zh, so
+  // applyStatic cannot re-render it when the reading changes — it stayed in
+  // English inside an otherwise 简体 panel. What is remembered is therefore
+  // what it is SAYING, and the sentence is produced again each time.
+  type Status =
+    | { kind: 'idle' }
+    | { kind: 'checking' }
+    | { kind: 'latest' }
+    | { kind: 'error' }
+    | { kind: 'update'; version: string };
+  let status: Status = { kind: 'idle' };
+
+  function paintStatus() {
+    const state = status.kind === 'update' ? 'update' : status.kind === 'error' ? 'error' : undefined;
+    statusEl.textContent =
+      status.kind === 'idle' ? ''
+      : status.kind === 'checking' ? t('Checking…', '正在检查…')
+      : status.kind === 'latest' ? t('You have the latest version.', '已是最新版本。')
+      : status.kind === 'error' ? t('Could not check for updates.', '无法检查更新。')
+      : t(`Version ${status.version} is available.`, `发现新版本 ${status.version}。`);
     if (state) statusEl.dataset.state = state; else delete statusEl.dataset.state;
+  }
+  onLocale(paintStatus);
+
+  function setStatus(next: Status) {
+    status = next;
+    paintStatus();
   }
 
   let currentVersion = '';
 
   async function runCheck() {
     checkNowBtn.disabled = true;
-    setStatus(t('Checking…', '正在检查…'));
+    setStatus({ kind: 'checking' });
     try {
       const result = await fetchLatestRelease();
       stampChecked();
       if (result && isNewer(result.latest, currentVersion)) {
-        setStatus(t(`Version ${result.latest} is available.`, `发现新版本 ${result.latest}。`), 'update');
+        setStatus({ kind: 'update', version: result.latest });
         downloadLink.href = result.htmlUrl;
         downloadLink.hidden = false;
       } else {
-        setStatus(t('You have the latest version.', '已是最新版本。'));
+        setStatus({ kind: 'latest' });
         downloadLink.hidden = true;
       }
     } catch {
-      setStatus(t('Could not check for updates.', '无法检查更新。'), 'error');
+      setStatus({ kind: 'error' });
     } finally {
       checkNowBtn.disabled = false;
     }
