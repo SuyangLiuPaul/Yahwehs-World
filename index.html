@@ -110,17 +110,15 @@
       <span id="t-count"></span>
     </div>
     <input id="t-range" type="range" min="0" max="1" value="1" step="1">
-    <!-- The events track (C1/P4). A second scale under the verse slider: all
-         1,443 events as bands. Drawn to a canvas rather than 1,443 elements,
-         and populated by src/events-track.ts once the payload arrives — the
-         globe paints first. -->
+    <!-- The events track (C1/P4). All 1,443 events as bands under the verse
+         slider, each under the verses it happens in. Drawn to a canvas rather
+         than 1,443 elements, and populated by src/events-track.ts once the
+         payload arrives — the globe paints first. There is no year axis: it
+         was built, then removed on the owner's call (events-track.ts says
+         why), so this track is on the same canonical scale as the slider. -->
     <div id="t-events" hidden>
       <canvas id="t-events-canvas" role="img"></canvas>
-      <div class="t-events-bar">
-        <button id="t-axis" type="button" aria-pressed="false"
-                data-en="Years" data-zh="按年代" data-zh-narrow="年代"></button>
-        <span id="t-events-note"></span>
-      </div>
+      <p id="t-events-note"></p>
     </div>
     <!-- The events menu: 1,443 is a number you can draw but not click
          through, so the track has a list beside it. Filled by

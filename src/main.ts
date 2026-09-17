@@ -19,7 +19,7 @@ import { PlaceLabels } from './place-labels.ts';
 import { RouteThumbnail } from './route-thumbnail.ts';
 import { Scenes } from './scenes.ts';
 import { Cartography, measureMap } from './cartography.ts';
-import { applyStatic, bindSwitch, fullLocale, hant, localized, locale as currentLocale, onLocale, t } from './locale.ts';
+import { applyStatic, bindSwitch, fullLocale, hant, localized, locale as currentLocale, onLocale } from './locale.ts';
 import { installUpdateChecker } from './updates.ts';
 import { EventsTrack, type TrackEvent } from './events-track.ts';
 import { installEventsMenu } from './events-menu.ts';
@@ -671,12 +671,11 @@ range.max = String(bundle.events.length - 1);
 range.value = range.max;
 
 function applyCursor() {
-  const raw = Number(range.value);
-  // In year mode the slider IS a year; the globe still reveals by canonical
-  // progress, so the year is mapped onto the verse cursor.
-  const byYear = eventsTrack?.isByYear ?? false;
-  const i = byYear ? eventsTrack.yearToIndex(raw) : raw;
-  eventsTrack?.setCursor(raw);
+  // One scale, the canon's. The slider used to be switchable into years; that
+  // went with the year axis (see the head of events-track.ts), and with it the
+  // year↔verse mapping that lived here.
+  const i = Number(range.value);
+  eventsTrack?.setCursor(i);
   markers.setCursor(i);
   const ev = bundle.events[i];
   // An opened event owns the readout. applyCursor still runs — the cursor,
@@ -686,9 +685,7 @@ function applyCursor() {
   else if (ev) {
     const book = bookName(bookOf(ev.sort), locale);
     const cv = ev.readable.replace(/^.*?(\d+:\d+.*)$/, '$1');
-    $('t-ref').textContent = byYear
-      ? (raw < 0 ? t(`${-raw} BC`, `公元前 ${-raw} 年`) : t(`AD ${raw}`, `公元 ${raw} 年`))
-      : locale === 'zh' ? `${book} ${cv}` : ev.readable;
+    $('t-ref').textContent = locale === 'zh' ? `${book} ${cv}` : ev.readable;
     $('t-here').textContent = markers.activeIndices
       .map((n) => placeName(bundle.places[n]!)).join(' · ');
   } else {
@@ -732,21 +729,6 @@ const eventsTrack = new EventsTrack({
   ),
   setVerseCursor: (index) => { range.value = String(index); applyCursor(); },
   showEvent: (ev) => { openEvent = ev; renderOpenEvent(); },
-  axisChanged: (byYear) => {
-    // One slider, two scales. Re-range it and carry the reader's position
-    // across rather than dropping them back at the start of the canon.
-    const i = Number(range.value);
-    if (byYear) {
-      const { min, max } = eventsTrack.years;
-      const year = eventsTrack.indexToYear(i);
-      range.min = String(min); range.max = String(max); range.value = String(year);
-    } else {
-      const index = eventsTrack.yearToIndex(Number(range.value));
-      range.min = '0'; range.max = String(bundle.events.length - 1);
-      range.value = String(index);
-    }
-    applyCursor();
-  },
 });
 
 /** The opened event takes over the readout — it is what the reader just asked
@@ -770,8 +752,7 @@ void eventsTrack.load('/data/events.json')
     installEventsMenu(eventsTrack, (ev) => eventsTrack.open(ev));
     console.info(
       `events layer: ${eventsTrack.count} events loaded, ` +
-      `${eventsTrack.drawnCount} bands drawn on the verse axis, ` +
-      `${eventsTrack.datedCount} of them dated (the year axis shows those)`,
+      `${eventsTrack.drawnCount} bands drawn`,
     );
   })
   .catch((err) => { console.warn('events layer unavailable:', err); });

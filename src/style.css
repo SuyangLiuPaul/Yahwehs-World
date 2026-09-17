@@ -377,9 +377,9 @@ body {
 }
 
 /* ── the events track (C1 / P4) ───────────────────────────────────────────
-   A second scale under the verse slider: 1,443 events as bands, drawn to a
-   canvas. The height is deliberately small — it is a track, not a chart, and
-   the map is what the page is for. */
+   1,443 events as bands under the verse slider, drawn to a canvas. The height
+   is deliberately small — it is a track, not a chart, and the map is what the
+   page is for. */
 #t-events { display: grid; gap: 2px; margin-top: var(--sp-1); }
 #t-events[hidden] { display: none; }
 #t-events-canvas {
@@ -387,18 +387,8 @@ body {
   border-radius: var(--radius);
   background: color-mix(in srgb, var(--surface) 55%, transparent);
 }
-.t-events-bar { display: flex; align-items: center; gap: var(--sp-2); min-width: 0; }
-#t-axis {
-  flex: none; min-height: 28px; padding: 2px var(--sp-2);
-  background: transparent; color: var(--gold);
-  border: 1px solid var(--line-gold); border-radius: var(--radius);
-  font: var(--fs-100) var(--ui); letter-spacing: var(--tr-cjk); cursor: pointer;
-}
-#t-axis:hover { background: var(--gold-wash); color: var(--gold-bright); }
-#t-axis:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
-#t-axis[aria-pressed="true"] { background: var(--gold-wash); color: var(--gold-bright); }
 #t-events-note {
-  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  margin: 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   font: var(--fs-100)/var(--lh-snug) var(--ui); color: var(--ink-3);
 }
 @media (max-width: 520px) {
@@ -464,9 +454,6 @@ body {
 .ev-row b { font: 500 var(--fs-300) var(--ui); letter-spacing: var(--tr-cjk); }
 html[lang="en"] .ev-row b { font-family: var(--latin); }
 .ev-row span { font: var(--fs-100) var(--ui); color: var(--ink-3); }
-/* The same two facts the band shape carries, carried into the list. */
-.ev-row[data-mark="disputed"] b::after { content: ''; display: inline-block; width: 6px; height: 6px; margin-left: 6px; background: #c98a5a; }
-.ev-row[data-mark="undated"] b::after { content: ''; display: inline-block; width: 6px; height: 6px; margin-left: 6px; border: 1px solid #6f7d8c; }
 @media (max-width: 520px) {
   #t-events-list { max-height: 30dvh; }
   #t-events-book { max-width: 38%; }

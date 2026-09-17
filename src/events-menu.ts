@@ -43,20 +43,11 @@ export function installEventsMenu(track: EventsTrack, open: (ev: TrackEvent) => 
   const label = (ev: TrackEvent) => (currentLocale() === 'zh' ? hant(ev.zh) : ev.en);
   const ref = (ev: TrackEvent) => (currentLocale() === 'zh' ? hant(ev.refZh) : ev.ref);
 
-  /** What the band shape says, said in words — the list must not quietly drop
-   *  the part the track is careful about. */
-  const mark = (ev: TrackEvent) =>
-    ev.c === 'disputed' ? t('disputed date', '年代有争议')
-    : ev.y0 === undefined ? t('undated', '无年代')
-    : ev.spine ? t('dated from the spine', '年代取自主干')
-    : '';
-
-  const years = (ev: TrackEvent) => {
-    if (ev.y0 === undefined || ev.y1 === undefined) return '';
-    const one = (y: number) => (y < 0 ? t(`${-y} BC`, `前 ${-y}`) : t(`AD ${y}`, `公元 ${y}`));
-    return ev.y0 === ev.y1 ? one(ev.y0) : `${one(ev.y0)} – ${one(ev.y1)}`;
-  };
-
+  // A row used to carry the event's year range and a date mark (disputed /
+  // undated / dated from the spine). Both went when the year axis went — see
+  // the note at the top of events-track.ts. The reference is what a reader
+  // navigates by, and it is the one thing here that is attested rather than
+  // derived.
   function render(items: TrackEvent[], total: number) {
     list.replaceChildren();
     for (const ev of items) {
@@ -64,14 +55,11 @@ export function installEventsMenu(track: EventsTrack, open: (ev: TrackEvent) => 
       row.type = 'button';
       row.className = 'ev-row';
       row.dataset.id = ev.id;
-      if (ev.c === 'disputed') row.dataset.mark = 'disputed';
-      else if (ev.y0 === undefined) row.dataset.mark = 'undated';
 
       const name = document.createElement('b');
       name.textContent = label(ev);
       const meta = document.createElement('span');
-      const bits = [ref(ev), years(ev), mark(ev)].filter(Boolean);
-      meta.textContent = bits.join(' · ');
+      meta.textContent = ref(ev);
       row.append(name, meta);
       row.addEventListener('click', () => {
         open(ev);
