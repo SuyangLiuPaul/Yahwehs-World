@@ -9,6 +9,12 @@ import type { Journey } from './routes.ts';
 
 // The plan, as a page rather than as a promise.
 //
+// The owner's instruction is that every event in the canon should reach 3D,
+// however hard it is. So the target on this page is not "coverage" in the
+// abstract: it is that each of the 56 units has a three-dimensional scene of
+// its own — a building to walk into, or the event standing where it happened.
+// Two of them do. The page counts the rest rather than describing them.
+//
 // Everything counted here is counted from the payloads the app already ships:
 // which unit each of the 1,443 events falls in, how many of them the text
 // locates, which journeys' own cited verses fall inside a unit, which
@@ -26,6 +32,7 @@ const DEPTHS: { key: Depth; zh: string; en: string; zhWhat: string; enWhat: stri
   { key: 'map', zh: '地图', en: 'On the map', zhWhat: '事件发生的地点，落在地球上。只在经文指明地点时才有。', enWhat: 'The place, on the globe — only where the text names one.' },
   { key: 'route', zh: '路线', en: 'Route', zhWhat: '一站一站画在地形上的行程，每站注明出处经文。', enWhat: 'A journey across the terrain, every stop citing its verse.' },
   { key: 'measure', zh: '尺寸', en: 'Measures', zhWhat: '照经文所记的尺寸做的卡片。', enWhat: 'A card built to the measurements the text states.' },
+  { key: 'scene', zh: '3D 场景', en: '3D scene', zhWhat: '事件本身的三维场景，站在事情发生的地方，按记载所描述的建。', enWhat: 'The event itself in three dimensions, standing where it happens, built from what the passage describes.' },
   { key: 'walk', zh: '走进去', en: 'Walk in', zhWhat: '可以自己走进去的建筑。', enWhat: 'A building you can walk into on your own feet.' },
 ];
 
@@ -62,8 +69,8 @@ const chip = (cls: string, label: string, note: string, href?: string) => {
 function render() {
   $('plan-title').textContent = t('The whole plan', '完整的计划');
   $('plan-lede').innerHTML = t(
-    'Every event in the canon, in the order it is read, cut into the units this app presents. Each unit shows how deep it goes today — the passage, the place, a route, the measurements, a building you can walk into — and what is still to be built. Dashed means it does not exist yet.',
-    '圣经里的每一个事件，按阅读的次序，分成本站呈现的单元。每个单元写明它现在做到哪一层——经文、地点、路线、尺寸、可以走进去的建筑——以及还没做的部分。虚线框的，是还没有做出来的。');
+    'The aim is that every event in the canon can be seen in three dimensions — a building to walk into, or the event standing where it happened. This page is the whole of it, in the order the canon is read, cut into units. Each unit shows how deep it goes today and what its 3D would be built from; dashed means it does not exist yet. Where the text describes nothing measurable, the entry says that instead of promising a building.',
+    '目标是圣经里的每一个事件都能用三维看见——可以走进去的建筑，或者站在事情发生的地方。这一页就是全部，按圣经的次序分成单元。每个单元写明它现在做到哪一层，以及它的 3D 会照什么来建；虚线框的是还没做出来的。经文没有可量之物的，就写明这一点，而不是许一座建筑。');
 
   $('ladder').innerHTML = DEPTHS.map((d) => `
     <div class="rung">
@@ -85,9 +92,13 @@ function render() {
   const pc = (n: number) => `${((n / Math.max(1, total)) * 100).toFixed(0)}%`;
   $('bar').innerHTML = (['walk', 'route', 'map', 'verse'] as const)
     .map((k2) => `<i class="b-${k2}" style="width:${pc(reach[k2])}"></i>`).join('');
+  // The target, counted: a unit has its own 3D when you can walk into it.
+  const own3d = rows.filter((r) => r.unit.walk).length;
+  const building = rows.filter((r) => (r.unit.plan ?? []).some((q) => q.status === 'building')).length;
+  const planned = UNITS.length - own3d - building;
   $('tally-line').textContent = t(
-    `${total.toLocaleString()} events · ${UNITS.length} units · walk-in ${pc(reach.walk)} · route ${pc(reach.route)} · mapped ${pc(reach.map)} · passage only ${pc(reach.verse)}`,
-    `${total.toLocaleString()} 个事件 · ${UNITS.length} 个单元 · 可走进 ${pc(reach.walk)} · 有路线 ${pc(reach.route)} · 有地点 ${pc(reach.map)} · 只有经文 ${pc(reach.verse)}`);
+    `Target: all ${total.toLocaleString()} events in 3D. ${UNITS.length} units — ${own3d} have a 3D scene of their own, ${building} in development, ${planned} planned. Today: walk-in ${pc(reach.walk)} of events · route ${pc(reach.route)} · mapped ${pc(reach.map)} · passage only ${pc(reach.verse)}`,
+    `目标：${total.toLocaleString()} 个事件全部做成 3D。${UNITS.length} 个单元——${own3d} 个已有自己的 3D 场景，${building} 个开发中，${planned} 个计划中。目前：可走进的事件 ${pc(reach.walk)} · 有路线 ${pc(reach.route)} · 有地点 ${pc(reach.map)} · 只有经文 ${pc(reach.verse)}`);
 
   $('units').innerHTML = rows.map((r) => {
     const chips: string[] = [];
