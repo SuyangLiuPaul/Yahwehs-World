@@ -21,6 +21,9 @@ that keep them from becoming an invention dressed as data.
 4. **Provenance is recorded.** Model, prompt, job id, cost and terms go in
    `handoff/MANIFEST-assets.md` before the file is committed — including the
    jobs that were thrown away.
+5. **Where the text DOES settle an appearance, it settles it.** The list is
+   short, and every reference prompt has to carry it. So far it is one entry,
+   and it overturns the most familiar picture there is — see *Hair* below.
 
 **Pipeline** (the one that works; the first attempt did not):
 `generate_image` → a clean full-body reference on a plain ground →
@@ -31,6 +34,33 @@ triangles under a smeared atlas with no face on it at all — the owner walked u
 to one of the eight and said *八个人都没有眼睛*. Image-to-3D from a photographic
 reference gives eyes, hands, sandal straps and toes at 19,000 triangles, and
 the packing step takes the file from 2.6 MB to 1.0 MB.
+
+### Hair — men are drawn short-haired
+
+*Doth not even nature itself teach you, that, if a man have long hair, it is a
+shame unto him?* — 1 Cor 11:14. It is the only statement anywhere in the
+letters that bears on how a man wore his hair, and it settles the question for
+every male figure in this app: **short.** The reference prompt says so, and a
+generated man who comes back long-haired is rejected and regenerated.
+
+This is not a small correction. The long-haired Jesus of nearly every painting,
+film and children's Bible is an artistic convention — it descends from
+classical and Byzantine models, not from anything in the text — and it is
+almost certainly wrong. The app does not render him at all (below), but it does
+render the twelve, the crowds, and every man from Adam onward, and all of them
+are short-haired.
+
+**The objection, answered, because it will be raised.** *Was he not a
+Nazarite, and did not a Nazarite leave his hair uncut (Num 6:5)?* No: that
+confuses **Nazarene** — 「拿撒勒人」, of the town, Matt 2:23 — with **Nazarite**,
+the vow of Num 6. They are different words. And the text closes it from the
+other side: he came *eating and drinking* and was called a winebibber (Matt
+11:19; Luke 7:34), which a man under the vow could not have done (Num 6:3). So
+the one argument ever offered for long hair fails on the text that supposedly
+supports it.
+
+The six figures already built pass this: the reference photograph for `man` is
+short-haired and short-bearded.
 
 ---
 
@@ -166,3 +196,49 @@ buildings are.
 the ass at the manger, and a specific number of wise men, are the two that
 will be asked about most. They are listed above so that the decision is made
 once, in the open: they do not go in, or they go in labelled.
+
+---
+
+## The one figure this app does not give a face
+
+**Decided, with the owner, 2026-09-18.** Jesus is not rendered as a figure.
+Where a scene has him in it, **the camera stands where he stands.** You are in
+the boat when the waves beat into it; you sit where he sat and look down at the
+multitude; you see the three asleep in the garden.
+
+Three reasons, in order of how hard they are to argue with:
+
+1. **The text gives nothing to build from** — with the one exception above,
+   which cuts against the pictures rather than toward them: the letters settle
+   that a man wore his hair short, so the familiar long-haired figure is wrong
+   even on the little the text does say. Beyond that there is no description of
+   his appearance anywhere in the canon. The nearest thing, Isa 53:2 — *no form nor
+   comeliness that we should desire him* — is a refusal to describe, not a
+   description. Every other figure in this app is generic because the text is
+   silent about the individual; here the silence is about the one person a
+   reader would most take the picture for a portrait of.
+2. **The project's own escape hatch does not reach.** Everything else unstated
+   is handled by one sentence: *the number is the text's, the species is a
+   display choice, and the card says which.* It works for an ox standing for a
+   clean kind, because nobody remembers that ox. It does not work for a face:
+   a reader will carry it for life, and a caption cannot undo that.
+3. **The second commandment.** Ex 20:4, and Deut 4:15 — *ye saw no manner of
+   similitude*. For an app called 雅伟之界 that is not a detail to be waved
+   past.
+
+**The twelve are rendered** — ordinary men, no attempt to say which is which,
+under the same rules as everyone else.
+
+**Revelation 1:12–16 is the one honest complication**, and it is recorded here
+rather than smoothed over: that passage *does* describe him, and at length —
+hair white as snow, eyes as a flame of fire, feet like fine brass, a voice as
+many waters. It is the only extended description in the canon, and it is a
+vision of the glorified Christ rather than a portrait. The way through is the
+text's own: *his countenance was as the sun shineth in his strength*, and John
+*fell at his feet as dead*. Build what is described — the lampstands, the brass,
+the light — at the brightness the passage states, and what a reader can look at
+is light, not a face. The literal reading and the aniconic one land in the same
+place.
+
+This is an editorial decision, not a technical one. It was weighed; if it is
+ever revisited, revisit it here.
