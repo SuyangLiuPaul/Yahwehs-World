@@ -22,6 +22,7 @@ import { Cartography, measureMap } from './cartography.ts';
 import { applyStatic, bindSwitch, fullLocale, hant, localized, locale as currentLocale, onLocale, t } from './locale.ts';
 import { installUpdateChecker } from './updates.ts';
 import { EventsTrack, type TrackEvent } from './events-track.ts';
+import { installEventsMenu } from './events-menu.ts';
 import type { GeoJson, Place, PlacesBundle } from './types.ts';
 
 type Locale = 'zh' | 'en';
@@ -766,6 +767,7 @@ function renderOpenEvent() {
 void eventsTrack.load('/data/events.json')
   .then(() => {
     eventsTrack.setCursor(Number(range.value));
+    installEventsMenu(eventsTrack, (ev) => eventsTrack.open(ev));
     console.info(
       `events layer: ${eventsTrack.count} events loaded, ` +
       `${eventsTrack.drawnCount} bands drawn on the verse axis, ` +

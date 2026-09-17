@@ -102,6 +102,8 @@
     <div class="readout">
       <div class="reading">
         <button id="t-goto-open" type="button" data-en="Go to…" data-zh="经文定位…" aria-haspopup="true" aria-expanded="false"></button>
+        <button id="t-events-open" type="button" hidden aria-haspopup="true" aria-expanded="false"
+                data-en="Events…" data-zh="事件…"></button>
         <span id="t-ref"></span>
         <span id="t-here"></span>
       </div>
@@ -119,6 +121,18 @@
                 data-en="Years" data-zh="按年代" data-zh-narrow="年代"></button>
         <span id="t-events-note"></span>
       </div>
+    </div>
+    <!-- The events menu: 1,443 is a number you can draw but not click
+         through, so the track has a list beside it. Filled by
+         src/events-menu.ts once the payload arrives. -->
+    <div id="t-events-menu" hidden>
+      <div class="t-events-menu-controls">
+        <input id="t-events-search" type="search" autocomplete="off">
+        <select id="t-events-book" aria-label="Book"></select>
+        <button id="t-events-menu-close" type="button" aria-label="Close">×</button>
+      </div>
+      <p id="t-events-count"></p>
+      <div id="t-events-list" role="listbox"></div>
     </div>
     <div id="t-goto" hidden>
       <select id="t-goto-book" aria-label="Book"></select>

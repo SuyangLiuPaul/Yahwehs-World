@@ -405,3 +405,69 @@ body {
   #t-events-canvas { height: 26px; }
   #t-events-note { font-size: 10px; }
 }
+
+/* ── the events menu ──────────────────────────────────────────────────────
+   Same shape as the book/chapter/verse picker beside it: a compact panel
+   that does one thing. The list is scrolled rather than paged — a reader
+   looking for one event wants to run their eye down a column. */
+#t-events-open {
+  flex: none; background: transparent; color: var(--ink-3);
+  border: 1px solid var(--line-gold); border-radius: 999px;
+  padding: 3px var(--sp-2); font-size: var(--fs-100); letter-spacing: var(--tr-cjk);
+  cursor: pointer; transition: color .18s, border-color .18s;
+}
+#t-events-open:hover, #t-events-open[aria-expanded="true"] { color: var(--gold-bright); border-color: var(--gold); }
+#t-events-open:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+#t-events-open[hidden] { display: none; }
+
+#t-events-menu {
+  margin: var(--sp-2) 0; padding: var(--sp-2) var(--sp-3);
+  background: #0e1d2ec0; border: 1px solid var(--line-gold); border-radius: var(--radius);
+}
+#t-events-menu[hidden] { display: none; }
+.t-events-menu-controls { display: flex; gap: var(--sp-2); align-items: center; }
+#t-events-search {
+  flex: 1; min-width: 0; padding: 4px var(--sp-2);
+  background: var(--ground); color: var(--ink);
+  border: 1px solid var(--line); border-radius: var(--radius);
+  font: var(--fs-200) var(--ui);
+}
+#t-events-search:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+#t-events-book {
+  flex: none; max-width: 42%; padding: 4px var(--sp-1);
+  background: var(--ground); color: var(--ink);
+  border: 1px solid var(--line); border-radius: var(--radius);
+  font: var(--fs-200) var(--ui);
+}
+#t-events-menu-close {
+  flex: none; width: 28px; height: 28px; padding: 0;
+  background: transparent; color: var(--ink-2);
+  border: 1px solid transparent; border-radius: var(--radius);
+  font-size: var(--fs-500); line-height: 1; cursor: pointer;
+}
+#t-events-menu-close:hover { color: var(--gold-bright); background: var(--surface-hi); }
+#t-events-count {
+  margin: var(--sp-1) 0 0; font: var(--fs-100) var(--ui); color: var(--ink-3);
+}
+#t-events-list {
+  margin-top: var(--sp-1); max-height: 34dvh; overflow-y: auto;
+  display: grid; gap: 1px;
+}
+.ev-row {
+  display: grid; gap: 1px; width: 100%; text-align: left; cursor: pointer;
+  padding: var(--sp-1) var(--sp-2);
+  background: transparent; color: var(--ink);
+  border: 1px solid transparent; border-radius: var(--radius);
+}
+.ev-row:hover { background: var(--surface-hi); border-color: var(--line-gold); }
+.ev-row:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: -2px; }
+.ev-row b { font: 500 var(--fs-300) var(--ui); letter-spacing: var(--tr-cjk); }
+html[lang="en"] .ev-row b { font-family: var(--latin); }
+.ev-row span { font: var(--fs-100) var(--ui); color: var(--ink-3); }
+/* The same two facts the band shape carries, carried into the list. */
+.ev-row[data-mark="disputed"] b::after { content: ''; display: inline-block; width: 6px; height: 6px; margin-left: 6px; background: #c98a5a; }
+.ev-row[data-mark="undated"] b::after { content: ''; display: inline-block; width: 6px; height: 6px; margin-left: 6px; border: 1px solid #6f7d8c; }
+@media (max-width: 520px) {
+  #t-events-list { max-height: 30dvh; }
+  #t-events-book { max-width: 38%; }
+}

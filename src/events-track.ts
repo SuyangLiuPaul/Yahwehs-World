@@ -86,6 +86,9 @@ export class EventsTrack {
    *  assumed: "1,443 events are in the file" and "1,443 bands are on the
    *  track" are different claims, and only the second one is the feature. */
   get drawnCount() { return this.boxes.length; }
+  /** The loaded events, for anything that needs to list rather than draw
+   *  them — see src/events-menu.ts. */
+  get all(): readonly TrackEvent[] { return this.events; }
   get datedCount() { return this.dated.length; }
 
   async load(url: string) {
