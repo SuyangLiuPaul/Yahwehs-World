@@ -102,7 +102,7 @@ const sceneReady = Promise.all([materialsReady, ready]).then(([ok]) => {
 loadingSteps(3);
 loadingStep();
 let handover: 'waiting' | 'ready' | 'done' = 'waiting';
-void sceneReady.then(() => { loadingStep(); handover = 'ready'; });
+void sceneReady.then(() => { loadingStep(); handover = 'ready'; renderTally(); });
 renderer.shadowMap.autoUpdate = false;
 renderer.shadowMap.needsUpdate = true;
 void ready.then(() => { renderer.shadowMap.needsUpdate = true; });
@@ -157,7 +157,13 @@ const verseEl = document.getElementById('verse')!;
 
 // Every line is a number the text gives, or a count the builder made while
 // building.
-const TALLY: [number, string, string, string][] = [
+//
+// A FUNCTION, not a constant. The figures are loaded asynchronously and count
+// themselves as they are placed, so a list built at module load reads every
+// one of them as zero — the card said "0 of a clean kind" with fourteen oxen
+// standing in the rooms behind it. A page in this app is not allowed to state
+// a number that is not true, so the numbers are read when they are drawn.
+const tally = (): [number, string, string, string][] => [
   [counts.lengthCubits, 'cubits long', '肘长', 'Gen 6:15'],
   [counts.widthCubits, 'cubits broad', '肘宽', 'Gen 6:15'],
   [counts.heightCubits, 'cubits high', '肘高', 'Gen 6:15'],
@@ -175,7 +181,7 @@ const TALLY: [number, string, string, string][] = [
   [counts.trees, 'trees standing on the plain', '平原上的树', '—'],
 ];
 function renderTally() {
-  document.getElementById('tally')!.innerHTML = TALLY
+  document.getElementById('tally')!.innerHTML = tally()
     .map(([n, en, zh, ref]) => `<div><b>${n}</b><span>${t(en, zh)}</span><i>${hant(ref)}</i></div>`)
     .join('');
 }
