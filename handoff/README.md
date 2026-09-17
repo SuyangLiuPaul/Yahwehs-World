@@ -12,8 +12,12 @@ from the repository on 2026-09-14.
 
 ## Reading order
 
-Latest implemented batch: `BATCH-5.md` (2026-09-15), altitude-scaled globe
-dragging, immediate release stop and gesture/tap separation. `BATCH-4.md`
+Latest implemented batch: **`BATCH-6.md` (2026-09-18)** — all 1,443 events
+drawn, a menu for them, the year axis removed, and the three pages joined to
+each other on the verses they cite. Released as v0.1.5. Read it before `02`,
+which it supersedes wherever they disagree. `BATCH-5.md` (2026-09-15) is
+altitude-scaled globe dragging, immediate release stop and gesture/tap
+separation. `BATCH-4.md`
 provides route-linked people and
 ships, the 42-stage Exodus camp cycle, and five inspectable story demonstrations.
 `BATCH-3.md` remains the current tabernacle material/environment pass. Neither
@@ -38,6 +42,8 @@ marks the full 1,443-event product or photographic visual target complete.
 | — | `ASTRA-PROMPTS.md` | Phase-by-phase execution prompts for a token-scarce executor model |
 | — | `MANIFEST-assets.md` | Provenance ledger for every non-code asset; append to it, never delete from it |
 | 13 | `13-asset-library.md` | The 39 models the map and scenes still want, what they cost (measured), the payload budget that binds, and the rule that anything the text measures is built from the measurement and never generated |
+| — | `BATCH-6.md` | **The current batch** — events layer, events menu, why there is no year axis, and the corridors between the three pages |
+| 14 | `14-native-builds.md` | macOS/Android/iOS builds, the signing key, and the four release scripts |
 | — | `EVENT-REVIEW.md` | Output of `node scripts/audit-events.mjs`. Regenerated, never hand-edited. Every number in it is measured — read it before believing any claim about coverage |
 
 ## Rules for whoever builds this
@@ -66,8 +72,13 @@ marks the full 1,443-event product or photographic visual target complete.
 
 ## Where things are
 
-- Repo: `SuyangLiuPaul/yahwehs-globe` (private), default branch `main`
-- Live: <https://yahwehsworld.netlify.app> — auto-deploys on push to `main`
+- Repo: `SuyangLiuPaul/yahwehs-globe` (**public** since 2026-09-16, so GitHub
+  Releases can be fetched without a token), default branch `main`
+- Live: <https://world.yahwehword.com> (= `yahwehsworld.netlify.app`).
+  **Prod does NOT auto-deploy** — `stop_builds` is on, by decision (D31); only
+  `tools/release_web.sh --include-prod` publishes it
+- Dev: <https://yahwehsworld-dev.netlify.app> — `tools/release_web.sh`, every
+  push-worthy change goes here first
 - This folder: `handoff/` at the repo root
 - Sister data: `../SeekSparks/assets/` (chronology, journeys, Chinese gazetteer, `cuvs-yhwh.json` — the text everything is checked against)
 - Authored corrections that survive regeneration: `data/events/summary-overrides.json`, `data/events/gazetteer-corrections.json`, `data/places/cuv-renderings.json`, `data/places/names-from-text.json` — every row cites its verse

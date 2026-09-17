@@ -1,5 +1,13 @@
 # 02 · Current state (measured 2026-09-15, commit `6b3471b`)
 
+> **Superseded in part by `BATCH-6.md` (2026-09-18, v0.1.5).** Since this file
+> was measured the app gained the events layer (all 1,443 drawn), the events
+> menu, corridors between the three pages, three locales (繁/简/EN), a
+> dark-only palette (no light mode — D28), native macOS/Android builds with an
+> in-app update check, and lost the year axis (D29). `src/main.ts` is ~1,120
+> lines, not 651. Read `BATCH-6.md` first; the tables below remain accurate for
+> everything it does not mention.
+
 Latest interaction repair: `BATCH-5.md`. Globe drag sensitivity follows camera
 altitude instead of a fixed angle; no release inertia. Mouse/touch gesture
 tracking preserves real taps without selecting on returning drags or pinches.

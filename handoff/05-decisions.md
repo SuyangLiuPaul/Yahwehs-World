@@ -248,3 +248,49 @@ non-aside, coordinate-bearing marker, memoized per `Journey` object. Nine
 of the ten journeys have `lastReachedStop === stopCount` and are
 unaffected; Elijah's own arrival now lands on Horeb (stop 8), which is
 where the text actually leaves him standing.
+
+**D28 — There is no light mode. The whole app is dark, always.** A
+"chrome-only" light theme was built at the owner's request and looked, in his
+words, like a problem twice: two pale bands sandwiching a dark globe, because
+the globe is deep-blue sea and parchment land in every condition and does not
+flip. The palette was deleted rather than left unused. What survived is the
+part that was always right: scrims, panels and route triggers now use tokens
+instead of literal colours, `--ink-4` went back to being a hairline rather
+than body text, and `--ink-3` was fixed on cards — **all three were dark-mode
+bugs the light-mode work exposed.** Modal backdrops must be dark: the old one
+was mixed from `--ground`, which fogged the globe with parchment.
+
+**D29 — No year axis, and no year printed anywhere in the interface.** Built
+in P4, removed two days later on the owner's call ("year 那个不 make sense"),
+for reasons the data supports: most of these dates are bounded by the events
+around them rather than attested; 549 of the dated events fall in years 0–100,
+which is 2.4 % of a linear −4114→95 axis, so the New Testament was a sliver
+nobody could aim at; and a printed year hands a derived number the same
+authority as an attested one. Removing it also removed the band colour code
+(spine / inferred / disputed / undated), which was a key the page never
+printed. **The dates remain in the data and in the audit.** If a future
+implementer wants dating back, it is an interface decision to re-take, not
+data to recover — and it needs an answer to "how does a reader tell a derived
+year from an attested one" before it ships again.
+
+**D30 — Everything that links one part of this app to another is joined on the
+verse, not asserted by hand.** A journey states the passage its stops come
+from; a structure states the verse that measures it; an event carries the
+range it covers. `src/bridges.ts` joins them on overlap, so a wrong link is a
+wrong reference somewhere and `audit-events.mjs` can see it. The single
+exception is four verse anchors for "this is the tabernacle you can walk
+into", marked AUTHORED in that file. Return links use a **citation**
+(`/#ref=Exodus 25:10`), never an event id, so a page that does not carry the
+events payload never has to download it to link into the globe.
+
+**D31 — Production deploys only when someone means it; artefacts are verified
+by reading the artefact.** Netlify's auto-build is off for prod
+(`stop_builds`), so pushing `main` publishes nothing; `tools/release_web.sh
+--include-prod` is the only path, and `--no-build` in it is load-bearing
+(without it Netlify rebuilds and discards the local bundle — and with it
+`VITE_DISPLAY_VERSION` — while reporting success). The same rule applies to
+binaries: a 0.1.4 APK once went up on the 0.1.5 release because the file was
+copied while Gradle was still writing it, and every check had looked at the
+build's intent rather than at the file. `build_apk.sh` now reads the APK's own
+`versionName` back and refuses on a mismatch; after uploading, download the
+asset again and check it there too.

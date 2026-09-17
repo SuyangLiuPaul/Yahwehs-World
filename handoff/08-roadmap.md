@@ -38,7 +38,7 @@ Tents/birds and all stop-conditioned L6 scenarios are not complete.
   budget allows. Provenance in the manifest for anything generated.
 Done: L6 tests pass; frame time measured and recorded.
 
-## Phase 4 — Events layer rendered (C1) (3–4 days)
+## Phase 4 — Events layer rendered (C1) — DONE 2026-09-18 (v0.1.5)
 - Render **all 1,443 events** of `data/events/all-events.json` as bands on a
   year axis toggle (verse index ⇄ years); band width = yearLate − yearEarly,
   hatched when `disputed`, dotted when `none`; click frames the event's places
@@ -46,8 +46,14 @@ Done: L6 tests pass; frame time measured and recorded.
 - Read `meta.candidatesCleared` and do not gate rendering on `status`.
 - Do not author, re-date or re-summarise any event; data changes go through
   `summary-overrides.json` and must leave `audit-events` at zero.
-Done: toggle works at three sizes; a disputed band renders hatched; clicking a
-band with places frames them; 1,443 bands present; audit still zero.
+Done, with two deliberate departures from the plan above — see `BATCH-6.md`:
+**the year axis was built and then removed** (D29), which also removed the
+hatched/dotted/colour date coding, and **"the 105 spine events" do not exist**
+as a subset of the 1,443 (309 events are spine-dated; the 105 are what the
+dates came from). What shipped: 1,443 bands on a canvas on the canonical
+scale, click frames the event's places and shows `summaryZh`, plus a book +
+search menu (`src/events-menu.ts`) because a sub-pixel band cannot be clicked
+through. Audit still zero.
 
 ## Phase 5 — Events for all 66 books (C1 full) — DATA DONE 2026-09-14
 All 66 books are covered by 1,443 events; every one of the canon's 31,102
