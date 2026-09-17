@@ -125,7 +125,10 @@ export function buildMount(summitHalfX: number, summitHalfZ: number): Mount {
   const SUMMIT = -0.06;
   // How far the fall runs, by side. Short to the east, where the ground drops
   // into the Kidron; long to the south, where the ridge runs down to the city.
-  const RUN = { east: 34, west: 58, north: 54, south: 96 };
+  const RUN = { east: 34, west: 58, north: 64, south: 96 };
+  // Only the east face is a cliff. The north's fall used to steepen past the
+  // 45° a walker will climb, which meant a visitor who went over that edge
+  // could not get back — and being stuck is not a feature of the terrain.
   // East is a scarp, not a slope: 28 m of fall in 34 steepens past 45° in its
   // middle band, which is the gradient the walker refuses to climb. So the
   // road on the south ridge is the way up, and the ground says so.

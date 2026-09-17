@@ -111,6 +111,9 @@ export interface Temple {
   /** The veil's woven face, for a page that wants the crossing into the
    *  oracle to look like cloth rather than like a dissolve to black. */
   veilCanvas: HTMLCanvasElement;
+  /** Half the paved summit, in metres. A visitor outside this is off the
+   *  mount's top and may have no way back up. */
+  summit: { halfX: number; halfZ: number };
   counts: TempleCounts;
   /** Named places the HUD can report, in metres after cubit is applied. */
   anchors: {
@@ -923,6 +926,7 @@ export function buildTemple(cubit: number): Temple {
   return {
     group: g, colliders, platforms, counts, anchors,
     floorY: mount.heightAt,
+    summit: { halfX: platW / 2, halfZ: platD / 2 },
     veilCanvas: TEX.veil.map.image as HTMLCanvasElement,
   };
 }

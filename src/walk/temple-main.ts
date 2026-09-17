@@ -67,7 +67,7 @@ sun.shadow.radius = 3;
 scene.add(sun);
 scene.add(new THREE.HemisphereLight(0x9fc2e0, 0xb9a377, 0.28));
 
-const { group, colliders, platforms, floorY, counts, veilCanvas } = buildTemple(CUBIT);
+const { group, colliders, platforms, floorY, counts, veilCanvas, summit } = buildTemple(CUBIT);
 const ready = Promise.resolve(true);
 group.traverse((o) => {
   if (!(o as THREE.Mesh).isMesh) return;
@@ -125,8 +125,11 @@ composer.addPass(ao);
 composer.addPass(new OutputPass());
 
 // Standing east of the court gate, looking in — the way anyone approaching
-// the temple would have come to it.
-walker.moveTo(CUBIT * 78, 0, Math.PI / 2);
+// the temple would have come to it. One place, named once: the free walk
+// starts here and every handover from the tour comes back here.
+const SPAWN = { x: CUBIT * 74, z: 0, facing: Math.PI / 2 };
+const spawn = () => walker.moveTo(SPAWN.x, SPAWN.z, SPAWN.facing);
+spawn();
 
 // Where the visitor is, now that "where" includes how high. The first two
 // entries are places the walk could not reach at all before this pass.
@@ -265,14 +268,19 @@ function startTour() {
     Math.atan2(-(first.at.x - first.x), -(first.at.z - first.z)));
   tour.start(walker.pose);
 }
-/** A tour can end in the air. Handing the visitor back a camera thirteen
- *  metres above the paving and letting gravity have it is not a handover, so
- *  they are set down in the court, facing the house, where the walk began. */
+/** A tour can end in the air, or over the side of the mountain. Handing the
+ *  visitor back a camera in either place is not a handover: the owner took
+ *  control at the closing stop, was set down on the north slope under a scarp
+ *  too steep to climb, and was stuck there. The rule is now about the ground
+ *  under them rather than about which stop the tour happened to end on —
+ *  anyone who is not standing on the paved summit is returned to the gate. */
+function onSummit() {
+  const { x, y, z } = walker.position;
+  return Math.abs(x) < summit.halfX && Math.abs(z) < summit.halfZ && y < 4;
+}
 function landIfAirborne() {
-  if (walker.position.y < 3) return;
-  const ground = TEMPLE_TOUR[1]!;
-  walker.moveTo(ground.x * CUBIT, ground.z * CUBIT,
-    Math.atan2(-(ground.at.x - ground.x), -(ground.at.z - ground.z)));
+  if (onSummit()) return;
+  spawn();
 }
 function endTour() {
   tour.stop();

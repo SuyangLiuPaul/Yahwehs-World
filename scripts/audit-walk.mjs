@@ -164,6 +164,32 @@ const tent = await report('/tabernacle.html', '__walk', [
 ]);
 SHOW(tent, '/tabernacle.html — the same controls, unchanged geometry');
 
+// A tour can end anywhere, including over the side of a mountain. Whatever
+// the last stop was, the visitor must be handed back standing on the summit:
+// the owner took control at the closing aerial and was set down on the north
+// slope under a scarp, with no way back up.
+await page.goto(URL + '/temple.html', { waitUntil: 'networkidle' });
+await page.waitForFunction(() => !!globalThis.__temple, null, { timeout: 30_000 });
+const handover = await page.evaluate(() => {
+  const W = globalThis.__temple;
+  const out = [];
+  for (const [i, s] of W.TOUR.entries()) {
+    if (s.y === undefined) continue;                  // only the stops in the air
+    W.startTour();
+    W.inspectStop(i);
+    W.endTour();
+    const p = W.walker.position;
+    out.push({ stop: i + 1, x: +(p.x / W.CUBIT).toFixed(0), z: +(p.z / W.CUBIT).toFixed(0), eye: +p.y.toFixed(2) });
+  }
+  return out;
+});
+console.log('\n/temple.html — where the visitor stands when an aerial tour hands back');
+for (const h of handover) {
+  const ok = Math.abs(h.x) < 82 && Math.abs(h.z) < 48 && h.eye < 4;
+  if (!ok) bad++;
+  console.log(`${ok ? '   ' : '  ✗'} after stop ${String(h.stop).padStart(2)}   x ${String(h.x).padStart(5)}  z ${String(h.z).padStart(5)} cubits   eye ${h.eye} m`);
+}
+
 await browser.close();
 console.log(bad ? `\n${bad} of the walk's own promises are not kept.` : '\nEvery promise the walk makes is kept.');
 process.exit(bad ? 1 : 0);
