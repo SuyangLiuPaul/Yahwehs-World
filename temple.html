@@ -69,6 +69,10 @@
     </div>
   </div>
 
+  <!-- The thumb stick, drawn where the thumb landed. Positioned by
+       src/walk/hud-input.ts; invisible until a touch arrives. -->
+  <div id="stick" hidden aria-hidden="true"><i></i></div>
+
   <div id="hud" hidden>
     <div id="tour-bar" hidden><i></i></div>
     <!-- Plan of the court: house 60×20, porch east, sea south-east, altar
@@ -94,6 +98,7 @@
       <button id="model-info" type="button" data-en="Evidence" data-zh="依据">Evidence</button>
       <!-- A phone has no Space bar, and the ramp and the stair are things you
            climb. Shown by the page only on touch devices. -->
+      <button id="walk-run" type="button" hidden aria-pressed="false" data-en="Run" data-zh="快走">Run</button>
       <button id="walk-jump" type="button" hidden data-en="Jump" data-zh="跳">Jump</button>
       <button id="walk-exit" type="button" data-en="Exit" data-zh="退出">Exit</button>
     </div>

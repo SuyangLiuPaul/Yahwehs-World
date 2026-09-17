@@ -9,6 +9,22 @@ import * as THREE from 'three';
 // no climbing. Solomon's temple has a ramp up to the altar and a winding stair
 // up the side chambers (1 Kgs 6:8), and both were scenery you bumped into.
 //
+// Which controls a visitor gets is NOT a question about their device. The old
+// answer was a one-shot guess at load — pointer lock exists, the pointer is
+// coarse — and it is wrong for an iPad with a trackpad, for a touchscreen
+// laptop, for a phone with a mouse, and for anyone who changes hands halfway
+// through. So nothing is guessed: every input path is bound all the time, and
+// the INPUT MODE is observed from what actually arrives. A touch switches to
+// touch, a key or a mouse movement switches to keyboard, a gamepad axis
+// switches to the pad. The mode decides only what the page shows and whether
+// entering asks for a pointer lock; a wrong guess therefore costs nothing,
+// and the right answer arrives the moment the visitor does anything at all.
+//
+// Keys follow what people already have in their hands: WASD and the arrow
+// keys both walk, and — as in the game this is measured against — the left
+// and right arrows TURN rather than strafe, so a laptop with no mouse can
+// still look around. Shift runs, Space jumps.
+//
 // So the walker now has a vertical axis: gravity, a jump, and a step height.
 // Two kinds of solid are distinguished, because a spiral stair needs it:
 //   · colliders — walls. They stop you and you can stand on top of them.
@@ -32,6 +48,20 @@ const JUMP = 5.4;           // m/s at the toes → an apex of about 0.77 m
 const ACCEL = 14;
 const DAMP = 10;
 const AIR_CONTROL = 0.35;   // you steer in the air, you do not walk in it
+const TURN = 2.2;           // rad/s, for the arrow keys and a pad's right stick
+const PAD_LOOK = 2.6;       // rad/s at full deflection
+const DEAD = 0.18;          // a stick at rest is never exactly at rest
+
+/** What the visitor is driving with at this moment. Observed, never guessed. */
+export type InputMode = 'key' | 'touch' | 'pad';
+
+/** Keys that mean "I am walking this myself", so a tour hands back control. */
+const WALK_KEYS = new Set([
+  'KeyW', 'KeyA', 'KeyS', 'KeyD',
+  'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
+]);
+/** …and the ones the browser would otherwise use to scroll the page. */
+const SCROLL_KEYS = new Set(['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']);
 
 export class Walker {
   readonly yaw = new THREE.Object3D();
@@ -42,6 +72,11 @@ export class Walker {
   /** Virtual stick deflection, -1..1 on each axis. */
   private readonly stick = new THREE.Vector2();
   private touching = false;
+  private padRunning = false;
+  private padJumped = false;
+  /** Toggled by the on-screen run button; a thumb cannot hold Shift. */
+  private runLatch = false;
+  private mode: InputMode = 'key';
   /** Height of the floor under the feet, in metres. The camera's own Y lags
    *  it slightly so a step up is a step, not a teleport. */
   private feet = 0;
@@ -66,29 +101,34 @@ export class Walker {
     camera.position.set(0, 0, 0);
     this.yaw.position.set(0, EYE, 0);
 
-    dom.addEventListener('click', () => { if (!this.locked&&!Walker.touchOnly) void dom.requestPointerLock()?.catch(()=>{}); });
+    // A click asks for the pointer lock only when the visitor is driving with
+    // a pointer. On touch, the click that follows a tap must not.
+    dom.addEventListener('click', () => {
+      if (!this.locked && this.mode === 'key' && !Walker.touchOnly) void dom.requestPointerLock()?.catch(() => {});
+    });
     document.addEventListener('pointerlockchange', () => {
       this.locked = document.pointerLockElement === dom;
       this.onLockChange?.(this.locked);
     });
     document.addEventListener('mousemove', (e) => {
       if (!this.locked) return;
-      if (e.movementX || e.movementY) this.onManualInput?.();
+      if (e.movementX || e.movementY) { this.setMode('key'); this.onManualInput?.(); }
       this.yaw.rotation.y -= e.movementX * 0.0022;
       this.pitch.rotation.x = THREE.MathUtils.clamp(
         this.pitch.rotation.x - e.movementY * 0.0022, -Math.PI / 2.1, Math.PI / 2.1);
     });
     addEventListener('keydown', (e) => {
-      if (['KeyW','KeyA','KeyS','KeyD'].includes(e.code)) this.onManualInput?.();
+      if (WALK_KEYS.has(e.code)) { this.setMode('key'); this.onManualInput?.(); }
       this.keys.add(e.code);
-      // Space jumps, and would otherwise scroll the page out from under the
-      // canvas.
-      if (e.code === 'Space') { e.preventDefault(); this.onManualInput?.(); }
+      // Space jumps, and the arrows would otherwise scroll the page out from
+      // under the canvas.
+      if (SCROLL_KEYS.has(e.code)) { e.preventDefault(); this.setMode('key'); this.onManualInput?.(); }
     });
     addEventListener('keyup', (e) => this.keys.delete(e.code));
     addEventListener('blur', () => this.keys.clear());
 
     this.bindTouch(dom);
+    addEventListener('gamepadconnected', () => this.setMode('pad'));
   }
 
   /** True where pointer lock and a keyboard are not both available — which is
@@ -108,10 +148,13 @@ export class Walker {
 
     dom.addEventListener('touchstart', (e) => {
       for (const t of Array.from(e.changedTouches)) {
-        if (t.clientX < innerWidth / 2) move.set(t.identifier, { x0: t.clientX, y0: t.clientY });
-        else look.set(t.identifier, { x: t.clientX, y: t.clientY });
+        if (t.clientX < innerWidth / 2) {
+          move.set(t.identifier, { x0: t.clientX, y0: t.clientY });
+          this.onStick?.({ active: true, x: t.clientX, y: t.clientY, dx: 0, dy: 0 });
+        } else look.set(t.identifier, { x: t.clientX, y: t.clientY });
       }
       this.touching = true;
+      this.setMode('touch');
       this.onManualInput?.();
       e.preventDefault();
     }, { passive: false });
@@ -126,6 +169,7 @@ export class Walker {
             THREE.MathUtils.clamp((t.clientX - m.x0) / R, -1, 1),
             THREE.MathUtils.clamp((t.clientY - m.y0) / R, -1, 1),
           );
+          this.onStick?.({ active: true, x: m.x0, y: m.y0, dx: this.stick.x * R, dy: this.stick.y * R });
           continue;
         }
         const l = look.get(t.identifier);
@@ -141,7 +185,7 @@ export class Walker {
 
     const end = (e: TouchEvent) => {
       for (const t of Array.from(e.changedTouches)) {
-        if (move.delete(t.identifier)) this.stick.set(0, 0);
+        if (move.delete(t.identifier)) { this.stick.set(0, 0); this.onStick?.({ active: false, x: 0, y: 0, dx: 0, dy: 0 }); }
         look.delete(t.identifier);
       }
       this.touching = move.size > 0 || look.size > 0;
@@ -151,6 +195,60 @@ export class Walker {
   }
 
   onLockChange?: (locked: boolean) => void;
+  /** Fires when the visitor picks up a different kind of control. The page
+   *  uses it to show the right help and the right on-screen furniture. */
+  onModeChange?: (mode: InputMode) => void;
+  /** Where the thumb stick is and how far it is pushed, in CSS pixels, so the
+   *  page can draw one. A stick you cannot see is a stick nobody finds. */
+  onStick?: (s: { active: boolean; x: number; y: number; dx: number; dy: number }) => void;
+
+  get inputMode() { return this.mode; }
+  /** The page's opening guess, before the visitor has done anything. It must
+   *  go through the walker and not just through the page's own CSS, or the
+   *  first real input matches the walker's stale default, changes nothing,
+   *  and the visitor is left reading the wrong legend. */
+  assume(mode: InputMode) {
+    this.mode = mode;
+    this.onModeChange?.(mode);
+  }
+  private setMode(mode: InputMode) {
+    if (this.mode === mode) return;
+    this.mode = mode;
+    if (mode !== 'touch') { this.stick.set(0, 0); this.onStick?.({ active: false, x: 0, y: 0, dx: 0, dy: 0 }); }
+    this.onModeChange?.(mode);
+  }
+
+  /** The on-screen run button: a thumb cannot hold Shift down. */
+  toggleRun() { this.runLatch = !this.runLatch; return this.runLatch; }
+  get running() { return this.runLatch; }
+
+  /** A gamepad, if one is being used: left stick walks, right stick looks,
+   *  the bottom face button jumps, either trigger runs. Polled rather than
+   *  evented, because that is the only way the API offers. */
+  private pollPad(dt: number) {
+    const pads = navigator.getGamepads?.() ?? [];
+    const pad = [...pads].find((p) => p && p.connected);
+    if (!pad) return;
+    const axis = (i: number) => {
+      const v = pad.axes[i] ?? 0;
+      return Math.abs(v) < DEAD ? 0 : (v - Math.sign(v) * DEAD) / (1 - DEAD);
+    };
+    const [lx, ly, rx, ry] = [axis(0), axis(1), axis(2), axis(3)];
+    const jump = pad.buttons[0]?.pressed ?? false;
+    const run = (pad.buttons[7]?.pressed ?? false) || (pad.buttons[6]?.pressed ?? false) ||
+      (pad.buttons[10]?.pressed ?? false);
+    if (lx || ly || rx || ry || jump || run) { this.setMode('pad'); this.onManualInput?.(); }
+    if (!lx && !ly && !rx && !ry && !jump && !run) return;
+    this.stick.set(lx, ly);
+    this.padRunning = run;
+    if (jump && !this.padJumped) this.jump();
+    this.padJumped = jump;
+    if (rx || ry) {
+      this.yaw.rotation.y -= rx * PAD_LOOK * dt;
+      this.pitch.rotation.x = THREE.MathUtils.clamp(
+        this.pitch.rotation.x - ry * PAD_LOOK * dt, -Math.PI / 2.1, Math.PI / 2.1);
+    }
+  }
 
   setColliders(c: THREE.Box3[], platforms: THREE.Box3[] = this.platforms) {
     this.colliders = c;
@@ -263,12 +361,19 @@ export class Walker {
   }
 
   update(dt: number) {
-    const fwd = (this.keys.has('KeyW') ? 1 : 0) - (this.keys.has('KeyS') ? 1 : 0) - this.stick.y;
+    if (this.mode !== 'touch') this.pollPad(dt);
+    // Left and right arrows turn, as they do in the game this is measured
+    // against, so a laptop with no mouse is not stuck facing one way.
+    const turn = (this.keys.has('ArrowLeft') ? 1 : 0) - (this.keys.has('ArrowRight') ? 1 : 0);
+    if (turn) this.yaw.rotation.y += turn * TURN * dt;
+
+    const fwd = (this.keys.has('KeyW') || this.keys.has('ArrowUp') ? 1 : 0)
+      - (this.keys.has('KeyS') || this.keys.has('ArrowDown') ? 1 : 0) - this.stick.y;
     const side = (this.keys.has('KeyD') ? 1 : 0) - (this.keys.has('KeyA') ? 1 : 0) + this.stick.x;
-    // Shift on a keyboard; on a phone there is no Shift, so a thumb pushed to
-    // the rim of the stick is the run.
+    // Shift on a keyboard, a trigger on a pad, the run button or a thumb
+    // pushed to the rim of the stick on a phone — where there is no Shift.
     const running = this.keys.has('ShiftLeft') || this.keys.has('ShiftRight') ||
-      this.stick.length() > 0.92;
+      this.padRunning || this.runLatch || this.stick.length() > 0.92;
     const speed = running ? SPRINT : SPEED;
 
     // Damp first, then accelerate, then clamp — in that order the clamp is the
@@ -321,5 +426,5 @@ export class Walker {
   get isTouching() { return this.touching; }
   /** Entered by either route — a pointer lock, or a touch device let straight in. */
   enterTouch() { this.onLockChange?.(true); }
-  exit(){this.keys.clear();this.velocity.set(0,0,0);this.stick.set(0,0);if(document.pointerLockElement)document.exitPointerLock();this.onLockChange?.(false);}
+  exit(){this.keys.clear();this.velocity.set(0,0,0);this.stick.set(0,0);this.runLatch=false;this.onStick?.({active:false,x:0,y:0,dx:0,dy:0});if(document.pointerLockElement)document.exitPointerLock();this.onLockChange?.(false);}
 }

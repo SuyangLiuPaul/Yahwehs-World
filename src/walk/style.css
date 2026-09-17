@@ -106,6 +106,12 @@ kbd {
 .hud-side button{min-height:44px;min-width:44px;border:1px solid var(--line);background:#0c1720d9;color:var(--ink);font:var(--fs-200) var(--ui);pointer-events:auto;cursor:pointer;padding:0 10px;}
 .hud-side button:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);}
+/* The on-screen stick: a ring where the thumb landed and a knob that follows
+   it. Drawn rather than implied — the two-thumb layout was invisible, and an
+   invisible control is one most visitors never find. */
+#stick{position:fixed;width:108px;height:108px;margin:-54px 0 0 -54px;border:1px solid var(--line-gold);border-radius:50%;background:#0b131c55;pointer-events:none;z-index:6;}
+#stick i{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:var(--gold-dim);opacity:.8;}
+#walk-run.on{background:var(--gold-dim);color:#0b131c;}
 #view-transition{position:fixed;inset:0;background:#090b0e;pointer-events:none;opacity:0;z-index:4;}
 #assumptions{color:var(--ink);background:#101d27;border:1px solid var(--line-gold);width:min(620px,calc(100% - 32px));max-height:80dvh;padding:24px;font:var(--fs-300)/1.65 var(--ui);}
 #assumptions::backdrop{background:#000a;backdrop-filter:blur(4px);}

@@ -3,6 +3,7 @@ import { desertSky } from './textures.ts';
 import './style.css';
 import { buildTemple } from './temple.ts';
 import { Walker } from './controls.ts';
+import { bindInputUi } from './hud-input.ts';
 import { Tour } from './tour.ts';
 import { TEMPLE_TOUR } from './temple-tour.ts';
 import { applyStatic, bindSwitch, hant, onLocale, t } from '../locale.ts';
@@ -180,22 +181,16 @@ function renderTally() {
     .join('');
 }
 
+// The stick, the run and jump buttons and the key legend — all of them
+// following the walker's observed input mode rather than a guess at the
+// device. See src/walk/hud-input.ts.
+bindInputUi(walker);
 const touchOnly = Walker.touchOnly;
-if (touchOnly) {
-  document.getElementById('enter')!.innerHTML =
-    '<span data-en="Walk it myself" data-zh="自己走">Walk it myself</span>';
-  document.querySelector('.keys')!.innerHTML =
-    '<span data-en="drag the left half to walk" data-zh="左半屏拖动走路"></span>' +
-    '<span data-en="drag the right half to look" data-zh="右半屏拖动转头"></span>';
-}
 document.getElementById('enter')!.addEventListener('click', () => {
-  if (touchOnly) walker.enterTouch(); else canvas.click();
+  // A device with no pointer lock cannot be asked for one: it fails silently
+  // and the visitor never gets past the gate.
+  if (touchOnly || walker.inputMode === 'touch') walker.enterTouch(); else canvas.click();
 });
-// Space jumps on a keyboard. A phone has no Space bar, so it gets a button —
-// on a touch screen the walk is the only way up the ramp and the stair.
-const jumpButton = document.getElementById('walk-jump')!;
-jumpButton.hidden = !touchOnly;
-jumpButton.addEventListener('click', () => { walker.jump(); });
 setGate(true);
 
 walker.onLockChange = (locked) => {

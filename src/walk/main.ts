@@ -3,6 +3,7 @@ import { desertSky } from './textures.ts';
 import './style.css';
 import { buildTabernacle } from './tabernacle.ts';
 import { Walker } from './controls.ts';
+import { bindInputUi } from './hud-input.ts';
 import { Tour, TOUR } from './tour.ts';
 import { applyStatic, bindSwitch, hant, onLocale, t } from '../locale.ts';
 import { installUpdateChecker } from '../updates.ts';
@@ -180,21 +181,16 @@ function renderTally() {
 // A phone has neither pointer lock nor a keyboard, so the enter button cannot
 // ask for a lock — it would fail silently and leave the visitor at the gate for
 // good. On touch the gate simply opens and the two-thumb controls take over.
+// The stick, the run and jump buttons and the key legend — all of them
+// following the walker's observed input mode rather than a guess at the
+// device. See src/walk/hud-input.ts.
+bindInputUi(walker);
 const touchOnly = Walker.touchOnly;
-if (touchOnly) {
-  document.getElementById('enter')!.innerHTML =
-    '<span data-en="Walk it myself" data-zh="自己走">Walk it myself</span>';
-  document.querySelector('.keys')!.innerHTML =
-    '<span data-en="drag the left half to walk" data-zh="左半屏拖动走路"></span>' +
-    '<span data-en="drag the right half to look" data-zh="右半屏拖动转头"></span>';
-}
 document.getElementById('enter')!.addEventListener('click', () => {
-  if (touchOnly) walker.enterTouch(); else canvas.click();
+  // A device with no pointer lock cannot be asked for one: it fails silently
+  // and the visitor never gets past the gate.
+  if (touchOnly || walker.inputMode === 'touch') walker.enterTouch(); else canvas.click();
 });
-// Space jumps on a keyboard; a phone gets a button for it.
-const jumpButton = document.getElementById('walk-jump')!;
-jumpButton.hidden = !touchOnly;
-jumpButton.addEventListener('click', () => { walker.jump(); });
 // The gate is up at load; ask once, since a muted autoplay is refused often
 // enough that leaving it to the attribute shows a still where a clip was meant.
 setGate(true);
