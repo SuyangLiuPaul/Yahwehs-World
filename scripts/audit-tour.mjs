@@ -16,6 +16,7 @@ const URL = process.argv[2] ?? 'http://localhost:5175';
 const PAGES = [
   { path: '/tabernacle.html', handle: '__walk' },
   { path: '/temple.html', handle: '__temple' },
+  { path: '/ark.html', handle: '__ark' },
 ];
 
 const browser = await chromium.launch();

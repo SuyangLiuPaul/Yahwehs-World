@@ -79,6 +79,12 @@ const STRUCTURE_ANCHORS = STRUCTURES
   .map((s) => ({ s, key: refKey(s.ref) }))
   .filter((x): x is { s: typeof STRUCTURES[number]; key: number } => x.key !== null);
 
+// AUTHORED. /ark.html is the ark of Genesis 6. The whole specification is
+// 6:14–16, and 7:13 is the day they went in.
+const ARK_WALK_ANCHORS = ['Genesis 6:14', 'Genesis 6:15', 'Genesis 6:16', 'Genesis 7:13']
+  .map(refKey)
+  .filter((k): k is number => k !== null);
+
 const inEvent = (ev: TrackEvent, key: number) => ev.s <= key && key <= ev.e;
 
 /** Everywhere else in this app this event can take the reader. */
@@ -96,6 +102,9 @@ export function bridgesFor(ev: TrackEvent, journeys: readonly Journey[]): Bridge
   }
   if (TEMPLE_WALK_ANCHORS.some((k) => inEvent(ev, k))) {
     out.push({ kind: 'walk', id: 'temple', zh: '走进圣殿', en: "Walk into Solomon's temple" });
+  }
+  if (ARK_WALK_ANCHORS.some((k) => inEvent(ev, k))) {
+    out.push({ kind: 'walk', id: 'ark', zh: '走进方舟', en: "Walk into Noah's ark" });
   }
   return out;
 }
@@ -116,7 +125,13 @@ export function structureForJourney(id: string): { id: string; zh: string; en: s
   return s ? { id: s.id, zh: s.zh, en: s.en } : null;
 }
 
+const WALK_PAGES: Record<string, string> = {
+  tabernacle: '/tabernacle.html',
+  temple: '/temple.html',
+  ark: '/ark.html',
+};
+
 export const href = (b: Bridge) => {
-  if (b.kind === 'walk') return b.id === 'temple' ? '/temple.html' : '/tabernacle.html';
+  if (b.kind === 'walk') return WALK_PAGES[b.id] ?? '/tabernacle.html';
   return `/structures.html#${b.id}`;
 };

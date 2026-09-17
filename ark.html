@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <title>Inside the Ark · 走进方舟 · Yahweh's World</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@500;600&family=Spectral:wght@500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <canvas id="stage"></canvas>
+  <div id="view-transition" aria-hidden="true"></div>
+
+  <nav class="sitenav">
+    <a class="brand" href="/">
+      <span class="zh" data-zh-text="雅伟之界">雅伟之界</span>
+      <span class="en">Yahweh's World</span>
+    </a>
+    <ol>
+      <li><a class="tab" href="/" data-en="Globe" data-en-narrow="Globe" data-zh="圣经世界" data-zh-narrow="地球">Globe</a></li>
+      <li><a class="tab" href="/structures.html" data-en="Measures" data-en-narrow="Sizes" data-zh="照着经文的尺寸" data-zh-narrow="尺寸">Measures</a></li>
+      <li><a class="tab" href="/tabernacle.html" data-en="Tabernacle" data-en-narrow="Tent" data-zh="走进会幕" data-zh-narrow="会幕">Tabernacle</a></li>
+      <li><a class="tab" href="/temple.html" data-en="Temple" data-en-narrow="Temple" data-zh="走进圣殿" data-zh-narrow="圣殿">Temple</a></li>
+      <li><a class="tab" href="/ark.html" aria-current="page" data-en="Ark" data-en-narrow="Ark" data-zh="走进方舟" data-zh-narrow="方舟">Ark</a></li>
+      <li><a class="tab" href="/plan.html" data-en="Plan" data-en-narrow="Plan" data-zh="完整的计划" data-zh-narrow="计划">Plan</a></li>
+    </ol>
+    <span class="spacer"></span>
+    <div class="lang-switch" role="group" aria-label="Language / 语言">
+      <button type="button" data-locale="en" lang="en">EN</button>
+      <button type="button" data-locale="zh-Hans" lang="zh-Hans">简</button>
+      <button type="button" data-locale="zh-Hant" lang="zh-Hant">繁</button>
+    </div>
+  </nav>
+
+  <div id="gate">
+    <div class="gate-inner">
+      <p class="eyebrow" data-en="Genesis 6:14–16" data-zh="创世记 6:14–16">Genesis 6:14–16</p>
+      <h1 data-en="Inside the Ark" data-zh="走进方舟" data-zh-narrow="方舟">Inside the Ark</h1>
+      <p class="lede"
+         data-en="Three hundred cubits long, fifty broad, thirty high — about 134 metres, longer than a football pitch. Four verses are the whole specification: gopher wood, rooms one and another, pitch within and without, a light opening a cubit high, a door in the side, and three decks. Everything you can walk through here comes from those verses. The shape does not: the text gives three numbers and no bow, no stern and no keel, and the word for it is a chest — the same word as the basket Moses was put in — so it is drawn as a chest. The door stands open, which is true of one moment only: after 6:16, and before 7:16, where Yahweh shuts him in."
+         data-zh="长三百肘、宽五十肘、高三十肘——约一百三十四米，比一个足球场还长。整份规格只有四节经文：歌斐木、一间一间地造、里外抹上松香、上边留一肘高的透光处、门开在旁边、分上中下三层。这里可以走过的每一样，都出自这几节。形状不是：经文只给了三个数字，没有说船头船尾和龙骨，而「方舟」这个词是箱子——和摩西被放进去的那只箱子是同一个字——所以这里画成箱子。门是开着的，那只在一个时刻为真：六章 16 节之后，七章 16 节「耶和华把他关在方舟里头」之前。">
+        Generated from the four verses that describe it.
+      </p>
+      <figure id="gate-film" hidden>
+        <video src="" poster="" autoplay muted loop playsinline preload="none" aria-hidden="true"></video>
+        <figcaption></figcaption>
+      </figure>
+
+      <div class="tally" id="tally"></div>
+
+      <div class="gate-go">
+        <button id="tour" type="button" class="primary">
+          <span data-en="Walk me through" data-zh="带我走一遍">Walk me through</span>
+        </button>
+        <button id="enter" type="button"><span data-en="Walk it myself" data-zh="自己走">Walk it myself</span></button>
+        <a class="gate-back" href="/#ref=Genesis%206:15"
+           data-en="This passage on the globe ↗" data-zh="在圣经世界看这段经文 ↗">This passage on the globe ↗</a>
+        <p class="keys">
+          <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
+          <span data-en="move" data-zh="走动">move</span>
+          <kbd>Shift</kbd><span data-en="run" data-zh="快走">run</span>
+          <kbd>Space</kbd><span data-en="jump" data-zh="跳">jump</span>
+          <span data-en="mouse to look" data-zh="鼠标转头">mouse to look</span>
+          <kbd>Esc</kbd><span data-en="exit" data-zh="退出">exit</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- The thumb stick, drawn where the thumb landed. Positioned by
+       src/walk/hud-input.ts; invisible until a touch arrives. -->
+  <div id="stick" hidden aria-hidden="true"><i></i></div>
+
+  <div id="hud" hidden>
+    <div id="tour-bar" hidden><i></i></div>
+    <!-- Plan of the court: house 60×20, porch east, sea south-east, altar
+         before the porch, side chambers on three sides. -->
+    <!-- The hull in plan: 300 × 50 cubits, the door in the south side
+         amidships, the two ramps between decks at the ends. -->
+    <svg id="plan" viewBox="0 0 132 74" aria-hidden="true">
+      <rect class="p-court" x="1" y="1" width="130" height="72"></rect>
+      <rect class="p-tent"  x="6" y="24" width="120" height="26"></rect>
+      <line  class="p-veil" x1="62" y1="50" x2="70" y2="50"></line>
+      <rect class="p-altar" x="14" y="31" width="14" height="12"></rect>
+      <rect class="p-altar" x="104" y="31" width="14" height="12"></rect>
+      <circle id="p-you" class="p-you" cx="66" cy="60" r="3.4"></circle>
+    </svg>
+    <div class="hud-text">
+      <label class="sr-only" for="tour-stop" data-en="Choose a tour stop" data-zh="选择导览站点">Choose a tour stop</label>
+      <select id="tour-stop"></select>
+      <div id="where"></div>
+      <div id="verse"></div>
+    </div>
+    <div class="hud-side">
+      <button id="tour-prev" type="button" aria-label="Previous stop">‹</button>
+      <button id="tour-toggle" type="button" aria-label="Pause tour" hidden>❚❚</button>
+      <button id="tour-next" type="button" aria-label="Next stop">›</button>
+      <button id="model-info" type="button" data-en="Evidence" data-zh="依据">Evidence</button>
+      <!-- A phone has no Space bar, and the ramp and the stair are things you
+           climb. Shown by the page only on touch devices. -->
+      <button id="walk-run" type="button" hidden aria-pressed="false" data-en="Run" data-zh="快走">Run</button>
+      <button id="walk-jump" type="button" hidden data-en="Jump" data-zh="跳">Jump</button>
+      <button id="walk-exit" type="button" data-en="Exit" data-zh="退出">Exit</button>
+    </div>
+  </div>
+  <dialog id="assumptions">
+    <form method="dialog"><button class="dialog-close" data-en="Close" data-zh="关闭">Close</button></form>
+    <p class="eyebrow" data-en="Text • reconstruction • display" data-zh="经文 · 重建 · 展示">Text • reconstruction • display</p>
+    <h2 data-en="What this model can claim" data-zh="这个模型的依据与边界">What this model can claim</h2>
+    <p data-en="Stated in the text, and built here: three hundred cubits long, fifty broad and thirty high (6:15); three decks — lower, second and third (6:16); one door, in the side (6:16); a light opening finished to a cubit (6:16); the ark made with rooms, one and another (6:14); gopher wood, pitched with pitch within and without (6:14). One cubit is displayed as 0.445 m, which makes the hull 133.5 m long — the card on the Measures page carries the argument about the cubit." data-zh="经文明确记载、这里也照着建的：长三百肘、宽五十肘、高三十肘（6:15）；分上、中、下三层（6:16）；一扇门，开在旁边（6:16）；上边留透光处，高一肘（6:16）；一间一间地造（6:14）；歌斐木，里外抹上松香（6:14）。这里以一肘 0.445 米展示，船身就是 133.5 米长——关于肘的长度，「照着经文的尺寸」那一页有完整的说明。"></p>
+    <p data-en="The shape is NOT stated. The text gives three numbers and says nothing of a bow, a stern, a keel or a rudder, and the word used for the ark (תֵּבָה) is a chest — the same word as the basket of Exodus 2:3. It is therefore drawn as a chest. Any hull drawn with a ship's lines is an illustration of a later idea, not of this passage." data-zh="形状不是经文说的。经文给了三个数字，没有提船头、船尾、龙骨或舵，而「方舟」用的字（תֵּבָה）是箱子——和出埃及记 2:3 那只蒲草箱是同一个字。所以这里画成箱子。任何画成船形的方舟，画的是后来的想象，不是这段经文。"></p>
+    <p data-en="Not measured by the text, and therefore display rather than measurement: the size of the door; how the decks were reached (ramps here, because a ladder would keep a visitor out of two thirds of the ark); the size and arrangement of the rooms; the timber framing and its ribs; whether the thirty cubits includes the covering, which is drawn as though it does; the hatch in the covering, which stands for the window Noah opened in 8:6; and the ground the ark stands on." data-zh="经文没有量、因此属于展示而非测量的部分：门的大小；层与层之间怎么上下（这里用坡道，因为若用梯子，来访的人就进不了三分之二的方舟）；隔间的大小与排法；船身的木构与肋木；三十肘是否含船盖——这里当作含；船盖上的那个舱口，代表挪亚在 8:6 开的窗户；以及方舟所站的地。"></p>
+    <p data-en="What is aboard, and what is not claimed: the text COUNTS and does not list. Of every clean beast seven males and seven females, of beasts that are not clean one male and one female, of the fowls of the air seven and seven (7:2–3), and two of every sort into the ark (6:19) — all of them &quot;after his kind&quot;, and no kind is ever named. So the numbers are what is drawn, on one kind of each: fourteen of a clean beast, two of an unclean one, fourteen birds. The forms are generic and identify no species. The eight people are Noah, his wife, his three sons and their three wives (7:13; 1 Peter 3:20 counts them as eight)." data-zh="舱里有什么，以及这里不主张什么：经文是「数」，不是「列」。凡洁净的畜类七公七母，不洁净的畜类一公一母，空中的飞鸟七公七母（7:2–3），凡有血肉的活物每样两个（6:19）——全都是「各从其类」，而经文从头到尾没有点过一个种名。所以这里画的是那些数目，各用一类来表示：洁净的一类十四只、不洁净的一类两只、飞鸟十四只。形体是通用的，不指认任何物种。八个人是挪亚、他的妻子、三个儿子和三个儿妇（7:13；彼前 3:20 数为八个人）。"></p>
+    <p data-en="Where it was built is not stated, and the ground here is a display choice: a wooded plain rather than a desert, because the one material the text does name is timber, and 300 cubits of it. The hills beyond are generic scenery." data-zh="方舟建在哪里，经文没有说；这里的地面是展示处理：画成有树的平原而不是沙漠，因为经文唯一点名的材料是木头，而且是三百肘的木头。远处的山是通用布景。"></p>
+    <p data-en="Display choices: the ark is shown finished, on dry land, with its door open — the one moment in the account when a person could have walked in, after 6:16 and before 7:16. Fill lights make the lower two decks readable; a hull lit by one cubit of opening would be black inside, and these lamps are a teaching aid, not a claim. No animals are placed: the text lists kinds and pairs (6:19–20, 7:2–3) and does not describe how they were housed." data-zh="展示处理：方舟画成已经造好、停在旱地上、门开着——那是记载中唯一可以走进去的时刻，在 6:16 之后、7:16 之前。补光让下面两层看得见；只靠一肘高的透光处，舱内是全黑的，这些灯是教学用具，不是主张。这里没有放动物：经文列的是各从其类、一对一对（6:19–20、7:2–3），没有描述怎么安置。"></p>
+    <p><a href="https://biblehub.com/bsb/genesis/6.htm" target="_blank" rel="noopener">Genesis 6</a> · <a href="https://biblehub.com/bsb/genesis/7.htm" target="_blank" rel="noopener">Genesis 7</a> · <a href="https://biblehub.com/bsb/genesis/8.htm" target="_blank" rel="noopener">Genesis 8</a></p>
+    <p data-en="Textures are generated into canvases at load: timber, pitch, planking and ground. No image files, no licence, nothing downloaded." data-zh="材质在加载时生成到画布上：木料、松香、甲板和地面。没有图片文件、没有授权负担、没有下载。"></p>
+  </dialog>
+  <script type="module" src="/src/walk/ark-main.ts"></script>
+  <footer class="source-credit"><p><span data-en="Place data" data-zh="地名数据">Place data</span> <a href="https://www.openbible.info/geo/" target="_blank" rel="noopener">OpenBible.info</a> · CC BY 4.0 · <span data-en="basemap Natural Earth (public domain)" data-zh="底图 Natural Earth（公有领域）">basemap Natural Earth (public domain)</span></p></footer>
+</body>
+</html>

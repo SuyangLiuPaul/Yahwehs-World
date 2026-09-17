@@ -58,7 +58,8 @@ export const UNITS: Unit[] = [
   { id: 'fall', zh: '堕落与该隐的后裔', en: 'The fall, and Cain\'s line', from: k(1, 3, 1),
     plan: [wip('scene', '园的东边 · 基路伯和四面转动发火焰的剑（创 3:24）', 'East of the garden — cherubim and a flaming sword (Gen 3:24)')] },
   { id: 'flood', zh: '洪水与方舟', en: 'The flood and the ark', from: k(1, 6, 1),
-    plan: [wip('walk', '走进挪亚方舟 · 三百乘五十乘三十肘，三层', 'Walk into Noah\'s ark — 300 × 50 × 30 cubits, three decks', 'planned')] },
+    walk: { href: '/ark.html', zh: '走进方舟', en: 'Walk into the ark' },
+    plan: [wip('scene', '洪水本身 · 水势比山高过十五肘（创 7:20）', 'The flood itself — the waters fifteen cubits above the mountains (Gen 7:20)')] },
   { id: 'babel', zh: '巴别与列国', en: 'Babel and the nations', from: k(1, 10, 1),
     plan: [
       wip('scene', '那城和塔 · 砖当石头、石漆当灰泥（创 11:3）；高度未记', 'The city and the tower — brick for stone, slime for mortar (Gen 11:3); no height is given'),

@@ -154,6 +154,20 @@ const temple = await report('/temple.html', '__temple', [
 ]);
 SHOW(temple, '/temple.html — what a visitor can do on their own feet');
 
+// The ark: the ramp to the door, and the ramps between the decks. If these do
+// not work a visitor sees one third of a building three hundred cubits long.
+const ark = await report('/ark.html', '__ark', [
+  { name: 'up the ramp to the door', from: [0, -62], face: Math.PI, keys: ['KeyW'],
+    seconds: 10, ceiling: 0.5, climb: true, target: 7, want: (r) => r.riseCubits >= 7 },
+  // The forward ramp climbs from x≈145 (lower deck) to x≈119 (second deck),
+  // so the walker starts at the bottom of it, on the lower deck.
+  { name: 'up to the second deck', from: [143, 0], face: Math.PI / 2, keys: ['KeyW'],
+    seconds: 14, ceiling: 1, climb: true, target: 9, want: (r) => r.riseCubits >= 9 },
+  { name: 'along the lower deck', from: [-120, 0], face: -Math.PI / 2, keys: ['KeyW', 'ShiftLeft'],
+    seconds: 6, ceiling: 1, want: (r) => r.speed > 8 && r.rise < 1 },
+]);
+SHOW(ark, '/ark.html — three hundred cubits, three decks');
+
 const tent = await report('/tabernacle.html', '__walk', [
   { name: 'crossing the court, walking', from: [40, 12], face: Math.PI / 2, keys: ['KeyW'],
     seconds: 3, ceiling: 0.5, want: (r) => r.speed > 4.2 && r.speed < 5.2 },
