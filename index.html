@@ -13,7 +13,18 @@
 <body>
   <canvas id="stage"></canvas>
 
-  <div id="loading"><i id="loading-bar"></i><div class="mark">✦</div><p id="loading-text" data-en="Drawing the world…" data-zh="正在绘制世界…">Drawing the world…</p></div>
+  <!-- The opening screen: the globe itself, turning, at a size that reads on a
+       phone. A 27 px star and 11 px of mono text in the middle of a black
+       field is what it was, and the owner photographed it twice. The land is
+       drawn twice side by side inside a circular clip and slid one width to
+       the left for ever, which is a sphere turning as far as the eye is
+       concerned — and it costs no WebGL context, so it can be on screen
+       before the scene exists. -->
+  <div id="loading">
+    <i id="loading-bar"></i>
+    <img id="loading-globe" src="/loading-globe.svg" alt="" width="180" height="180">
+    <p id="loading-text" data-en="Drawing the world…" data-zh="正在绘制世界…">Drawing the world…</p>
+  </div>
 
   <nav class="sitenav">
     <a class="brand" href="/">

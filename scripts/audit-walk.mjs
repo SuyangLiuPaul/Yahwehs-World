@@ -157,8 +157,10 @@ SHOW(temple, '/temple.html — what a visitor can do on their own feet');
 // The ark: the ramp to the door, and the ramps between the decks. If these do
 // not work a visitor sees one third of a building three hundred cubits long.
 const ark = await report('/ark.html', '__ark', [
+  // The ramp climbs the cradle's height to the sill — 2.6 cubits — and not the
+  // door's full height: a ramp to the lintel is a ramp to nowhere.
   { name: 'up the ramp to the door', from: [0, -62], face: Math.PI, keys: ['KeyW'],
-    seconds: 10, ceiling: 0.5, climb: true, target: 7, want: (r) => r.riseCubits >= 7 },
+    seconds: 10, ceiling: 0.5, climb: true, target: 2.4, want: (r) => r.riseCubits >= 2.4 },
   // The forward ramp climbs from x≈145 (lower deck) to x≈119 (second deck),
   // so the walker starts at the bottom of it, on the lower deck.
   { name: 'up to the second deck', from: [143, 0], face: Math.PI / 2, keys: ['KeyW'],

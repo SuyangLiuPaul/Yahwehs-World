@@ -59,6 +59,9 @@ export interface Ark {
   group: THREE.Group;
   colliders: THREE.Box3[];
   platforms: THREE.Box3[];
+  /** The ground outside the hull, which is a cradle's height below the ark's
+   *  own floor. */
+  floorY: number;
   counts: ArkCounts;
   anchors: {
     outside: THREE.Vector3;
@@ -150,6 +153,11 @@ export function buildArk(cubit: number): Ark {
   const eaves = C(28);                  // the covering rises the last two
   const LIGHT_BOTTOM = C(26.6);         // the opening of 6:16, a cubit high
   const LIGHT_TOP = LIGHT_BOTTOM + C(1);
+  // A hull is built on blocks, not laid in the mud: the ground is the datum
+  // minus this, and the space between is filled with keel blocks and shores.
+  // Nothing about it is stated — a ship three hundred cubits long has to be
+  // held up while it is built, and the card says that is the whole argument.
+  const LIFT = C(2.6);
 
   // ── the ground it stands on ───────────────────────────────────────────
   // NOT the desert the tabernacle and the temple stand in. Where the ark was
@@ -158,6 +166,7 @@ export function buildArk(cubit: number): Ark {
   // display choice, and the card says so — rather than on sand, where the
   // material it is made of does not grow.
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(C(1400), C(1400), 160, 160), M.ground());
+  floor.position.y = -LIFT;
   const fp = floor.geometry.attributes.position as THREE.BufferAttribute;
   const fc = new Float32Array(fp.count * 3);
   const green = new THREE.Color(0x9fb06a), dry = new THREE.Color(0xe8dcc4), mix = new THREE.Color();
@@ -173,13 +182,12 @@ export function buildArk(cubit: number): Ark {
   floor.geometry.setAttribute('color', new THREE.BufferAttribute(fc, 3));
   floor.geometry.computeVertexNormals();
   floor.rotation.x = -Math.PI / 2;
-  floor.position.y = -C(0.06);
   floor.receiveShadow = true;
   floor.userData.noCast = true;
   floor.userData.dynamic = true;
   g.add(floor);
   const hills = buildDesert(() => true, 320);      // distant hills only
-  hills.position.y = -C(1.6);
+  hills.position.y = -LIFT - C(1.6);
   g.add(hills);
 
   // Timber standing where timber grows. Instanced, three sizes, none of them
@@ -203,7 +211,7 @@ export function buildArk(cubit: number): Ark {
       const x = Math.cos(a) * r, z = Math.sin(a) * r * 0.8;
       if (Math.abs(x) < halfL + C(20) && Math.abs(z) < halfW + C(70)) continue;
       const scale = 0.7 + (Math.sin(i * 7.77) * 0.5 + 0.5) * 0.9;
-      dummy.position.set(x, 0, z);
+      dummy.position.set(x, -LIFT, z);
       dummy.rotation.y = i;
       dummy.scale.set(scale, scale * (0.85 + 0.3 * Math.sin(i * 3.1)), scale);
       dummy.updateMatrix();
@@ -256,14 +264,38 @@ export function buildArk(cubit: number): Ark {
     }
   }
 
+  // Keel blocks down the centre line and raking shores on both sides: what
+  // holds a hull up on land while it is built.
+  for (let x = -halfL + C(6); x < halfL - C(4); x += C(12)) {
+    const block = bevelBox(C(4), LIFT, C(9), beam, 0.02);
+    block.position.set(x, -LIFT / 2, 0);
+    g.add(block); addCollider(block);
+    for (const sz of [-1, 1]) {
+      const shore = bevelBox(C(1.1), LIFT * 2.1, C(1.1), beam, 0.02);
+      shore.position.set(x, -LIFT / 2 + C(0.4), sz * (halfW - C(1.2)));
+      shore.rotation.x = sz * 0.42;
+      g.add(shore);
+      const pad = bevelBox(C(2.2), C(0.5), C(2.2), beam, 0.02);
+      pad.position.set(x, -LIFT + C(0.25), sz * (halfW + C(1.6)));
+      g.add(pad);
+    }
+  }
+
   // ── the covering, 8:13 ────────────────────────────────────────────────
   // Two cubits of ridge over the eaves, so the thirty of 6:15 is the whole
   // height. Whether the thirty includes it is not stated; the card says so.
   const roofRun = halfW + C(0.8);
+  const OVER = C(1.4);                  // how far each panel crosses the ridge
   for (const sz of [-1, 1]) {
     const slope = Math.atan2(H - eaves, roofRun);
-    const panel = bevelBox(L + C(1.6), C(0.5), Math.hypot(roofRun, H - eaves), deckWood, 0.01);
-    panel.position.set(0, (eaves + H) / 2, sz * roofRun / 2);
+    const len = Math.hypot(roofRun, H - eaves) + OVER;
+    const panel = bevelBox(L + C(1.6), C(0.5), len, deckWood, 0.01);
+    // Placed from the EAVE inward, so the extra length crosses the ridge and
+    // laps the other panel instead of leaving a slit of daylight down the
+    // whole three hundred cubits — which is what the first version did, and
+    // what the owner saw from inside as a bright line in the ceiling.
+    const mid = (roofRun - OVER) / 2;
+    panel.position.set(0, (eaves + H) / 2 - Math.sin(slope) * OVER / 2, sz * mid);
     panel.rotation.x = -sz * slope;
     g.add(panel); addCollider(panel);
   }
@@ -272,16 +304,47 @@ export function buildArk(cubit: number): Ark {
   g.add(ridge);
 
   // ── three decks, 6:16 ─────────────────────────────────────────────────
+  //
+  // Each deck above the lowest has a hole cut in it where the ramp from the
+  // deck below arrives. Without it the ramp runs up into a ceiling: the owner
+  // walked it, saw a plank climbing into the underside of the deck above, and
+  // said 应该开个口. The hole and the ramp are computed from the same numbers
+  // so they cannot drift apart.
   const deckY = [C(0), DECK_H, DECK_H * 2];
+  const RAMP_HALF = C(3.2);                       // half the ramp's width
+  /** Where the ramp INTO deck `i` lands, in x. Deck 0 has none. */
+  const rampSpan = (i: number): [number, number] | null => {
+    if (i === 0) return null;
+    const sx = (i - 1) % 2 === 0 ? 1 : -1;
+    const near = sx * (halfL - hull - C(4));
+    const far = sx * (halfL - hull - C(30));
+    return [Math.min(near, far), Math.max(near, far)];
+  };
   for (const [i, y] of deckY.entries()) {
-    const planks = bevelBox(L - hull * 2, deckT, W - hull * 2, deckWood, 0.006);
-    planks.position.y = y + deckT / 2;
-    g.add(planks);
-    // A deck is a floor, not a wall: it holds the walker up and never blocks.
-    addTread(-halfL, y, -halfW, halfL, y + deckT, halfW);
+    const span = rampSpan(i);
+    const x0 = -halfL + hull, x1 = halfL - hull;
+    const z0 = -halfW + hull, z1 = halfW - hull;
+    /** One piece of decking, as mesh and as floor. */
+    const deckPiece = (ax: number, bx: number, az: number, bz: number) => {
+      if (bx - ax < 0.01 || bz - az < 0.01) return;
+      const piece = bevelBox(bx - ax, deckT, bz - az, deckWood, 0.006);
+      piece.position.set((ax + bx) / 2, y + deckT / 2, (az + bz) / 2);
+      g.add(piece);
+      addTread(ax, y, az, bx, y + deckT, bz);
+    };
+    if (!span) {
+      deckPiece(x0, x1, z0, z1);
+    } else {
+      const [hx0, hx1] = span;
+      deckPiece(x0, hx0, z0, z1);                 // before the opening
+      deckPiece(hx1, x1, z0, z1);                 // after it
+      deckPiece(hx0, hx1, z0, -RAMP_HALF);        // and the strips beside it
+      deckPiece(hx0, hx1, RAMP_HALF, z1);
+    }
     if (i > 0) {
-      // Beams under it, seen from the deck below.
+      // Beams under it, seen from the deck below — and not across the hole.
       for (let x = -halfL + C(4); x < halfL; x += C(4)) {
+        if (span && x > span[0] - C(2) && x < span[1] + C(2)) continue;
         const joist = bevelBox(C(0.8), C(0.9), W - hull * 2, beam, 0.01);
         joist.position.set(x, y - C(0.45), 0);
         g.add(joist);
@@ -300,6 +363,8 @@ export function buildArk(cubit: number): Ark {
       const backZ = sz * (halfW - hull);
       const frontZ = sz * (halfW - hull - PEN_DEEP);
       for (let x = -halfL + hull; x < halfL - hull - PEN; x += PEN) {
+        const hole = rampSpan(deckY.indexOf(y) + 1);
+        if (hole && x + PEN > hole[0] && x < hole[1]) continue;   // the stair well
         // The partition between this room and the next.
         const wall = bevelBox(C(0.35), C(3.2), PEN_DEEP, timber, 0.006);
         wall.position.set(x, y + C(1.6) + deckT, (backZ + frontZ) / 2);
@@ -386,12 +451,25 @@ export function buildArk(cubit: number): Ark {
   };
   // Outside: from the ground up to the door.
   {
-    const run = C(26);
-    const ramp = bevelBox(doorW, C(0.6), run, timber, 0.01);
-    ramp.position.set(0, doorH / 2, doorZ - run / 2 - C(1));
-    ramp.rotation.x = Math.atan2(doorH, run);
+    // The ramp climbs to the SILL, which is the lowest deck — not to the head
+    // of the doorway. The first one rose the door's full height and arrived at
+    // the lintel, which is what the owner saw and called 反的. So the rise is
+    // only the cradle's height.
+    const run = C(14);
+    const rise = LIFT;
+    const ramp = bevelBox(doorW, C(0.6), Math.hypot(run, rise), timber, 0.01);
+    ramp.position.set(0, -LIFT / 2, doorZ - run / 2 - C(1));
+    ramp.rotation.x = Math.atan2(rise, run);
     g.add(ramp);
-    rampTreads(0, doorZ - run - C(1), 0, doorZ - C(1), C(0), doorH, doorW / 2);
+    rampTreads(0, doorZ - run - C(1), 0, doorZ - C(1), -LIFT, C(0), doorW / 2, 20);
+    for (let i = 1; i <= 2; i++) {
+      const t = i / 3;
+      const z = doorZ - C(1) - run * t;
+      const h = LIFT * (1 - t) + C(0.3);
+      const trestle = bevelBox(doorW * 0.8, h, C(0.7), beam, 0.02);
+      trestle.position.set(0, -LIFT + h / 2, z);
+      g.add(trestle);
+    }
   }
   // Inside: one ramp at each end, turning back on itself so it fits.
   for (const [i, y] of deckY.entries()) {
@@ -416,10 +494,15 @@ export function buildArk(cubit: number): Ark {
     frame.position.set(C(40), eaves + C(1.1), 0);
     frame.rotation.z = 0.02;
     g.add(frame);
+    // Lying back on the covering beside the opening, on its hinge — not
+    // hanging in the air over it.
     const lid = bevelBox(hatch, C(0.35), hatch, timber, 0.01);
-    lid.position.set(C(40) + hatch * 0.9, eaves + C(2.2), C(0.6));
-    lid.rotation.set(0.15, 0.2, -0.5);
+    lid.position.set(C(40) + hatch * 1.05, eaves + C(1.5), C(0.4));
+    lid.rotation.set(0.04, 0.05, -0.12);
     g.add(lid);
+    const hinge = bevelBox(C(0.5), C(0.25), hatch, beam, 0.01);
+    hinge.position.set(C(40) + hatch / 2, eaves + C(1.35), 0);
+    g.add(hinge);
   }
 
   // ── what is aboard, 6:19–20; 7:2–3, 7:13 ──────────────────────────────
@@ -532,5 +615,5 @@ export function buildArk(cubit: number): Ark {
     second: new THREE.Vector3(0, DECK_H, 0),
     third: new THREE.Vector3(0, DECK_H * 2, 0),
   };
-  return { group: g, colliders, platforms, counts, anchors };
+  return { group: g, colliders, platforms, counts, anchors, floorY: -LIFT };
 }

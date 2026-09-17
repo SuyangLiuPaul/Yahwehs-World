@@ -13,7 +13,7 @@ of 2026-09-18 (v0.1.3 released; see the release table below).
 | Platform | Builds locally on this Mac | Needs from the owner |
 |---|---|---|
 | macOS | **Yes — built, launched, screenshotted.** Native window, correct title, globe renders, `Go to…` present, no console errors | Nothing to *run* it; a paid Apple Developer account ($99/yr) only if notarization (no Gatekeeper prompt) or the Mac App Store is wanted |
-> **The repository is `SuyangLiuPaul/yahwehsworld`** (renamed from
+> **The repository is `SuyangLiuPaul/Yahwehs-World`** (renamed from
 > `yahwehs-globe` on 2026-09-18; GitHub redirects the old URL). The local
 > checkout directory and the signing key's filename are unchanged — the key
 > must never be renamed or replaced, or every installed copy has to be

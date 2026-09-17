@@ -49,7 +49,7 @@
 ## 通用前言（每条 Astra 消息最上面原样粘贴）
 
 ```
-Repository: SuyangLiuPaul/yahwehsworld (private), branch main, working tree clean.
+Repository: SuyangLiuPaul/Yahwehs-World (private), branch main, working tree clean.
 Before touching code, read handoff/README.md, then ONLY the handoff files named in this
 message. Do not summarize them back to me.
 Rules: handoff/README.md §Rules apply. Do not ask me anything: where the docs are silent,

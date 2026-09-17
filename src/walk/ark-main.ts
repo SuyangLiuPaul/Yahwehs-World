@@ -67,7 +67,7 @@ sun.shadow.radius = 3;
 scene.add(sun);
 scene.add(new THREE.HemisphereLight(0x9fc2e0, 0xb9a377, 0.28));
 
-const { group, colliders, platforms, counts, anchors } = buildArk(CUBIT);
+const { group, colliders, platforms, counts, anchors, floorY } = buildArk(CUBIT);
 const ready = Promise.resolve(true);
 group.traverse((o) => {
   if (!(o as THREE.Mesh).isMesh) return;
@@ -101,7 +101,7 @@ renderer.shadowMap.needsUpdate = true;
 void ready.then(() => { renderer.shadowMap.needsUpdate = true; });
 pmrem.dispose();
 
-const walker = new Walker(camera, canvas, colliders, { platforms });
+const walker = new Walker(camera, canvas, colliders, { platforms, floorY });
 scene.add(walker.yaw);
 const composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, samples: 2 }));
 composer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
