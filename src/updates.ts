@@ -23,7 +23,7 @@ import { getVersion } from '@tauri-apps/api/app';
 import { openUrl } from '@tauri-apps/plugin-opener';
 import { applyStatic, onLocale, t } from './locale.ts';
 
-const REPO = 'SuyangLiuPaul/yahwehs-globe';
+const REPO = 'SuyangLiuPaul/yahwehsworld';
 const CHECK_KEY = 'ydh.update.mode';
 const LAST_CHECK_KEY = 'ydh.update.lastChecked';
 

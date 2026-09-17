@@ -12,3 +12,4 @@ src-tauri/gen/
 src-tauri/icon-source.png
 .netlify/
 public/version.json
+dist-app/

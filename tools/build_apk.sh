@@ -205,9 +205,18 @@ if [ "$WANT" != "$GOT" ]; then
 fi
 echo "   versionName=$GOT (matches tauri.conf.json)"
 
+# What the file is CALLED matters: it is what a reader downloads and what
+# sits in their Downloads folder afterwards. Gradle names it after its own
+# module, which is how "app-universal-release.apk" ends up on a release page.
+RELEASE_DIR="$PROJECT/dist-app"
+mkdir -p "$RELEASE_DIR"
+NAMED="$RELEASE_DIR/YahwehsWorld-$GOT.apk"
+cp "$APK" "$NAMED"
+
 echo
-echo "✓ $APK"
-ls -lh "$APK" | awk '{print "  " $5}'
+echo "✓ $NAMED"
+ls -lh "$NAMED" | awk '{print "  " $5}'
+echo "  (built from $APK)"
 
 if [ "$INSTALL" = "1" ]; then
   # With an emulator also running, a bare `adb install` fails with "more than
