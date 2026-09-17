@@ -1,10 +1,11 @@
-// The joins between the three pages.
+// The joins between the pages.
 //
-// This app had three doors and no corridors. The globe knows 1,443 events and
-// ten journeys; /structures.html knows five things built to scriptural
-// measurements; /tabernacle.html is a tabernacle you can walk into. A reader
-// who opened 「立起会幕、神荣光充满」 on the globe was standing on Exodus 40
-// with the tabernacle one tab away and nothing on screen saying so.
+// This app had four doors and no corridors. The globe knows 1,443 events and
+// ten journeys; /structures.html knows the things built to scriptural
+// measurements; /tabernacle.html is a tabernacle you can walk into;
+// /temple.html is Solomon's temple you can walk into. A reader who opened
+// 「立起会幕、神荣光充满」 on the globe was standing on Exodus 40 with the
+// tabernacle one tab away and nothing on screen saying so.
 //
 // Everything here is JOINED ON THE VERSE, not asserted by hand. Every part of
 // this app already cites chapter and verse — a journey states the passage it
@@ -13,10 +14,10 @@
 // overlapping text. That keeps the corridors honest as the data grows, and it
 // means a wrong link is a wrong reference somewhere, which the audit can see.
 //
-// The one exception is marked AUTHORED below: which verses count as "this is
-// the tabernacle you can walk into" is a judgement, not something the data
-// states, so it is four verse anchors written out in the open rather than a
-// rule pretending to derive them.
+// The exceptions are marked AUTHORED below: which verses count as "this is
+// the tabernacle you can walk into" (or the temple) is a judgement, not
+// something the data states, so they are verse anchors written out in the
+// open rather than a rule pretending to derive them.
 import { refKey } from './books.ts';
 import { STRUCTURES } from './structures/specs.ts';
 import type { Journey } from './routes.ts';
@@ -24,7 +25,7 @@ import type { TrackEvent } from './events-track.ts';
 
 export interface Bridge {
   kind: 'journey' | 'structure' | 'walk';
-  /** Journey id, structure id, or '' for the walk. */
+  /** Journey id, structure id, or 'tabernacle' / 'temple' for a walk. */
   id: string;
   zh: string;
   en: string;
@@ -63,6 +64,16 @@ const WALK_ANCHORS = ['Exodus 26:1', 'Exodus 27:18', 'Exodus 36:8', 'Exodus 40:1
   .map(refKey)
   .filter((k): k is number => k !== null);
 
+// AUTHORED. /temple.html is Solomon's house. These are the passages where a
+// reader is looking at that building being measured, built or dedicated.
+// 1 Kings 8 (the dedication) is in the same stretch and is deliberately not
+// here — it is the prayer, not the plan.
+const TEMPLE_WALK_ANCHORS = [
+  '1 Kings 6:2', '1 Kings 6:16', '1 Kings 6:37',
+  '1 Kings 7:15', '1 Kings 7:23',
+  '2 Chronicles 3:1', '2 Chronicles 4:1',
+].map(refKey).filter((k): k is number => k !== null);
+
 /** Structures, joined on the verse each one says gives its measurements. */
 const STRUCTURE_ANCHORS = STRUCTURES
   .map((s) => ({ s, key: refKey(s.ref) }))
@@ -70,7 +81,7 @@ const STRUCTURE_ANCHORS = STRUCTURES
 
 const inEvent = (ev: TrackEvent, key: number) => ev.s <= key && key <= ev.e;
 
-/** Everywhere else in the app this event can take the reader. */
+/** Everywhere else in this app this event can take the reader. */
 export function bridgesFor(ev: TrackEvent, journeys: readonly Journey[]): Bridge[] {
   const out: Bridge[] = [];
   for (const jr of journeys) {
@@ -81,7 +92,10 @@ export function bridgesFor(ev: TrackEvent, journeys: readonly Journey[]): Bridge
     if (inEvent(ev, key)) out.push({ kind: 'structure', id: s.id, zh: s.zh, en: s.en });
   }
   if (WALK_ANCHORS.some((k) => inEvent(ev, k))) {
-    out.push({ kind: 'walk', id: '', zh: '走进会幕', en: 'Walk into the tabernacle' });
+    out.push({ kind: 'walk', id: 'tabernacle', zh: '走进会幕', en: 'Walk into the tabernacle' });
+  }
+  if (TEMPLE_WALK_ANCHORS.some((k) => inEvent(ev, k))) {
+    out.push({ kind: 'walk', id: 'temple', zh: '走进圣殿', en: "Walk into Solomon's temple" });
   }
   return out;
 }
@@ -102,5 +116,7 @@ export function structureForJourney(id: string): { id: string; zh: string; en: s
   return s ? { id: s.id, zh: s.zh, en: s.en } : null;
 }
 
-export const href = (b: Bridge) =>
-  b.kind === 'walk' ? '/tabernacle.html' : `/structures.html#${b.id}`;
+export const href = (b: Bridge) => {
+  if (b.kind === 'walk') return b.id === 'temple' ? '/temple.html' : '/tabernacle.html';
+  return `/structures.html#${b.id}`;
+};

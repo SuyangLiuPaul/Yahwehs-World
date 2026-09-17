@@ -49,6 +49,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         structures: resolve(__dirname, 'structures.html'),
         tabernacle: resolve(__dirname, 'tabernacle.html'),
+        temple: resolve(__dirname, 'temple.html'),
       },
     },
   },

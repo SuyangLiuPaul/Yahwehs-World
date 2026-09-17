@@ -34,7 +34,7 @@ Total uncited verses: 0
 
 Every link in src/bridges.ts is a verse citation landing inside an event.
 
-All journeys, structure measurements and tabernacle anchors land.
+All journeys, structure measurements and walk anchors land.
 
 
 ## Summaries whose words are least like the passage

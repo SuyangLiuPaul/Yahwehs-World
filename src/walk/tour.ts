@@ -109,37 +109,43 @@ export class Tour {
   private from = { x: 0, z: 0, yaw: 0, pitch: 0 };
   running = false;
   paused=false;
+  /** The stop list this tour walks. Defaults to the tabernacle's; the temple
+   *  passes its own so both pages share one Tour implementation. */
+  private stops: readonly Stop[];
 
-  constructor(private readonly cubit: number) {}
+  constructor(private readonly cubit: number, stops: readonly Stop[] = TOUR) {
+    this.stops = stops;
+  }
 
   onStop?: (s: Stop, index: number, total: number) => void;
   onEnd?: () => void;
 
-  start(current: { x: number; z: number; yaw: number; pitch: number }) {
+  start(current: { x: number; z: number; yaw: number; pitch: number }, stops?: readonly Stop[]) {
+    if (stops) this.stops = stops;
     this.from = { ...current };
     this.index = 0;
-    this.phase = TOUR[0]!.travel > 0 ? 'travel' : 'dwell';
+    this.phase = this.stops[0]!.travel > 0 ? 'travel' : 'dwell';
     this.t = 0;
     this.running = true;
     this.paused=false;
-    this.onStop?.(TOUR[0]!, 0, TOUR.length);
+    this.onStop?.(this.stops[0]!, 0, this.stops.length);
   }
 
   stop() { this.running = false; this.paused=false; }
   pause(){this.running=false;this.paused=true;}
   resume(){if(this.paused){this.running=true;this.paused=false;}}
-  get fade(){const s=TOUR[this.index];return s?.cut&&this.phase==='travel'?Math.sin(Math.PI*Math.min(1,this.t/s.travel)):0;}
+  get fade(){const s=this.stops[this.index];return s?.cut&&this.phase==='travel'?Math.sin(Math.PI*Math.min(1,this.t/s.travel)):0;}
   goTo(index:number){
-    this.index=THREE.MathUtils.clamp(index,0,TOUR.length-1);
-    const s=TOUR[this.index]!;this.phase='dwell';this.t=0;
-    this.onStop?.(s,this.index,TOUR.length);
+    this.index=THREE.MathUtils.clamp(index,0,this.stops.length-1);
+    const s=this.stops[this.index]!;this.phase='dwell';this.t=0;
+    this.onStop?.(s,this.index,this.stops.length);
     return {x:s.x*this.cubit,z:s.z*this.cubit,yaw:facing(s),pitch:inclination(s,this.cubit)};
   }
 
   /** Returns where the camera should be this frame, or null when not running. */
   update(dt: number): { x: number; z: number; yaw: number; pitch: number } | null {
     if (!this.running) return null;
-    const s = TOUR[this.index];
+    const s = this.stops[this.index];
     if (!s) { this.running = false; this.onEnd?.(); return null; }
 
     const target = {
@@ -169,11 +175,11 @@ export class Tour {
     if (this.t >= s.dwell) {
       this.from = { x: target.x, z: target.z, yaw: target.yaw, pitch: target.pitch };
       this.index++;
-      const next = TOUR[this.index];
+      const next = this.stops[this.index];
       if (!next) { this.running = false; this.onEnd?.(); return target; }
       this.phase = next.travel > 0 ? 'travel' : 'dwell';
       this.t = 0;
-      this.onStop?.(next, this.index, TOUR.length);
+      this.onStop?.(next, this.index, this.stops.length);
     }
     return target;
   }

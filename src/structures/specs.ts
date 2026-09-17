@@ -30,7 +30,7 @@ export interface Structure {
   textZh: string; textEn: string;
   dims: Dim[];
   /** Rendered geometry kind — each has a builder in build.ts. */
-  kind: 'ark' | 'chest' | 'court' | 'cube' | 'menorah';
+  kind: 'ark' | 'chest' | 'court' | 'cube' | 'menorah' | 'templeHouse' | 'bronzePillar' | 'bronzeSea';
   /** Some things Scripture specifies by COUNT rather than by measurement. The
    *  lampstand is the extreme case: every ornament is numbered and no
    *  dimension is given anywhere. */
@@ -174,6 +174,94 @@ export const STRUCTURES: Structure[] = [
       { zh: '上海到北京', m: 1_064_000 },
       { zh: '国际空间站轨道高度', m: 408_000 },
       { zh: '珠穆朗玛峰', m: 8_849 },
+    ],
+  },
+  {
+    id: 'temple',
+    zh: '所罗门圣殿', en: "Solomon's Temple",
+    ref: '1 Kings 6:2', refZh: '列王纪上 6:2',
+    textZh: '所罗门王为雅伟所建的殿，长六十肘，宽二十肘，高三十肘。',
+    textEn: 'The temple that King Solomon built for Yahweh was sixty cubits long, twenty wide and thirty high.',
+    dims: [
+      { key: 'length', zh: '长', cubits: 60, ref: '王上 6:2' },
+      { key: 'width',  zh: '宽', cubits: 20, ref: '王上 6:2' },
+      { key: 'height', zh: '高', cubits: 30, ref: '王上 6:2' },
+      { key: 'porchDepth', zh: '廊深', cubits: 10, ref: '王上 6:3' },
+      { key: 'debir', zh: '至圣所长宽高', cubits: 20, ref: '王上 6:20' },
+      { key: 'hekal', zh: '圣所长', cubits: 40, ref: '王上 6:17' },
+    ],
+    kind: 'templeHouse',
+    punchZh: '六十乘二十乘三十肘 —— 大约 27 米长、9 米宽、13 米高。比会幕的帐幕长两倍、宽两倍，却是石头香柏木的房子，不是帐幕。至圣所是一个二十肘见方的立方体，里面是两个十肘高的基路伯，翅膀正好撑满那间屋子。',
+    unstated: [
+      '**屋顶坡度经文没有给。** 王上 6:9 给了殿高三十肘，从未说屋顶是什么形状。这里画成平顶，那是经文唯一支持的「不发明」的读法。',
+      '**墙的厚度没有记载。** 模型取一肘，只为让内空等于经文给的外部尺寸；真实墙体可能更厚。',
+      '**门的宽度没有记载。** 模型用六肘，是与二十肘正面相称的展示选择，不是测量结果。',
+      '**外院的尺寸所罗门的经文没有给。** 出埃及记量了会幕的院子（一百肘），列王纪上 6 章只说内院墙是「三行凿过的石头，一行香柏木」（6:36），没有长宽。可走的模型只画了局部围合，不假装有一个量出来的院子。',
+      '旁屋的间数、每间的进深——只给了层数和层高（下五、中六、上七）。',
+    ],
+    compare: [
+      { zh: '会幕的帐幕（长）', m: 13.35 },
+      { zh: '一个标准篮球场（长）', m: 28 },
+      { zh: '一节地铁车厢', m: 18 },
+    ],
+  },
+  {
+    id: 'pillars',
+    zh: '雅斤与波阿斯', en: 'Jachin and Boaz',
+    ref: '1 Kings 7:15', refZh: '列王纪上 7:15',
+    textZh: '他制造两根铜柱，每根高十八肘，围十二肘。',
+    textEn: 'He cast two pillars of bronze, each eighteen cubits high and twelve cubits in circumference.',
+    dims: [
+      { key: 'height', zh: '柱高', cubits: 18, ref: '王上 7:15' },
+      { key: 'girth',  zh: '围', cubits: 12, ref: '王上 7:15' },
+      { key: 'capital', zh: '柱顶高', cubits: 5, ref: '王上 7:19' },
+    ],
+    kind: 'bronzePillar',
+    counts: [
+      { zh: '柱顶的石榴（王上）', n: 200, ref: '王上 7:20' },
+      { zh: '柱顶的石榴（代下）', n: 100, ref: '代下 3:16' },
+    ],
+    punchZh: '十八肘的铜柱，围十二肘 —— 大约八米高、一米八粗。柱顶再加五肘，顶上是二百个石榴（列王纪）或一百个（历代志）。**两处经文对柱高的记载还不一样**：王上 7:15 写十八肘，代下 3:15 写三十五肘。这个模型用十八肘，两种都写在这里。',
+    unstated: [
+      '**柱高的两处记载不一致。** 王上 7:15 是十八肘；代下 3:15 是三十五肘。本产品不裁决，可走模型用王上的十八肘，此卡片两种都列。',
+      '**石榴的数目也不一致。** 王上 7:20 每柱顶二百个；代下 3:16 一百个。',
+      '柱身是否有凹槽、柱顶是什么形制——只给了高度和石榴数。',
+      '两根柱子是否中空、如何铸造。',
+    ],
+    compare: [
+      { zh: '一个成年人（身高）', m: 1.7 },
+      { zh: '会幕的帷子高', m: 2.225 },
+      { zh: '一层楼', m: 3 },
+    ],
+  },
+  {
+    id: 'bronze-sea',
+    zh: '铜海', en: 'The Molten Sea',
+    ref: '1 Kings 7:23', refZh: '列王纪上 7:23',
+    textZh: '他又铸一个铜海，样式是圆的，高五肘，径十肘，围三十肘。',
+    textEn: 'He made the Sea of cast metal, circular in shape, ten cubits from rim to rim and five cubits high. It took a line of thirty cubits to measure around it.',
+    dims: [
+      { key: 'diameter', zh: '直径', cubits: 10, ref: '王上 7:23' },
+      { key: 'height',   zh: '高', cubits: 5, ref: '王上 7:23' },
+      { key: 'girth',    zh: '围', cubits: 30, ref: '王上 7:23' },
+    ],
+    kind: 'bronzeSea',
+    counts: [
+      { zh: '驮海的铜牛', n: 12, ref: '王上 7:25' },
+      { zh: '容量（王上）', n: 2000, ref: '王上 7:26' },
+      { zh: '容量（代下）', n: 3000, ref: '代下 4:5' },
+    ],
+    punchZh: '直径十肘、高五肘、围三十肘 —— 大约四米五宽、两米二高，卧在十二只铜牛上，牛三只面向东、三只面向南、三只面向西、三只面向北。**容量两处经文不一样**：列王纪上写二千罢特，历代志下写三千罢特。几何按十乘五乘三十立起来，容量只报告，不建模。',
+    unstated: [
+      '**容量不一致。** 王上 7:26 二千罢特；代下 4:5 三千罢特。以十肘直径五肘高的圆柱估算，几何更接近二千；此处两种都写。',
+      '「一虎口厚」的边沿——没有给「虎口」折合多少肘。',
+      '铜牛的形态：只说了十二只和朝向。',
+      '水如何取出、是否有出水口——经文未记。',
+    ],
+    compare: [
+      { zh: '一个成年人（身高）', m: 1.7 },
+      { zh: '标准轿车长度', m: 4.5 },
+      { zh: '会幕的铜坛（长）', m: 2.225 },
     ],
   },
 ];

@@ -293,6 +293,78 @@ export function goatHair(): Surface {
   return { map: wrap(new THREE.CanvasTexture(c), 6), normalMap: wrap(normalFrom(c, 1.3), 6) };
 }
 
+/** Jerusalem limestone ashlar — the stone the house is built of (1 Kgs 6:7).
+ *  Courses of dressed blocks, warm pale, with joint shadow so the wall reads
+ *  as masonry rather than a painted plane. */
+export function ashlarStone(): Surface {
+  const n = 512;
+  const { c, x } = cv(n);
+  x.fillStyle = '#d8cbb0';
+  x.fillRect(0, 0, n, n);
+  noise(x, n, 28, 0.05);
+  noise(x, n, 90, 0.04);
+  // Courses. Block length varies; joint lines are darker, never black.
+  const course = 64;
+  for (let row = 0; row < n / course; row++) {
+    const y = row * course;
+    x.strokeStyle = 'rgba(92,78,58,0.45)';
+    x.lineWidth = 2;
+    x.beginPath(); x.moveTo(0, y + 1); x.lineTo(n, y + 1); x.stroke();
+    const offset = row % 2 ? 70 : 0;
+    for (let bx = -offset; bx < n; bx += 120 + (row % 3) * 18) {
+      x.strokeStyle = 'rgba(92,78,58,0.35)';
+      x.lineWidth = 2;
+      x.beginPath(); x.moveTo(bx, y); x.lineTo(bx, y + course); x.stroke();
+      // Slight face variation per block.
+      x.fillStyle = `rgba(${190 + random() * 40},${175 + random() * 35},${145 + random() * 30},0.12)`;
+      x.fillRect(bx + 2, y + 2, 110, course - 4);
+    }
+  }
+  return { map: wrap(new THREE.CanvasTexture(c), 8), normalMap: wrap(normalFrom(c, 2.4), 8) };
+}
+
+/** Cedar boards for the interior overlay — "he covered the house with pure
+ *  gold" after cedar (1 Kgs 6:20-22), boards of fir/cypress and cedar. */
+export function cedarWood(): Surface {
+  const n = 256;
+  const { c, x } = cv(n);
+  x.fillStyle = '#8a6a3e';
+  x.fillRect(0, 0, n, n);
+  // Long grain along Y so a tall wall does not stretch the grain sideways.
+  for (let i = 0; i < 220; i++) {
+    const X = random() * n;
+    const alpha = 0.08 + random() * 0.18;
+    x.strokeStyle = `rgba(52,32,16,${alpha})`;
+    x.lineWidth = 0.6 + random() * 1.8;
+    x.beginPath();
+    const wobble = 2 + random() * 6;
+    x.moveTo(X, 0);
+    x.bezierCurveTo(X + wobble, n * 0.3, X - wobble, n * 0.7, X + (random() - 0.5) * 4, n);
+    x.stroke();
+  }
+  noise(x, n, 20, 0.08);
+  return { map: wrap(new THREE.CanvasTexture(c), 6), normalMap: wrap(normalFrom(c, 1.5), 6) };
+}
+
+/** Olive wood for the doors — 1 Kgs 6:31-33. Warmer and tighter than cedar. */
+export function oliveWood(): Surface {
+  const n = 256;
+  const { c, x } = cv(n);
+  x.fillStyle = '#a07848';
+  x.fillRect(0, 0, n, n);
+  for (let i = 0; i < 180; i++) {
+    const X = random() * n;
+    x.strokeStyle = `rgba(70,42,20,${0.1 + random() * 0.16})`;
+    x.lineWidth = 0.5 + random() * 1.2;
+    x.beginPath();
+    x.moveTo(X, 0);
+    x.bezierCurveTo(X + (random() - 0.5) * 8, n * 0.4, X + (random() - 0.5) * 8, n * 0.7, X, n);
+    x.stroke();
+  }
+  noise(x, n, 28, 0.06);
+  return { map: wrap(new THREE.CanvasTexture(c), 5), normalMap: wrap(normalFrom(c, 1.2), 5) };
+}
+
 /** A desert sky as an equirectangular strip: deep above, bleached at the
  *  horizon. It replaces the studio environment the scene was lit by, which is
  *  why the gold read as showroom metal rather than sun. */

@@ -144,12 +144,19 @@ function cardHtml(s: Structure, cubitM: number) {
   // (see src/bridges.ts and the hash handler in src/main.ts) — this page
   // stays a page about measurements and downloads no event data to link.
   const backLink = `<a class="s-back" href="/#ref=${encodeURIComponent(s.ref)}">在圣经世界看这段经文 ↗</a>`;
+  // A reader looking at a temple measurement can walk into the building the
+  // same measurements generate. Joined by the object, not by a hand-asserted
+  // URL: these three cards are the house, its pillars and its sea.
+  const walkLink = ['temple', 'pillars', 'bronze-sea'].includes(s.id)
+    ? `<a class="s-walk" href="/temple.html">走进这座圣殿 ↗</a>`
+    : '';
 
   return `<section class="card" data-i="${STRUCTURES.indexOf(s)}" data-id="${s.id}"><div class="inner">
     <p class="eyebrow">照着经文的尺寸</p>
     <h1>${s.zh}</h1>
     <p class="en">${s.en}</p>
     ${backLink}
+    ${walkLink}
     ${lead}
     <blockquote>${s.textZh}<cite>${s.refZh}　·　${s.ref}</cite></blockquote>
     <table><tbody>${dimRows}${countRows}</tbody></table>

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <title>Solomon's Temple · Yahweh's World</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@500;600&family=Spectral:wght@500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <canvas id="stage"></canvas>
+  <div id="view-transition" aria-hidden="true"></div>
+
+  <nav class="sitenav">
+    <a class="brand" href="/">
+      <span class="zh" data-zh-text="雅伟之界">雅伟之界</span>
+      <span class="en">Yahweh's World</span>
+    </a>
+    <ol>
+      <li><a class="tab" href="/" data-en="Globe" data-zh="圣经世界" data-zh-narrow="地球">Globe</a></li>
+      <li><a class="tab" href="/structures.html" data-en="Measures" data-zh="照着经文的尺寸" data-zh-narrow="尺寸">Measures</a></li>
+      <li><a class="tab" href="/tabernacle.html" data-en="Tabernacle" data-zh="走进会幕" data-zh-narrow="会幕">Tabernacle</a></li>
+      <li><a class="tab" href="/temple.html" aria-current="page" data-en="Temple" data-zh="走进圣殿" data-zh-narrow="圣殿">Temple</a></li>
+    </ol>
+    <span class="spacer"></span>
+    <div class="lang-switch" role="group" aria-label="Language / 语言">
+      <button type="button" data-locale="en" lang="en">EN</button>
+      <button type="button" data-locale="zh-Hans" lang="zh-Hans">简</button>
+      <button type="button" data-locale="zh-Hant" lang="zh-Hant">繁</button>
+    </div>
+  </nav>
+
+  <div id="gate">
+    <div class="gate-inner">
+      <p class="eyebrow" data-en="1 Kings 6–7 · 2 Chronicles 3–4" data-zh="列王纪上 6–7 · 历代志下 3–4">1 Kings 6–7 · 2 Chronicles 3–4</p>
+      <h1 data-en="Solomon's Temple" data-zh="走进圣殿" data-zh-narrow="圣殿">Solomon's Temple</h1>
+      <p class="lede"
+         data-en="A walkable reconstruction of the house Solomon built, generated from the cubits 1 Kings 6–7 and 2 Chronicles 3–4 state: a house 60 × 20 × 30, a most holy place 20 cubits cubed, cherubim ten cubits with wings spanning twenty, the pillars Jachin and Boaz, the molten sea on twelve oxen, ten lavers on wheeled stands. Where the text gives no measurement the model uses a labelled display choice. The two Kings–Chronicles disagreements (pillar height, the sea's capacity) are stated, not silently settled."
+         data-zh="这是依据列王纪上6–7章、历代志下3–4章所记尺寸生成的可走动重建：殿长六十肘、宽二十肘、高三十肘；至圣所二十肘见方；基路伯高十肘、翅膀共二十肘；雅斤与波阿斯两根铜柱；铜海卧在十二只铜牛上；十个盆座。经文未给尺寸的部分采用标注的展示处理。列王纪与历代志的两处不一致（柱高、铜海容量）如实写出，不擅自裁决。">
+        The house, porch, side chambers, oracle, pillars, sea and lavers are
+        generated from the counts the passage gives.
+      </p>
+
+      <figure id="gate-film" hidden>
+        <video src="" poster="" autoplay muted loop playsinline preload="none" aria-hidden="true"></video>
+        <figcaption></figcaption>
+      </figure>
+
+      <div class="tally" id="tally"></div>
+
+      <div class="gate-go">
+        <button id="tour" type="button" class="primary">
+          <span data-en="Walk me through" data-zh="带我走一遍">Walk me through</span>
+        </button>
+        <button id="enter" type="button"><span data-en="Walk it myself" data-zh="自己走">Walk it myself</span></button>
+        <a class="gate-back" href="/#ref=1%20Kings%206:2"
+           data-en="This passage on the globe ↗" data-zh="在圣经世界看这段经文 ↗">This passage on the globe ↗</a>
+        <p class="keys">
+          <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
+          <span data-en="move" data-zh="走动">move</span>
+          <kbd>Shift</kbd><span data-en="run" data-zh="快走">run</span>
+          <span data-en="mouse to look" data-zh="鼠标转头">mouse to look</span>
+          <kbd>Esc</kbd><span data-en="exit" data-zh="退出">exit</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div id="hud" hidden>
+    <div id="tour-bar" hidden><i></i></div>
+    <!-- Plan of the court: house 60×20, porch east, sea south-east, altar
+         before the porch, side chambers on three sides. -->
+    <svg id="plan" viewBox="0 0 132 74" aria-hidden="true">
+      <rect class="p-court" x="1" y="1" width="130" height="72"></rect>
+      <rect class="p-tent"  x="38" y="28" width="52" height="18"></rect>
+      <rect class="p-porch" x="90" y="30" width="10" height="14"></rect>
+      <line  class="p-veil" x1="55" y1="28" x2="55" y2="46"></line>
+      <rect class="p-altar" x="102" y="32" width="14" height="10"></rect>
+      <circle id="p-you" class="p-you" cx="120" cy="37" r="3.4"></circle>
+    </svg>
+    <div class="hud-text">
+      <label class="sr-only" for="tour-stop" data-en="Choose a tour stop" data-zh="选择导览站点">Choose a tour stop</label>
+      <select id="tour-stop"></select>
+      <div id="where"></div>
+      <div id="verse"></div>
+    </div>
+    <div class="hud-side">
+      <button id="tour-prev" type="button" aria-label="Previous stop">‹</button>
+      <button id="tour-toggle" type="button" aria-label="Pause tour" hidden>❚❚</button>
+      <button id="tour-next" type="button" aria-label="Next stop">›</button>
+      <button id="model-info" type="button" data-en="Evidence" data-zh="依据">Evidence</button>
+      <button id="walk-exit" type="button" data-en="Exit" data-zh="退出">Exit</button>
+    </div>
+  </div>
+  <dialog id="assumptions">
+    <form method="dialog"><button class="dialog-close" data-en="Close" data-zh="关闭">Close</button></form>
+    <p class="eyebrow" data-en="Text • reconstruction • display" data-zh="经文 · 重建 · 展示">Text • reconstruction • display</p>
+    <h2 data-en="What this model can claim" data-zh="这个模型的依据与边界">What this model can claim</h2>
+    <p data-en="Stated in the text: the house 60 × 20 × 30 cubits (1 Kgs 6:2); the porch 20 × 10 (6:3); the most holy place 20 cubits cubed (6:16–20); three storeys of side chambers with floors at 5, 11 and 18 cubits (6:5–6); cherubim 10 cubits high with wings of 5 + 5 (6:23–28); pillars of bronze 18 cubits high, 12 in circumference, capitals 5 (7:15–22); the molten sea 10 × 5 × 30 on twelve oxen (7:23–26); ten bases 4 × 4 × 3 (7:27–39); the bronze altar 20 × 20 × 10 (2 Chr 4:1); the site Mount Moriah (2 Chr 3:1). One cubit is displayed as 0.445 m." data-zh="经文明确记载：殿长六十肘、宽二十肘、高三十肘（王上 6:2）；廊二十肘、深十肘（6:3）；至圣所二十肘见方（6:16–20）；旁屋三层，楼面在第五、十一、十八肘（6:5–6）；基路伯高十肘、翅膀五加五（6:23–28）；铜柱高十八肘、围十二肘、柱顶五肘（7:15–22）；铜海十肘径、五肘高、围三十肘，下有十二只牛（7:23–26）；十个盆座四四三肘（7:27–39）；铜坛二十肘见方、高十肘（代下 4:1）；地点是摩利亚山（代下 3:1）。这里以一肘 0.445 米展示。"></p>
+    <p data-en="Two Kings–Chronicles disagreements, not settled here: 1 Kgs 7:15 makes the pillars 18 cubits; 2 Chron 3:15 makes them 35 — this walk uses 18 and the structure card carries both. 1 Kgs 7:26 gives the sea 2,000 baths; 2 Chron 4:5 gives 3,000 — the geometry is the stated 10 × 5 × 30; the capacity is reported, not modelled. 2 Chron 3:3's porch height of 120 is left as a disputed reading on the card; the porch body here uses the house height." data-zh="两处列王纪与历代志的不一致，此处不裁决：王上 7:15 记柱高十八肘，代下 3:15 记三十五肘——本模型用十八肘，尺寸卡片两种都写。王上 7:26 记铜海二千罢特，代下 4:5 记三千——几何按十乘五乘三十，容量只报告不建模。代下 3:3「廊高一百二十」在卡片上标为有争议读法；本模型的廊体用殿高。"></p>
+    <p data-en="Not measured by the text, so not invented as measurement: roof pitch (a flat roof is drawn), wall thickness (one cubit for the interior to keep the stated exterior measures), door width (six cubits, a display choice), outer-court dimensions (the wall here is a partial enclosure, not a measured rectangle), the form of the cherubim beyond height and wing span, and the carved motifs on the doors and laver bases." data-zh="经文未量、本模型也不当作测量结果的部分：屋顶坡度（画成平顶）、墙厚（内空保持经文尺寸，墙取一肘）、门宽（六肘，展示选择）、外院尺寸（此处院墙是局部围合，不是量出来的矩形）、基路伯除高度与翼展外的形态、门与盆座上的雕花。"></p>
+    <p data-en="Display choices: the veil blocks free walk; the tour cuts past it as an educational view. Interior fill lights make details readable; they are not a claim about divine light. The surrounding highland is generic scenery, not a surveyed Jerusalem." data-zh="展示处理：幔子挡住自由通行，导览以教学剖视越过。室内补光用于看清细节，不代表神圣光源。周围山地是通用布景，不是测绘的耶路撒冷。"></p>
+    <p><a href="https://biblehub.com/bsb/1kings/6.htm" target="_blank" rel="noopener">1 Kings 6</a> · <a href="https://biblehub.com/bsb/1kings/7.htm" target="_blank" rel="noopener">1 Kings 7</a> · <a href="https://biblehub.com/bsb/2chronicles/3.htm" target="_blank" rel="noopener">2 Chronicles 3</a> · <a href="https://biblehub.com/bsb/2chronicles/4.htm" target="_blank" rel="noopener">2 Chronicles 4</a></p>
+    <p data-en="Textures are generated into canvases at load: ashlar stone, cedar, olive wood, beaten gold, bronze and the veil. No image files, no licence, nothing downloaded. Procedural only." data-zh="材质在加载时生成到画布上：方石、香柏木、橄榄木、锤出来的金子、铜，以及幔子。没有图片文件、没有授权负担、没有下载。全部程序生成。"></p>
+  </dialog>
+
+  <script type="module" src="/src/walk/temple-main.ts"></script>
+  <footer class="source-credit"><p><span data-en="Place data" data-zh="地名数据">Place data</span> <a href="https://www.openbible.info/geo/" target="_blank" rel="noopener">OpenBible.info</a> · CC BY 4.0 · <span data-en="basemap Natural Earth (public domain)" data-zh="底图 Natural Earth（公有领域）">basemap Natural Earth (public domain)</span></p></footer>
+</body>
+</html>

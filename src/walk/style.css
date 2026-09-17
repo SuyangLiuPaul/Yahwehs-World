@@ -118,6 +118,7 @@ kbd {
 .p-tent  { stroke: var(--gold-dim); fill: #c9a2271a; }
 .p-veil  { stroke: var(--gold); stroke-dasharray: 3 2; }
 .p-altar { stroke: #8c6a3a; fill: #8c6a3a2e; }
+.p-porch { stroke: var(--gold-dim); fill: #c9a2270f; }
 .p-you   { fill: var(--gold-bright); stroke: #060d16; stroke-width: 1.4; }
 
 .hud-text { display: grid; gap: 2px; min-width: 0; }
