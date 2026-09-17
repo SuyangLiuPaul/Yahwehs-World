@@ -22,6 +22,12 @@ export interface Stop {
   pitch?: number;
   /** Seconds to travel here, then seconds to stand still. */
   travel: number; dwell: number;
+  /** Waypoints, in cubits, between the previous stop and this one. Without
+   *  them the camera flies in a straight line, and a straight line from the
+   *  temple's altar to its molten sea goes through the altar — the owner
+   *  watched it happen. scripts/audit-tour.mjs samples exactly this path
+   *  against the walk's own colliders. */
+  via?: { x: number; z: number }[];
   /** Educational cut past a restricted barrier; never fly through a curtain. */
   cut?: boolean;
   zh: string; en: string; ref: string;
@@ -162,9 +168,9 @@ export class Tour {
         return {...out};
       }
       const yawDelta = wrap(target.yaw - this.from.yaw);
+      const { x, z } = this.along(s, k);
       const out = {
-        x: THREE.MathUtils.lerp(this.from.x, target.x, k),
-        z: THREE.MathUtils.lerp(this.from.z, target.z, k),
+        x, z,
         yaw: this.from.yaw + yawDelta * k,
         pitch: THREE.MathUtils.lerp(this.from.pitch, target.pitch, k),
       };
@@ -185,4 +191,34 @@ export class Tour {
   }
 
   get currentIndex() { return this.index; }
+
+  /** Position at eased progress k along from → via… → stop, by arc length,
+   *  so the camera moves at one speed round a corner instead of racing the
+   *  short segments and crawling the long one. */
+  private along(s: Stop, k: number): { x: number; z: number } {
+    const pts = [
+      { x: this.from.x, z: this.from.z },
+      ...(s.via ?? []).map((v) => ({ x: v.x * this.cubit, z: v.z * this.cubit })),
+      { x: s.x * this.cubit, z: s.z * this.cubit },
+    ];
+    const seg: number[] = [];
+    let total = 0;
+    for (let i = 1; i < pts.length; i++) {
+      const d = Math.hypot(pts[i]!.x - pts[i - 1]!.x, pts[i]!.z - pts[i - 1]!.z);
+      seg.push(d); total += d;
+    }
+    if (total < 1e-6) return pts[pts.length - 1]!;
+    let want = k * total;
+    for (let i = 0; i < seg.length; i++) {
+      if (want <= seg[i]! || i === seg.length - 1) {
+        const t = seg[i]! > 0 ? Math.min(1, want / seg[i]!) : 1;
+        return {
+          x: THREE.MathUtils.lerp(pts[i]!.x, pts[i + 1]!.x, t),
+          z: THREE.MathUtils.lerp(pts[i]!.z, pts[i + 1]!.z, t),
+        };
+      }
+      want -= seg[i]!;
+    }
+    return pts[pts.length - 1]!;
+  }
 }

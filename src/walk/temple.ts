@@ -230,30 +230,45 @@ function laverBase(cubit: number, mat: THREE.Material): THREE.Group {
 function templeDoor(
   height: number, width: number, thickness: number,
   wood: THREE.Material, gold: THREE.Material,
+  /** How far each leaf stands open, in radians. 6:34 calls the leaves
+   *  "folding"; a shut door here was a wall the guided tour flew through
+   *  (measured by scripts/audit-tour.mjs), so they hang on hinges at the
+   *  posts and stand open, and the walk goes in the way a person would. */
+  open = 0,
 ): THREE.Group {
   const g = new THREE.Group();
+  const leaves: THREE.Group[] = [];
   for (const side of [-1, 1]) {
     const leafW = width / 2 - height * 0.01;
+    // The hinge is the post at the leaf's outer edge; everything on the leaf
+    // is placed relative to it, so the whole leaf swings as one.
+    const hinge = new THREE.Group();
+    hinge.position.set(side * (width / 2), 0, 0);
+    hinge.rotation.y = -side * open;
+    g.add(hinge);
+    leaves.push(hinge);
+    const lx = -side * (leafW / 2 + height * 0.005);
     const leaf = bevelBox(leafW, height, thickness, wood, 0.004);
-    leaf.position.set(side * (width / 4), height / 2, 0);
-    g.add(leaf);
+    leaf.position.set(lx, height / 2, 0);
+    hinge.add(leaf);
     // Gold overlay — 6:32 "the two doors also were of olive tree… and he
     // overlaid them with gold".
     const face = bevelBox(leafW * 0.92, height * 0.94, thickness * 0.15, gold, 0.002);
-    face.position.set(side * (width / 4), height / 2, thickness * 0.5);
-    g.add(face);
+    face.position.set(lx, height / 2, thickness * 0.5);
+    hinge.add(face);
     // Carved palm-and-flower motif: a vertical trunk with three open cups.
     const trunk = new THREE.Mesh(
       new THREE.BoxGeometry(leafW * 0.08, height * 0.72, thickness * 0.08), gold);
-    trunk.position.set(side * (width / 4), height * 0.5, thickness * 0.58);
-    g.add(trunk);
+    trunk.position.set(lx, height * 0.5, thickness * 0.58);
+    hinge.add(trunk);
     for (let i = 0; i < 3; i++) {
       const cup = new THREE.Mesh(new THREE.SphereGeometry(leafW * 0.1, 10, 8), gold);
-      cup.position.set(side * (width / 4), height * (0.28 + i * 0.2), thickness * 0.58);
+      cup.position.set(lx, height * (0.28 + i * 0.2), thickness * 0.58);
       cup.scale.set(1, 0.55, 0.45);
-      g.add(cup);
+      hinge.add(cup);
     }
   }
+  g.userData.leaves = leaves;
   // Five-sided posts — 6:31 "posts of olive tree". Five faces, so a cylinder
   // of five segments rather than a square or a round one.
   for (const side of [-1, 1]) {
@@ -487,11 +502,14 @@ export function buildTemple(cubit: number): Temple {
   addCollider(roof);
 
   // The olive-wood doors of the temple — 6:31-34. Hung in the east opening.
-  const door = templeDoor(doorH, doorW, C(0.2), olive, gold);
+  const door = templeDoor(doorH, doorW, C(0.2), olive, gold, THREE.MathUtils.degToRad(160));
   door.position.set(frontX, 0, 0);
   door.rotation.y = -Math.PI / 2;
   g.add(door);
-  addCollider(door);
+  // Each open leaf is solid; the opening between them is not. One collider
+  // for the whole group would be a box across the doorway — the shut door
+  // the tour used to fly through, in collider form.
+  for (const leaf of door.userData.leaves as THREE.Group[]) addCollider(leaf);
 
   // ── the veil, 2 Chron 3:14 ────────────────────────────────────────────
   // "An oracle of blue, and purple, and crimson, and fine linen, and made
@@ -690,14 +708,21 @@ export function buildTemple(cubit: number): Temple {
     ] as [number, number][]).map(([r, y]) => new THREE.Vector2(r, y)), 40),
     bronze);
   bowl.geometry.computeVertexNormals();
-  bowl.position.y = C(2.2);
+  // The bowl sits on the oxen's backs — 7:25 "the sea was set above upon
+  // them". It was placed at a round 2.2 cubits and floated 0.4 m clear of
+  // the backs (the owner saw the gap); the height is now read from the ox
+  // itself: body centre plus its half-height, at the scale the oxen are
+  // drawn.
+  const oxScale = C(1.15) / 0.85;
+  const oxBack = (0.55 + 0.42 * 0.85) * oxScale;
+  bowl.position.y = oxBack - 0.03;
   sea.add(bowl);
   // A handbreadth rim is stated (7:26); the exact conversion is not. Drawn
   // as a lip about 4 cm at the common cubit.
   const lip = new THREE.Mesh(
     new THREE.TorusGeometry(seaR * 0.96, C(0.08), 8, 40), bronze);
   lip.rotation.x = Math.PI / 2;
-  lip.position.y = C(2.2) + seaH * 0.98;
+  lip.position.y = bowl.position.y + seaH * 0.98;
   sea.add(lip);
   // Twelve oxen, three looking to each of the four cardinal faces — 7:25.
   for (let i = 0; i < 12; i++) {
@@ -706,7 +731,7 @@ export function buildTemple(cubit: number): Temple {
     ox.position.set(Math.cos(a) * C(2.4), 0, Math.sin(a) * C(2.4));
     ox.rotation.y = -a;   // each looks outward
     // The text says they faced outward (three to each quarter).
-    ox.scale.setScalar(C(1.15) / 0.85);
+    ox.scale.setScalar(oxScale);
     sea.add(ox);
     counts.oxen++;
   }
