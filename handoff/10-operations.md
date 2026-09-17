@@ -1,7 +1,7 @@
 # 10 · Operations and ownership
 
 ## Repositories
-- `SuyangLiuPaul/yahwehs-globe` — **private**; this product. Default `main`.
+- `SuyangLiuPaul/yahwehsworld` — **private**; this product. Default `main`.
 - `SuyangLiuPaul/SeekSparks` — sister app; `assets/bible_*.json` are read by
   scripts via `../SeekSparks/assets/` (relative path; clone side by side).
   SeekSparks itself has **no AI features by owner decision (2026-09-07)** —

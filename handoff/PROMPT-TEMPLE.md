@@ -9,7 +9,7 @@ is the job.
 ## The story so far
 
 There is a product called **雅伟之界 · Yahweh's World** (`world.yahwehword.com`,
-repo `SuyangLiuPaul/yahwehs-globe`, released v0.1.5). It is a 3D biblical
+repo `SuyangLiuPaul/yahwehsworld`, released v0.1.5). It is a 3D biblical
 atlas, written Chinese-first, and it exists because five other Bible-map
 products already exist and being a sixth one would be pointless. It is
 different in four ways, and only these four:

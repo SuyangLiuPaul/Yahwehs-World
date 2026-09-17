@@ -76,7 +76,7 @@ marks the full 1,443-event product or photographic visual target complete.
 
 ## Where things are
 
-- Repo: `SuyangLiuPaul/yahwehs-globe` (**public** since 2026-09-16, so GitHub
+- Repo: `SuyangLiuPaul/yahwehsworld` (**public** since 2026-09-16, so GitHub
   Releases can be fetched without a token), default branch `main`
 - Live: <https://world.yahwehword.com> (= `yahwehsworld.netlify.app`).
   **Prod does NOT auto-deploy** — `stop_builds` is on, by decision (D31); only
