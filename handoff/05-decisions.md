@@ -294,3 +294,14 @@ copied while Gradle was still writing it, and every check had looked at the
 build's intent rather than at the file. `build_apk.sh` now reads the APK's own
 `versionName` back and refuses on a mismatch; after uploading, download the
 asset again and check it there too.
+
+**D32 — A tally on a gate says only what the verse counts.** BATCH-7's temple
+gate said "39 side chambers". 1 Kings 6:5–10 counts storeys and gives their
+widths and height; it never counts rooms, so 39 was the model's own number
+presented as the text's. The gate now says 3 storeys. The rule generalises:
+the number a reader sees beside a verse must be a number that verse states,
+counted by the builder as it builds — 600 gourds because 7:24 says ten to the
+cubit on a thirty-cubit line, 400 pomegranates because 7:42 says so — and
+where the text gives a count for one thing and a form for nothing, the count
+is exact and the form is the least that reads as the thing named.
+

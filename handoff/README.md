@@ -12,7 +12,10 @@ from the repository on 2026-09-14.
 
 ## Reading order
 
-Latest implemented batch: **`BATCH-6.md` (2026-09-18)** — all 1,443 events
+Latest implemented batch: **`BATCH-8.md` (2026-09-18)** — Solomon's temple
+rebuilt from the verses: gold and carving inside, cherubim facing the holy
+place with the ark beneath, ten lampstands and tables, a tour measured for
+clipping (4 legs → 0). Before it, **`BATCH-6.md` (2026-09-18)** — all 1,443 events
 drawn, a menu for them, the year axis removed, and the three pages joined to
 each other on the verses they cite. Released as v0.1.5. Read it before `02`,
 which it supersedes wherever they disagree. `BATCH-5.md` (2026-09-15) is
@@ -42,7 +45,8 @@ marks the full 1,443-event product or photographic visual target complete.
 | — | `ASTRA-PROMPTS.md` | Phase-by-phase execution prompts for a token-scarce executor model |
 | — | `MANIFEST-assets.md` | Provenance ledger for every non-code asset; append to it, never delete from it |
 | 13 | `13-asset-library.md` | The 39 models the map and scenes still want, what they cost (measured), the payload budget that binds, and the rule that anything the text measures is built from the measurement and never generated |
-| — | `BATCH-6.md` | **The current batch** — events layer, events menu, why there is no year axis, and the corridors between the three pages |
+| — | `BATCH-8.md` | **The current batch** — the temple walk, rebuilt from 1 Kings 6–8 / 2 Chronicles 3–4 |
+| — | `BATCH-6.md` | Events layer, events menu, why there is no year axis, and the corridors between the three pages |
 | 14 | `14-native-builds.md` | macOS/Android/iOS builds, the signing key, and the four release scripts |
 | — | `EVENT-REVIEW.md` | Output of `node scripts/audit-events.mjs`. Regenerated, never hand-edited. Every number in it is measured — read it before believing any claim about coverage |
 

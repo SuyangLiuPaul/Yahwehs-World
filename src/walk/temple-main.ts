@@ -83,7 +83,7 @@ const sceneReady = Promise.all([materialsReady, ready]).then(([ok]) => {
   renderer.shadowMap.needsUpdate = true;
   const target = new THREE.WebGLCubeRenderTarget(128, { type: THREE.HalfFloatType });
   const probe = new THREE.CubeCamera(0.08, 80, target);
-  probe.position.set(CUBIT * 5, CUBIT * 8, 0);
+  probe.position.set(CUBIT * 8, CUBIT * 9, 0);
   probe.update(renderer, scene);
   const bake = new THREE.PMREMGenerator(renderer);
   const room = bake.fromCubemap(target.texture);
@@ -148,13 +148,19 @@ const hud = document.getElementById('hud')!;
 const whereEl = document.getElementById('where')!;
 const verseEl = document.getElementById('verse')!;
 
+// Every line is a number the text gives and the builder counted while
+// building. There is no "39 side chambers" here any more: 6:5–10 count
+// storeys, not rooms, and a tally that says more than the verse is a claim.
 const TALLY: [number, string, string, string][] = [
   [counts.pillars, 'bronze pillars', '铜柱', '1 Kgs 7:15'],
-  [counts.pomegranates, 'pomegranates on the capitals', '柱顶石榴', '1 Kgs 7:20'],
+  [counts.pomegranates, 'pomegranates on the two capitals', '两柱顶的石榴', '1 Kgs 7:42'],
   [counts.oxen, 'oxen under the sea', '铜海下的牛', '1 Kgs 7:25'],
-  [counts.lavers, 'lavers on stands', '盆座与盆', '1 Kgs 7:27–39'],
+  [counts.gourds, 'gourds cast under its brim', '海边的野瓜', '1 Kgs 7:24'],
+  [counts.lavers, 'lavers on wheeled bases', '盆座与盆', '1 Kgs 7:38'],
+  [counts.lampstands, 'lampstands of gold', '金灯台', '1 Kgs 7:49'],
+  [counts.tables, 'tables', '桌子', '2 Chr 4:8'],
   [counts.cherubim, 'cherubim in the oracle', '至圣所基路伯', '1 Kgs 6:23'],
-  [counts.sideChambers, 'side chambers', '旁屋', '1 Kgs 6:5–10'],
+  [counts.storeys, 'storeys of side chambers', '旁屋层数', '1 Kgs 6:6'],
 ];
 function renderTally() {
   document.getElementById('tally')!.innerHTML = TALLY

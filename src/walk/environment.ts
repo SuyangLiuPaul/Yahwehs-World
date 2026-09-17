@@ -28,7 +28,11 @@ function relief(x: number, z: number) {
   return Math.max(0, mass * (.30 + ridge * .90) - 13) * smooth(64, 120, d) * (1 - smooth(390, 500, d));
 }
 
-export function buildDesert() {
+/** `clear` says where the level, built ground is — no boulders there. The
+ *  default is the tabernacle's court and its approach; the temple passes its
+ *  own platform. */
+export function buildDesert(clear: (x: number, z: number) => boolean = (x, z) =>
+  (Math.abs(x) < 25 && Math.abs(z) < 14) || (x > 20 && Math.abs(z) < 4)) {
   const group = new THREE.Group(); group.name = 'Illustrative arid environment';
   const geo = new THREE.PlaneGeometry(1000, 1000, 256, 256); geo.rotateX(-Math.PI / 2);
   const p = geo.attributes.position!, colors = new Float32Array(p.count * 3);
@@ -67,7 +71,7 @@ export function buildDesert() {
   for (let i = 0; index < 360; i++) {
     const a = i * 2.399963, radius = 18 + (Math.sin(i * 78.23) * .5 + .5) ** .65 * 105;
     const x = Math.cos(a) * radius, z = Math.sin(a) * radius;
-    if ((Math.abs(x) < 25 && Math.abs(z) < 14) || (x > 20 && Math.abs(z) < 4)) continue;
+    if (clear(x, z)) continue;
     const size = .075 + (Math.sin(i * 6.3) * .5 + .5) ** 5 * 1.35;
     dummy.position.set(x, Math.max(0, relief(x, z) - .12) + size * .30, z);
     dummy.scale.set(size * 1.4, size, size * .9); dummy.rotation.set(i * .3, i, i * .12); dummy.updateMatrix();

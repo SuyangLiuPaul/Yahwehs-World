@@ -12,7 +12,8 @@ const random=()=>{randomState=(Math.imul(randomState,1664525)+1013904223)>>>0;re
 const cv = (size: number) => {
   const c = document.createElement('canvas');
   c.width = c.height = size;
-  return { c, x: c.getContext('2d')! };
+  // Every one of these is read back to derive a normal map.
+  return { c, x: c.getContext('2d', { willReadFrequently: true })! };
 };
 
 const wrap = (t: THREE.CanvasTexture, repeat: number) => {
@@ -28,7 +29,7 @@ const wrap = (t: THREE.CanvasTexture, repeat: number) => {
 function normalFrom(src: HTMLCanvasElement, strength = 2.2): THREE.CanvasTexture {
   const n = src.width;
   const { c, x } = cv(n);
-  const sd = src.getContext('2d')!.getImageData(0, 0, n, n).data;
+  const sd = src.getContext('2d', { willReadFrequently: true })!.getImageData(0, 0, n, n).data;
   const out = x.createImageData(n, n);
   const lum = (i: number) => (sd[i * 4]! * 0.3 + sd[i * 4 + 1]! * 0.59 + sd[i * 4 + 2]! * 0.11) / 255;
   for (let y = 0; y < n; y++) {
@@ -406,4 +407,248 @@ export function desertSky(): THREE.CanvasTexture {
   t.mapping = THREE.EquirectangularReflectionMapping;
   t.colorSpace = THREE.SRGBColorSpace;
   return t;
+}
+
+// ── Solomon's temple ────────────────────────────────────────────────────
+// 1 Kings 6:29: "内殿、外殿周围的墙上，都刻着基路伯、棕树，和初开的花" — on the
+// walls of BOTH rooms, carved cherubim, palm trees and open flowers, and all
+// of it overlaid with gold (6:22). The forms are not described beyond their
+// names, so the relief is drawn as no more than a palm, a winged figure and a
+// rosette — authored silhouettes, not recovered art — and lives in the NORMAL
+// map, where a carving lives: the colour stays gold and the light finds the
+// figure. A figure two metres tall in the wall, at the scale a carver would
+// have worked in a room ten metres high.
+
+/** A height field, white where the carving stands proud, on which the
+ *  relief motifs are drawn; the normal map is derived from it. */
+function reliefCanvas(n: number, draw: (x: CanvasRenderingContext2D, n: number) => void) {
+  const { c, x } = cv(n);
+  x.fillStyle = '#808080';
+  x.fillRect(0, 0, n, n);
+  draw(x, n);
+  // Soften the edges so the relief reads as carved and bevelled rather than
+  // stamped: a two-pass blur of the height field.
+  const blurred = cv(n);
+  blurred.x.filter = 'blur(2px)';
+  blurred.x.drawImage(c, 0, 0);
+  return blurred.c;
+}
+
+const palm = (x: CanvasRenderingContext2D, cx: number, base: number, h: number) => {
+  // Trunk, tapered, with the ring marks of a date palm.
+  x.fillStyle = '#c8c8c8';
+  x.beginPath();
+  x.moveTo(cx - h * 0.045, base);
+  x.lineTo(cx + h * 0.045, base);
+  x.lineTo(cx + h * 0.025, base - h * 0.62);
+  x.lineTo(cx - h * 0.025, base - h * 0.62);
+  x.closePath(); x.fill();
+  x.strokeStyle = '#9a9a9a'; x.lineWidth = 2;
+  for (let i = 1; i < 14; i++) {
+    const y = base - (h * 0.62) * (i / 14);
+    x.beginPath(); x.moveTo(cx - h * 0.04, y); x.lineTo(cx + h * 0.04, y); x.stroke();
+  }
+  // Fronds: nine, fanned from the crown, each a tapered leaf with a midrib.
+  const crownY = base - h * 0.62;
+  for (let i = 0; i < 9; i++) {
+    const a = -Math.PI / 2 + (i - 4) * 0.36;
+    const len = h * (0.30 - Math.abs(i - 4) * 0.02);
+    x.save(); x.translate(cx, crownY); x.rotate(a);
+    x.fillStyle = '#d6d6d6';
+    x.beginPath();
+    x.moveTo(0, 0);
+    x.quadraticCurveTo(len * 0.5, -len * 0.09, len, 0);
+    x.quadraticCurveTo(len * 0.5, len * 0.09, 0, 0);
+    x.fill();
+    x.strokeStyle = '#9a9a9a'; x.lineWidth = 1.5;
+    x.beginPath(); x.moveTo(0, 0); x.lineTo(len, 0); x.stroke();
+    x.restore();
+  }
+};
+
+const cherubRelief = (x: CanvasRenderingContext2D, cx: number, base: number, h: number) => {
+  // A standing winged figure: robe, head, two raised wings with feather
+  // lines. No face, no dress detail — the text names the creature and
+  // nothing about its appearance.
+  x.fillStyle = '#cfcfcf';
+  x.beginPath();
+  x.moveTo(cx - h * 0.09, base);
+  x.lineTo(cx + h * 0.09, base);
+  x.lineTo(cx + h * 0.05, base - h * 0.55);
+  x.lineTo(cx - h * 0.05, base - h * 0.55);
+  x.closePath(); x.fill();
+  x.beginPath(); x.arc(cx, base - h * 0.62, h * 0.06, 0, Math.PI * 2); x.fill();
+  for (const s of [-1, 1]) {
+    x.save(); x.translate(cx, base - h * 0.5); x.scale(s, 1);
+    x.fillStyle = '#dedede';
+    x.beginPath();
+    x.moveTo(h * 0.04, 0);
+    x.quadraticCurveTo(h * 0.22, -h * 0.30, h * 0.30, -h * 0.62);
+    x.quadraticCurveTo(h * 0.20, -h * 0.40, h * 0.06, -h * 0.12);
+    x.closePath(); x.fill();
+    x.strokeStyle = '#a8a8a8'; x.lineWidth = 1.5;
+    for (let i = 1; i < 6; i++) {
+      const t = i / 6;
+      x.beginPath();
+      x.moveTo(h * 0.05 + t * h * 0.02, -t * h * 0.12);
+      x.lineTo(h * 0.10 + t * h * 0.19, -t * h * 0.60);
+      x.stroke();
+    }
+    x.restore();
+  }
+};
+
+const rosette = (x: CanvasRenderingContext2D, cx: number, cy: number, r: number) => {
+  // "初开的花" — an open flower: eight petals round a boss.
+  x.fillStyle = '#d2d2d2';
+  for (let i = 0; i < 8; i++) {
+    const a = (i / 8) * Math.PI * 2;
+    x.save(); x.translate(cx, cy); x.rotate(a);
+    x.beginPath(); x.ellipse(r * 0.55, 0, r * 0.45, r * 0.2, 0, 0, Math.PI * 2); x.fill();
+    x.restore();
+  }
+  x.fillStyle = '#e4e4e4';
+  x.beginPath(); x.arc(cx, cy, r * 0.22, 0, Math.PI * 2); x.fill();
+};
+
+/** The carved and gilded wall of the house — 6:29 in relief, 6:22 in
+ *  colour. One tile is one palm and one cherub between two bands of open
+ *  flowers; `worldMetres` is how wide that tile stands on the wall, so the
+ *  figures are carved at a human scale whatever the wall's size. bevelBox
+ *  maps two texture units to the metre, which the repeat accounts for. */
+export function carvedGold(worldMetres = 2.6): Surface {
+  const n = 1024;
+  const height = reliefCanvas(n, (x) => {
+    palm(x, n * 0.26, n * 0.80, n * 0.58);
+    cherubRelief(x, n * 0.74, n * 0.80, n * 0.58);
+    for (let i = 0; i < 6; i++) {
+      rosette(x, n * (0.09 + i * 0.164), n * 0.09, n * 0.055);
+      rosette(x, n * (0.09 + i * 0.164), n * 0.91, n * 0.055);
+    }
+  });
+  // Colour: the beaten-gold ground, with the relief faintly warmer where it
+  // stands proud so the carving reads even where the light is flat.
+  const { c, x } = cv(n);
+  x.fillStyle = '#efd484';
+  x.fillRect(0, 0, n, n);
+  for (let i = 0; i < 900; i++) {
+    const r = 6 + random() * 18;
+    x.save(); x.translate(random() * n, random() * n);
+    const grd = x.createRadialGradient(0, 0, 0, 0, 0, r);
+    grd.addColorStop(0, 'rgba(255,248,222,0.16)');
+    grd.addColorStop(1, 'rgba(196,156,66,0.10)');
+    x.fillStyle = grd;
+    x.beginPath(); x.arc(0, 0, r, 0, Math.PI * 2); x.fill();
+    x.restore();
+  }
+  x.globalAlpha = 0.28;
+  x.globalCompositeOperation = 'multiply';
+  x.drawImage(height, 0, 0);
+  x.globalAlpha = 1;
+  x.globalCompositeOperation = 'source-over';
+  noise(x, n, 48, 0.04);
+  const repeat = 1 / (worldMetres * 2);
+  const map = new THREE.CanvasTexture(c);
+  map.wrapS = map.wrapT = THREE.RepeatWrapping; map.repeat.set(repeat, repeat);
+  map.colorSpace = THREE.SRGBColorSpace; map.anisotropy = 8;
+  const normalMap = normalFrom(height, 6.5);
+  normalMap.repeat.set(repeat, repeat); normalMap.anisotropy = 8;
+  const rough = cv(256); rough.x.fillStyle = '#b4b4b4'; rough.x.fillRect(0, 0, 256, 256);
+  noise(rough.x, 256, 14, 0.22); noise(rough.x, 256, 96, 0.10);
+  const roughnessMap = wrap(new THREE.CanvasTexture(rough.c), 3); roughnessMap.colorSpace = THREE.NoColorSpace;
+  return { map, normalMap, roughnessMap };
+}
+
+/** The floor of the house: boards of cypress (6:15) overlaid with gold
+ *  (6:30). Plank seams in the gold, so the floor reads as boards under leaf
+ *  rather than as a poured metal sheet. */
+export function goldPlanks(): Surface {
+  const n = 512;
+  const { c, x } = cv(n);
+  x.fillStyle = '#ecd07e';
+  x.fillRect(0, 0, n, n);
+  for (let i = 0; i < 500; i++) {
+    const r = 4 + random() * 12;
+    x.save(); x.translate(random() * n, random() * n);
+    const grd = x.createRadialGradient(0, 0, 0, 0, 0, r);
+    grd.addColorStop(0, 'rgba(255,246,214,0.14)');
+    grd.addColorStop(1, 'rgba(190,150,60,0.09)');
+    x.fillStyle = grd;
+    x.beginPath(); x.arc(0, 0, r, 0, Math.PI * 2); x.fill();
+    x.restore();
+  }
+  // Boards a cubit and a half wide, running the length of the house.
+  const height = reliefCanvas(n, (hx) => {
+    hx.strokeStyle = '#3c3c3c'; hx.lineWidth = 3;
+    for (let i = 0; i < 4; i++) {
+      const y = i * (n / 4) + 2;
+      hx.beginPath(); hx.moveTo(0, y); hx.lineTo(n, y); hx.stroke();
+      // Staggered board ends.
+      const bx = (i % 2 ? n * 0.3 : n * 0.75);
+      hx.beginPath(); hx.moveTo(bx, y); hx.lineTo(bx, y + n / 4); hx.stroke();
+    }
+  });
+  x.globalAlpha = 0.35; x.globalCompositeOperation = 'multiply';
+  x.drawImage(height, 0, 0);
+  x.globalAlpha = 1; x.globalCompositeOperation = 'source-over';
+  noise(x, n, 40, 0.05);
+  // Four boards per tile, boards 0.67 m wide: a tile is 2.67 m.
+  const repeat = 1 / (2.67 * 2);
+  const map = new THREE.CanvasTexture(c);
+  map.wrapS = map.wrapT = THREE.RepeatWrapping; map.repeat.set(repeat, repeat);
+  map.colorSpace = THREE.SRGBColorSpace; map.anisotropy = 8;
+  const normalMap = normalFrom(height, 4.0);
+  normalMap.repeat.set(repeat, repeat); normalMap.anisotropy = 8;
+  const rough = cv(256); rough.x.fillStyle = '#b8b8b8'; rough.x.fillRect(0, 0, 256, 256);
+  noise(rough.x, 256, 16, 0.2); noise(rough.x, 256, 100, 0.1);
+  const roughnessMap = wrap(new THREE.CanvasTexture(rough.c), 3); roughnessMap.colorSpace = THREE.NoColorSpace;
+  return { map, normalMap, roughnessMap };
+}
+
+/** A laver base's panel — 7:29 "心子上有狮子和牛，并基路伯": a lion, an ox and
+ *  a cherub in relief on cast bronze, with the pendant wreaths (璎珞) below.
+ *  Silhouettes only; the text names the animals and nothing of their pose. */
+export function bronzePanel(): Surface {
+  const n = 512;
+  const height = reliefCanvas(n, (x) => {
+    // Frame.
+    x.strokeStyle = '#d0d0d0'; x.lineWidth = 14;
+    x.strokeRect(22, 22, n - 44, n - 44);
+    // Lion, left: a body, a maned head, a raised tail.
+    x.fillStyle = '#cdcdcd';
+    x.beginPath(); x.ellipse(n * 0.22, n * 0.5, n * 0.11, n * 0.06, 0, 0, Math.PI * 2); x.fill();
+    x.beginPath(); x.arc(n * 0.33, n * 0.44, n * 0.06, 0, Math.PI * 2); x.fill();
+    for (let i = 0; i < 4; i++) { x.fillRect(n * (0.13 + i * 0.05), n * 0.53, n * 0.02, n * 0.09); }
+    x.strokeStyle = '#cdcdcd'; x.lineWidth = 5;
+    x.beginPath(); x.moveTo(n * 0.11, n * 0.48); x.quadraticCurveTo(n * 0.04, n * 0.36, n * 0.08, n * 0.30); x.stroke();
+    // Ox, centre: heavier body, horns.
+    x.fillStyle = '#cdcdcd';
+    x.beginPath(); x.ellipse(n * 0.52, n * 0.52, n * 0.12, n * 0.075, 0, 0, Math.PI * 2); x.fill();
+    x.beginPath(); x.ellipse(n * 0.65, n * 0.47, n * 0.05, n * 0.045, 0, 0, Math.PI * 2); x.fill();
+    for (let i = 0; i < 4; i++) { x.fillRect(n * (0.43 + i * 0.055), n * 0.57, n * 0.022, n * 0.08); }
+    x.lineWidth = 4;
+    x.beginPath(); x.moveTo(n * 0.66, n * 0.43); x.lineTo(n * 0.70, n * 0.36); x.stroke();
+    x.beginPath(); x.moveTo(n * 0.62, n * 0.43); x.lineTo(n * 0.60, n * 0.36); x.stroke();
+    // Cherub, right.
+    cherubRelief(x, n * 0.84, n * 0.66, n * 0.42);
+    // Pendant wreaths along the bottom — 7:29.
+    x.strokeStyle = '#c4c4c4'; x.lineWidth = 6;
+    for (let i = 0; i < 6; i++) {
+      const x0 = n * (0.10 + i * 0.135);
+      x.beginPath(); x.moveTo(x0, n * 0.80); x.quadraticCurveTo(x0 + n * 0.067, n * 0.90, x0 + n * 0.135, n * 0.80); x.stroke();
+    }
+  });
+  const { c, x } = cv(n);
+  x.fillStyle = '#b7966c';
+  x.fillRect(0, 0, n, n);
+  noise(x, n, 10, 0.05); noise(x, n, 70, 0.03);
+  x.globalAlpha = 0.3; x.globalCompositeOperation = 'multiply';
+  x.drawImage(height, 0, 0);
+  x.globalAlpha = 1; x.globalCompositeOperation = 'source-over';
+  const map = new THREE.CanvasTexture(c);
+  map.colorSpace = THREE.SRGBColorSpace; map.anisotropy = 8;
+  map.wrapS = map.wrapT = THREE.ClampToEdgeWrapping;
+  const normalMap = normalFrom(height, 5.0);
+  normalMap.wrapS = normalMap.wrapT = THREE.ClampToEdgeWrapping;
+  return { map, normalMap };
 }

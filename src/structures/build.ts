@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { metres, type Structure } from './specs.ts';
 import { buildMenorah, type BranchForm } from './menorah.ts';
 import { buildCherub } from './cherub.ts';
+import { buildPillar, buildSea } from './temple-parts.ts';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 // Geometry is generated from the stated dimensions, never modelled by hand.
@@ -212,52 +213,24 @@ export function buildStructure(s: Structure, cubitM: number, form: BranchForm = 
       break;
     }
     case 'bronzePillar': {
-      // One shaft at the Kings height (18 cubits), circumference 12 → r = 12/2π.
-      // The 35-cubit Chronicles reading is named on the card, not drawn twice.
-      const BRZ = 0x8a6a3a;
-      const m = mat(BRZ, { metalness: 0.85, roughness: 0.45 });
-      const radius = d('girth') / (2 * Math.PI);
-      const shaft = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius * 1.05, H, 28), m);
-      shaft.position.y = H / 2;
-      g.add(shaft);
-      const capH = d('capital');
-      const cap = new THREE.Mesh(new THREE.CylinderGeometry(radius * 1.3, radius * 1.1, capH, 28), m);
-      cap.position.y = H + capH / 2;
-      g.add(cap);
-      const band = new THREE.Mesh(new THREE.TorusGeometry(radius * 1.15, capH * 0.08, 8, 28), m);
-      band.rotation.x = Math.PI / 2;
-      band.position.y = H + capH * 0.55;
-      g.add(band);
+      // The same pillar the walk stands before — capital, net, two rows of
+      // pomegranates, lily-work — at the Kings height; the 35-cubit
+      // Chronicles reading is named on the card, not drawn twice.
+      const cub = (key: string) => s.dims.find((x) => x.key === key)?.cubits ?? 0;
+      const kings = s.counts?.find((c) => c.ref.startsWith('王上'))?.n ?? 200;
+      const { group } = buildPillar(
+        { cubit: cubitM, height: cub('height'), girth: cub('girth'), capital: cub('capital'), pomegranates: kings },
+        mat(BRONZE, { metalness: 0.85, roughness: 0.45 }));
+      g.add(group);
       break;
     }
     case 'bronzeSea': {
-      // 10 across, 5 high on twelve oxen — 1 Kgs 7:23-25.
-      const BRZ = 0x8a6a3a;
-      const m = mat(BRZ, { metalness: 0.88, roughness: 0.4 });
-      const seaR = (d('diameter') || W) / 2;
-      const bowl = new THREE.Mesh(
-        new THREE.LatheGeometry(([
-          [0, 0.1], [seaR * 0.55, 0.06], [seaR * 0.82, 0.25], [seaR * 0.95, H * 0.55],
-          [seaR, H * 0.9], [seaR * 0.92, H], [seaR * 0.88, H * 0.9], [0, 0.12],
-        ] as [number, number][]).map(([rr, yy]) => new THREE.Vector2(rr, yy)), 36),
-        m);
-      bowl.geometry.computeVertexNormals();
-      bowl.position.y = H * 0.45;
-      g.add(bowl);
-      for (let i = 0; i < 12; i++) {
-        const a = (i / 12) * Math.PI * 2;
-        const ox = new THREE.Group();
-        const body = new THREE.Mesh(new THREE.SphereGeometry(seaR * 0.18, 12, 10), m);
-        body.scale.set(1.3, 0.8, 0.9);
-        body.position.y = seaR * 0.2;
-        ox.add(body);
-        const head = new THREE.Mesh(new THREE.SphereGeometry(seaR * 0.09, 10, 8), m);
-        head.position.set(seaR * 0.22, seaR * 0.26, 0);
-        ox.add(head);
-        ox.position.set(Math.cos(a) * seaR * 0.42, 0, Math.sin(a) * seaR * 0.42);
-        ox.rotation.y = -a;
-        g.add(ox);
-      }
+      // 10 across, 5 high, 30 around, on twelve oxen — the walk's own sea.
+      const cub = (key: string) => s.dims.find((x) => x.key === key)?.cubits ?? 0;
+      const { group } = buildSea(
+        { cubit: cubitM, diameter: cub('diameter'), height: cub('height'), girth: cub('girth') },
+        mat(BRONZE, { metalness: 0.88, roughness: 0.4 }));
+      g.add(group);
       break;
     }
     default: {
