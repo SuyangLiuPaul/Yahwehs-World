@@ -43,7 +43,13 @@ const camera = new THREE.PerspectiveCamera(
   65, Math.max(1, innerWidth) / Math.max(1, innerHeight), 0.04, 1200);
 
 const sun = new THREE.DirectionalLight(0xfff0d6, 2.5);
-sun.position.set(60, 40, 28);
+// The sun stands in the SOUTH. Both walks put east at +x and north at +z, and
+// the sun was at +z — north — which at the latitude of Jerusalem (31.8°N) it
+// never is: the sun's declination never exceeds 23.4°, so the midday sun is
+// south of the zenith every day of the year. It also left the whole south
+// side in shade, which is the side the molten sea, the lavers and the door of
+// the side chambers are on.
+sun.position.set(60, 44, -34);
 sun.castShadow = true;
 sun.shadow.mapSize.set(4096, 4096);
 // The house is 60 × 20 × 30 cubits (~27 × 9 × 13 m); the court furnishings
@@ -60,7 +66,7 @@ sun.shadow.radius = 3;
 scene.add(sun);
 scene.add(new THREE.HemisphereLight(0x9fc2e0, 0xb9a377, 0.28));
 
-const { group, colliders, counts } = buildTemple(CUBIT);
+const { group, colliders, platforms, floorY, counts, veilCanvas } = buildTemple(CUBIT);
 const ready = Promise.resolve(true);
 group.traverse((o) => {
   if (!(o as THREE.Mesh).isMesh) return;
@@ -105,7 +111,7 @@ renderer.shadowMap.needsUpdate = true;
 void ready.then(() => { renderer.shadowMap.needsUpdate = true; });
 pmrem.dispose();
 
-const walker = new Walker(camera, canvas, colliders);
+const walker = new Walker(camera, canvas, colliders, { platforms, floorY });
 scene.add(walker.yaw);
 const composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, samples: 2 }));
 composer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
@@ -121,7 +127,13 @@ composer.addPass(new OutputPass());
 // the temple would have come to it.
 walker.moveTo(CUBIT * 78, 0, Math.PI / 2);
 
-const ZONES: { test: (x: number, z: number) => boolean; zh: string; en: string; ref: string }[] = [
+// Where the visitor is, now that "where" includes how high. The first two
+// entries are places the walk could not reach at all before this pass.
+const ZONES: { test: (x: number, z: number, y: number) => boolean; zh: string; en: string; ref: string }[] = [
+  { zh: '旁屋顶上', en: 'On the roof of the side chambers', ref: '王上 6:6、6:8 · 1 Kgs 6:6, 6:8',
+    test: (_x, _z, y) => y > CUBIT * 13 },
+  { zh: '铜坛上', en: 'On the bronze altar', ref: '代下 4:1；出 20:26 · 2 Chr 4:1; Ex 20:26',
+    test: (x, z, y) => y > CUBIT * 8 && Math.abs(x - CUBIT * 61) < CUBIT * 12 && Math.abs(z) < CUBIT * 12 },
   { zh: '至圣所', en: 'The most holy place', ref: '王上 6:16–20 · 1 Kgs 6:16–20',
     test: (x, z) => x < CUBIT * -10 && x > CUBIT * -30 && Math.abs(z) < CUBIT * 10 },
   { zh: '圣所', en: 'The holy place', ref: '王上 6:17 · 1 Kgs 6:17',
@@ -179,6 +191,11 @@ if (touchOnly) {
 document.getElementById('enter')!.addEventListener('click', () => {
   if (touchOnly) walker.enterTouch(); else canvas.click();
 });
+// Space jumps on a keyboard. A phone has no Space bar, so it gets a button —
+// on a touch screen the walk is the only way up the ramp and the stair.
+const jumpButton = document.getElementById('walk-jump')!;
+jumpButton.hidden = !touchOnly;
+jumpButton.addEventListener('click', () => { walker.jump(); });
 setGate(true);
 
 walker.onLockChange = (locked) => {
@@ -197,6 +214,32 @@ const tourFill = tourBar.querySelector('i') as HTMLElement;
 const tourToggle = document.getElementById('tour-toggle')!;
 const stopSelect = document.getElementById('tour-stop') as HTMLSelectElement;
 const veilFade = document.getElementById('view-transition')!;
+
+// Crossing into the most holy place used to be a dissolve to near-black: the
+// owner walked it and said it did not feel like a veil at all, which is fair —
+// a black screen is what a scene change looks like, not what a curtain looks
+// like. The screen now fills with the veil's own woven face (2 Chr 3:14: blue,
+// purple, crimson and fine linen, with cherubim worked in it) and the weave
+// swells as the camera passes through it, while the tour keeps the camera
+// moving along the line rather than standing still behind a fade.
+let veilDressed = false;
+let veilUrl = '';
+function dressVeil(fade: number) {
+  if (!veilDressed) {
+    veilUrl ||= veilCanvas.toDataURL('image/png');
+    veilFade.style.backgroundImage = `url(${veilUrl})`;
+    veilFade.style.backgroundColor = '#241c3d';
+    veilDressed = true;
+  }
+  veilFade.style.backgroundSize = `${(170 + 190 * fade).toFixed(0)}%`;
+  veilFade.style.backgroundPosition = 'center';
+}
+function undressVeil() {
+  if (!veilDressed) return;
+  veilFade.style.backgroundImage = '';
+  veilFade.style.backgroundColor = '';
+  veilDressed = false;
+}
 
 let tourCaption: { zh: string; en: string; ref: string } | null = null;
 
@@ -227,8 +270,18 @@ function startTour() {
     Math.atan2(-(first.at.x - first.x), -(first.at.z - first.z)));
   tour.start(walker.pose);
 }
+/** A tour can end in the air. Handing the visitor back a camera thirteen
+ *  metres above the paving and letting gravity have it is not a handover, so
+ *  they are set down in the court, facing the house, where the walk began. */
+function landIfAirborne() {
+  if (walker.position.y < 3) return;
+  const ground = TEMPLE_TOUR[1]!;
+  walker.moveTo(ground.x * CUBIT, ground.z * CUBIT,
+    Math.atan2(-(ground.at.x - ground.x), -(ground.at.z - ground.z)));
+}
 function endTour() {
   tour.stop();
+  landIfAirborne();
   tourCaption = null;
   tourToggle.hidden = true;
   tourBar.hidden = true;
@@ -273,7 +326,7 @@ function updateHud() {
   you.setAttribute('cy', String(PLAN.y0 + PLAN.h * Math.max(-0.12, Math.min(1.12, v))));
   if (tourCaption) return;
 
-  const zone = ZONES.find((zn) => zn.test(x, z));
+  const zone = ZONES.find((zn) => zn.test(x, z, walker.position.y - 1.65));
   const name = zone ? t(zone.en, zone.zh) : t('In the court', '院内');
   if (name === lastZone) return;
   lastZone = name;
@@ -321,8 +374,14 @@ const clock = new THREE.Clock();
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.1);
   const pose = tour.update(dt);
-  if (pose) walker.setPose(pose); else walker.update(dt);
-  veilFade.style.opacity = String(tour.fade);
+  // A paused tour still owns the camera. Without this the walker's own
+  // physics ran under a posed camera, and every stop above head height fell
+  // out of the sky the moment the tour was paused — which is also how the
+  // aerial views were first photographed from the floor.
+  if (pose) walker.setPose(pose); else if (!tour.paused) walker.update(dt);
+  const fade = tour.fade;
+  veilFade.style.opacity = String(fade);
+  if (fade > 0 && tour.crossing === 'veil') dressVeil(fade); else if (fade === 0) undressVeil();
   updateHud();
   renderer.info.reset();
   composer.render();
@@ -330,7 +389,7 @@ renderer.setAnimationLoop(() => {
 
 if (import.meta.env.DEV) {
   (globalThis as unknown as Record<string, unknown>).__temple = {
-    scene, camera, renderer, walker, counts, colliders, CUBIT, updateHud,
+    scene, camera, renderer, walker, counts, colliders, platforms, floorY, CUBIT, updateHud,
     tour, startTour, endTour, TOUR: TEMPLE_TOUR, ready, materialsReady: sceneReady, inspectStop,
     snapshot(w = 1400, h = 900) {
       const prev = { w: renderer.domElement.width, h: renderer.domElement.height };

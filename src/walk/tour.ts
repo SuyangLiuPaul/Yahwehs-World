@@ -18,6 +18,12 @@ export interface Stop {
   at: { x: number; z: number };
   /** Eye height of the thing being looked at, in cubits, for the pitch. */
   atY?: number;
+  /** How high the eye itself stands, in cubits above the floor. Default is a
+   *  person's 1.65 m. A building 30 cubits tall cannot be seen from inside a
+   *  person's height: the owner watched the whole temple tour and said there
+   *  was no holistic view and that the roof was never visible, which is what
+   *  a tour taken entirely at eye level looks like. */
+  y?: number;
   /** Fixed inclination, for stops that look at nothing in particular. */
   pitch?: number;
   /** Seconds to travel here, then seconds to stand still. */
@@ -28,8 +34,11 @@ export interface Stop {
    *  watched it happen. scripts/audit-tour.mjs samples exactly this path
    *  against the walk's own colliders. */
   via?: { x: number; z: number }[];
-  /** Educational cut past a restricted barrier; never fly through a curtain. */
+  /** Educational cut past a restricted barrier; never fly through a curtain.
+   *  `through` names the barrier, so the page can make the crossing look like
+   *  what is being crossed instead of a black dissolve. */
   cut?: boolean;
+  through?: 'veil';
   zh: string; en: string; ref: string;
 }
 
@@ -94,14 +103,18 @@ function facing(s: Stop): number {
   return Math.atan2(-(s.at.x - s.x), -(s.at.z - s.z));
 }
 
+/** The eye's own height at a stop, in metres. */
+function eyeOf(s: Stop, cubit: number): number {
+  return s.y === undefined ? 1.65 : s.y * cubit;
+}
+
 /** Downward angle to the thing's own height, so a low object is looked at
- *  rather than over. */
+ *  rather than over — and, from a stop above the roof, looked DOWN at. */
 function inclination(s: Stop, cubit: number): number {
   if (s.atY === undefined) return s.pitch ?? 0;
-  const EYE = 1.65;
   const dist = Math.hypot(s.at.x - s.x, s.at.z - s.z) * cubit;
   if (dist < 0.1) return 0;
-  return Math.atan2(s.atY * cubit - EYE, dist);
+  return Math.atan2(s.atY * cubit - eyeOf(s, cubit), dist);
 }
 
 const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
@@ -112,7 +125,7 @@ export class Tour {
   private index = -1;
   private phase: 'travel' | 'dwell' = 'dwell';
   private t = 0;
-  private from = { x: 0, z: 0, yaw: 0, pitch: 0 };
+  private from = { x: 0, z: 0, y: 1.65, yaw: 0, pitch: 0 };
   running = false;
   paused=false;
   /** The stop list this tour walks. Defaults to the tabernacle's; the temple
@@ -126,9 +139,9 @@ export class Tour {
   onStop?: (s: Stop, index: number, total: number) => void;
   onEnd?: () => void;
 
-  start(current: { x: number; z: number; yaw: number; pitch: number }, stops?: readonly Stop[]) {
+  start(current: { x: number; z: number; y?: number; yaw: number; pitch: number }, stops?: readonly Stop[]) {
     if (stops) this.stops = stops;
-    this.from = { ...current };
+    this.from = { y: 1.65, ...current };
     this.index = 0;
     this.phase = this.stops[0]!.travel > 0 ? 'travel' : 'dwell';
     this.t = 0;
@@ -141,36 +154,51 @@ export class Tour {
   pause(){this.running=false;this.paused=true;}
   resume(){if(this.paused){this.running=true;this.paused=false;}}
   get fade(){const s=this.stops[this.index];return s?.cut&&this.phase==='travel'?Math.sin(Math.PI*Math.min(1,this.t/s.travel)):0;}
+  /** The barrier being crossed this frame, for a page that wants the crossing
+   *  to look like the thing it crosses. */
+  get crossing(){const s=this.stops[this.index];return s?.cut&&this.phase==='travel'?s.through??null:null;}
   goTo(index:number){
     this.index=THREE.MathUtils.clamp(index,0,this.stops.length-1);
     const s=this.stops[this.index]!;this.phase='dwell';this.t=0;
     this.onStop?.(s,this.index,this.stops.length);
-    return {x:s.x*this.cubit,z:s.z*this.cubit,yaw:facing(s),pitch:inclination(s,this.cubit)};
+    return {x:s.x*this.cubit,y:eyeOf(s,this.cubit),z:s.z*this.cubit,yaw:facing(s),pitch:inclination(s,this.cubit)};
   }
 
   /** Returns where the camera should be this frame, or null when not running. */
-  update(dt: number): { x: number; z: number; yaw: number; pitch: number } | null {
+  update(dt: number): { x: number; z: number; y: number; yaw: number; pitch: number } | null {
     if (!this.running) return null;
     const s = this.stops[this.index];
     if (!s) { this.running = false; this.onEnd?.(); return null; }
 
     const target = {
-      x: s.x * this.cubit, z: s.z * this.cubit,
+      x: s.x * this.cubit, z: s.z * this.cubit, y: eyeOf(s, this.cubit),
       yaw: facing(s), pitch: inclination(s, this.cubit),
     };
     this.t += dt;
 
     if (this.phase === 'travel') {
       const k = easeInOut(Math.min(1, this.t / s.travel));
-      if(s.cut){
-        const out=this.t<s.travel/2?this.from:target;
-        if(this.t>=s.travel){this.phase='dwell';this.t=0;}
-        return {...out};
+      if (s.cut) {
+        // A cut used to be a jump cut: the camera stood still, the screen went
+        // dark, and the camera was somewhere else. Crossing the veil felt like
+        // nothing because nothing happened. Now the camera keeps moving along
+        // the line between the two stops while the screen is covered, so the
+        // visitor goes THROUGH the curtain rather than around the moment.
+        const out = {
+          x: THREE.MathUtils.lerp(this.from.x, target.x, k),
+          z: THREE.MathUtils.lerp(this.from.z, target.z, k),
+          y: THREE.MathUtils.lerp(this.from.y, target.y, k),
+          yaw: this.from.yaw + wrap(target.yaw - this.from.yaw) * k,
+          pitch: THREE.MathUtils.lerp(this.from.pitch, target.pitch, k),
+        };
+        if (this.t >= s.travel) { this.phase = 'dwell'; this.t = 0; }
+        return out;
       }
       const yawDelta = wrap(target.yaw - this.from.yaw);
       const { x, z } = this.along(s, k);
       const out = {
         x, z,
+        y: THREE.MathUtils.lerp(this.from.y, target.y, k),
         yaw: this.from.yaw + yawDelta * k,
         pitch: THREE.MathUtils.lerp(this.from.pitch, target.pitch, k),
       };
@@ -179,7 +207,7 @@ export class Tour {
     }
 
     if (this.t >= s.dwell) {
-      this.from = { x: target.x, z: target.z, yaw: target.yaw, pitch: target.pitch };
+      this.from = { x: target.x, z: target.z, y: target.y, yaw: target.yaw, pitch: target.pitch };
       this.index++;
       const next = this.stops[this.index];
       if (!next) { this.running = false; this.onEnd?.(); return target; }

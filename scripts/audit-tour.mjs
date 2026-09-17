@@ -31,27 +31,50 @@ for (const { path, handle } of PAGES) {
     const stops = W.TOUR;
     // The same path the Tour class walks: from the previous stop, through any
     // `via` waypoints, to this stop, in metres.
+    // A stop may stand above head height — the temple's approach and its roof
+    // views do. Testing every leg at a fixed 1.65 m would call a pass ABOVE
+    // the roof a collision with it, and would miss one that is genuinely
+    // through a wall on the way down, so the eye's own height is interpolated
+    // along the leg exactly as the Tour interpolates it.
+    const eyeOf = (s) => (s.y === undefined ? EYE : s.y * cubit);
     const legs = [];
     for (let i = 1; i < stops.length; i++) {
       const prev = stops[i - 1], s = stops[i];
       if (s.cut) continue; // an educational cut is a fade, not a flight
       const pts = [prev, ...(s.via ?? []), s].map((p) => [p.x * cubit, p.z * cubit]);
-      let hits = 0, samples = 0;
+      const y0 = eyeOf(prev), y1 = eyeOf(s);
+      // Arc length, so the eye's height moves with the camera and not with
+      // the waypoint index.
+      const seg = [];
+      let total = 0;
+      for (let k = 1; k < pts.length; k++) {
+        const d = Math.hypot(pts[k][0] - pts[k - 1][0], pts[k][1] - pts[k - 1][1]);
+        seg.push(d); total += d;
+      }
+      let done = 0;
+      let hits = 0, samples = 0, lowest = Infinity, highest = -Infinity;
       for (let k = 1; k < pts.length; k++) {
         const [ax, az] = pts[k - 1], [bx, bz] = pts[k];
         const n = Math.max(2, Math.ceil(Math.hypot(bx - ax, bz - az) / 0.15));
         for (let j = 0; j <= n; j++) {
           const t = j / n, x = ax + (bx - ax) * t, z = az + (bz - az) * t;
+          const u = total > 0 ? (done + seg[k - 1] * t) / total : 1;
+          const y = y0 + (y1 - y0) * u;
+          lowest = Math.min(lowest, y); highest = Math.max(highest, y);
           samples++;
           // The eye and a small body around it, so grazing a wall counts.
           const inside = W.colliders.some((c) =>
             x >= c.min.x - 0.15 && x <= c.max.x + 0.15 &&
             z >= c.min.z - 0.15 && z <= c.max.z + 0.15 &&
-            EYE >= c.min.y && EYE <= c.max.y);
+            y >= c.min.y && y <= c.max.y);
           if (inside) hits++;
         }
+        done += seg[k - 1];
       }
-      legs.push({ leg: `${i} → ${s.en.slice(0, 40)}`, samples, hits, via: (s.via ?? []).length });
+      legs.push({
+        leg: `${i} → ${s.en.slice(0, 40)}`, samples, hits, via: (s.via ?? []).length,
+        eye: highest - lowest < 0.05 ? `${lowest.toFixed(1)} m` : `${lowest.toFixed(1)}–${highest.toFixed(1)} m`,
+      });
     }
     const seconds = stops.reduce((a, s) => a + s.travel + s.dwell, 0);
     return { legs, seconds };
@@ -59,7 +82,7 @@ for (const { path, handle } of PAGES) {
   console.log(`\n${path} — tour runs ${Math.round(report.seconds)} s`);
   for (const l of report.legs) {
     const flag = l.hits ? '  ✗' : '   ';
-    console.log(`${flag} ${l.leg.padEnd(46)} ${String(l.hits).padStart(3)} / ${String(l.samples).padStart(3)} samples inside a collider${l.via ? `  (via ${l.via})` : ''}`);
+    console.log(`${flag} ${l.leg.padEnd(46)} ${String(l.hits).padStart(3)} / ${String(l.samples).padStart(3)} inside a collider   eye ${l.eye.padEnd(12)}${l.via ? `(via ${l.via})` : ''}`);
     if (l.hits) bad++;
   }
 }

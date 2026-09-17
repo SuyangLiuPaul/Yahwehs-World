@@ -4,7 +4,7 @@ import { buildStructure } from '../structures/build.ts';
 import { STRUCTURES } from '../structures/specs.ts';
 import { buildPillar, buildSea, buildLaver, buildStandingCherub } from '../structures/temple-parts.ts';
 import {
-  ashlarStone, beatenGold, bronze as bronzeTex, cedarWood, oliveWood, veilCloth,
+  ashlarStone, beatenGold, bronze as bronzeTex, cedarWood, oliveWood, embroidered,
   carvedGold, goldPlanks, bronzePanel,
 } from './textures.ts';
 import { bevelBox, hanging, batchStatic, altarHorn } from './craft.ts';
@@ -100,6 +100,16 @@ export interface TempleCounts {
 export interface Temple {
   group: THREE.Group;
   colliders: THREE.Box3[];
+  /** Treads and ramps: they hold the walker up and never block them. The
+   *  altar ramp and the winding stair of 6:8 are made of these — see
+   *  src/walk/controls.ts for why a stair cannot be made of walls. */
+  platforms: THREE.Box3[];
+  /** The ground outside the platform, so stepping off its edge is a drop of
+   *  the platform's own height and not a fall out of the world. */
+  floorY: number;
+  /** The veil's woven face, for a page that wants the crossing into the
+   *  oracle to look like cloth rather than like a dissolve to black. */
+  veilCanvas: HTMLCanvasElement;
   counts: TempleCounts;
   /** Named places the HUD can report, in metres after cubit is applied. */
   anchors: {
@@ -122,7 +132,9 @@ const TEX = {
   stone: ashlarStone(),
   cedar: cedarWood(),
   olive: oliveWood(),
-  veil: veilCloth(),
+  // 2 Chr 3:14 names the cherubim on it, so the veil gets the embroidered
+  // cloth the tabernacle's does and not the plain weave it had.
+  veil: embroidered(true),
 };
 for (const surface of Object.values(TEX)) {
   surface.map.colorSpace = THREE.SRGBColorSpace;
@@ -232,6 +244,10 @@ function foldingDoor(
 export function buildTemple(cubit: number): Temple {
   const g = new THREE.Group();
   const colliders: THREE.Box3[] = [];
+  const platforms: THREE.Box3[] = [];
+  /** A tread or a ramp surface, in world metres: it supports, never blocks. */
+  const addTread = (x0: number, y0: number, z0: number, x1: number, y1: number, z1: number) =>
+    platforms.push(new THREE.Box3(new THREE.Vector3(x0, y0, z0), new THREE.Vector3(x1, y1, z1)));
   const C = (n: number) => n * cubit;
   const counts: TempleCounts = {
     pillars: 0, pomegranates: 0, oxen: 0, gourds: 0, lavers: 0,
@@ -262,6 +278,10 @@ export function buildTemple(cubit: number): Temple {
   platform.receiveShadow = true;
   platform.userData.noCast = true;
   g.add(platform);
+  // Standing on the paving is now a fact about the world rather than an
+  // assumption in the camera: the walker has a vertical axis, so the platform
+  // has to hold them up, and its edge has to be an edge.
+  addCollider(platform);
   const desert = buildDesert((x, z) => Math.abs(x) < platW / 2 + 3 && Math.abs(z) < platD / 2 + 3);
   desert.position.y = -platH + C(0.2);
   g.add(desert);
@@ -622,11 +642,20 @@ export function buildTemple(cubit: number): Temple {
   counts.oxen += oxen; counts.gourds += gourds;
 
   // ── ten lavers on their bases, 1 Kgs 7:27–39 ──────────────────────────
-  // Five on the south side of the house, five on the north.
+  // Five on the south side of the house, five on the north. Where along the
+  // side each one stands is not given. The north row is evenly spaced; the
+  // south row leaves the way to the chambers' door clear, because a base four
+  // cubits square standing in a doorway two and a half cubits wide is a door
+  // nobody can use — which is exactly what the even spacing produced, and it
+  // took a bot walking into it to notice.
+  const LAVER_X = {
+    north: [-18, -8, 2, 12, 22],
+    south: [-26, -16, 6, 16, 26],
+  };
   for (let i = 0; i < 5; i++) {
     for (const sz of [-1, 1]) {
       const stand = buildLaver(cubit, bronze, panel);
-      stand.position.set(-C(18) + i * C(10), 0, sz * (halfW + C(8)));
+      stand.position.set(C((sz < 0 ? LAVER_X.south : LAVER_X.north)[i]!), 0, sz * (halfW + C(8)));
       stand.rotation.y = sz > 0 ? Math.PI : 0;
       g.add(stand);
       addCollider(stand);
@@ -657,6 +686,7 @@ export function buildTemple(cubit: number): Temple {
   altar.add(ledge);
   for (const [dx, dz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]] as const) {
     const horn = altarHorn(C(1.2), C(0.28), bronze);
+    horn.name = 'altar-horn';
     horn.rotation.y = Math.atan2(-dz, dx);
     horn.position.set(dx * (altarL / 2 - C(0.3)), altarH, dz * (altarL / 2 - C(0.3)));
     altar.add(horn);
@@ -678,48 +708,150 @@ export function buildTemple(cubit: number): Temple {
   // thirty cubits long that the lane past the pillars runs straight into.
   altar.updateWorldMatrix(true, true);
   const altarBody = new THREE.Box3();
-  for (const child of altar.children) if (child !== ramp) altarBody.expandByObject(child);
+  const horns = altar.children.filter((c) => c.name === 'altar-horn');
+  for (const child of altar.children) {
+    if (child === ramp || horns.includes(child)) continue;
+    altarBody.expandByObject(child);
+  }
   colliders.push(altarBody);
-  addCollider(ramp);
+  // The horns are four posts on the corners, not a lid over the whole altar.
+  // Rolled into the body box they raised its top by their own height, so a
+  // visitor who walked up the ramp ended standing half a metre above the
+  // hearth on nothing at all.
+  for (const horn of horns) addCollider(horn);
+  // And the ramp is a ramp. It was a solid box: ten cubits of bronze wall
+  // that a visitor walked into and stopped at, on the one part of the court
+  // the text builds specifically to be walked UP (Exodus 20:26 forbids steps,
+  // so this is a slope). The wedge rises from the ground at its south end to
+  // the altar's full height at its north; the treads below trace that same
+  // line, one every 13 cm, which is under the walker's own step height.
+  const rampZ0 = altar.position.z - altarL / 2 - C(22);
+  const rampZ1 = altar.position.z - altarL / 2;
+  const RAMP_TREADS = 34;
+  for (let i = 0; i < RAMP_TREADS; i++) {
+    const z0 = THREE.MathUtils.lerp(rampZ0, rampZ1, i / RAMP_TREADS);
+    const z1 = THREE.MathUtils.lerp(rampZ0, rampZ1, (i + 1) / RAMP_TREADS);
+    const top = (altarH * (i + 1)) / RAMP_TREADS;
+    addTread(altar.position.x - C(3), top - C(0.5), z0, altar.position.x + C(3), top, z1);
+  }
 
-  // ── side chambers, 1 Kgs 6:5–10 ───────────────────────────────────────
+  // ── side chambers, 1 Kgs 6:5–10; the door and the winding stair, 6:8 ──
   // Three storeys round the north, south and west — not the front — five,
   // six and seven cubits wide, each five high, the beams of every storey
   // resting on a ledge in the wall so the upper storeys stand a cubit
   // further out than the one below: the annex steps outward as it rises.
-  // The door to the chambers on the south side, midway (6:8).
+  //
+  // 6:8 puts the door on the right (south) side, midway, "and they went up by
+  // winding stairs into the middle chamber, and out of the middle into the
+  // third". That sentence describes the one part of this building whose whole
+  // purpose is to be climbed, and the first version drew it as a dark panel
+  // painted on a solid wall. There is now a stair well cut through all three
+  // storeys at that door, a winding stair inside it, and a way out at the top
+  // onto the roof of the chambers — which is also the only place a visitor
+  // can stand and see the house from above without leaving the ground.
   const storeys: { y0: number; w: number }[] = [
     { y0: 0, w: C(5) }, { y0: C(5), w: C(6) }, { y0: C(10), w: C(7) },
   ];
   const storeyH = C(5);
+  // The well is nine cubits along the wall, which is wider than the stair
+  // needs: the door stands at one end of it and the stair at the other, so a
+  // visitor steps in onto a floor rather than onto a tread. With the stair
+  // centred on the door, the treads reach into the doorway, the first one
+  // lifts you three quarters of a metre, and then the lintel is at your
+  // forehead and you can go nowhere at all. That was measured, not imagined.
+  const shaftHalf = C(4.5);
+  const shaftZ = -(halfW + wall + C(2.15));       // the stair's axis, clear of both walls
+  const stairX = C(1.6);                          // …and at the east end of the well
+  const chamberTop = C(15);
+  const chamberDoorW = C(2.4), chamberDoorH = C(4.5), chamberDoorX = -C(2.6);
   for (const st of storeys) {
-    for (const sz of [-1, 1]) {
-      const run = bevelBox(houseL + wall * 2, storeyH, st.w, stone, 0.01);
-      run.position.set(0, st.y0 + storeyH / 2, sz * (halfW + wall + st.w / 2));
+    // North: one run, unbroken.
+    const north = bevelBox(houseL + wall * 2, storeyH, st.w, stone, 0.01);
+    north.position.set(0, st.y0 + storeyH / 2, halfW + wall + st.w / 2);
+    g.add(north); addCollider(north);
+    // South: the same run, in two lengths, with the stair well between them.
+    for (const sx of [-1, 1]) {
+      const outer = sx < 0 ? rearX - wall : frontX + wall;
+      const len = Math.abs(outer) - shaftHalf;
+      const run = bevelBox(len, storeyH, st.w, stone, 0.01);
+      run.position.set(sx * (shaftHalf + len / 2), st.y0 + storeyH / 2, -(halfW + wall + st.w / 2));
       g.add(run); addCollider(run);
+    }
+    // The well's own outer face, in line with this storey's face. The lowest
+    // one is the door of 6:8: two jambs and a lintel, and an opening a person
+    // walks through rather than a dark rectangle painted on stone.
+    const faceZ = -(halfW + wall + st.w) + C(0.35);
+    if (st.y0 === 0) {
+      for (const sx of [-1, 1]) {
+        const edge = sx * shaftHalf;
+        const inner = chamberDoorX + sx * chamberDoorW / 2;
+        const jambW = Math.abs(edge - inner);
+        const jamb = bevelBox(jambW, storeyH, C(0.7), stone, 0.01);
+        jamb.position.set((edge + inner) / 2, storeyH / 2, faceZ);
+        g.add(jamb); addCollider(jamb);
+      }
+      const head = bevelBox(chamberDoorW, storeyH - chamberDoorH, C(0.7), stone, 0.01);
+      head.position.set(chamberDoorX, chamberDoorH + (storeyH - chamberDoorH) / 2, faceZ);
+      g.add(head); addCollider(head);
+      const lintel = bevelBox(chamberDoorW + C(0.8), C(0.4), C(0.9), cedar, 0.006);
+      lintel.position.set(chamberDoorX, chamberDoorH + C(0.2), faceZ);
+      g.add(lintel);
+    } else {
+      const face = bevelBox(shaftHalf * 2, storeyH, C(0.7), stone, 0.01);
+      face.position.set(0, st.y0 + storeyH / 2, faceZ);
+      g.add(face); addCollider(face);
+    }
+    // The cedar beam course each storey rests on (6:6, 6:10). Broken at the
+    // well like the run it sits on, so no beam crosses the stair.
+    const beamN = bevelBox(houseL + wall * 2 + st.w * 0.2, C(0.35), st.w + C(0.25), cedar, 0.006);
+    beamN.position.set(0, st.y0 + storeyH, halfW + wall + st.w / 2);
+    g.add(beamN);
+    for (const sx of [-1, 1]) {
+      const outer = sx < 0 ? rearX - wall - st.w * 0.1 : frontX + wall + st.w * 0.1;
+      const len = Math.abs(outer) - shaftHalf;
+      const beamS = bevelBox(len, C(0.35), st.w + C(0.25), cedar, 0.006);
+      beamS.position.set(sx * (shaftHalf + len / 2), st.y0 + storeyH, -(halfW + wall + st.w / 2));
+      g.add(beamS);
     }
     const west = bevelBox(st.w, storeyH, houseW + wall * 2 + st.w * 2, stone, 0.01);
     west.position.set(rearX - wall - st.w / 2, st.y0 + storeyH / 2, 0);
     g.add(west); addCollider(west);
-    // The cedar beam course each storey rests on (6:6, 6:10).
-    for (const sz of [-1, 1]) {
-      const beamRow = bevelBox(houseL + wall * 2 + st.w * 0.2, C(0.35), st.w + C(0.25), cedar, 0.006);
-      beamRow.position.set(0, st.y0 + storeyH, sz * (halfW + wall + st.w / 2));
-      g.add(beamRow);
-    }
     const beamW = bevelBox(st.w + C(0.25), C(0.35), houseW + wall * 2 + st.w * 2 + C(0.3), cedar, 0.006);
     beamW.position.set(rearX - wall - st.w / 2, st.y0 + storeyH, 0);
     g.add(beamW);
     counts.storeys++;
   }
-  // The chamber door, south side, midway (6:8): a dark opening in the lowest
-  // storey with a cedar lintel.
-  const cd = bevelBox(C(2), C(3.5), C(0.4), new THREE.MeshStandardMaterial({ color: 0x1a140e, roughness: 1 }), 0.004);
-  cd.position.set(0, C(1.75), -(halfW + wall + storeys[0]!.w) + C(0.1));
-  g.add(cd);
-  const cdl = bevelBox(C(2.6), C(0.4), C(0.5), cedar, 0.006);
-  cdl.position.set(0, C(3.7), -(halfW + wall + storeys[0]!.w) + C(0.1));
-  g.add(cdl);
+
+  // The winding stair itself: a newel of cedar with wedge treads round it,
+  // rising the fifteen cubits of the three storeys in 36 steps of five
+  // twelfths of a cubit — a rise of 18 cm, which is a stair, not a ladder.
+  // Two and a quarter turns, ending facing the roof so the last tread is a
+  // step and not a leap. The treads are platforms, never walls: see
+  // src/walk/controls.ts on why a spiral made of boxes is otherwise solid.
+  const STAIR_STEPS = 36;
+  const stairR = C(2.1), newelR = C(0.45), treadT = C(0.3);
+  const walkR = (newelR + stairR) / 2;
+  const turn = THREE.MathUtils.degToRad(810 / STAIR_STEPS);   // 2¼ turns
+  const newel = new THREE.Mesh(new THREE.CylinderGeometry(newelR, newelR, chamberTop, 12), cedar);
+  newel.position.set(stairX, chamberTop / 2, shaftZ);
+  g.add(newel);
+  for (let i = 0; i < STAIR_STEPS; i++) {
+    const a = i * turn;
+    const top = (chamberTop * (i + 1)) / STAIR_STEPS;
+    const tread = new THREE.Mesh(
+      new THREE.CylinderGeometry(stairR, stairR, treadT, 8, 1, false, a - turn / 2, turn), cedar);
+    tread.position.set(stairX, top - treadT / 2, shaftZ);
+    g.add(tread);
+    const cx = stairX + Math.sin(a) * walkR, cz = -Math.cos(a) * walkR;
+    addTread(cx - C(0.7), top - treadT, shaftZ + cz - C(0.7),
+             cx + C(0.7), top, shaftZ + cz + C(0.7));
+  }
+  // The landing at the head of the stair, level with the roof of the
+  // chambers, reaching across to the edge of the terrace.
+  const landing = bevelBox(shaftHalf - C(2.4), C(0.3), C(2.6), cedar, 0.006);
+  landing.position.set((shaftHalf + C(2.4)) / 2, chamberTop - C(0.15), shaftZ);
+  g.add(landing);
+  addTread(C(2.4), chamberTop - C(0.3), shaftZ - C(1.3), shaftHalf, chamberTop, shaftZ + C(1.3));
 
   // ── the inner court, 1 Kgs 6:36; its gates, 2 Chr 4:9 ─────────────────
   // Three courses of hewn stone and one of cedar. The court's extent is not
@@ -777,5 +909,9 @@ export function buildTemple(cubit: number): Temple {
     boaz: new THREE.Vector3(pillarX, 0, boazZ),
     altar: altar.position.clone(),
   };
-  return { group: g, colliders, counts, anchors };
+  return {
+    group: g, colliders, platforms, counts, anchors,
+    floorY: -platH + C(0.2),
+    veilCanvas: TEX.veil.map.image as HTMLCanvasElement,
+  };
 }

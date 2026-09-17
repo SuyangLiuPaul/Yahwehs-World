@@ -50,7 +50,9 @@ const camera = new THREE.PerspectiveCamera(
 // Mid-morning rather than noon: a sun overhead casts no shadows worth having,
 // and shadow is most of what makes a shape read as solid.
 const sun = new THREE.DirectionalLight(0xfff0d6, 2.6);
-sun.position.set(50, 30, 22);
+// East at +x, north at +z — so the sun belongs at −z. See the same note in
+// src/walk/temple-main.ts.
+sun.position.set(50, 34, -26);
 sun.castShadow = true;
 sun.shadow.mapSize.set(4096, 4096);
 // Sized to the built area rather than the terrain: the court is 100x50 cubits,
@@ -189,6 +191,10 @@ if (touchOnly) {
 document.getElementById('enter')!.addEventListener('click', () => {
   if (touchOnly) walker.enterTouch(); else canvas.click();
 });
+// Space jumps on a keyboard; a phone gets a button for it.
+const jumpButton = document.getElementById('walk-jump')!;
+jumpButton.hidden = !touchOnly;
+jumpButton.addEventListener('click', () => { walker.jump(); });
 // The gate is up at load; ask once, since a muted autoplay is refused often
 // enough that leaving it to the attribute shows a still where a clip was meant.
 setGate(true);
@@ -340,7 +346,7 @@ renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.1);
   const pose = tour.update(dt);
   // The tour owns the camera while it runs; otherwise the walker does.
-  if (pose) walker.setPose(pose); else walker.update(dt);
+  if (pose) walker.setPose(pose); else if (!tour.paused) walker.update(dt);
   veilFade.style.opacity=String(tour.fade);
   updateHud();
   renderer.info.reset();composer.render();

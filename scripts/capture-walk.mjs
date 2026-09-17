@@ -22,12 +22,11 @@ try{
    await page.click('#tour');
    const count=await page.evaluate(h=>window[h].TOUR.length,handle);
    for(let i=0;i<count;i++){
-    await page.evaluate(({i,h})=>{
-     const w=window[h],s=w.TOUR[i],c=w.CUBIT;w.tour.stop();
-     w.walker.setPose({x:s.x*c,z:s.z*c,yaw:Math.atan2(-(s.at.x-s.x),-(s.at.z-s.z)),
-      pitch:s.atY===undefined?(s.pitch||0):Math.atan2(s.atY*c-1.65,Math.hypot(s.at.x-s.x,s.at.z-s.z)*c)});
-     w.tour.onStop?.(s,i,w.TOUR.length);w.updateHud();
-    },{i,h:handle});
+    // The page's own "go to this stop", not a second copy of the arithmetic.
+    // A stop can stand above head height now, and both a re-derivation that
+    // assumed 1.65 m and a tour.stop() that let gravity have the camera
+    // photographed the aerial views from the floor.
+    await page.evaluate(({i,h})=>{window[h].inspectStop(i);window[h].updateHud();},{i,h:handle});
     await page.waitForTimeout(350);
     await page.screenshot({path:`${dir}/${name}-${locale}-walk-${String(i+1).padStart(2,'0')}.png`});
     metrics.push(await page.evaluate(({name,locale,i,h})=>({name,locale,stop:i+1,counts:window[h].counts,render:window[h].renderer.info.render}),{name,locale,i,h:handle}));
