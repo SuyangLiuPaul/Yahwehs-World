@@ -1,7 +1,7 @@
 {
   "name": "yahwehs-globe",
   "private": true,
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A 3D globe of the biblical world — every place Scripture names, placed as honestly as the evidence allows.",
   "type": "module",
   "scripts": {
