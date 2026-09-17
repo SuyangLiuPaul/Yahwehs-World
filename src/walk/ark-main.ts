@@ -67,8 +67,7 @@ sun.shadow.radius = 3;
 scene.add(sun);
 scene.add(new THREE.HemisphereLight(0x9fc2e0, 0xb9a377, 0.28));
 
-const { group, colliders, platforms, counts, anchors, floorY } = buildArk(CUBIT);
-const ready = Promise.resolve(true);
+const { group, colliders, platforms, counts, anchors, floorY, ready } = buildArk(CUBIT);
 group.traverse((o) => {
   if (!(o as THREE.Mesh).isMesh) return;
   o.receiveShadow = true;

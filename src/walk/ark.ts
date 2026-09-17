@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { bevelBox, batchStatic } from './craft.ts';
 import { detailedSurface } from './materials.ts';
 import { buildDesert } from './environment.ts';
-import { humanFigure } from '../structures/build.ts';
+import { loadFigure, place } from './figures.ts';
 import { beatenGold, bronze as bronzeTex, cedarWood, oliveWood, sand as sandTex } from './textures.ts';
 
 // Noah's ark, at the size Genesis gives it.
@@ -55,6 +55,22 @@ export interface ArkCounts {
   trees: number;
 }
 
+/** The figures aboard: a kind, how many, and how tall it stands.
+ *
+ *  The numbers are the text's (7:2–3; 7:13). The KINDS are the text's only
+ *  where it names them — the raven and the dove are named in this very
+ *  account (8:7–12) — and elsewhere they are a display choice standing for a
+ *  number the text does give. The heights are ordinary adult sizes, because
+ *  a figure of the wrong size teaches the wrong thing about the ark. */
+export const ABOARD = [
+  { file: 'ox', kind: 'clean', count: 14, height: 1.45, zh: '洁净的畜类 · 七公七母', en: 'a clean kind — seven males, seven females', ref: 'Gen 7:2' },
+  { file: 'camel', kind: 'unclean', count: 2, height: 2.05, zh: '不洁净的畜类 · 一公一母（利 11:4 指明骆驼不洁净）', en: 'a kind not clean — one male, one female (Lev 11:4 names the camel)', ref: 'Gen 7:2; Lev 11:4' },
+  { file: 'dove', kind: 'bird', count: 14, height: 0.3, zh: '飞鸟 · 七公七母（创 8:8 的鸽子）', en: 'fowls — seven and seven (the dove of Gen 8:8)', ref: 'Gen 7:3; 8:8' },
+  { file: 'raven', kind: 'raven', count: 1, height: 0.5, zh: '乌鸦（创 8:7 先放出的那一只）', en: 'the raven, sent out first (Gen 8:7)', ref: 'Gen 8:7' },
+  { file: 'man', kind: 'man', count: 4, height: 1.72, zh: '挪亚与他的三个儿子', en: 'Noah and his three sons', ref: 'Gen 7:13' },
+  { file: 'woman', kind: 'woman', count: 4, height: 1.63, zh: '挪亚的妻子与三个儿妇', en: 'Noah\'s wife and his three sons\' wives', ref: 'Gen 7:13' },
+] as const;
+
 export interface Ark {
   group: THREE.Group;
   colliders: THREE.Box3[];
@@ -63,6 +79,8 @@ export interface Ark {
    *  own floor. */
   floorY: number;
   counts: ArkCounts;
+  /** Resolves when the generated figures have been loaded and placed. */
+  ready: Promise<boolean>;
   anchors: {
     outside: THREE.Vector3;
     door: THREE.Vector3;
@@ -518,93 +536,59 @@ export function buildArk(cubit: number): Ark {
   // a clean beast, two of an unclean one, fourteen birds. The forms are
   // generic — a four-footed beast, a bird — and identify nothing. The card
   // says all of this.
-  const beastMat = new THREE.MeshStandardMaterial({
-    name: 'Beast', color: 0x7d6a55, roughness: 0.95, flatShading: true,
-  });
-  const beastPale = beastMat.clone(); beastPale.color.setHex(0x9a8a72);
-  const birdMat = new THREE.MeshStandardMaterial({
-    name: 'Fowl', color: 0x8d8574, roughness: 0.95, flatShading: true,
-  });
+  // The figures are generated meshes loaded from public/models — see
+  // figures.ts for the rule they are held to. They arrive after this function
+  // returns, so they are added to the group afterwards and never batched.
+  const ready = (async () => {
+    try {
+      const templates = new Map<string, THREE.Group>();
+      await Promise.all(ABOARD.map(async (a) => {
+        templates.set(a.file, await loadFigure(`/models/${a.file}.glb`, a.height));
+      }));
+      const ox = templates.get('ox')!, camel = templates.get('camel')!;
+      const dove = templates.get('dove')!, raven = templates.get('raven')!;
+      const man = templates.get('man')!, woman = templates.get('woman')!;
 
-  /** A four-footed beast: body, neck, head, four legs, a tail. Deliberately
-   *  unspecific — the verse says "after his kind" and names no kind. */
-  const beast = (scale: number, material: THREE.Material) => {
-    const b = new THREE.Group();
-    const body = new THREE.Mesh(new THREE.CapsuleGeometry(C(0.62), C(1.5), 3, 8), material);
-    body.rotation.z = Math.PI / 2;
-    body.position.y = C(1.5);
-    b.add(body);
-    const neck = new THREE.Mesh(new THREE.CapsuleGeometry(C(0.26), C(1.0), 3, 6), material);
-    neck.position.set(C(1.15), C(1.95), 0);
-    neck.rotation.z = -0.5;
-    b.add(neck);
-    const head = new THREE.Mesh(new THREE.SphereGeometry(C(0.36), 8, 6), material);
-    head.position.set(C(1.6), C(2.35), 0);
-    b.add(head);
-    for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
-      const leg = new THREE.Mesh(new THREE.CapsuleGeometry(C(0.16), C(1.2), 3, 6), material);
-      leg.position.set(sx * C(0.85), C(0.7), sz * C(0.38));
-      b.add(leg);
+      // Fourteen of a clean kind, in the rooms along the lower deck's north
+      // side: seven on one side of the gangway, seven on the other (7:2).
+      // Each beast stands in the middle of a room rather than across its
+      // partition: the rooms start at the bow and are five cubits apart, so
+      // room n has its centre at −146.5 + 5n.
+      const room = (n: number) => C(-146.5 + n * 5);
+      for (let i = 0; i < 14; i++) {
+        const male = i < 7;
+        const n = (male ? i : i - 7) + 12;
+        g.add(place(ox, room(n), deckT, C(male ? 13 : -13), male ? -Math.PI / 2 : Math.PI / 2));
+        counts.clean++;
+      }
+      // One male and one female of a kind that is not clean (7:2; Lev 11:4
+      // names the camel among those that are not).
+      for (let i = 0; i < 2; i++) {
+        g.add(place(camel, room(26 + i * 2), deckT, C(i === 0 ? 14 : -14),
+          i === 0 ? -Math.PI / 2 : Math.PI / 2));
+        counts.unclean++;
+      }
+      // Fourteen of the fowls of the air on the second deck's rails (7:3),
+      // and the raven that was sent out first (8:7).
+      for (let i = 0; i < 14; i++) {
+        const sz = i % 2 === 0 ? 1 : -1;
+        g.add(place(dove, C(16 + Math.floor(i / 2) * 7), DECK_H + deckT + RAIL, sz * C(8),
+          sz > 0 ? 0.4 : Math.PI - 0.4));
+        counts.birds++;
+      }
+      g.add(place(raven, C(70), DECK_H + deckT + RAIL, C(8), 0.6));
+      // And the eight: Noah, his wife, his three sons and their three wives
+      // (7:13; 1 Pet 3:20 counts them as eight).
+      for (let i = 0; i < 4; i++) {
+        g.add(place(man, C(-8 + i * 3.4), DECK_H + deckT, C(3.2), Math.PI));
+        g.add(place(woman, C(-8 + i * 3.4), DECK_H + deckT, C(-3.2), 0));
+        counts.people += 2;
+      }
+      return true;
+    } catch {
+      return false;                       // the walk still stands without them
     }
-    const tail = new THREE.Mesh(new THREE.CapsuleGeometry(C(0.1), C(0.9), 3, 5), material);
-    tail.position.set(-C(1.35), C(1.6), 0);
-    tail.rotation.z = 0.7;
-    b.add(tail);
-    b.scale.setScalar(scale);
-    return b;
-  };
-  const fowl = () => {
-    const b = new THREE.Group();
-    const body = new THREE.Mesh(new THREE.CapsuleGeometry(C(0.22), C(0.42), 3, 7), birdMat);
-    body.rotation.z = Math.PI / 2.4;
-    body.position.y = C(0.42);
-    const head = new THREE.Mesh(new THREE.SphereGeometry(C(0.13), 7, 6), birdMat);
-    head.position.set(C(0.34), C(0.72), 0);
-    const tail = new THREE.Mesh(new THREE.ConeGeometry(C(0.16), C(0.5), 5), birdMat);
-    tail.position.set(-C(0.42), C(0.42), 0);
-    tail.rotation.z = Math.PI / 2;
-    b.add(body, head, tail);
-    return b;
-  };
-
-  // Fourteen of a clean kind — seven males and seven females (7:2) — in the
-  // rooms along the lower deck's north side.
-  for (let i = 0; i < 14; i++) {
-    const male = i < 7;
-    const one = beast(male ? 1 : 0.86, male ? beastMat : beastPale);
-    one.position.set(C(-120 + i * 5 + (male ? 0 : 2.2)), deckT, C(male ? 12 : 17));
-    one.rotation.y = male ? -Math.PI / 2 : Math.PI / 2;
-    g.add(one);
-    counts.clean++;
-  }
-  // One male and one female of a kind that is not clean (7:2).
-  for (let i = 0; i < 2; i++) {
-    const one = beast(i === 0 ? 1.35 : 1.2, i === 0 ? beastMat : beastPale);
-    one.position.set(C(-46 + i * 6), deckT, C(-14));
-    one.rotation.y = Math.PI / 2;
-    g.add(one);
-    counts.unclean++;
-  }
-  // Fourteen of the fowls of the air (7:3), on the second deck's rails.
-  for (let i = 0; i < 14; i++) {
-    const bird = fowl();
-    const sz = i % 2 === 0 ? 1 : -1;
-    bird.position.set(C(20 + Math.floor(i / 2) * 6), DECK_H + deckT + RAIL + C(0.15), sz * C(8));
-    bird.rotation.y = sz > 0 ? 0.3 : Math.PI - 0.3;
-    g.add(bird);
-    counts.birds++;
-  }
-  // And eight people: Noah, his wife, his three sons and their three wives
-  // (7:13; 1 Pet 3:20 counts them). Standing on the second deck, amidships.
-  for (let i = 0; i < 8; i++) {
-    const person = humanFigure();
-    const row = i < 4 ? 1 : -1;
-    person.position.set(C(-6 + (i % 4) * 3.2), DECK_H + deckT, row * C(3.4));
-    person.rotation.y = row > 0 ? Math.PI : 0;
-    person.traverse((o) => { o.userData.dynamic = false; });
-    g.add(person);
-    counts.people++;
-  }
+  })();
 
   batchStatic(g);
 
@@ -615,5 +599,5 @@ export function buildArk(cubit: number): Ark {
     second: new THREE.Vector3(0, DECK_H, 0),
     third: new THREE.Vector3(0, DECK_H * 2, 0),
   };
-  return { group: g, colliders, platforms, counts, anchors, floorY: -LIFT };
+  return { group: g, colliders, platforms, counts, ready, anchors, floorY: -LIFT };
 }
