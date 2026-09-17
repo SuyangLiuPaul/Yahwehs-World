@@ -11,7 +11,7 @@ import { Staffage } from './staffage.ts';
 import {CampPlayback} from './journey-actors/camp-playback.ts';
 import { placeLabel, bareName } from './names.ts';
 import { Markers } from './markers.ts';
-import { bookName, bookOf, localiseRef } from './books.ts';
+import { bookName, bookOf, localiseRef, refKey } from './books.ts';
 import { precisionOf, precisionStyle } from './theme.ts';
 import { Route, type Journey } from './routes.ts';
 import { RouteLabels } from './labels.ts';
@@ -22,7 +22,8 @@ import { Cartography, measureMap } from './cartography.ts';
 import { applyStatic, bindSwitch, fullLocale, hant, localized, locale as currentLocale, onLocale } from './locale.ts';
 import { installUpdateChecker } from './updates.ts';
 import { EventsTrack, type TrackEvent } from './events-track.ts';
-import { installEventsMenu } from './events-menu.ts';
+import { installEventsMenu, type EventsMenu } from './events-menu.ts';
+import { bridgesFor, eventsInJourney, href as bridgeHref, structureForJourney } from './bridges.ts';
 import type { GeoJson, Place, PlacesBundle } from './types.ts';
 
 type Locale = 'zh' | 'en';
@@ -304,6 +305,7 @@ function openRoute(id: string) {
   // beside the stop count means a reader meets it before the animation, not
   // after wondering why 42 stops drew 23 dots.
   renderRouteStats(jr);
+  renderRouteBridges(jr);
   renderStops();
   updateLayout();
   frameRoute(jr);
@@ -311,6 +313,41 @@ function openRoute(id: string) {
   setRoutePlayback(false);
   updateRouteReadout();
 }
+
+/** The way out of a journey and into the events inside its passage, and — for
+ *  the ark, which is carried in 1 Samuel and measured in Exodus — into the
+ *  card that measures it.
+ *
+ *  Opening the list closes the journey. That is not a compromise: the comment
+ *  at the top of this section already says a route and the verse timeline
+ *  answer different questions and do not share the screen, and route-ui.css
+ *  hides the readout while one runs. So the button means "leave this journey,
+ *  here is its passage in events", and the journey is one click back. */
+function renderRouteBridges(jr: Journey) {
+  const btn = $<HTMLButtonElement>('r-events');
+  const link = $<HTMLAnchorElement>('r-structure');
+  const inside = eventsInJourney(jr, eventsTrack.all);
+  btn.hidden = !inside.length || !eventsMenu;
+  if (!btn.hidden) {
+    btn.textContent = locale === 'zh'
+      ? hant(`这段的事件 ${inside.length}`)
+      : `${inside.length} events`;
+  }
+  const s = structureForJourney(jr.id);
+  link.hidden = !s;
+  if (s) {
+    link.href = `/structures.html#${s.id}`;
+    link.textContent = locale === 'zh' ? hant(`${s.zh}的尺寸`) : `How big: ${s.en}`;
+  }
+}
+
+$('r-events').addEventListener('click', () => {
+  const jr = route?.journey;
+  if (!jr || !eventsMenu) return;
+  const inside = eventsInJourney(jr, eventsTrack.all);
+  clearRoute();
+  eventsMenu.showSet(() => (locale === 'zh' ? hant(jr.zh) : jr.en), inside);
+});
 
 /** Moves the camera to hold the whole route.
  *
@@ -681,6 +718,13 @@ function applyCursor() {
   // An opened event owns the readout. applyCursor still runs — the cursor,
   // the markers and the count all still move — it just does not overwrite the
   // line the reader opened, which is what it did to the route readout too.
+  // The links belong to an opened event; a scrubbed verse has none, and
+  // leaving the last event's links under a different verse would be a claim
+  // about a passage the reader has already left.
+  if (!openEvent && $('t-links').childElementCount) {
+    $('t-links').replaceChildren();
+    updateLayout(); // the strip is shorter again — see renderEventLinks
+  }
   if (openEvent) { renderOpenEvent(); }
   else if (ev) {
     const book = bookName(bookOf(ev.sort), locale);
@@ -744,12 +788,77 @@ function renderOpenEvent() {
     ? hant(openEvent.sum)
     : [...new Set(openEvent.p.map((id) => placeById.get(id)).filter(Boolean)
         .map((p) => placeName(p as Place)))].join(' · ');
+  renderEventLinks();
+}
+
+/** The corridors out of this event — see src/bridges.ts. Rendered from the
+ *  event itself every time, so switching reading re-renders them in the new
+ *  one, and an event that leads nowhere shows nothing rather than an empty
+ *  row of chrome. */
+function renderEventLinks() {
+  const host = $('t-links');
+  host.replaceChildren();
+  if (!openEvent) return;
+  for (const b of bridgesFor(openEvent, journeyData.journeys)) {
+    const text = locale === 'zh' ? hant(b.zh) : b.en;
+    if (b.kind === 'journey') {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'ev-link';
+      btn.textContent = `↗ ${text}`;
+      btn.addEventListener('click', () => openRoute(b.id));
+      host.append(btn);
+    } else {
+      const a = document.createElement('a');
+      a.className = 'ev-link';
+      a.href = bridgeHref(b);
+      a.textContent = `↗ ${text}`;
+      host.append(a);
+    }
+  }
+  // On a phone the links take a second line, so the footer is taller with an
+  // event open than without. --footer-height is what everything above it is
+  // positioned off; without this the routes bar sat on top of the links.
+  updateLayout();
+}
+
+let eventsMenu: EventsMenu | undefined;
+
+/** How the other two pages send a reader back here: `#event=<id>` for an
+ *  exact event, or `#ref=Exodus 25:10` for a citation, which is what a page
+ *  that does not carry the events payload can give. The citation is resolved
+ *  to the event whose passage contains it — so /structures.html links by the
+ *  verse it already prints on the card, and downloads nothing to do it.
+ *  Anything unresolvable is ignored rather than guessed at. */
+function openEventFromHash() {
+  const hash = location.hash;
+  const id = /(?:^|[#&])event=([^&]+)/.exec(hash)?.[1];
+  if (id) {
+    const ev = eventsTrack.all.find((e) => e.id === decodeURIComponent(id));
+    if (ev) eventsTrack.open(ev);
+    return;
+  }
+  const ref = /(?:^|[#&])ref=([^&]+)/.exec(hash)?.[1];
+  if (!ref) return;
+  const key = refKey(decodeURIComponent(ref));
+  if (key === null) return;
+  const ev = eventsTrack.all.find((e) => e.s <= key && key <= e.e);
+  if (ev) {
+    eventsTrack.open(ev);
+  } else {
+    // No event covers that verse — put the reader at it anyway, which is the
+    // part of the promise this app can still keep.
+    range.value = String(indexOfKey(key));
+    applyCursor();
+  }
 }
 
 void eventsTrack.load('/data/events.json')
   .then(() => {
     eventsTrack.setCursor(Number(range.value));
-    installEventsMenu(eventsTrack, (ev) => eventsTrack.open(ev));
+    eventsMenu = installEventsMenu(eventsTrack, (ev) => eventsTrack.open(ev));
+    openEventFromHash();
+    addEventListener('hashchange', openEventFromHash);
     console.info(
       `events layer: ${eventsTrack.count} events loaded, ` +
       `${eventsTrack.drawnCount} bands drawn`,
@@ -885,6 +994,7 @@ onLocale((l) => {
   if (route) {
     renderRouteHeader(route.journey);
     renderRouteStats(route.journey);
+    renderRouteBridges(route.journey);
     routeLabels.build(route.markerObjects, locale);
     renderStops();
     setRoutePlayback(routePlaying);

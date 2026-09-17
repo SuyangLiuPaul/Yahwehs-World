@@ -74,6 +74,11 @@
         <button id="r-next" type="button" aria-label="Next stop">›</button>
         <button id="r-art" type="button" aria-pressed="true" data-en="Picture" data-zh="画面">Picture</button>
         <button id="r-info" type="button" data-en="Sources" data-zh="依据">Sources</button>
+        <!-- The events inside this journey's passage, and (for the ark) the
+             card that measures the thing being carried. Both filled in JS,
+             both hidden when there is nothing to point at. -->
+        <button id="r-events" type="button" hidden></button>
+        <a id="r-structure" hidden></a>
       </div>
     </article>
   </nav>
@@ -106,6 +111,10 @@
                 data-en="Events…" data-zh="事件…"></button>
         <span id="t-ref"></span>
         <span id="t-here"></span>
+        <!-- Where else in the app this event is: the journey it falls inside,
+             the structure whose measurements it gives, the tabernacle you can
+             walk into. Filled by src/bridges.ts — see the note there. -->
+        <span id="t-links"></span>
       </div>
       <span id="t-count"></span>
     </div>

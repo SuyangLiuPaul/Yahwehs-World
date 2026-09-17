@@ -1,6 +1,11 @@
 /* Journey player: the map keeps the centre; all reading controls sit below it. */
 body.route-active #timeline .readout,
 body.route-active #timeline #t-range,
+/* The events track and its menu belong to the canon-wide reading, same as the
+   slider above them. They were left visible when the track shipped, which put
+   1,443 bands under a journey that covers thirty verses. */
+body.route-active #timeline #t-events,
+body.route-active #timeline #t-events-menu,
 body.route-active #timeline .legend { display: none; }
 body.route-active #timeline { padding: var(--sp-2) var(--sp-4); }
 #routes { bottom: calc(var(--footer-height, 94px) + var(--sp-3)); top: auto; max-height: calc(100dvh - 160px); }
@@ -48,6 +53,19 @@ html[lang^="zh"] #r-name { font-family: var(--display); font-size: var(--fs-400)
 .r-step[aria-current="step"] { color: var(--gold-bright); }
 .r-step[aria-current="step"]::before { background: var(--gold-bright); border-color: var(--gold-bright); box-shadow: 0 0 0 3px var(--line-gold); }
 #r-info { width: auto; min-width: 52px; font-size: var(--fs-100); color: var(--gold); }
+/* The two ways out of a journey: its events, and the card that measures what
+   it carries. Quieter than the transport controls — they are exits, not the
+   thing the card is for. */
+#r-events, #r-structure {
+  min-height: 44px; display: inline-flex; align-items: center; white-space: nowrap;
+  padding: 0 var(--sp-2); margin: 0; background: transparent; cursor: pointer;
+  border: 1px solid transparent; border-radius: var(--radius);
+  color: var(--ink-2); text-decoration: none;
+  font: var(--fs-100) var(--ui); letter-spacing: var(--tr-cjk);
+}
+#r-events:hover, #r-structure:hover { color: var(--gold-bright); border-color: var(--line-gold); }
+#r-events:focus-visible, #r-structure:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+#r-events[hidden], #r-structure[hidden] { display: none; }
 #r-prev:disabled, #r-next:disabled { opacity: .25; cursor: default; }
 #r-card button:focus-visible, #map-tools button:focus-visible, #r-sources button:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: -3px; }
 #r-card button:hover:not(:disabled) { color: var(--gold-bright); background: var(--surface-hi); }

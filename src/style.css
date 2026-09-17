@@ -267,7 +267,13 @@ body {
 }
 .reading { display: flex; align-items: center; gap: var(--sp-3); min-width: 0; }
 #t-ref {
-  flex: none; font-family: var(--display); font-size: var(--fs-500);
+  /* Shrinkable, not fixed. An opened event puts its own title here — as long
+     as the event's name — and `flex: none` let 「會幕與約櫃的樣式 · 出埃及記
+     25:1–27:21」 push the links out of the strip entirely on a phone, where
+     it was also cut off mid-word with no ellipsis to say so. */
+  flex: 0 1 auto; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-family: var(--display); font-size: var(--fs-500);
   font-weight: 600; letter-spacing: .06em; line-height: var(--lh-tight);
 }
 
@@ -354,6 +360,11 @@ body {
   #r-why { display: none; }
   /* The stop is already named in the card; the strip below need not repeat it. */
   #t-here, #t-count { display: none; }
+  /* The links get their own line rather than competing with the title for a
+     375px row, and scroll sideways if an event leads to four places at once. */
+  .reading { flex-wrap: wrap; row-gap: var(--sp-2); }
+  #t-links { width: 100%; overflow-x: auto; scrollbar-width: none; }
+  #t-links::-webkit-scrollbar { display: none; }
 
   /* Touch targets. The visual sizes are right for the type; the hit areas were
      not — 19px for the route's close control is a miss waiting to happen. */
@@ -454,6 +465,30 @@ body {
 .ev-row b { font: 500 var(--fs-300) var(--ui); letter-spacing: var(--tr-cjk); }
 html[lang="en"] .ev-row b { font-family: var(--latin); }
 .ev-row span { font: var(--fs-100) var(--ui); color: var(--ink-3); }
+
+/* ── the corridors (src/bridges.ts) ───────────────────────────────────────
+   Chips on the readout for the journey an event falls inside and the page
+   that measures what it is about, and the chip that says the menu is
+   currently showing one journey's passage rather than a book. */
+.ev-link {
+  flex: none; min-height: 28px; display: inline-flex; align-items: center;
+  padding: 2px var(--sp-2); margin: 0;
+  background: transparent; color: var(--gold); text-decoration: none; cursor: pointer;
+  border: 1px solid var(--line-gold); border-radius: var(--radius);
+  font: var(--fs-100) var(--ui); letter-spacing: var(--tr-cjk); white-space: nowrap;
+}
+.ev-link:hover { background: var(--gold-wash); color: var(--gold-bright); }
+.ev-link:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+#t-links { flex: none; display: inline-flex; gap: var(--sp-2); min-width: 0; }
+#t-events-pin {
+  flex: none; min-height: 32px; padding: 2px var(--sp-2); max-width: 46%;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  background: var(--gold-wash); color: var(--gold-bright); cursor: pointer;
+  border: 1px solid var(--line-gold); border-radius: var(--radius);
+  font: var(--fs-100) var(--ui); letter-spacing: var(--tr-cjk);
+}
+#t-events-pin:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+#t-events-pin[hidden] { display: none; }
 @media (max-width: 520px) {
   #t-events-list { max-height: 30dvh; }
   #t-events-book { max-width: 38%; }

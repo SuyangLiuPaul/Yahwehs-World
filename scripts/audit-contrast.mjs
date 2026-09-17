@@ -18,7 +18,11 @@ import { chromium } from 'playwright';
 
 const URL = process.argv[2] ?? 'http://localhost:5175';
 // WCAG AA: 4.5 for body text, 3.0 for text at 18.66px+ or bold 14px+.
-const PAGES = ['/', '/structures.html', '/tabernacle.html'];
+// The fourth entry is the globe with an event already open (the hash handler
+// in src/main.ts resolves the citation). Text that only exists in a state —
+// the opened event's line and the links out of it — is text a reader reads,
+// and a sweep that only ever sees the resting page cannot measure it.
+const PAGES = ['/', '/structures.html', '/tabernacle.html', '/#ref=Exodus%2025:10'];
 
 const measure = async (page) => page.evaluate(() => {
   const parse = (c) => {

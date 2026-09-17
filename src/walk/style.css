@@ -46,6 +46,13 @@ body { margin: 0; background: #060d16; color: var(--ink); font-family: var(--ui)
 }
 
 .gate-go { display: flex; gap: var(--sp-2); align-items: center; flex-wrap: wrap; }
+/* Quieter than the two ways in — it is the way back out. */
+.gate-back {
+  color: var(--gold); text-decoration: none; padding: var(--sp-2);
+  font: var(--fs-100) var(--ui); letter-spacing: var(--tr-cjk); white-space: nowrap;
+}
+.gate-back:hover { color: var(--gold-bright); text-decoration: underline; }
+.gate-back:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: var(--radius); }
 .gate-go + .keys { margin-top: var(--sp-3); }
 #enter, #tour {
   background: transparent; border: 1px solid var(--line); color: var(--ink-2);

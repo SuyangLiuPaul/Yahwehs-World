@@ -83,3 +83,19 @@ export function localiseRef(ref: string, locale: 'en' | 'zh'): string {
   if (locale === 'en') out = out.replace(/(\d+)\s*章/g, '$1');
   return out;
 }
+
+/** "Acts 13:1" / "创世记 6:15" -> the canonical key bbbcccvvv, or null if the
+ *  string does not start with a book this table knows. Used to join the parts
+ *  of the app that cite verses to the 1,443 events, which carry the same keys
+ *  — see src/bridges.ts. Book names are matched longest-first by ANY_BOOK, so
+ *  "1 Samuel" is never read as "Samuel". */
+export function refKey(ref: string): number | null {
+  const at = ref.match(ANY_BOOK);
+  if (!at?.length) return null;
+  const name = at[0];
+  const rest = ref.slice(ref.indexOf(name) + name.length);
+  const cv = /^\s*(\d+)(?::(\d+))?/.exec(rest);
+  if (!cv) return null;
+  const book = NAME_TO_INDEX.get(name)! + 1;
+  return book * 1_000_000 + Number(cv[1]) * 1000 + Number(cv[2] ?? 0);
+}

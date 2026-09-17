@@ -18,7 +18,17 @@ import type { EventsTrack, TrackEvent } from './events-track.ts';
 
 const MAX_RESULTS = 80;
 
-export function installEventsMenu(track: EventsTrack, open: (ev: TrackEvent) => void) {
+/** What the rest of the page can ask of the menu — a journey card says "the
+ *  14 events inside Acts 27–28" and hands them over already chosen. */
+export interface EventsMenu {
+  /** Show exactly this set, under a chip naming where it came from. */
+  showSet(label: () => string, items: TrackEvent[]): void;
+}
+
+export function installEventsMenu(
+  track: EventsTrack,
+  open: (ev: TrackEvent) => void,
+): EventsMenu | undefined {
   const openBtn = document.getElementById('t-events-open') as HTMLButtonElement;
   const panel = document.getElementById('t-events-menu') as HTMLElement;
   const search = document.getElementById('t-events-search') as HTMLInputElement;
@@ -77,21 +87,47 @@ export function installEventsMenu(track: EventsTrack, open: (ev: TrackEvent) => 
     if (currentLocale() === 'zh') countEl.textContent = hant(countEl.textContent);
   }
 
+  // A set handed in from elsewhere — "the events inside this journey's
+  // passage" — shown under a chip so the reader can see the list is narrowed
+  // and get out of it. The label is a function because the name it shows is
+  // the journey's, in whichever reading the page is in at the time.
+  let pinned: { label: () => string; items: TrackEvent[] } | null = null;
+  const pin = document.createElement('button');
+  pin.id = 't-events-pin';
+  pin.type = 'button';
+  pin.hidden = true;
+  pin.addEventListener('click', () => { pinned = null; paintPin(); refresh(); });
+  bookSel.before(pin);
+
+  function paintPin() {
+    pin.hidden = !pinned;
+    bookSel.hidden = !!pinned;
+    if (pinned) {
+      pin.textContent = `${pinned.label()} ×`;
+      pin.setAttribute('aria-label', t(`Showing ${pinned.label()} — show all books`,
+        `只看${pinned.label()}——点此看全部`));
+    }
+  }
+
   function refresh() {
     const q = search.value.trim().toLowerCase();
+    // Searching inside a pinned set searches the set, not the canon — a chip
+    // that a search silently escaped would be lying about what is on screen.
+    const scope = pinned ? pinned.items : all;
     if (q) {
       // Every token has to appear somewhere, rather than the whole query as
       // one substring. "Exod 14" found nothing while the reference read
       // "Exodus 14:1–14:31" — the reader typed the abbreviation everyone uses
       // and the list said there is no such event.
       const tokens = q.split(/\s+/).filter(Boolean);
-      const hits = all.filter((ev) => {
+      const hits = scope.filter((ev) => {
         const hay = `${ev.en} ${ev.zh} ${hant(ev.zh)} ${ev.ref} ${ev.refZh}`.toLowerCase();
         return tokens.every((tk) => hay.includes(tk));
       });
       render(hits.slice(0, MAX_RESULTS), hits.length);
       return;
     }
+    if (pinned) { render(pinned.items.slice(0, MAX_RESULTS), pinned.items.length); return; }
     const arr = byBook.get(Number(bookSel.value)) ?? [];
     render(arr, arr.length);
   }
@@ -112,6 +148,7 @@ export function installEventsMenu(track: EventsTrack, open: (ev: TrackEvent) => 
     search.placeholder = t('Search 1,443 events', '搜索 1443 条事件');
     search.setAttribute('aria-label', search.placeholder);
     fillBooks();
+    paintPin();
     refresh();
   }
 
@@ -129,9 +166,20 @@ export function installEventsMenu(track: EventsTrack, open: (ev: TrackEvent) => 
     panel.hidden = true;
     openBtn.setAttribute('aria-expanded', 'false');
   });
-  bookSel.addEventListener('change', () => { search.value = ''; refresh(); });
+  bookSel.addEventListener('change', () => { search.value = ''; pinned = null; paintPin(); refresh(); });
   search.addEventListener('input', refresh);
   onLocale(relabel);
 
   relabel();
+
+  return {
+    showSet(label, items) {
+      pinned = { label, items };
+      search.value = '';
+      paintPin();
+      refresh();
+      panel.hidden = false;
+      openBtn.setAttribute('aria-expanded', 'true');
+    },
+  };
 }

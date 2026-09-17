@@ -139,10 +139,17 @@ function cardHtml(s: Structure, cubitM: number) {
         <b>${o.zh}</b><span>${o.note}</span></button>`).join('')}
     </div>` : '';
 
-  return `<section class="card" data-i="${STRUCTURES.indexOf(s)}"><div class="inner">
+  // The way back to the globe, by the verse this card already cites. The
+  // globe owns the 1,443 events and resolves the citation to one of them
+  // (see src/bridges.ts and the hash handler in src/main.ts) — this page
+  // stays a page about measurements and downloads no event data to link.
+  const backLink = `<a class="s-back" href="/#ref=${encodeURIComponent(s.ref)}">在圣经世界看这段经文 ↗</a>`;
+
+  return `<section class="card" data-i="${STRUCTURES.indexOf(s)}" data-id="${s.id}"><div class="inner">
     <p class="eyebrow">照着经文的尺寸</p>
     <h1>${s.zh}</h1>
     <p class="en">${s.en}</p>
+    ${backLink}
     ${lead}
     <blockquote>${s.textZh}<cite>${s.refZh}　·　${s.ref}</cite></blockquote>
     <table><tbody>${dimRows}${countRows}</tbody></table>
@@ -154,6 +161,20 @@ function cardHtml(s: Structure, cubitM: number) {
       <ul>${s.unstated.map((u) => `<li>${u}</li>`).join('')}</ul></details>
   </div></section>`;
 }
+
+/** `/structures.html#ark` opens on that card instead of at the top — how the
+ *  globe hands a reader over when they open an event about a thing this page
+ *  measures. An unknown hash is ignored, not guessed at. */
+function scrollToHash() {
+  const id = location.hash.slice(1);
+  if (!id) return;
+  const card = feed.querySelector(`.card[data-id="${CSS.escape(id)}"]`) as HTMLElement | null;
+  if (!card) return;
+  card.scrollIntoView({ block: 'start', behavior: 'instant' as ScrollBehavior });
+  const i = STRUCTURES.findIndex((s) => s.id === id);
+  if (i >= 0) show(i, CUBITS[Number(cubitRange.value)]!.m);
+}
+addEventListener('hashchange', scrollToHash);
 
 function renderFeed() {
   const cubitM = CUBITS[Number(cubitRange.value)]!.m;
@@ -271,6 +292,7 @@ fit();
 frameCamera();
 applyCubit();
 show(0, CUBITS[0]!.m);
+scrollToHash();
 
 if (import.meta.env.DEV) {
   (globalThis as unknown as Record<string, unknown>).__structures = {

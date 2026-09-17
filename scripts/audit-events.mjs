@@ -201,6 +201,60 @@ for (const f of SHIPPED) {
   for (const [needle, n] of hits) shipped.push([`${f} · ${needle}`, n]);
 }
 
+// ── F · do the corridors between the three pages still land? ──────────────
+// src/bridges.ts joins the pages on the verse each part already cites: a
+// journey states the passage its stops come from, a structure states the verse
+// that measures it, and four authored anchors say which verses are the
+// tabernacle you can walk into. If any of those stops falling inside an event,
+// a link in the interface silently goes nowhere — the kind of failure nobody
+// reports, because a chip that is not there looks like a page without one.
+//
+// The anchors are READ OUT of the files that own them rather than restated
+// here. A second copy of the list is how a correction lands in one place and
+// not the other; this repo has paid for that lesson twice.
+const enBooks = [...readFileSync('src/books.ts', 'utf8')
+  .matchAll(/\{ en: '([^']+)', zh: '[^']+' \}/g)].map((m) => m[1]);
+const enNo = new Map(enBooks.map((n, i) => [n, i + 1]));
+const refToKey = (ref) => {
+  const m = /^(.+?)\s+(\d+)(?::(\d+))?/.exec(ref);
+  const b = m && enNo.get(m[1]);
+  return b ? b * 1_000_000 + Number(m[2]) * 1000 + Number(m[3] ?? 0) : null;
+};
+const eventsAt = (key) => events.filter((e) => e.start <= key && key <= e.end).length;
+const corridors = [];
+
+const journeysDoc = JSON.parse(readFileSync('public/data/journeys.json', 'utf8'));
+for (const jr of journeysDoc.journeys) {
+  const keys = jr.markers
+    .flatMap((m) => m.refs ?? [m.ref])
+    .map(refToKey)
+    .filter((k) => k !== null);
+  if (!keys.length) { corridors.push([`journey ${jr.id}`, 'no stop cites a verse this table knows']); continue; }
+  const [lo, hi] = [Math.min(...keys), Math.max(...keys)];
+  const n = events.filter((e) => e.end >= lo && e.start <= hi).length;
+  if (!n) corridors.push([`journey ${jr.id}`, `passage ${lo}–${hi} contains no event`]);
+}
+
+const specsSrc = readFileSync('src/structures/specs.ts', 'utf8');
+let lastId = null;
+for (const line of specsSrc.split('\n')) {
+  const id = /^\s{4}id: '([^']+)'/.exec(line);
+  if (id) { lastId = id[1]; continue; }
+  const ref = /^\s{4}ref: '([^']+)'/.exec(line);
+  if (!ref || !lastId) continue;
+  const key = refToKey(ref[1]);
+  if (key === null) corridors.push([`structure ${lastId}`, `cannot read "${ref[1]}"`]);
+  else if (!eventsAt(key)) corridors.push([`structure ${lastId}`, `${ref[1]} falls in no event`]);
+}
+
+const walkAnchors = [...(/const WALK_ANCHORS = \[([^\]]+)\]/
+  .exec(readFileSync('src/bridges.ts', 'utf8'))?.[1] ?? '').matchAll(/'([^']+)'/g)].map((m) => m[1]);
+if (!walkAnchors.length) corridors.push(['tabernacle', 'no anchors found in src/bridges.ts']);
+for (const a of walkAnchors) {
+  const key = refToKey(a);
+  if (key === null || !eventsAt(key)) corridors.push(['tabernacle', `${a} falls in no event`]);
+}
+
 // ── report ────────────────────────────────────────────────────────────────
 const byKind = {};
 for (const f of findings) (byKind[f.kind] ??= []).push(f);
@@ -235,6 +289,11 @@ const fmt = (id) => { const v = byId.get(id); return `${v.book} ${v.chapter}:${v
 for (const [s, e, n] of gaps.slice(0, 60)) lines.push(`- ${fmt(s)} – ${fmt(e)} (${n} verses)`);
 if (gaps.length > 60) lines.push(`- …and ${gaps.length - 60} more runs`);
 lines.push('', `Total uncited verses: ${gaps.reduce((a, g) => a + g[2], 0)}`, '');
+lines.push(`## Corridors between the pages — ${corridors.length} broken`, '');
+lines.push('Every link in src/bridges.ts is a verse citation landing inside an event.', '');
+if (!corridors.length) lines.push('All journeys, structure measurements and tabernacle anchors land.', '');
+for (const [what, why] of corridors) lines.push(`- **${what}** — ${why}`);
+lines.push('');
 lines.push('## Summaries whose words are least like the passage', '');
 lines.push('Screening only — a low share means look, not that it is wrong.', '');
 for (const o of overlap.slice(0, 40))
@@ -246,4 +305,6 @@ for (const k of kinds) console.log(`  ${k}: ${byKind[k].length}`);
 console.log(`耶和华 / modern spellings in shipped payloads: ${shipped.length ? shipped.map(([f, n]) => `${f}:${n}`).join(', ') : 'none'}`);
 console.log(`names that belong elsewhere: ${wrongName.length}; names absent from the CUV: ${unknownName.length}`);
 console.log(`uncited verses: ${gaps.reduce((a, g) => a + g[2], 0)} in ${gaps.length} runs`);
+console.log(`corridors that land nowhere: ${corridors.length}`);
+for (const [what, why] of corridors) console.log(`  ${what}: ${why}`);
 console.log(`lowest summary overlap: ${(overlap[0]?.share * 100).toFixed(0)}%`);
