@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Springs · figures — Yahweh's World</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <!-- A review page, not a destination: it is not in the nav and not in the
+       production build. It stands two copies of one figure side by side —
+       the file as it was skinned to the body alone, and the file with spring
+       bones swung by src/walk/springs.ts — playing the same clip in step, so
+       whether the cloth now MOVES LIKE CLOTH can be judged by eye, and what
+       it costs can be read off the counter.
+         ?glb=/models/springs/man.glb        the figure with spring bones
+         ?base=/models/springs/man-base.glb  the same figure without (optional)
+         ?clip=walk                          which clip to start on -->
+  <style>
+    :root { color-scheme: dark; }
+    html, body { margin: 0; background: #060d16; color: #e8dcc4; font: 14px Inter, system-ui, sans-serif; }
+    #stage { display: block; width: 100vw; height: 100vh; }
+    #bar { position: fixed; left: 0; right: 0; top: 0; display: flex; gap: 8px; align-items: center; padding: 10px 14px;
+      background: linear-gradient(#060d16, transparent); flex-wrap: wrap; }
+    button { background: #16283a; color: #e8dcc4; border: 1px solid #2a3d52; border-radius: 6px; padding: 5px 10px; cursor: pointer; font: inherit; }
+    button[aria-pressed="true"] { background: #c9a961; color: #060d16; border-color: #c9a961; }
+    .sep { width: 1px; height: 22px; background: #2a3d52; margin: 0 4px; }
+    #stats { position: fixed; left: 14px; bottom: 12px; font: 12px "IBM Plex Mono", ui-monospace, monospace; color: #8a97a6; white-space: pre; }
+    .label { position: fixed; bottom: 48px; font-weight: 600; letter-spacing: .04em; color: #c9a961; }
+    #l-base { left: 22%; } #l-springs { right: 22%; }
+    .label i { display: block; font-style: normal; font-weight: 400; color: #8a97a6; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <canvas id="stage"></canvas>
+  <div id="bar">
+    <span id="clips"></span>
+    <span class="sep"></span>
+    <button type="button" id="springs" aria-pressed="true">springs on</button>
+    <button type="button" id="colliders" aria-pressed="false">colliders</button>
+    <button type="button" id="bones" aria-pressed="false">chains</button>
+    <button type="button" id="slow" aria-pressed="false">¼ speed</button>
+    <button type="button" id="turn" aria-pressed="false">turn</button>
+  </div>
+  <div class="label" id="l-base">before<i>skinned to the body only</i></div>
+  <div class="label" id="l-springs">with springs<i>hem, girdle ends, beard, head-cloth</i></div>
+  <div id="stats">loading…</div>
+  <script type="module" src="/src/figures-springs.ts"></script>
+</body>
+</html>

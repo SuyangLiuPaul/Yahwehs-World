@@ -23,7 +23,11 @@ opt = {"gender": 1.0, "age": 0.6, "weight": 0.5, "height": 0.5, "muscle": 0.5, "
        "skin": "toigo_light_skin_male_bronze", "hair": "short02", "beard": "grinsegold_beard_sigmund_wip",
        "beard_tint": "0.30,0.21,0.15", "fabric": "Fabric036",
        "eyebrows": "eyebrow001", "eyelashes": "eyelashes01",
-       "robe": "ankle", "rig": "mixamo", "clips": "idle,walk,look,pray,speak,carry"}
+       "robe": "ankle", "rig": "mixamo", "clips": "idle,walk,look,pray,speak,carry",
+       # spring bones under the hem, the girdle's ends, a head-cloth and the
+       # beard, for the app to swing at run time (springs.py). --springs 0 for
+       # a figure skinned to the body alone, as before.
+       "springs": 1.0}
 
 # A FIRST CAST. Each preset is a person who can be told from the others at a
 # glance: build, age, the face, the colour of hair and beard, the skin. They are
@@ -385,12 +389,14 @@ def main():
     # The robe is cut and DRAPED while the arms are still out (robe.py), then
     # the arms come down and the sleeves go with them.
     robe, sleeve_objs = (None, [])
+    girdle = headcloth = None
     if opt["robe"] != "none":
         import robe as robe_mod
         tup = lambda k: tuple(float(x) for x in opt[k].split(","))
         robe, sleeve_objs = robe_mod.make_draped_robe(body, rig, fabric=opt.get("fabric", "Fabric036"),
                                                       tint=tup("robe_tint"))
-        sleeve_objs.append(robe_mod.make_girdle(body, rig, tint=tup("girdle_tint")))
+        girdle = robe_mod.make_girdle(body, rig, tint=tup("girdle_tint"))
+        sleeve_objs.append(girdle)
         if opt["mantle"] != "none":
             # the mantle: a sleeveless outer garment of rough hair-cloth to the
             # knee, standing a little off the robe — laid over it the same way
@@ -399,14 +405,22 @@ def main():
             sleeve_objs.append(mantle)
     if opt["head"] in ("veil", "headcloth"):
         import robe as robe_mod
-        sleeve_objs.append(robe_mod.make_headcloth(
+        headcloth = robe_mod.make_headcloth(
             body, rig, size=1.15 if opt["head"] == "veil" else 0.85,
             tint=(0.62, 0.52, 0.42) if opt["head"] == "veil" else (0.90, 0.86, 0.78),
             name="Veil" if opt["head"] == "veil" else "Headcloth",
             # a veil over a head with no hair asset comes down to the hairline
-            brow=0.008 if opt["head"] == "veil" else 0.040))
+            brow=0.008 if opt["head"] == "veil" else 0.040)
+        sleeve_objs.append(headcloth)
     bb["lower_arms"](body, rig)
     sleeves = None
+    # Spring bones go in NOW: the rest pose is final (lower_arms has just made
+    # it so) and no clip is keyed yet, so every clip is keyed onto the full
+    # rig and the chains ride along at rest in all of them.
+    if opt["springs"]:
+        import springs as springs_mod
+        beard_obj = next((o for o in parts if o is not None and "beard" in o.name.lower()), None)
+        springs_mod.add_springs(body, rig, robe=robe, girdle=girdle, veil=headcloth, beard=beard_obj)
 
     for name in opt["clips"].split(","):
         ac.make_clip(rig, name, ac.CLIP_DEFS[name], ac.MIXAMO)
@@ -425,6 +439,9 @@ def main():
     bpy.ops.export_scene.gltf(filepath=OUT, export_format="GLB", use_selection=True,
                               export_animations=True, export_animation_mode="NLA_TRACKS",
                               export_skins=True, export_yup=True,
+                              # the spring bones' parameters and the colliders
+                              # travel as custom properties → glTF extras
+                              export_extras=True,
                               # NOT JPEG: hair, beards and brows are cards whose
                               # empty parts are transparent, and JPEG has no alpha —
                               # the first export drew every card solid, a helmet of
