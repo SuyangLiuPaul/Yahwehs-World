@@ -53,6 +53,7 @@ export default defineConfig({
         figures: resolve(__dirname, 'figures.html'),
         plan: resolve(__dirname, 'plan.html'),
         crowd: resolve(__dirname, 'crowd-test.html'),
+        springs: resolve(__dirname, 'figures-springs.html'),
       },
     },
   },

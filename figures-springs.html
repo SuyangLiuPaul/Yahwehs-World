@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Springs · figures — Yahweh's World</title>
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
-  <!-- A review page, not a destination: it is not in the nav and not in the
-       production build. It stands two copies of one figure side by side —
+  <!-- A review page, not a destination: it is built (so it can be looked at
+       on dev) but it is not in the nav. It stands two copies of one figure side by side —
        the file as it was skinned to the body alone, and the file with spring
        bones swung by src/walk/springs.ts — playing the same clip in step, so
        whether the cloth now MOVES LIKE CLOTH can be judged by eye, and what
@@ -26,12 +26,23 @@
     #stats { position: fixed; left: 14px; bottom: 12px; font: 12px "IBM Plex Mono", ui-monospace, monospace; color: #8a97a6; white-space: pre; }
     .label { position: fixed; bottom: 48px; font-weight: 600; letter-spacing: .04em; color: #c9a961; }
     #l-base { left: 22%; } #l-springs { right: 22%; }
+    #cast { display: flex; gap: 6px; flex-wrap: wrap; }
+    #cast a { color: #e8dcc4; text-decoration: none; border: 1px solid #2a3d52; border-radius: 6px; padding: 5px 10px; }
+    #cast a[aria-current="page"] { border-color: #c9a961; color: #c9a961; }
     .label i { display: block; font-style: normal; font-weight: 400; color: #8a97a6; font-size: 12px; }
   </style>
 </head>
 <body>
   <canvas id="stage"></canvas>
   <div id="bar">
+    <nav id="cast" aria-label="cast">
+      <a href="?glb=/models/springs/young-man.glb">young man</a>
+      <a href="?glb=/models/springs/man.glb">man of forty</a>
+      <a href="?glb=/models/springs/elijah.glb">Elijah</a>
+      <a href="?glb=/models/springs/old-man.glb">old man</a>
+      <a href="?glb=/models/springs/woman.glb">woman</a>
+    </nav>
+    <span class="sep"></span>
     <span id="clips"></span>
     <span class="sep"></span>
     <button type="button" id="springs" aria-pressed="true">springs on</button>
@@ -43,6 +54,11 @@
   <div class="label" id="l-base">before<i>skinned to the body only</i></div>
   <div class="label" id="l-springs">with springs<i>hem, girdle ends, beard, head-cloth</i></div>
   <div id="stats">loading…</div>
+  <script>
+    // the figure on show is marked in the cast row; man of forty when none is asked for
+    const want = new URLSearchParams(location.search).get('glb') ?? '/models/springs/man.glb';
+    for (const a of document.querySelectorAll('#cast a')) if (a.getAttribute('href') === '?glb=' + want) a.setAttribute('aria-current', 'page');
+  </script>
   <script type="module" src="/src/figures-springs.ts"></script>
 </body>
 </html>
