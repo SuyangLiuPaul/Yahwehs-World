@@ -123,12 +123,12 @@ export async function loadFigure(url: string, height: number): Promise<THREE.Gro
 // Height first, because it is the one that carries. Adult stature varies by
 // about four per cent either side of the mean, which is the range here — big
 // enough to break the rank, small enough that nobody in it is the wrong size.
-const HEIGHT = [1.000, 0.972, 1.031, 0.988, 1.016, 0.964, 1.004, 1.039, 0.980, 1.024, 0.956, 0.996];
-const TURN = [0, 0.14, -0.09, 0.21, -0.17, 0.06, -0.23, 0.11, 0.18, -0.05, 0.25, -0.13];
+export const HEIGHT = [1.000, 0.972, 1.031, 0.988, 1.016, 0.964, 1.004, 1.039, 0.980, 1.024, 0.956, 0.996];
+export const TURN = [0, 0.14, -0.09, 0.21, -0.17, 0.06, -0.23, 0.11, 0.18, -0.05, 0.25, -0.13];
 // Undyed wool and a beast's hide are not one colour. Four shades, SHARED —
 // one cloned material per shade per template, not one per copy, so a crowd
 // of three hundred still costs four materials.
-const SHADE = [0xffffff, 0xf3ece1, 0xe6dccb, 0xfdf6ec];
+export const SHADE = [0xffffff, 0xf3ece1, 0xe6dccb, 0xfdf6ec];
 const shades = new Map<string, THREE.Material>();
 
 function shade(mesh: THREE.Mesh, k: number) {
