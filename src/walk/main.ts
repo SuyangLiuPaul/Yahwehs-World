@@ -9,6 +9,8 @@ import { Tour, TOUR } from './tour.ts';
 import { applyStatic, bindSwitch, hant, onLocale, t } from '../locale.ts';
 import { installUpdateChecker } from '../updates.ts';
 import { installSiteMenu, loadingStep, loadingSteps, pageReady } from '../site-shell.ts';
+import { installMeasures } from '../structures/panel.ts';
+import { structuresFor } from '../structures/specs.ts';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
@@ -304,10 +306,25 @@ document.getElementById('tour-prev')!.addEventListener('click',()=>inspectStop(t
 document.getElementById('tour-next')!.addEventListener('click',()=>inspectStop(tour.currentIndex+1));
 function exitWalk(){endTour();walker.exit();setGate(true);hud.hidden=true;}
 document.getElementById('walk-exit')!.addEventListener('click',exitWalk);
-addEventListener('keydown',e=>{if(e.code==='Escape')exitWalk();});
+// Esc closes whichever dialog is over the walk before it means "leave the
+// walk" — otherwise closing the Measures panel also exited the building.
+addEventListener('keydown', (e) => {
+  if (e.code !== 'Escape' || document.querySelector('dialog[open]')) return;
+  exitWalk();
+});
 document.getElementById('model-info')!.addEventListener('click',()=>{
   if(tour.running){tour.pause();tourToggle.textContent='▶';}
   (document.getElementById('assumptions') as HTMLDialogElement).showModal();
+});
+
+// The measurements this walk was generated from, as the cards that used to be
+// a page of their own. Which cards belong here is decided in specs.ts by where
+// the thing physically stands, not by a list kept on this page.
+installMeasures({
+  cards: structuresFor('tabernacle'),
+  dialog: document.getElementById('measures-panel') as HTMLDialogElement,
+  openers: [document.getElementById('measures'), document.getElementById('gate-measures')],
+  beforeOpen: () => { if (tour.running) { tour.pause(); tourToggle.textContent = '▶'; } },
 });
 
 let lastZone = '';

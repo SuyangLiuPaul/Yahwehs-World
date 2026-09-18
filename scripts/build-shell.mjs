@@ -25,8 +25,6 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PAGES = [
   { file: 'index.html', href: '/', en: 'Globe', narrowEn: 'Globe', zh: '圣经世界', narrowZh: '地球',
     loadEn: 'Drawing the world…', loadHans: '正在绘制世界…', loadHant: '正在繪製世界…' },
-  { file: 'structures.html', href: '/structures.html', en: 'Measures', narrowEn: 'Sizes', zh: '照着经文的尺寸', narrowZh: '尺寸',
-    loadEn: 'Building to the measurements…', loadHans: '正在照着尺寸建造…', loadHant: '正在照著尺寸建造…' },
   { file: 'tabernacle.html', href: '/tabernacle.html', en: 'Tabernacle', narrowEn: 'Tent', zh: '走进会幕', narrowZh: '会幕',
     loadEn: 'Raising the tabernacle…', loadHans: '正在支搭会幕…', loadHant: '正在支搭會幕…' },
   { file: 'temple.html', href: '/temple.html', en: 'Temple', narrowEn: 'Temple', zh: '走进圣殿', narrowZh: '圣殿',

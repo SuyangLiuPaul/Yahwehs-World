@@ -25,7 +25,10 @@ set -o pipefail; npm run build   # tsc --noEmit && vite build; pipefail or a pip
 ## Driving the app
 
 - DEV: `window.__globe.openRoute('paul-1')`, `window.__globe.tickRoute(0.05)`,
-  `window.__walk.tour.stop()` then set a pose; `window.__structures.show(i, m)`.
+  `window.__walk.tour.stop()` then set a pose. The Measures panel is DOM-only,
+  in DEV and in prod alike: `#gate-measures` opens it, `#mp-c-range` is the
+  cubit, `#measures-panel .mp-card` are the cards
+  (`node scripts/audit-measures.mjs` sweeps all four pages that hold them).
 - PROD (no handles): `document.querySelector('[data-id="paul-1"]').click()`,
   the language button (text 中文/EN), `#rplay`, `#t-goto-open`/`#t-goto-book`/
   `#t-goto-chapter`/`#t-goto-verse` for the reference picker.

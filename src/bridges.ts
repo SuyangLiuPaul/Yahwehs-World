@@ -1,11 +1,11 @@
 // The joins between the pages.
 //
 // This app had four doors and no corridors. The globe knows 1,443 events and
-// ten journeys; /structures.html knows the things built to scriptural
-// measurements; /tabernacle.html is a tabernacle you can walk into;
-// /temple.html is Solomon's temple you can walk into. A reader who opened
-// 「立起会幕、神荣光充满」 on the globe was standing on Exodus 40 with the
-// tabernacle one tab away and nothing on screen saying so.
+// ten journeys; each walk carries the measurement cards for the things that
+// stand in it (src/structures/panel.ts); /tabernacle.html is a tabernacle you
+// can walk into; /temple.html is Solomon's temple you can walk into. A reader
+// who opened 「立起会幕、神荣光充满」 on the globe was standing on Exodus 40
+// with the tabernacle one tab away and nothing on screen saying so.
 //
 // Everything here is JOINED ON THE VERSE, not asserted by hand. Every part of
 // this app already cites chapter and verse — a journey states the passage it
@@ -19,7 +19,7 @@
 // something the data states, so they are verse anchors written out in the
 // open rather than a rule pretending to derive them.
 import { refKey } from './books.ts';
-import { STRUCTURES } from './structures/specs.ts';
+import { measuresHref, STRUCTURES } from './structures/specs.ts';
 import type { Journey } from './routes.ts';
 import type { TrackEvent } from './events-track.ts';
 
@@ -133,5 +133,7 @@ const WALK_PAGES: Record<string, string> = {
 
 export const href = (b: Bridge) => {
   if (b.kind === 'walk') return WALK_PAGES[b.id] ?? '/tabernacle.html';
-  return `/structures.html#${b.id}`;
+  // Not a page any more: the card is a panel on whichever walk holds the thing
+  // it measures, and specs.ts is the only place that knows which.
+  return measuresHref(b.id);
 };

@@ -5,8 +5,8 @@
 // The cubit is the whole problem. Scripture measures in cubits and never says
 // how long one is, and the candidates differ by nearly 20%: Noah's ark is
 // either 134 m or 157 m depending on which you pick. Rather than quietly
-// choosing, the page puts the cubit on a slider and lets every structure
-// resize at once.
+// choosing, the Measures panel puts the cubit on a slider and lets every
+// structure resize at once (src/structures/panel.ts).
 
 export interface CubitStandard { id: string; m: number; zh: string; en: string; note: string }
 
@@ -21,6 +21,12 @@ export const CUBITS: CubitStandard[] = [
 
 /** A dimension the text actually states, with the verse that states it. */
 export interface Dim { key: string; zh: string; cubits: number; ref: string }
+
+/** The walk-in pages. A card lives on the page where the thing it measures
+ *  physically stands, which is the one rule that never needs maintaining: the
+ *  ark of the covenant is in the most holy place, so its measurements are in
+ *  the tabernacle walk, and nobody has to remember that they are. */
+export type WalkHome = 'ark' | 'tabernacle' | 'temple';
 
 export interface Structure {
   id: string;
@@ -52,6 +58,10 @@ export interface Structure {
   compare: { zh: string; m: number }[];
   /** Some measures are not in cubits at all. */
   unit?: { zh: string; m: number; note: string };
+  /** The walk this card is shown in. Absent means no walk holds this thing
+   *  yet: the card is still built and still reachable from the Plan page
+   *  under its unit, and it moves in here the day its walk exists. */
+  walk?: WalkHome;
 }
 
 export const STRUCTURES: Structure[] = [
@@ -67,6 +77,7 @@ export const STRUCTURES: Structure[] = [
       { key: 'height', zh: '高', cubits: 30,  ref: '创 6:15' },
     ],
     kind: 'ark',
+    walk: 'ark',
     unstated: [
       '船体形状——经文只给了长宽高三个数，没有说船首船尾是什么样子。这里按方箱处理，因为那是经文唯一支持的形状。',
       '材质细节——只说了歌斐木和里外抹松香（创 6:14）。',
@@ -90,6 +101,7 @@ export const STRUCTURES: Structure[] = [
       { key: 'height', zh: '高', cubits: 1.5, ref: '出 25:10' },
     ],
     kind: 'chest',
+    walk: 'tabernacle',
     unstated: [
       '基路伯长什么样——经文说了「用金子锤出两个基路伯来」（出 25:18），翅膀遮掩施恩座，脸对脸。形态没有描述。这里只放出经文明确的姿态。',
       '包金的厚度。',
@@ -112,6 +124,7 @@ export const STRUCTURES: Structure[] = [
       { key: 'height', zh: '帷子高', cubits: 5, ref: '出 27:18' },
     ],
     kind: 'court',
+    walk: 'tabernacle',
     unstated: ['帷子的织法与颜色细节、柱子的雕饰。经文给了柱数、座与钩（出 27:9-17），没有给形制。'],
     punchZh: '45 米 × 22 米，围墙只有两米二高——比一个网球场大不了多少。神与以色列人相会的地方，尺寸是一个人站在外面就能看见里面的院子。',
     compare: [
@@ -134,6 +147,7 @@ export const STRUCTURES: Structure[] = [
       { zh: '灯盏', n: 7, ref: '出 25:37' },
     ],
     kind: 'menorah',
+    walk: 'tabernacle',
     assumedHeight: 1.5,
     unstated: [
       '**灯台有多高，经文从头到尾没有说。** 出埃及记 25 章把每一个装饰的数量都数清楚了，却一个尺寸都没给。这里用的 1.5 米来自提图斯凯旋门浮雕的比例和犹太传统，不是经文。',
@@ -191,6 +205,7 @@ export const STRUCTURES: Structure[] = [
       { key: 'hekal', zh: '圣所长', cubits: 40, ref: '王上 6:17' },
     ],
     kind: 'templeHouse',
+    walk: 'temple',
     punchZh: '六十乘二十乘三十肘 —— 大约 27 米长、9 米宽、13 米高。比会幕的帐幕长两倍、宽两倍，却是石头香柏木的房子，不是帐幕。至圣所是一个二十肘见方的立方体，里面是两个十肘高的基路伯，翅膀正好撑满那间屋子。',
     unstated: [
       '**屋顶坡度经文没有给。** 王上 6:9 给了殿高三十肘，从未说屋顶是什么形状。这里画成平顶，那是经文唯一支持的「不发明」的读法。',
@@ -217,6 +232,7 @@ export const STRUCTURES: Structure[] = [
       { key: 'capital', zh: '柱顶高', cubits: 5, ref: '王上 7:19' },
     ],
     kind: 'bronzePillar',
+    walk: 'temple',
     counts: [
       { zh: '柱顶的石榴（王上）', n: 200, ref: '王上 7:20' },
       { zh: '柱顶的石榴（代下）', n: 100, ref: '代下 3:16' },
@@ -246,6 +262,7 @@ export const STRUCTURES: Structure[] = [
       { key: 'girth',    zh: '围', cubits: 30, ref: '王上 7:23' },
     ],
     kind: 'bronzeSea',
+    walk: 'temple',
     counts: [
       { zh: '驮海的铜牛', n: 12, ref: '王上 7:25' },
       { zh: '容量（王上）', n: 2000, ref: '王上 7:26' },
@@ -268,3 +285,28 @@ export const STRUCTURES: Structure[] = [
 
 export const metres = (cubits: number, s: Structure, cubitM: number) =>
   cubits * (s.unit ? s.unit.m : cubitM);
+
+/** The cards one walk shows, in the order they stand in this file. */
+export const structuresFor = (walk: WalkHome) => STRUCTURES.filter((s) => s.walk === walk);
+
+/** Cards no walk holds yet. Listed rather than dropped: 启 21:16 gives three
+ *  numbers, and the card that stands them up is finished work. */
+export const homelessStructures = () => STRUCTURES.filter((s) => !s.walk);
+
+const WALK_PAGE: Record<WalkHome, string> = {
+  ark: '/ark.html',
+  tabernacle: '/tabernacle.html',
+  temple: '/temple.html',
+};
+
+/** Where a reader goes to read one card. Every link to a measurement in this
+ *  app is built here, so there is one answer to "where does this card live"
+ *  rather than one per calling page — which is how /structures.html#pillars
+ *  outlived the page it pointed at in three different files.
+ *
+ *  A card with no walk yet falls to the Plan page, which lists it under its
+ *  unit and says what it is waiting for. */
+export const measuresHref = (id: string) => {
+  const s = STRUCTURES.find((x) => x.id === id);
+  return `${s?.walk ? WALK_PAGE[s.walk] : '/plan.html'}#measures=${id}`;
+};

@@ -8,7 +8,7 @@ const directory=process.env.EVIDENCE_DIR??'handoff/evidence/phase-1/live';
 const sourceCommit=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 const assets=new Set(),pages=[];
-for(const name of ['index.html','structures.html','tabernacle.html']){
+for(const name of ['index.html','tabernacle.html','temple.html']){
   const expected=await readFile(`dist/${name}`,'utf8');
   const response=await fetch(new URL(name,site),{cache:'no-store'});
   assert.equal(response.status,200,`${name} did not load`);

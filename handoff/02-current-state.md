@@ -47,10 +47,10 @@ under `evidence/phase-1/`. The historical measurements below are retained.
 | URL | Module | What it does | State |
 |---|---|---|---|
 | `/` | `src/main.ts` (651 lines) | The globe: 1,332 places, verse-level timeline (5,582 steps), 10 journeys with playback, place panel, legend, terrain patch | Shipping. Demo-quality; see `11` for defects |
-| `/structures.html` | `src/structures/*` | Measurement cards: Noah's ark, ark of the covenant, court, lampstand (two variants), New Jerusalem; each rebuilt in three.js from its stated cubits, with a cubit switch (common 0.445 m / long 0.518 m / royal 0.523 m) | Shipping. Card bodies are Chinese only |
+| Measures panel (no page of its own) | `src/structures/panel.ts` | The eight measurement cards — Noah's ark, ark of the covenant, court, lampstand (two variants), Solomon's temple, Jachin and Boaz, the molten sea, New Jerusalem — each rebuilt in three.js from its stated cubits, with a cubit switch (common 0.445 m / long 0.518 m / royal 0.523 m). Opened from the walk that holds the thing it measures; New Jerusalem has no walk yet and is read on `/plan.html` | Shipping. Card bodies are Chinese only. `/structures.html` was removed and redirects to `/tabernacle.html` |
 | `/tabernacle.html` | `src/walk/*` | First-person walk through the tabernacle of Exodus 26–27, generated from the counts the text gives (60 court pillars, 48 boards, 96 sockets, 15 bars, 10 curtains, 50 clasps), with a 9-stop guided tour | Shipping. Verified on phone/tablet/desktop |
 
-All three share `src/nav.css` (nav, language switch), `src/tokens.css` (design
+Every page shares `src/nav.css` (nav, language switch), `src/tokens.css` (design
 system) and `src/locale.ts` (default `en`, persisted in `localStorage['ydh.locale']`,
 `data-en` / `data-zh` attributes for static strings).
 
