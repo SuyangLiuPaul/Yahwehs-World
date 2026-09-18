@@ -25,10 +25,19 @@ const URL = process.argv[2] ?? 'http://localhost:5175';
 // with an event already OPEN (the hash handler in src/main.ts resolves the
 // citation): state-dependent text is text a reader reads, and a sweep that
 // only sees the resting page cannot measure it.
+// The last five are state, not pages. A <dialog> that is shut is display:none
+// and this sweep skips it, so the Measures panel and the Evidence dialog were
+// both invisible to it — eight cards of measurements and six walls of prose
+// that no reader sees a contrast number for. They open on a hash or on nothing
+// at all, so they are swept as paths like everything else.
 const PAGES = [
   ...[...(await import('node:fs')).readFileSync('vite.config.ts', 'utf8')
     .matchAll(/resolve\(__dirname, '([^']+\.html)'\)/g)].map((m) => (m[1] === 'index.html' ? '/' : `/${m[1]}`)),
   '/#ref=Exodus%2025:10',
+  '/ark.html#measures',
+  '/tabernacle.html#measures',
+  '/temple.html#measures',
+  '/plan.html#measures=newjerusalem',
 ];
 
 const measure = async (page) => page.evaluate(() => {

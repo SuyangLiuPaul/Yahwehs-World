@@ -26,6 +26,7 @@ import { installSiteMenu } from './site-shell.ts';
 import { EventsTrack, type TrackEvent } from './events-track.ts';
 import { installEventsMenu, type EventsMenu } from './events-menu.ts';
 import { bridgesFor, eventsInJourney, href as bridgeHref, structureForJourney } from './bridges.ts';
+import { measuresHref } from './structures/specs.ts';
 import type { GeoJson, Place, PlacesBundle } from './types.ts';
 
 type Locale = 'zh' | 'en';
@@ -355,7 +356,7 @@ function renderRouteBridges(jr: Journey) {
   const s = structureForJourney(jr.id);
   link.hidden = !s;
   if (s) {
-    link.href = `/structures.html#${s.id}`;
+    link.href = measuresHref(s.id);
     link.textContent = locale === 'zh' ? hant(`${s.zh}的尺寸`) : `How big: ${s.en}`;
   }
 }
@@ -846,8 +847,8 @@ let eventsMenu: EventsMenu | undefined;
 /** How the other two pages send a reader back here: `#event=<id>` for an
  *  exact event, or `#ref=Exodus 25:10` for a citation, which is what a page
  *  that does not carry the events payload can give. The citation is resolved
- *  to the event whose passage contains it — so /structures.html links by the
- *  verse it already prints on the card, and downloads nothing to do it.
+ *  to the event whose passage contains it — so a measurement card links by the
+ *  verse it already prints, and downloads nothing to do it.
  *  Anything unresolvable is ignored rather than guessed at. */
 function openEventFromHash() {
   const hash = location.hash;

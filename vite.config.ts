@@ -47,7 +47,6 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        structures: resolve(__dirname, 'structures.html'),
         tabernacle: resolve(__dirname, 'tabernacle.html'),
         temple: resolve(__dirname, 'temple.html'),
         ark: resolve(__dirname, 'ark.html'),

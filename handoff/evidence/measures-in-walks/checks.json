@@ -1,0 +1,226 @@
+[
+  {
+    "page": "/ark.html",
+    "viewport": "desktop",
+    "locale": "zh-Hans",
+    "cards": [
+      "noah"
+    ],
+    "stage": "605×420",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "3/3",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/tabernacle.html",
+    "viewport": "desktop",
+    "locale": "zh-Hans",
+    "cards": [
+      "ark",
+      "court",
+      "menorah"
+    ],
+    "stage": "605×420",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "6/6",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/temple.html",
+    "viewport": "desktop",
+    "locale": "zh-Hans",
+    "cards": [
+      "temple",
+      "pillars",
+      "bronze-sea"
+    ],
+    "stage": "605×420",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "12/12",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/plan.html",
+    "viewport": "desktop",
+    "locale": "zh-Hans",
+    "cards": [
+      "newjerusalem"
+    ],
+    "stage": "607×420",
+    "cubitControl": "hidden",
+    "cubitCellsMoved": "0/3",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/ark.html",
+    "viewport": "desktop",
+    "locale": "en",
+    "cards": [
+      "noah"
+    ],
+    "stage": "605×420",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "3/3",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/tabernacle.html",
+    "viewport": "desktop",
+    "locale": "en",
+    "cards": [
+      "ark",
+      "court",
+      "menorah"
+    ],
+    "stage": "605×420",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "6/6",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/temple.html",
+    "viewport": "desktop",
+    "locale": "en",
+    "cards": [
+      "temple",
+      "pillars",
+      "bronze-sea"
+    ],
+    "stage": "605×420",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "12/12",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/plan.html",
+    "viewport": "desktop",
+    "locale": "en",
+    "cards": [
+      "newjerusalem"
+    ],
+    "stage": "607×420",
+    "cubitControl": "hidden",
+    "cubitCellsMoved": "0/3",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/ark.html",
+    "viewport": "phone",
+    "locale": "zh-Hans",
+    "cards": [
+      "noah"
+    ],
+    "stage": "390×286",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "3/3",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/tabernacle.html",
+    "viewport": "phone",
+    "locale": "zh-Hans",
+    "cards": [
+      "ark",
+      "court",
+      "menorah"
+    ],
+    "stage": "390×286",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "6/6",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/temple.html",
+    "viewport": "phone",
+    "locale": "zh-Hans",
+    "cards": [
+      "temple",
+      "pillars",
+      "bronze-sea"
+    ],
+    "stage": "390×286",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "12/12",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/plan.html",
+    "viewport": "phone",
+    "locale": "zh-Hans",
+    "cards": [
+      "newjerusalem"
+    ],
+    "stage": "390×287",
+    "cubitControl": "hidden",
+    "cubitCellsMoved": "0/3",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/ark.html",
+    "viewport": "phone",
+    "locale": "en",
+    "cards": [
+      "noah"
+    ],
+    "stage": "390×286",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "3/3",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/tabernacle.html",
+    "viewport": "phone",
+    "locale": "en",
+    "cards": [
+      "ark",
+      "court",
+      "menorah"
+    ],
+    "stage": "390×286",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "6/6",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/temple.html",
+    "viewport": "phone",
+    "locale": "en",
+    "cards": [
+      "temple",
+      "pillars",
+      "bronze-sea"
+    ],
+    "stage": "390×286",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "12/12",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/plan.html",
+    "viewport": "phone",
+    "locale": "en",
+    "cards": [
+      "newjerusalem"
+    ],
+    "stage": "390×287",
+    "cubitControl": "hidden",
+    "cubitCellsMoved": "0/3",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  }
+]

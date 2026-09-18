@@ -1,0 +1,185 @@
+/* The measurement cards, as a panel inside a walk.
+ *
+ * They used to be a page of their own — a scroll-snapped feed over a full-bleed
+ * canvas. They are now a dialog on the page that holds the thing each card
+ * measures, so every rule here is scoped under `#measures-panel`: the card
+ * markup keeps bare `h1`, `blockquote` and `table` selectors, and a walk page
+ * has its own of all three.
+ *
+ * The one structural change from the page: there, the canvas was the whole
+ * viewport and the card floated over it. Here the panel is a box, so the model
+ * gets its own sticky area and the cards scroll past it — the verse and the
+ * thing it describes still on screen at the same time, which was the point. */
+
+#measures-panel {
+  color: var(--ink); background: #101d27; border: 1px solid var(--line-gold);
+  width: min(1040px, calc(100% - 32px)); height: min(86dvh, 860px);
+  max-width: none; max-height: none;
+  padding: 0; overflow: hidden;
+  font: var(--fs-300)/1.65 var(--ui);
+}
+#measures-panel::backdrop { background: #000a; backdrop-filter: blur(4px); }
+
+.mp-shell { display: grid; grid-template-rows: auto auto minmax(0, 1fr); height: 100%; }
+
+.mp-head {
+  display: flex; align-items: baseline; gap: var(--sp-3); flex-wrap: wrap;
+  padding: var(--sp-4) var(--sp-5) var(--sp-3);
+  border-bottom: 1px solid var(--line);
+}
+.mp-head h2 { margin: 0; font-family: var(--display); font-size: var(--fs-600); font-weight: 600; letter-spacing: .06em; }
+.mp-head .mp-lede { margin: 0; flex: 1 1 18rem; min-width: 0; font-size: var(--fs-200); color: var(--ink-3); }
+.mp-head .dialog-close { float: none; margin-left: auto; flex: none; }
+
+/* The cubit is the argument the cards are built on, so its control sits above
+   them rather than inside any one of them: one choice, every card resized. */
+.mp-cubit {
+  display: grid; gap: var(--sp-1); justify-items: start;
+  padding: var(--sp-3) var(--sp-5);
+  border-bottom: 1px solid var(--line); background: #0c1720;
+}
+.mp-cubit[hidden] { display: none; }
+.mp-cubit label { font-size: var(--fs-300); letter-spacing: .06em; }
+.mp-cubit b { font-family: var(--mono); color: var(--gold-bright); font-weight: 500; }
+#mp-c-range { width: min(20rem, 100%); accent-color: var(--gold); cursor: pointer; }
+#mp-c-range:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+#mp-c-note { margin: 0; font-size: var(--fs-200); color: var(--ink-3); max-width: 46rem; }
+
+/* One scroll container. The model is sticky inside it, so it holds still while
+   the cards move past — the arrangement the page got from a fixed canvas. */
+.mp-body {
+  overflow-y: auto; overscroll-behavior: contain;
+  scroll-snap-type: y proximity;
+  display: grid; grid-template-columns: 1fr; align-content: start;
+}
+.mp-stage {
+  position: sticky; top: 0; z-index: 1; height: 34svh; min-height: 180px;
+  background: radial-gradient(120% 90% at 50% 10%, #12202e 0%, #0a1420 100%);
+  border-bottom: 1px solid var(--line);
+}
+.mp-stage canvas { display: block; width: 100%; height: 100%; }
+
+.mp-feed { display: grid; align-content: start; }
+.mp-card { scroll-snap-align: start; padding: var(--sp-5) var(--sp-5) var(--sp-6); }
+
+@media (min-width: 900px) {
+  .mp-body { grid-template-columns: minmax(0, 1fr) minmax(0, 27rem); }
+  .mp-stage { grid-column: 1; grid-row: 1; height: min(60svh, 420px); border-bottom: 0; border-right: 1px solid var(--line); }
+  .mp-feed { grid-column: 2; grid-row: 1; }
+}
+
+/* ── the card, as it was ──────────────────────────────────────────────────
+   Everything below is the page's own card styling, scoped. */
+#measures-panel .inner {
+  background: var(--surface); border: 1px solid #c9a22733; border-radius: var(--radius);
+  padding: var(--sp-5); box-shadow: 0 20px 60px #0007;
+}
+#measures-panel .eyebrow {
+  font-family: var(--mono); font-size: var(--fs-100); letter-spacing: .26em;
+  text-transform: uppercase; color: var(--gold); margin: 0 0 var(--sp-2);
+}
+#measures-panel h1 { margin: 0 0 2px; font-size: var(--fs-700); font-weight: 600; letter-spacing: .05em; text-wrap: balance; }
+#measures-panel .en { font-family: var(--latin); font-size: var(--fs-200); color: var(--ink-3); margin: 0 0 var(--sp-4); letter-spacing: 0; }
+/* Back to the globe, at the verse this card cites (src/bridges.ts). */
+#measures-panel .s-back {
+  display: inline-block; margin: 0 0 var(--sp-4); color: var(--gold); text-decoration: none;
+  font: var(--fs-100) var(--ui); letter-spacing: var(--tr-cjk);
+}
+#measures-panel .s-back:hover { color: var(--gold-bright); text-decoration: underline; }
+#measures-panel .s-back:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: var(--radius); }
+#measures-panel blockquote {
+  margin: 0 0 var(--sp-4); padding-left: var(--sp-3); border-left: 2px solid var(--gold);
+  font-size: var(--fs-500); line-height: 1.8;
+}
+#measures-panel blockquote cite {
+  display: block; margin-top: var(--sp-1); font-style: normal; font-family: var(--mono);
+  font-size: var(--fs-100); color: var(--ink-3); letter-spacing: .1em;
+}
+
+#measures-panel table { width: 100%; border-collapse: collapse; margin: 0 0 var(--sp-4); font-size: var(--fs-300); }
+#measures-panel th, #measures-panel td { text-align: left; padding: var(--sp-1) 0; border-bottom: 1px solid var(--line); }
+#measures-panel th { font-weight: 400; color: var(--ink-2); font-size: var(--fs-200); }
+#measures-panel td.n { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; }
+#measures-panel td.m { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; color: var(--gold-bright); }
+#measures-panel td.r { font-family: var(--mono); font-size: var(--fs-100); color: var(--ink-3); text-align: right; }
+
+#measures-panel .punch { font-size: var(--fs-400); line-height: 1.8; margin: 0 0 var(--sp-4); }
+#measures-panel .punch strong { color: var(--gold-bright); font-weight: 600; }
+
+#measures-panel .compare { margin: 0 0 var(--sp-4); display: grid; gap: var(--sp-1); }
+#measures-panel .compare .row { display: grid; grid-template-columns: 1fr auto; gap: var(--sp-2); align-items: center; font-size: var(--fs-200); }
+#measures-panel .compare .label { color: var(--ink-2); display: flex; align-items: center; gap: var(--sp-2); min-width: 0; }
+#measures-panel .compare .track { flex: 1; height: 3px; background: #ffffff14; border-radius: var(--radius); overflow: hidden; min-width: 1.5rem; }
+#measures-panel .compare .track i { display: block; height: 100%; background: var(--ink-2); }
+#measures-panel .compare .row.self .track i { background: var(--gold-bright); }
+#measures-panel .compare .row.self .label { color: var(--gold-bright); }
+#measures-panel .compare .v { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink-3); white-space: nowrap; }
+
+#measures-panel details.unstated { border-top: 1px solid var(--line); padding-top: var(--sp-3); }
+#measures-panel details.unstated summary {
+  cursor: pointer; font-family: var(--mono); font-size: var(--fs-100); letter-spacing: .16em;
+  text-transform: uppercase; color: var(--ink-2); list-style: none;
+}
+#measures-panel details.unstated summary::-webkit-details-marker { display: none; }
+#measures-panel details.unstated summary:hover { color: var(--gold); }
+#measures-panel details.unstated ul { margin: var(--sp-2) 0 0; padding-left: var(--sp-4); font-size: var(--fs-300); color: var(--ink-2); line-height: 1.7; }
+#measures-panel details.unstated li { margin-bottom: var(--sp-1); }
+
+/* Where two reconstructions are both defensible, the switch is part of the
+   content, not a setting — so it reads as a pair of cited readings. */
+#measures-panel .variant { margin: 0 0 var(--sp-4); display: grid; gap: var(--sp-1); }
+#measures-panel .vlabel { margin: 0 0 2px; font-size: var(--fs-200); color: var(--ink-2); letter-spacing: .04em; }
+#measures-panel .vbtn {
+  display: grid; gap: 2px; text-align: left; cursor: pointer;
+  background: transparent; border: 1px solid var(--line); border-radius: var(--radius);
+  padding: var(--sp-2) var(--sp-3); color: var(--ink-2); font-family: var(--ui);
+  transition: border-color .18s, color .18s, background .18s;
+}
+#measures-panel .vbtn b { font-size: var(--fs-300); font-weight: 600; color: var(--ink); }
+#measures-panel .vbtn span { font-size: var(--fs-100); color: var(--ink-2); line-height: 1.5; }
+#measures-panel .vbtn:hover { border-color: #c9a22766; }
+#measures-panel .vbtn.on { border-color: var(--gold); background: #c9a2271a; }
+#measures-panel .vbtn.on b { color: var(--gold-bright); }
+#measures-panel .vbtn:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+
+/* ── the answer, first ───────────────────────────────────────────────────
+   The card exists to say how big the thing actually is, so that number leads
+   at a size nothing competes with, and the cubit figure sits under it: one is
+   what the text says, the other is what it means. */
+#measures-panel .lead {
+  display: grid; gap: 2px; margin: 0 0 var(--sp-4);
+  padding: var(--sp-3) 0; border-block: 1px solid var(--line);
+}
+#measures-panel .lead b {
+  font-family: var(--mono); font-size: 34px; font-weight: 500; line-height: 1;
+  color: var(--gold-bright); font-variant-numeric: tabular-nums; letter-spacing: -.02em;
+}
+#measures-panel .lead span { font-size: var(--fs-200); color: var(--ink-3); letter-spacing: var(--tr-cjk); }
+#measures-panel .lead.none b { font-size: var(--fs-600); font-family: var(--display); color: var(--ink-2); }
+
+#measures-panel .sec {
+  margin: var(--sp-4) 0 var(--sp-2);
+  font-family: var(--mono); font-size: var(--fs-100); font-weight: 500;
+  letter-spacing: var(--tr-caps); text-transform: uppercase; color: var(--ink-3);
+}
+
+@media (max-width: 640px) {
+  #measures-panel { width: 100%; height: 100dvh; border: 0; }
+  .mp-head { padding: var(--sp-4) var(--sp-4) var(--sp-3); }
+  .mp-cubit { padding: var(--sp-3) var(--sp-4); }
+  .mp-card { padding: var(--sp-4) var(--sp-4) var(--sp-5); }
+  #measures-panel .inner { padding: var(--sp-4); }
+  #measures-panel h1 { font-size: var(--fs-600); }
+}
+
+/* The opener, on the gate: quieter than the two ways into the walk, because it
+   is a reference rather than a way in. Matches .gate-back, which is an <a>. */
+#gate-measures {
+  background: transparent; border: 0; cursor: pointer;
+  color: var(--gold); padding: var(--sp-2);
+  font: var(--fs-100) var(--ui); letter-spacing: var(--tr-cjk); white-space: nowrap;
+}
+#gate-measures:hover { color: var(--gold-bright); text-decoration: underline; }
+#gate-measures:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: var(--radius); }
+
+@media (prefers-reduced-motion: reduce) { #measures-panel * { transition: none !important; } }

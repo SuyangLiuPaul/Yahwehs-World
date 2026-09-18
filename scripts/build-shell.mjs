@@ -25,8 +25,6 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PAGES = [
   { file: 'index.html', href: '/', en: 'Globe', narrowEn: 'Globe', zh: '圣经世界', narrowZh: '地球',
     loadEn: 'Drawing the world…', loadHans: '正在绘制世界…', loadHant: '正在繪製世界…' },
-  { file: 'structures.html', href: '/structures.html', en: 'Measures', narrowEn: 'Sizes', zh: '照着经文的尺寸', narrowZh: '尺寸',
-    loadEn: 'Building to the measurements…', loadHans: '正在照着尺寸建造…', loadHant: '正在照著尺寸建造…' },
   { file: 'tabernacle.html', href: '/tabernacle.html', en: 'Tabernacle', narrowEn: 'Tent', zh: '走进会幕', narrowZh: '会幕',
     loadEn: 'Raising the tabernacle…', loadHans: '正在支搭会幕…', loadHant: '正在支搭會幕…' },
   { file: 'temple.html', href: '/temple.html', en: 'Temple', narrowEn: 'Temple', zh: '走进圣殿', narrowZh: '圣殿',
@@ -75,6 +73,7 @@ const FONTS = '  <link href="https://fonts.googleapis.com/css2?'
   + '&family=Noto+Serif+TC:wght@500;600'
   + '&display=swap" rel="stylesheet">';
 
+const HEAD_END = '<!-- /shell:head -->';
 const HEAD = `  <!-- shell:head --><style>:root{color-scheme:dark}html,body{background:#060d16;margin:0}` +
   `#loading-text i{font-style:normal;display:none}` +
   `html[lang="en"] #loading-text .l-en,html[lang="zh-Hans"] #loading-text .l-hans,` +
@@ -85,7 +84,7 @@ const HEAD = `  <!-- shell:head --><style>:root{color-scheme:dark}html,body{back
   `for(var i=0;i<t.length;i++){var g=(t[i]||"").toLowerCase();` +
   `if(g==="zh"||g.indexOf("zh-")===0){l=/hant|tw|hk|mo/.test(g)?"zh-Hant":"zh-Hans";break}` +
   `if(g==="en"||g.indexOf("en-")===0){l="en";break}}}` +
-  `document.documentElement.lang=l}catch(e){document.documentElement.lang="en"}})()<\/script>`;
+  `document.documentElement.lang=l}catch(e){document.documentElement.lang="en"}})()<\/script>` + HEAD_END;
 
 const tabs = (self) => PAGES.map((p) =>
   `      <li><a class="tab" href="${p.href}"${p.file === self ? ' aria-current="page"' : ''}` +
@@ -154,11 +153,23 @@ for (const page of PAGES) {
   // …the font link, which is the same in all six…
   html = html.replace(/[ \t]*<link href="https:\/\/fonts\.googleapis\.com\/css2[^>]*>/, FONTS);
 
-  // …and the anti-flash rule in the head.
-  if (!html.includes('<!-- shell:head -->')) {
+  // …and the anti-flash rule in the head, BETWEEN TWO MARKERS.
+  //
+  // It used to be found by a pattern that ended at </style>, which matched
+  // only the first half of what it had written. Every run therefore left the
+  // old <script> in place and appended a new one: by the time this was caught
+  // the pages carried twenty copies of it, all doing the same thing. A block
+  // that is rewritten needs a mark at BOTH ends.
+  const headAt = html.indexOf('<!-- shell:head -->');
+  if (headAt < 0) {
     html = html.replace('</head>', `${HEAD}\n</head>`);
   } else {
-    html = html.replace(/[ \t]*<!-- shell:head --><style>.*?<\/style>/, HEAD);
+    const headEnd = html.indexOf(HEAD_END, headAt);
+    const from = html.lastIndexOf('\n', headAt) + 1;
+    html = headEnd < 0
+      // A page written by the broken version: take everything it left behind.
+      ? html.slice(0, from) + HEAD + '\n' + html.slice(html.indexOf('</head>', headAt))
+      : html.slice(0, from) + HEAD + html.slice(headEnd + HEAD_END.length);
   }
 
   const before = readFileSync(path, 'utf8');

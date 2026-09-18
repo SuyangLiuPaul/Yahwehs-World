@@ -7,6 +7,23 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# /structures.html was the page of measurement cards. The cards now live in the
+# walk that holds the thing each one measures, so the page is gone and this is
+# the only thing standing between an existing link and a 404.
+#
+# The tabernacle is the target because it holds the most of what that page was:
+# the ark of the covenant, the court and the lampstand, three of its eight
+# cards. No fragment is given here on purpose — a redirect target with one
+# would overwrite the reader's, and every deep link that page took was a
+# fragment. `/structures.html#pillars` therefore arrives as
+# `/tabernacle.html#pillars`, which the panel recognises as a card belonging to
+# another walk and forwards to /temple.html (src/structures/panel.ts).
+[[redirects]]
+  from = "/structures.html"
+  to = "/tabernacle.html"
+  status = 301
+  force = true
+
 # Public data filenames are stable. Revalidate them so source corrections
 # reach returning readers; only Vite's content-hashed assets are immutable.
 [[headers]]

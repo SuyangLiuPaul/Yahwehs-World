@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 // The bronze and gold work of Solomon's temple — 1 Kings 7 and 2 Chronicles
 // 3–4 — built once here and used by both the walk (/temple.html) and the
-// measurement cards (/structures.html), so the pillar a reader measures is
+// measurement cards (src/structures/panel.ts), so the pillar a reader measures is
 // the pillar they walk past.
 //
 // Every number is the text's. Where the text gives a count and no form (the

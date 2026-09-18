@@ -4,7 +4,7 @@ import { installUpdateChecker } from './updates.ts';
 import { installSiteMenu, loadingSteps, loadingStep, pageReady } from './site-shell.ts';
 import { UNITS, unitFor, type Depth, type Status, type Unit } from './plan-units.ts';
 import { journeySpan } from './bridges.ts';
-import { STRUCTURES } from './structures/specs.ts';
+import { measuresHref, STRUCTURES } from './structures/specs.ts';
 import { refKey } from './books.ts';
 import type { Journey } from './routes.ts';
 
@@ -115,7 +115,7 @@ function render() {
       chips.push(chip('live', t('Route', '路线'), t(jr.en, jr.zh), `/#journey=${jr.id}`));
     }
     for (const st of r.structures) {
-      chips.push(chip('live', t('Measures', '尺寸'), t(st.en, st.zh), `/structures.html#${st.id}`));
+      chips.push(chip('live', t('Measures', '尺寸'), t(st.en, st.zh), measuresHref(st.id)));
     }
     if (r.unit.walk) {
       chips.push(chip('walk live', t('Walk in', '走进去'), t(r.unit.walk.en, r.unit.walk.zh), r.unit.walk.href));
@@ -209,3 +209,34 @@ loadingSteps(2);
 loadingStep();
 onLocale(() => { if (rows.length) render(); });
 void load();
+
+// The cards no walk holds yet — New Jerusalem, measured in Revelation 21:16
+// with nowhere to walk into. Their chips link here by hash (see measuresHref in
+// specs.ts), so this page is where that card is read until its walk exists.
+//
+// Loaded on demand, not with the page. The panel renders its previews with
+// three.js, and this is the one page in the app that is otherwise text: making
+// every reader of the plan download a 3D engine for a card most of them will
+// not open is a cost with nothing on the other side of it.
+{
+  let installed = false;
+  const wantsMeasures = () => /^#measures(=|$)/.test(location.hash);
+  const install = async () => {
+    if (installed) return;
+    installed = true;
+    const [{ installMeasures }, { homelessStructures }] = await Promise.all([
+      import('./structures/panel.ts'),
+      import('./structures/specs.ts'),
+    ]);
+    // installMeasures reads the hash itself, so the card asked for opens as
+    // soon as the module lands — whether the reader arrived on that link or
+    // clicked the chip a moment ago.
+    installMeasures({
+      cards: homelessStructures(),
+      dialog: document.getElementById('measures-panel') as HTMLDialogElement,
+      openers: [],
+    });
+  };
+  if (wantsMeasures()) void install();
+  addEventListener('hashchange', () => { if (wantsMeasures()) void install(); });
+}

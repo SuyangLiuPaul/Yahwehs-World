@@ -47,7 +47,6 @@ export function pageReady() {
 /** What is built, in the order the nav has it. `zh` is the long reading. */
 const BUILT: { href: string; zh: string; en: string; noteZh: string; noteEn: string }[] = [
   { href: '/', zh: '圣经世界', en: 'The globe', noteZh: '1,443 个事件，落在地球上', noteEn: '1,443 events, on the globe' },
-  { href: '/structures.html', zh: '照着经文的尺寸', en: 'Measures', noteZh: '按经文所记的尺寸做的卡片', noteEn: 'Cards built to the measurements the text states' },
   { href: '/tabernacle.html', zh: '走进会幕', en: 'Walk into the tabernacle', noteZh: '出埃及记 26–27', noteEn: 'Exodus 26–27' },
   { href: '/temple.html', zh: '走进圣殿', en: 'Walk into the temple', noteZh: '列王纪上 6–7；历代志下 3–4', noteEn: '1 Kings 6–7; 2 Chronicles 3–4' },
   { href: '/ark.html', zh: '走进方舟', en: 'Walk into the ark', noteZh: '创世记 6–8', noteEn: 'Genesis 6–8' },

@@ -77,8 +77,10 @@ Rules the pipeline enforces and the next builder must keep:
 - `window.__globe`: `scene, camera, controls, markers, globe, bundle, screenOf,
   select, selected, advance, follow, advanceRoute, openRoute, clearRoute,
   playing, route, tickRoute, routeT, snapshot`
-- `window.__structures`, `window.__walk` (`scene, camera, renderer, walker,
-  counts, colliders, CUBIT, updateHud, tour, startTour, endTour, TOUR, snapshot`)
+- `window.__walk`, `window.__temple`, `window.__ark` (`scene, camera, renderer,
+  walker, counts, colliders, CUBIT, updateHud, tour, startTour, endTour, TOUR,
+  snapshot`). The Measures panel has no handle: drive it through the DOM —
+  `#gate-measures` or `#measures` opens it, `#mp-c-range` is the cubit
 - Production has no handles; drive the UI via `[data-id="paul-1"]` buttons etc.
 
 ## Design system
