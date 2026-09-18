@@ -3,7 +3,8 @@
     blender -b --python tools/autorig/person.py -- out.glb \
         [--gender 1] [--age 0.6] [--weight 0.5] [--height 0.5] [--muscle 0.5] \
         [--skin toigo_light_skin_male_bronze] [--hair short02] [--beard wdg_scruffy_beard] \
-        [--eyebrows mindfront_eyebrows_04] [--robe ankle|none] [--clips idle,walk,...]
+        [--eyebrows mindfront_eyebrows_04] [--robe ankle|none] [--clips idle,walk,...] \
+        [--face-photo ref.png [--face-fit 1.0] [--face-feather 0.06]]
 
 This is the "Blender, then real textures" route the owner asked for. Every
 part is a MakeHuman asset, CC0 unless noted in handoff/MANIFEST-assets.md:
@@ -15,6 +16,13 @@ plays on it.
 MEN ARE SHORT-HAIRED. 1 Cor 11:14 is the only word in the letters on a man's
 hair, and it says long hair is a shame to him; every male preset here uses a
 short style, and --hair on a man is checked against that.
+
+A FACE FROM A PHOTOGRAPH. --face-photo takes a frontal reference photograph
+and writes its face into the skin texture, landmark for landmark, on this
+same head (photoface.py has the why and the how); --face-fit also nudges the
+head's proportions toward the photograph's before the rig is fitted. The
+skin's --tan is then not applied: the texture is already the colour of the
+photographed face, all over.
 """
 import bpy, sys, importlib
 argv = sys.argv[sys.argv.index("--") + 1:]
@@ -58,13 +66,15 @@ PRESETS = {
 }
 
 STR = {"skin", "hair", "beard", "eyebrows", "eyelashes", "robe", "rig", "clips", "fabric",
-       "beard_tint", "hair_tint", "tan", "face", "preset", "head", "robe_tint", "girdle_tint", "mantle"}
+       "beard_tint", "hair_tint", "tan", "face", "preset", "head", "robe_tint", "girdle_tint", "mantle",
+       "face_photo"}
 opt.update({"hair_tint": "1,1,1", "tan": "1,1,1", "face": "", "head": "none",
-            "robe_tint": "0.93,0.89,0.80", "girdle_tint": "0.42,0.30,0.20", "mantle": "none"})
+            "robe_tint": "0.93,0.89,0.80", "girdle_tint": "0.42,0.30,0.20", "mantle": "none",
+            "face_photo": "", "face_fit": 1.0, "face_feather": 0.06})
 args = {}
 for i, a in enumerate(argv[1:], 1):
     if a.startswith("--"):
-        k = a[2:]; v = argv[i + 1]
+        k = a[2:].replace("-", "_"); v = argv[i + 1]
         args[k] = v if k in STR else float(v)
 if "preset" in args:
     opt.update(PRESETS[args["preset"]])
@@ -266,27 +276,34 @@ def paint_hairline(body, hair_obj, strength=0.55, feather_px=None):
     return True
 
 
-def whiten_hair(hair_obj):
+def whiten_hair(*objs):
     """Grey and white hair. A colour factor only multiplies, and brown times
     anything is never white — the old man kept his brown hair. So where the
     hair tint asks for more than 1, the hair image is taken to grey and lifted
-    toward the asked lightness, keeping its strands' light and dark."""
+    toward the asked lightness, keeping its strands' light and dark.
+
+    The BROWS go with the hair: a white-haired man with black brow cards
+    looked drawn-on, and with a photographed face under them — whose own
+    brows are white — it looked like a mistake."""
     import numpy as np
     t = [float(x) for x in opt["hair_tint"].split(",")]
-    if hair_obj is None or max(t) <= 1.0 or not hair_obj.data.materials:
+    if max(t) <= 1.0:
         return
-    img = next((n.image for m in hair_obj.data.materials if m and m.use_nodes
-                for n in m.node_tree.nodes if n.type == "TEX_IMAGE" and n.image), None)
-    if img is None:
-        return
-    px = np.empty(len(img.pixels), dtype=np.float32); img.pixels.foreach_get(px)
-    px = px.reshape(-1, 4)
-    lum = px[:, :3] @ np.array([0.30, 0.59, 0.11], dtype=np.float32)
-    lum = lum / max(float(np.percentile(lum[px[:, 3] > 0.5], 95)), 1e-3)   # stretch to full range
-    target = min(max(t) / 2.0, 0.92)                                        # 1.6 -> 0.8 grey-white
-    g = np.clip(0.35 * target + 0.65 * target * lum, 0, 1)
-    px[:, 0] = g * 0.98; px[:, 1] = g * 0.97; px[:, 2] = g * 0.95
-    img.pixels.foreach_set(px.ravel()); img.update()
+    for ob in objs:
+        if ob is None or not ob.data.materials:
+            continue
+        img = next((n.image for m in ob.data.materials if m and m.use_nodes
+                    for n in m.node_tree.nodes if n.type == "TEX_IMAGE" and n.image), None)
+        if img is None:
+            continue
+        px = np.empty(len(img.pixels), dtype=np.float32); img.pixels.foreach_get(px)
+        px = px.reshape(-1, 4)
+        lum = px[:, :3] @ np.array([0.30, 0.59, 0.11], dtype=np.float32)
+        lum = lum / max(float(np.percentile(lum[px[:, 3] > 0.5], 95)), 1e-3)   # stretch to full range
+        target = min(max(t) / 2.0, 0.92)                                        # 1.6 -> 0.8 grey-white
+        g = np.clip(0.35 * target + 0.65 * target * lum, 0, 1)
+        px[:, 0] = g * 0.98; px[:, 1] = g * 0.97; px[:, 2] = g * 0.95
+        img.pixels.foreach_set(px.ravel()); img.update()
     opt["hair_tint"] = "1,1,1"          # the colour is in the image now, not in a factor
 
 
@@ -359,6 +376,21 @@ def main():
     for kv in filter(None, opt["face"].split(",")):
         k, v = kv.split("=")
         face[k.strip()] = float(v)
+    photo = opt["face_photo"]
+    if photo:
+        import photoface
+        opt["tan"] = "1,1,1"      # the texture will be the photograph's colour already
+    if photo and opt["face_fit"] > 0:
+        # Bodies made only to be measured: the bare head rendered and compared
+        # with the photograph, the difference made into face targets. Targets
+        # must go in before the rig, so the body is made again with them — a
+        # fifth of a second each time; it is the assets that cost.
+        def rebuild(face_targets):
+            body, _ = bb["make_body"](keep_helpers=True, face=face_targets)
+            HS.set_character_skin(find("skins", opt["skin"], "mhmat"), body, skin_type="GAMEENGINE")
+            bb["drop_helpers"](body)
+            return body
+        face = photoface.fit_shape(rebuild, photo, face, strength=opt["face_fit"])
     body, rig = bb["make_body"](keep_helpers=True, face=face)
 
     # The likeness: skin, eyes, brows, lashes, hair, beard. GAMEENGINE materials
@@ -382,6 +414,14 @@ def main():
                     wired.append(stem)
 
     bb["drop_helpers"](body)          # only now: the parts above were fitted by them
+    if photo:
+        # The face, before anything is painted over it (the hairline goes on
+        # top, later). Hair and beard are hidden from the front render so the
+        # detector sees a bare head; eyes, brows and lashes stay — they help it.
+        cards = [o for o in parts if o is not None
+                 and (opt["hair"] in o.name or "beard" in o.name.lower() or "moustache" in o.name.lower())]
+        photoface.apply(body, photo, hide=cards, feather=opt["face_feather"],
+                        debug_png=OUT.rsplit(".", 1)[0] + "-photoface.png")
     # The robe is cut and DRAPED while the arms are still out (robe.py), then
     # the arms come down and the sleeves go with them.
     robe, sleeve_objs = (None, [])
@@ -415,7 +455,8 @@ def main():
 
     hair_obj = next((o for o in parts if o is not None and opt["hair"] in o.name), None)
     painted = paint_hairline(body, hair_obj) if opt["hair"] != "none" else False
-    whiten_hair(hair_obj)
+    brow_obj = next((o for o in parts if o is not None and "eyebrow" in o.name.lower()), None)
+    whiten_hair(hair_obj, brow_obj)
     shrink_images()
     bpy.ops.object.select_all(action="DESELECT")
     keep = [body, rig, robe] + sleeve_objs + [p for p in parts if p]
