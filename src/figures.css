@@ -70,6 +70,18 @@
   font: var(--fs-100)/var(--lh-snug) var(--ui);
 }
 
+/* The cast's badge: these move, and that is the news. Top right, opposite
+   the height, in the same pill so the two read as a pair of facts. */
+.g-moves {
+  position: absolute; top: var(--sp-2); right: var(--sp-2);
+  font: 500 var(--fs-100)/1 var(--ui); letter-spacing: var(--tr-cjk);
+  color: var(--ground); background: var(--gold); border-radius: 999px; padding: 4px 8px;
+}
+/* The crowd is a scene, not a model: a link, marked by a gold edge. */
+a.g-card { text-decoration: none; }
+.g-crowd { border-color: var(--line-gold); }
+.g-crowd .g-where { color: var(--gold-bright); }
+
 /* ── the rooms, which are not on the list above ───────────────────────── */
 #g-built { margin: var(--sp-7) 0 0; border-top: 1px solid var(--line); padding-top: var(--sp-6); }
 #g-built-list { display: grid; gap: var(--sp-3); grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
@@ -120,6 +132,18 @@
   color: var(--ink-3); font: var(--fs-200)/1 var(--ui);
 }
 #gv-loading[hidden] { display: none; }
+#gv-clips {
+  display: flex; flex-wrap: wrap; gap: var(--sp-2); margin: var(--sp-3) var(--sp-4) 0;
+}
+#gv-clips[hidden] { display: none; }
+#gv-clips button {
+  cursor: pointer; font: var(--fs-200)/1 var(--ui); letter-spacing: var(--tr-cjk);
+  color: var(--ink-2); background: var(--surface); border: 1px solid var(--line);
+  border-radius: 999px; padding: 7px 12px;
+}
+#gv-clips button:hover { color: var(--ink); border-color: var(--line-gold); }
+#gv-clips button[aria-pressed="true"] { color: var(--ground); background: var(--gold); border-color: var(--gold); }
+#gv-clips button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 #gv-facts {
   display: flex; flex-wrap: wrap; gap: var(--sp-4); margin: var(--sp-4);
 }

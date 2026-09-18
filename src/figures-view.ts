@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { SpringRig } from './walk/springs.ts';
 
 // The live look at ONE model. Loaded on demand — a reader browsing the grid of
 // pictures pays nothing for three.js until they ask to turn something round.
@@ -17,9 +18,23 @@ let renderer: THREE.WebGLRenderer | null = null;
 let raf = 0;
 let token = 0;
 
-export interface Shown { clips: string[] }
+export interface Shown { token: number; clips: string[]; playing: string | null }
 
-export async function show(canvas: HTMLCanvasElement, url: string, height: number) {
+// The model on show, so a clip button can reach it.
+let current: { mixer: THREE.AnimationMixer; clips: THREE.AnimationClip[]; action: THREE.AnimationAction | null } | null = null;
+
+/** Crossfade to another of the model's own clips. */
+export function play(name: string) {
+  if (!current) return;
+  const clip = current.clips.find((c) => c.name === name);
+  if (!clip) return;
+  const next = current.mixer.clipAction(clip);
+  next.reset().play();
+  if (current.action && current.action !== next) current.action.crossFadeTo(next, 0.35, false);
+  current.action = next;
+}
+
+export async function show(canvas: HTMLCanvasElement, url: string, height: number): Promise<Shown> {
   const mine = ++token;
   renderer ??= new THREE.WebGLRenderer({ canvas, antialias: true });
   const w = canvas.clientWidth || 480, h = canvas.clientHeight || 520;
@@ -41,7 +56,7 @@ export async function show(canvas: HTMLCanvasElement, url: string, height: numbe
   floor.rotation.x = -Math.PI / 2; scene.add(floor);
 
   const gltf = await loader.loadAsync(url);
-  if (mine !== token) return 0;                 // a second card was opened
+  if (mine !== token) return { token: 0, clips: [], playing: null };   // a second card was opened
   const root = gltf.scene;
   // The same measuring loadFigure() does, because what this page claims about
   // a model is its size and that claim has to be the one the walks use.
@@ -63,7 +78,15 @@ export async function show(canvas: HTMLCanvasElement, url: string, height: numbe
   camera.lookAt(0, mid.y, 0);
 
   const mixer = gltf.animations.length ? new THREE.AnimationMixer(root) : null;
-  if (mixer && gltf.animations[0]) mixer.clipAction(gltf.animations[0]).play();
+  // Start on standing if there is such a clip: it is the one that shows the
+  // figure, where a walk shows the motion. A reader picks the rest.
+  const first = gltf.animations.find((a) => a.name === 'idle') ?? gltf.animations[0];
+  current = mixer ? { mixer, clips: gltf.animations, action: null } : null;
+  if (first) play(first.name);
+  // Cloth that swings: the figures built here carry spring bones in the hem,
+  // the girdle, the veil and the beard. A model without them returns null
+  // and nothing is added.
+  const springs = SpringRig.from(root);
 
   const clock = new THREE.Clock();
   cancelAnimationFrame(raf);
@@ -71,6 +94,7 @@ export async function show(canvas: HTMLCanvasElement, url: string, height: numbe
     if (mine !== token) return;
     const dt = clock.getDelta();
     mixer?.update(dt);
+    springs?.update(dt);
     // A still model is turned so it can be seen from every side. A model with
     // an animation is left facing you — the motion is the thing to look at,
     // and spinning it as well makes both unreadable.
@@ -79,7 +103,7 @@ export async function show(canvas: HTMLCanvasElement, url: string, height: numbe
     raf = requestAnimationFrame(tick);
   };
   tick();
-  return mine;
+  return { token: mine, clips: gltf.animations.map((a) => a.name), playing: first?.name ?? null };
 }
 
 export function stop(t: number) {

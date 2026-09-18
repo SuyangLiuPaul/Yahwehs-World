@@ -35,6 +35,9 @@ for (const m of src.matchAll(/fromRegister\('(\w+)'/g))
   items.push({ id: m[1], height: heights.get(m[1]) });
 for (const m of src.matchAll(/\{\s*id:\s*'([\w-]+)',\s*kind:[^}]*?height:\s*([\d.]+)/g))
   items.push({ id: m[1], height: Number(m[2]) });
+// the cast: cast('file', 'en', 'zh', height, …) — their models are in springs/
+for (const m of src.matchAll(/cast\('([\w-]+)',\s*'(?:[^'\\]|\\.)*',\s*'[^']*',\s*([\d.]+)/g))
+  items.push({ id: `springs/${m[1]}`, height: Number(m[2]) });
 
 const only = process.argv.slice(2);
 const wanted = only.length ? items.filter((i) => only.includes(i.id)) : items;
@@ -65,6 +68,10 @@ const floor = new THREE.Mesh(new THREE.CircleGeometry(6, 48),
 floor.rotation.x = -Math.PI / 2; scene.add(floor);
 const gltf = await new GLTFLoader().loadAsync('/model.glb');
 const root = gltf.scene;
+// A rigged figure is shown standing as it stands in its idle clip, not in the
+// rest pose its skin was bound in.
+const idle = gltf.animations.find((a) => a.name === 'idle');
+if (idle) { const mx = new THREE.AnimationMixer(root); mx.clipAction(idle).play(); mx.update(0.5); root.updateMatrixWorld(true); }
 let box = new THREE.Box3().setFromObject(root);
 const s = Number(p.get('h')) / box.getSize(new THREE.Vector3()).y;
 root.scale.setScalar(s);
@@ -75,7 +82,9 @@ scene.add(root);
 box = new THREE.Box3().setFromObject(root);
 const size = box.getSize(new THREE.Vector3()), mid = box.getCenter(new THREE.Vector3());
 const camera = new THREE.PerspectiveCamera(30, ${W} / ${H}, .01, 200);
-const r = Math.max(size.x, size.y, size.z) * 2.1;
+// A tall thing is framed by its height; a wide one (a bowl) by its width over
+// the picture's aspect, or it runs off the side of a portrait card.
+const r = Math.max(Math.max(size.x, size.y, size.z) * 2.1, Math.max(size.x, size.z) / (${W} / ${H}) * 2.3);
 const a = Math.PI * 0.28;
 camera.position.set(mid.x + r * Math.sin(a), mid.y + size.y * .22, mid.z + r * Math.cos(a));
 camera.lookAt(mid.x, mid.y, mid.z);
@@ -112,6 +121,7 @@ for (const item of wanted) {
   catch { console.log(`  ${item.id}: FAILED — ${errs[0] ?? 'timed out'}`); continue; }
   const { url, tris } = await page.evaluate(() => window.__out);
   const buf = Buffer.from(url.split(',')[1], 'base64');
+  await mkdir(dirname(join(OUT, `${item.id}.jpg`)), { recursive: true });
   await writeFile(join(OUT, `${item.id}.jpg`), buf);
   done.push(`${item.id} ${item.height}m ${Math.round(tris).toLocaleString()} tris ${(buf.length / 1024).toFixed(0)} kB`);
 }

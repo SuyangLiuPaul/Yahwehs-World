@@ -3,21 +3,44 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Crowd test · Yahweh's World</title>
+  <title>人群 · 雅伟之界 | A crowd · Yahweh's World</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
   <!-- A bench, not a page of the site: no shell, no nav, no fonts. It exists
        to put a number on src/walk/crowd.ts — how many walkers a browser can
        carry at what frame time — and to be driven by a script that reads
-       window.__crowd. ?n=1000|10000|50000 sets the count. -->
+       window.__crowd. ?n=1000|10000|50000 sets the count. It is also where
+       the Figures page sends a reader to see a crowd, so it carries a way
+       back and a choice of size; the numbers stay, folded, because what a
+       crowd costs is part of what this page is for. -->
   <style>
     html, body { margin: 0; background: #060d16; color: #e8e2d6; font: 13px/1.4 ui-monospace, Menlo, monospace; }
     #stage { display: block; width: 100vw; height: 100vh; }
-    #hud { position: fixed; top: 10px; left: 10px; padding: 8px 10px; background: rgba(6,13,22,.72);
+    #bar { position: fixed; top: 0; left: 0; right: 0; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+           padding: calc(10px + env(safe-area-inset-top, 0px)) 14px 10px; background: linear-gradient(rgba(6,13,22,.82), rgba(6,13,22,0));
+           font: 14px/1.2 "Noto Sans SC", system-ui, sans-serif; }
+    #bar a { color: #e8e2d6; text-decoration: none; border: 1px solid rgba(232,226,214,.22); border-radius: 999px; padding: 6px 12px; background: rgba(6,13,22,.55); }
+    #bar a:hover { border-color: #c9a961; }
+    #bar a[aria-current="page"] { background: #c9a961; border-color: #c9a961; color: #060d16; }
+    #bar .back { margin-right: 6px; }
+    #bar h1 { font: 600 16px/1 "Noto Serif SC", serif; margin: 0 8px 0 0; color: #f3ead6; }
+    #hud { position: fixed; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); left: 10px; font-size: 11px; padding: 8px 10px; background: rgba(6,13,22,.72);
            border: 1px solid rgba(232,226,214,.18); border-radius: 6px; white-space: pre; pointer-events: none; }
     #hud b { color: #f2c46d; }
   </style>
 </head>
 <body>
   <canvas id="stage"></canvas>
+  <nav id="bar" aria-label="Crowd">
+    <a class="back" href="/figures.html">← 人物 Figures</a>
+    <h1>人群 · A crowd</h1>
+    <a href="?n=1000">1,000</a>
+    <a href="?n=10000">10,000</a>
+    <a href="?n=50000">50,000</a>
+  </nav>
+  <script>
+    for (const a of document.querySelectorAll('#bar a[href^="?n="]'))
+      if (a.getAttribute('href') === '?n=' + (new URLSearchParams(location.search).get('n') ?? '1000')) a.setAttribute('aria-current', 'page');
+  </script>
   <div id="hud">loading…</div>
   <script type="module" src="/src/walk/crowd-test.ts"></script>
 </body>
