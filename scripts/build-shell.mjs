@@ -15,32 +15,60 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
-/** The pages, in the order they stand in the nav. */
+/** The pages, in the order they stand in the nav.
+ *
+ *  The loading line is carried in all THREE readings, written out literally.
+ *  Everywhere else in this codebase 繁體 comes from public/data/zh-hant.json
+ *  at run time — but this line has to be correct in the FIRST PAINT, before
+ *  any module, any fetch and any table exists, so it cannot come from there.
+ *  A 简体 reader watched the whole of a load in English and said so. */
 const PAGES = [
   { file: 'index.html', href: '/', en: 'Globe', narrowEn: 'Globe', zh: '圣经世界', narrowZh: '地球',
-    loadEn: 'Drawing the world…', loadZh: '正在绘制世界…' },
+    loadEn: 'Drawing the world…', loadHans: '正在绘制世界…', loadHant: '正在繪製世界…' },
   { file: 'structures.html', href: '/structures.html', en: 'Measures', narrowEn: 'Sizes', zh: '照着经文的尺寸', narrowZh: '尺寸',
-    loadEn: 'Building to the measurements…', loadZh: '正在照着尺寸建造…' },
+    loadEn: 'Building to the measurements…', loadHans: '正在照着尺寸建造…', loadHant: '正在照著尺寸建造…' },
   { file: 'tabernacle.html', href: '/tabernacle.html', en: 'Tabernacle', narrowEn: 'Tent', zh: '走进会幕', narrowZh: '会幕',
-    loadEn: 'Raising the tabernacle…', loadZh: '正在支搭会幕…' },
+    loadEn: 'Raising the tabernacle…', loadHans: '正在支搭会幕…', loadHant: '正在支搭會幕…' },
   { file: 'temple.html', href: '/temple.html', en: 'Temple', narrowEn: 'Temple', zh: '走进圣殿', narrowZh: '圣殿',
-    loadEn: 'Building the house…', loadZh: '正在建造圣殿…' },
+    loadEn: 'Building the house…', loadHans: '正在建造圣殿…', loadHant: '正在建造聖殿…' },
   { file: 'ark.html', href: '/ark.html', en: 'Ark', narrowEn: 'Ark', zh: '走进方舟', narrowZh: '方舟',
-    loadEn: 'Building the ark…', loadZh: '正在造方舟…' },
+    loadEn: 'Building the ark…', loadHans: '正在造方舟…', loadHant: '正在造方舟…' },
   { file: 'plan.html', href: '/plan.html', en: 'Plan', narrowEn: 'Plan', zh: '完整的计划', narrowZh: '计划',
-    loadEn: 'Laying out the plan…', loadZh: '正在整理全部计划…' },
+    loadEn: 'Laying out the plan…', loadHans: '正在整理全部计划…', loadHant: '正在整理全部計劃…' },
 ];
 
 const START = '  <!-- shell:start — written by scripts/build-shell.mjs. Edit that, not this. -->';
 const END = '  <!-- shell:end -->';
 
-// The frame BEFORE the loading screen. The stylesheet is a separate file, so
-// between the first paint and the CSS arriving the page is whatever white the
-// browser defaults to — a flash of white in front of a dark app, on every
-// navigation. Two declarations inline in the head cost nothing and remove it.
-// `color-scheme` is what stops the scrollbars and the form controls flashing
-// light as well.
-const HEAD = `  <!-- shell:head --><style>:root{color-scheme:dark}html,body{background:#060d16;margin:0}</style>`;
+// The frame BEFORE the loading screen, and the language it is in.
+//
+// Two things have to be true at the very first paint, and neither of them can
+// wait for a module:
+//
+//   · the page must already be dark. The stylesheet is a separate file, so
+//     until it arrives the page is whatever white the browser defaults to —
+//     a flash of white in front of a #060d16 app, on every navigation.
+//   · the loading line must already be in the reader's language. It used to
+//     be English markup that applyStatic() translated once the module ran,
+//     which is AFTER the loading screen is up: a 简体 reader watched the
+//     whole load in English.
+//
+// So the reading is chosen here, by the same rule as src/locale.ts — the
+// remembered choice first, then the system's languages — and written onto
+// <html lang>, which the CSS below turns into one visible line out of three.
+// setLocale() writes that same attribute, so switching language while the
+// screen is still up changes the line with it.
+const HEAD = `  <!-- shell:head --><style>:root{color-scheme:dark}html,body{background:#060d16;margin:0}` +
+  `#loading-text i{font-style:normal;display:none}` +
+  `html[lang="en"] #loading-text .l-en,html[lang="zh-Hans"] #loading-text .l-hans,` +
+  `html[lang="zh-Hant"] #loading-text .l-hant{display:inline}</style>` +
+  `<script>(function(){try{var l=localStorage.getItem("ydh.locale");` +
+  `if(l!=="en"&&l!=="zh-Hans"&&l!=="zh-Hant"){l="en";` +
+  `var t=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||""];` +
+  `for(var i=0;i<t.length;i++){var g=(t[i]||"").toLowerCase();` +
+  `if(g==="zh"||g.indexOf("zh-")===0){l=/hant|tw|hk|mo/.test(g)?"zh-Hant":"zh-Hans";break}` +
+  `if(g==="en"||g.indexOf("en-")===0){l="en";break}}}` +
+  `document.documentElement.lang=l}catch(e){document.documentElement.lang="en"}})()<\/script>`;
 
 const tabs = (self) => PAGES.map((p) =>
   `      <li><a class="tab" href="${p.href}"${p.file === self ? ' aria-current="page"' : ''}` +
@@ -55,7 +83,7 @@ const shell = (page) => `${START}
   <div id="loading">
     <i id="loading-bar"></i>
     <img id="loading-globe" src="/loading-globe.svg" alt="" width="180" height="180">
-    <p id="loading-text" data-en="${page.loadEn}" data-zh="${page.loadZh}">${page.loadEn}</p>
+    <p id="loading-text"><i class="l-en">${page.loadEn}</i><i class="l-hans">${page.loadHans}</i><i class="l-hant">${page.loadHant}</i></p>
   </div>
 
   <nav class="sitenav">
