@@ -3,7 +3,8 @@
     blender -b --python tools/autorig/person.py -- out.glb \
         [--gender 1] [--age 0.6] [--weight 0.5] [--height 0.5] [--muscle 0.5] \
         [--skin toigo_light_skin_male_bronze] [--hair short02] [--beard wdg_scruffy_beard] \
-        [--eyebrows mindfront_eyebrows_04] [--robe ankle|none] [--clips idle,walk,...]
+        [--eyebrows mindfront_eyebrows_04] [--robe ankle|none] [--garment sewn|tube] \
+        [--tunic hem=0.05,full=1.5,ease=0.22,sleeve=1.0] [--clips idle,walk,...]
 
 This is the "Blender, then real textures" route the owner asked for. Every
 part is a MakeHuman asset, CC0 unless noted in handoff/MANIFEST-assets.md:
@@ -15,6 +16,13 @@ plays on it.
 MEN ARE SHORT-HAIRED. 1 Cor 11:14 is the only word in the letters on a man's
 hair, and it says long hair is a shame to him; every male preset here uses a
 short style, and --hair on a man is checked against that.
+
+THE CLOTHES. `--garment sewn` (the default) cuts a tunic from flat panels and
+sews and drapes it on the body (garment.py); `tube` is the older robe.py,
+a tube swept round the body, kept so the two can be compared. Each preset
+sets its own cut in `tunic`: where the hem falls, how full the skirt is, how
+wide the sleeves — so a slight young man and an old man in a full robe are
+not the same silhouette with different heads.
 """
 import bpy, sys, importlib
 argv = sys.argv[sys.argv.index("--") + 1:]
@@ -23,42 +31,53 @@ opt = {"gender": 1.0, "age": 0.6, "weight": 0.5, "height": 0.5, "muscle": 0.5, "
        "skin": "toigo_light_skin_male_bronze", "hair": "short02", "beard": "grinsegold_beard_sigmund_wip",
        "beard_tint": "0.30,0.21,0.15", "fabric": "Fabric036",
        "eyebrows": "eyebrow001", "eyelashes": "eyelashes01",
-       "robe": "ankle", "rig": "mixamo", "clips": "idle,walk,look,pray,speak,carry"}
+       "robe": "ankle", "rig": "mixamo", "clips": "idle,walk,look,pray,speak,carry",
+       "garment": "sewn", "tunic": "hem=0.05,full=1.5,ease=0.22,sleeve=1.0"}
 
 # A FIRST CAST. Each preset is a person who can be told from the others at a
 # glance: build, age, the face, the colour of hair and beard, the skin. They are
 # ROLES, not portraits (handoff/FIGURES.md: a figure is named only where the
 # text describes it) — except where a preset says which verse it answers to.
 PRESETS = {
-    # a man in his twenties: slight, dark-haired, a young beard
-    "young-man": dict(robe_tint="0.78,0.70,0.58", girdle_tint="0.30,0.22,0.16", gender=1, age=0.47, weight=0.42, muscle=0.55, height=0.55,
+    # a man in his twenties: slight, dark-haired, a young beard; a shorter,
+    # slimmer tunic with narrow sleeves — a working man's
+    "young-man": dict(robe_tint="0.78,0.70,0.58", girdle_tint="0.30,0.22,0.16", tunic="hem=0.13,full=1.3,ease=0.16,sleeve=0.7",
+                      gender=1, age=0.47, weight=0.42, muscle=0.55, height=0.55,
                       skin="young_caucasian_male", tan="0.80,0.66,0.52", hair="short01",
                       beard="culturalibre_faun_beard", beard_tint="0.16,0.11,0.08",
                       face="nose-hump-incr=0.35,chin-prominent-incr=0.3,head-oval=0.5,eyebrows-trans-down=0.3"),
     # a man of forty — the default
-    "man": dict(robe_tint="0.62,0.48,0.34", girdle_tint="0.25,0.18,0.12", gender=1, age=0.60, weight=0.5, muscle=0.5,
+    "man": dict(robe_tint="0.62,0.48,0.34", girdle_tint="0.25,0.18,0.12", tunic="hem=0.06,full=1.5,ease=0.22,sleeve=1.0",
+                gender=1, age=0.60, weight=0.5, muscle=0.5,
                 skin="toigo_light_skin_male_bronze", tan="1,1,1", hair="short02",
                 beard="grinsegold_beard_sigmund_wip", beard_tint="0.30,0.21,0.15",
                 face="nose-hump-incr=0.5,nose-greek-incr=0.3,head-rectangular=0.4,l-cheek-bones-incr=0.3,r-cheek-bones-incr=0.3"),
     # Elijah: "an hairy man, and girt with a girdle of leather" (2 Kgs 1:8) — a
     # lean, weathered man of the wilderness, grey coming into a dark beard
-    "elijah": dict(robe_tint="0.55,0.46,0.36", girdle_tint="0.22,0.14,0.08", mantle="hair", fabric="Fabric019", gender=1, age=0.74, weight=0.28, muscle=0.62, height=0.55,
+    "elijah": dict(robe_tint="0.55,0.46,0.36", girdle_tint="0.22,0.14,0.08", mantle="hair", fabric="Fabric019",
+                   tunic="hem=0.08,full=1.35,ease=0.18,sleeve=0.8",
+                   gender=1, age=0.74, weight=0.28, muscle=0.62, height=0.55,
                    skin="old_caucasian_male", tan="0.78,0.62,0.48", hair="short01", hair_tint="0.55,0.52,0.50",
                    beard="grinsegold_beard_sigmund_wip", beard_tint="0.42,0.38,0.35",
                    face="nose-hump-incr=0.8,l-cheek-inner-decr=0.6,r-cheek-inner-decr=0.6,l-cheek-bones-incr=0.6,r-cheek-bones-incr=0.6,eyebrows-trans-down=0.5,head-age-incr=0.4,chin-prominent-incr=0.4"),
     # an old man — fourscore years (Moses at Ex 7:7), white-haired
-    "old-man": dict(robe_tint="0.88,0.85,0.78", girdle_tint="0.36,0.26,0.18", gender=1, age=0.93, weight=0.40, muscle=0.35, height=0.45,
+    # …in a long, full robe with wide sleeves
+    "old-man": dict(robe_tint="0.88,0.85,0.78", girdle_tint="0.36,0.26,0.18", tunic="hem=0.04,full=1.75,ease=0.30,sleeve=1.5",
+                    gender=1, age=0.93, weight=0.40, muscle=0.35, height=0.45,
                     skin="old_caucasian_male", tan="0.86,0.72,0.58", hair="short02", hair_tint="1.6,1.6,1.6",
                     beard="grinsegold_beard_sigmund_wip", beard_tint="1.05,1.05,1.05",
                     face="head-age-incr=0.8,nose-hump-incr=0.4,l-eye-bag-incr=0.7,r-eye-bag-incr=0.7,mouth-angles-down=0.4"),
     # a woman of forty; her head is covered (1 Cor 11:5)
-    "woman": dict(robe_tint="0.36,0.40,0.55", girdle_tint="0.55,0.38,0.22", gender=0, age=0.60, weight=0.5, muscle=0.4, height=0.45,
+    # …in the fullest skirt, to the ground, with wide sleeves
+    "woman": dict(robe_tint="0.36,0.40,0.55", girdle_tint="0.55,0.38,0.22", tunic="hem=0.03,full=1.9,ease=0.26,sleeve=1.3",
+                  gender=0, age=0.60, weight=0.5, muscle=0.4, height=0.45,
                   skin="middleage_caucasian_female", tan="0.84,0.70,0.56", hair="none", beard="none", head="veil",
                   face="nose-hump-incr=0.3,head-oval=0.5"),
 }
 
 STR = {"skin", "hair", "beard", "eyebrows", "eyelashes", "robe", "rig", "clips", "fabric",
-       "beard_tint", "hair_tint", "tan", "face", "preset", "head", "robe_tint", "girdle_tint", "mantle"}
+       "beard_tint", "hair_tint", "tan", "face", "preset", "head", "robe_tint", "girdle_tint", "mantle",
+       "garment", "tunic"}
 opt.update({"hair_tint": "1,1,1", "tan": "1,1,1", "face": "", "head": "none",
             "robe_tint": "0.93,0.89,0.80", "girdle_tint": "0.42,0.30,0.20", "mantle": "none"})
 args = {}
@@ -317,7 +336,7 @@ def shrink_images():
             for l in list(bsdf.inputs["Alpha"].links):
                 m.node_tree.links.remove(l)
             bsdf.inputs["Alpha"].default_value = 1.0
-            if m.name in ("Robe", "Girdle"):
+            if m.name in ("Robe", "Girdle", "Tunic", "Mantle"):
                 for l in list(bsdf.inputs["Roughness"].links):
                     m.node_tree.links.remove(l)
                 bsdf.inputs["Roughness"].default_value = 0.9
@@ -382,12 +401,19 @@ def main():
                     wired.append(stem)
 
     bb["drop_helpers"](body)          # only now: the parts above were fitted by them
-    # The robe is cut and DRAPED while the arms are still out (robe.py), then
-    # the arms come down and the sleeves go with them.
     robe, sleeve_objs = (None, [])
-    if opt["robe"] != "none":
-        import robe as robe_mod
-        tup = lambda k: tuple(float(x) for x in opt[k].split(","))
+    tup = lambda k: tuple(float(x) for x in opt[k].split(","))
+    import robe as robe_mod
+    sewn = opt["robe"] != "none" and opt["garment"] == "sewn"
+    # ARMS. The old tube robe is cut and draped in MakeHuman's A-pose and the
+    # arms come down after (36°). The sewn tunic is draped with the arms most
+    # of the way down already (20° of the 36°): a sleeve simulated on an arm
+    # held out stands off the shoulder like a tent along its top, and turned
+    # down by its weights it kept that shape — a shelf on each shoulder. The
+    # last 16° are skinned, which the cloth takes without a fold out of place.
+    if sewn:
+        bb["lower_arms"](body, rig, degrees=20.0)
+    if opt["robe"] != "none" and not sewn:
         robe, sleeve_objs = robe_mod.make_draped_robe(body, rig, fabric=opt.get("fabric", "Fabric036"),
                                                       tint=tup("robe_tint"))
         sleeve_objs.append(robe_mod.make_girdle(body, rig, tint=tup("girdle_tint")))
@@ -397,15 +423,42 @@ def main():
             mantle, _ = robe_mod.make_draped_robe(body, rig, fabric="Fabric019", tint=(0.34, 0.26, 0.18),
                                                   hem=0.30, pad=0.034, sleeves=False, name="Mantle")
             sleeve_objs.append(mantle)
+    elif sewn:
+        import garment
+        cut = {}
+        for kv in filter(None, opt["tunic"].split(",")):
+            k, v = kv.split("=")
+            cut[k.strip()] = float(v)
+        robe = garment.make_tunic(body, rig, fabric=opt.get("fabric", "Fabric036"), tint=tup("robe_tint"), **cut)
+        outer = robe
+        if opt["mantle"] != "none":
+            # the mantle: the same pattern without sleeves, cut fuller and to
+            # the knee in rough hair-cloth, sewn and dropped over the tunic
+            # (which is a collider for it), and girded over — the girdle is
+            # the outermost thing on him (2 Kgs 1:8), and made under the
+            # mantle its hanging ends came through the cloth
+            outer = garment.make_tunic(
+                body, rig, fabric="Fabric019", tint=(0.34, 0.26, 0.18), hem=0.30, full=1.3, ease=0.35,
+                sleeves=False, cinch=0.0, neck_extra=0.03, pad=0.05, colliders=[robe], frames=90, name="Mantle")
+            sleeve_objs.append(outer)
+        sleeve_objs.append(garment.make_girdle(body, rig, outer, tint=tup("girdle_tint")))
     if opt["head"] in ("veil", "headcloth"):
-        import robe as robe_mod
+        # The head-cloth falls onto the shoulders, and on the sewn tunic the
+        # shoulders are cloth with folds in it: simulated against the body
+        # alone, the veil fell through those folds and showed holes wherever
+        # a fold stood through it. So the tunic is a collider for it too.
+        col = robe.modifiers.new("collide", "COLLISION") if sewn and robe is not None else None
+        if col is not None:
+            robe.collision.thickness_outer = 0.004; robe.collision.cloth_friction = 6.0
         sleeve_objs.append(robe_mod.make_headcloth(
             body, rig, size=1.15 if opt["head"] == "veil" else 0.85,
             tint=(0.62, 0.52, 0.42) if opt["head"] == "veil" else (0.90, 0.86, 0.78),
             name="Veil" if opt["head"] == "veil" else "Headcloth",
             # a veil over a head with no hair asset comes down to the hairline
             brow=0.008 if opt["head"] == "veil" else 0.040))
-    bb["lower_arms"](body, rig)
+        if col is not None:
+            robe.modifiers.remove(col)
+    bb["lower_arms"](body, rig, degrees=16.0 if sewn else 36.0)
     sleeves = None
 
     for name in opt["clips"].split(","):
