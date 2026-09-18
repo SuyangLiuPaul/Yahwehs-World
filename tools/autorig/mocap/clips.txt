@@ -1,5 +1,5 @@
 idle=139_02.bvh:1:427
 walk=37_01.bvh:1:79
 look=40_11.bvh:1:240
-speak=19_08.bvh:1:236:arms=0.75
+speak=19_08.bvh:1:236:arms=0.55:calm=0.8
 carry=69_69.bvh:1:75

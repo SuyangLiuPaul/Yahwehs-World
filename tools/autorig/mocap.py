@@ -133,7 +133,11 @@ def parse_clips(spec):
         name, rest = item.split("=", 1)
         parts = rest.split(":")
         f, s, e = parts[0], int(parts[1]), int(parts[2])
-        flags = {"loop": False, "cut": False, "legs": 1.0, "arms": 1.0}
+        # soft: seconds of smoothing each joint gets over time (captured motion
+        #   carries every twitch of the performer; a figure in a scene should not)
+        # calm: how much of the captured movement is kept, all joints alike —
+        #   0.85 keeps the character of the motion and loses its excess
+        flags = {"loop": False, "cut": False, "legs": 1.0, "arms": 1.0, "soft": 0.14, "calm": 0.85}
         for p in parts[3:]:
             k, _, v = p.partition("=")
             flags[k] = float(v) if v else True
@@ -272,7 +276,12 @@ def solve(rig, ref, frames, flags):
     gain = {}
     for n in tmap:
         short = n[len(pre):].replace("Left", "").replace("Right", "")
-        gain[n] = flags["legs"] if short in LEGS else flags["arms"] if short in ARMS else 1.0
+        # Arms are NOT scaled here: this scales toward the capture's reference
+        # pose, a T-pose with the arms level, so "less arm" lifted the arms —
+        # speak at arms=0.55 held them straight out. Arm damping is done in
+        # soften(), toward our own rest with the arms down. The legs' reference
+        # hangs straight like our rest, so they are safe to scale here.
+        gain[n] = flags["legs"] if short in LEGS else 1.0
 
     hips = pre + "Hips"
     hip_h_t = B[hips].translation.z          # rest hips above the origin (feet on the ground at rest)
@@ -338,7 +347,55 @@ def solve(rig, ref, frames, flags):
                 q2 = Quaternion().slerp(D, t) @ q
                 tr2 = tr + (first[b][1] - last[b][1]) * t if tr is not None else None
                 loc[b] = (q2, tr2)
-    return out
+    return soften(out, flags, not flags["cut"])
+
+
+FPS_SOLVE = 24
+
+
+def soften(out, flags, wrap):
+    """Smooth every joint over time, then scale it back toward rest.
+
+    Both act on LOCAL rotations, where rest is the identity, so "less" means
+    "nearer to standing still" for every bone at once and nothing drifts."""
+    n = len(out)
+    if n < 3:
+        return out
+    r = max(0, int(round(flags["soft"] * FPS_SOLVE)))
+    calm = flags["calm"]
+    if r == 0 and calm == 1.0 and flags["arms"] == 1.0:
+        return out
+    import math
+    w = [math.exp(-0.5 * (k / max(r / 2, 1e-6)) ** 2) for k in range(-r, r + 1)] if r else [1.0]
+    bones = list(out[0].keys())
+    new = [dict(f) for f in out]
+    for b in bones:
+        short = b.split(":")[-1].replace("Left", "").replace("Right", "")
+        k_b = calm * (flags["arms"] if short in ARMS else 1.0)
+        qs = [out[i][b][0].copy() for i in range(n)]
+        for i in range(1, n):                       # one hemisphere, or the average flips
+            if qs[i].dot(qs[i - 1]) < 0:
+                qs[i].negate()
+        trs = [out[i][b][1] for i in range(n)]
+        for i in range(n):
+            acc = Quaternion((0, 0, 0, 0)); tacc = None; wsum = 0.0
+            for k, wk in zip(range(-r, r + 1), w):
+                j = i + k
+                j = j % n if wrap else min(max(j, 0), n - 1)
+                q = qs[j]
+                if q.dot(qs[i]) < 0:
+                    q = -q
+                acc = Quaternion((acc.w + wk * q.w, acc.x + wk * q.x, acc.y + wk * q.y, acc.z + wk * q.z))
+                if trs[j] is not None:
+                    tacc = trs[j] * wk if tacc is None else tacc + trs[j] * wk
+                wsum += wk
+            acc.normalize()
+            q = Quaternion().slerp(acc, k_b) if k_b != 1.0 else acc
+            tr = None
+            if tacc is not None:
+                tr = tacc / wsum
+            new[i][b] = (q, tr)
+    return new
 
 
 def key_clip(rig, name, poses):
@@ -519,7 +576,7 @@ def main():
             n = trim_bvh(path, dst, s, e, stride)
             # the loop end was already found, so the trimmed clip is `cut`:
             # no second search over a range that is now the whole file
-            fl = [k for k in ("cut",) if flags[k]] + [f"{k}={flags[k]}" for k in ("legs", "arms") if flags[k] != 1.0]
+            fl = [k for k in ("cut",) if flags[k]] + [f"{k}={flags[k]}" for k in ("legs", "arms", "soft", "calm") if flags[k] != 1.0]
             rows.append(f"{name}={os.path.basename(path)}:1:{n - 1}" + "".join(":" + x for x in fl))
             print(f"  trimmed {os.path.basename(path)}: {n} frames at 1/{stride} rate → {dst}")
         open(os.path.join(opt["trim-to"], "clips.txt"), "w").write("\n".join(rows) + "\n")
