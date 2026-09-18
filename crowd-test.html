@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crowd test · Yahweh's World</title>
+  <!-- A bench, not a page of the site: no shell, no nav, no fonts. It exists
+       to put a number on src/walk/crowd.ts — how many walkers a browser can
+       carry at what frame time — and to be driven by a script that reads
+       window.__crowd. ?n=1000|10000|50000 sets the count. -->
+  <style>
+    html, body { margin: 0; background: #060d16; color: #e8e2d6; font: 13px/1.4 ui-monospace, Menlo, monospace; }
+    #stage { display: block; width: 100vw; height: 100vh; }
+    #hud { position: fixed; top: 10px; left: 10px; padding: 8px 10px; background: rgba(6,13,22,.72);
+           border: 1px solid rgba(232,226,214,.18); border-radius: 6px; white-space: pre; pointer-events: none; }
+    #hud b { color: #f2c46d; }
+  </style>
+</head>
+<body>
+  <canvas id="stage"></canvas>
+  <div id="hud">loading…</div>
+  <script type="module" src="/src/walk/crowd-test.ts"></script>
+</body>
+</html>

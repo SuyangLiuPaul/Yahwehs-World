@@ -52,6 +52,7 @@ export default defineConfig({
         ark: resolve(__dirname, 'ark.html'),
         figures: resolve(__dirname, 'figures.html'),
         plan: resolve(__dirname, 'plan.html'),
+        crowd: resolve(__dirname, 'crowd-test.html'),
       },
     },
   },
