@@ -1112,7 +1112,7 @@ console.info(
 // Guarded by import.meta.env.DEV, so it is dropped from a production build.
 if (import.meta.env.DEV) {
   (globalThis as unknown as Record<string, unknown>).__globe = {
-    scene, camera, controls, markers, globe, bundle, renderer,staffage,
+    scene, camera, controls, markers, globe, bundle, renderer,staffage, doors,
     get campPlayback(){return campPlayback;},
     measureMap, visibleBand, frameRoute, seekStop,
     /** Screen-space position of a place, for synthetic pointer events. */

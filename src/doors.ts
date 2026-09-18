@@ -40,6 +40,12 @@ export interface Door {
   id: string;
   /** The gazetteer slug this door stands on. */
   slug: string;
+  /** How far out this door is worth showing, in globe radii — the scale of
+   *  the thing itself, not of the passage. A building three hundred cubits
+   *  long is worth a continent's view; the room a meal was eaten in is not.
+   *  Without this, a plan with a hundred scenes in it puts a hundred cards
+   *  over the Levant at every zoom and the map stops being a map. */
+  from: number;
   href: string;
   zh: string; en: string;
   /** The verse that puts it at this place. */
@@ -50,21 +56,21 @@ export interface Door {
 
 export const DOORS: Door[] = [
   {
-    id: 'ark', slug: 'ararat', href: '/ark.html',
+    id: 'ark', from: 1.5, slug: 'ararat', href: '/ark.html',
     zh: '走进方舟', en: 'Walk into the ark',
     ref: 'Gen 8:4', refZh: '创 8:4',
     noteZh: '「方舟停在亚拉腊山上」——原文是复数，指的是一个地区，不是一座山峰。今天指认的那座山属传统，不是经文所定。',
     noteEn: 'The ark rested on the mountains of Ararat — plural in the Hebrew, a region and not a peak. The single mountain of the pictures is a later identification, not the text\'s.',
   },
   {
-    id: 'tabernacle', slug: 'shiloh', href: '/tabernacle.html',
+    id: 'tabernacle', from: 1.5, slug: 'shiloh', href: '/tabernacle.html',
     zh: '走进会幕', en: 'Walk into the tabernacle',
     ref: 'Josh 18:1', refZh: '书 18:1',
     noteZh: '会幕是在西乃造的（出 25–40），而经文没有定下西乃在哪里。书 18:1 把帐幕支搭在示罗——那是经文指名、地也找得到的地方，所以门开在这里。',
     noteEn: 'The tent was made at Sinai (Ex 25–40), and the text does not fix where Sinai is. Josh 18:1 sets it up at Shiloh — a place the text names and the ground can be found — so the door stands there.',
   },
   {
-    id: 'temple', slug: 'mount-moriah', href: '/temple.html',
+    id: 'temple', from: 1.5, slug: 'mount-moriah', href: '/temple.html',
     zh: '走进圣殿', en: 'Walk into the temple',
     ref: '2 Chr 3:1', refZh: '代下 3:1',
     noteZh: '「在耶路撒冷摩利亚山上」。这一处没有疑问。',
@@ -135,6 +141,21 @@ export class Doors {
     }
   }
 
+  /** Adds doors after construction. Dev only: it exists so the question
+   *  「当有非常多的 3D 怎么办呢」 can be answered with a screenshot of a
+   *  hundred of them rather than with an assurance. */
+  add(doors: Placed[]) {
+    for (const door of doors) {
+      this.marks.push({ door, world: lonLatToVec3(door.lon, door.lat, 0) });
+      const card = document.createElement('a');
+      card.className = 'door';
+      card.href = door.href;
+      this.root.appendChild(card);
+      this.cards.set(door.id, card);
+    }
+    this.write();
+  }
+
   /** Called every frame from the render loop. */
   update(camera: THREE.PerspectiveCamera, globe: THREE.Object3D, dt: number) {
     const distance = camera.position.length() / GLOBE_RADIUS;
@@ -152,21 +173,36 @@ export class Doors {
     const horizon = GLOBE_RADIUS * GLOBE_RADIUS;
     const w = innerWidth, h = innerHeight;
 
-    // Shiloh and Moriah are thirty-one kilometres apart, so at any useful zoom
-    // their cards land on top of one another — which is what happened. Only
-    // the door nearest the middle of the screen opens fully; the others shrink
-    // to a name, and a name that still collides is stepped down out of the
-    // way. Nearest-to-centre rather than nearest-to-camera because the middle
-    // of the screen is where the reader is actually looking.
+    // WHAT HAPPENS WHEN THERE ARE A HUNDRED OF THESE.
+    //
+    // Three doors already collided — Shiloh and Moriah are thirty-one
+    // kilometres apart. The plan has fifty-six units and most of them will
+    // have a scene, and Jerusalem alone will end up holding Solomon's house,
+    // Herod's, the upper room, Gethsemane and the council. A card each is not
+    // a design, it is a pile.
+    //
+    // So doors are thinned the way this app already thins 1,332 place names:
+    // project them all, rank them, and let one winner claim each cell of a
+    // screen-space grid. Nothing new is invented here; the discipline is
+    // PlaceLabels'. Three rules on top of it:
+    //
+    //   · ZOOM FILTERS BY SIZE. Each door carries the distance it is worth
+    //     seeing from. The ark is worth a continent's view. A room is not.
+    //   · ONE PLACE, ONE ANCHOR. Doors sharing a gazetteer slug share a point,
+    //     so ten scenes in Jerusalem are one card that says how many, not ten
+    //     cards on the same pixel.
+    //   · A BUDGET. One card opens, four more give their name, and the rest
+    //     are a ring on the map until the reader comes closer. The 全部 menu
+    //     has every one of them regardless, so nothing depends on being found.
     const onScreen: { door: Placed; x: number; y: number; d: number }[] = [];
     for (const { door, world } of this.marks) {
-      const facing = world.dot(this.cameraLocal) > horizon;
-
       const card = this.cards.get(door.id)!;
-      if (!facing) { card.style.opacity = '0'; card.style.pointerEvents = 'none'; continue; }
+      const hide = () => { card.style.opacity = '0'; card.style.pointerEvents = 'none'; };
+      if (distance > door.from) { hide(); continue; }
+      if (world.dot(this.cameraLocal) <= horizon) { hide(); continue; }
       this.v.copy(world).applyMatrix4(globe.matrixWorld).project(camera);
       if (this.v.z > 1 || Math.abs(this.v.x) > 1.2 || Math.abs(this.v.y) > 1.2) {
-        card.style.opacity = '0'; card.style.pointerEvents = 'none'; continue;
+        hide(); continue;
       }
       onScreen.push({
         door,
@@ -175,10 +211,52 @@ export class Doors {
         d: Math.hypot((this.v.x + 1) * w / 2 - w / 2, (1 - this.v.y) * h / 2 - h / 2),
       });
     }
+    // Nearest to the MIDDLE OF THE SCREEN, because that is where the reader is
+    // looking — not nearest to the camera, which on a sphere is the same thing
+    // only when they happen to be looking straight down.
     onScreen.sort((a, b) => a.d - b.d);
 
+    // ONE WINNER PER CELL, AND THE LOSERS ARE COUNTED, NOT DRAWN.
+    //
+    // Hiding the losers is the whole trick. The first version demoted them to
+    // dots and left them where they were: a hundred synthetic doors put
+    // SEVENTY rings on top of Jerusalem, which is the pile this was meant to
+    // prevent, only rounder. A cell now shows its winner and how many others
+    // are under it — 「12」 on the ring — and the number falls as the reader
+    // comes down and the cells divide the cluster.
+    const CELL_X = 230, CELL_Y = 120;
+    const winners = new Map<number, { spot: typeof onScreen[number]; n: number }>();
+    const order: number[] = [];
+    for (const spot of onScreen) {
+      const key = Math.floor(spot.x / CELL_X) * 4096 + Math.floor(spot.y / CELL_Y);
+      const cell = winners.get(key);
+      if (cell) { cell.n++; this.cards.get(spot.door.id)!.style.opacity = '0'; continue; }
+      winners.set(key, { spot, n: 1 });
+      order.push(key);
+    }
+    // A budget on top of the grid, for a screen that is all one cluster: one
+    // door opens, four give their name, the rest are a ring with a number.
+    const NAMED = 5;
+    const kept: typeof onScreen = [];
+    for (const [i, key] of order.entries()) {
+      const { spot, n } = winners.get(key)!;
+      const card = this.cards.get(spot.door.id)!;
+      card.dataset.count = n > 1 ? String(n) : '';
+      if (i < NAMED) {
+        card.classList.remove('door--dot');
+        kept.push(spot);
+        continue;
+      }
+      card.classList.add('door--dot');
+      card.classList.remove('door--min', 'door--below');
+      card.style.transform =
+        `translate(${Math.round(spot.x)}px,${Math.round(spot.y)}px) translate(-50%, -50%)`;
+      card.style.opacity = String(this.opacity * 0.9);
+      card.style.pointerEvents = this.opacity > 0.6 ? 'auto' : 'none';
+    }
+
     const taken: { x: number; y: number }[] = [];
-    for (const [rank, spot] of onScreen.entries()) {
+    for (const [rank, spot] of kept.entries()) {
       const card = this.cards.get(spot.door.id)!;
       card.classList.toggle('door--min', rank > 0);
       const { x, y } = spot;

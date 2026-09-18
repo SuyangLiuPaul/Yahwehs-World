@@ -539,3 +539,23 @@ html[lang="en"] .ev-row b { font-family: var(--latin); }
   box-shadow: 0 0 0 3px #060d1666;
 }
 .door--below::before { top: auto; bottom: calc(100% + 22px); }
+/* A door that lost its cell, or fell outside the budget: just the point, so a
+   reader can see there is something there and come closer. This is the state
+   most doors will be in once the plan is built out. */
+.door--dot {
+  width: 15px; height: 15px; padding: 0; border-radius: 50%; gap: 0;
+  border: 2px solid var(--gold-bright); background: #060d16cc; box-shadow: none;
+}
+.door--dot b, .door--dot i, .door--dot span, .door--dot em { display: none; }
+.door--dot::before, .door--dot::after { display: none; }
+.door--dot:hover { background: var(--gold-wash); transform-origin: center; }
+/* How many doors are under this one. It is not decoration: without it the
+   reader has no way of knowing that the ring they can see stands for twelve
+   things they cannot. */
+.door[data-count]:not([data-count=""])::after {
+  content: attr(data-count); position: absolute; left: auto; right: -9px; top: -9px;
+  width: auto; height: auto; min-width: 18px; padding: 1px 4px;
+  background: var(--gold-bright); color: #08121d; border-radius: 999px;
+  font: 600 11px/1.5 var(--ui); text-align: center; letter-spacing: 0;
+}
+.door--dot[data-count]:not([data-count=""]) { width: 17px; height: 17px; }
