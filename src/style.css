@@ -482,3 +482,60 @@ html[lang="en"] .ev-row b { font-family: var(--latin); }
   #t-events-list { max-height: 30dvh; }
   #t-events-book { max-width: 38%; }
 }
+
+/* ── the doors ───────────────────────────────────────────────────────────
+   The three walks, standing on the globe where the text puts them, reached
+   by finding them rather than by a fourth button in the bar. They only exist
+   below 1.5 globe radii — after the shaded relief has come in — so a reader
+   meets the ground first and the buildings on it second. */
+#doors { position: fixed; inset: 0; z-index: 25; pointer-events: none; }
+.door {
+  position: absolute; top: 0; left: 0; width: min(280px, 72vw);
+  display: grid; gap: 4px; padding: var(--sp-3) var(--sp-4);
+  background: var(--panel); border: 1px solid var(--line-gold); border-radius: var(--radius);
+  box-shadow: var(--shadow); text-decoration: none;
+  transition: opacity .2s ease, border-color .16s, background .16s;
+  will-change: transform, opacity;
+}
+.door:hover { border-color: var(--gold); }
+.door b {
+  font-family: var(--display); font-size: var(--fs-500); font-weight: 600;
+  color: var(--gold-bright); letter-spacing: var(--tr-cjk);
+}
+/* The verse and how exactly the place is located — the second half of that
+   line is the gazetteer's own word, not a claim this file invented. */
+.door i {
+  font-style: normal; font-family: var(--mono); font-size: var(--fs-100); color: var(--ink-3);
+}
+.door span { font-size: var(--fs-200); line-height: var(--lh-snug); color: var(--ink-2); }
+.door em {
+  font-style: normal; margin-top: var(--sp-2); font-size: var(--fs-200); font-weight: 600;
+  color: var(--gold); letter-spacing: var(--tr-cjk);
+}
+.door:hover em { color: var(--gold-bright); }
+/* The stem down to the beacon, so the card is plainly about that point. */
+.door::after {
+  content: ''; position: absolute; left: 50%; top: 100%; width: 1px; height: 22px;
+  background: linear-gradient(180deg, var(--line-gold), transparent);
+}
+@media (max-width: 560px) {
+  .door { width: min(240px, 78vw); padding: var(--sp-2) var(--sp-3); }
+  .door span { display: none; }
+}
+/* A door that is not the one being looked at: its name, and no argument.
+   Two of the three are within thirty-one kilometres of each other. */
+.door--min { width: auto; padding: var(--sp-2) var(--sp-3); }
+.door--min i, .door--min span { display: none; }
+.door--min b { font-size: var(--fs-300); }
+.door--min em { margin-top: 0; font-size: var(--fs-100); }
+/* …and its stem points the other way. */
+.door--below::after { top: auto; bottom: 100%; background: linear-gradient(0deg, var(--line-gold), transparent); }
+/* The point the card is about. A ring rather than a dot, so it reads on top
+   of a place marker instead of competing with one. */
+.door::before {
+  content: ''; position: absolute; left: 50%; top: calc(100% + 22px);
+  width: 13px; height: 13px; margin-left: -7px; border-radius: 50%;
+  border: 2px solid var(--gold-bright); background: #060d1699;
+  box-shadow: 0 0 0 3px #060d1666;
+}
+.door--below::before { top: auto; bottom: calc(100% + 22px); }

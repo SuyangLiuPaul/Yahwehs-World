@@ -6,6 +6,7 @@ import './route-ui.css';
 import { paintBasemap } from './basemap.ts';
 import { createGlobe, createLighting, GLOBE_RADIUS, lonLatToVec3 } from './globe.ts';
 import { Terrain } from './terrain.ts';
+import { Doors, placeDoors } from './doors.ts';
 import { RegionLabels } from './regions.ts';
 import { Staffage } from './staffage.ts';
 import {CampPlayback} from './journey-actors/camp-playback.ts';
@@ -142,6 +143,12 @@ globe.add(markers.mesh);
 // Decides which places the camera is close enough to print, and hands the
 // answer to the markers so a thinned-away name leaves no orphan dot.
 const placeLabels = new PlaceLabels(bundle.places);
+
+// The three walks, standing on the globe at the places the text puts them.
+// They resolve their own coordinates out of the gazetteer by slug, so a
+// correction there reaches them and the map and the door cannot disagree.
+const bySlug = new Map(bundle.places.map((p) => [p.slug, p]));
+const doors = new Doors(placeDoors((slug) => bySlug.get(slug)), document.body);
 markers.setMask(placeLabels.shown);
 
 // A ring that snaps to the selected place — cheaper and clearer than
@@ -1066,6 +1073,7 @@ renderer.setAnimationLoop(() => {
     routeLabels.update(camera, globe, route.reachedIndex(routeT), innerWidth, innerHeight, safeBand, route.highlightedIndex(routeT));
   }
   terrain.update(camera.position.length(), dt);
+  doors.update(camera, globe, dt);
   staffage.update(route,camera,dt,routeT,routePlaying,selectedOrdinal,campPlayback?.phase??'rest',campPlayback?.tentScale??1);
   // Before the region labels, which dodge these: a named point outranks a
   // territory anchor when both want the same pixels. Before setZoom too, so a

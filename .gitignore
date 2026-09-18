@@ -13,3 +13,6 @@ src-tauri/icon-source.png
 .netlify/
 public/version.json
 dist-app/
+
+# Worktrees the agent tooling creates beside the checkout.
+.claude/worktrees/
