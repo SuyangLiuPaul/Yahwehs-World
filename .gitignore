@@ -16,3 +16,4 @@ dist-app/
 
 # Worktrees the agent tooling creates beside the checkout.
 .claude/worktrees/
+__pycache__/
