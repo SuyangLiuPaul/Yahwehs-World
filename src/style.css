@@ -17,7 +17,7 @@ body {
 }
 
 /* A single micro-label recipe, used everywhere one is needed. */
-.eyebrow, .rlabel, #p-refs-title, .lbl {
+.eyebrow, #p-refs-title, .lbl {
   font-family: var(--mono);
   font-size: var(--fs-100);
   font-weight: 500;
@@ -94,50 +94,17 @@ body {
 }
 
 /* ── routes ──────────────────────────────────────────────────────────────
-   A disclosure, not a permanent column. Ten routes stacked open took a fifth
-   of the screen away from the thing they annotate, and the map is the point.
-   Closed it is one control; open it is the list; with a route running it is a
-   card about that route and the list steps back. */
+   What is left here is the PLAYER. Choosing a journey used to happen in this
+   corner too — a disclosure that opened a list of ten — and that list is now
+   in the nav, where the other four pages can reach it. So this element has
+   nothing to show until a journey is actually running: closed, it is not a
+   control sitting over the map, it is nothing at all. */
 #routes {
   position: fixed; top: 66px; left: var(--sp-5); z-index: 20;
   width: min(268px, calc(100vw - var(--sp-5) * 2));
   display: grid; gap: var(--sp-2);
 }
-
-#r-open {
-  display: grid; grid-template-columns: auto 1fr auto; align-items: center;
-  gap: var(--sp-3); width: 100%; cursor: pointer; text-align: left;
-  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
-  padding: var(--sp-2) var(--sp-3); color: var(--ink-2);
-  font-family: var(--ui); font-size: var(--fs-200); letter-spacing: var(--tr-cjk);
-  backdrop-filter: blur(10px); transition: border-color .16s, color .16s;
-}
-#r-open:hover { color: var(--ink); border-color: var(--line-gold); }
-#r-open:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
-#r-open .rlabel { color: var(--gold); }
-.r-open-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.r-chev { color: var(--ink-3); font-size: var(--fs-100); transition: transform .2s; }
-#routes[data-state="open"] .r-chev { transform: rotate(180deg); }
-/* With a route running the trigger is redundant — the card names it. */
-#routes[data-state="active"] #r-open { display: none; }
-
-#rlist { display: none; gap: 1px; }
-#routes[data-state="open"] #rlist { display: grid; }
-.rbtn {
-  display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-2);
-  text-align: left; cursor: pointer;
-  background: #0d1a28d9; border: 1px solid var(--line); border-radius: var(--radius);
-  color: var(--ink-2); padding: var(--sp-2) var(--sp-3);
-  font-family: var(--ui); font-size: var(--fs-200); letter-spacing: var(--tr-cjk);
-  backdrop-filter: blur(10px);
-  transition: color .16s, border-color .16s, background .16s;
-}
-.rbtn i {
-  font-style: normal; font-family: var(--mono); font-size: var(--fs-100);
-  color: var(--ink-4); letter-spacing: 0; flex: none;
-}
-.rbtn:hover { color: var(--ink); border-color: var(--line-gold); background: var(--rbtn-hover); }
-.rbtn:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+#routes[data-state="closed"] { display: none; }
 
 /* ── the running route ───────────────────────────────────────────────── */
 #r-card {
@@ -357,8 +324,8 @@ body {
 
   /* Touch targets. The visual sizes are right for the type; the hit areas were
      not — 19px for the route's close control is a miss waiting to happen. */
-  #lang, #r-toggle, #r-open { position: relative; }
-  #lang::after, #r-toggle::after, #r-open::after {
+  #lang, #r-toggle { position: relative; }
+  #lang::after, #r-toggle::after {
     content: ''; position: absolute; left: 50%; top: 50%;
     width: max(100%, 44px); height: 44px; transform: translate(-50%, -50%);
   }
@@ -366,7 +333,6 @@ body {
     width: 40px; height: 40px; display: grid; place-content: center;
     margin: calc(var(--sp-2) * -1) calc(var(--sp-2) * -1) 0 0;
   }
-  #rlist { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: var(--sp-1); }
   #r-basis { max-height: 64px; }
   #panel {
     top: auto; bottom: 188px; right: var(--sp-3); left: var(--sp-3);

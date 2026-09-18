@@ -26,11 +26,16 @@ const PAGES = [
   { file: 'index.html', href: '/', en: 'Globe', narrowEn: 'Globe', zh: '圣经世界', narrowZh: '地球',
     loadEn: 'Drawing the world…', loadHans: '正在绘制世界…', loadHant: '正在繪製世界…' },
   { file: 'tabernacle.html', href: '/tabernacle.html', en: 'Tabernacle', narrowEn: 'Tent', zh: '走进会幕', narrowZh: '会幕',
+    walk: true, inEn: 'The tabernacle', inZh: '会幕', ofEn: 'Exodus 26–27', ofZh: '出埃及记 26–27',
     loadEn: 'Raising the tabernacle…', loadHans: '正在支搭会幕…', loadHant: '正在支搭會幕…' },
   { file: 'temple.html', href: '/temple.html', en: 'Temple', narrowEn: 'Temple', zh: '走进圣殿', narrowZh: '圣殿',
+    walk: true, inEn: "Solomon's temple", inZh: '圣殿', ofEn: '1 Kings 6–7', ofZh: '列王纪上 6–7',
     loadEn: 'Building the house…', loadHans: '正在建造圣殿…', loadHant: '正在建造聖殿…' },
   { file: 'ark.html', href: '/ark.html', en: 'Ark', narrowEn: 'Ark', zh: '走进方舟', narrowZh: '方舟',
+    walk: true, inEn: "Noah's ark", inZh: '方舟', ofEn: 'Genesis 6–8', ofZh: '创世记 6–8',
     loadEn: 'Building the ark…', loadHans: '正在造方舟…', loadHant: '正在造方舟…' },
+  { file: 'figures.html', href: '/figures.html', en: 'Figures', narrowEn: 'Figures', zh: '人物与活物', narrowZh: '人物',
+    loadEn: 'Standing the figures up…', loadHans: '正在把人物立起来…', loadHant: '正在把人物立起來…' },
   { file: 'plan.html', href: '/plan.html', en: 'Plan', narrowEn: 'Plan', zh: '完整的计划', narrowZh: '计划',
     loadEn: 'Laying out the plan…', loadHans: '正在整理全部计划…', loadHant: '正在整理全部計劃…' },
 ];
@@ -86,10 +91,46 @@ const HEAD = `  <!-- shell:head --><style>:root{color-scheme:dark}html,body{back
   `if(g==="en"||g.indexOf("en-")===0){l="en";break}}}` +
   `document.documentElement.lang=l}catch(e){document.documentElement.lang="en"}})()<\/script>` + HEAD_END;
 
-const tabs = (self) => PAGES.map((p) =>
+// THE BAR IS A SHELF, NOT A LIST.
+//
+// It held five destinations side by side — Globe, Tabernacle, Temple, Ark,
+// Plan — and three of those five are the same KIND of thing: a building you
+// walk into. The plan has more of them coming (Ezekiel's temple, Herod's, the
+// New Jerusalem), and each one added would have taken another slot off a bar
+// that had already run off the edge of a phone once.
+//
+// So the three collapse into one: 走进 opens the series. Adding the fourth
+// walk is then a row in PAGES and nothing else — the bar does not grow.
+const tab = (p, self) =>
   `      <li><a class="tab" href="${p.href}"${p.file === self ? ' aria-current="page"' : ''}` +
-  ` data-en="${p.en}" data-en-narrow="${p.narrowEn}" data-zh="${p.zh}" data-zh-narrow="${p.narrowZh}">${p.en}</a></li>`
+  ` data-en="${p.en}" data-en-narrow="${p.narrowEn}" data-zh="${p.zh}" data-zh-narrow="${p.narrowZh}">${p.en}</a></li>`;
+
+const walkItems = (self) => PAGES.filter((p) => p.walk).map((p) =>
+  `        <a href="${p.href}"${p.file === self ? ' aria-current="page"' : ''}>` +
+  `<span class="dd-name" data-en="${p.inEn}" data-zh="${p.inZh}">${p.inEn}</span>` +
+  `<span class="dd-of" data-en="${p.ofEn}" data-zh="${p.ofZh}">${p.ofEn}</span></a>`
 ).join('\n');
+
+const tabs = (self) => {
+  const walks = PAGES.filter((p) => p.walk);
+  const here = walks.some((p) => p.file === self);
+  const out = [];
+  for (const p of PAGES) {
+    if (p.walk) {
+      if (p.file !== walks[0].file) continue;
+      out.push(`      <li class="tab-group">
+        <button type="button" class="tab" id="walk-open" aria-expanded="false" aria-controls="walkmenu"${here ? ' aria-current="page"' : ''}>
+          <b data-en="Walk in" data-zh="走进">Walk in</b><i class="chev" aria-hidden="true">▾</i></button>
+        <div class="dd" id="walkmenu" hidden>
+${walkItems(self)}
+        </div>
+      </li>`);
+      continue;
+    }
+    out.push(tab(p, self));
+  }
+  return out.join('\n');
+};
 
 const shell = (page) => `${START}
   <!-- The opening screen. It is markup rather than something the page's own
@@ -113,8 +154,21 @@ const shell = (page) => `${START}
          button opens the whole index. On a phone the bar drops the tabs and
          this is the only way through — which is why it is not an afterthought
          at the end of the row. -->
-    <button type="button" id="all-open" aria-expanded="false" aria-controls="allmenu"
-      data-en="All" data-zh="全部"><span aria-hidden="true">☰</span> <b>All</b></button>
+    <button type="button" id="all-open" aria-expanded="false" aria-controls="allmenu">
+      <span aria-hidden="true">☰</span> <b data-en="All" data-zh="全部">All</b></button>
+    <!-- THE JOURNEYS, ON EVERY PAGE.
+         They used to be a pill at the bottom-left corner of the globe and
+         nowhere else at all: on the tabernacle, the temple, the ark and the
+         plan there was no way to reach a journey, and on the globe itself it
+         was furniture floating over the map rather than a way through the
+         app. It is a destination, so it stands with the destinations.
+         OUTSIDE the <ol> on purpose — that row is dropped below 980px, and
+         routes must not disappear with it, the same reason 全部 is out here. -->
+    <div class="tab-group" id="routes-group">
+      <button type="button" id="routes-open" aria-expanded="false" aria-controls="routemenu">
+        <b data-en="Routes" data-zh="路线">Routes</b><i class="chev" aria-hidden="true">▾</i></button>
+      <div class="dd" id="routemenu" hidden></div>
+    </div>
     <ol>
 ${tabs(page.file)}
     </ol>

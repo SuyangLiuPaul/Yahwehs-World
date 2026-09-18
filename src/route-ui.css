@@ -10,8 +10,6 @@ body.route-active #timeline .legend { display: none; }
 body.route-active #timeline { padding: var(--sp-2) var(--sp-4); }
 #routes { bottom: calc(var(--footer-height, 94px) + var(--sp-3)); top: auto; max-height: calc(100dvh - 160px); }
 #routes[data-state="active"] { left: 50%; right: auto; transform: translateX(-50%); width: min(680px, calc(100% - 24px)); }
-#r-open, .rbtn { min-height: 44px; }
-#rlist { max-height: 52dvh; overflow: auto; }
 #r-card { padding: var(--sp-2) var(--sp-3); gap: var(--sp-1); background: var(--surface); border-color: var(--line-gold); }
 #r-card header { align-items: center; min-height: 44px; }
 .r-heading { min-width: 0; }

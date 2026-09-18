@@ -50,6 +50,7 @@ export default defineConfig({
         tabernacle: resolve(__dirname, 'tabernacle.html'),
         temple: resolve(__dirname, 'temple.html'),
         ark: resolve(__dirname, 'ark.html'),
+        figures: resolve(__dirname, 'figures.html'),
         plan: resolve(__dirname, 'plan.html'),
       },
     },

@@ -1,0 +1,142 @@
+/* The gallery. A grid of pictures, because a grid of live canvases is a grid
+   that will not open on a phone; and a card that shows the model's HEIGHT
+   before it shows its name, because the height is the only claim this project
+   makes about a generated figure and it should not be buried in a caption. */
+#gallery {
+  max-width: 1180px; margin: 0 auto;
+  padding: calc(72px + var(--safe-top)) calc(var(--sp-5) + var(--safe-right))
+           calc(var(--sp-7) + var(--footer-height, 56px)) calc(var(--sp-5) + var(--safe-left));
+  color: var(--ink);
+}
+#gallery header h1 {
+  margin: 0 0 var(--sp-3); font-family: var(--display); font-size: var(--fs-700);
+  font-weight: 600; letter-spacing: var(--tr-cjk); line-height: var(--lh-tight);
+}
+#gallery .lede {
+  margin: 0 0 var(--sp-7); max-width: 62ch; color: var(--ink-2);
+  font: var(--fs-300)/var(--lh-normal) var(--ui);
+}
+#gallery .lede b { color: var(--gold-bright); font-weight: 500; }
+
+.g-kind { margin: 0 0 var(--sp-7); }
+.g-kind h2, #g-built-title {
+  margin: 0 0 var(--sp-2); font-family: var(--display); font-size: var(--fs-500);
+  font-weight: 600; letter-spacing: var(--tr-cjk); color: var(--ink);
+  display: flex; align-items: baseline; gap: var(--sp-3);
+}
+.g-kind h2 i {
+  font-style: normal; font-family: var(--mono); font-size: var(--fs-100);
+  color: var(--gold); letter-spacing: var(--tr-caps);
+}
+.g-what {
+  margin: 0 0 var(--sp-4); max-width: 62ch; color: var(--ink-3);
+  font: var(--fs-200)/var(--lh-normal) var(--ui);
+}
+
+.g-grid {
+  display: grid; gap: var(--sp-3);
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+}
+.g-card {
+  position: relative; display: grid; gap: 2px; text-align: left; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 0 0 var(--sp-3); overflow: hidden;
+  transition: border-color .16s, transform .16s;
+}
+.g-card:hover { border-color: var(--line-gold); transform: translateY(-2px); }
+.g-card:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.g-card img {
+  width: 100%; height: auto; display: block; margin-bottom: var(--sp-2);
+  background: #0b1622; aspect-ratio: 600 / 760; object-fit: cover;
+}
+/* The height, over the picture, in the monospace face — it is a measurement,
+   and measurements in this app are always set as measurements. */
+.g-h {
+  position: absolute; top: var(--sp-2); left: var(--sp-2);
+  font: 500 var(--fs-100)/1 var(--mono); letter-spacing: var(--tr-caps);
+  color: var(--gold-bright); background: color-mix(in srgb, var(--ground) 76%, transparent);
+  border: 1px solid var(--line-gold); border-radius: 999px; padding: 4px 8px;
+}
+.g-card .g-name {
+  padding: 0 var(--sp-3); color: var(--ink);
+  font-size: var(--fs-300); letter-spacing: var(--tr-cjk);
+}
+.g-card .g-ref {
+  padding: 0 var(--sp-3); color: var(--gold);
+  font: var(--fs-100)/var(--lh-snug) var(--mono); letter-spacing: 0;
+}
+.g-card .g-where {
+  padding: 0 var(--sp-3); color: var(--ink-3);
+  font: var(--fs-100)/var(--lh-snug) var(--ui);
+}
+
+/* ── the rooms, which are not on the list above ───────────────────────── */
+#g-built { margin: var(--sp-7) 0 0; border-top: 1px solid var(--line); padding-top: var(--sp-6); }
+#g-built-list { display: grid; gap: var(--sp-3); grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.g-built-card {
+  display: grid; gap: 4px; text-decoration: none; padding: var(--sp-4);
+  background: var(--surface); border: 1px solid var(--line-gold); border-radius: var(--radius);
+  transition: background .16s;
+}
+.g-built-card:hover { background: var(--gold-wash); }
+.g-built-card .g-name { color: var(--ink); font-size: var(--fs-400); letter-spacing: var(--tr-cjk); }
+.g-built-card .g-ref { color: var(--ink-3); font: var(--fs-100)/var(--lh-snug) var(--ui); }
+.g-built-card .g-go { color: var(--gold-bright); font-size: var(--fs-200); margin-top: var(--sp-2); }
+
+#g-note {
+  margin: var(--sp-7) 0 0; max-width: 72ch; color: var(--ink-4);
+  font: var(--fs-100)/var(--lh-normal) var(--ui);
+}
+
+/* ── the one live viewer ──────────────────────────────────────────────── */
+#g-view {
+  width: min(560px, calc(100vw - 24px)); max-height: calc(100dvh - 48px);
+  padding: 0; border: 1px solid var(--line-gold); border-radius: var(--radius);
+  background: var(--ground); color: var(--ink); overflow: auto;
+}
+#g-view::backdrop { background: color-mix(in srgb, var(--ground) 82%, transparent); }
+#g-view header {
+  display: flex; align-items: flex-start; gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-4) var(--sp-2);
+}
+#gv-name {
+  margin: 0; font-family: var(--display); font-size: var(--fs-500); font-weight: 600;
+  letter-spacing: var(--tr-cjk);
+}
+#gv-where { margin: 2px 0 0; color: var(--ink-3); font: var(--fs-100)/var(--lh-snug) var(--ui); }
+#gv-close {
+  margin-left: auto; flex: none; width: 34px; height: 34px; cursor: pointer;
+  background: transparent; border: 1px solid var(--line); border-radius: var(--radius);
+  color: var(--ink-2); font-size: var(--fs-400);
+}
+#gv-close:hover { color: var(--ink); border-color: var(--line-gold); }
+#gv-stage { position: relative; margin: 0 var(--sp-4); }
+#gv-canvas {
+  width: 100%; height: min(52dvh, 420px); display: block;
+  background: #0b1622; border-radius: var(--radius);
+}
+#gv-loading {
+  position: absolute; inset: 0; margin: 0; display: grid; place-content: center;
+  color: var(--ink-3); font: var(--fs-200)/1 var(--ui);
+}
+#gv-loading[hidden] { display: none; }
+#gv-facts {
+  display: flex; flex-wrap: wrap; gap: var(--sp-4); margin: var(--sp-4);
+}
+#gv-facts div { display: grid; gap: 2px; }
+#gv-facts dt {
+  font: 500 var(--fs-100)/1 var(--ui); letter-spacing: var(--tr-caps);
+  text-transform: uppercase; color: var(--gold);
+}
+html[lang^="zh"] #gv-facts dt { text-transform: none; letter-spacing: var(--tr-cjk); }
+#gv-facts dd { margin: 0; font: var(--fs-300)/1.2 var(--mono); color: var(--ink); }
+#gv-note {
+  margin: 0 var(--sp-4) var(--sp-5); color: var(--ink-2);
+  font: var(--fs-200)/var(--lh-normal) var(--ui);
+}
+
+@media (max-width: 760px) {
+  #gallery { padding-top: calc(60px + var(--safe-top)); }
+  #gallery header h1 { font-size: var(--fs-600); }
+  .g-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--sp-2); }
+}

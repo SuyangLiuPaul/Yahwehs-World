@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <title>完整的计划 · 雅伟之界 | The plan · Yahweh's World</title>
+  <title>人物与活物 · 雅伟之界 | People and creatures · Yahweh's World</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Spectral:wght@500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@500;600&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
   <div id="loading">
     <i id="loading-bar"></i>
     <img id="loading-globe" src="/loading-globe.svg" alt="" width="180" height="180">
-    <p id="loading-text"><i class="l-en">Laying out the plan…</i><i class="l-hans">正在整理全部计划…</i><i class="l-hant">正在整理全部計劃…</i></p>
+    <p id="loading-text"><i class="l-en">Standing the figures up…</i><i class="l-hans">正在把人物立起来…</i><i class="l-hant">正在把人物立起來…</i></p>
   </div>
 
   <nav class="sitenav">
@@ -60,8 +60,8 @@
         <a href="/ark.html"><span class="dd-name" data-en="Noah's ark" data-zh="方舟">Noah's ark</span><span class="dd-of" data-en="Genesis 6–8" data-zh="创世记 6–8">Genesis 6–8</span></a>
         </div>
       </li>
-      <li><a class="tab" href="/figures.html" data-en="Figures" data-en-narrow="Figures" data-zh="人物与活物" data-zh-narrow="人物">Figures</a></li>
-      <li><a class="tab" href="/plan.html" aria-current="page" data-en="Plan" data-en-narrow="Plan" data-zh="完整的计划" data-zh-narrow="计划">Plan</a></li>
+      <li><a class="tab" href="/figures.html" aria-current="page" data-en="Figures" data-en-narrow="Figures" data-zh="人物与活物" data-zh-narrow="人物">Figures</a></li>
+      <li><a class="tab" href="/plan.html" data-en="Plan" data-en-narrow="Plan" data-zh="完整的计划" data-zh-narrow="计划">Plan</a></li>
     </ol>
     <span class="spacer"></span>
     <div class="lang-switch" role="group" aria-label="Language / 语言">
@@ -75,24 +75,33 @@
   <!-- shell:end -->
 
 
-  <main id="plan">
+  <main id="gallery">
     <header>
-      <h1 id="plan-title">完整的计划</h1>
-      <p class="lede" id="plan-lede"></p>
-      <div id="ladder"></div>
-      <p id="tally-line"></p>
-      <div id="bar" aria-hidden="true"></div>
+      <h1 id="g-title">人物与活物</h1>
+      <p class="lede" id="g-lede"></p>
     </header>
-    <div id="units"></div>
-    <footer class="note" id="plan-note"></footer>
+    <div id="g-kinds"></div>
+    <section id="g-built">
+      <h2 id="g-built-title"></h2>
+      <p class="g-what" id="g-built-what"></p>
+      <div id="g-built-list"></div>
+    </section>
+    <footer class="note" id="g-note"></footer>
   </main>
 
-  <!-- The measurement cards for the things no walk holds yet. New Jerusalem is
-       measured in Revelation 21:16 and there is nowhere to walk into, so its
-       card is read here, under its unit, until that walk exists. Filled — and
-       its module loaded — only when a reader opens it. -->
-  <dialog id="measures-panel"></dialog>
-  <script type="module" src="/src/plan.ts"></script>
-  <footer class="source-credit"><p><span data-en="Place data" data-zh="地名数据">Place data</span> <a href="https://www.openbible.info/geo/" target="_blank" rel="noopener">OpenBible.info</a> · CC BY 4.0 · <span data-en="basemap Natural Earth (public domain)" data-zh="底图 Natural Earth（公有领域）">basemap Natural Earth (public domain)</span></p></footer>
+  <!-- One WebGL context, opened for the one model you asked to look at. A grid
+       of fifteen live canvases is a grid that does not open on a phone. -->
+  <dialog id="g-view">
+    <header>
+      <div><h2 id="gv-name"></h2><p id="gv-where"></p></div>
+      <button type="button" id="gv-close" aria-label="Close">×</button>
+    </header>
+    <div id="gv-stage"><canvas id="gv-canvas"></canvas><p id="gv-loading"></p></div>
+    <dl id="gv-facts"></dl>
+    <p id="gv-note"></p>
+  </dialog>
+
+  <script type="module" src="/src/figures.ts"></script>
+  <footer class="source-credit"><p><span data-en="Models are generated and then measured; every height is stated in the register" data-zh="模型是生成的，生成之后再量；每一个高度都记在册上">Models are generated and then measured; every height is stated in the register</span> · <span data-en="provenance in handoff/MANIFEST-assets.md" data-zh="来源记在 handoff/MANIFEST-assets.md">provenance in handoff/MANIFEST-assets.md</span></p></footer>
 </body>
 </html>

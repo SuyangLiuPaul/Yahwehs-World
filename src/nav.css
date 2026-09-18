@@ -190,6 +190,82 @@
   .sitenav ol { display: none; }
 }
 
+/* ── the shelves: 走进 and 路线 ─────────────────────────────────────────
+   Two lists that outgrew a row of tabs. 走进 was three tabs and is about to
+   be six; 路线 was a pill floating over the bottom-left of the globe and did
+   not exist at all on the other four pages. Both hang from the bar now, and
+   both are the same object so they cannot drift apart. */
+.tab-group { position: relative; pointer-events: auto; }
+#routes-group { flex: none; }
+#routes-open {
+  display: flex; align-items: center; gap: 4px;
+  background: transparent; color: var(--ink-3);
+  border: 1px solid transparent; border-radius: var(--radius);
+  padding: var(--sp-1) var(--sp-3); min-height: 30px; cursor: pointer;
+  font-family: var(--ui); font-size: var(--fs-200); letter-spacing: var(--tr-cjk);
+  transition: color .16s, border-color .16s, background .16s;
+}
+#routes-open b, #walk-open b { font-weight: 400; }
+#routes-open:hover, #walk-open:hover { color: var(--ink); border-color: var(--line); background: var(--tab-hover); }
+#routes-open:focus-visible, #walk-open:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+/* The group's own button carries the current mark when the reader is standing
+   inside the series, or walking into the temple would leave the bar showing
+   nothing selected at all. */
+#walk-open[aria-current="page"], #routes-open[aria-expanded="true"] {
+  color: var(--gold-bright); border-color: var(--line-gold); background: var(--gold-wash);
+}
+/* A button wearing a tab's clothes. `.sitenav a.tab` only reaches anchors, so
+   without this the series opener kept the browser's own button border — a
+   white box in the middle of the bar. */
+#walk-open {
+  display: flex; align-items: center; gap: 4px; cursor: pointer;
+  background: transparent; color: var(--ink-3);
+  border: 1px solid transparent; border-radius: var(--radius);
+  padding: var(--sp-1) var(--sp-3);
+  font-family: var(--ui); font-size: var(--fs-200); letter-spacing: var(--tr-cjk);
+  transition: color .16s, border-color .16s, background .16s;
+}
+.chev { font-size: var(--fs-100); color: var(--ink-3); transition: transform .2s; }
+[aria-expanded="true"] .chev { transform: rotate(180deg); }
+.dd {
+  position: absolute; top: calc(100% + 6px); left: 0; z-index: 41;
+  min-width: 220px; max-width: min(320px, calc(100vw - 24px));
+  /* Ten journeys is 480px of list, which on a 600px-tall window reaches the
+     bottom edge. It scrolls rather than running off. */
+  max-height: calc(100dvh - 96px); overflow-y: auto; overscroll-behavior: contain;
+  display: grid; gap: 1px; padding: var(--sp-1);
+  background: var(--ground); border: 1px solid var(--line-gold);
+  border-radius: var(--radius); box-shadow: 0 12px 32px rgb(0 0 0 / .5);
+}
+.dd[hidden] { display: none; }
+.dd a {
+  display: grid; gap: 1px; text-decoration: none;
+  padding: var(--sp-2) var(--sp-3); border-radius: var(--radius); min-height: 44px;
+  align-content: center;
+}
+.dd a:hover { background: var(--tab-hover); }
+.dd a:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+.dd a[aria-current="page"] .dd-name { color: var(--gold-bright); }
+.dd-name { color: var(--ink); font-size: var(--fs-200); letter-spacing: var(--tr-cjk); }
+.dd-of { color: var(--ink-3); font: var(--fs-100)/var(--lh-snug) var(--ui); }
+.dd-none { margin: 0; padding: var(--sp-2) var(--sp-3); color: var(--ink-3); font: var(--fs-100)/var(--lh-snug) var(--ui); }
+/* The routes shelf hangs off a button near the left edge on a phone and off
+   the middle of the bar on a desktop; either way it must not run off the
+   right-hand side. */
+/* On a phone the shelf hangs off a button about 70px from the left edge, and
+   a 220px panel anchored to either edge of that button runs off the screen —
+   `right: 0` put it 13px off the LEFT. It stops being a dropdown there and
+   becomes a sheet across the width of the bar, which is the only shape that
+   fits. Measured at 360 and 390. */
+@media (max-width: 480px) {
+  .dd {
+    position: fixed; top: auto; left: var(--sp-2); right: var(--sp-2);
+    min-width: 0; max-width: none; width: auto;
+    margin-top: 6px;
+  }
+  #routes-open { padding: var(--sp-1) var(--sp-2); font-size: var(--fs-100); }
+}
+
 #allmenu {
   position: fixed; inset: 0; z-index: 60;
   background: color-mix(in srgb, var(--ground) 82%, transparent);
@@ -214,7 +290,7 @@
 #all-close:hover { color: var(--ink); border-color: var(--line-gold); }
 .am-lede {
   margin: var(--sp-3) 0 var(--sp-5); color: var(--ink-2);
-  font: var(--fs-200)/var(--lh-loose) var(--ui);
+  font: var(--fs-200)/var(--lh-normal) var(--ui);
 }
 .am-sheet h3 {
   margin: var(--sp-5) 0 var(--sp-2); font-family: var(--ui); font-size: var(--fs-200);

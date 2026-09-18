@@ -34,13 +34,33 @@
          button opens the whole index. On a phone the bar drops the tabs and
          this is the only way through — which is why it is not an afterthought
          at the end of the row. -->
-    <button type="button" id="all-open" aria-expanded="false" aria-controls="allmenu"
-      data-en="All" data-zh="全部"><span aria-hidden="true">☰</span> <b>All</b></button>
+    <button type="button" id="all-open" aria-expanded="false" aria-controls="allmenu">
+      <span aria-hidden="true">☰</span> <b data-en="All" data-zh="全部">All</b></button>
+    <!-- THE JOURNEYS, ON EVERY PAGE.
+         They used to be a pill at the bottom-left corner of the globe and
+         nowhere else at all: on the tabernacle, the temple, the ark and the
+         plan there was no way to reach a journey, and on the globe itself it
+         was furniture floating over the map rather than a way through the
+         app. It is a destination, so it stands with the destinations.
+         OUTSIDE the <ol> on purpose — that row is dropped below 980px, and
+         routes must not disappear with it, the same reason 全部 is out here. -->
+    <div class="tab-group" id="routes-group">
+      <button type="button" id="routes-open" aria-expanded="false" aria-controls="routemenu">
+        <b data-en="Routes" data-zh="路线">Routes</b><i class="chev" aria-hidden="true">▾</i></button>
+      <div class="dd" id="routemenu" hidden></div>
+    </div>
     <ol>
       <li><a class="tab" href="/" aria-current="page" data-en="Globe" data-en-narrow="Globe" data-zh="圣经世界" data-zh-narrow="地球">Globe</a></li>
-      <li><a class="tab" href="/tabernacle.html" data-en="Tabernacle" data-en-narrow="Tent" data-zh="走进会幕" data-zh-narrow="会幕">Tabernacle</a></li>
-      <li><a class="tab" href="/temple.html" data-en="Temple" data-en-narrow="Temple" data-zh="走进圣殿" data-zh-narrow="圣殿">Temple</a></li>
-      <li><a class="tab" href="/ark.html" data-en="Ark" data-en-narrow="Ark" data-zh="走进方舟" data-zh-narrow="方舟">Ark</a></li>
+      <li class="tab-group">
+        <button type="button" class="tab" id="walk-open" aria-expanded="false" aria-controls="walkmenu">
+          <b data-en="Walk in" data-zh="走进">Walk in</b><i class="chev" aria-hidden="true">▾</i></button>
+        <div class="dd" id="walkmenu" hidden>
+        <a href="/tabernacle.html"><span class="dd-name" data-en="The tabernacle" data-zh="会幕">The tabernacle</span><span class="dd-of" data-en="Exodus 26–27" data-zh="出埃及记 26–27">Exodus 26–27</span></a>
+        <a href="/temple.html"><span class="dd-name" data-en="Solomon's temple" data-zh="圣殿">Solomon's temple</span><span class="dd-of" data-en="1 Kings 6–7" data-zh="列王纪上 6–7">1 Kings 6–7</span></a>
+        <a href="/ark.html"><span class="dd-name" data-en="Noah's ark" data-zh="方舟">Noah's ark</span><span class="dd-of" data-en="Genesis 6–8" data-zh="创世记 6–8">Genesis 6–8</span></a>
+        </div>
+      </li>
+      <li><a class="tab" href="/figures.html" data-en="Figures" data-en-narrow="Figures" data-zh="人物与活物" data-zh-narrow="人物">Figures</a></li>
       <li><a class="tab" href="/plan.html" data-en="Plan" data-en-narrow="Plan" data-zh="完整的计划" data-zh-narrow="计划">Plan</a></li>
     </ol>
     <span class="spacer"></span>
@@ -75,15 +95,13 @@
     <p id="p-refs"></p>
   </aside>
 
+  <!-- The journey PLAYER. Choosing a journey is no longer done here: that was
+       a pill in the bottom-left corner of one page out of five, so on the
+       other four there was no way to reach a journey at all. The picker is in
+       the nav now (scripts/build-shell.mjs), and what is left here is the
+       thing that could never have gone in a bar — the stop, the terrain
+       preview, the dots and the play control. -->
   <nav id="routes" data-state="closed">
-    <button id="r-open" type="button" aria-expanded="false">
-      <span class="rlabel" data-en="Routes" data-zh="路线">Routes</span>
-      <span class="r-open-name" data-en="Choose a journey" data-zh="选一条走过的路">Choose a journey</span>
-      <span class="r-chev" aria-hidden="true">▾</span>
-    </button>
-
-    <div id="rlist" role="list"></div>
-
     <article id="r-card" hidden>
       <header>
         <div class="r-heading"><h2 id="r-name"></h2><div id="r-stats"></div></div>

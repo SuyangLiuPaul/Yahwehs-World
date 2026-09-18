@@ -22,7 +22,7 @@ import { Scenes } from './scenes.ts';
 import { Cartography, measureMap } from './cartography.ts';
 import { applyStatic, bindSwitch, fullLocale, hant, localized, locale as currentLocale, onLocale } from './locale.ts';
 import { installUpdateChecker } from './updates.ts';
-import { installSiteMenu } from './site-shell.ts';
+import { installSiteMenu, onJourneyPick } from './site-shell.ts';
 import { EventsTrack, type TrackEvent } from './events-track.ts';
 import { installEventsMenu, type EventsMenu } from './events-menu.ts';
 import { bridgesFor, eventsInJourney, href as bridgeHref, structureForJourney } from './bridges.ts';
@@ -257,28 +257,22 @@ let readoutKey = '';
 let safeBand = { top: 48, height: innerHeight - 160 };
 
 const routesEl = $('routes');
-const rlist = $('rlist');
-const rOpen = $('r-open');
 const rCard = $('r-card');
 const rToggle = $('r-toggle');
 const rStop = $('r-stop');
 const rBasis = $('r-basis');
 
-// Rebuilt rather than written once: the menu names the ten journeys, and a
-// reader who switches language with the menu open should not be left reading
-// the list they just switched away from.
-function renderRouteList() {
-  rlist.innerHTML = journeyData.journeys.map((jr) => `
-    <button class="rbtn" type="button" data-id="${jr.id}">
-      <span>${locale === 'zh' ? hant(jr.zh) : jr.en}</span><i>${T.stops[locale](jr.stopCount)}</i>
-    </button>`).join('');
-}
-renderRouteList();
+// The picker lives in the nav and is shared with the other four pages; this
+// page only has to say what to do when one is chosen. Without this the link
+// would still work — it sets #journey= and the hash handler below opens it —
+// but it would also reload the globe, which takes seconds it does not need to.
+onJourneyPick((id) => {
+  if (journeyData.journeys.some((jr) => jr.id === id)) openRoute(id);
+});
 setRoutesState('closed');
 
-function setRoutesState(state: 'closed' | 'open' | 'active') {
+function setRoutesState(state: 'closed' | 'active') {
   routesEl.dataset.state = state;
-  rOpen.setAttribute('aria-expanded', String(state === 'open'));
 }
 
 function clearRoute() {
@@ -669,17 +663,6 @@ function updateRouteReadout() {
   $('t-count').textContent = T.stopCount[locale](route.journey.stopCount, route.journey.markers.length);
 }
 
-rOpen.addEventListener('click', () => {
-  setRoutesState(routesEl.dataset.state === 'open' ? 'closed' : 'open');
-});
-rlist.addEventListener('click', (e) => {
-  const btn = (e.target as HTMLElement).closest('.rbtn') as HTMLElement | null;
-  if (!btn) return;
-  openRoute(btn.dataset.id!);
-});
-addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && routesEl.dataset.state === 'open') setRoutesState('closed');
-});
 rToggle.addEventListener('click', () => {
   if (!route) return;
   if (routeT >= 1) { routeT=0;route.setProgress(0);if(campPlayback)campPlayback=new CampPlayback(route); }
@@ -1018,7 +1001,6 @@ onLocale((l) => {
   applyStatic();
   renderLegend();
   applyCursor();
-  renderRouteList();
   if (route) {
     renderRouteHeader(route.journey);
     renderRouteStats(route.journey);

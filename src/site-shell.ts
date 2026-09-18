@@ -1,4 +1,4 @@
-import { hant, onLocale, t } from './locale.ts';
+import { applyStatic, hant, onLocale, t } from './locale.ts';
 import { UNITS } from './plan-units.ts';
 
 // Two things every page shares, and neither of them belonged to any one page.
@@ -105,6 +105,85 @@ function render(menu: HTMLElement) {
   menu.querySelector('#all-close')?.addEventListener('click', close);
 }
 
+// ── the two shelves in the bar ───────────────────────────────────────────
+//
+// 走进 holds the walks and 路线 holds the journeys. Neither is a new kind of
+// thing: both are lists that were going to outgrow a row of tabs, and both
+// are opened the same way, so they are opened by the same function.
+
+type Shelf = { button: HTMLElement; panel: HTMLElement; fill?: () => Promise<void> | void };
+const shelves: Shelf[] = [];
+
+function closeShelves(except?: Shelf) {
+  for (const s of shelves) {
+    if (s === except) continue;
+    s.panel.hidden = true;
+    s.button.setAttribute('aria-expanded', 'false');
+  }
+}
+
+function shelf(buttonId: string, panelId: string, fill?: Shelf['fill']) {
+  const button = $(buttonId), panel = $(panelId);
+  if (!button || !panel) return;
+  const s: Shelf = { button, panel, fill };
+  shelves.push(s);
+  let filled = false;
+  button.addEventListener('click', async () => {
+    const showing = !panel.hidden;
+    closeShelves(s);
+    if (showing) { panel.hidden = true; button.setAttribute('aria-expanded', 'false'); return; }
+    if (!filled && fill) { await fill(); filled = true; }
+    panel.hidden = false;
+    button.setAttribute('aria-expanded', 'true');
+    (panel.querySelector('a, button') as HTMLElement | null)?.focus();
+  });
+  panel.addEventListener('click', () => { panel.hidden = true; button.setAttribute('aria-expanded', 'false'); });
+}
+
+/** The globe page takes journeys itself rather than through the address bar,
+ *  so choosing one does not reload the scene. Any page that does not register
+ *  a handler simply follows the link, which is what the links are for. */
+let takeJourney: ((id: string) => void) | null = null;
+export function onJourneyPick(fn: (id: string) => void) { takeJourney = fn; }
+
+type Journey = { id: string; en: string; zh: string; stopCount: number };
+let journeys: Journey[] = [];
+
+async function fillRoutes() {
+  const panel = $('routemenu');
+  if (!panel) return;
+  if (!journeys.length) {
+    try {
+      const r = await fetch('/data/journeys.json');
+      journeys = (await r.json()).journeys as Journey[];
+    } catch {
+      // The names come from the same payload the globe draws the stops from,
+      // so they can never name a journey that is not there. If it cannot be
+      // had, say so rather than showing an empty shelf.
+      panel.innerHTML = `<p class="dd-none">${t('Routes unavailable', '路线未载入')}</p>`;
+      return;
+    }
+  }
+  drawRoutes();
+  onLocale(drawRoutes);
+}
+
+function drawRoutes() {
+  const panel = $('routemenu');
+  if (!panel || !journeys.length) return;
+  panel.innerHTML = journeys.map((jr) => `<a href="/#journey=${jr.id}" data-journey="${jr.id}">
+    <span class="dd-name">${t(jr.en, hant(jr.zh))}</span>
+    <span class="dd-of">${t(`${jr.stopCount} stops`, `${jr.stopCount} 站`)}</span>
+  </a>`).join('');
+  panel.querySelectorAll<HTMLAnchorElement>('a[data-journey]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      if (!takeJourney) return;
+      e.preventDefault();
+      takeJourney(a.dataset.journey!);
+    });
+  });
+}
+
 let open = false;
 function close() {
   const menu = $('allmenu'), button = $('all-open');
@@ -115,8 +194,17 @@ function close() {
   (button as HTMLElement | null)?.focus();
 }
 
-/** Wires 全部. Every page calls this. */
+/** Wires 全部, 走进 and 路线. Every page calls this. */
 export function installSiteMenu() {
+  shelf('walk-open', 'walkmenu');
+  shelf('routes-open', 'routemenu', fillRoutes);
+  // One press anywhere else puts them away — a shelf left hanging over the
+  // map after the reader has moved on is the same fault as the pill was.
+  document.addEventListener('click', (e) => {
+    if (!(e.target as HTMLElement).closest('.tab-group')) closeShelves();
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeShelves(); });
+
   const menu = $('allmenu'), button = $('all-open');
   if (!menu || !button) return;
   let drawn = false;
@@ -133,5 +221,5 @@ export function installSiteMenu() {
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && open) close(); });
   // The sheet is built from the plan and the plan is bilingual: redraw it, or
   // a reader who switches language while it is open gets the other one.
-  onLocale(() => { if (drawn) draw(); });
+  onLocale(() => { if (drawn) draw(); applyStatic(document.querySelector('.sitenav') ?? document); });
 }
