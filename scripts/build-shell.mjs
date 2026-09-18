@@ -34,6 +34,14 @@ const PAGES = [
 const START = '  <!-- shell:start — written by scripts/build-shell.mjs. Edit that, not this. -->';
 const END = '  <!-- shell:end -->';
 
+// The frame BEFORE the loading screen. The stylesheet is a separate file, so
+// between the first paint and the CSS arriving the page is whatever white the
+// browser defaults to — a flash of white in front of a dark app, on every
+// navigation. Two declarations inline in the head cost nothing and remove it.
+// `color-scheme` is what stops the scrollbars and the form controls flashing
+// light as well.
+const HEAD = `  <!-- shell:head --><style>:root{color-scheme:dark}html,body{background:#060d16;margin:0}</style>`;
+
 const tabs = (self) => PAGES.map((p) =>
   `      <li><a class="tab" href="${p.href}"${p.file === self ? ' aria-current="page"' : ''}` +
   ` data-en="${p.en}" data-en-narrow="${p.narrowEn}" data-zh="${p.zh}" data-zh-narrow="${p.narrowZh}">${p.en}</a></li>`
@@ -98,6 +106,13 @@ for (const page of PAGES) {
     const at = body + '<body>'.length;
     html = html.slice(0, at) + '\n' + block + '\n' + html.slice(at);
   }
+  // …and the anti-flash rule in the head.
+  if (!html.includes('<!-- shell:head -->')) {
+    html = html.replace('</head>', `${HEAD}\n</head>`);
+  } else {
+    html = html.replace(/[ \t]*<!-- shell:head --><style>.*?<\/style>/, HEAD);
+  }
+
   const before = readFileSync(path, 'utf8');
   if (before !== html) { writeFileSync(path, html); changed++; }
 }

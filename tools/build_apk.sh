@@ -160,6 +160,51 @@ for values, label in [
     print(f"   {values}/strings.xml -> {label}")
 PY
 
+# The FIRST loading screen a reader on a phone sees, and it is not the one in
+# the web app: between tapping the icon and the WebView painting anything,
+# Android shows the launch theme. Tauri generates Theme.app with nothing in it,
+# so that theme is Material's default — a flash of WHITE in front of an app
+# whose every page is #060d16. On Android 12 and up this colour is also what
+# the system splash draws the app icon on, so setting it buys a real splash
+# screen; below 12 it is simply the window background instead of white.
+# Rewritten on every run, because gen/ is regenerated.
+echo "==> setting the launch screen"
+python3 - "$ANDROID_DIR" <<'LAUNCH'
+import pathlib, re, sys
+res = pathlib.Path(sys.argv[1]) / "app/src/main/res"
+
+# --ground from src/tokens.css. If that token ever moves this has to move with
+# it: there is no way to read a CSS custom property from Gradle.
+GROUND = "#060d16"
+(res / "values").mkdir(parents=True, exist_ok=True)
+(res / "values/colors.xml").write_text(
+    '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n'
+    '    <color name="ground">' + GROUND + '</color>\n</resources>\n')
+
+ITEMS = (
+    '        <item name="android:windowBackground">@color/ground</item>\n'
+    '        <item name="android:statusBarColor">@color/ground</item>\n'
+    '        <item name="android:navigationBarColor">@color/ground</item>\n'
+    '        <item name="android:windowLightStatusBar">false</item>\n'
+)
+STYLE = re.compile(r'(<style name="Theme\.app"[^>]*>\n)')
+for values in ("values", "values-night"):
+    f = res / values / "themes.xml"
+    if not f.exists():
+        continue
+    text = f.read_text()
+    if "android:windowBackground" in text:
+        print("   " + values + "/themes.xml already carries it")
+        continue
+    new, n = STYLE.subn(lambda m: m.group(1) + ITEMS, text, count=1)
+    if n == 0:
+        print("   !! could not find Theme.app in " + values, file=sys.stderr)
+        continue
+    f.write_text(new)
+    print("   " + values + "/themes.xml -> windowBackground " + GROUND)
+
+LAUNCH
+
 # Android's mipmaps live in the gitignored gen/ tree, so a fresh
 # `android init` would put Tauri's default icon back. Regenerated here
 # from the one master in brand/.

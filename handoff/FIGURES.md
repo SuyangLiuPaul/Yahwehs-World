@@ -80,6 +80,23 @@ short-haired and short-bearded.
 Eight of the ten are the ark's. Two figures serve eight people and two serve
 sixteen beasts, because a model is loaded once and placed many times.
 
+**Made and waiting for their scenes** — the recurring cast of the list below,
+built ahead of the units that need them. The register in `src/walk/figures.ts`
+is the one place that states each height and why it is that height.
+
+| Model | Height | Withers | Why it looks like this |
+|---|---|---|---|
+| `priest` | 1.70 m | — | The garments of Ex 28:40–42 — linen coat, girdle, bonnet — with the girdle's blue, purple and scarlet from Ex 39:29. **Barefoot**, because no shoe is among the garments listed. Hair polled: not shaven, not long (Ezek 44:20) |
+| `sheep` | 0.86 m | 0.76 m | **Fat-tailed**, the Near Eastern breed, because Lev 3:9 has the whole rump taken off hard by the backbone and burnt — that is a fat tail and nothing else. A woolly-tailed European sheep makes the verse unreadable |
+| `lamb` | 0.63 m | 0.55 m | A yearling, which is what both the passover and the daily offering call for (Ex 12:5; 29:38). **Not a scaled-down sheep** — a yearling is short-legged and big-headed, and is modelled as its own animal |
+| `goat` | 0.92 m | 0.80 m | The Syrian long-eared type. Sheep and goats are built as plainly different animals because Matt 25:32 turns on telling them apart |
+| `ass` | 1.35 m | 1.05 m | Height is to the **ear tips**; the back is at 1.05 m, which is why a man riding one has his feet near the ground |
+
+**Which height.** `loadFigure` scales by the bounding box, and for an animal
+that box reaches whatever is highest as posed — a donkey's ears, a goat's
+horns — not the withers a lexicon would quote. The register records both.
+Confusing them would put a donkey's back at a man's chest.
+
 ---
 
 ## Still to make, unit by unit

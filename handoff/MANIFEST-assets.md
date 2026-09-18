@@ -3,6 +3,23 @@
 Append a row for every non-code file under `public/` that a script in
 `scripts/` does not generate. Never delete a row; mark removed assets as such.
 
+## What generation is for, and what it is not for — owner's instruction, 2026-09-18
+
+**Do not generate textures.** Surfaces in this app — wood, linen, pitch, stone,
+ground — are written as code (`src/walk/textures.ts`, `materials.ts`) and that
+is where they stay. The five generated `public/materials/*.webp` studies from
+Phase 3 are kept because they are already shipped and already attributed, but
+nothing joins them: a new surface is authored, not bought.
+
+**Generation is for the things that cannot be written as geometry**, which in
+practice means one thing: **people and animals.** A man, an ox, a fat-tailed
+sheep — no measurement in Scripture produces those, and hand-modelling them is
+not work this project can do well. Everything else in the world you can walk
+through is derived from a number the text states, and must be.
+
+The credit balance is the owner's money. Before spending it, the test is: is
+this a living thing, and is there a scene that needs it?
+
 | Path | What | Source / generation | Licence | Commit | Status |
 |---|---|---|---|---|---|
 | `public/data/terrain-color.webp` | 2400×1980 RGBA relief, 10E–50E / 12N–45N, colour-graded, 9 % feathered border | Natural Earth 10m rasters `HYP_HR_SR_OB_DR.tif` (colour) + `SR_HR.tif` (relief), cropped and graded with Pillow (script kept in session notes; re-create per `06-L1`) | Public domain | `a6c3378`, regraded `3cda3a8` | superseded by Phase 2 ETOPO atlas; retained here for provenance |
@@ -43,3 +60,4 @@ Append a row for every non-code file under `public/` that a script in
 | `public/models/man.glb`, `woman.glb` | Robed figures, ~2,900 tris each | Same service; jobs `57f291a8-0b24-4a19-be5b-9be83c8a4c2c`, `8d8ad06a-abd7-4deb-a3bd-58bd6b72721d` | Same generated-asset terms | Ark implementation commit | active; the eight of Gen 7:13. Generic dress, no faces at working distance, no individual identified |
 | `public/loading-globe.svg` | The opening screen's turning globe, 56 KB | `scripts/build-icon.mjs`, Natural Earth 110m coastline, equirectangular, the same data and the same two colours as `brand/icon.svg` | Natural Earth public domain | Loading-screen commit (contains this row) | active |
 | `public/models/{man,woman,ox,camel,dove,raven}.glb` **v2 — replaces every text-to-3D row above** | Photographic-reference figures, 19,008 / 19,046 / ~16,000 / ~16,000 / ~8,000 / ~8,000 tris; 998 KB, 1.2 MB, 1.0 MB, 1.0 MB, 538 KB, 556 KB | Two stages, both Higgsfield: (1) `gpt_image_2_5` full-body reference on a plain ground — jobs `931d75ef-4d6b-4b8f-9933-acfb8461616f` (man), `a31400fa-9e33-48ad-a247-fb7858219b45` (woman), `4fdeab03-2692-4268-9701-e878fdff6779` (ox), `18f1743f-ea28-4d08-9f23-90797dc8fb99` (camel), `46aaa7c2-5737-4449-ac89-475152febdc7` (dove), `f500232a-f4f0-4cd8-bba7-26b0aa529146` (raven); (2) `tripo_h3_1_image_to_3d`, `texture_quality: detailed`, `geometry_quality: detailed`, `orientation: align_image` — jobs `c919bcd9-201c-454f-b4bb-e89a8acf2622`, `759452e5-07d6-4faf-8eda-88afbc552721`, `b6b8cfb7-a0e5-41b4-9deb-a0f292090881`, `665bdef6-e99d-491d-8891-0fdefe050fcf`, `634afaf5-983a-4491-981f-9ee25ba31099`, `4e4f7558-f5b7-4381-825e-0a328aa83839`. Every prompt is in this commit. Textures repacked by `scripts/pack-figure.py` (`--colour 1536 --maps 512`; birds `--colour 1024`), which took the six files from 17.9 MB to 5.2 MB | Generated for the project via the owner's connected service; service terms apply | Figures v2 commit (contains this row) | active; **supersedes the six `tripo_3d` text-to-3D models**, which had no face on the atlas at all — the owner walked up to one of the eight and said 「八个人都没有眼睛」. Counts and kinds are unchanged and still `handoff/FIGURES.md`'s rules: the number is the text's, the species of the clean kind is a display choice |
+| `public/models/{sheep,lamb,goat,ass,priest}.glb` | The recurring cast, built ahead of the units that need them; 1.1 MB, 1.0 MB, 1.2 MB, 1.0 MB, 1.0 MB | Same two-stage pipeline as the v2 figures above. `gpt_image_2_5` references — jobs `d9c9e001-2410-485a-9d02-1f7ecee64ac1` (Awassi fat-tailed sheep), `8048a2e1-d503-4fc2-8d2f-4e73cdf260b0` (yearling lamb), `ab8c8682-1eb2-4769-a4e1-76be2c921ddd` (Syrian mamber goat), `3f03f655-4da2-42ee-ac7a-a69a888becd2` (Near Eastern donkey), `ee7a5781-b59c-4923-aa63-8f737009ab9c` (priest in the garments of Ex 28:40–42). `tripo_h3_1_image_to_3d` — jobs `64f36f36-e92c-4e44-8a65-27c825bd6a86`, `38cf756f-7526-4efa-8089-bf0d76030289`, `8137379f-737c-485a-939e-518b9e8bf623`, `55d3a938-9bb1-4b6a-9b65-5d708dac31d8`, `dcef914d-0ea7-4ef1-9e4d-7b69b00d9426`. Repacked by `scripts/pack-figure.py --colour 1536 --maps 512`: 16.0 MB → 5.3 MB. Prompts in this commit | Generated for the project via the owner's connected service; service terms apply | Figures v3 commit (contains this row) | active; heights and the reason for each breed are in `handoff/FIGURES.md` and `src/walk/figures.ts`. The fat tail is Lev 3:9's, the priest's bare feet are the absence of a shoe from Ex 28, the polled hair is Ezek 44:20 |
