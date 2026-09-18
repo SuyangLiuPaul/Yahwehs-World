@@ -276,6 +276,34 @@ run on the first two rigged files before the rest are ordered.
 
 ---
 
+## Cloth that sways — spring bones, 2026-09-18
+
+A robe skinned to the body alone is a rigid skirt hung from the hips, and it
+follows the legs: on a real stride (the CMU walk) a shin stands clean outside
+the cloth in five frames of twelve. Every figure `person.py` builds now carries
+chains of small extra bones under what hangs — eight columns down the skirt,
+one down each end of the girdle, five round the back of a veil or head-cloth,
+one down the beard — and the cloth is weighted to them
+(`tools/autorig/springs.py`; `--springs 0` builds a figure without). The file
+carries each chain's parameters and a dozen capsules measured from the body as
+glTF extras. The app swings them: `src/walk/springs.ts` is a page of Verlet —
+attach with `SpringRig.from(root)` after `loadFigure`, call
+`rig.update(dt, distanceToCamera)` after the mixer, and past 40 m the chain is
+put to rest and costs nothing. Thirty to sixty microseconds a figure a frame.
+
+Two things learnt the hard way, both written into the code: a capsule on the
+BONE'S line reaches the belly and sticks out of the back, so every collider is
+re-centred on its flesh first; and a segment's rest must be the whole chain
+hanging under the body bone, not the segment above it as it leans now — the
+other way a 35° allowance compounded to 175° and a knee lifted the hem to the
+thigh. `figures-springs.html` stands the file as it was beside the file with
+springs, playing the same clip in step, and is where to look before touching
+a parameter. Not wired into any scene yet: `place()` still uses
+`Object3D.clone`, which shares bones between copies — a crowd of rigged
+figures needs `SkeletonUtils.clone` and one `SpringRig` per copy.
+
+---
+
 ## The one figure this app does not give a face
 
 **Decided, with the owner, 2026-09-18.** Jesus is not rendered as a figure.
