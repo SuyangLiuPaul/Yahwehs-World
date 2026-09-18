@@ -65,8 +65,12 @@ const PALETTE = {
 export class EventsTrack {
   private events: TrackEvent[] = [];
   private readonly root = document.getElementById('t-events') as HTMLElement;
-  private readonly canvas = document.getElementById('t-events-canvas') as HTMLCanvasElement;
-  private readonly note = document.getElementById('t-events-note') as HTMLElement;
+  // Both are OPTIONAL. The drawn track was removed from the page; this
+  // class went on being the events model — the payload, the cursor, the
+  // opened event — and everything that draws is guarded rather than
+  // deleted, so the strip can come back by putting the element back.
+  private readonly canvas = document.getElementById('t-events-canvas') as HTMLCanvasElement | null;
+  private readonly note = document.getElementById('t-events-note') as HTMLElement | null;
   private ctx: CanvasRenderingContext2D | null = null;
   /** Where each event was last drawn, for hit testing. */
   private boxes: { ev: TrackEvent; x0: number; x1: number; lane: number }[] = [];
@@ -92,28 +96,29 @@ export class EventsTrack {
     this.events = data.events;
 
     this.root.hidden = false;
-    this.ctx = this.canvas.getContext('2d');
+    this.ctx = this.canvas?.getContext('2d') ?? null;
     this.wire();
     this.relabel();
     this.resize();
   }
 
   private wire() {
-    this.canvas.addEventListener('click', (ev) => {
+    this.canvas?.addEventListener('click', (ev) => {
       const hit = this.hit(ev);
       this.open(hit);
     });
     // A band is a small target; saying what is under the pointer costs nothing.
-    this.canvas.addEventListener('pointermove', (ev) => {
+    this.canvas?.addEventListener('pointermove', (ev) => {
       const hit = this.hit(ev);
-      this.canvas.style.cursor = hit ? 'pointer' : '';
-      this.canvas.title = hit ? this.title(hit) : '';
+      this.canvas!.style.cursor = hit ? 'pointer' : '';
+      this.canvas!.title = hit ? this.title(hit) : '';
     });
     addEventListener('resize', () => this.resize());
     onLocale(() => { this.relabel(); this.draw(); });
   }
 
   private relabel() {
+    if (!this.note) return;
     const l = currentLocale();
     const n = this.events.length;
     this.note.textContent = t(
@@ -123,7 +128,7 @@ export class EventsTrack {
     if (l === 'zh') this.note.textContent = hant(this.note.textContent);
     // role="img" with no accessible name is a picture a screen reader cannot
     // describe; the note is exactly the description.
-    this.canvas.setAttribute('aria-label', this.note.textContent);
+    this.canvas?.setAttribute('aria-label', this.note?.textContent ?? '');
   }
 
   private title(ev: TrackEvent) {
@@ -133,7 +138,7 @@ export class EventsTrack {
   }
 
   resize() {
-    if (!this.ctx) return;
+    if (!this.ctx || !this.canvas) return;
     const dpr = Math.min(devicePixelRatio || 1, 2);
     const w = this.canvas.clientWidth || 1;
     const h = this.canvas.clientHeight || 1;
@@ -181,7 +186,7 @@ export class EventsTrack {
 
   private draw() {
     const ctx = this.ctx;
-    if (!ctx || !this.events.length) return;
+    if (!ctx || !this.canvas || !this.events.length) return;
     const w = this.canvas.clientWidth;
     const h = this.canvas.clientHeight;
     ctx.clearRect(0, 0, w, h);
@@ -215,6 +220,7 @@ export class EventsTrack {
   }
 
   private hit(pointer: PointerEvent | MouseEvent): TrackEvent | null {
+    if (!this.canvas) return null;
     const r = this.canvas.getBoundingClientRect();
     const x = pointer.clientX - r.left;
     const y = pointer.clientY - r.top;
