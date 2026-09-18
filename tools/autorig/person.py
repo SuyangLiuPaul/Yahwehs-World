@@ -24,11 +24,55 @@ opt = {"gender": 1.0, "age": 0.6, "weight": 0.5, "height": 0.5, "muscle": 0.5, "
        "beard_tint": "0.30,0.21,0.15", "fabric": "Fabric036",
        "eyebrows": "eyebrow001", "eyelashes": "eyelashes01",
        "robe": "ankle", "rig": "mixamo", "clips": "idle,walk,look,pray,speak,carry"}
-STR = {"skin", "hair", "beard", "eyebrows", "eyelashes", "robe", "rig", "clips", "fabric", "beard_tint"}
+
+# A FIRST CAST. Each preset is a person who can be told from the others at a
+# glance: build, age, the face, the colour of hair and beard, the skin. They are
+# ROLES, not portraits (handoff/FIGURES.md: a figure is named only where the
+# text describes it) — except where a preset says which verse it answers to.
+PRESETS = {
+    # a man in his twenties: slight, dark-haired, a young beard
+    "young-man": dict(robe_tint="0.78,0.70,0.58", girdle_tint="0.30,0.22,0.16", gender=1, age=0.47, weight=0.42, muscle=0.55, height=0.55,
+                      skin="young_caucasian_male", tan="0.80,0.66,0.52", hair="short01",
+                      beard="culturalibre_faun_beard", beard_tint="0.16,0.11,0.08",
+                      face="nose-hump-incr=0.35,chin-prominent-incr=0.3,head-oval=0.5,eyebrows-trans-down=0.3"),
+    # a man of forty — the default
+    "man": dict(robe_tint="0.62,0.48,0.34", girdle_tint="0.25,0.18,0.12", gender=1, age=0.60, weight=0.5, muscle=0.5,
+                skin="toigo_light_skin_male_bronze", tan="1,1,1", hair="short02",
+                beard="grinsegold_beard_sigmund_wip", beard_tint="0.30,0.21,0.15",
+                face="nose-hump-incr=0.5,nose-greek-incr=0.3,head-rectangular=0.4,l-cheek-bones-incr=0.3,r-cheek-bones-incr=0.3"),
+    # Elijah: "an hairy man, and girt with a girdle of leather" (2 Kgs 1:8) — a
+    # lean, weathered man of the wilderness, grey coming into a dark beard
+    "elijah": dict(robe_tint="0.55,0.46,0.36", girdle_tint="0.22,0.14,0.08", mantle="hair", fabric="Fabric019", gender=1, age=0.74, weight=0.28, muscle=0.62, height=0.55,
+                   skin="old_caucasian_male", tan="0.78,0.62,0.48", hair="short01", hair_tint="0.55,0.52,0.50",
+                   beard="grinsegold_beard_sigmund_wip", beard_tint="0.42,0.38,0.35",
+                   face="nose-hump-incr=0.8,l-cheek-inner-decr=0.6,r-cheek-inner-decr=0.6,l-cheek-bones-incr=0.6,r-cheek-bones-incr=0.6,eyebrows-trans-down=0.5,head-age-incr=0.4,chin-prominent-incr=0.4"),
+    # an old man — fourscore years (Moses at Ex 7:7), white-haired
+    "old-man": dict(robe_tint="0.88,0.85,0.78", girdle_tint="0.36,0.26,0.18", gender=1, age=0.93, weight=0.40, muscle=0.35, height=0.45,
+                    skin="old_caucasian_male", tan="0.86,0.72,0.58", hair="short02", hair_tint="1.6,1.6,1.6",
+                    beard="grinsegold_beard_sigmund_wip", beard_tint="1.05,1.05,1.05",
+                    face="head-age-incr=0.8,nose-hump-incr=0.4,l-eye-bag-incr=0.7,r-eye-bag-incr=0.7,mouth-angles-down=0.4"),
+    # a woman of forty; her head is covered (1 Cor 11:5)
+    "woman": dict(robe_tint="0.36,0.40,0.55", girdle_tint="0.55,0.38,0.22", gender=0, age=0.60, weight=0.5, muscle=0.4, height=0.45,
+                  skin="middleage_caucasian_female", tan="0.84,0.70,0.56", hair="none", beard="none", head="veil",
+                  face="nose-hump-incr=0.3,head-oval=0.5"),
+}
+
+STR = {"skin", "hair", "beard", "eyebrows", "eyelashes", "robe", "rig", "clips", "fabric",
+       "beard_tint", "hair_tint", "tan", "face", "preset", "head", "robe_tint", "girdle_tint", "mantle"}
+opt.update({"hair_tint": "1,1,1", "tan": "1,1,1", "face": "", "head": "none",
+            "robe_tint": "0.93,0.89,0.80", "girdle_tint": "0.42,0.30,0.20", "mantle": "none"})
+args = {}
 for i, a in enumerate(argv[1:], 1):
     if a.startswith("--"):
         k = a[2:]; v = argv[i + 1]
-        opt[k] = v if k in STR else float(v)
+        args[k] = v if k in STR else float(v)
+if "preset" in args:
+    opt.update(PRESETS[args["preset"]])
+opt.update(args)
+
+if opt["head"] in ("veil", "headcloth"):
+    # a covered head has no hair to show; the asset would only poke through
+    opt["hair"] = "none"
 
 LONG = {"long01", "o4saken_long01", "braid01", "ponytail01", "elvs_double_mh_braid",
         "elvs_french_braid_variation", "elvs_unkempt_french_braid", "rehmanpolanski_hair_bun_brown"}
@@ -112,6 +156,13 @@ def set_alpha_modes(glb_path):
                 if "beard" in n or "moustache" in n:
                     # MakeHuman's beards come grey; a man of forty is not.
                     mat.setdefault("pbrMetallicRoughness", {})["baseColorFactor"] = tint
+                elif n.endswith("body"):
+                    # the skin, toward a Levantine tone where the chosen skin is fairer
+                    mat.setdefault("pbrMetallicRoughness", {})["baseColorFactor"] = \
+                        [float(x) for x in opt["tan"].split(",")] + [1.0]
+                elif opt["hair"].lower() in n:
+                    mat.setdefault("pbrMetallicRoughness", {})["baseColorFactor"] = \
+                        [min(float(x), 4.0) for x in opt["hair_tint"].split(",")] + [1.0]
                 mode, cut = next((v for k, v in ALPHA.items() if n.endswith(k)), (None, None))
                 if mode is None and any(c in n for c in CARDS):
                     mode, cut = "MASK", 0.5
@@ -215,6 +266,30 @@ def paint_hairline(body, hair_obj, strength=0.55, feather_px=None):
     return True
 
 
+def whiten_hair(hair_obj):
+    """Grey and white hair. A colour factor only multiplies, and brown times
+    anything is never white — the old man kept his brown hair. So where the
+    hair tint asks for more than 1, the hair image is taken to grey and lifted
+    toward the asked lightness, keeping its strands' light and dark."""
+    import numpy as np
+    t = [float(x) for x in opt["hair_tint"].split(",")]
+    if hair_obj is None or max(t) <= 1.0 or not hair_obj.data.materials:
+        return
+    img = next((n.image for m in hair_obj.data.materials if m and m.use_nodes
+                for n in m.node_tree.nodes if n.type == "TEX_IMAGE" and n.image), None)
+    if img is None:
+        return
+    px = np.empty(len(img.pixels), dtype=np.float32); img.pixels.foreach_get(px)
+    px = px.reshape(-1, 4)
+    lum = px[:, :3] @ np.array([0.30, 0.59, 0.11], dtype=np.float32)
+    lum = lum / max(float(np.percentile(lum[px[:, 3] > 0.5], 95)), 1e-3)   # stretch to full range
+    target = min(max(t) / 2.0, 0.92)                                        # 1.6 -> 0.8 grey-white
+    g = np.clip(0.35 * target + 0.65 * target * lum, 0, 1)
+    px[:, 0] = g * 0.98; px[:, 1] = g * 0.97; px[:, 2] = g * 0.95
+    img.pixels.foreach_set(px.ravel()); img.update()
+    opt["hair_tint"] = "1,1,1"          # the colour is in the image now, not in a factor
+
+
 def shrink_images():
     """Every texture at the size a figure a few metres away can use, and in the
     format its content needs: JPEG where there is no alpha (skin, cloth), PNG
@@ -280,7 +355,11 @@ def shrink_images():
 def main():
     bb["opt"].update({k: opt[k] for k in ("gender", "age", "weight", "height", "muscle", "proportions")})
     bb["opt"].update({"rig": opt["rig"], "robe": opt["robe"]})
-    body, rig = bb["make_body"](keep_helpers=True)
+    face = {}
+    for kv in filter(None, opt["face"].split(",")):
+        k, v = kv.split("=")
+        face[k.strip()] = float(v)
+    body, rig = bb["make_body"](keep_helpers=True, face=face)
 
     # The likeness: skin, eyes, brows, lashes, hair, beard. GAMEENGINE materials
     # are plain image textures on a principled shader — what glTF, and so
@@ -308,8 +387,24 @@ def main():
     robe, sleeve_objs = (None, [])
     if opt["robe"] != "none":
         import robe as robe_mod
-        robe, sleeve_objs = robe_mod.make_draped_robe(body, rig, fabric=opt.get("fabric", "Fabric036"))
-        sleeve_objs.append(robe_mod.make_girdle(body, rig))
+        tup = lambda k: tuple(float(x) for x in opt[k].split(","))
+        robe, sleeve_objs = robe_mod.make_draped_robe(body, rig, fabric=opt.get("fabric", "Fabric036"),
+                                                      tint=tup("robe_tint"))
+        sleeve_objs.append(robe_mod.make_girdle(body, rig, tint=tup("girdle_tint")))
+        if opt["mantle"] != "none":
+            # the mantle: a sleeveless outer garment of rough hair-cloth to the
+            # knee, standing a little off the robe — laid over it the same way
+            mantle, _ = robe_mod.make_draped_robe(body, rig, fabric="Fabric019", tint=(0.34, 0.26, 0.18),
+                                                  hem=0.30, pad=0.034, sleeves=False, name="Mantle")
+            sleeve_objs.append(mantle)
+    if opt["head"] in ("veil", "headcloth"):
+        import robe as robe_mod
+        sleeve_objs.append(robe_mod.make_headcloth(
+            body, rig, size=1.15 if opt["head"] == "veil" else 0.85,
+            tint=(0.62, 0.52, 0.42) if opt["head"] == "veil" else (0.90, 0.86, 0.78),
+            name="Veil" if opt["head"] == "veil" else "Headcloth",
+            # a veil over a head with no hair asset comes down to the hairline
+            brow=0.008 if opt["head"] == "veil" else 0.040))
     bb["lower_arms"](body, rig)
     sleeves = None
 
@@ -320,6 +415,7 @@ def main():
 
     hair_obj = next((o for o in parts if o is not None and opt["hair"] in o.name), None)
     painted = paint_hairline(body, hair_obj) if opt["hair"] != "none" else False
+    whiten_hair(hair_obj)
     shrink_images()
     bpy.ops.object.select_all(action="DESELECT")
     keep = [body, rig, robe] + sleeve_objs + [p for p in parts if p]

@@ -41,7 +41,7 @@ HS = importlib.import_module(BASE + ".services.humanservice").HumanService
 TS = importlib.import_module(BASE + ".services.targetservice").TargetService
 
 
-def make_body(keep_helpers=False):
+def make_body(keep_helpers=False, face=None):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     macro = TS.get_default_macro_info_dict()
     for k in ("gender", "age", "height", "weight", "muscle", "proportions"):
@@ -49,6 +49,17 @@ def make_body(keep_helpers=False):
     # A population of the Near East, not an average of the world.
     macro["race"] = {"asian": 0.15, "caucasian": 0.7, "african": 0.15}
     body = HS.create_human(scale=0.1, feet_on_ground=True, macro_detail_dict=macro)
+    # A FACE OF ITS OWN. MakeHuman's targets — nose hump, cheekbones, chin,
+    # brow, the set of the eyes, the age of the head — loaded before the rig is
+    # fitted, so a face that changes the skull still gets joints that fit it.
+    # `face` is {target_file_stem: weight 0..1}; set_target_value alone silently
+    # does nothing until a target has been loaded, so they are loaded by path.
+    for stem, w in (face or {}).items():
+        path = TS.target_full_path(stem)
+        if path is None:
+            print(f"BASEBODY no face target called {stem}")
+            continue
+        TS.load_target(body, path, weight=float(w))
     rig = HS.add_builtin_rig(body, opt["rig"], import_weights=True)
     # Bake the shape keys: the exported mesh must be the body with the targets
     # applied, not the neutral base with sliders.
