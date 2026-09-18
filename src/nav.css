@@ -16,9 +16,13 @@
    the width anyway, and on a desktop this keeps the globe from filling the
    screen. */
 #loading-globe { width: min(46vw, 34vh, 280px); height: auto; display: block; }
+/* A sentence, so it is set in the reading face, not the monospace one. Mono
+   at 20px with .14em of tracking is a readout of a sentence rather than a
+   sentence, and in Chinese — where the mono face has no 汉字 at all and the
+   whole line fell through to a system fallback — it was worse than that. */
 #loading p {
-  margin: 0; font-family: var(--mono); font-size: clamp(14px, 3.6vw, 20px);
-  letter-spacing: var(--tr-caps); color: var(--ink-2);
+  margin: 0; font-family: var(--ui); font-size: clamp(15px, 3.8vw, 21px);
+  font-weight: 500; letter-spacing: .04em; color: var(--ink-2);
 }
 #loading-bar {
   position: fixed; left: 0; top: 0; height: 2px; width: 0;
@@ -92,9 +96,14 @@
 .lang-switch button[aria-pressed="true"] { color: var(--gold-bright); background: var(--gold-wash); }
 /* 简/繁 want the Chinese face, not the mono Latin one. */
 .lang-switch button[lang^="zh"] { font-family: var(--ui); letter-spacing: 0; }
+/* A fixed height was fine while this was one line of 11px. At 12px it wraps
+   on a phone, and a fixed 40px then cropped it and let the page scroll
+   underneath. It grows instead, and the pages reserve room with the variable
+   below rather than with a number each of them guesses. */
 .source-credit {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 20;
-  height: 40px; display: flex; align-items: center; padding: var(--sp-1) var(--sp-3);
+  min-height: 40px; display: flex; align-items: center;
+  padding: var(--sp-2) var(--sp-3) calc(var(--sp-2) + var(--safe-bottom));
   background: var(--ground); color: var(--ink-2); font: var(--fs-100)/var(--lh-snug) var(--ui);
 }
 /* The bar is a caption, not a surface: only its link takes the pointer, so it
@@ -174,7 +183,10 @@
 #all-open b { font-weight: 500; }
 /* Below this the tabs come out of the bar and live in the sheet instead. The
    brand, 全部 and the three readings fit in 360 px; seven tabs never did. */
-@media (max-width: 760px) {
+/* 760 was too low: between there and about 980 the six tabs wrapped onto a
+   second row and pushed the bar down over the page. The bar either holds the
+   whole row or holds none of it — 全部 has everything either way. */
+@media (max-width: 980px) {
   .sitenav ol { display: none; }
 }
 
@@ -205,9 +217,12 @@
   font: var(--fs-200)/var(--lh-loose) var(--ui);
 }
 .am-sheet h3 {
-  margin: var(--sp-5) 0 var(--sp-2); font-family: var(--mono); font-size: var(--fs-100);
-  font-weight: 500; letter-spacing: var(--tr-caps); text-transform: uppercase; color: var(--gold);
+  margin: var(--sp-5) 0 var(--sp-2); font-family: var(--ui); font-size: var(--fs-200);
+  font-weight: 600; letter-spacing: var(--tr-caps); text-transform: uppercase; color: var(--gold);
 }
+/* Chinese does not have uppercase, and letter-spacing a heading of 汉字 by
+   .14em pulls it apart into separate characters. */
+html[lang^="zh"] .am-sheet h3 { text-transform: none; letter-spacing: var(--tr-cjk); }
 .am-sheet ul, .am-sheet ol { list-style: none; margin: 0; padding: 0; }
 .am-sheet a {
   display: grid; grid-template-columns: 1fr auto; gap: 2px var(--sp-3);
@@ -223,7 +238,7 @@
 /* The state of each unit, said in words rather than in colour alone. */
 .am-state {
   grid-column: 2; grid-row: 1 / span 2; align-self: center; white-space: nowrap;
-  font: var(--fs-100)/1 var(--mono); letter-spacing: var(--tr-caps);
+  font: 500 var(--fs-100)/1 var(--ui); letter-spacing: var(--tr-cjk);
   padding: 4px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink-3);
 }
 .am-live .am-state { color: var(--gold-bright); border-color: var(--line-gold); background: var(--gold-wash); }

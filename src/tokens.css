@@ -23,25 +23,33 @@
   --line:         #22334a;
   --line-gold:    #c9a2273d;
 
-  /* ── type scale — 1.18 ratio, in px so the steps are exact ───────── */
-  --fs-100: 11px;   /* micro: legend, credits, ordinals */
-  --fs-200: 12px;   /* meta, captions */
-  --fs-300: 13px;   /* interface default */
-  --fs-400: 14px;   /* body */
-  --fs-500: 16px;   /* emphasis, readout */
-  --fs-600: 21px;   /* section title */
-  --fs-700: 28px;   /* page title */
+  /* ── type scale ──────────────────────────────────────────────────────
+     Raised a step at the bottom. The old scale bottomed out at 11px and
+     put the interface default at 13, which is small for Latin and hard
+     work for Chinese: a 汉字 at 11px has to carry as many as thirty
+     strokes inside the same square a Latin letter fills with two. The
+     owner read the site and said 费劲. Nothing here is below 12 now, and
+     the sizes a reader actually reads at length start at 15. */
+  --fs-100: 12px;   /* micro: legend, credits, ordinals */
+  --fs-200: 13px;   /* meta, captions */
+  --fs-300: 14px;   /* interface default */
+  --fs-400: 15px;   /* body */
+  --fs-500: 17px;   /* emphasis, readout */
+  --fs-600: 22px;   /* section title */
+  --fs-700: 30px;   /* page title */
 
-  --lh-tight:  1.25;
-  --lh-snug:   1.45;
-  --lh-normal: 1.7;
+  /* Chinese needs more room between lines than Latin does, because the
+     glyphs fill their box top to bottom and leave no natural gap. */
+  --lh-tight:  1.3;
+  --lh-snug:   1.55;
+  --lh-normal: 1.8;
 
   /* Tracking has three jobs and therefore three values. CJK interface text
      wants a hair; uppercase Latin micro-labels want a lot; nothing else
      wants any. */
-  --tr-cjk:  .03em;
-  --tr-caps: .16em;
-  --tr-mark: .26em;
+  --tr-cjk:  .02em;
+  --tr-caps: .14em;
+  --tr-mark: .24em;
 
   /* ── space — 4px base ────────────────────────────────────────────── */
   --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
@@ -77,10 +85,34 @@
   --tab-hover: #0d1a2899;
   --rbtn-hover: #11202fdd;
 
-  --ui:      'Noto Sans SC', 'PingFang SC', system-ui, -apple-system, sans-serif;
-  --display: 'Noto Serif SC', 'Songti SC', Georgia, serif;
+  /* ── the faces ───────────────────────────────────────────────────────
+     Two decisions, and the second one is the one that was wrong.
+
+     LATIN FIRST. The stacks used to begin with Noto Sans SC and Noto Serif
+     SC, which have Latin glyphs — so every English word on the site was set
+     in a Chinese font's Latin, with a Chinese font's metrics. It is legible
+     and it is not good. Inter and Spectral lead now; the CJK faces pick up
+     the characters they do not have, which is what a font stack is for.
+
+     AND THE SCRIPT FOLLOWS THE READER. 'Noto Sans SC' and 'Noto Serif SC'
+     are the SIMPLIFIED families. A 繁體 reader got Simplified regional
+     forms for every character the two scripts share, and the system's
+     fallback — a different face mid-sentence — for every one they do not.
+     Redefining these two variables under html[lang="zh-Hant"] fixes it for
+     everything downstream at once, because a custom property resolves where
+     it is used, not where it is written. The switch writes that attribute,
+     so it follows a reader who changes their mind. */
+  --cjk-sans:  'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --cjk-serif: 'Noto Serif SC', 'Songti SC', serif;
+
+  --ui:      'Inter', system-ui, -apple-system, var(--cjk-sans);
+  --display: 'Spectral', Georgia, var(--cjk-serif);
   --latin:   'Spectral', Georgia, serif;
-  --mono:    'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  /* Numbers, verse references and measurements — the places where a reader
+     compares one figure with another down a column and the digits have to
+     line up. NOT for running interface text, which is what it had drifted
+     into. */
+  --mono:    'IBM Plex Mono', ui-monospace, SFMono-Regular, var(--cjk-sans);
 
   /* The globe is dark in both the sea and the night sky behind it, and it
      does not repaint itself for a system setting — so neither does the
@@ -89,3 +121,21 @@
      reached the same conclusion first, being the inside of a dark tent. */
   color-scheme: dark;
 }
+
+html[lang="zh-Hant"] {
+  --cjk-sans:  'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  --cjk-serif: 'Noto Serif TC', 'Songti TC', serif;
+}
+
+/* Chinese has no spaces, so a line of it can break anywhere and a paragraph
+   of it needs no hyphenation or justification help. What it does need is a
+   hair more leading than Latin, and NO synthetic bolding: a 汉字 emboldened
+   by the renderer turns into a blot at interface sizes, so weight comes from
+   a real weight or not at all. */
+html[lang^="zh"] body { letter-spacing: var(--tr-cjk); }
+html[lang^="zh"] b, html[lang^="zh"] strong { font-weight: 600; }
+
+/* Latin text set inside a Chinese page — a verse reference, a name, a number
+   — should not inherit CJK tracking. */
+html[lang^="zh"] [lang="en"], html[lang^="zh"] .en, html[lang^="zh"] code,
+html[lang^="zh"] kbd { letter-spacing: normal; }

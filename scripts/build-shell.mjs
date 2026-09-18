@@ -58,6 +58,23 @@ const END = '  <!-- shell:end -->';
 // <html lang>, which the CSS below turns into one visible line out of three.
 // setLocale() writes that same attribute, so switching language while the
 // screen is still up changes the line with it.
+// The web fonts. One source, because it was copied into six files by hand
+// and any change to it had to be made six times without a mistake.
+//
+// Both Chinese scripts are here: SC and TC. Google serves each family as
+// unicode-range subsets, so a reader downloads the ranges their page
+// actually uses and not the other script's — which is what makes shipping
+// both affordable at all.
+const FONTS = '  <link href="https://fonts.googleapis.com/css2?'
+  + 'family=Inter:wght@400;500;600'
+  + '&family=Spectral:wght@500;600'
+  + '&family=IBM+Plex+Mono:wght@400;500'
+  + '&family=Noto+Sans+SC:wght@400;500;600'
+  + '&family=Noto+Serif+SC:wght@500;600'
+  + '&family=Noto+Sans+TC:wght@400;500;600'
+  + '&family=Noto+Serif+TC:wght@500;600'
+  + '&display=swap" rel="stylesheet">';
+
 const HEAD = `  <!-- shell:head --><style>:root{color-scheme:dark}html,body{background:#060d16;margin:0}` +
   `#loading-text i{font-style:normal;display:none}` +
   `html[lang="en"] #loading-text .l-en,html[lang="zh-Hans"] #loading-text .l-hans,` +
@@ -134,6 +151,9 @@ for (const page of PAGES) {
     const at = body + '<body>'.length;
     html = html.slice(0, at) + '\n' + block + '\n' + html.slice(at);
   }
+  // …the font link, which is the same in all six…
+  html = html.replace(/[ \t]*<link href="https:\/\/fonts\.googleapis\.com\/css2[^>]*>/, FONTS);
+
   // …and the anti-flash rule in the head.
   if (!html.includes('<!-- shell:head -->')) {
     html = html.replace('</head>', `${HEAD}\n</head>`);

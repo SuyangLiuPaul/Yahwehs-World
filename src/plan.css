@@ -12,7 +12,7 @@ body { margin: 0; background: var(--ground); color: var(--ink); font: var(--fs-3
 #ladder .rung b { display: block; font-family: var(--display); color: var(--gold-bright); }
 #ladder .rung span { color: var(--ink-3); font-size: var(--fs-200); }
 #ladder .rung i { font-style: normal; font-family: var(--mono); color: var(--ink-2); }
-#tally-line { font-family: var(--mono); color: var(--ink-2); font-size: var(--fs-200); margin: 14px 0 0; }
+#tally-line { font-family: var(--ui); font-variant-numeric: tabular-nums; color: var(--ink-2); font-size: var(--fs-200); margin: 14px 0 0; }
 #bar { height: 8px; border: 1px solid var(--line); display: flex; margin: 10px 0 26px; }
 #bar i { display: block; height: 100%; }
 #bar .b-walk { background: var(--gold-bright); }
@@ -22,7 +22,7 @@ body { margin: 0; background: var(--ground); color: var(--ink); font: var(--fs-3
 .unit { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
 .unit h2 { font-family: var(--display); font-size: var(--fs-400); margin: 0; font-weight: 600; }
 .unit .where { grid-column: 1; color: var(--ink-3); font-family: var(--mono); font-size: var(--fs-200); }
-.unit .counts { grid-column: 2; grid-row: 1 / span 2; text-align: right; color: var(--ink-3); font-family: var(--mono); font-size: var(--fs-200); white-space: nowrap; }
+.unit .counts { grid-column: 2; grid-row: 1 / span 2; text-align: right; color: var(--ink-3); font-family: var(--ui); font-variant-numeric: tabular-nums; font-size: var(--fs-200); white-space: nowrap; }
 .unit .counts b { display: block; color: var(--ink); font-size: var(--fs-400); font-weight: 500; }
 .unit .chips { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); padding: 5px 10px; font-size: var(--fs-200); color: var(--ink-2); text-decoration: none; min-height: 32px; }
@@ -31,10 +31,10 @@ a.chip:hover { border-color: var(--line-gold); color: var(--ink); }
 .chip.walk.live { background: #c9a2271f; }
 .chip.building { border-style: dashed; border-color: var(--line-gold); color: var(--gold); }
 .chip.planned { border-style: dashed; color: var(--ink-3); }
-.chip em { font-style: normal; font-family: var(--mono); font-size: var(--fs-100); opacity: .8; }
+.chip em { font-style: normal; font-family: var(--ui); font-size: var(--fs-200); opacity: .85; }
 #plan footer.note { margin-top: 28px; color: var(--ink-3); font-size: var(--fs-200); max-width: 70ch; }
 @media (max-width: 640px) {
-  #plan { padding: 76px 14px 72px; }
+  #plan { padding: 76px 14px 104px; }
   .unit { grid-template-columns: 1fr; }
   .unit .counts { grid-column: 1; grid-row: auto; text-align: left; }
   .unit .counts b { display: inline; font-size: var(--fs-300); }
