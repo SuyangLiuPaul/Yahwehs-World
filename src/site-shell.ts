@@ -50,6 +50,7 @@ const BUILT: { href: string; zh: string; en: string; noteZh: string; noteEn: str
   { href: '/tabernacle.html', zh: '走进会幕', en: 'Walk into the tabernacle', noteZh: '出埃及记 26–27', noteEn: 'Exodus 26–27' },
   { href: '/temple.html', zh: '走进圣殿', en: 'Walk into the temple', noteZh: '列王纪上 6–7；历代志下 3–4', noteEn: '1 Kings 6–7; 2 Chronicles 3–4' },
   { href: '/ark.html', zh: '走进方舟', en: 'Walk into the ark', noteZh: '创世记 6–8', noteEn: 'Genesis 6–8' },
+  { href: '/figures.html', zh: '人物与活物', en: 'People and creatures', noteZh: '每个模型，按它真实的高度', noteEn: 'Every model, at its real height' },
   { href: '/plan.html', zh: '完整的计划', en: 'The whole plan', noteZh: '56 个单元，逐项的进度', noteEn: '56 units, counted' },
 ];
 

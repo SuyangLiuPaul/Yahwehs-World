@@ -216,6 +216,66 @@ once, in the open: they do not go in, or they go in labelled.
 
 ---
 
+## Naming a figure — the rule, decided 2026-09-18
+
+The owner asked for as many figures as possible to be **individual people**:
+Elijah, Elisha, Paul, and so on, rather than one generic man standing in for
+all of them. That is a change to rule 3 above, and it needs a rule of its own,
+because the objection that rules out a face for Jesus applies in a weaker form
+to everyone else: **the text is silent about what almost all of them looked
+like, and a model is not silent.** A reader who meets a figure captioned 以利亚
+will remember that face as Elijah's whether the caption qualifies it or not.
+
+So the line is drawn where the project already draws every other line — at what
+the text actually says:
+
+> **A figure is named only when the text describes it. Everyone else is a role.**
+
+That is not a smaller list than it sounds, and it is a far more interesting one,
+because the descriptions that do exist are mostly *not* the ones the pictures
+use:
+
+| Named | What the text gives | Verse |
+|---|---|---|
+| Goliath | **Six cubits and a span** — the only stature given for anyone in the canon — with brass helmet, a coat of mail of 5,000 shekels, brass greaves, a brass target between the shoulders, a spear staff like a weaver's beam | 1 Sam 17:4–7 |
+| The high priest | The fullest description of a person's appearance anywhere in Scripture: ephod, breastplate of twelve stones each graven with a name, a robe with bells and pomegranates alternating on its hem, a mitre with a plate of gold | Ex 28:4–38 |
+| Elijah | **An hairy man, and girt with a girdle of leather** — the sentence by which the king's men knew him | 2 Kgs 1:8 |
+| Elisha | He takes up Elijah's mantle, and he is **bald** — which is the point of the mocking at Bethel | 2 Kgs 2:13, 23 |
+| John the Baptist | Raiment of camel's hair, a leathern girdle | Matt 3:4 |
+| Moses | An old man — fourscore years at Ex 7:7 — with the rod of God, and a face that shone | Ex 7:7; 17:9; 34:29 |
+| Saul | **From his shoulders upward higher than any of the people** | 1 Sam 9:2 |
+| Zacchaeus | **Little of stature** — which is why he climbs the tree | Luke 19:3 |
+| Nebuchadnezzar, driven out | Hair grown like eagles' feathers, nails like birds' claws | Dan 4:33 |
+
+Four of those nine are **measurements or statures**, which is this project's own
+subject. Goliath and Saul and Zacchaeus are in the list for exactly the reason
+the ark and the temple are: the text gives a size, so the size is built.
+
+Everyone the text does not describe stays a **role** — a man, an old woman, a
+boy, a shepherd, a scribe, a soldier of this army or that. That covers every
+scene in the plan without asserting anything, and it is also what the scenes
+need: a crowd is one figure placed three thousand times.
+
+**The roster is `handoff/ROSTER.json`** — thirty-nine entries with the verse, the
+height and the reference prompt for each, in the order to generate them.
+
+### What each step costs, measured 2026-09-18
+
+| Step | Where | Cost |
+|---|---|---|
+| Reference photograph | `gpt_image_2_5` | 1 credit |
+| Photograph → mesh | **local TRELLIS.2 on this Mac** | free, ~8 min |
+| Rig + one animation clip | `3d_rigging` (Meshy) | 8 credits |
+
+Animation is the expensive line, and it does not have to be paid per clip. The
+rigging service fits the same humanoid skeleton every time, so **one figure
+bought with six clips gives a clip library that drives all the others**, and
+every further figure costs one rig. `scratchpad/glb-rig.mjs` is the check —
+two rigs retarget iff their bone names and hierarchy agree — and it should be
+run on the first two rigged files before the rest are ordered.
+
+---
+
 ## The one figure this app does not give a face
 
 **Decided, with the owner, 2026-09-18.** Jesus is not rendered as a figure.
