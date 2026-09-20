@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Terrain lab | ground, river, trees in blocks</title>
+  <!-- A WORKBENCH, not a page of the site: a patch of ground dressed by
+       src/voxel/terrain.ts, so the ground can be judged on its own before
+       the ark stands on it. Screenshot it from window.__lab. -->
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #9fd0ef; font: 12px/1.4 ui-monospace, monospace; }
+    #stage { display: block; width: 100vw; height: 100vh; touch-action: none; }
+    #stats { position: fixed; left: 12px; bottom: 10px; background: rgba(255,255,255,.75); border-radius: 8px; padding: 6px 10px; color: #23384a; white-space: pre; }
+  </style>
+</head>
+<body>
+  <canvas id="stage"></canvas>
+  <pre id="stats">building…</pre>
+  <script type="module" src="/src/voxel/terrain-lab.ts"></script>
+</body>
+</html>
