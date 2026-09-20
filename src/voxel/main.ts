@@ -1,6 +1,10 @@
 import * as THREE from 'three';
 import { buildArkWorld, CUBITS, FINE } from './ark-scene.ts';
 import { loadVoxSet, type VoxModel } from './vox.ts';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
 // THE BLOCK WORLD, ON SCREEN.
 //
@@ -192,8 +196,23 @@ document.getElementById('b-photo')?.addEventListener('click', () => {
   press('b-photo', document.body.classList.toggle('photo'));
 });
 
+// BLOOM, for the lamps and the lattice under the eave. Only the brightest
+// things in frame pass the threshold, so the hull does not glow — the lit
+// doorway, the lantern posts and the warm line under the roof do, which is
+// the whole reason those were painted bright in the first place.
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+// Threshold 0.72 in LINEAR space caught the sky and half the hull and turned
+// the whole frame to milk. The composer's passes run before tone mapping, so
+// the threshold has to sit above where ordinary lit surfaces land: only the
+// lamps, which are painted near white, get past 1.0.
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.5, 0.45, 1.05);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+
 addEventListener('resize', () => {
   renderer.setSize(innerWidth, innerHeight);
+  composer.setSize(innerWidth, innerHeight);
   camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();
 });
@@ -209,4 +228,4 @@ void loadVoxSet(['sheep', 'cow', 'ox', 'ass', 'horse', 'swine', 'wolf'])
   .then((got) => { if (Object.keys(got).length) { vox = got; raise(); } });
 press('b-scenery', true);
 press('v-wide', true);
-renderer.setAnimationLoop(() => renderer.render(scene, camera));
+renderer.setAnimationLoop(() => composer.render());

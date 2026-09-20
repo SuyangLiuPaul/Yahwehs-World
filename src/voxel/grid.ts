@@ -28,7 +28,7 @@ export const PALETTE: Record<string, number> = {
   beam: 0x6f4d2c,          // posts and beams
   roof: 0xc4a070,          // the covering
   door: 0x4a3218,
-  grass: 0x7cab4d,
+  grass: 0x84a558,
   dirt: 0x8a6a45,
   sand: 0xcbb187,
   water: 0x3f7fa6,
@@ -78,9 +78,9 @@ export const PALETTE: Record<string, number> = {
   // Appended, never reordered: the entries above are referenced by name
   // from the creatures and the ark, and a field is only ever painted from
   // here. Three greens for grass because one green is a billiard table.
-  grassLight: 0x86b552,
-  grassDark: 0x5c893a,
-  grassDry: 0xa3b04f,
+  grassLight: 0x93b063,
+  grassDark: 0x66854a,
+  grassDry: 0xaeae6a,
   dirtDark: 0x715539,
   dirtLight: 0xa48c66,
   mud: 0x5f4a33,

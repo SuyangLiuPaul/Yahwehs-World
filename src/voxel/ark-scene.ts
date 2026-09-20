@@ -159,6 +159,20 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
     coarse.set(x, H + 1, Math.round(W / 2) - 1, P.beam!);
   }
 
+  // where the three floors sit, wanted both by the windows here and by the
+  // decks themselves further down
+  const decks = [Math.round(H / 4), Math.round(H / 2), Math.round((H * 3) / 4)];
+
+  // LIT WINDOWS on the two lower decks. Genesis specifies one opening and no
+  // windows, so these are a CHOICE and the panel says so — but a hundred and
+  // thirty metres of blank wall is the single dullest thing in the scene, and
+  // a lit ark reads as one that somebody lives in.
+  if (!cut) for (let x = 6; x < L - 6; x += 8)
+    for (const y of [decks[0]! + 2, decks[1]! + 2]) {
+      coarse.set(x, y, W - 1, P.lamp!);
+      coarse.set(x, y + 1, W - 1, P.beam!);
+    }
+
   // LAMPS along the side. Painted bright rather than lit — one real light in
   // the doorway is worth the cost, twenty down a hull are not, and a bright
   // block beside a dark one reads as a lamp perfectly well at this distance.
@@ -173,7 +187,6 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
   // The text gives the count, not the spacing; even spacing is the choice.
   // Nothing is drawn inside a closed hull: it would be a hundred thousand
   // blocks nobody can see.
-  const decks = [Math.round(H / 4), Math.round(H / 2), Math.round((H * 3) / 4)];
   if (cut) {
     for (const y of decks) {
       for (let x = 0; x < L; x++)
