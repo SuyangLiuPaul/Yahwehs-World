@@ -1,6 +1,7 @@
 import { Grid, PALETTE } from './grid.ts';
 import { MODELS, stamp } from './creatures.ts';
 import { stampVox, type VoxModel } from './vox.ts';
+import { PROPS, scatter } from './props.ts';
 
 // NOAH'S ARK, BUILT FROM THE NUMBERS AND NOTHING ELSE.
 //
@@ -339,11 +340,52 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
   fence(f(doorX - 26), rampFromZ + f(4), f(doorX - 7), rampFromZ + f(22));
   fence(f(doorX + 7), rampFromZ + f(4), f(doorX + 26), rampFromZ + f(22));
 
-  // hay, because the beasts have to eat for a year (Genesis 6:21)
-  for (let i = 0; i < 16; i++) {
-    const x = f(doorX - 24) + ((i * 37) % f(48)), z = rampFromZ + f(5) + ((i * 23) % f(18));
-    fine.box(x, groundY, z, x + 3, groundY + 2, z + 3, P.hay!);
-  }
+  // THE YARD, DRESSED. The charm of the picture we are chasing is not the
+  // building — it is that the ground in front of it is covered in the stuff
+  // of a year's work: fodder, crates, jars, tools, a fire. Placed by
+  // scatter(), which is a deterministic hash, so the same scene comes back
+  // every reload and a screenshot can be compared with last week's.
+  scatter(fine, [
+    { model: PROPS.hayBaleRound!, count: 5 },
+    { model: PROPS.hayBaleSquare!, count: 6 },
+    { model: PROPS.hayHeap!, count: 3 },
+    { model: PROPS.crateStack!, count: 4 },
+    { model: PROPS.crateLarge!, count: 5 },
+    { model: PROPS.crate!, count: 8 },
+    { model: PROPS.barrel!, count: 7 },
+    { model: PROPS.barrelSide!, count: 3 },
+    { model: PROPS.sackPile!, count: 4 },
+    { model: PROPS.grainSack!, count: 5 },
+    { model: PROPS.waterJar!, count: 4 },
+    { model: PROPS.amphora!, count: 4 },
+    { model: PROPS.potCluster!, count: 3 },
+    { model: PROPS.basket!, count: 5 },
+    { model: PROPS.chest!, count: 3 },
+    { model: PROPS.strawBundle!, count: 6 },
+  ], { x0: f(doorX - 30), z0: rampFromZ + f(3), x1: f(doorX + 34), z1: rampFromZ + f(26),
+       y: groundY, seed: 7, gap: 2, avoid: [
+         // the ramp and its approach stay clear, or the beasts cannot get up
+         { x0: f(doorX) - f(5), z0: rampFromZ, x1: f(doorX) + f(5), z1: rampFromZ + f(18) },
+       ] });
+
+  // the working end: timber, tools and the fire, by the scaffold
+  scatter(fine, [
+    { model: PROPS.logPile!, count: 3 },
+    { model: PROPS.plankStack!, count: 4 },
+    { model: PROPS.sawhorse!, count: 3 },
+    { model: PROPS.handCart!, count: 2 },
+    { model: PROPS.wheelbarrow!, count: 2 },
+    { model: PROPS.ropeCoil!, count: 3 },
+    { model: PROPS.bucket!, count: 4 },
+    { model: PROPS.pail!, count: 3 },
+    { model: PROPS.firePit!, count: 1 },
+    { model: PROPS.cookingTripod!, count: 1 },
+    { model: PROPS.oilJar!, count: 3 },
+    { model: PROPS.chickenCoop!, count: 1 },
+    { model: PROPS.feedTrough!, count: 3 },
+    { model: PROPS.trough!, count: 2 },
+  ], { x0: f(doorX + 12), z0: rampFromZ + f(4), x1: f(doorX + 52), z1: rampFromZ + f(24),
+       y: groundY, seed: 19, gap: 2 });
 
   // the beasts, two and two (Genesis 7:9), turned toward the ramp
   const pairs: [keyof typeof MODELS, number, number][] = [
@@ -378,17 +420,15 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
   // looks warm: a banner, lamps at the door, tents, trees, and flowers in
   // the grass. A true thing drawn coldly still does not get looked at.
 
-  // a banner on a pole beside the ramp, with a dove on it (Genesis 8:8)
-  for (let y = 0; y < f(9); y++) fine.set(f(doorX + 9), groundY + y, rampFromZ + f(1), P.beam!);
-  fine.box(f(doorX + 9) + 1, groundY + f(5), rampFromZ + f(1), f(doorX + 9) + 10, groundY + f(8), rampFromZ + f(1), P.robeBlue!);
-  fine.box(f(doorX + 9) + 4, groundY + f(6), rampFromZ + f(1) - 1, f(doorX + 9) + 7, groundY + f(7), rampFromZ + f(1) - 1, P.wool!);
-
-  // lamps either side of the door, on posts
-  for (const dx of [-doorW / 2 - 2, doorW / 2 + 2]) {
-    const x = f(doorX + dx);
-    for (let y = 0; y < f(4); y++) fine.set(x, groundY + y, rampFromZ + 1, P.beam!);
-    fine.box(x - 1, groundY + f(4), rampFromZ, x + 1, groundY + f(4) + 2, rampFromZ + 2, P.hay!);
-  }
+  // a banner beside the ramp, and lantern posts down the path from it, which
+  // is what carries the eye from the door out into the camp after dark
+  stamp(fine, PROPS.bannerPole!, [f(doorX + 9), groundY, rampFromZ + f(1)], 0, 1);
+  stamp(fine, PROPS.signpost!, [f(doorX - 14), groundY, rampFromZ + f(21)], 0, 1);
+  for (let i = 0; i < 6; i++)
+    stamp(fine, PROPS.lanternPost!, [f(doorX - 22 + i * 10), groundY, rampFromZ + f(19)], 0, 1);
+  stamp(fine, PROPS.lantern!, [f(doorX - doorW / 2 - 2), groundY, rampFromZ + 1], 0, 1);
+  stamp(fine, PROPS.lantern!, [f(doorX + doorW / 2 + 2), groundY, rampFromZ + 1], 0, 1);
+  stamp(fine, PROPS.gate!, [f(doorX - 7), groundY, rampFromZ + f(13)], 0, 1);
 
   // tents of the camp, off to one side — a pitched roof on four walls
   const tent = (cx: number, cz: number, w: number) => {
