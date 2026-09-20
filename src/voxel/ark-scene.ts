@@ -64,11 +64,22 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
   const cutAt = cut ? Math.round(W * 0.55) : W;
 
   // ── the hull ───────────────────────────────────────────────────────────
+  // A hundred and thirty-four metres of one flat brown reads as a fence, not
+  // as a ship. What makes timber read as timber, in a picture or in blocks,
+  // is the SEAMS: courses of planking with a shadow line between them, heavy
+  // wales running the length, and ribs close enough together to count. None
+  // of it is stated by Genesis — the text gives three numbers and pitch — but
+  // a surface has to be made of something, and these are the choices a
+  // shipwright would make. The panel says so.
+  //
   // The lowest four courses are pitch: "thou shalt pitch it within and
-  // without with pitch" (6:14). The planking is drawn by alternating two
-  // woods every third course, which is what makes a wall of one colour read
-  // as timber rather than as a slab.
-  const plank = (y: number) => (y < 4 ? P.pitch! : (Math.floor(y / 3) % 2 ? P.gopher! : P.gopherDark!));
+  // without with pitch" (6:14).
+  const plank = (y: number) => {
+    if (y < 4) return y === 3 ? P.pitchSeam! : P.pitch!;
+    const course = Math.floor((y - 4) / 3);            // three-cubit courses
+    if ((y - 4) % 3 === 2) return P.gopherSeam!;       // the shadow line on top of each
+    return course % 2 ? P.gopher! : P.gopherDark!;
+  };
   for (let y = 0; y < H; y++) {
     for (let x = 0; x < L; x++) {
       coarse.set(x, y, 0, plank(y));                        // the far side
@@ -80,30 +91,80 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
     }
     if (cut) for (let x = 0; x < L; x++) coarse.set(x, y, cutAt, plank(y));   // the cut face
   }
-  // RIB TIMBERS. A hundred and thirty-four metres of one brown is a slab, not
-  // a ship: the eye needs something to count along. A rib every ten cubits is
-  // a shipwright's spacing and it makes the length legible — you can see that
-  // the ark is thirty ribs long. The text does not specify ribs.
-  for (let x = 0; x < L; x += 10)
+
+  // RIBS, every five cubits and STANDING PROUD of the planking by one cubit.
+  // Ribs flush with the wall are just a stripe of another colour; a rib that
+  // stands out casts its own shadow down the hull, and that shadow is most of
+  // what the eye reads as depth. Sixty of them along the length.
+  for (let x = 0; x < L; x += 5)
     for (let y = 0; y < H; y++) {
-      coarse.set(x, y, 0, P.beam!);
-      if (!cut) coarse.set(x, y, W - 1, P.beam!);
+      coarse.set(x, y, -1, P.beam!);
+      if (!cut) coarse.set(x, y, W, P.beam!);
+    }
+  // WALES: the heavy timbers that run the whole length, also standing proud.
+  // They cut the height into bands, which is what stops the hull reading as
+  // one tall blank thing.
+  for (const y of [7, 15, 23]) {
+    for (let x = 0; x < L; x++) {
+      coarse.set(x, y, -1, P.wale!);
+      if (!cut) coarse.set(x, y, W, P.wale!);
+    }
+    for (let z = 0; z < cutAt; z++) {
+      coarse.set(-1, y, z, P.wale!);
+      coarse.set(L, y, z, P.wale!);
+    }
+  }
+  // the ends get ribs too, or the bow reads as a blank panel
+  for (let z = 0; z < cutAt; z += 5)
+    for (let y = 0; y < H; y++) {
+      coarse.set(-1, y, z, P.beam!);
+      coarse.set(L, y, z, P.beam!);
     }
   // corner posts, the full height, at all four corners
   for (let y = 0; y < H; y++)
-    for (const [x, z] of [[0, 0], [L - 1, 0], [0, W - 1], [L - 1, W - 1]] as [number, number][])
-      if (!cut || z === 0) coarse.set(x, y, z, P.beam!);
+    for (const [x, z] of [[-1, -1], [L, -1], [-1, W], [L, W]] as [number, number][])
+      if (!cut || z === -1) coarse.set(x, y, z, P.beam!);
 
-  // the roof over it, with an eave standing one cubit proud of the sides so
-  // the hull gets a shadow line down its length, and the pitched floor (only
-  // worth drawing when the hull is open)
-  for (let x = -1; x <= L; x++)
-    for (let z = -1; z <= (cut ? cutAt + 1 : W); z++) {
-      coarse.set(x, H, z, P.roof!);
+  // THE ROOF, with a two-cubit eave all round. The overhang is what puts a
+  // band of shadow along the top of the hull; without it the wall and the
+  // roof are one flat shape.
+  // The roof is the biggest single surface in the scene — twenty-two metres by
+  // a hundred and thirty-four — and one flat brown reads as a tarpaulin. It
+  // gets the same treatment as the hull: boards running the length, in courses
+  // three cubits wide with a seam between, so the eye has something to travel
+  // along.
+  const board = (z: number) => {
+    const course = Math.floor((z + 2) / 3);
+    if ((z + 2) % 3 === 2) return P.gopherSeam!;
+    return course % 2 ? P.roof! : P.wale!;
+  };
+  for (let x = -2; x <= L + 1; x++)
+    for (let z = -2; z <= (cut ? cutAt + 1 : W + 1); z++) {
+      coarse.set(x, H, z, board(z));
       if (cut && x >= 0 && x < L && z >= 0) coarse.set(x, 0, z, P.pitch!);
     }
-  // a ridge along the middle of the roof, one course proud
-  for (let x = 0; x < L; x++) coarse.set(x, H + 1, Math.round(W / 2), P.beam!);
+  // purlins across the boards every ten cubits, standing one course proud
+  for (let x = 0; x < L; x += 12)
+    for (let z = -2; z <= (cut ? cutAt + 1 : W + 1); z++) coarse.set(x, H, z, P.beam!);
+  // rafter ends showing under the eave, every five cubits
+  for (let x = 0; x < L; x += 5) {
+    coarse.set(x, H - 1, -2, P.beam!);
+    if (!cut) coarse.set(x, H - 1, W + 1, P.beam!);
+  }
+  // a ridge down the middle, two courses proud
+  for (let x = -1; x <= L; x++) {
+    coarse.set(x, H + 1, Math.round(W / 2), P.wale!);
+    coarse.set(x, H + 1, Math.round(W / 2) - 1, P.beam!);
+  }
+
+  // LAMPS along the side. Painted bright rather than lit — one real light in
+  // the doorway is worth the cost, twenty down a hull are not, and a bright
+  // block beside a dark one reads as a lamp perfectly well at this distance.
+  for (let x = 12; x < L - 12; x += 24) {
+    if (cut) break;
+    coarse.set(x, 12, W + 1, P.lampIron!);
+    coarse.set(x, 11, W + 1, P.lamp!);
+  }
 
   // ── three decks ────────────────────────────────────────────────────────
   //   "with lower, second, and third stories shalt thou make it" — 6:16
@@ -129,7 +190,14 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
   // The verse fixes the side; where along it is the choice. Amidships, four
   // cubits wide and six high, so the ox of Genesis 7 walks in without
   // stooping.
-  const doorX = Math.round(L * 0.5), doorW = 4, doorH = 6;
+  // WHERE ALONG THE SIDE. Genesis fixes the side and says nothing else, so
+  // this is a free choice — and it is a composition choice as much as
+  // anything. Amidships (x = L/2) puts the door, the ramp and the whole camp
+  // seventy metres from either end, so no single view can hold the bow and
+  // the animals at once. A fifth of the way along keeps everything in one
+  // frame, which is how the reference picture reads as a place rather than a
+  // wall. The panel lists this under "chosen".
+  const doorX = Math.round(L * 0.2), doorW = 4, doorH = 6;
   if (!cut) {
     coarse.carve(doorX - doorW / 2, 1, W - 1, doorX + doorW / 2, doorH, W - 1);
     for (let y = 1; y <= doorH + 1; y++) {
@@ -175,20 +243,69 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
   const f = (cubits: number) => Math.round(cubits * FINE);
   const groundY = 0;
 
-  // the ramp down from the door to the yard
-  const rampFromZ = f(W), rampLen = f(14);
+  // THE RAMP, six cubits wide with a rail down each side and cross-cleats for
+  // a hoof to grip. The first one was a bare plank four cubits wide and read
+  // as a diving board.
+  const rampFromZ = f(W), rampLen = f(16), rampHalf = f(3);
   for (let i = 0; i < rampLen; i++) {
     const y = f(doorH) - Math.round((i / rampLen) * f(doorH));
-    fine.box(f(doorX - doorW / 2), y, rampFromZ + i, f(doorX + doorW / 2), y, rampFromZ + i, P.deck!);
+    fine.box(f(doorX) - rampHalf, y, rampFromZ + i, f(doorX) + rampHalf, y, rampFromZ + i, P.deck!);
+    if (i % f(1) === 0)                                   // a cleat every cubit
+      fine.box(f(doorX) - rampHalf, y + 1, rampFromZ + i, f(doorX) + rampHalf, y + 1, rampFromZ + i, P.beam!);
+    for (const side of [-rampHalf - 1, rampHalf + 1]) {   // the two rails
+      fine.set(f(doorX) + side, y + 1, rampFromZ + i, P.beam!);
+      fine.set(f(doorX) + side, y + 4, rampFromZ + i, P.beam!);
+      if (i % f(2) === 0) for (let dy = 1; dy <= 4; dy++) fine.set(f(doorX) + side, y + dy, rampFromZ + i, P.beam!);
+    }
   }
 
-  // scaffolding against the hull, as in the reference picture — the ark took
-  // a hundred and twenty years, so there is still a stage standing
-  for (let x = f(doorX + 12); x < f(doorX + 40); x += f(4)) {
-    for (let y = 0; y < f(16); y++) fine.set(x, y, rampFromZ + 2, P.beam!);
-    for (let y = f(5); y < f(16); y += f(5))
-      fine.box(x, y, rampFromZ, x + f(4), y, rampFromZ + 2, P.beam!);
+  // SCAFFOLDING, the stage the ark is still being built from. Uprights,
+  // ledgers, diagonal braces and two boarded lifts: the braces are the part
+  // that makes it read as scaffolding rather than as a ladder, because a
+  // rectangle of sticks is a fence and a braced rectangle is a structure.
+  const scafX0 = f(doorX + 14), scafX1 = f(doorX + 46), bay = f(4);
+  const scafZ = rampFromZ + 2, scafD = f(3), scafTop = f(20);
+  for (let x = scafX0; x <= scafX1; x += bay) {
+    for (let y = 0; y < scafTop; y++) {                   // uprights, front and back
+      fine.set(x, y, scafZ + scafD, P.beam!);
+      fine.set(x, y, scafZ, P.beam!);
+    }
+    for (let y = f(6); y < scafTop; y += f(6))            // ledgers across the bay
+      fine.box(x, y, scafZ, x, y, scafZ + scafD, P.beam!);
+    // a diagonal brace across each bay, alternating direction
+    if (x + bay <= scafX1) {
+      const rise = f(6), run = bay;
+      for (let t = 0; t <= run; t++) {
+        const up = Math.round((t / run) * rise);
+        const dir = ((x - scafX0) / bay) % 2 === 0 ? t : run - t;
+        fine.set(x + dir, up, scafZ + scafD, P.beam!);
+      }
+    }
   }
+  for (const lift of [f(6), f(12)])                       // two boarded lifts
+    for (let x = scafX0; x <= scafX1; x++)
+      for (let z = scafZ; z <= scafZ + scafD; z++) fine.set(x, lift, z, P.deck!);
+  // a ladder from the ground to the first lift
+  for (let y = 0; y < f(12); y++) {
+    fine.set(scafX0 + f(1), y, scafZ + scafD + 1, P.beam!);
+    fine.set(scafX0 + f(2), y, scafZ + scafD + 1, P.beam!);
+    if (y % 3 === 0) fine.box(scafX0 + f(1), y, scafZ + scafD + 1, scafX0 + f(2), y, scafZ + scafD + 1, P.beam!);
+  }
+
+  // A CRANE: an A-frame with a jib, a rope over it and a crate on the hook,
+  // halfway up. Every picture of a ship being built has one, and it is the
+  // single prop that says "this thing is unfinished and enormous".
+  const craneX = f(doorX - 34), craneZ = rampFromZ + f(4), craneTop = f(26);
+  for (let y = 0; y < craneTop; y++) {                    // the two legs, leaning in
+    const lean = Math.round((1 - y / craneTop) * f(3));
+    fine.set(craneX - lean, y, craneZ, P.beam!);
+    fine.set(craneX + lean, y, craneZ + f(3), P.beam!);
+  }
+  fine.box(craneX, craneTop, craneZ, craneX, craneTop, craneZ + f(3), P.beam!);   // the head
+  for (let i = 0; i <= f(7); i++) fine.set(craneX, craneTop - Math.round(i / 3), craneZ - i, P.beam!);  // the jib
+  const hookZ = craneZ - f(7);
+  for (let y = f(10); y < craneTop - f(2); y++) fine.set(craneX, y, hookZ, P.rope!);   // the fall
+  fine.box(craneX - f(1), f(8), hookZ - f(1), craneX + f(1), f(10), hookZ + f(1), P.gopher!);  // the crate on it
 
   // NO DIRT YARD HERE. It used to be painted at y = -1, which is underneath
   // the flat ground plane the renderer draws — eighty-six thousand blocks that

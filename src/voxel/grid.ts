@@ -47,6 +47,16 @@ export const PALETTE: Record<string, number> = {
   hairWhite: 0xe6e1d6,
   leaf: 0x4f7a3a,
   trunk: 0x6b4a2c,
+  // the second timber pass: a wall of one brown reads as a slab, so the
+  // planking now runs light course / dark course with a seam line between,
+  // and the heavy timbers that stand proud of it are darker again
+  gopherSeam: 0x6a4a2c,    // the shadow line between two courses of planking
+  wale: 0x77522f,          // the heavy horizontal timbers down the length
+  pitchSeam: 0x3b2c22,     // the same, in the pitched band below the waterline
+  lamp: 0xffcf7a,          // a lit lamp, painted bright rather than lit
+  lampIron: 0x40352c,
+  rope: 0xb9a179,
+  ironDark: 0x4a4038,
 };
 // A typo-proof list of the names, so a block placed with a name that is not in
 // the palette fails loudly at build time rather than rendering black.

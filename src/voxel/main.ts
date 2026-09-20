@@ -33,17 +33,23 @@ scene.fog = new THREE.Fog(0xc4e3f7, 220, 700);
 // warm bounce off the ground, which is what keeps the side of a plank the sun
 // misses from going black.
 const sun = new THREE.DirectionalLight(0xfff4e0, 2.15);
-sun.position.set(-120, 150, 120);
+// Lower and further round than it was. A high sun lights the roof and leaves
+// the whole side of the hull — the thing you are actually looking at — in its
+// own shade; a raking sun from over the camera's shoulder picks out every rib
+// and wale instead, which is the only reason the planking reads at all.
+sun.position.set(-150, 95, 210);
 sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
 sun.shadow.camera.near = 20;
 sun.shadow.camera.far = 600;
-const S = 120;
+const S = 105;
 sun.shadow.camera.left = -S; sun.shadow.camera.right = S;
 sun.shadow.camera.top = S; sun.shadow.camera.bottom = -S;
 sun.shadow.camera.updateProjectionMatrix();
 sun.shadow.bias = -0.0012;
-scene.add(sun, new THREE.HemisphereLight(0xdceeff, 0x8f7f5c, 1.55));
+const fill = new THREE.DirectionalLight(0xdfeaff, 1.05);
+fill.position.set(140, 90, 180);          // over the camera's shoulder, no shadows
+scene.add(sun, fill, new THREE.HemisphereLight(0xdceeff, 0x93835f, 1.7));
 
 // A lamp in the doorway. One point light, and it does the job the reference
 // picture's glowing door does: it says the way in is open and somebody is home.
@@ -124,8 +130,8 @@ function raise() {
 // to 35°. That angle IS the look, so the camera keeps it and only turns and
 // zooms. Letting it fly would show the scene from angles nobody dressed,
 // which is how a diorama stops looking like one.
-const focus = new THREE.Vector3(CUBITS.length * COARSE * 0.5, 6, CUBITS.breadth * COARSE * 1.6);
-const orbit = { yaw: -0.5, pitch: 0.42, dist: 180 };
+const focus = new THREE.Vector3(58 * COARSE, 7 * COARSE, 60 * COARSE);
+const orbit = { yaw: -0.82, pitch: 0.24, dist: 62 };
 function place() {
   camera.position.set(
     focus.x + Math.sin(orbit.yaw) * Math.cos(orbit.pitch) * orbit.dist,
@@ -165,7 +171,7 @@ document.getElementById('b-scenery')?.addEventListener('click', () => {
   state.scenery = !state.scenery; press('b-scenery', state.scenery); raise();
 });
 const VIEWS: Record<string, [number, number, number]> = {
-  'v-wide': [-0.5, 0.42, 180], 'v-door': [-0.35, 0.22, 52], 'v-end': [-1.45, 0.3, 120],
+  'v-wide': [-0.82, 0.24, 62], 'v-door': [-0.30, 0.20, 34], 'v-end': [-1.5, 0.30, 150],
 };
 for (const [id, [yaw, pitch, dist]] of Object.entries(VIEWS)) {
   document.getElementById(id)?.addEventListener('click', () => {
