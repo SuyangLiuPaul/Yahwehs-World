@@ -25,7 +25,11 @@ sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
 Object.assign(sun.shadow.camera, { left: -12, right: 12, top: 12, bottom: -12, near: 1, far: 40 });
 sun.shadow.bias = -0.0005; sun.shadow.normalBias = 0.03;
-scene.add(sun, sun.target, new THREE.HemisphereLight(0xdfeaff, 0xa0ad58, 2.3));
+// A strongly green ground bounce tints every animal olive — the elephant came
+// out mossy and the giraffe's yellow went dull. The ground term is kept, but
+// desaturated and weaker, with the sky carrying most of the fill.
+scene.add(sun, sun.target, new THREE.HemisphereLight(0xe8f1ff, 0x9a9a72, 1.5));
+scene.add(new THREE.AmbientLight(0xfff6e8, 0.35));
 
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshLambertMaterial({ color: GROUND }));
 ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
@@ -50,7 +54,7 @@ function layout() {
 
 function place() {
   const both = view.mode === 'both';
-  const tall = view.mode === 'elephant' ? 3.6 : 5.9;
+  const tall = view.mode === 'elephant' ? 3.8 : 6.5;
   const width = both ? 16 : view.mode === 'elephant' ? 7 : 5;
   const half = THREE.MathUtils.degToRad(camera.fov) / 2;
   const aspect = innerWidth / innerHeight;
