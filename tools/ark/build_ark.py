@@ -40,11 +40,15 @@ RENDER = argv[argv.index("--render") + 1] if "--render" in argv else None
 random.seed(11)
 
 # ── palette: warm honey-brown timber, a darker pitch band, iron ─────────────
-WOODS = [(0.62, 0.44, 0.25), (0.56, 0.39, 0.21), (0.68, 0.49, 0.28), (0.51, 0.35, 0.19), (0.60, 0.42, 0.23)]
-PITCH = (0.30, 0.22, 0.15)
-IRON = (0.17, 0.16, 0.16)
-POST = (0.52, 0.34, 0.18)
-DARK = (0.13, 0.09, 0.06)
+# MEASURED, not guessed. Sampled off the reference picture, its hull planks run
+# from #523421 in shadow through #805437 to #d39861 in the sun — lighter, and
+# LESS saturated than the palette this replaced (mid value 0.50 against 0.34,
+# saturation 0.57 against 0.75). Those are the albedos that land there once lit.
+WOODS = [(0.72, 0.57, 0.41), (0.66, 0.52, 0.37), (0.77, 0.61, 0.44), (0.61, 0.48, 0.34), (0.70, 0.55, 0.40)]
+PITCH = (0.46, 0.33, 0.22)
+IRON = (0.27, 0.24, 0.22)
+POST = (0.55, 0.36, 0.20)
+DARK = (0.33, 0.22, 0.14)      # the seam colour: was near-black, which made every seam a hole
 ROPE = (0.78, 0.66, 0.44)
 GLASS = (1.0, 0.72, 0.32)
 
@@ -56,7 +60,12 @@ def srgb(c):
 
 
 def tint(c, k):
-    return tuple(max(0.0, min(1.0, v * k)) for v in c)
+    """Brightness, plus a per-call drift of hue. Brightness alone gave a wall that
+    was one colour in different lights; the reference's planks are visibly
+    different woods — some golden, some grey-brown, some reddish."""
+    d = random.uniform(-0.028, 0.028)
+    r, g, b = c
+    return tuple(max(0.0, min(1.0, v * k)) for v in (r + d, g + d * 0.35, b - d * 0.9))
 
 
 class Mesh:
@@ -428,6 +437,45 @@ def export_glb(path, ho, go):
     print("EXPORT", path)
 
 
+def matte(name, rgb, rough=1.0):
+    m = bpy.data.materials.new(name); m.use_nodes = True
+    b = m.node_tree.nodes["Principled BSDF"]
+    b.inputs["Base Color"].default_value = (*rgb, 1); b.inputs["Roughness"].default_value = rough
+    return m
+
+
+def landscape(sc):
+    """Blue-green hills on the horizon and a scatter of low-poly trees. Nothing here
+    is Scripture; it is what makes a building look like it stands somewhere, and it
+    is most of the colour in the picture the owner is matching."""
+    rnd = random.Random(5)
+    # distant hills go BLUE-GREY and pale with distance, not mint: aerial perspective
+    hill_mats = [matte("h1", (0.05, 0.11, 0.08)), matte("h2", (0.07, 0.14, 0.13)), matte("h3", (0.10, 0.17, 0.19))]
+    for i in range(14):
+        a = rnd.uniform(-0.9, 0.9)
+        d = rnd.uniform(160, 300)
+        bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=3, radius=1, location=(LENGTH * 0.5 + math.sin(a) * d * 1.6, -d - 60, -4))
+        ob = bpy.context.active_object
+        ob.scale = (rnd.uniform(40, 90), rnd.uniform(30, 60), rnd.uniform(14, 44))
+        ob.data.materials.append(hill_mats[i % 3])
+    leaf = [matte("t1", (0.05, 0.13, 0.04)), matte("t2", (0.09, 0.17, 0.04)), matte("t3", (0.16, 0.19, 0.04))]
+    trunk = matte("trunk", (0.18, 0.11, 0.06))
+    for i in range(46):
+        x = rnd.uniform(-30, LENGTH + 30)
+        y = rnd.choice([-1, 1]) * rnd.uniform(BREADTH / 2 + 8, 70)
+        if y > 0 and abs(x - DOOR_X) < 26:
+            continue                                     # keep the door's yard clear
+        h = rnd.uniform(5.0, 9.5)
+        bpy.ops.mesh.primitive_cylinder_add(vertices=6, radius=0.28, depth=h * 0.45, location=(x, y, h * 0.22))
+        bpy.context.active_object.data.materials.append(trunk)
+        if rnd.random() < 0.5:                           # a conifer
+            bpy.ops.mesh.primitive_cone_add(vertices=7, radius1=h * 0.30, depth=h * 0.85, location=(x, y, h * 0.62))
+        else:                                            # a broadleaf
+            bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1, radius=h * 0.34, location=(x, y, h * 0.62))
+            bpy.context.active_object.scale = (1.0, 1.0, 0.85)
+        bpy.context.active_object.data.materials.append(leaf[i % 3])
+
+
 def render(path, ho, go):
     sc = bpy.context.scene
     sc.render.engine = "CYCLES"
@@ -437,7 +485,7 @@ def render(path, ho, go):
     sc.render.filepath = path
     # STANDARD, not AgX/Filmic: the filmic curves desaturate and darken timber, and
     # the first render read as brick for exactly that reason
-    sc.view_settings.view_transform = "Khronos PBR Neutral"    # the same operator the Three.js viewer uses
+    sc.view_settings.view_transform = "Khronos PBR Neutral"; sc.view_settings.exposure = -0.25    # the same operator the Three.js viewer uses
 
     world = bpy.data.worlds.new("w"); sc.world = world; world.use_nodes = True
     nt = world.node_tree
@@ -446,13 +494,21 @@ def render(path, ho, go):
     # blazing sun disc in frame and turned the whole picture white.
     tc = nt.nodes.new("ShaderNodeTexCoord"); sep = nt.nodes.new("ShaderNodeSeparateXYZ")
     ramp = nt.nodes.new("ShaderNodeValToRGB")
-    nt.links.new(tc.outputs["Generated"], sep.inputs[0]) if False else None
     nt.links.new(tc.outputs["Window"], sep.inputs[0])
     nt.links.new(sep.outputs["Y"], ramp.inputs["Fac"])
-    ramp.color_ramp.elements[0].color = (0.86, 0.90, 0.92, 1); ramp.color_ramp.elements[0].position = 0.30
-    ramp.color_ramp.elements[1].color = (0.40, 0.66, 0.95, 1); ramp.color_ramp.elements[1].position = 0.75
-    nt.links.new(ramp.outputs[0], bg.inputs[0]); bg.inputs[1].default_value = 1.7
-    sun = bpy.data.lights.new("sun", "SUN"); sun.energy = 4.6; sun.angle = math.radians(5); sun.color = (1.0, 0.88, 0.72)
+    ramp.color_ramp.elements[0].color = (0.92, 0.94, 0.95, 1); ramp.color_ramp.elements[0].position = 0.30
+    ramp.color_ramp.elements[1].color = (0.20, 0.52, 0.96, 1); ramp.color_ramp.elements[1].position = 0.78
+    # soft cumulus: noise stretched along x, thresholded, laid over the blue
+    cn = nt.nodes.new("ShaderNodeTexNoise"); cn.inputs["Scale"].default_value = 3.2; cn.inputs["Detail"].default_value = 6.0
+    mp = nt.nodes.new("ShaderNodeMapping"); mp.inputs["Scale"].default_value = (1.0, 2.4, 1.0)
+    nt.links.new(tc.outputs["Window"], mp.inputs[0]); nt.links.new(mp.outputs[0], cn.inputs["Vector"])
+    cr = nt.nodes.new("ShaderNodeMapRange"); cr.inputs["From Min"].default_value = 0.52; cr.inputs["From Max"].default_value = 0.72
+    nt.links.new(cn.outputs["Fac"], cr.inputs["Value"])
+    mix = nt.nodes.new("ShaderNodeMix"); mix.data_type = "RGBA"
+    nt.links.new(cr.outputs[0], mix.inputs["Factor"])
+    nt.links.new(ramp.outputs[0], mix.inputs["A"]); mix.inputs["B"].default_value = (1.0, 0.99, 0.97, 1)
+    nt.links.new(mix.outputs["Result"], bg.inputs[0]); bg.inputs[1].default_value = 2.8
+    sun = bpy.data.lights.new("sun", "SUN"); sun.energy = 5.0; sun.angle = math.radians(5); sun.color = (1.0, 0.91, 0.78)
     so = bpy.data.objects.new("sun", sun); sc.collection.objects.link(so)
     so.rotation_euler = (math.radians(50), math.radians(0), math.radians(215))
 
@@ -461,14 +517,34 @@ def render(path, ho, go):
     bpy.ops.mesh.primitive_plane_add(size=600, location=(LENGTH / 2, 0, 0))
     gd = bpy.context.active_object
     gm = bpy.data.materials.new("grass"); gm.use_nodes = True
-    gm.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.17, 0.21, 0.05, 1)
-    gm.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 1.0
+    gt = gm.node_tree
+    gb = gt.nodes["Principled BSDF"]; gb.inputs["Roughness"].default_value = 1.0
+    gtc = gt.nodes.new("ShaderNodeTexCoord")
+    n1 = gt.nodes.new("ShaderNodeTexNoise"); n1.inputs["Scale"].default_value = 0.16; n1.inputs["Detail"].default_value = 5.0
+    n2 = gt.nodes.new("ShaderNodeTexNoise"); n2.inputs["Scale"].default_value = 1.6; n2.inputs["Detail"].default_value = 8.0
+    gt.links.new(gtc.outputs["Object"], n1.inputs["Vector"]); gt.links.new(gtc.outputs["Object"], n2.inputs["Vector"])
+    ramp2 = gt.nodes.new("ShaderNodeValToRGB")
+    e = ramp2.color_ramp.elements
+    e[0].position = 0.36; e[0].color = (0.10, 0.14, 0.04, 1)       # deep olive
+    e[1].position = 0.66; e[1].color = (0.30, 0.26, 0.07, 1)       # sunlit gold
+    e.new(0.50).color = (0.17, 0.19, 0.05, 1)
+    mixn = gt.nodes.new("ShaderNodeMath"); mixn.operation = "ADD"
+    sc1 = gt.nodes.new("ShaderNodeMath"); sc1.operation = "MULTIPLY"; sc1.inputs[1].default_value = 0.75
+    sc2 = gt.nodes.new("ShaderNodeMath"); sc2.operation = "MULTIPLY"; sc2.inputs[1].default_value = 0.25
+    gt.links.new(n1.outputs["Fac"], sc1.inputs[0]); gt.links.new(n2.outputs["Fac"], sc2.inputs[0])
+    gt.links.new(sc1.outputs[0], mixn.inputs[0]); gt.links.new(sc2.outputs[0], mixn.inputs[1])
+    gt.links.new(mixn.outputs[0], ramp2.inputs["Fac"])
+    gt.links.new(ramp2.outputs[0], gb.inputs["Base Color"])
     gd.data.materials.append(gm)
+
+    landscape(sc)
 
     cam = bpy.data.cameras.new("cam"); cam.lens = 40
     co = bpy.data.objects.new("cam", cam); sc.collection.objects.link(co); sc.camera = co
     which = argv[argv.index("--cam") + 1] if "--cam" in argv else "door"
-    if which == "bow":
+    if which == "wide":
+        tgt = Vector((LENGTH * 0.42, BREADTH / 2, LIFT + 6.0)); co.location = tgt + Vector((-58.0, 96.0, 16.0)); cam.lens = 34
+    elif which == "bow":
         tgt = Vector((4.0, 3.0, LIFT + 6.0)); co.location = Vector((-22.0, 34.0, 5.0))
     else:
         tgt = Vector((DOOR_X + 1.5, BREADTH / 2, LIFT + 5.0)); co.location = tgt + Vector((-24.0, 44.0, 2.0))
