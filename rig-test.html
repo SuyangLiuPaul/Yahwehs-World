@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>动物骨骼动作 | Rigged animals</title>
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#9cc8f2;font:15px/1.4 system-ui,"Noto Sans SC",sans-serif}
+  #stage{display:block;width:100vw;height:100vh;touch-action:none}
+  #bar{position:fixed;left:0;right:0;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:0 8px}
+  button{font:inherit;font-weight:600;padding:9px 16px;border-radius:12px;border:1px solid rgba(60,50,20,.25);background:rgba(250,246,232,.94);color:#3b3222;box-shadow:0 3px 10px rgba(0,0,0,.15)}
+  button.on{background:#f3d36b}
+  #info{position:fixed;top:10px;left:12px;font:12px ui-monospace,monospace;color:rgba(30,40,50,.8)}
+</style></head><body>
+<canvas id="stage"></canvas><div id="info">loading…</div><div id="bar"></div>
+<script type="module" src="/src/ark3d/rig-test.ts"></script>
+</body></html>

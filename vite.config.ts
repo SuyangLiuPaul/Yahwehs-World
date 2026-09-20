@@ -57,6 +57,7 @@ export default defineConfig({
         voxel: resolve(__dirname, 'voxel.html'),
         lowpoly: resolve(__dirname, 'lowpoly.html'),
         arkBlender: resolve(__dirname, 'ark-blender.html'),
+        rigTest: resolve(__dirname, 'rig-test.html'),
       },
     },
   },

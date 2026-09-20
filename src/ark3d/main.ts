@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+import { clone as skeletonClone } from 'three/addons/utils/SkeletonUtils.js';
 
 // THE ARK, MODELLED IN BLENDER AND SHOWN HERE.
 //
@@ -73,28 +74,39 @@ loader.load('/models/ark/ark.glb', (gltf) => {
 });
 
 // THE ANIMALS, in the yard before the door — two of each, as the text has them
-// come. Both are Blender models from tools/ark/build_animals.py (a chamfered
-// block style, vertex-coloured, ~60 KB apiece), stood on the ground and turned a
-// little toward the ramp. They face +x in their own frame; the ark is not mirrored
-// for them, so no correction is needed.
-const PAIRS: { file: string; at: [number, number][]; yaw: number[] }[] = [
-  { file: 'elephant', at: [[23, 27], [28, 31.5]], yaw: [-0.5, -0.8] },
-  { file: 'giraffe', at: [[35, 26], [40, 30]], yaw: [0.5, 0.15] },
+// come. Blender models from tools/ark/build_animals.py, rigged by
+// tools/ark/rig_quadruped.py, so each stands and idles (breathing, trunk and ears,
+// tail) on its own phase. They face +x in their own frame; the ark is not mirrored
+// for them. The giraffe is drawn at 0.72 because the model is 7.6 m as built and a
+// real one is about 5.5.
+const PAIRS: { file: string; at: [number, number][]; yaw: number[]; scale: number }[] = [
+  { file: 'elephant', at: [[23, 27], [28, 31.5]], yaw: [-0.5, -0.8], scale: 1 },
+  { file: 'giraffe', at: [[35, 26], [40, 30]], yaw: [0.5, 0.15], scale: 0.72 },
 ];
+const mixers: THREE.AnimationMixer[] = [];
 for (const p of PAIRS) {
-  loader.load(`/models/ark/${p.file}.glb`, (gltf) => {
+  loader.load(`/models/ark/rig/${p.file}-rig.glb`, (gltf) => {
     gltf.scene.traverse((o) => {
       if (o instanceof THREE.Mesh) {
-        o.castShadow = true; o.receiveShadow = true;
+        o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false;
         const m = o.material as THREE.MeshStandardMaterial;
         m.roughness = 0.9; m.metalness = 0; m.flatShading = true; m.needsUpdate = true;
       }
     });
+    const idle = gltf.animations.find((c) => c.name === 'idle');
     p.at.forEach(([x, z], i) => {
-      const a = i === 0 ? gltf.scene : gltf.scene.clone(true);
+      const a = i === 0 ? gltf.scene : skeletonClone(gltf.scene);
       a.position.set(x, 0, z);
       a.rotation.y = p.yaw[i]!;
+      a.scale.setScalar(p.scale);
       scene.add(a);
+      if (idle) {
+        const mx = new THREE.AnimationMixer(a);
+        const act = mx.clipAction(idle);
+        act.time = i * idle.duration * 0.37;              // out of step, so a pair does not move as one
+        act.play();
+        mixers.push(mx);
+      }
     });
   });
 }
@@ -119,4 +131,5 @@ for (const [id, [yaw, pitch, dist, ax, ay, az]] of Object.entries(VIEWS))
 
 addEventListener('resize', () => { renderer.setSize(innerWidth, innerHeight); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); });
 place();
-renderer.setAnimationLoop(() => renderer.render(scene, camera));
+const clock = new THREE.Clock();
+renderer.setAnimationLoop(() => { const dt = clock.getDelta(); mixers.forEach((m) => m.update(dt)); renderer.render(scene, camera); });
