@@ -33,21 +33,21 @@ def opt(flag, default):
 
 
 # ── palette (sRGB albedo; what lands on screen is lit and tone-mapped) ──
-GREY = (0.665, 0.635, 0.635)
-GREY_L = (0.75, 0.72, 0.72)
+GREY = (0.665, 0.635, 0.645)
+GREY_L = (0.76, 0.72, 0.73)
 GREY_D = (0.47, 0.445, 0.46)
-FOOT = (0.60, 0.57, 0.575)
-TOE = (0.50, 0.48, 0.49)
+FOOT = (0.62, 0.61, 0.70)
+TOE = (0.70, 0.69, 0.78)
 EAR_IN = (0.60, 0.56, 0.57)
 TUSK = (0.97, 0.95, 0.88)
 EYE = (0.03, 0.03, 0.04)
 GLINT = (1.0, 1.0, 1.0)
 
-GIR = (0.95, 0.81, 0.43)
+GIR = (0.96, 0.80, 0.40)
 GIR_L = (0.98, 0.86, 0.54)
-PATCH = (0.64, 0.40, 0.22)
+PATCH = (0.60, 0.36, 0.18)
 MANE = (0.30, 0.17, 0.09)
-MUZZLE = (0.96, 0.74, 0.42)
+MUZZLE = (0.98, 0.84, 0.56)
 HOOF = (0.10, 0.09, 0.09)
 
 WOOD = (0.55, 0.38, 0.22)
@@ -138,52 +138,45 @@ def rotate(pts, pivot, angle, axis="Z"):
 
 # ═════════════════════════════ the elephant ═════════════════════════════
 def build_elephant(m):
-    # legs: tapered pillars on a broad foot with three toe blocks
-    for x, front in ((0.78, True), (-0.72, False)):
+    # legs: thick tapered pillars on a bluish foot pad with four toe blocks
+    for x in (0.85, -0.95):
         for s in (-1, 1):
             y = s * 0.52
-            m.solid(box_pts((x, y, 0.47), (0.68, 0.68, 0.62), top=(0.94, 0.94)), GREY, 0.045)
-            m.solid(box_pts((x, y, 1.05), (0.74, 0.74, 0.70), bot=(0.90, 0.90)), GREY, 0.06)
+            m.solid(box_pts((x, y, 0.80), (0.72, 0.72, 1.50), top=(1.0, 1.0), bot=(0.84, 0.84)), GREY, 0.07, seg=2)
             m.solid(box_pts((x + 0.02, y, 0.07), (0.80, 0.82, 0.14), top=(0.96, 0.96)), FOOT, 0.03)
-            for k in (-1, 0, 1):
-                m.solid(box_pts((x + 0.30, y + k * 0.26, 0.075), (0.22, 0.22, 0.15), top=(0.95, 0.95)), TOE, 0.025)
+            for k in (-1.5, -0.5, 0.5, 1.5):
+                m.solid(box_pts((x + 0.34, y + k * 0.19, 0.08), (0.13, 0.16, 0.16), top=(0.95, 0.95)), TOE, 0.02)
 
-    # body: a barrel. A chamfered block, then a wider, lower bulge with big rounded edges.
-    m.solid(box_pts((-0.08, 0, 2.02), (2.10, 1.74, 1.50), top=(0.92, 0.78), bot=(0.94, 0.90)), GREY, 0.30, seg=2)
-    m.solid(box_pts((-1.10, 0, 1.96), (0.62, 1.38, 1.34), top=(0.90, 0.80), shift=(-0.03, 0)), GREY, 0.14, seg=2)
-    m.solid(box_pts((-0.15, 0, 1.30), (1.6, 1.10, 0.20), bot=(0.85, 0.8)), GREY_D, 0.05)
-    m.solid(beam_pts((-1.40, 0, 2.30), (-1.50, 0, 1.30), 0.07, 0.05), GREY_D, 0.01, 0.02)
-    m.solid(box_pts((-1.50, 0, 1.16), (0.16, 0.14, 0.24)), GREY_D, 0.02)
+    # body: a faceted barrel, big rounded chamfers
+    m.solid(box_pts((-0.20, 0, 2.20), (2.50, 1.70, 1.60), top=(0.90, 0.78), bot=(0.94, 0.84)), GREY, 0.38, seg=3)
+    m.solid(box_pts((-1.36, 0, 2.12), (0.60, 1.40, 1.40), top=(0.90, 0.78), shift=(-0.03, 0)), GREY, 0.20, seg=2)
+    m.solid(box_pts((-0.25, 0, 1.44), (1.9, 1.10, 0.20), bot=(0.85, 0.8)), GREY_D, 0.05)
+    m.solid(beam_pts((-1.66, 0, 2.50), (-1.76, 0, 1.40), 0.07, 0.05), GREY_D, 0.01, 0.02)
+    m.solid(box_pts((-1.76, 0, 1.26), (0.16, 0.14, 0.26)), GREY_D, 0.02)
 
-    # head: a big block with the forehead sloping back, and a dome above
-    m.solid(box_pts((1.62, 0, 2.15), (1.30, 1.42, 1.62), top=(0.86, 0.80), shift=(-0.14, 0)), GREY, 0.13)
-    m.solid(box_pts((1.44, 0, 3.05), (1.00, 1.08, 0.32), top=(0.68, 0.72), shift=(-0.04, 0)), GREY_L, 0.09)
+    # head: a big block, the forehead sloping back to a rounded dome
+    m.solid(box_pts((1.62, 0, 2.32), (1.32, 1.50, 1.66), top=(0.88, 0.80), shift=(-0.14, 0)), GREY, 0.20, seg=2)
+    m.solid(box_pts((1.42, 0, 3.22), (1.06, 1.16, 0.34), top=(0.68, 0.72), shift=(-0.04, 0)), GREY_L, 0.14, seg=2)
     for s in (-1, 1):
-        m.solid(box_pts((2.20, s * 0.47, 2.60), (0.13, 0.26, 0.08)), GREY_D, 0.02)
-        m.solid(box_pts((2.265, s * 0.47, 2.45), (0.04, 0.09, 0.13)), EYE, 0.0, 0.0)
-        m.solid(box_pts((2.29, s * 0.47 + s * 0.012, 2.50), (0.02, 0.035, 0.04)), GLINT, 0.0, 0.0)
+        m.solid(box_pts((2.22, s * 0.50, 2.65), (0.05, 0.10, 0.14)), EYE, 0.0, 0.0)
+        m.solid(box_pts((2.245, s * 0.50 + s * 0.012, 2.70), (0.02, 0.035, 0.04)), GLINT, 0.0, 0.0)
 
-    # ears: hugging the head, hinged at the front edge with the rear only just swung out
+    # ears: one big, broad, rounded flap hinged at the front edge, the rear swung out
     for s in (-1, 1):
-        ang = -s * 0.20
-        pivot = (1.80, s * 0.74, 2.45)
-        ear = box_pts((1.30, s * 0.775, 2.42), (1.05, 0.15, 1.40), bot=(0.62, 1.0))
-        m.solid(rotate(ear, pivot, ang), GREY, 0.07, seg=2)
-        up = box_pts((1.28, s * 0.86, 2.80), (0.74, 0.07, 0.55), bot=(0.8, 1.0))
-        m.solid(rotate(up, pivot, ang), GREY_L, 0.03)
+        ang = -s * 0.30
+        pivot = (1.90, s * 0.80, 2.65)
+        ear = box_pts((1.28, s * 0.88, 2.58), (1.36, 0.16, 1.45), top=(0.92, 1.0), bot=(0.78, 1.0))
+        m.solid(rotate(ear, pivot, ang), (0.68, 0.645, 0.66), 0.13, seg=1)
 
-    # trunk: a stack that bends -- each course sits a little further forward and leans out at the bottom
-    n, pitch, z0 = 6, 0.33, 2.42
+    # trunk: a stack of fine courses that thins as it falls, curving forward, tip clear of the ground
+    n, pitch, z0 = 9, 0.235, 2.60
     for i in range(n):
         t = i / (n - 1)
-        w = 0.80 - 0.36 * t
-        cx = 2.36 + 0.06 * i + 0.02 * i * i
+        w = 0.86 - 0.42 * t
+        cx = 2.38 + 0.035 * i
         cz = z0 - (i + 0.5) * pitch
-        pts = box_pts((cx, 0, cz), (w, w * 1.04, pitch), top=(0.96, 0.96))
-        if i >= 3:
-            pts = rotate(pts, (cx, 0, cz + pitch / 2), -0.04 * (i - 2), "Y")
-        m.solid(pts, (0.64, 0.62, 0.635) if i % 2 else GREY, 0.05, 0.03, seg=1)
-    m.solid(box_pts((cx + 0.10, 0, 0.30), (0.40, 0.42, 0.24)), GREY_D, 0.05)
+        pts = box_pts((cx, 0, cz), (w, w * 1.04, pitch + 0.02), top=(0.97, 0.97))
+        m.solid(pts, (0.60, 0.575, 0.62) if i % 2 else GREY, 0.035, 0.03)
 
     # tusks: cream, thick at the root, sweeping out and curling up
     for s in (-1, 1):
@@ -191,10 +184,10 @@ def build_elephant(m):
         segs = 8
         for i in range(segs + 1):
             t = i / segs
-            p = Vector((2.14 + 0.60 * t, s * (0.50 + 0.24 * t), 1.66 - 0.08 * t + 0.66 * t ** 2.4))
+            p = Vector((2.14 + 0.62 * t, s * (0.54 + 0.30 * t), 1.72 - 0.06 * t + 0.64 * t ** 2.4))
             if prev is not None:
-                r0 = 0.125 - 0.080 * ((i - 1) / segs)
-                r1 = 0.125 - 0.080 * (i / segs)
+                r0 = 0.15 - 0.085 * ((i - 1) / segs)
+                r1 = 0.15 - 0.085 * (i / segs)
                 m.solid(beam_pts(prev, p, r0, r1), TUSK, 0.012, 0.02)
             prev = p
 
@@ -219,6 +212,14 @@ def patches_on(m, rng, face, along, up, fixed, sign, cell, skip=0.30, size=(0.10
                 else:
                     pts = box_pts((fixed, ca, cu), (depth * 2, w, h))
                 m.solid(pts, PATCH, 0.012, 0.05)
+                if rng.random() < 0.55:      # a second tile pushed against the first: an L or a step, like the picture's
+                    da = rng.choice((-1, 1)) * w * 0.55
+                    du = rng.choice((-1, 1)) * h * 0.55
+                    if face == 'y':
+                        p2 = box_pts((ca + da, sign * fixed, cu + du), (w * 0.6, depth * 2, h * 0.6))
+                    else:
+                        p2 = box_pts((fixed, ca + da, cu + du), (depth * 2, w * 0.6, h * 0.6))
+                    m.solid(p2, PATCH, 0.01, 0.05)
             u += cell
         a += cell
 
@@ -242,7 +243,7 @@ def build_giraffe(m):
     m.solid(box_pts((0.65, 0, body_top + 0.02), (0.85, 0.78, 0.22), top=(0.85, 0.8)), GIR, 0.07)
     m.solid(box_pts((0.0, 0, body_bot + 0.05), (1.8, 0.76, 0.16)), (0.80, 0.62, 0.30), 0.04)
     for s in (-1, 1):
-        patches_on(m, rng, "y", (-1.00, 1.10), (2.10, 3.18), 0.49 * 0.97, s, 0.40, skip=0.15, size=(0.20, 0.33), depth=0.03, margin=0.14)
+        patches_on(m, rng, "y", (-1.00, 1.10), (2.10, 3.18), 0.49 * 0.97, s, 0.36, skip=0.08, size=(0.16, 0.28), depth=0.03, margin=0.14)
     # tail
     m.solid(beam_pts((-1.12, 0, 3.05), (-1.20, 0, 1.75), 0.05, 0.04), GIR, 0.01, 0.02)
     m.solid(box_pts((-1.20, 0, 1.62), (0.14, 0.12, 0.28)), MANE, 0.02)
@@ -254,8 +255,8 @@ def build_giraffe(m):
     cxs = []
     for i in range(n):
         t = i / (n - 1)
-        wy = 0.62 - 0.20 * t
-        wx = 0.72 - 0.26 * t
+        wy = 0.72 - 0.30 * t
+        wx = 0.84 - 0.40 * t
         cx = 0.80 + 0.62 * t
         cz = z0 + (i + 0.5) * pitch
         cxs.append((cx, cz, wx, wy))
@@ -316,7 +317,7 @@ def assign_materials(ob):
 
 CAMS = {
     # name: (location, target, lens, width, height)
-    "hero": ((6.4, -5.2, 3.5), (0.4, 0, 1.45), 45, 1200, 780),
+    "hero": ((8.6, -7.0, 4.2), (0.4, 0, 1.6), 45, 1200, 780),
     "side": ((0.4, -10.5, 2.0), (0.4, 0, 1.45), 55, 1200, 780),
     "back": ((-6.5, 5.0, 3.3), (0.4, 0, 1.45), 45, 1200, 780),
     "giraffe": ((13.0, -10.0, 3.8), (0.9, 0, 3.15), 46, 900, 1100),
