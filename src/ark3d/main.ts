@@ -72,6 +72,33 @@ loader.load('/models/ark/ark.glb', (gltf) => {
   (window as unknown as { __ready: boolean }).__ready = true;
 });
 
+// THE ANIMALS, in the yard before the door — two of each, as the text has them
+// come. Both are Blender models from tools/ark/build_animals.py (a chamfered
+// block style, vertex-coloured, ~60 KB apiece), stood on the ground and turned a
+// little toward the ramp. They face +x in their own frame; the ark is not mirrored
+// for them, so no correction is needed.
+const PAIRS: { file: string; at: [number, number][]; yaw: number[] }[] = [
+  { file: 'elephant', at: [[16, 27], [21, 31.5]], yaw: [-0.5, -0.8] },
+  { file: 'giraffe', at: [[39, 27], [44, 30.5]], yaw: [0.5, 0.15] },
+];
+for (const p of PAIRS) {
+  loader.load(`/models/ark/${p.file}.glb`, (gltf) => {
+    gltf.scene.traverse((o) => {
+      if (o instanceof THREE.Mesh) {
+        o.castShadow = true; o.receiveShadow = true;
+        const m = o.material as THREE.MeshStandardMaterial;
+        m.roughness = 0.9; m.metalness = 0; m.flatShading = true; m.needsUpdate = true;
+      }
+    });
+    p.at.forEach(([x, z], i) => {
+      const a = i === 0 ? gltf.scene : gltf.scene.clone(true);
+      a.position.set(x, 0, z);
+      a.rotation.y = p.yaw[i]!;
+      scene.add(a);
+    });
+  });
+}
+
 let drag: { x: number; y: number } | null = null;
 canvas.addEventListener('pointerdown', (e) => { drag = { x: e.clientX, y: e.clientY }; canvas.setPointerCapture(e.pointerId); });
 canvas.addEventListener('pointerup', () => { drag = null; });
@@ -85,6 +112,7 @@ canvas.addEventListener('wheel', (e) => { e.preventDefault(); view.dist = Math.m
 
 const VIEWS: Record<string, [number, number, number, number, number, number]> = {
   'v-wide': [0.62, 0.16, 95, 30, 6, 8], 'v-door': [0.42, 0.12, 30, 28, 4, 12], 'v-bow': [1.15, 0.2, 60, 6, 6, 8],
+  'v-zoo': [0.45, 0.14, 40, 33, 3.5, 28],
 };
 for (const [id, [yaw, pitch, dist, ax, ay, az]] of Object.entries(VIEWS))
   document.getElementById(id)?.addEventListener('click', () => { Object.assign(view, { yaw, pitch, dist }); view.at.set(ax, ay, az); place(); });
