@@ -15,7 +15,7 @@ import { type Block, type Grid, PALETTE } from './grid.ts';
 // register in src/walk/figures.ts already states in metres.
 
 /** One box of a creature: from corner to corner, in the creature's own grid. */
-type Box = [number, number, number, number, number, number, Block];
+export type Box = [number, number, number, number, number, number, Block];
 
 export interface Model {
   /** How many blocks tall, for placing it on the ground and for the label. */

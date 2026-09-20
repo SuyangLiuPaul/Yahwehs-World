@@ -60,6 +60,20 @@ export const PALETTE: Record<string, number> = {
   post: 0xb07a48,          // the vertical posts, LIGHTER than the planking so
                            // they catch the light instead of reading as gaps
   latticeGlow: 0xffc85a,   // behind the open course under the eave
+  // the camp's small things (props.ts) — appended, never reordered, because
+  // the index is what a block stores
+  clay: 0xb8794d,
+  clayDark: 0x8a5535,
+  iron: 0x4a4644,
+  copper: 0xb8722f,
+  sackcloth: 0xa8926a,
+  sackDark: 0x7d6a4c,
+  straw: 0xe8d283,
+  wicker: 0xc79c58,
+  fire: 0xff8a2a,
+  ember: 0xd23f1c,
+  flame: 0xffd452,
+  charcoal: 0x2a2320,
 };
 // A typo-proof list of the names, so a block placed with a name that is not in
 // the palette fails loudly at build time rather than rendering black.

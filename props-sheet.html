@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Props · contact sheet</title>
+  <!-- A DEV PAGE, not part of the site. Every prop in src/voxel/props.ts laid
+       out in a labelled grid under the ark page's light and camera angle, so
+       each can be judged the way it will be seen. -->
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #9fd0ef; }
+    #stage { display: block; width: 100vw; height: 100vh; }
+    #labels { position: fixed; inset: 0; pointer-events: none; }
+    .label { position: absolute; transform: translate(-50%, 0); font: 600 12px/1.2 Inter, system-ui, sans-serif;
+      color: #2b2418; background: rgba(255,255,255,.78); padding: 2px 6px; border-radius: 6px; white-space: nowrap; }
+  </style>
+</head>
+<body>
+  <canvas id="stage"></canvas>
+  <div id="labels"></div>
+  <script type="module" src="/src/voxel/props-sheet.ts"></script>
+</body>
+</html>
