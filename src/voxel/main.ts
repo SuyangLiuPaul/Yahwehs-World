@@ -21,25 +21,27 @@ renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.setSize(innerWidth, innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.25;
+renderer.toneMappingExposure = 1.0;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x9ed2f2);
-scene.fog = new THREE.Fog(0xc4e3f7, 220, 700);
+scene.background = new THREE.Color(0x9cc9f0);
+// The far end of a hundred and thirty-four metres should go pale rather
+// than simply run out of frame: recession is what sells the length.
+scene.fog = new THREE.Fog(0xd9e6f0, 120, 420);
 
 // A bright, kind morning: a low sun from the left, a blue sky bounce and a
 // warm bounce off the ground, which is what keeps the side of a plank the sun
 // misses from going black.
-const sun = new THREE.DirectionalLight(0xfff4e0, 2.15);
+const sun = new THREE.DirectionalLight(0xfff1d6, 2.2);
 // Lower and further round than it was. A high sun lights the roof and leaves
 // the whole side of the hull — the thing you are actually looking at — in its
 // own shade; a raking sun from over the camera's shoulder picks out every rib
 // and wale instead, which is the only reason the planking reads at all.
 sun.position.set(-150, 95, 210);
 sun.castShadow = true;
-sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.mapSize.set(4096, 4096);
 sun.shadow.camera.near = 20;
 sun.shadow.camera.far = 600;
 const S = 105;
@@ -47,9 +49,9 @@ sun.shadow.camera.left = -S; sun.shadow.camera.right = S;
 sun.shadow.camera.top = S; sun.shadow.camera.bottom = -S;
 sun.shadow.camera.updateProjectionMatrix();
 sun.shadow.bias = -0.0012;
-const fill = new THREE.DirectionalLight(0xdfeaff, 1.05);
+const fill = new THREE.DirectionalLight(0xffe0b0, 0.4);
 fill.position.set(140, 90, 180);          // over the camera's shoulder, no shadows
-scene.add(sun, fill, new THREE.HemisphereLight(0xdceeff, 0x93835f, 1.7));
+scene.add(sun, fill, new THREE.HemisphereLight(0xcfe3ff, 0xb8a070, 0.8));
 
 // A lamp in the doorway. One point light, and it does the job the reference
 // picture's glowing door does: it says the way in is open and somebody is home.
@@ -69,7 +71,9 @@ ground.rotation.x = -Math.PI / 2;
 ground.receiveShadow = true;
 scene.add(ground);
 
-const camera = new THREE.PerspectiveCamera(36, innerWidth / innerHeight, 0.5, 1400);
+// A slightly long lens. At 36° and wider everything falls away from the
+// centre and the hull looks like it is toppling backwards.
+const camera = new THREE.PerspectiveCamera(32, innerWidth / innerHeight, 0.5, 1400);
 
 // ── the far country ──────────────────────────────────────────────────────
 // Hills on the horizon and a few clouds. Not blocks: half a dozen flat shapes

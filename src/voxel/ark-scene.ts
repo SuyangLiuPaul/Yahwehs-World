@@ -74,10 +74,13 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
   //
   // The lowest four courses are pitch: "thou shalt pitch it within and
   // without with pitch" (6:14).
+  // Two woods twenty-five per cent apart turned the hull into a barcode. The
+  // courses are now within a few per cent of each other and it is the SEAM —
+  // one dark row every three cubits — that does the work.
   const plank = (y: number) => {
-    if (y < 4) return y === 3 ? P.pitchSeam! : P.pitch!;
-    const course = Math.floor((y - 4) / 3);            // three-cubit courses
-    if ((y - 4) % 3 === 2) return P.gopherSeam!;       // the shadow line on top of each
+    if (y < 2) return y === 1 ? P.pitchSeam! : P.pitch!;   // pitch, two cubits only
+    const course = Math.floor((y - 2) / 3);
+    if ((y - 2) % 3 === 2) return P.gopherSeam!;
     return course % 2 ? P.gopher! : P.gopherDark!;
   };
   for (let y = 0; y < H; y++) {
@@ -96,15 +99,15 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
   // Ribs flush with the wall are just a stripe of another colour; a rib that
   // stands out casts its own shadow down the hull, and that shadow is most of
   // what the eye reads as depth. Sixty of them along the length.
-  for (let x = 0; x < L; x += 5)
+  for (let x = 0; x < L; x += 4)
     for (let y = 0; y < H; y++) {
-      coarse.set(x, y, -1, P.beam!);
-      if (!cut) coarse.set(x, y, W, P.beam!);
+      coarse.set(x, y, -1, P.post!);
+      if (!cut) coarse.set(x, y, W, P.post!);
     }
   // WALES: the heavy timbers that run the whole length, also standing proud.
   // They cut the height into bands, which is what stops the hull reading as
   // one tall blank thing.
-  for (const y of [7, 15, 23]) {
+  for (const y of [8, 17]) {
     for (let x = 0; x < L; x++) {
       coarse.set(x, y, -1, P.wale!);
       if (!cut) coarse.set(x, y, W, P.wale!);
@@ -231,9 +234,22 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
   //    it above" — 6:16. The plainest reading of a hard verse: an opening a
   // cubit high under the eaves. Others read a single window of one cubit.
   // This takes the running opening, and the panel says it is a reading.
-  for (let x = 2; x < L - 2; x++) {
-    coarse.carve(x, H - 1, 0, x, H - 1, 0);
-    if (!cut) coarse.carve(x, H - 1, W - 1, x, H - 1, W - 1);
+  // Read as a LATTICE: a course of open cubit-wide gaps between short posts,
+  // running the whole length under the eave, with the lit inside of the ark
+  // showing through. It gives the top of the hull a line of dark-and-gold
+  // that a plain slot cannot, and it is what the verse most plainly
+  // describes — an opening finished to a cubit below the roof.
+  for (let x = 1; x < L - 1; x++) {
+    const openGap = x % 2 === 1;
+    for (const z of cut ? [0] : [0, W - 1]) {
+      if (openGap) {
+        coarse.carve(x, H - 1, z, x, H - 1, z);
+        // the warm inside, one course behind the opening
+        coarse.set(x, H - 1, z === 0 ? 1 : W - 2, P.latticeGlow!);
+      } else {
+        coarse.set(x, H - 1, z, P.post!);
+      }
+    }
   }
 
   if (!opts.scenery) return { coarse, fine, door: { x: doorX, height: doorH } };

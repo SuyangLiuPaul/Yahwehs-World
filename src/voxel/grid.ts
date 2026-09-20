@@ -21,12 +21,12 @@ export const BPC = 2;
 /** The palette. Index, not colour, is stored per block — one byte per block
  *  instead of three floats, and a palette swap re-tints the whole world. */
 export const PALETTE: Record<string, number> = {
-  gopher: 0xa87c4a,        // the hull, gopher wood (Gen 6:14)
-  gopherDark: 0x8a6238,    // the same wood in shadow, for plank courses
-  pitch: 0x4d3a2c,         // "pitch it within and without" — the dark band
+  gopher: 0xa67447,        // the hull, gopher wood (Gen 6:14)
+  gopherDark: 0x9c6c41,    // the same wood in shadow, for plank courses
+  pitch: 0x3a2a20,         // "pitch it within and without" — the dark band
   deck: 0xc89a5e,          // deck planking, seen from above
   beam: 0x6f4d2c,          // posts and beams
-  roof: 0x96693f,          // the covering
+  roof: 0xc4a070,          // the covering
   door: 0x4a3218,
   grass: 0x7cab4d,
   dirt: 0x8a6a45,
@@ -50,13 +50,16 @@ export const PALETTE: Record<string, number> = {
   // the second timber pass: a wall of one brown reads as a slab, so the
   // planking now runs light course / dark course with a seam line between,
   // and the heavy timbers that stand proud of it are darker again
-  gopherSeam: 0x6a4a2c,    // the shadow line between two courses of planking
-  wale: 0x77522f,          // the heavy horizontal timbers down the length
+  gopherSeam: 0x6e4a2b,    // the shadow line between two courses of planking
+  wale: 0x8a5a30,          // the heavy horizontal timbers down the length
   pitchSeam: 0x3b2c22,     // the same, in the pitched band below the waterline
   lamp: 0xffcf7a,          // a lit lamp, painted bright rather than lit
   lampIron: 0x40352c,
   rope: 0xb9a179,
   ironDark: 0x4a4038,
+  post: 0xb07a48,          // the vertical posts, LIGHTER than the planking so
+                           // they catch the light instead of reading as gaps
+  latticeGlow: 0xffc85a,   // behind the open course under the eave
 };
 // A typo-proof list of the names, so a block placed with a name that is not in
 // the palette fails loudly at build time rather than rendering black.
