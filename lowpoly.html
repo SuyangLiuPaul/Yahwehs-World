@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>低多边形长颈鹿与大象 | Low-poly giraffe and elephant</title>
+<!-- A review page, not part of the nav: the two animals alone, in the flat-
+     faceted low-poly style, generated in code (src/lowpoly/beasts.ts). -->
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#98a64c;font:15px/1.4 system-ui,"Noto Sans SC",sans-serif}
+  #stage{display:block;width:100vw;height:100vh;touch-action:none}
+  #bar{position:fixed;left:0;right:0;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;justify-content:center}
+  button{font:inherit;font-weight:600;padding:10px 18px;border-radius:12px;border:1px solid rgba(60,50,20,.25);background:rgba(250,246,232,.92);color:#3b3222;box-shadow:0 3px 10px rgba(0,0,0,.15)}
+  button[aria-pressed="true"]{background:#3f7d5a;color:#fff;border-color:#2f6146}
+  #stats{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:12px;font:11px ui-monospace,monospace;color:rgba(40,40,10,.7)}
+</style></head><body>
+<canvas id="stage"></canvas>
+<div id="stats"></div>
+<div id="bar">
+  <button type="button" id="b-both" aria-pressed="false">一起</button>
+  <button type="button" id="b-giraffe" aria-pressed="false">长颈鹿</button>
+  <button type="button" id="b-elephant" aria-pressed="false">大象</button>
+</div>
+<script type="module" src="/src/lowpoly/main.ts"></script>
+</body></html>

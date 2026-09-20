@@ -55,6 +55,7 @@ export default defineConfig({
         crowd: resolve(__dirname, 'crowd-test.html'),
         springs: resolve(__dirname, 'figures-springs.html'),
         voxel: resolve(__dirname, 'voxel.html'),
+        lowpoly: resolve(__dirname, 'lowpoly.html'),
       },
     },
   },
