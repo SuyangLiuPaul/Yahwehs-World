@@ -2,33 +2,26 @@ import type { Model } from './creatures.ts';
 import type { Block } from './grid.ts';
 import { Body } from './beasts-opus.ts';
 
-// THE CUBE-PET STYLE, LEARNED FROM KENNEY'S.
+// THE CUBE-PET STYLE, LEARNED FROM KENNEY'S — second pass.
 //
 // Kenney's cube-pets giraffe and elephant were taken apart to see what makes
-// them charming (about 420 triangles each). What they turned out to be:
+// them charming (about 420 triangles each). They turned out to be:
 //
-//   · ONE BODY, NOT PARTS. The whole animal is a single chamfered cube with the
-//     face on its front, standing on four stubby leg cubes. There is no neck
-//     and no separate head. Proportion is the joke.
-//   · HUGE EYES, FLAT ON THE FACE. A white disc, a dark pupil, a tiny highlight,
-//     each eye about a fifth of the animal's height. That is nearly all of the
-//     expression; the mouth is a single small nose block.
-//   · THREE TONES OF ONE HUE, PAINTED IN. Lighter on top, darker underneath,
-//     picked from a tiny palette rather than lit — which is why they read as
-//     soft even in flat lighting.
-//   · THE ONE FEATURE THAT NAMES IT. Two knobbed horns and a few spots for the
-//     giraffe; a snout, two white tusks and side-plate ears for the elephant.
+//   · ONE FAT BODY, ROUNDED — a chamfered cube, not a box. The corner radius is
+//     large, about a fifth of the body's width, which is what stops it reading
+//     as a crate and makes it read as a soft toy.
+//   · HUGE EYES, FLAT ON THE FACE — a white disc, a dark pupil, a catch-light.
+//   · THREE TONES OF ONE HUE, PAINTED IN — lighter on top, darker underneath.
+//   · ONE FEATURE THAT NAMES IT — on the elephant, big ROUND ears and a trunk
+//     that tapers; on the giraffe, two knobbed horns, ears and spots.
 //
-// This applies those four rules at the scene's block size and keeps the real
-// registered heights (giraffe 94 blocks, elephant 56). Cube-pets ignore scale
-// entirely; this one cannot, and the giraffe therefore gets a thick short neck
-// that Kenney's does not have — at five metres a giraffe with no neck at all
-// stops being recognisable.
+// The first pass had slab ears, a stiff pipe neck and a blocky trunk, and it
+// read as a robot. This pass rounds everything: ears are discs, the trunk and
+// neck are swept tapered shafts, and the head is its own soft block.
 
-type Tones = [Block, Block, Block];   // top, side, underside
+type Tones = [Block, Block, Block];
 
-/** A rounded box: every cell within `r` of the inner box, so the corners are
- *  chamfered and it never reads as a razor-edged crate. */
+/** A rounded box: every cell within `r` of the inner box. */
 function rbox(b: Body, x0: number, y0: number, z0: number, x1: number, y1: number, z1: number,
   r: number, tone: (y: number) => Block) {
   for (let x = x0; x <= x1; x++)
@@ -41,81 +34,91 @@ function rbox(b: Body, x0: number, y0: number, z0: number, x1: number, y1: numbe
       }
 }
 
-/** Top third light, middle mid, bottom third dark — the painted shading. */
 const banded = (y0: number, y1: number, t: Tones) => (y: number): Block => {
   const f = (y - y0) / Math.max(1, y1 - y0);
   return f > 0.68 ? t[0] : f > 0.3 ? t[1] : t[2];
 };
 
-/** A big flat cartoon eye on a face at x = faceX (the face looks toward -x). */
+/** A flat round plate standing out from a side of the body (an ear, a spot). */
+function discZ(b: Body, cx: number, cy: number, z: number, radius: number, thick: number, tone: (y: number) => Block) {
+  for (let x = -radius; x <= radius; x++)
+    for (let y = -radius; y <= radius; y++)
+      if (x * x + y * y <= radius * radius + 0.5)
+        for (let t = 0; t < thick; t++) b.put(cx + x, cy + y, z + t, tone(cy + y));
+}
+
+/** A big cartoon eye on a face at x = faceX, the face looking toward -x. */
 function eye(b: Body, faceX: number, cy: number, cz: number, radius: number) {
   for (let y = -radius; y <= radius; y++)
     for (let z = -radius; z <= radius; z++)
-      if ((y * y) / (radius * radius) + (z * z) / (radius * radius) <= 1.05) b.put(faceX - 1, cy + y, cz + z, 'cuteEyeWhite');
-  const pr = Math.max(2, Math.round(radius * 0.62));
+      if (y * y + z * z <= radius * radius + 0.6) b.put(faceX - 1, cy + y, cz + z, 'cuteEyeWhite');
+  const pr = Math.max(2, Math.round(radius * 0.64));
+  const toward = cz > 0 ? -1 : 1;                         // pupils look slightly inward
   for (let y = -pr; y <= pr; y++)
     for (let z = -pr; z <= pr; z++)
-      if (y * y + z * z <= pr * pr + 0.5) { b.put(faceX - 2, cy + y - 1, cz + z + (cz > 0 ? -1 : 1), 'cutePupil'); }
-  b.put(faceX - 3, cy + 1, cz + (cz > 0 ? -2 : 2), 'cuteEyeWhite');      // the catch-light
+      if (y * y + z * z <= pr * pr + 0.5) b.put(faceX - 2, cy + y - 1, cz + z + toward, 'cutePupil');
+  b.put(faceX - 3, cy + 1, cz + toward * 2, 'cuteEyeWhite');
+  b.put(faceX - 3, cy + 2, cz + toward * 2, 'cuteEyeWhite');
 }
 
 // ── the giraffe ──────────────────────────────────────────────────────────
 const g = new Body();
 {
   const tan: Tones = ['cuteTanTop', 'cuteTan', 'cuteTanDark'];
-  // four stubby legs
-  for (const [lx, lz] of [[-14, -9], [-14, 9], [14, -9], [14, 9]] as [number, number][])
-    rbox(g, lx - 4, 0, lz - 4, lx + 4, 15, lz + 4, 1, () => 'cuteHoof');
-  // the body — one fat chamfered cube
-  rbox(g, -22, 12, -16, 22, 46, 16, 3, banded(12, 46, tan));
-  // a short thick neck, then the big head with the face on the front
-  rbox(g, -28, 40, -8, -14, 74, 8, 2, banded(40, 74, tan));
-  rbox(g, -40, 66, -14, -16, 90, 14, 3, banded(66, 90, tan));
-  // the face: enormous eyes, a nose block, two nostril dots
-  eye(g, -40, 80, -7, 5);
-  eye(g, -40, 80, 7, 5);
-  g.box(-43, 70, -5, -40, 75, 5, 'cuteNose');
-  g.put(-44, 73, -2, 'cutePupil'); g.put(-44, 73, 2, 'cutePupil');
-  // two knobbed horns and two small ears
-  for (const s of [-1, 1]) {
-    g.box(-27, 90, s * 6 - 1, -26, 95, s * 6, 'cuteTan');
-    g.box(-28, 96, s * 6 - 2, -25, 98, s * 6 + 1, 'cuteHoof');
-    g.box(-24, 82, s * 14, -22, 87, s * 15, 'cuteTanDark');
+  for (const [lx, lz] of [[-13, -10], [-13, 10], [13, -10], [13, 10]] as [number, number][]) {
+    rbox(g, lx - 4, 0, lz - 4, lx + 4, 16, lz + 4, 2, () => 'cuteHoof');
+    rbox(g, lx - 4, 12, lz - 4, lx + 4, 22, lz + 4, 2, () => 'cuteTanDark');     // the leg's top, joining the body
   }
-  g.box(20, 32, -1, 25, 34, 1, 'cuteTanDark');                             // a stub of a tail
-  // the spots: darker patches painted only onto cells that exist
-  const spots: [number, number, number][] = [
-    [-4, 38, 16], [10, 26, 16], [-14, 22, 16], [16, 40, 16], [0, 30, -16], [12, 34, -16], [-12, 40, -16],
-    [-22, 56, 8], [-22, 66, -8], [-22, 50, -8], [-30, 84, 14], [-26, 74, -14], [4, 46, 4], [-6, 46, -8], [12, 46, 8],
+  // a fat, properly rounded body
+  rbox(g, -24, 14, -18, 24, 50, 18, 8, banded(14, 50, tan));
+  // the neck rises from the front of the body, leaning slightly toward the face
+  g.shaft([-16, 44, 0], [-24, 76, 0], 9.5, 7.2, 'cuteTan');
+  // the head: a soft rounded block with the face on -x
+  rbox(g, -46, 68, -15, -14, 96, 15, 8, banded(68, 96, tan));
+  eye(g, -46, 84, -8, 5);
+  eye(g, -46, 84, 8, 5);
+  rbox(g, -50, 72, -6, -44, 79, 6, 3, () => 'cuteNose');                         // the muzzle
+  g.put(-51, 76, -3, 'cutePupil'); g.put(-51, 76, 3, 'cutePupil');               // nostrils
+  for (const s of [-1, 1]) {
+    g.shaft([-28, 96, s * 8], [-28, 103, s * 8], 1.6, 1.4, 'cuteTan');           // horn
+    g.blob(-28, 105, s * 8, 3.0, 2.6, 3.0, 'cuteHoof');                          // its round knob
+    discZ(g, -22, 88, s > 0 ? 15 : -18, 5, 3, () => 'cuteTanDark');             // ear
+  }
+  g.shaft([24, 40, 0], [30, 30, 0], 2.0, 1.6, 'cuteTanDark');                    // tail
+  // spots, painted only where the animal exists, in a lattice with jitter
+  const spots: [number, number, number, number][] = [
+    [-4, 42, 18, 5], [10, 30, 18, 5], [-16, 26, 18, 4], [16, 44, 18, 4], [2, 22, 18, 3.5],
+    [-2, 36, -18, 5], [12, 26, -18, 5], [-14, 42, -18, 4], [6, 46, 4, 4],
+    [-26, 60, 8, 4], [-26, 72, -8, 4], [-28, 84, 8, 3.5], [-34, 90, -14, 4], [-38, 76, 15, 4.5],
   ];
-  for (const [sx, sy, sz] of spots)
+  for (const [sx, sy, sz, sr] of spots)
     for (const c of g.all())
       if ((c.block === 'cuteTan' || c.block === 'cuteTanTop' || c.block === 'cuteTanDark') &&
-          Math.hypot(c.x - sx, c.y - sy, c.z - sz) < 4.6) g.paint(c.x, c.y, c.z, 'cutePatch');
+          Math.hypot(c.x - sx, c.y - sy, c.z - sz) < sr) g.paint(c.x, c.y, c.z, 'cutePatch');
 }
-export const GIRAFFE_CUTE: Model = { height: 98, boxes: g.boxes() };
+export const GIRAFFE_CUTE: Model = { height: 108, boxes: g.boxes() };
 
 // ── the elephant ─────────────────────────────────────────────────────────
 const e = new Body();
 {
   const grey: Tones = ['cuteGreyTop', 'cuteGrey', 'cuteGreyDark'];
-  for (const [lx, lz] of [[-12, -13], [-12, 13], [18, -13], [18, 13]] as [number, number][])
-    rbox(e, lx - 6, 0, lz - 6, lx + 6, 14, lz + 6, 2, () => 'cuteLegGrey');
-  // the body behind, and a HEAD in front of it — a second, taller block, so the
-  // animal has the two-mass silhouette that says "elephant" before any detail
-  rbox(e, -14, 12, -20, 30, 48, 20, 4, banded(12, 48, grey));
-  rbox(e, -42, 16, -17, -12, 52, 17, 4, banded(16, 52, grey));
-  // the face on the front of the head, x = -42: two huge eyes above a trunk
-  eye(e, -42, 40, -9, 5);
-  eye(e, -42, 40, 9, 5);
-  rbox(e, -62, 6, -6, -42, 34, 6, 2, () => 'cuteGrey');                     // the trunk, hanging
-  e.box(-65, 6, -5, -62, 12, 5, 'cuteGreyDark');                            // its darker tip
+  for (const [lx, lz] of [[-12, -14], [-12, 14], [20, -14], [20, 14]] as [number, number][])
+    rbox(e, lx - 7, 0, lz - 7, lx + 7, 15, lz + 7, 3, () => 'cuteLegGrey');
+  // one big rounded body, and the head as a second rounded block in front
+  rbox(e, -8, 12, -22, 36, 50, 22, 8, banded(12, 50, grey));
+  rbox(e, -40, 16, -19, -6, 54, 19, 9, banded(16, 54, grey));
+  eye(e, -40, 42, -10, 5);
+  eye(e, -40, 42, 10, 5);
+  // the trunk: a tapered shaft hanging from the middle of the face, curling out at the tip
+  e.shaft([-40, 30, 0], [-46, 16, 0], 7.0, 5.4, 'cuteGrey');
+  e.shaft([-46, 16, 0], [-52, 6, 0], 5.4, 4.0, 'cuteGreyDark');
+  e.blob(-53, 5, 0, 4.4, 3.2, 4.4, 'cuteGreyDark');
   for (const s of [-1, 1]) {
-    e.box(-54, 24, s * 11 - 1, -43, 27, s * 11 + 1, 'cuteTusk');            // two short white tusks
-    e.box(-56, 25, s * 11 - 1, -54, 29, s * 11 + 1, 'cuteTusk');
-    // ears: big flat plates on the sides of the head, standing proud of it
-    rbox(e, -36, 28, s > 0 ? 17 : -25, -14, 56, s > 0 ? 25 : -17, 2, () => 'cuteGreyDark');
+    e.shaft([-42, 26, s * 10], [-52, 22, s * 12], 2.1, 1.3, 'cuteTusk');        // tusk
+    // BIG ROUND EARS, standing proud of the sides of the head — the feature
+    discZ(e, -16, 38, s > 0 ? 19 : -25, 13, 6, () => 'cuteGreyDark');
+    discZ(e, -16, 38, s > 0 ? 24 : -26, 9, 1, () => 'cuteGrey');               // the lighter inside of the ear
   }
-  e.box(30, 26, -2, 38, 40, 2, 'cuteGreyDark');                            // the tail
+  e.shaft([36, 32, 0], [42, 22, 0], 2.2, 1.6, 'cuteGreyDark');                  // tail
 }
 export const ELEPHANT_CUTE: Model = { height: 56, boxes: e.boxes() };

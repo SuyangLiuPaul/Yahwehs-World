@@ -116,10 +116,10 @@ async function main() {
   const fov = 24, aspect = innerWidth / innerHeight;
   const half = THREE.MathUtils.degToRad(fov) / 2;
   const forHeight = (tallest * 1.35 / 2) / Math.tan(half);
-  const forWidth = (span * 1.05 / 2) / Math.tan(half) / aspect;
+  const forWidth = (span * (only ? 1.32 : 1.05) / 2) / Math.tan(half) / aspect;
   const dist = Math.max(forHeight, forWidth);
   const camera = new THREE.PerspectiveCamera(fov, aspect, 0.1, 900);
-  const yaw = only ? -0.7 : 0.42, pitch = only ? 0.22 : 0.32;                       // a three-quarter view, ~18° up
+  const yaw = only ? -0.62 : 0.42, pitch = only ? 0.16 : 0.32;                       // a three-quarter view, ~18° up
   const at = new THREE.Vector3(span * 0.5, tallest * 0.45, 0);
   camera.position.set(
     at.x + Math.sin(yaw) * Math.cos(pitch) * dist,
