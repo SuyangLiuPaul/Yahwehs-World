@@ -68,6 +68,11 @@ const ground = new THREE.Mesh(
   new THREE.MeshLambertMaterial({ color: 0x74a24a }),
 );
 ground.rotation.x = -Math.PI / 2;
+// Two centimetres below the voxel ground's top face. The painted terrain's
+// surface block sits at y = -1 and its top face lands exactly on zero, so a
+// plane AT zero z-fights with every square of it; this one only shows past
+// the edge of what terrain.ts painted, as the far field.
+ground.position.y = -0.02;
 ground.receiveShadow = true;
 scene.add(ground);
 

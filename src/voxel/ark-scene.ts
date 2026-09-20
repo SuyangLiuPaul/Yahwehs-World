@@ -2,6 +2,7 @@ import { Grid, PALETTE } from './grid.ts';
 import { MODELS, stamp } from './creatures.ts';
 import { stampVox, type VoxModel } from './vox.ts';
 import { PROPS, scatter } from './props.ts';
+import { paintGround, scatterTrees, scatterVegetation } from './terrain.ts';
 
 // NOAH'S ARK, BUILT FROM THE NUMBERS AND NOTHING ELSE.
 //
@@ -442,43 +443,40 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
   tent(f(doorX - 40), rampFromZ + f(14), f(5));
   tent(f(doorX + 38), rampFromZ + f(10), f(6));
 
-  // trees: a trunk and a blocky crown, scattered clear of the yard
-  const tree = (cx: number, cz: number, h: number) => {
-    for (let y = 0; y < h; y++) fine.set(cx, groundY + y, cz, P.trunk!);
-    const r = Math.max(2, Math.round(h / 3));
-    for (let x = -r; x <= r; x++)
-      for (let y = -r; y <= r; y++)
-        for (let z = -r; z <= r; z++)
-          if (x * x + y * y + z * z <= r * r + 1) fine.set(cx + x, groundY + h + y, cz + z, P.leaf!);
-  };
-  for (let i = 0; i < 18; i++) {
-    const side = i % 2 ? 1 : -1;
-    const x = f(doorX) + side * (f(30) + ((i * 91) % f(90)));
-    const z = rampFromZ + f(3) + ((i * 57) % f(30));
-    tree(x, z, f(3) + (i % 4));
-  }
-
-  // flowers and tufts in the grass, three blocks at a time, so the ground is
-  // not one flat green
-  const bloom = [P.robeRed!, P.hay!, P.wool!, P.leaf!];
-  // A hash, not a modulo. `(i * 131) % width` walks a constant stride and lays
-  // the flowers in tidy diagonal rows, which is exactly what a meadow is not.
-  const hash = (n: number) => { let h = n * 374761393 + 668265263; h = (h ^ (h >> 13)) * 1274126177; return ((h ^ (h >> 16)) >>> 0) / 4294967296; };
-  for (let i = 0; i < 900; i++) {
-    const x = f(doorX - 90) + Math.floor(hash(i) * f(180));
-    const z = rampFromZ + f(1) + Math.floor(hash(i + 9871) * f(38));
-    fine.set(x, groundY, z, bloom[Math.floor(hash(i + 555) * bloom.length)]!);
-  }
-
-  // a pond off the near side, with a sandy rim — water is the one thing this
-  // whole story is about, and a flat green field never says so
-  const pondX = f(doorX - 70), pondZ = rampFromZ + f(22);
-  for (let x = -f(9); x <= f(9); x++)
-    for (let z = -f(6); z <= f(6); z++) {
-      const d = (x * x) / (f(9) * f(9)) + (z * z) / (f(6) * f(6));
-      if (d <= 1) fine.set(pondX + x, groundY - 1, pondZ + z, P.water!);
-      else if (d <= 1.35) fine.set(pondX + x, groundY - 1, pondZ + z, P.sand!);
-    }
+  // ── the ground, the wood and the meadow ────────────────────────────────
+  // All of this is terrain.ts: the ground and the water are painted on the
+  // COARSE grid, where a 0.445 m block is the right chunkiness and a field
+  // costs ten thousand blocks instead of a million; the trees, flowers and
+  // tufts go on the FINE grid, where the detail actually shows.
+  //
+  // The camp stands on a level patch — hills are pretty but the ark has to
+  // sit flat — and a worn track runs from the foot of the ramp out through
+  // the yard, which is what the eye follows into the scene.
+  const field = { x0: -40, z0: -22, x1: 210, z1: 112 };
+  const ground = paintGround(coarse, {
+    rect: field,
+    y: -1,
+    seed: 11,
+    relief: { height: 5, scale: 46, flat: { x0: -14, z0: -12, x1: L + 14, z1: W + 34 }, margin: 16 },
+    paths: [
+      { points: [[doorX, W + 2], [doorX, W + 18], [doorX - 16, W + 30], [doorX - 34, W + 40]], width: 3.2 },
+      { points: [[doorX + 6, W + 16], [doorX + 26, W + 24], [doorX + 48, W + 26]], width: 2.4 },
+    ],
+    ponds: [{ x: doorX - 52, z: W + 40, rx: 11, rz: 7 }],
+    stones: 0.004,
+  });
+  scatterTrees(fine, {
+    ground, finePerCubit: FINE, seed: 5, spacing: 20, chance: 0.55,
+    rect: { x0: -34, z0: -18, x1: 200, z1: 106 },
+    // nothing grows where the ark stands, nor in the dressed yard
+    avoid: (x, z) => (x > -6 && x < L + 6 && z > -6 && z < W + 4)
+      || (x > doorX - 34 && x < doorX + 56 && z > W + 1 && z < W + 28),
+  });
+  scatterVegetation(fine, {
+    ground, finePerCubit: FINE, seed: 23,
+    rect: { x0: -30, z0: -14, x1: 196, z1: 104 },
+    flowers: 0.10, tufts: 0.12, pebbles: 0.02, boulders: 0.0006,
+  });
 
   return { coarse, fine, door: { x: doorX, height: doorH } };
 }
