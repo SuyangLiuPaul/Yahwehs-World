@@ -74,6 +74,38 @@ export const PALETTE: Record<string, number> = {
   ember: 0xd23f1c,
   flame: 0xffd452,
   charcoal: 0x2a2320,
+  // ── the ground and what grows on it (src/voxel/terrain.ts) ──────────
+  // Appended, never reordered: the entries above are referenced by name
+  // from the creatures and the ark, and a field is only ever painted from
+  // here. Three greens for grass because one green is a billiard table.
+  grassLight: 0x86b552,
+  grassDark: 0x5c893a,
+  grassDry: 0xa3b04f,
+  dirtDark: 0x715539,
+  dirtLight: 0xa48c66,
+  mud: 0x5f4a33,
+  rock: 0x7d7872,
+  rockLight: 0xaaa59c,
+  moss: 0x5f8f3f,
+  waterDeep: 0x2f6b92,
+  foam: 0xe9f3f7,
+  leafLight: 0x6f9e48,
+  leafDark: 0x3d6330,
+  pine: 0x2f5f3a,
+  pineLight: 0x45784a,
+  pineDark: 0x24492d,
+  olive: 0x7d9a6a,
+  oliveLight: 0xa3b88f,
+  bark: 0x8a6b4a,
+  palmLeaf: 0x5c9a3e,
+  reed: 0x98a44f,
+  reedHead: 0x6a4a2e,
+  petalPink: 0xe58bb0,
+  petalYellow: 0xf1c94c,
+  petalPurple: 0x8d6fbe,
+  petalBlue: 0x6a94d8,
+  petalRed: 0xd1483f,
+  lilypad: 0x4f8a3a,
 };
 // A typo-proof list of the names, so a block placed with a name that is not in
 // the palette fails loudly at build time rather than rendering black.
