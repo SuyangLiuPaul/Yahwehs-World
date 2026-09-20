@@ -78,8 +78,8 @@ loader.load('/models/ark/ark.glb', (gltf) => {
 // little toward the ramp. They face +x in their own frame; the ark is not mirrored
 // for them, so no correction is needed.
 const PAIRS: { file: string; at: [number, number][]; yaw: number[] }[] = [
-  { file: 'elephant', at: [[16, 27], [21, 31.5]], yaw: [-0.5, -0.8] },
-  { file: 'giraffe', at: [[39, 27], [44, 30.5]], yaw: [0.5, 0.15] },
+  { file: 'elephant', at: [[23, 27], [28, 31.5]], yaw: [-0.5, -0.8] },
+  { file: 'giraffe', at: [[35, 26], [40, 30]], yaw: [0.5, 0.15] },
 ];
 for (const p of PAIRS) {
   loader.load(`/models/ark/${p.file}.glb`, (gltf) => {
@@ -112,7 +112,7 @@ canvas.addEventListener('wheel', (e) => { e.preventDefault(); view.dist = Math.m
 
 const VIEWS: Record<string, [number, number, number, number, number, number]> = {
   'v-wide': [0.62, 0.16, 95, 30, 6, 8], 'v-door': [0.42, 0.12, 30, 28, 4, 12], 'v-bow': [1.15, 0.2, 60, 6, 6, 8],
-  'v-zoo': [0.45, 0.14, 40, 33, 3.5, 28],
+  'v-zoo': [0.45, 0.14, 34, 31, 3.2, 28],
 };
 for (const [id, [yaw, pitch, dist, ax, ay, az]] of Object.entries(VIEWS))
   document.getElementById(id)?.addEventListener('click', () => { Object.assign(view, { yaw, pitch, dist }); view.at.set(ax, ay, az); place(); });
