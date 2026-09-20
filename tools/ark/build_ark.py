@@ -94,6 +94,37 @@ class Mesh:
                 loop[self.col] = col
         return self
 
+    def pillow(self, c, u, v, n, w, h, depth, bev, colour):
+        """A plank with only the faces anyone can see: a flat front and a chamfer
+        round it. c is the centre on the wall plane; u and v run along the plank's
+        length and height, n points out of the wall. A closed bevelled box spends
+        three quarters of its triangles on a back and sides that a dark backing wall
+        hides — this is 10 triangles where the box was 44."""
+        u = Vector(u).normalized(); v = Vector(v).normalized(); n = Vector(n).normalized()
+        c = Vector(c)
+        hw, hh = w / 2, h / 2
+        bev = min(bev, hw * 0.45, hh * 0.45)
+        def ring(dx, dy, dz):
+            return [c + u * (sx * dx) + v * (sy * dy) + n * dz
+                    for sx, sy in ((-1, -1), (1, -1), (1, 1), (-1, 1))]
+        outer = [self.bm.verts.new(p) for p in ring(hw, hh, 0.0)]
+        inner = [self.bm.verts.new(p) for p in ring(hw - bev, hh - bev, depth)]
+        quads = [(inner[0], inner[1], inner[2], inner[3])]
+        for i in range(4):
+            j = (i + 1) % 4
+            quads.append((outer[i], outer[j], inner[j], inner[i]))
+        col = srgb(colour)
+        for q in quads:
+            f = self.bm.faces.new(q)
+            # make every face point out of the wall, whatever order the corners came in
+            nrm = (q[1].co - q[0].co).cross(q[2].co - q[1].co)
+            if nrm.dot(n) < 0 and f.normal.dot(n) > -1e-9:
+                f.normal_flip()
+            elif f.normal.dot(n) < -0.0 and nrm.dot(n) >= 0:
+                pass
+            for loop in f.loops:
+                loop[self.col] = col
+
     def ball(self, centre, r, colour):
         self.bm.faces.ensure_lookup_table()
         first = len(self.bm.faces)
@@ -107,13 +138,12 @@ class Mesh:
 
     def commit(self, collection=None):
         me = bpy.data.meshes.new(self.name)
-        bmesh.ops.recalc_face_normals(self.bm, faces=self.bm.faces[:])
         self.bm.to_mesh(me)
         self.bm.free()
         ob = bpy.data.objects.new(self.name, me)
         (collection or bpy.context.scene.collection).objects.link(ob)
         for p in me.polygons:
-            p.use_smooth = True
+            p.use_smooth = False           # crisp chamfers: the facets are what catch the light
         return ob
 
 
@@ -164,8 +194,8 @@ def wall(m, x0, x1, y, facing, holes=(), courses=None):
                 k = random.uniform(0.92, 1.08)
                 proud = random.uniform(-0.010, 0.016)     # a hair proud or sunk: the difference between timber and a slab
                 for (p0, p1) in clip(a, b, z - PLANK_H / 2, z + PLANK_H / 2, holes):
-                    m.box(((p0 + p1) / 2, y + facing * proud, z), ((p1 - p0) - 0.018, 0.09, PLANK_H - 0.020),
-                          tint(base, k), bevel=0.013, segments=2)
+                    m.pillow(((p0 + p1) / 2, y + facing * (proud - 0.02), z), (1, 0, 0), (0, 0, 1), (0, facing, 0),
+                             (p1 - p0) - 0.018, PLANK_H - 0.020, 0.06, 0.028, tint(base, k))
             x += length
 
 
@@ -181,8 +211,8 @@ def end_wall(m, x, facing):
             a, b = max(yy, -BREADTH / 2), min(yy + length, BREADTH / 2)
             if b - a > 0.15:
                 base = PITCH if pitch else random.choice(WOODS)
-                m.box((x + facing * random.uniform(-0.01, 0.016), (a + b) / 2, z), (0.09, (b - a) - 0.018, PLANK_H - 0.02),
-                      tint(base, random.uniform(0.92, 1.08)), bevel=0.013, segments=2)
+                m.pillow((x + facing * (random.uniform(-0.01, 0.016) - 0.02), (a + b) / 2, z), (0, 1, 0), (0, 0, 1), (facing, 0, 0),
+                         (b - a) - 0.018, PLANK_H - 0.02, 0.06, 0.028, tint(base, random.uniform(0.92, 1.08)))
             yy += length
 
 
@@ -287,7 +317,8 @@ def roof_and_rail(m):
             length = PLANK_L * random.uniform(0.9, 1.15)
             a, b = max(x, -0.9), min(x + length, LENGTH + 0.9)
             if b - a > 0.15:
-                m.box(((a + b) / 2, yy + 0.15, zt + 0.05), ((b - a) - 0.02, 0.29, 0.10), tint(random.choice(WOODS), random.uniform(0.9, 1.06)), bevel=0.012, segments=1)
+                m.pillow(((a + b) / 2, yy + 0.15, zt), (1, 0, 0), (0, 1, 0), (0, 0, 1),
+                         (b - a) - 0.02, 0.28, 0.07, 0.024, tint(random.choice(WOODS), random.uniform(0.9, 1.06)))
             x += length
         yy += 0.30; row += 1
     for i in range(int((LENGTH + 1.8) / 1.1)):                # rafter ends showing under the eave
@@ -360,9 +391,41 @@ def main():
     build(hull, glow)
     ho = hull.commit(); go = glow.commit()
     print(f"ARK hull: {len(ho.data.polygons):,} faces  glow: {len(go.data.polygons):,} faces")
+    if "--export" in argv:
+        export_glb(argv[argv.index("--export") + 1], ho, go)
     bpy.ops.wm.save_as_mainfile(filepath=OUT)
     if RENDER:
         render(RENDER, ho, go)
+
+
+def assign_materials(ho, go):
+    """The timber reads the per-plank tint from the Col attribute; the glow is a
+    plain emission. Kept apart from render() because the glTF export needs them too."""
+    mat = bpy.data.materials.new("timber"); mat.use_nodes = True
+    n = mat.node_tree
+    attr = n.nodes.new("ShaderNodeVertexColor"); attr.layer_name = "Col"
+    bsdf = n.nodes["Principled BSDF"]
+    n.links.new(attr.outputs["Color"], bsdf.inputs["Base Color"])
+    bsdf.inputs["Roughness"].default_value = 0.85
+    mat.use_backface_culling = True
+    ho.data.materials.clear(); ho.data.materials.append(mat)
+    gmat = bpy.data.materials.new("glow"); gmat.use_nodes = True
+    gn = gmat.node_tree
+    for nd in list(gn.nodes):
+        gn.nodes.remove(nd)
+    em = gn.nodes.new("ShaderNodeEmission"); em.inputs["Color"].default_value = (1.0, 0.52, 0.16, 1); em.inputs["Strength"].default_value = 2.2
+    out = gn.nodes.new("ShaderNodeOutputMaterial"); gn.links.new(em.outputs[0], out.inputs[0])
+    go.data.materials.clear(); go.data.materials.append(gmat)
+
+
+def export_glb(path, ho, go):
+    assign_materials(ho, go)
+    bpy.ops.object.select_all(action="DESELECT")
+    ho.select_set(True); go.select_set(True)
+    bpy.ops.export_scene.gltf(filepath=path, export_format="GLB", use_selection=True,
+                              export_apply=True, export_vertex_color="MATERIAL",
+                              export_cameras=False, export_lights=False)
+    print("EXPORT", path)
 
 
 def render(path, ho, go):
@@ -393,20 +456,7 @@ def render(path, ho, go):
     so = bpy.data.objects.new("sun", sun); sc.collection.objects.link(so)
     so.rotation_euler = (math.radians(50), math.radians(0), math.radians(215))
 
-    mat = bpy.data.materials.new("timber"); mat.use_nodes = True
-    n = mat.node_tree
-    attr = n.nodes.new("ShaderNodeVertexColor"); attr.layer_name = "Col"
-    bsdf = n.nodes["Principled BSDF"]
-    n.links.new(attr.outputs["Color"], bsdf.inputs["Base Color"])
-    bsdf.inputs["Roughness"].default_value = 0.78
-    ho.data.materials.clear(); ho.data.materials.append(mat)
-    gmat = bpy.data.materials.new("glow"); gmat.use_nodes = True
-    gn = gmat.node_tree
-    for nd in list(gn.nodes):
-        gn.nodes.remove(nd)
-    em = gn.nodes.new("ShaderNodeEmission"); em.inputs["Color"].default_value = (1.0, 0.52, 0.16, 1); em.inputs["Strength"].default_value = 2.2
-    out = gn.nodes.new("ShaderNodeOutputMaterial"); gn.links.new(em.outputs[0], out.inputs[0])
-    go.data.materials.clear(); go.data.materials.append(gmat)
+    assign_materials(ho, go)
 
     bpy.ops.mesh.primitive_plane_add(size=600, location=(LENGTH / 2, 0, 0))
     gd = bpy.context.active_object

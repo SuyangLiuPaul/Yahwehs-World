@@ -56,6 +56,7 @@ export default defineConfig({
         springs: resolve(__dirname, 'figures-springs.html'),
         voxel: resolve(__dirname, 'voxel.html'),
         lowpoly: resolve(__dirname, 'lowpoly.html'),
+        arkBlender: resolve(__dirname, 'ark-blender.html'),
       },
     },
   },
