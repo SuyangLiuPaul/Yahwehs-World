@@ -1,5 +1,6 @@
 import { Grid, PALETTE } from './grid.ts';
 import { MODELS, stamp } from './creatures.ts';
+import { stampVox, type VoxModel } from './vox.ts';
 
 // NOAH'S ARK, BUILT FROM THE NUMBERS AND NOTHING ELSE.
 //
@@ -27,8 +28,16 @@ import { MODELS, stamp } from './creatures.ts';
 // person outside the ark, and every colour.
 
 export const CUBITS = { length: 300, breadth: 50, height: 30 } as const;
-/** Fine blocks to the cubit. The coarse grid is one block to the cubit. */
-export const FINE = 4;
+/** Fine blocks to the cubit. The coarse grid is one block to the cubit.
+ *
+ *  This was four, and a sheep came out eight blocks tall — still a lump. At
+ *  eight to the cubit a block is 5.6 cm: a man is thirty-two blocks, a barrel
+ *  eight, and a voxelised animal has room for ears and feet. The ark stays at
+ *  one block to the cubit, where each block IS a stated measurement. */
+export const FINE = 8;
+/** Hand-built creatures in creatures.ts are authored at half a cubit a block,
+ *  so they need blowing up by this much to stand in the fine grid. */
+const HANDMADE = FINE / 2;
 
 const L = CUBITS.length, W = CUBITS.breadth, H = CUBITS.height;
 
@@ -38,6 +47,10 @@ export interface BuildOptions {
   cutaway?: boolean;
   /** The camp, the animals and the eight — none of it stated by the text. */
   scenery?: boolean;
+  /** Voxelised creatures, by name. Where one is present it is used instead of
+   *  the hand-built model of the same name; where it is missing the hand-built
+   *  one still stands, so a half-finished set renders. */
+  vox?: Record<string, VoxModel>;
 }
 
 export interface World { coarse: Grid; fine: Grid; door: { x: number; height: number } }
@@ -177,9 +190,11 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
       fine.box(x, y, rampFromZ, x + f(4), y, rampFromZ + 2, P.beam!);
   }
 
-  // a worn dirt yard in front of the door, one block deep, and a fence round it
-  for (let x = f(doorX - 26); x < f(doorX + 26); x++)
-    for (let z = rampFromZ; z < rampFromZ + f(26); z++) fine.set(x, groundY - 1, z, P.dirt!);
+  // NO DIRT YARD HERE. It used to be painted at y = -1, which is underneath
+  // the flat ground plane the renderer draws — eighty-six thousand blocks that
+  // nobody could ever see, a third of the whole scene. The ground is the
+  // terrain builder's job and it paints on the coarse grid, where a patch this
+  // size costs a few hundred blocks instead.
   const fence = (x0: number, z0: number, x1: number, z1: number) => {
     for (let x = x0; x <= x1; x++)
       for (let z = z0; z <= z1; z++)
@@ -203,11 +218,15 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
     ['ass', 17, 15], ['lion', 21, 6], ['sheep', -10, 18], ['goat', -6, 12],
     ['ram', 8, 19], ['chicken', 3, 21],
   ];
+  const beast = (kind: string, x: number, z: number, turn: number) => {
+    const real = opts.vox?.[kind];
+    if (real) stampVox(fine, real, [x, groundY, z], turn);
+    else if (MODELS[kind]) stamp(fine, MODELS[kind]!, [x, groundY, z], turn, HANDMADE);
+  };
   for (const [kind, dx, dz] of pairs) {
-    const m = MODELS[kind]!;
     const x = f(doorX + dx), z = rampFromZ + f(dz);
-    stamp(fine, m, [x, groundY, z], 3);
-    stamp(fine, m, [x, groundY, z + f(2.5)], 3);
+    beast(kind, x, z, 3);
+    beast(kind, x, z + f(2.5), 3);
   }
 
   // the eight: Noah, his wife, his three sons and their wives (Genesis 7:13)
@@ -215,11 +234,11 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
     ['noah', -5], ['noahWife', -3.2], ['son', -1.4], ['sonWife', 0.4],
     ['son', 2.2], ['sonWife', 4], ['son', 5.8], ['sonWife', 7.6],
   ];
-  for (const [who, dx] of eight) stamp(fine, MODELS[who]!, [f(doorX + dx), groundY, rampFromZ + f(17)], 3);
+  for (const [who, dx] of eight) beast(who, f(doorX + dx), rampFromZ + f(17), 3);
 
   // two still at work on the stage
-  stamp(fine, MODELS.worker!, [f(doorX + 14), groundY, rampFromZ + f(3)], 3);
-  stamp(fine, MODELS.worker!, [f(doorX + 30), groundY, rampFromZ + f(2)], 2);
+  beast('worker', f(doorX + 14), rampFromZ + f(3), 3);
+  beast('worker', f(doorX + 30), rampFromZ + f(2), 2);
 
   // ── the furniture of a lived-in place ──────────────────────────────────
   // None of this is Scripture and all of it is why the reference picture

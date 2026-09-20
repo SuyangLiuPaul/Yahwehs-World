@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { buildArkWorld, CUBITS, FINE } from './ark-scene.ts';
+import { loadVoxSet, type VoxModel } from './vox.ts';
 
 // THE BLOCK WORLD, ON SCREEN.
 //
@@ -20,7 +21,7 @@ renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.setSize(innerWidth, innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.1;
+renderer.toneMappingExposure = 1.25;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -31,7 +32,7 @@ scene.fog = new THREE.Fog(0xc4e3f7, 220, 700);
 // A bright, kind morning: a low sun from the left, a blue sky bounce and a
 // warm bounce off the ground, which is what keeps the side of a plank the sun
 // misses from going black.
-const sun = new THREE.DirectionalLight(0xfff2da, 2.4);
+const sun = new THREE.DirectionalLight(0xfff4e0, 2.15);
 sun.position.set(-120, 150, 120);
 sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
@@ -42,11 +43,14 @@ sun.shadow.camera.left = -S; sun.shadow.camera.right = S;
 sun.shadow.camera.top = S; sun.shadow.camera.bottom = -S;
 sun.shadow.camera.updateProjectionMatrix();
 sun.shadow.bias = -0.0012;
-scene.add(sun, new THREE.HemisphereLight(0xd6ecff, 0x7d6e4e, 1.2));
+scene.add(sun, new THREE.HemisphereLight(0xdceeff, 0x8f7f5c, 1.55));
 
 // A lamp in the doorway. One point light, and it does the job the reference
 // picture's glowing door does: it says the way in is open and somebody is home.
-const doorLamp = new THREE.PointLight(0xffc781, 260, 26, 2);
+// Intensity 260 over 26 metres washed a bright disc across the hull the size
+// of a house. A lamp is a lamp: enough to warm the doorway and a stride of
+// the ramp, and no further.
+const doorLamp = new THREE.PointLight(0xffc781, 26, 11, 2);
 scene.add(doorLamp);
 
 // The ground is a plane, not blocks: a field of grass a hundred metres across
@@ -88,14 +92,17 @@ for (let i = 0; i < 16; i++) {
 
 // ── the world ────────────────────────────────────────────────────────────
 
-let built: THREE.InstancedMesh[] = [];
+let built: THREE.Mesh[] = [];
 const state = { cutaway: false, scenery: true };
+// The voxelised creatures, fetched once. Until they arrive the scene draws the
+// hand-built ones, so the page is never empty waiting on a download.
+let vox: Record<string, VoxModel> = {};
 
 function raise() {
   const t0 = performance.now();
   for (const m of built) { m.geometry.dispose(); (m.material as THREE.Material).dispose(); scene.remove(m); }
   built = [];
-  const world = buildArkWorld({ cutaway: state.cutaway, scenery: state.scenery });
+  const world = buildArkWorld({ cutaway: state.cutaway, scenery: state.scenery, vox });
   doorLamp.position.set(world.door.x * COARSE, 2.2, (CUBITS.breadth - 4) * COARSE);
   doorLamp.visible = !state.cutaway;
   const a = world.coarse.build(COARSE);
@@ -107,8 +114,7 @@ function raise() {
   if (stats) {
     stats.textContent =
       `${CUBITS.length}×${CUBITS.breadth}×${CUBITS.height} 肘 · ${(CUBITS.length * CUBIT_M).toFixed(0)} m · `
-      + `${(a.drawn + b.drawn).toLocaleString()} blocks (ark ${a.drawn.toLocaleString()} at 1 cubit, `
-      + `camp ${b.drawn.toLocaleString()} at ¼ cubit) · ${ms} ms`;
+      + `${(a.drawn + b.drawn).toLocaleString()} blocks · ${((a.faces + b.faces) * 2).toLocaleString()} triangles · ${ms} ms`;
   }
 }
 
@@ -184,6 +190,8 @@ window.__voxel = { orbit, focus, place, state, raise };
 
 raise();
 place();
+void loadVoxSet(['sheep', 'cow', 'ox', 'ass', 'horse', 'swine', 'wolf'])
+  .then((got) => { if (Object.keys(got).length) { vox = got; raise(); } });
 press('b-scenery', true);
 press('v-wide', true);
 renderer.setAnimationLoop(() => renderer.render(scene, camera));
