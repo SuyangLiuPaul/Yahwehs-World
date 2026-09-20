@@ -106,6 +106,28 @@ export const PALETTE: Record<string, number> = {
   petalBlue: 0x6a94d8,
   petalRed: 0xd1483f,
   lilypad: 0x4f8a3a,
+  // ── added for the quarter-cubit creatures (src/voxel/creatures.ts) ──
+  // Appended, never reordered: the index is what a block stores.
+  eye: 0x1f1a16,           // a one-block dark dot, which is all a face needs
+  hoof: 0x3d3229,
+  horn: 0xb8a180,          // ram, goat and ox horn — bone, not wood
+  udder: 0xe3a89b,
+  giraffeCream: 0xe8d6a3,
+  giraffeSpot: 0x8f5a2a,
+  elephant: 0x8e8c90,      // a cool grey, so it is not the same stone as the yard
+  lionTawny: 0xcf9d55,
+  mane: 0x7b4b20,
+  assGrey: 0x8b8378,
+  goatDark: 0x4f3b2b,      // the Syrian goat is dark; a brown goat is a small ox
+  camelTan: 0xc7a06b,
+  henRust: 0xb56f3a,
+  chick: 0xf2d04c,
+  comb: 0xd0392b,
+  beak: 0xe6b73c,
+  robeOchre: 0xc4923f,
+  robePlum: 0x6f4b6e,
+  linen: 0xe9dfc8,
+  girdle: 0x5a3b22,
 };
 // A typo-proof list of the names, so a block placed with a name that is not in
 // the palette fails loudly at build time rather than rendering black.

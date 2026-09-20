@@ -1,5 +1,5 @@
 import { Grid, PALETTE } from './grid.ts';
-import { MODELS, stamp } from './creatures.ts';
+import { MODELS, measure, stamp } from './creatures.ts';
 import { stampVox, type VoxModel } from './vox.ts';
 import { PROPS, scatter } from './props.ts';
 import { paintGround, scatterTrees, scatterVegetation } from './terrain.ts';
@@ -37,9 +37,6 @@ export const CUBITS = { length: 300, breadth: 50, height: 30 } as const;
  *  eight, and a voxelised animal has room for ears and feet. The ark stays at
  *  one block to the cubit, where each block IS a stated measurement. */
 export const FINE = 8;
-/** Hand-built creatures in creatures.ts are authored at half a cubit a block,
- *  so they need blowing up by this much to stand in the fine grid. */
-const HANDMADE = FINE / 2;
 
 const L = CUBITS.length, W = CUBITS.breadth, H = CUBITS.height;
 
@@ -334,8 +331,8 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
     for (let x = x0; x <= x1; x++)
       for (let z = z0; z <= z1; z++)
         if (x === x0 || x === x1 || z === z0 || z === z1) {
-          if ((x + z) % 3 === 0) fine.box(x, groundY, z, x, groundY + 3, z, P.beam!);
-          fine.set(x, groundY + 2, z, P.beam!);
+          if ((x + z) % f(1) === 0) fine.box(x, groundY, z, x, groundY + f(1.4), z, P.beam!);
+          fine.set(x, groundY + f(0.9), z, P.beam!);
         }
   };
   fence(f(doorX - 26), rampFromZ + f(4), f(doorX - 7), rampFromZ + f(22));
@@ -363,7 +360,7 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
     { model: PROPS.basket!, count: 5 },
     { model: PROPS.chest!, count: 3 },
     { model: PROPS.strawBundle!, count: 6 },
-  ], { x0: f(doorX - 30), z0: rampFromZ + f(3), x1: f(doorX + 34), z1: rampFromZ + f(26),
+  ], { x0: f(doorX - 30), z0: rampFromZ + f(2), x1: f(doorX + 34), z1: rampFromZ + f(8),
        y: groundY, seed: 7, gap: 2, avoid: [
          // the ramp and its approach stay clear, or the beasts cannot get up
          { x0: f(doorX) - f(5), z0: rampFromZ, x1: f(doorX) + f(5), z1: rampFromZ + f(18) },
@@ -389,31 +386,46 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
        y: groundY, seed: 19, gap: 2 });
 
   // the beasts, two and two (Genesis 7:9), turned toward the ramp
+  // Spread wide. The beasts used to be laid out for the old hand-built models,
+  // which were a couple of cubits long; a voxelised elephant is eleven and a
+  // half, so two of them at two and a half cubits apart stood inside each
+  // other. The yard is forty cubits of frontage now, not twelve.
   const pairs: [keyof typeof MODELS, number, number][] = [
-    ['elephant', -24, 6], ['giraffe', -22, 15], ['ox', -14, 10], ['camel', 10, 8],
-    ['ass', 17, 15], ['lion', 21, 6], ['sheep', -10, 18], ['goat', -6, 12],
-    ['ram', 8, 19], ['chicken', 3, 21],
+    ['elephant', -46, 8], ['giraffe', -30, 6], ['ox', -20, 17],
+    ['camel', 14, 7], ['ass', 30, 17], ['lion', 44, 8],
+    ['sheep', -10, 21], ['goat', -2, 13], ['ram', 8, 22], ['chicken', 22, 23],
   ];
+  // TURN 1, not 3. Turn 3 maps the model's nose to −z, which pointed every
+  // beast away from the ramp it is queueing for; turn 1 faces them at it.
+  const FACING = 1;
   const beast = (kind: string, x: number, z: number, turn: number) => {
     const real = opts.vox?.[kind];
     if (real) stampVox(fine, real, [x, groundY, z], turn);
-    else if (MODELS[kind]) stamp(fine, MODELS[kind]!, [x, groundY, z], turn, HANDMADE);
+    else if (MODELS[kind]) stamp(fine, MODELS[kind]!, [x, groundY, z], turn, 1);
+  };
+  // How far apart the two of a pair stand: its OWN length plus a stride.
+  // A fixed two and a half cubits put the sheep politely side by side and
+  // stamped the second elephant through the first.
+  const pairGap = (kind: string) => {
+    const real = opts.vox?.[kind];
+    const len = real ? real.size[2] : (MODELS[kind] ? measure(MODELS[kind]!).length : f(2));
+    return Math.round(len * 1.35) + f(0.5);
   };
   for (const [kind, dx, dz] of pairs) {
     const x = f(doorX + dx), z = rampFromZ + f(dz);
-    beast(kind, x, z, 3);
-    beast(kind, x, z + f(2.5), 3);
+    beast(kind, x, z, FACING);
+    beast(kind, x, z + pairGap(kind), FACING);
   }
 
   // the eight: Noah, his wife, his three sons and their wives (Genesis 7:13)
   const eight: [keyof typeof MODELS, number][] = [
-    ['noah', -5], ['noahWife', -3.2], ['son', -1.4], ['sonWife', 0.4],
-    ['son', 2.2], ['sonWife', 4], ['son', 5.8], ['sonWife', 7.6],
+    ['noah', -6], ['noahWife', -4], ['son', -2], ['sonWife', 0],
+    ['son2', 2], ['sonWife2', 4], ['son3', 6], ['sonWife3', 8],
   ];
-  for (const [who, dx] of eight) beast(who, f(doorX + dx), rampFromZ + f(17), 3);
+  for (const [who, dx] of eight) beast(who, f(doorX + dx), rampFromZ + f(17), FACING);
 
   // two still at work on the stage
-  beast('worker', f(doorX + 14), rampFromZ + f(3), 3);
+  beast('worker', f(doorX + 14), rampFromZ + f(3), FACING);
   beast('worker', f(doorX + 30), rampFromZ + f(2), 2);
 
   // ── the furniture of a lived-in place ──────────────────────────────────
@@ -431,17 +443,10 @@ export function buildArkWorld(opts: BuildOptions = {}): World {
   stamp(fine, PROPS.lantern!, [f(doorX + doorW / 2 + 2), groundY, rampFromZ + 1], 0, 1);
   stamp(fine, PROPS.gate!, [f(doorX - 7), groundY, rampFromZ + f(13)], 0, 1);
 
-  // tents of the camp, off to one side — a pitched roof on four walls
-  const tent = (cx: number, cz: number, w: number) => {
-    for (let i = 0; i <= w; i++) {
-      const h = Math.round((w / 2 - Math.abs(i - w / 2)) * 1.3) + f(1);
-      fine.box(cx + i, groundY, cz, cx + i, groundY + h, cz + w, i % 5 === 0 ? P.tentDark! : P.tent!);
-      fine.box(cx + i, groundY, cz + w, cx + i, groundY + h, cz + w, P.tent!);
-    }
-  };
-  tent(f(doorX - 48), rampFromZ + f(6), f(6));
-  tent(f(doorX - 40), rampFromZ + f(14), f(5));
-  tent(f(doorX + 38), rampFromZ + f(10), f(6));
+  // The three hand-made tents that used to stand here were flat grey wedges
+  // and read as tarpaulins thrown over something. Until there is a tent worth
+  // looking at, the camp does without one; an empty patch is better than a
+  // bad prop, and the prop library has no tent yet.
 
   // ── the ground, the wood and the meadow ────────────────────────────────
   // All of this is terrain.ts: the ground and the water are painted on the
