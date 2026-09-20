@@ -113,11 +113,13 @@ class Vol {
     }
   }
 
-  /** Cuts the volume into boxes: same-colour runs along x, one box each. */
+  /** Cuts the volume into boxes: same-colour runs along x, one box each.
+   *  Anything below the ground is dropped — a rounded foot ends at y = 0. */
   compile(): Box[] {
     const rows = new Map<number, [number, Block][]>();
     for (const [k, c] of this.cells) {
       const [x, y, z] = unkey(k);
+      if (y < 0) continue;
       const rk = (y + H) * K + (z + H);
       let row = rows.get(rk);
       if (!row) rows.set(rk, row = []);

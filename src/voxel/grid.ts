@@ -149,6 +149,12 @@ export const PALETTE: Record<string, number> = {
   elephantDarkHide: 0x66615d,   // the folds: trunk rings, mouth, tail tuft
   tuskIvory: 0xefe6cf,
   toenailIvory: 0xd9cfb6,
+  // the cube-pet style (beasts-cute.ts): three tones of one hue, painted in
+  cuteTanTop: 0xf6c45a, cuteTan: 0xf0a030, cuteTanDark: 0xd07a30,
+  cutePatch: 0xb05a38, cuteHoof: 0xc06a3a,
+  cuteGreyTop: 0xb8bce4, cuteGrey: 0xa0a4d4, cuteGreyDark: 0x7a7ca0,
+  cuteLegGrey: 0x60607a, cuteEyeWhite: 0xf6f6fa, cutePupil: 0x2c2c3c,
+  cuteNose: 0xe07858, cuteTusk: 0xf4f0e8,
 };
 // A typo-proof list of the names, so a block placed with a name that is not in
 // the palette fails loudly at build time rather than rendering black.
@@ -238,12 +244,19 @@ export class Grid {
     // `ax`/`bx` are which axis index runs across the face — the ambient
     // occlusion below needs them to know where a corner's neighbours are.
     const FACES: { n: [number, number, number]; u: number; v: number; corners: [number, number, number][] }[] = [
-      { n: [1, 0, 0], u: 2, v: 1, corners: [[1, 0, 0], [1, 0, 1], [1, 1, 1], [1, 1, 0]] },
-      { n: [-1, 0, 0], u: 2, v: 1, corners: [[0, 0, 1], [0, 0, 0], [0, 1, 0], [0, 1, 1]] },
+      // WINDING. Four of these six used to be wound clockwise seen from outside,
+      // so with back-face culling on, any block whose +x, -x, +z or -z face
+      // pointed at the camera simply was not drawn — you looked through it to
+      // the far side. It went unnoticed for a long time because on the ark the
+      // hull is one block thick and the camera happened to sit on the side
+      // where the surviving faces were. The check is one line: for a face with
+      // outward normal n, (c1-c0) x (c2-c0) must point along n.
+      { n: [1, 0, 0], u: 2, v: 1, corners: [[1, 0, 0], [1, 1, 0], [1, 1, 1], [1, 0, 1]] },
+      { n: [-1, 0, 0], u: 2, v: 1, corners: [[0, 0, 1], [0, 1, 1], [0, 1, 0], [0, 0, 0]] },
       { n: [0, 1, 0], u: 0, v: 2, corners: [[0, 1, 1], [1, 1, 1], [1, 1, 0], [0, 1, 0]] },
       { n: [0, -1, 0], u: 0, v: 2, corners: [[0, 0, 0], [1, 0, 0], [1, 0, 1], [0, 0, 1]] },
-      { n: [0, 0, 1], u: 0, v: 1, corners: [[1, 0, 1], [0, 0, 1], [0, 1, 1], [1, 1, 1]] },
-      { n: [0, 0, -1], u: 0, v: 1, corners: [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]] },
+      { n: [0, 0, 1], u: 0, v: 1, corners: [[0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]] },
+      { n: [0, 0, -1], u: 0, v: 1, corners: [[1, 0, 0], [0, 0, 0], [0, 1, 0], [1, 1, 0]] },
     ];
     const at = (b: [number, number, number], d: number[]) => this.has(b[0] + d[0]!, b[1] + d[1]!, b[2] + d[2]!) ? 1 : 0;
 

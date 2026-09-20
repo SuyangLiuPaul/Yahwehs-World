@@ -23,7 +23,7 @@ import type { Block } from './grid.ts';
 
 type Cell = { x: number; y: number; z: number; block: Block };
 
-class Body {
+export class Body {
   private cells = new Map<number, Block>();
   private static key = (x: number, y: number, z: number) => ((x + 256) * 512 + (y + 256)) * 512 + (z + 256);
 
