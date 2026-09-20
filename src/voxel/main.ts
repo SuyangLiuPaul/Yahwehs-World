@@ -24,21 +24,43 @@ const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPrefere
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.setSize(innerWidth, innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
+// Neutral, not ACES. ACES converts through the AP1 gamut and shifts hue,
+// which is what flattens a saturated stylised palette; Neutral leaves any
+// pixel under 0.76 linear untouched.
+renderer.toneMapping = THREE.NeutralToneMapping;
 renderer.toneMappingExposure = 1.0;
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.type = THREE.PCFShadowMap;      // r182+: this is the soft one
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x9cc9f0);
+// A GRADIENT SKY, not a flat slab. The measurement of our old frame found the
+// top tenth of the image was one constant colour with a standard deviation of
+// zero, which reads as an unfinished scene more than anything else in it.
+const sky = new THREE.Mesh(
+  new THREE.SphereGeometry(900, 24, 16),
+  new THREE.ShaderMaterial({
+    side: THREE.BackSide, depthWrite: false, fog: false,
+    uniforms: { top: { value: new THREE.Color(0x88ccfc) }, bottom: { value: new THREE.Color(0xd6ecfa) } },
+    vertexShader: 'varying float vH; void main(){ vH = normalize(position).y; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+    fragmentShader: 'uniform vec3 top; uniform vec3 bottom; varying float vH; void main(){ gl_FragColor = vec4(mix(bottom, top, clamp(vH*1.6, 0.0, 1.0)), 1.0); }',
+  }),
+);
+scene.add(sky);
 // The far end of a hundred and thirty-four metres should go pale rather
 // than simply run out of frame: recession is what sells the length.
-scene.fog = new THREE.Fog(0xd9e6f0, 120, 420);
+scene.fog = new THREE.Fog(0xdcd3bd, 130, 460);
 
 // A bright, kind morning: a low sun from the left, a blue sky bounce and a
 // warm bounce off the ground, which is what keeps the side of a plank the sun
 // misses from going black.
-const sun = new THREE.DirectionalLight(0xfff1d6, 2.2);
+// THE RATIO IS THE LOOK. Measured off Townscaper and corroborated by
+// MagicaVoxel's own shipped defaults (sun 0.6, sky 0.7): the cosy look is
+// FILL-DOMINANT — the sky gives more light than the sun, about 1.28×. This
+// scene had it backwards, sun 2.2 against a 0.8 sky, which is why it read
+// hard and contrasty where the reference reads soft.
+// (Intensities are ~3× what they would have been before three r155, which
+// stopped scaling lights by π internally.)
+const sun = new THREE.DirectionalLight(0xffd9a0, 3.5);
 // Lower and further round than it was. A high sun lights the roof and leaves
 // the whole side of the hull — the thing you are actually looking at — in its
 // own shade; a raking sun from over the camera's shoulder picks out every rib
@@ -53,9 +75,12 @@ sun.shadow.camera.left = -S; sun.shadow.camera.right = S;
 sun.shadow.camera.top = S; sun.shadow.camera.bottom = -S;
 sun.shadow.camera.updateProjectionMatrix();
 sun.shadow.bias = -0.0012;
-const fill = new THREE.DirectionalLight(0xffe0b0, 0.4);
+const fill = new THREE.DirectionalLight(0xffe0b0, 0.5);
 fill.position.set(140, 90, 180);          // over the camera's shoulder, no shadows
-scene.add(sun, fill, new THREE.HemisphereLight(0xcfe3ff, 0xb8a070, 0.8));
+// A COOL ground bounce, not a warm one. A warm ground tint drives the shadow
+// side warm; every measurement of the reference look has shadows going COOL
+// (red/blue ratio about 0.66) while the lit faces go warm.
+scene.add(sun, fill, new THREE.HemisphereLight(0x9fc2d6, 0x6d7f74, 4.5));
 
 // A lamp in the doorway. One point light, and it does the job the reference
 // picture's glowing door does: it says the way in is open and somebody is home.

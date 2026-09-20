@@ -28,7 +28,7 @@ export const PALETTE: Record<string, number> = {
   beam: 0x6f4d2c,          // posts and beams
   roof: 0xc4a070,          // the covering
   door: 0x4a3218,
-  grass: 0x84a558,
+  grass: 0x9aa254,
   dirt: 0x8a6a45,
   sand: 0xcbb187,
   water: 0x3f7fa6,
@@ -78,9 +78,9 @@ export const PALETTE: Record<string, number> = {
   // Appended, never reordered: the entries above are referenced by name
   // from the creatures and the ark, and a field is only ever painted from
   // here. Three greens for grass because one green is a billiard table.
-  grassLight: 0x93b063,
-  grassDark: 0x66854a,
-  grassDry: 0xaeae6a,
+  grassLight: 0xb2b062,
+  grassDark: 0x7c8447,
+  grassDry: 0xc2b46b,
   dirtDark: 0x715539,
   dirtLight: 0xa48c66,
   mud: 0x5f4a33,
@@ -249,21 +249,42 @@ export class Grid {
           const oc = [n[0], n[1], n[2]]; oc[face.u] = oc[face.u]! + du; oc[face.v] = oc[face.v]! + dv;
           const s1 = at(here, o1), s2 = at(here, o2);
           const level = (s1 && s2) ? 0 : 3 - (s1 + s2 + at(here, oc));
-          ao.push(0.62 + 0.38 * (level / 3));
+          // THE CURVE MATTERS, AND IT IS NOT LINEAR IN WHAT YOU SEE.
+          // A BufferAttribute's colours are in LINEAR space, and three.js
+          // converts to sRGB on output — so an evenly spaced ramp lands
+          // unevenly on screen. These four values are chosen in linear space
+          // to display as roughly 0.66 / 0.79 / 0.90 / 1.00.
+          ao.push([0.39, 0.58, 0.79, 1.0][level]!);
         }
 
         // the block's own shade, hashed off its position, so a wall of one
         // colour still reads as separate planks
+        // KILLING THE FLAT FACE. A measurement of our render against the
+        // reference counted 1,704 distinct colours in ours against 9,134 in
+        // theirs, and found one 32-pixel tile in six to be a single solid
+        // colour. Nothing in a painted scene is one flat colour, and the fix
+        // costs nothing: two hashes, at two different scales.
+        //   · per-block jitter, so no two bricks match;
+        //   · a RUN at plank scale, so a wall reads as boards laid in courses
+        //     rather than as a field of confetti.
         const h = ((x * 73856093) ^ (y * 19349663) ^ (z * 83492791)) >>> 0;
-        const jitter = 0.94 + ((h % 100) / 100) * 0.12;
+        const run = ((Math.floor(x / 7) * 2654435761) ^ (y * 40503) ^ (Math.floor(z / 7) * 2246822519)) >>> 0;
+        const jitter = (0.91 + ((h % 100) / 100) * 0.18) * (0.94 + ((run % 100) / 100) * 0.12);
 
         const base = pos.length / 3;
         for (let i = 0; i < 4; i++) {
           const corner = face.corners[i]!;
           pos.push((x + corner[0]) * blockSize, (y + corner[1]) * blockSize, (z + corner[2]) * blockSize);
           nor.push(n[0], n[1], n[2]);
-          c.setHex(colour).multiplyScalar(jitter * ao[i]!);
-          col.push(c.r, c.g, c.b);
+          // Shadowed blocks go COOL as well as dark. ephtracy's own face table
+          // in MagicaVoxel does the same thing — his lit top is (1.17, 1.15,
+          // 1.25) and his shadow side (0.37, 0.35, 0.55), so blue climbs as
+          // the face darkens. A purely neutral multiply is what makes voxel
+          // ambient occlusion read as soot.
+          const a = ao[i]!;
+          c.setHex(colour).multiplyScalar(jitter * a);
+          const cool = (1 - a) * 0.22;
+          col.push(c.r * (1 - cool), c.g * (1 - cool * 0.7), c.b * (1 + cool * 0.5));
         }
         // split the quad along its darker diagonal, or a face with one dark
         // corner shows an obvious seam across it
