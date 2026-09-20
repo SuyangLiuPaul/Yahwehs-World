@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { buildAtlas, tileSpan } from './atlas.ts';
 
 // A WORLD MADE OF BLOCKS, MEASURED IN CUBITS.
 //
@@ -128,6 +129,26 @@ export const PALETTE: Record<string, number> = {
   robePlum: 0x6f4b6e,
   linen: 0xe9dfc8,
   girdle: 0x5a3b22,
+  // the bake-off beasts (beasts-opus.ts). The NAME carries the texture
+  // pattern atlas.ts picks, so "hide" gets soft noise and "mane" gets hair.
+  giraffeHide: 0xe0b878,
+  giraffePatch: 0xa9682f,
+  giraffeMuzzle: 0xd8c4a2,
+  giraffeMane: 0x8a5a2c,
+  elephantHide: 0x9aa0a4,
+  elephantEar: 0x8b9195,
+  elephantFoot: 0x777d81,
+  elephantTail: 0x6f7478,
+  tusk: 0xf2ece0,
+  // the other bake-off entrant (beasts-fable.ts). Appended after the block
+  // above, never reordered; "hide" and "hair" pick the soft-noise tile.
+  giraffeTanHide: 0xe6cf9a,     // the cream ground of the coat
+  giraffePatchHide: 0x8a4a1e,   // the liver patches
+  giraffeManeHair: 0x40291a,    // mane, ossicones, muzzle, tail tuft
+  elephantGreyHide: 0x8a8580,   // a dusty warm grey, not the yard's stone
+  elephantDarkHide: 0x66615d,   // the folds: trunk rings, mouth, tail tuft
+  tuskIvory: 0xefe6cf,
+  toenailIvory: 0xd9cfb6,
 };
 // A typo-proof list of the names, so a block placed with a name that is not in
 // the palette fails loudly at build time rather than rendering black.
@@ -205,9 +226,12 @@ export class Grid {
    * one dark corner shows an obvious seam.
    */
   build(blockSize: number): { mesh: THREE.Mesh; drawn: number; hidden: number; faces: number } {
-    const pos: number[] = [], nor: number[] = [], col: number[] = [], idx: number[] = [];
+    const pos: number[] = [], nor: number[] = [], col: number[] = [], idx: number[] = [], uvs: number[] = [];
+    // One 16×16 tile per material, so a face is a little picture of the stuff
+    // it is made of instead of a flat colour (atlas.ts).
+    const atlas = buildAtlas();
+    const span = tileSpan(atlas);
     let drawn = 0, hidden = 0, faces = 0;
-    const c = new THREE.Color();
 
     // The six faces. Each carries its outward normal, the two in-plane axes,
     // and the four corners of the quad wound anticlockwise seen from outside.
@@ -272,19 +296,30 @@ export class Grid {
         const jitter = (0.91 + ((h % 100) / 100) * 0.18) * (0.94 + ((run % 100) / 100) * 0.12);
 
         const base = pos.length / 3;
+        const [u0, v0] = atlas.uvOf(colour);
+        // The face's own two in-plane axes pick which way the little texture
+        // lies, so planking runs along a wall rather than up it.
+        const CORNER_UV: [number, number][] = [[0, 0], [1, 0], [1, 1], [0, 1]];
         for (let i = 0; i < 4; i++) {
           const corner = face.corners[i]!;
           pos.push((x + corner[0]) * blockSize, (y + corner[1]) * blockSize, (z + corner[2]) * blockSize);
           nor.push(n[0], n[1], n[2]);
-          // Shadowed blocks go COOL as well as dark. ephtracy's own face table
-          // in MagicaVoxel does the same thing — his lit top is (1.17, 1.15,
+          const [tu, tv] = CORNER_UV[i]!;
+          uvs.push(u0 + tu * span, v0 + tv * span);
+          // THE COLOUR NOW LIVES IN THE TEXTURE, so the vertex colour carries
+          // only what modulates it: the ambient occlusion and the two scales
+          // of hashed variation. Multiplying the palette colour in here as
+          // well would square it and the whole scene would go black.
+          //
+          // Shadowed blocks go COOL as well as dark. ephtracy's own face
+          // table in MagicaVoxel does the same — his lit top is (1.17, 1.15,
           // 1.25) and his shadow side (0.37, 0.35, 0.55), so blue climbs as
-          // the face darkens. A purely neutral multiply is what makes voxel
-          // ambient occlusion read as soot.
+          // the face darkens. A neutral multiply is what makes voxel ambient
+          // occlusion read as soot.
           const a = ao[i]!;
-          c.setHex(colour).multiplyScalar(jitter * a);
+          const k = jitter * a;
           const cool = (1 - a) * 0.22;
-          col.push(c.r * (1 - cool), c.g * (1 - cool * 0.7), c.b * (1 + cool * 0.5));
+          col.push(k * (1 - cool), k * (1 - cool * 0.7), k * (1 + cool * 0.5));
         }
         // split the quad along its darker diagonal, or a face with one dark
         // corner shows an obvious seam across it
@@ -301,9 +336,12 @@ export class Grid {
     geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
     geo.setAttribute('normal', new THREE.Float32BufferAttribute(nor, 3));
     geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+    geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
     geo.setIndex(idx);
     geo.computeBoundingSphere();
-    const mesh = new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ vertexColors: true }));
+    // The map carries the material; the vertex colours carry the block's own
+    // tint, its hashed variation and its ambient occlusion. They multiply.
+    const mesh = new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ vertexColors: true, map: atlas.texture }));
     mesh.castShadow = true;
     mesh.receiveShadow = true;
     return { mesh, drawn, hidden, faces };
