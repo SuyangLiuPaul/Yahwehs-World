@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { makeElephant, makeGiraffe } from './beasts.ts';
+import { makeElephant as fableElephant, makeGiraffe as fableGiraffe } from './beasts-fable.ts';
 
 // The two animals, alone, on a plain olive ground. Drag to turn; the buttons
 // choose one or both. No texture, no post-processing: the look is the flat
@@ -34,28 +35,44 @@ scene.add(new THREE.AmbientLight(0xfff6e8, 0.35));
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshLambertMaterial({ color: GROUND }));
 ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
 
-const giraffe = makeGiraffe(), elephant = makeElephant();
-giraffe.position.set(0, 0, 0); elephant.position.set(0, 0, 0);
+// ?by=opus | fable | vs — the last stands the two authors' animals side by
+// side under exactly this scene's light, which is the only fair comparison.
+const q0 = new URLSearchParams(location.search);
+const by = (q0.get('by') ?? 'opus') as 'opus' | 'fable' | 'vs';
+const giraffe = by === 'fable' ? fableGiraffe() : makeGiraffe();
+const elephant = by === 'fable' ? fableElephant() : makeElephant();
 scene.add(giraffe, elephant);
+const rival = by === 'vs' ? { giraffe: fableGiraffe(), elephant: fableElephant() } : null;
+if (rival) scene.add(rival.giraffe, rival.elephant);
 
 const view = { yaw: 0.6, pitch: 0.14, mode: 'both' as 'both' | 'giraffe' | 'elephant' };
 const camera = new THREE.PerspectiveCamera(30, innerWidth / innerHeight, 0.1, 300);
 
 function layout() {
-  // both animals face +x, so a row along x puts them side by side on screen
-  // when the camera looks from the front-right, without one hiding the other
   const both = view.mode === 'both';
   giraffe.visible = view.mode !== 'elephant';
   elephant.visible = view.mode !== 'giraffe';
-  giraffe.position.set(both ? -4.4 : 0, 0, 0);
-  elephant.position.set(both ? 2.4 : 0, 0, 0);
+  if (rival) {
+    // MINE ON THE LEFT, THE RIVAL'S ON THE RIGHT, side by side at the same
+    // depth. Standing them in two rows one behind the other looked like a
+    // comparison but was not one: the nearer pair is simply bigger.
+    const gap = view.mode === 'elephant' ? 5.2 : 3.6;
+    giraffe.position.set(both ? -4.4 : -gap, 0, both ? -2.6 : 0);
+    elephant.position.set(both ? 2.4 : -gap, 0, both ? -2.6 : 0);
+    rival.giraffe.visible = giraffe.visible; rival.elephant.visible = elephant.visible;
+    rival.giraffe.position.set(both ? -4.4 : gap, 0, both ? 3.4 : 0);
+    rival.elephant.position.set(both ? 2.4 : gap, 0, both ? 3.4 : 0);
+  } else {
+    giraffe.position.set(both ? -4.4 : 0, 0, 0);
+    elephant.position.set(both ? 2.4 : 0, 0, 0);
+  }
   place();
 }
 
 function place() {
   const both = view.mode === 'both';
   const tall = view.mode === 'elephant' ? 3.8 : 6.5;
-  const width = both ? 16 : view.mode === 'elephant' ? 7 : 5;
+  const width = (rival ? (both ? 1.35 : 2.4) : 1) * (both ? 16 : view.mode === 'elephant' ? 7 : 5);
   const half = THREE.MathUtils.degToRad(camera.fov) / 2;
   const aspect = innerWidth / innerHeight;
   const dist = Math.max((tall * 1.25) / 2 / Math.tan(half), (width * 1.1) / 2 / Math.tan(half) / aspect);
@@ -96,7 +113,8 @@ layout();
 document.getElementById(`b-${view.mode}`)?.setAttribute('aria-pressed', 'true');
 let tris = 0;
 for (const m of [giraffe, elephant]) tris += m.geometry.getAttribute('position').count / 3;
-const stats = document.getElementById('stats'); if (stats) stats.textContent = `giraffe ${(giraffe.geometry.getAttribute('position').count / 3).toLocaleString()} tris · elephant ${(elephant.geometry.getAttribute('position').count / 3).toLocaleString()} tris · no textures`;
+const who = by === 'vs' ? 'left: Opus · right: Fable' : by;
+const stats = document.getElementById('stats'); if (stats) stats.textContent = `${who} — giraffe ${(giraffe.geometry.getAttribute('position').count / 3).toLocaleString()} tris · elephant ${(elephant.geometry.getAttribute('position').count / 3).toLocaleString()} tris · no textures`;
 renderer.setAnimationLoop(() => renderer.render(scene, camera));
 (window as unknown as { __ready: boolean }).__ready = true;
 void tris;

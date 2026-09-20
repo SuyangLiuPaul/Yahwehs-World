@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>fable low-poly beasts — scratch review page</title>
+  <!-- SCRATCH, dev only, not in the build: src/lowpoly/beasts-fable.ts on the
+       same olive ground and lights as lowpoly.html, framed for a screenshot.
+         ?who=both|giraffe|elephant   ?yaw=35 (deg; 0 = side view, 90 = nose on)
+         ?pitch=12 (deg)   ?frac=0.8 (tallest model as a fraction of frame height) -->
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #98a64c; }
+    #stage { display: block; width: 100vw; height: 100vh; }
+    #stats { position: fixed; top: 8px; left: 10px; font: 12px ui-monospace, monospace; color: rgba(40,40,10,.75); }
+  </style>
+</head>
+<body>
+  <canvas id="stage"></canvas>
+  <div id="stats"></div>
+  <script type="module">
+    import * as THREE from 'three';
+    import { makeGiraffe, makeElephant } from '/src/lowpoly/beasts-fable.ts';
+
+    const q = new URLSearchParams(location.search);
+    const who = q.get('who') ?? 'both';
+    const yaw = THREE.MathUtils.degToRad(Number(q.get('yaw') ?? 35));
+    const pitch = THREE.MathUtils.degToRad(Number(q.get('pitch') ?? 12));
+    const frac = Number(q.get('frac') ?? 0.8);
+
+    const canvas = document.getElementById('stage');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
+    renderer.setPixelRatio(1);
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.NeutralToneMapping;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
+
+    const GROUND = 0x98a64c;
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(GROUND);
+    const sun = new THREE.DirectionalLight(0xfff0d8, 2.8);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(2048, 2048);
+    Object.assign(sun.shadow.camera, { left: -12, right: 12, top: 12, bottom: -12, near: 1, far: 40 });
+    sun.shadow.bias = -0.0005; sun.shadow.normalBias = 0.03;
+    scene.add(sun, sun.target, new THREE.HemisphereLight(0xdfeaff, 0xa0ad58, 2.3));
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshLambertMaterial({ color: GROUND }));
+    ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+
+    const giraffe = makeGiraffe(), elephant = makeElephant();
+    const placed = [];
+    if (who === 'both' || who === 'giraffe') { giraffe.position.set(who === 'both' ? -4.2 : 0, 0, 0); scene.add(giraffe); placed.push(giraffe); }
+    if (who === 'both' || who === 'elephant') { elephant.position.set(who === 'both' ? 2.6 : 0, 0, 0); scene.add(elephant); placed.push(elephant); }
+
+    // frame: the union box of what is placed fills `frac` of the frame height
+    const box = new THREE.Box3();
+    for (const m of placed) box.expandByObject(m);
+    const size = box.getSize(new THREE.Vector3()), centre = box.getCenter(new THREE.Vector3());
+    const camera = new THREE.PerspectiveCamera(30, innerWidth / innerHeight, 0.1, 300);
+    const half = THREE.MathUtils.degToRad(camera.fov) / 2;
+    const aspect = innerWidth / innerHeight;
+    const dist = Math.max((size.y / frac) / 2 / Math.tan(half), (Math.hypot(size.x, size.z) / frac) / 2 / Math.tan(half) / aspect);
+    // yaw 0 looks along -z at the flank; positive yaw walks round toward the nose (+x)
+    camera.position.set(
+      centre.x + Math.sin(yaw) * Math.cos(pitch) * dist,
+      centre.y + Math.sin(pitch) * dist,
+      centre.z + Math.cos(yaw) * Math.cos(pitch) * dist);
+    camera.lookAt(centre);
+    const sy = yaw + 0.55;
+    sun.position.set(centre.x + Math.sin(sy) * 10, centre.y + 8, centre.z + Math.cos(sy) * 10);
+    sun.target.position.copy(centre); sun.target.updateMatrixWorld();
+
+    const tris = (m) => m.geometry.getAttribute('position').count / 3;
+    const attrs = (m) => Object.keys(m.geometry.attributes).join('+');
+    const bb = (m) => { const b = new THREE.Box3().setFromObject(m); return [b.min, b.max].map((v) => v.toArray().map((n) => n.toFixed(2)).join(',')).join(' → '); };
+    window.__info = { giraffe: { tris: tris(giraffe), attrs: attrs(giraffe), box: bb(giraffe), indexed: !!giraffe.geometry.index },
+                      elephant: { tris: tris(elephant), attrs: attrs(elephant), box: bb(elephant), indexed: !!elephant.geometry.index } };
+    document.getElementById('stats').textContent = `giraffe ${tris(giraffe)} tris · elephant ${tris(elephant)} tris`;
+    window.__frames = 0;
+    renderer.setAnimationLoop(() => { renderer.render(scene, camera); window.__frames++; });
+  </script>
+</body>
+</html>
