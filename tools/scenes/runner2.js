@@ -33,10 +33,14 @@ async function attach(){
  const form=document.querySelector('#prompt-textarea').closest('form');
  for(let k=0;k<60;k++){await sleep(1000);if(form.querySelectorAll('img').length>=3)break}
  await sleep(5000);return form.querySelectorAll('img').length>=3}
-async function sendText(t){const ta=document.querySelector('#prompt-textarea');ta.focus();document.execCommand('selectAll',false);document.execCommand('insertText',false,t);await sleep(1200);
+const limitDialog=()=>[...document.querySelectorAll('[role=dialog]')].some(d=>/Too many requests/i.test(d.innerText||''));
+async function sendText(t){
+ for(let a=0;a<3;a++){const ta=document.querySelector('#prompt-textarea');ta.focus();document.execCommand('selectAll',false);document.execCommand('insertText',false,t);await sleep(1500);
+  if((ta.innerText||'').trim().length>=Math.min(t.length,300)*0.9)break; if(a===2)return false}
  for(let k=0;k<40;k++){const b=document.querySelector('[data-testid="send-button"]');if(b&&!b.disabled){b.click();return true}await sleep(500)}return false}
 async function waitDone(n0,ms){const t0=Date.now();let idle=0;
  while(Date.now()-t0<ms){await sleep(5000);
+  if(limitDialog())return 'limit';
   const done=!stopBtn();const n=gen().length;
   if(done&&n>n0){idle++;if(idle>=3)return 'image'}
   else if(done){idle++;if(idle>=10)return /limit|too many|later|come back/i.test(lastText())?'limit':'noimage'}
@@ -51,6 +55,7 @@ R.run=async function(rows){if(R.busy)return 'busy';R.busy=true;R.halted=null;
  try{if(!R.files)await R.loadRefs()}catch(e){R.halted='refs';R.busy=false;return 'refs: '+e}
  for(const r of rows){if(R.halted)break;
   const t0=Date.now();const rec={id:r[0]};
+  if(limitDialog()){rec.st='limit';R.log.push(rec);R.halted='limit';break}
   if(R.inChat===0||R.inChat>=R.perChat){
    R.inChat=0;
    if(!(await newChat())){rec.st='nonewchat';R.log.push(rec);R.halted='nonewchat';break}
@@ -61,7 +66,7 @@ R.run=async function(rows){if(R.busy)return 'busy';R.busy=true;R.halted=null;
   const st=await waitDone(n0,12*60000);rec.st=st;rec.url=location.pathname;rec.sec=Math.round((Date.now()-t0)/1000);
   if(st==='image'||gen().length>n0){await sleep(2500);try{Object.assign(rec,await saveImg(gen().pop(),r[0]+(r[5]||'')+'.png'))}catch(e){rec.err=String(e)}}
   else rec.text=lastText().slice(0,200);
-  R.log.push(rec);try{localStorage.setItem('__R2log',JSON.stringify(R.log))}catch(e){}
+  R.log.push(rec);try{localStorage.setItem('__R2log',JSON.stringify(R.log));localStorage.setItem('__QREST',JSON.stringify(rows.slice(rows.indexOf(r)+(rec.ok?1:0))))}catch(e){}
   if(st==='limit'){R.halted='limit';break}
   if(rec.ok){R.fails=0}else{R.inChat=R.perChat;if(++R.fails>=3){R.halted='fails';break}}
   await sleep((R.min+Math.random()*(R.max-R.min))*1000)}
