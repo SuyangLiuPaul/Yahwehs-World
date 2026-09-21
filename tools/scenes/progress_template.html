@@ -280,6 +280,7 @@ document.onkeydown = e => {
 
 setInterval(() => { if (S.auto && cur < 0) location.reload(); }, 60000);
 if (D.site && 'serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+if (innerWidth < 820) $('bkwrap').removeAttribute('open');
 update();
 </script>
 </body>
