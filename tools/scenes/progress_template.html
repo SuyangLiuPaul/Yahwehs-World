@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>事件图进度</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#faf6ea">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="事件图">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
 :root{
   --bg:#faf6ea;--panel:#fffdf6;--ink:#3b3222;--mute:#8a7d62;--line:#e3d9bd;--gold:#c8963e;
@@ -136,6 +144,7 @@ const E = D.events, BOOKS = D.books;
 const LABEL = {ok:'已通过', new:'待审核', redo:'返工中', bad:'放弃', todo:'未做'};
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const full = id => D.site ? `full/${id}.jpg` : `raw/${id}.png`;
 const madeSet = e => e.st === 'ok' || e.st === 'new' || e.st === 'bad';
 
 // filter state, kept in the URL hash so a refresh keeps the view
@@ -144,7 +153,7 @@ try { Object.assign(S, JSON.parse(decodeURIComponent(location.hash.slice(1)))); 
 const save = () => { try { history.replaceState(null, '', '#' + encodeURIComponent(JSON.stringify(S))); } catch (e) {} };
 
 function ago(t) {
-  const s = D.now - t;
+  const s = Date.now() / 1000 - t;
   if (s < 90) return '刚刚';
   if (s < 3600) return Math.round(s / 60) + ' 分钟前';
   if (s < 86400) return Math.round(s / 3600) + ' 小时前';
@@ -248,9 +257,9 @@ let cur = -1;
 function open(i) {
   cur = i; const e = list[i]; if (!e) return;
   $('lb').classList.add('show');
-  $('lbi').src = madeSet(e) ? `raw/${e.id}.png` : '';
+  $('lbi').src = madeSet(e) ? full(e.id) : '';
   $('lbi').style.display = madeSet(e) ? '' : 'none';
-  const rej = e.rej.map(f => `<a href="rejected/${f}" target="_blank" title="${esc(f)}"><img src="thumbs/${f.replace('.png', '.jpg')}" alt=""></a>`).join('');
+  const rej = e.rej.map(f => `<a href="${D.site ? 'thumbs/' + f.replace('.png', '.jpg') : 'rejected/' + f}" target="_blank" title="${esc(f)}"><img src="thumbs/${f.replace('.png', '.jpg')}" alt=""></a>`).join('');
   $('lbm').innerHTML = `<h2>${esc(e.zh)}</h2><div class="en">${esc(e.en)}</div>
     <div class="ref">${esc(e.refZh)}</div>
     <p><span class="badge" style="background:var(--${e.st === 'bad' ? 'redo' : e.st})">${LABEL[e.st]}</span></p>
@@ -258,7 +267,7 @@ function open(i) {
     <p class="meta">${e.made ? '生成于 ' + when(e.made) + '（' + ago(e.made) + '）<br>' : ''}事件 ${e.i + 1} / ${total} · ${esc(e.id)}${e.y != null ? '<br>年代 ' + (e.y < 0 ? '公元前 ' + (-e.y) : '公元 ' + e.y) : ''}</p>
     ${e.note ? `<p class="meta">审核意见：${esc(e.note)}</p>` : ''}
     ${e.rej.length ? `<p class="meta">被拒收的旧版（${e.rej.length}）：</p><div class="rej">${rej}</div>${e.rejNotes.map(t => `<p class="meta">· ${esc(t)}</p>`).join('')}` : ''}
-    ${madeSet(e) ? `<p class="meta"><a href="raw/${e.id}.png" target="_blank" style="color:var(--gold)">在新窗口打开原图</a></p>` : ''}`;
+    ${madeSet(e) ? `<p class="meta"><a href="${full(e.id)}" target="_blank" style="color:var(--gold)">在新窗口打开原图</a></p>` : ''}`;
 }
 const close = () => { $('lb').classList.remove('show'); cur = -1; };
 const step = d => { if (cur >= 0) open((cur + d + list.length) % list.length); };
@@ -270,6 +279,7 @@ document.onkeydown = e => {
 };
 
 setInterval(() => { if (S.auto && cur < 0) location.reload(); }, 60000);
+if (D.site && 'serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 update();
 </script>
 </body>
