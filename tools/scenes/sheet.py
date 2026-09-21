@@ -1,18 +1,23 @@
 """Contact sheet for review: per picture, the title/card corner at full detail and the whole picture small.
 
-    python3 tools/scenes/sheet.py out.png id1 id2 ... [--dir raw_dir]
+    python3 tools/scenes/sheet.py out.png id1 id2 ... [--dir raw_dir] [--big]
+--big: each picture whole at 1400 px wide (2 per sheet) so hands, legs and feet can be counted.
 """
 import sys, os
 from PIL import Image, ImageDraw
 a = sys.argv[1:]
 out = a[0]
 d = a[a.index("--dir") + 1] if "--dir" in a else "/Users/pliu0036/Documents/CodingProject/assets-scenes/raw"
-ids = [x for x in a[1:] if x != "--dir" and x != d]
-W = 1500
+big = "--big" in a
+ids = [x for x in a[1:] if x not in ("--dir", "--big") and x != d]
+W = 1400 if big else 1500
 tiles = []
 for i in ids:
     im = Image.open(os.path.join(d, i + ".png")).convert("RGB")
     w, h = im.size
+    if big:
+        b = im.resize((1400, int(1400 * h / w))); t = Image.new("RGB", (1400, b.height + 20), "white"); t.paste(b, (0, 20))
+        ImageDraw.Draw(t).text((6, 4), i, fill="black"); tiles.append(t); continue
     crop = im.crop((0, 0, int(w * .34), int(h * .30))).resize((560, int(560 * (h * .30) / (w * .34))))
     whole = im.resize((640, int(640 * h / w)))
     t = Image.new("RGB", (W, max(crop.height, whole.height) + 26), "white")
