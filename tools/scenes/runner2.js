@@ -1,4 +1,4 @@
-// One NEW ChatGPT chat per picture (long chats stall; a fresh one is more stable). Paste into the page of any
+// A fresh ChatGPT chat every R.perChat (=5) pictures (very long chats stall; owner's tip 2026-09-21). Paste into the page of any
 // chatgpt.com tab via javascript_exec, then:  __R2.run(rows)   (row = [id, zh, en, refZh, summary, suffix?, note?]).
 // The three reference pictures are re-fetched from the owner's own first chat (their attachment ids are in
 // __R2.refIds) and attached to every new chat through the page's own file input, so no file ever leaves the browser.
@@ -7,7 +7,7 @@
 (()=>{
 if(window.__R2){return 'exists'}
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-const R={log:[],halted:null,busy:false,min:20,max:60,stallMin:6,files:null,fails:0,
+const R={log:[],halted:null,busy:false,min:20,max:60,stallMin:6,files:null,fails:0,perChat:5,inChat:0,
  refIds:["file_0000000072fc81fa82b8b798360da03b","file_000000002378820bbfd8a87a0c18dfd2","file_000000006324820b822da55798fe9668"],
  refNames:["ref-ark.jpg","ref-a.jpg","ref-b.jpg"]};
 R.tpl=(r)=>{const [id,zh,en,ref,sm]=r;return `Make the next picture in the same style as the three reference pictures in this chat: an isometric three-quarter top-down Minecraft-like voxel / chamfered-block diorama game screen, warm golden light, painterly soft shading, dense lively detail, tiny blocky people and animals, rich props, 16:9 landscape. Bible event: "${en}" (${ref}). Chinese title: ${zh}. Illustrate this event faithfully as a concrete scene. If the passage is a letter, a law, a psalm, a prophecy or a list, draw what it is about as a real scene with people and objects. Keep the same screen layout as the references: title with a small icon at top-left (Chinese title large, English title smaller under it), a parchment card beneath it, resource counters and two round buttons at top-right, and a row of three wooden buttons at the bottom. Text in the picture must be spelled exactly: title "${zh}" and "${en}"; the card shows "${ref}" and the line "${sm}"; the counters show 320, 180, 240; the three bottom buttons read "探索 Explore", "人物 People", "地图 Map". No other text anywhere. Rules: every man has short hair; ancient Near-Eastern clothing, nothing modern; every person has exactly two legs and two feet. Jesus, if the event has him, is shown with short hair cut above the ears and collar, gentle and majestic. God, if the event has him, is shown as a kind and majestic figure in radiant light, or as light and cloud alone.`+(r[6]?' '+r[6]:'')};
@@ -51,16 +51,19 @@ R.run=async function(rows){if(R.busy)return 'busy';R.busy=true;R.halted=null;
  try{if(!R.files)await R.loadRefs()}catch(e){R.halted='refs';R.busy=false;return 'refs: '+e}
  for(const r of rows){if(R.halted)break;
   const t0=Date.now();const rec={id:r[0]};
-  if(!(await newChat())){rec.st='nonewchat';R.log.push(rec);R.halted='nonewchat';break}
-  if(!(await attach())){rec.st='noattach';R.log.push(rec);if(++R.fails>=3){R.halted='noattach';break}continue}
+  if(R.inChat===0||R.inChat>=R.perChat){
+   R.inChat=0;
+   if(!(await newChat())){rec.st='nonewchat';R.log.push(rec);R.halted='nonewchat';break}
+   if(!(await attach())){rec.st='noattach';R.log.push(rec);if(++R.fails>=3){R.halted='noattach';break}continue}}
   const n0=gen().length;
   if(!(await sendText(R.tpl(r)))){rec.st='nosend';R.log.push(rec);R.halted='nosend';break}
+  R.inChat++;
   const st=await waitDone(n0,12*60000);rec.st=st;rec.url=location.pathname;rec.sec=Math.round((Date.now()-t0)/1000);
   if(st==='image'||gen().length>n0){await sleep(2500);try{Object.assign(rec,await saveImg(gen().pop(),r[0]+(r[5]||'')+'.png'))}catch(e){rec.err=String(e)}}
   else rec.text=lastText().slice(0,200);
   R.log.push(rec);try{localStorage.setItem('__R2log',JSON.stringify(R.log))}catch(e){}
   if(st==='limit'){R.halted='limit';break}
-  if(rec.ok){R.fails=0}else if(++R.fails>=3){R.halted='fails';break}
+  if(rec.ok){R.fails=0}else{R.inChat=R.perChat;if(++R.fails>=3){R.halted='fails';break}}
   await sleep((R.min+Math.random()*(R.max-R.min))*1000)}
  R.busy=false;return 'finished'};
 window.__R2=R;return 'ready'})()
