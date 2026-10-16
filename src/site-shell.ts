@@ -46,12 +46,15 @@ export function pageReady() {
 
 /** What is built, in the order the nav has it. `zh` is the long reading. */
 const BUILT: { href: string; zh: string; en: string; noteZh: string; noteEn: string }[] = [
-  { href: '/', zh: '圣经世界', en: 'The globe', noteZh: '1,443 个事件，落在地球上', noteEn: '1,443 events, on the globe' },
-  { href: '/tabernacle.html', zh: '走进会幕', en: 'Walk into the tabernacle', noteZh: '出埃及记 26–27', noteEn: 'Exodus 26–27' },
-  { href: '/temple.html', zh: '走进圣殿', en: 'Walk into the temple', noteZh: '列王纪上 6–7；历代志下 3–4', noteEn: '1 Kings 6–7; 2 Chronicles 3–4' },
-  { href: '/ark.html', zh: '走进方舟', en: 'Walk into the ark', noteZh: '创世记 6–8', noteEn: 'Genesis 6–8' },
-  { href: '/figures.html', zh: '人物与活物', en: 'People and creatures', noteZh: '每个模型，按它真实的高度', noteEn: 'Every model, at its real height' },
-  { href: '/plan.html', zh: '完整的计划', en: 'The whole plan', noteZh: '56 个单元，逐项的进度', noteEn: '56 units, counted' },
+  { href: '/', zh: '🌍 3D 圣经地球仪', en: '🌍 3D Biblical Globe', noteZh: '1,332 处圣经地名、1,443 个事件坐标定位与 10 条行程动态演示', noteEn: '1,332 biblical places, 1,443 geolocated events & 10 animated routes' },
+  { href: '/bible.html', zh: '📖 《和合本雅伟版 · 画卷圣经》 (全书)', en: '📖 Illustrated CUV-Yahweh Bible (66 Books)', noteZh: '全书 66 卷 31,102 节经文与 1,443 幅正典画卷一对一嵌合，含主[雅伟]/主[耶稣]/主[基督]、H0/G0 与 ①② 随段小注及 EPUB 下载', noteEn: 'All 66 books (31,102 verses) paired 1-to-1 with 1,443 canonical plates, referent markers, ①② notes & EPUB download' },
+  { href: '/scenes.html', zh: '🖼️ 圣经画卷全集 (1,443 幅)', en: '🖼️ Biblical Scenes Gallery (1,443)', noteZh: '创世记至启示录 1,443 幅中英双语事件插画，支持按书卷与单元检索', noteEn: 'All 1,443 canonical event illustrations across 66 books & 56 units' },
+  { href: '/tabernacle.html', zh: '🏛️ 走进摩西会幕 (1:1 漫游)', en: '🏛️ Walk into the Tabernacle', noteZh: '出埃及记 26–27 · 第一人称实尺走进院落、圣所与至圣所', noteEn: 'Exodus 26–27 · First-person 1:1 walk through court & sanctuary' },
+  { href: '/temple.html', zh: '🏛️ 走进所罗门圣殿 (1:1 漫游)', en: "🏛️ Walk into Solomon's Temple", noteZh: '列王纪上 6–7；历代志下 3–4 · 第一人称实尺走进圣殿与内院', noteEn: '1 Kings 6–7; 2 Chronicles 3–4 · First-person 1:1 walk' },
+  { href: '/ark.html', zh: '🚢 走进挪亚方舟 (1:1 漫游)', en: "🚢 Walk into Noah's Ark", noteZh: '创世记 6–8 · 第一人称走进三层甲板与方舟内部结构', noteEn: 'Genesis 6–8 · First-person walk inside the 3-deck Ark' },
+  { href: '/scene-assembly.html', zh: '🎬 3D 动态场景工坊与沙盘', en: '🎬 3D Animated Diorama Scenes', noteZh: '方舟登船、三层剖面、会幕营地与圣殿献殿 3D 骨骼动画沙盘', noteEn: 'Interactive 3D dioramas with rigged & animated biblical figures' },
+  { href: '/figures.html', zh: '🧍 人物与活物库 (3D + 394 立绘)', en: '🧍 People, Creatures & 394 Cutouts', noteZh: '85+ 可交互骨骼动画 3D 模型、真实身高比例尺与 394 张透明立绘', noteEn: '85+ animated 3D models, scale comparisons & 394 transparent cutouts' },
+  { href: '/plan.html', zh: '📜 圣经全景 (56 个叙事单元)', en: '📜 Bible Panorama (56 Units)', noteZh: '整本圣经划分为 56 个叙事单元，串联经文、画卷、地图、路线与 3D 空间', noteEn: 'All 56 narrative units connecting scripture, art, maps, routes & 3D' },
 ];
 
 type State = 'live' | 'building' | 'planned';
@@ -65,42 +68,42 @@ function stateOf(u: (typeof UNITS)[number]): State {
 }
 
 const STATE_TEXT: Record<State, { zh: string; en: string }> = {
-  live: { zh: '可以走进去', en: 'Open' },
+  live: { zh: '已开放 3D', en: 'Open' },
   building: { zh: '开发中', en: 'In development' },
-  planned: { zh: '计划中', en: 'Planned' },
+  planned: { zh: '已配画卷', en: 'Illustrated' },
 };
 
 function render(menu: HTMLElement) {
   const counts = { live: 0, building: 0, planned: 0 };
   for (const u of UNITS) counts[stateOf(u)]++;
 
-  const rows = UNITS.map((u) => {
+  const rows = UNITS.map((u, idx) => {
     const s = stateOf(u);
     const href = u.walk ? u.walk.href : `/plan.html#u-${u.id}`;
     const what = u.walk
       ? t(u.walk.en, u.walk.zh)
-      : t(u.plan?.[0]?.en ?? 'Planned', u.plan?.[0]?.zh ?? '计划中');
+      : t(u.plan?.[0]?.en ?? 'Illustrated unit', u.plan?.[0]?.zh ?? '含事件画卷与经文定位');
     return `<li class="am-row am-${s}"><a href="${href}">
-      <span class="am-name">${t(u.en, hant(u.zh))}</span>
+      <span class="am-name">${idx + 1}. ${t(u.en, hant(u.zh))}</span>
       <span class="am-what">${what}</span>
       <span class="am-state">${t(STATE_TEXT[s].en, STATE_TEXT[s].zh)}</span>
     </a></li>`;
   }).join('');
 
-  menu.innerHTML = `<div class="am-sheet" role="dialog" aria-modal="true" aria-label="${t('Everything in this app', '这个应用的全部')}">
+  menu.innerHTML = `<div class="am-sheet" role="dialog" aria-modal="true" aria-label="${t('Everything in this app', '雅伟之界 · 全景导览')}">
     <header>
-      <h2>${t('Everything in this app', '这个应用的全部')}</h2>
+      <h2>${t("Yahweh's World · Full Guide", '雅伟之界 · 全景导览')}</h2>
       <button type="button" id="all-close" aria-label="${t('Close', '关闭')}">✕</button>
     </header>
     <p class="am-lede">${t(
-      `The whole Bible is the target: all 1,443 events in three dimensions. That is 56 units — ${counts.live} you can open today, ${counts.building} in development, ${counts.planned} still on paper. Nothing here is hidden until it is finished.`,
-      `目标是整本圣经：1,443 个事件全部做成三维。共 56 个单元 — 现在可以打开的 ${counts.live} 个，开发中 ${counts.building} 个，还在纸上的 ${counts.planned} 个。没有做完的也照样列在这里。`)}</p>
-    <h3>${t('Open now', '现在就可以进去')}</h3>
+      `Explore the entire Bible across 1,443 canonical events, 1,332 geographical places, 10 animated journeys, 394 character cutouts, 85+ rigged 3D models, and 1:1 measured 3D spaces across 56 narrative units.`,
+      `汇集整本圣经 1,443 个正典事件与双语画卷、1,332 处考据地名、10 条动态行程路线、394 张透明立绘、85+ 骨骼动画 3D 模型，以及按圣经尺寸 1:1 建造的 3D 空间（共 56 个叙事单元）。`)}</p>
+    <h3>${t('Core Modules · Open Now', '核心功能模块 · 点击直达')}</h3>
     <ul class="am-built">${BUILT.map((b) => `<li><a href="${b.href}">
       <span class="am-name">${t(b.en, hant(b.zh))}</span>
       <span class="am-what">${t(b.noteEn, hant(b.noteZh))}</span>
     </a></li>`).join('')}</ul>
-    <h3>${t('The whole plan, unit by unit', '全部计划，逐个单元')}</h3>
+    <h3>${t('All 56 Biblical Narrative Units', '整本圣经 56 个叙事单元目录')}</h3>
     <ol class="am-units">${rows}</ol>
   </div>`;
   menu.querySelector('#all-close')?.addEventListener('click', close);

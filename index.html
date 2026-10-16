@@ -51,17 +51,23 @@
     </div>
     <ol>
       <li><a class="tab" href="/" aria-current="page" data-en="Globe" data-en-narrow="Globe" data-zh="圣经世界" data-zh-narrow="地球">Globe</a></li>
+      <li><a class="tab" href="/bible.html" data-en="Illustrated Bible" data-en-narrow="Bible" data-zh="画卷圣经" data-zh-narrow="圣经">Illustrated Bible</a></li>
+      <li><a class="tab" href="/scenes.html" data-en="Scenes" data-en-narrow="Scenes" data-zh="圣经画卷" data-zh-narrow="画卷">Scenes</a></li>
       <li class="tab-group">
         <button type="button" class="tab" id="walk-open" aria-expanded="false" aria-controls="walkmenu">
-          <b data-en="Walk in" data-zh="走进">Walk in</b><i class="chev" aria-hidden="true">▾</i></button>
+          <b data-en="3D Spaces" data-zh="走进 3D">3D Spaces</b><i class="chev" aria-hidden="true">▾</i></button>
         <div class="dd" id="walkmenu" hidden>
-        <a href="/tabernacle.html"><span class="dd-name" data-en="The tabernacle" data-zh="会幕">The tabernacle</span><span class="dd-of" data-en="Exodus 26–27" data-zh="出埃及记 26–27">Exodus 26–27</span></a>
-        <a href="/temple.html"><span class="dd-name" data-en="Solomon's temple" data-zh="圣殿">Solomon's temple</span><span class="dd-of" data-en="1 Kings 6–7" data-zh="列王纪上 6–7">1 Kings 6–7</span></a>
-        <a href="/ark.html"><span class="dd-name" data-en="Noah's ark" data-zh="方舟">Noah's ark</span><span class="dd-of" data-en="Genesis 6–8" data-zh="创世记 6–8">Genesis 6–8</span></a>
+        <a href="/tabernacle.html"><span class="dd-name" data-en="The tabernacle (1:1 Walk)" data-zh="摩西会幕（第一人称漫游）">The tabernacle (1:1 Walk)</span><span class="dd-of" data-en="Exodus 26–27 · Measured 3D" data-zh="出埃及记 26–27 · 实尺建造">Exodus 26–27 · Measured 3D</span></a>
+        <a href="/temple.html"><span class="dd-name" data-en="Solomon's temple (1:1 Walk)" data-zh="所罗门圣殿（第一人称漫游）">Solomon's temple (1:1 Walk)</span><span class="dd-of" data-en="1 Kings 6–7 · Measured 3D" data-zh="列王纪上 6–7 · 实尺建造">1 Kings 6–7 · Measured 3D</span></a>
+        <a href="/ark.html"><span class="dd-name" data-en="Noah's ark (1:1 Walk)" data-zh="挪亚方舟（第一人称漫游）">Noah's ark (1:1 Walk)</span><span class="dd-of" data-en="Genesis 6–8 · Measured 3D" data-zh="创世记 6–8 · 实尺建造">Genesis 6–8 · Measured 3D</span></a>
+        <a href="/scene-assembly.html"><span class="dd-name" data-en="Noah's Ark Boarding Diorama" data-zh="方舟登船 3D 沙盘">Noah's Ark Boarding Diorama</span><span class="dd-of" data-en="Genesis 7 · Animated 3D Cutouts" data-zh="创世记 7 · 动态 3D 模型场景">Genesis 7 · Animated 3D Cutouts</span></a>
+        <a href="/previews/noahs-ark-v01/index.html"><span class="dd-name" data-en="Noah's Ark 3-Deck Cutaway" data-zh="挪亚方舟三层剖面 3D">Noah's Ark 3-Deck Cutaway</span><span class="dd-of" data-en="Genesis 6–8 · 3-Deck Diorama" data-zh="创世记 6–8 · 三层甲板动态展示">Genesis 6–8 · 3-Deck Diorama</span></a>
+        <a href="/previews/moses-tabernacle-v04/index.html"><span class="dd-name" data-en="Tabernacle Wilderness Camp 3D" data-zh="摩西会幕旷野营地 3D">Tabernacle Wilderness Camp 3D</span><span class="dd-of" data-en="Exodus 40 · Camp & Court 3D" data-zh="出埃及记 40 · 营地与院落 3D">Exodus 40 · Camp & Court 3D</span></a>
+        <a href="/previews/solomon-temple-v02/index.html"><span class="dd-name" data-en="Solomon's Temple Courtyard 3D" data-zh="所罗门圣殿献殿 3D">Solomon's Temple Courtyard 3D</span><span class="dd-of" data-en="2 Chronicles 2–7 · Temple 3D" data-zh="历代志下 2–7 · 圣殿建造与献殿">2 Chronicles 2–7 · Temple 3D</span></a>
         </div>
       </li>
       <li><a class="tab" href="/figures.html" data-en="Figures" data-en-narrow="Figures" data-zh="人物与活物" data-zh-narrow="人物">Figures</a></li>
-      <li><a class="tab" href="/plan.html" data-en="Plan" data-en-narrow="Plan" data-zh="完整的计划" data-zh-narrow="计划">Plan</a></li>
+      <li><a class="tab" href="/plan.html" data-en="Panorama" data-en-narrow="Plan" data-zh="圣经全景" data-zh-narrow="全景">Panorama</a></li>
     </ol>
     <span class="spacer"></span>
     <div class="lang-switch" role="group" aria-label="Language / 语言">
@@ -85,15 +91,66 @@
        before the scene exists. -->
 
 
+  <div id="globe-modes" aria-label="Quick navigation modes">
+    <button type="button" class="gm-pill gm-pill--gold" id="gm-events">
+      <span aria-hidden="true">🖼️</span>
+      <span data-en="1,443 Events" data-zh="1,443 事件画卷">1,443 Events</span>
+    </button>
+    <button type="button" class="gm-pill" id="gm-goto">
+      <span aria-hidden="true">📖</span>
+      <span data-en="Find Verse" data-zh="经文定位">Find Verse</span>
+    </button>
+    <button type="button" class="gm-pill" id="gm-routes">
+      <span aria-hidden="true">🧭</span>
+      <span data-en="10 Journeys" data-zh="10 条圣经路线">10 Journeys</span>
+    </button>
+    <button type="button" class="gm-pill" id="gm-walks">
+      <span aria-hidden="true">🏛️</span>
+      <span data-en="3D Spaces" data-zh="走进 3D 建筑">3D Spaces</span>
+    </button>
+    <a class="gm-pill gm-pill--link" href="/bible.html">
+      <span data-en="📖 Illustrated Bible ↗" data-zh="📖 画卷圣经全书 ↗">📖 Illustrated Bible ↗</span>
+    </a>
+    <a class="gm-pill gm-pill--link" href="/scenes.html">
+      <span data-en="Scenes Gallery ↗" data-zh="全屏画卷库 ↗">Scenes Gallery ↗</span>
+    </a>
+  </div>
+
   <aside id="panel" hidden>
     <button id="panel-close" type="button" aria-label="close">×</button>
     <h2 id="p-name"></h2>
     <p id="p-modern"></p>
     <div id="p-badges"></div>
     <dl id="p-meta"></dl>
+    <div id="p-events-wrap" hidden>
+      <h3 id="p-events-title"></h3>
+      <div id="p-events"></div>
+    </div>
     <h3 id="p-refs-title"></h3>
     <p id="p-refs"></p>
   </aside>
+
+  <article id="event-card" hidden aria-label="Biblical event illustration">
+    <div class="ec-media" id="ec-media" role="button" tabindex="0">
+      <img id="ec-img" alt="" decoding="async" />
+      <span class="ec-id" id="ec-id"></span>
+      <span class="ec-zoom" data-en="🔍 Fullscreen" data-zh="🔍 高清大图">🔍 Fullscreen</span>
+    </div>
+    <div class="ec-body">
+      <div class="ec-bar">
+        <span class="ec-ref" id="ec-ref"></span>
+        <div class="ec-nav">
+          <button type="button" id="ec-prev" aria-label="Previous event">‹</button>
+          <button type="button" id="ec-next" aria-label="Next event">›</button>
+          <button type="button" id="ec-close" aria-label="Close event">×</button>
+        </div>
+      </div>
+      <h2 id="ec-title"></h2>
+      <p id="ec-sum"></p>
+      <div id="ec-places" class="ec-places"></div>
+      <div id="ec-links" class="ec-links"></div>
+    </div>
+  </article>
 
   <!-- The journey PLAYER. Choosing a journey is no longer done here: that was
        a pill in the bottom-left corner of one page out of five, so on the
@@ -107,12 +164,6 @@
         <div class="r-heading"><h2 id="r-name"></h2><div id="r-stats"></div></div>
         <button id="r-clear" type="button" aria-label="Close journey">×</button>
       </header>
-      <figure id="r-scene-art" hidden>
-        <img alt="" decoding="async" loading="lazy" />
-        <video muted loop playsinline preload="metadata"></video>
-        <button class="r-scene-more" type="button" hidden></button>
-        <figcaption><span class="r-scene-caption"></span><span class="r-scene-credit"></span></figcaption>
-      </figure>
       <div id="rplay">
         <div class="r-preview"><canvas id="r-thumbnail" width="160" height="90" role="img" aria-label="Terrain near this stop"></canvas><span class="r-loading" data-en="Loading terrain" data-zh="地形加载中">Loading terrain</span><span class="r-error" data-en="Terrain unavailable" data-zh="地形未载入">Terrain unavailable</span><span id="r-unlocated" hidden data-en="Unlocated" data-zh="位置未定">Unlocated</span></div>
         <div class="r-reading"><span id="r-stop"></span><span id="r-ref"></span></div>
@@ -132,6 +183,12 @@
       </div>
     </article>
   </nav>
+  <figure id="r-scene-art" hidden>
+    <img alt="" decoding="async" loading="lazy" />
+    <video muted loop playsinline preload="metadata"></video>
+    <button class="r-scene-more" type="button" hidden></button>
+    <figcaption><span class="r-scene-caption"></span><span class="r-scene-credit"></span></figcaption>
+  </figure>
 
   <dialog id="r-sources" aria-labelledby="r-sources-title">
     <header><h2 id="r-sources-title" data-en="Reading this journey" data-zh="这条路线的依据">Reading this journey</h2><button id="r-sources-close" type="button" aria-label="Close sources">×</button></header>

@@ -25,49 +25,35 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PAGES = [
   { file: 'index.html', href: '/', en: 'Globe', narrowEn: 'Globe', zh: '圣经世界', narrowZh: '地球',
     loadEn: 'Drawing the world…', loadHans: '正在绘制世界…', loadHant: '正在繪製世界…' },
+  { file: 'bible.html', href: '/bible.html', en: 'Illustrated Bible', narrowEn: 'Bible', zh: '画卷圣经', narrowZh: '圣经',
+    loadEn: 'Opening the Illustrated CUV-Yahweh Bible…', loadHans: '正在展开《和合本雅伟版 · 画卷圣经》…', loadHant: '正在展開《和合本雅偉版 · 畫卷聖經》…' },
+  { file: 'scenes.html', href: '/scenes.html', en: 'Scenes', narrowEn: 'Scenes', zh: '圣经画卷', narrowZh: '画卷',
+    loadEn: 'Opening the 1,443 scenes…', loadHans: '正在展开 1,443 幅圣经画卷…', loadHant: '正在展開 1,443 幅聖經畫卷…' },
   { file: 'tabernacle.html', href: '/tabernacle.html', en: 'Tabernacle', narrowEn: 'Tent', zh: '走进会幕', narrowZh: '会幕',
-    walk: true, inEn: 'The tabernacle', inZh: '会幕', ofEn: 'Exodus 26–27', ofZh: '出埃及记 26–27',
+    walk: true, inEn: 'The tabernacle (1:1 Walk)', inZh: '摩西会幕（第一人称漫游）', ofEn: 'Exodus 26–27 · Measured 3D', ofZh: '出埃及记 26–27 · 实尺建造',
     loadEn: 'Raising the tabernacle…', loadHans: '正在支搭会幕…', loadHant: '正在支搭會幕…' },
   { file: 'temple.html', href: '/temple.html', en: 'Temple', narrowEn: 'Temple', zh: '走进圣殿', narrowZh: '圣殿',
-    walk: true, inEn: "Solomon's temple", inZh: '圣殿', ofEn: '1 Kings 6–7', ofZh: '列王纪上 6–7',
+    walk: true, inEn: "Solomon's temple (1:1 Walk)", inZh: '所罗门圣殿（第一人称漫游）', ofEn: '1 Kings 6–7 · Measured 3D', ofZh: '列王纪上 6–7 · 实尺建造',
     loadEn: 'Building the house…', loadHans: '正在建造圣殿…', loadHant: '正在建造聖殿…' },
   { file: 'ark.html', href: '/ark.html', en: 'Ark', narrowEn: 'Ark', zh: '走进方舟', narrowZh: '方舟',
-    walk: true, inEn: "Noah's ark", inZh: '方舟', ofEn: 'Genesis 6–8', ofZh: '创世记 6–8',
+    walk: true, inEn: "Noah's ark (1:1 Walk)", inZh: '挪亚方舟（第一人称漫游）', ofEn: 'Genesis 6–8 · Measured 3D', ofZh: '创世记 6–8 · 实尺建造',
     loadEn: 'Building the ark…', loadHans: '正在造方舟…', loadHant: '正在造方舟…' },
   { file: 'figures.html', href: '/figures.html', en: 'Figures', narrowEn: 'Figures', zh: '人物与活物', narrowZh: '人物',
     loadEn: 'Standing the figures up…', loadHans: '正在把人物立起来…', loadHant: '正在把人物立起來…' },
-  { file: 'plan.html', href: '/plan.html', en: 'Plan', narrowEn: 'Plan', zh: '完整的计划', narrowZh: '计划',
+  { file: 'plan.html', href: '/plan.html', en: 'Panorama', narrowEn: 'Plan', zh: '圣经全景', narrowZh: '全景',
     loadEn: 'Laying out the plan…', loadHans: '正在整理全部计划…', loadHant: '正在整理全部計劃…' },
+];
+
+const EXTRA_WALKS = [
+  { href: '/scene-assembly.html', inEn: "Noah's Ark Boarding Diorama", inZh: '方舟登船 3D 沙盘', ofEn: 'Genesis 7 · Animated 3D Cutouts', ofZh: '创世记 7 · 动态 3D 模型场景' },
+  { href: '/previews/noahs-ark-v01/index.html', inEn: "Noah's Ark 3-Deck Cutaway", inZh: '挪亚方舟三层剖面 3D', ofEn: 'Genesis 6–8 · 3-Deck Diorama', ofZh: '创世记 6–8 · 三层甲板动态展示' },
+  { href: '/previews/moses-tabernacle-v04/index.html', inEn: 'Tabernacle Wilderness Camp 3D', inZh: '摩西会幕旷野营地 3D', ofEn: 'Exodus 40 · Camp & Court 3D', ofZh: '出埃及记 40 · 营地与院落 3D' },
+  { href: '/previews/solomon-temple-v02/index.html', inEn: "Solomon's Temple Courtyard 3D", inZh: '所罗门圣殿献殿 3D', ofEn: '2 Chronicles 2–7 · Temple 3D', ofZh: '历代志下 2–7 · 圣殿建造与献殿' },
 ];
 
 const START = '  <!-- shell:start — written by scripts/build-shell.mjs. Edit that, not this. -->';
 const END = '  <!-- shell:end -->';
 
-// The frame BEFORE the loading screen, and the language it is in.
-//
-// Two things have to be true at the very first paint, and neither of them can
-// wait for a module:
-//
-//   · the page must already be dark. The stylesheet is a separate file, so
-//     until it arrives the page is whatever white the browser defaults to —
-//     a flash of white in front of a #060d16 app, on every navigation.
-//   · the loading line must already be in the reader's language. It used to
-//     be English markup that applyStatic() translated once the module ran,
-//     which is AFTER the loading screen is up: a 简体 reader watched the
-//     whole load in English.
-//
-// So the reading is chosen here, by the same rule as src/locale.ts — the
-// remembered choice first, then the system's languages — and written onto
-// <html lang>, which the CSS below turns into one visible line out of three.
-// setLocale() writes that same attribute, so switching language while the
-// screen is still up changes the line with it.
-// The web fonts. One source, because it was copied into six files by hand
-// and any change to it had to be made six times without a mistake.
-//
-// Both Chinese scripts are here: SC and TC. Google serves each family as
-// unicode-range subsets, so a reader downloads the ranges their page
-// actually uses and not the other script's — which is what makes shipping
-// both affordable at all.
 const FONTS = '  <link href="https://fonts.googleapis.com/css2?'
   + 'family=Inter:wght@400;500;600'
   + '&family=Spectral:wght@500;600'
@@ -91,25 +77,22 @@ const HEAD = `  <!-- shell:head --><style>:root{color-scheme:dark}html,body{back
   `if(g==="en"||g.indexOf("en-")===0){l="en";break}}}` +
   `document.documentElement.lang=l}catch(e){document.documentElement.lang="en"}})()<\/script>` + HEAD_END;
 
-// THE BAR IS A SHELF, NOT A LIST.
-//
-// It held five destinations side by side — Globe, Tabernacle, Temple, Ark,
-// Plan — and three of those five are the same KIND of thing: a building you
-// walk into. The plan has more of them coming (Ezekiel's temple, Herod's, the
-// New Jerusalem), and each one added would have taken another slot off a bar
-// that had already run off the edge of a phone once.
-//
-// So the three collapse into one: 走进 opens the series. Adding the fourth
-// walk is then a row in PAGES and nothing else — the bar does not grow.
 const tab = (p, self) =>
   `      <li><a class="tab" href="${p.href}"${p.file === self ? ' aria-current="page"' : ''}` +
   ` data-en="${p.en}" data-en-narrow="${p.narrowEn}" data-zh="${p.zh}" data-zh-narrow="${p.narrowZh}">${p.en}</a></li>`;
 
-const walkItems = (self) => PAGES.filter((p) => p.walk).map((p) =>
-  `        <a href="${p.href}"${p.file === self ? ' aria-current="page"' : ''}>` +
-  `<span class="dd-name" data-en="${p.inEn}" data-zh="${p.inZh}">${p.inEn}</span>` +
-  `<span class="dd-of" data-en="${p.ofEn}" data-zh="${p.ofZh}">${p.ofEn}</span></a>`
-).join('\n');
+const walkItems = (self) => [
+  ...PAGES.filter((p) => p.walk).map((p) =>
+    `        <a href="${p.href}"${p.file === self ? ' aria-current="page"' : ''}>` +
+    `<span class="dd-name" data-en="${p.inEn}" data-zh="${p.inZh}">${p.inEn}</span>` +
+    `<span class="dd-of" data-en="${p.ofEn}" data-zh="${p.ofZh}">${p.ofEn}</span></a>`
+  ),
+  ...EXTRA_WALKS.map((w) =>
+    `        <a href="${w.href}">` +
+    `<span class="dd-name" data-en="${w.inEn}" data-zh="${w.inZh}">${w.inEn}</span>` +
+    `<span class="dd-of" data-en="${w.ofEn}" data-zh="${w.ofZh}">${w.ofEn}</span></a>`
+  ),
+].join('\n');
 
 const tabs = (self) => {
   const walks = PAGES.filter((p) => p.walk);
@@ -120,7 +103,7 @@ const tabs = (self) => {
       if (p.file !== walks[0].file) continue;
       out.push(`      <li class="tab-group">
         <button type="button" class="tab" id="walk-open" aria-expanded="false" aria-controls="walkmenu"${here ? ' aria-current="page"' : ''}>
-          <b data-en="Walk in" data-zh="走进">Walk in</b><i class="chev" aria-hidden="true">▾</i></button>
+          <b data-en="3D Spaces" data-zh="走进 3D">3D Spaces</b><i class="chev" aria-hidden="true">▾</i></button>
         <div class="dd" id="walkmenu" hidden>
 ${walkItems(self)}
         </div>

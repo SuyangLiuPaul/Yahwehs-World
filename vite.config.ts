@@ -1,20 +1,14 @@
 import { defineConfig, type Plugin } from 'vite';
-import { resolve } from 'node:path';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { resolve, join } from 'node:path';
+import {
+  cpSync,
+  existsSync,
+  lstatSync,
+  mkdirSync,
+  readdirSync,
+  writeFileSync,
+} from 'node:fs';
 
-/** Lets a page hand a recording of itself back to disk, during `vite dev` only.
- *
- * The walkthrough, the journey scenes and the globe are all canvases, and the
- * useful thing to do with one — send it to a video model, put a frame in a
- * document, check a render frame by frame — starts with having the bytes in a
- * file. A browser cannot write one: downloads are blocked in an embedded pane,
- * and streaming a blob out through a tool's return value costs more than the
- * recording is worth. So the page POSTs it here and this writes it.
- *
- * `apply: 'serve'` keeps it out of every build. It writes only inside
- * `recordings/`, which is gitignored, and only ever writes — nothing here reads
- * or lists the disk.
- */
 function recorder(): Plugin {
   return {
     name: 'recorder',
@@ -22,7 +16,6 @@ function recorder(): Plugin {
     configureServer(server) {
       server.middlewares.use('/__capture', (req, res) => {
         if (req.method !== 'POST') { res.statusCode = 405; res.end(); return; }
-        // One path segment, no dots: a name, never a path.
         const name = decodeURIComponent((req.url ?? '').replace(/^\//, '')).trim();
         if (!/^[A-Za-z0-9_-]+\.(webm|mp4|png|jpg|jpeg)$/.test(name)) {
           res.statusCode = 400; res.end('bad name'); return;
@@ -41,15 +34,61 @@ function recorder(): Plugin {
   };
 }
 
+/** Copies public/ (excluding external symlinks and unshipped raw test GLBs)
+ *  and merges t7-web-stage/ into dist/ so builds are 100% self-contained. */
+function stagePublicPlugin(): Plugin {
+  const skipRel = new Set([
+    'models/tripo-test',
+    'models/ark/tripo/lamb-source.glb',
+    'models/ark/tripo/prompts.json',
+  ]);
+
+  function copyTree(srcDir: string, destDir: string, relBase = '') {
+    if (!existsSync(srcDir)) return;
+    mkdirSync(destDir, { recursive: true });
+    for (const entry of readdirSync(srcDir)) {
+      if (entry === '.DS_Store') continue;
+      const rel = relBase ? `${relBase}/${entry}` : entry;
+      if (skipRel.has(rel)) continue;
+      const srcPath = join(srcDir, entry);
+      const destPath = join(destDir, entry);
+      const st = lstatSync(srcPath);
+      if (st.isSymbolicLink()) continue;
+      if (st.isDirectory()) {
+        copyTree(srcPath, destPath, rel);
+      } else if (st.isFile()) {
+        cpSync(srcPath, destPath);
+      }
+    }
+  }
+
+  return {
+    name: 'stage-public',
+    apply: 'build',
+    closeBundle() {
+      const distDir = resolve(__dirname, 'dist');
+      copyTree(resolve(__dirname, 'public'), distDir);
+      copyTree(resolve(__dirname, 't7-web-stage'), distDir);
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [recorder()],
+  plugins: [recorder(), stagePublicPlugin()],
   build: {
+    copyPublicDir: false,
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
+        bible: resolve(__dirname, 'bible.html'),
+        scenes: resolve(__dirname, 'scenes.html'),
         tabernacle: resolve(__dirname, 'tabernacle.html'),
         temple: resolve(__dirname, 'temple.html'),
         ark: resolve(__dirname, 'ark.html'),
+        sceneAssembly: resolve(__dirname, 'scene-assembly.html'),
+        previewArk: resolve(__dirname, 'previews/noahs-ark-v01/index.html'),
+        previewTabernacle: resolve(__dirname, 'previews/moses-tabernacle-v04/index.html'),
+        previewTemple: resolve(__dirname, 'previews/solomon-temple-v02/index.html'),
         figures: resolve(__dirname, 'figures.html'),
         plan: resolve(__dirname, 'plan.html'),
         crowd: resolve(__dirname, 'crowd-test.html'),
@@ -58,6 +97,7 @@ export default defineConfig({
         lowpoly: resolve(__dirname, 'lowpoly.html'),
         arkBlender: resolve(__dirname, 'ark-blender.html'),
         rigTest: resolve(__dirname, 'rig-test.html'),
+        elephantStudy: resolve(__dirname, 'elephant-3d.html'),
       },
     },
   },

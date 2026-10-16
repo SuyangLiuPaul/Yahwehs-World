@@ -1,0 +1,898 @@
+@import './tokens.css';
+@import './nav.css';
+
+/* ── Root Page Scroll Fix (Never inherit WebGL overflow: hidden) ───────── */
+html {
+  margin: 0;
+  padding: 0;
+  height: auto !important;
+  overflow-x: clip !important;
+  overflow-y: auto !important;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: auto !important;
+  min-height: 100vh;
+  overflow: visible !important;
+  background: radial-gradient(ellipse at 50% 0%, #102033 0%, #070d16 70%);
+  color: var(--ink, #f1ece1);
+  font-family: var(--ui, 'Inter', 'Noto Sans SC', sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sitenav {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  background: rgba(6, 12, 20, 0.98) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(232, 197, 90, 0.16);
+  padding: 12px clamp(16px, 3vw, 28px) !important;
+}
+
+.source-credit {
+  position: static !important;
+  justify-content: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 16px 20px !important;
+  background: rgba(6, 12, 20, 0.95) !important;
+}
+
+#bible-book-page {
+  min-height: 100vh;
+  padding-top: 0;
+  padding-bottom: 40px;
+}
+
+/* ── Clean Sticky Reader Bar (Spacious, never overlaps .sitenav) ───────── */
+.bb-reader-bar {
+  position: sticky;
+  top: 0;
+  z-index: 35;
+  background: rgba(10, 16, 26, 0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(232, 197, 90, 0.24);
+  padding: 11px clamp(14px, 2.5vw, 24px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.bb-reader-bar-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.bb-picker-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  background: rgba(232, 197, 90, 0.16);
+  border: 1px solid rgba(232, 197, 90, 0.48);
+  color: var(--gold-bright, #f6e29c);
+  font-size: 13.8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 140ms, border-color 140ms;
+}
+
+.bb-picker-btn:hover {
+  background: rgba(232, 197, 90, 0.26);
+  border-color: var(--gold-bright, #f6e29c);
+}
+
+.bb-select {
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 13.8px;
+  font-weight: 500;
+  background: rgba(18, 25, 38, 0.95);
+  color: var(--ink, #f1ece1);
+  border: 1px solid rgba(232, 197, 90, 0.28);
+  cursor: pointer;
+}
+
+.bb-select:focus {
+  outline: 1px solid var(--gold, #e8c55a);
+}
+
+.bb-ch-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.bb-step-btn {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(232, 197, 90, 0.26);
+  color: var(--gold-bright, #f6e29c);
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 140ms, border-color 140ms;
+}
+
+.bb-step-btn:hover:not(:disabled) {
+  background: rgba(232, 197, 90, 0.18);
+  border-color: var(--gold, #e8c55a);
+}
+
+.bb-step-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.bb-bar-spacer {
+  flex: 1 1 auto;
+}
+
+.bb-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink, #ece6d8);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 140ms, border-color 140ms, color 140ms;
+}
+
+.bb-pill-btn:hover {
+  background: rgba(232, 197, 90, 0.15);
+  border-color: rgba(232, 197, 90, 0.45);
+  color: var(--gold-bright, #f6e29c);
+}
+
+.bb-pill-gold {
+  background: rgba(232, 197, 90, 0.18);
+  border-color: rgba(232, 197, 90, 0.5);
+  color: var(--gold-bright, #f6e29c);
+  font-weight: 600;
+}
+
+/* ── Main Centered Reading Stream (Words Reading Flow + World Plates) ──── */
+.bb-reader-stream {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 20px clamp(14px, 2.5vw, 24px) 36px;
+}
+
+/* ── Book Intro Card (Shown on Chapter 1, collapsible like Yahweh's Words) */
+.bb-intro-box {
+  background: rgba(16, 23, 35, 0.88);
+  border: 1px solid rgba(232, 197, 90, 0.26);
+  border-left: 4px solid var(--gold, #e8c55a);
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin-bottom: 8px;
+}
+
+.bb-intro-box summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--gold-bright, #f6e29c);
+  font-size: 13.5px;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bb-intro-summary {
+  margin: 8px 0 10px;
+  font-size: 13.8px;
+  line-height: 1.7;
+  color: var(--ink, #ece6d8);
+}
+
+.bb-intro-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 8px 14px;
+  font-size: 12.5px;
+  color: var(--ink-2, #c7bfb0);
+  padding-top: 8px;
+  border-top: 1px dashed rgba(232, 197, 90, 0.22);
+}
+
+.bb-intro-item b {
+  color: var(--gold, #e8c55a);
+  display: block;
+  margin-bottom: 2px;
+}
+
+/* ── Chapter Banner (Placed OUTSIDE and BEFORE sections) ───────────────── */
+.bb-chapter-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 2px 0 8px;
+  padding: 6px 14px;
+  background: linear-gradient(90deg, rgba(232, 197, 90, 0.14), rgba(232, 197, 90, 0.03));
+  border-left: 4px solid var(--gold, #e8c55a);
+  border-radius: 8px;
+}
+
+.bb-chapter-num {
+  font-family: var(--display, 'Noto Serif SC', 'Spectral', Georgia, serif);
+  font-size: clamp(18px, 2vw, 21px);
+  font-weight: 700;
+  color: var(--gold-bright, #f6e29c);
+}
+
+.bb-chapter-sub {
+  font-size: 12px;
+  color: var(--ink-2, #b8b0a0);
+}
+
+/* ── Illustrated Sections (Words Section Heading + World HD Plate + Prose) */
+.bb-sections-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bb-section {
+  background: rgba(14, 19, 29, 0.92);
+  border: 1px solid rgba(232, 197, 90, 0.2);
+  border-radius: 14px;
+  padding: clamp(12px, 1.8vw, 16px);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* Words-style left-accent section heading bar */
+.bb-sec-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 12px;
+  border-left: 3.5px solid var(--gold, #e8c55a);
+  padding-left: 10px;
+  margin-bottom: 6px;
+}
+
+.bb-sec-title {
+  margin: 0;
+  font-family: 'Noto Serif SC', 'Noto Serif TC', var(--display, Georgia, serif);
+  font-size: clamp(17px, 1.8vw, 20px);
+  font-weight: 700;
+  color: var(--gold-bright, #f6e29c);
+}
+
+.bb-sec-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.bb-sec-ref {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold, #e8c55a);
+  background: rgba(232, 197, 90, 0.12);
+  border: 1px solid rgba(232, 197, 90, 0.3);
+  padding: 2px 9px;
+  border-radius: 999px;
+}
+
+.bb-globe-chip {
+  font-size: 12px;
+  color: var(--gold-bright, #f6e29c);
+  background: rgba(232, 197, 90, 0.1);
+  border: 1px solid rgba(232, 197, 90, 0.28);
+  padding: 2px 9px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 140ms;
+}
+
+.bb-globe-chip:hover {
+  background: rgba(232, 197, 90, 0.24);
+}
+
+/* Section Context Explanation (from Words section_titles.json + Globe sum) */
+.bb-sec-explain {
+  margin: 0 0 8px;
+  padding: 5px 10px;
+  background: rgba(232, 197, 90, 0.08);
+  border: 1px solid rgba(232, 197, 90, 0.22);
+  border-radius: 8px;
+  font-size: 13.2px;
+  line-height: 1.52;
+  color: #e8dfc8;
+}
+
+/* Large, Crisp Panoramic Event Plate (1672x941 merged-full, 100% uncropped) */
+.bb-plate-frame {
+  position: relative;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1.5px solid rgba(232, 197, 90, 0.38);
+  background: #070b12;
+  margin-bottom: 12px;
+  cursor: zoom-in;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.48);
+}
+
+.bb-plate-frame img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  display: block;
+}
+
+.bb-plate-zoom-hint {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(8, 12, 20, 0.78);
+  border: 1px solid rgba(232, 197, 90, 0.4);
+  color: var(--gold-bright, #f6e29c);
+  font-size: 11.5px;
+  pointer-events: none;
+}
+
+/* ── Flowing Paragraph Scripture (Words ParagraphGroupWidget Style) ────── */
+.bb-scripture-prose {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bb-para-group {
+  margin: 0;
+  break-inside: avoid;
+}
+
+.bb-para {
+  margin: 0;
+  font-family: 'Noto Serif SC', 'Noto Serif TC', 'Songti SC', Georgia, serif;
+  font-size: clamp(17.5px, 1.45vw, 19.5px);
+  line-height: 1.95;
+  color: var(--ink, #f4efe6);
+  text-align: justify;
+  text-indent: 2em;
+}
+
+.bb-para-ref {
+  margin: 4px 0 6px 2em;
+  padding-left: 12px;
+  border-left: 2.5px solid rgba(232, 197, 90, 0.45);
+  color: #dfd7c6;
+  text-indent: 0;
+}
+
+.bb-verse {
+  display: inline;
+}
+
+.bb-vnum {
+  font-family: var(--mono, monospace);
+  font-size: 0.68em;
+  font-weight: 600;
+  color: var(--gold, #e8c55a);
+  vertical-align: super;
+  margin-right: 3px;
+  margin-left: 4px;
+  user-select: none;
+}
+
+.bb-para .bb-verse:first-child .bb-vnum {
+  margin-left: 0;
+}
+
+/* ── Unified Single-Color Referent Markers & ① ② Translator Notes ──────── */
+/* Plain 雅伟 is NOT highlighted. All markers & ① ② notes share ONE unified color. */
+.bb-mark,
+.bb-mark-yhwh,
+.bb-mark-jesus,
+.bb-mark-christ {
+  display: inline;
+  text-indent: 0 !important;
+  white-space: nowrap;
+  border-radius: 4px;
+  padding: 1px 4px;
+  margin: 0 1px;
+  cursor: help;
+  font-weight: 600;
+  color: #f6e29c;
+  background: rgba(232, 197, 90, 0.16);
+  border-bottom: 1.5px solid rgba(232, 197, 90, 0.68);
+}
+
+.bb-hg0-tag {
+  display: inline;
+  text-indent: 0 !important;
+  font-family: var(--mono, monospace);
+  font-size: 0.64em;
+  font-weight: 600;
+  color: #f6e29c;
+  background: rgba(232, 197, 90, 0.16);
+  border: 1px solid rgba(232, 197, 90, 0.42);
+  border-radius: 3px;
+  padding: 0 3px;
+  margin-left: 1px;
+  vertical-align: super;
+  cursor: help;
+}
+
+.bb-fn-ref {
+  display: inline;
+  text-indent: 0 !important;
+  font-family: 'Noto Sans SC', 'Noto Sans TC', sans-serif;
+  font-size: 0.76em;
+  font-weight: 600;
+  line-height: 1;
+  color: #f6e29c;
+  background: rgba(232, 197, 90, 0.16);
+  border: 1px solid rgba(232, 197, 90, 0.45);
+  border-radius: 4px;
+  padding: 1px 4px;
+  margin: 0 2px;
+  vertical-align: super;
+  cursor: pointer;
+}
+
+.bb-apparatus {
+  text-indent: 0 !important;
+  color: var(--ink-2, #b5ad9d);
+  font-size: 0.92em;
+}
+
+/* Indented left-accented two-column note block directly beneath paragraph (Unified Color) */
+.bb-verse-notes-block {
+  margin-top: 6px;
+  margin-left: 1.5em;
+  padding: 7px 12px;
+  border-left: 3px solid rgba(232, 197, 90, 0.78);
+  background: rgba(232, 197, 90, 0.09);
+  border-radius: 6px;
+}
+
+.bb-vnb-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.bb-vnb-num {
+  width: 1%;
+  white-space: nowrap;
+  vertical-align: top;
+  padding: 1px 7px 2px 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.55;
+  color: #f6e29c;
+  user-select: none;
+}
+
+.bb-vnb-text {
+  vertical-align: top;
+  padding: 1px 0 2px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #f6e29c;
+  text-align: left;
+}
+
+.bb-vnb-vref {
+  font-family: var(--mono, monospace);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #f6e29c;
+}
+
+/* ── Bottom Chapter Pager ──────────────────────────────────────────────── */
+.bb-book-pager {
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(232, 197, 90, 0.2);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.bb-pager-btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: rgba(232, 197, 90, 0.14);
+  border: 1px solid rgba(232, 197, 90, 0.38);
+  color: var(--gold-bright, #f6e29c);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 140ms, transform 140ms;
+}
+
+.bb-pager-btn:hover:not(:disabled) {
+  background: rgba(232, 197, 90, 0.25);
+  transform: translateY(-1px);
+}
+
+.bb-pager-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* ── Book & Chapter Grid Picker + Search Dialog (Words Style) ──────────── */
+.bb-dialog {
+  width: min(860px, 94vw);
+  max-height: 86vh;
+  background: #0d131f;
+  color: var(--ink, #f1ece1);
+  border: 1px solid rgba(232, 197, 90, 0.42);
+  border-radius: 16px;
+  padding: 0;
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.78);
+}
+
+.bb-dialog::backdrop {
+  background: rgba(3, 6, 12, 0.76);
+  backdrop-filter: blur(6px);
+}
+
+.bb-dialog-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(232, 197, 90, 0.2);
+}
+
+.bb-dialog-head h2 {
+  margin: 0;
+  font-size: 17px;
+  color: var(--gold-bright, #f6e29c);
+}
+
+.bb-dialog-close {
+  background: transparent;
+  border: none;
+  color: var(--ink-2, #b8b0a0);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.bb-md-controls {
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.bb-md-search {
+  width: 100%;
+  padding: 9px 13px;
+  border-radius: 8px;
+  border: 1px solid rgba(232, 197, 90, 0.32);
+  background: rgba(7, 10, 16, 0.9);
+  color: var(--ink, #f1ece1);
+  font-size: 14px;
+}
+
+.bb-toc-body {
+  padding: 16px 20px 22px;
+  overflow-y: auto;
+  max-height: calc(86vh - 130px);
+}
+
+.bb-testament-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold, #e8c55a);
+  letter-spacing: 0.06em;
+  margin: 12px 0 8px;
+}
+
+.bb-testament-title:first-child {
+  margin-top: 0;
+}
+
+.bb-toc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+  gap: 7px;
+}
+
+.bb-toc-card {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(20, 27, 40, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--ink, #f1ece1);
+  text-align: left;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: border-color 120ms, background 120ms;
+}
+
+.bb-toc-card:hover {
+  border-color: var(--gold, #e8c55a);
+  background: rgba(232, 197, 90, 0.12);
+}
+
+.bb-toc-card.active {
+  border-color: var(--gold, #e8c55a);
+  background: rgba(232, 197, 90, 0.2);
+  color: var(--gold-bright, #f6e29c);
+}
+
+.bb-toc-card small {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ink-2, #b8b0a0);
+}
+
+.bb-ch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
+  gap: 6px;
+  margin: 10px 0 16px;
+  padding: 12px;
+  background: rgba(232, 197, 90, 0.06);
+  border: 1px solid rgba(232, 197, 90, 0.24);
+  border-radius: 10px;
+}
+
+.bb-ch-cell {
+  padding: 7px 0;
+  border-radius: 6px;
+  background: rgba(15, 21, 32, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--ink, #f1ece1);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+}
+
+.bb-ch-cell:hover,
+.bb-ch-cell.active {
+  background: rgba(232, 197, 90, 0.24);
+  border-color: var(--gold, #e8c55a);
+  color: var(--gold-bright, #f6e29c);
+}
+
+.bb-search-hit {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  margin-bottom: 7px;
+  border-radius: 8px;
+  background: rgba(20, 27, 40, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--ink, #f1ece1);
+  cursor: pointer;
+}
+
+.bb-search-hit:hover {
+  border-color: var(--gold, #e8c55a);
+}
+
+.bb-search-hit-ref {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--gold-bright, #f6e29c);
+  margin-bottom: 3px;
+}
+
+.bb-search-hit-text {
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.source-credit {
+  text-align: center;
+  padding: 18px 16px 32px;
+  font-size: 12px;
+  color: var(--ink-3, #8e8779);
+}
+
+.source-credit a {
+  color: var(--gold, #e8c55a);
+}
+
+/* ── Responsive Breakpoints (Tablet & Mobile Phones) ───────────────────── */
+@media (max-width: 768px) {
+  .sitenav {
+    padding: 10px 14px !important;
+  }
+
+  .bb-reader-bar {
+    padding: 8px 12px;
+  }
+
+  .bb-reader-bar-inner {
+    gap: 6px;
+  }
+
+  .bb-picker-btn,
+  .bb-select,
+  .bb-pill-btn {
+    font-size: 12.8px;
+    padding: 6px 10px;
+  }
+
+  .bb-step-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 15px;
+  }
+
+  .bb-reader-stream {
+    padding: 14px 12px 28px;
+  }
+
+  .bb-section {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .bb-para {
+    font-size: 17px;
+    line-height: 1.88;
+  }
+}
+
+@media (max-width: 480px) {
+  .sitenav {
+    padding: 8px 10px !important;
+  }
+
+  .bb-reader-bar {
+    padding: 7px 10px;
+  }
+
+  .bb-reader-bar-inner {
+    gap: 5px;
+    justify-content: space-between;
+  }
+
+  .bb-bar-spacer {
+    display: none;
+  }
+
+  .bb-select {
+    font-size: 12.5px;
+    padding: 5px 7px;
+    max-width: 118px;
+  }
+
+  .bb-picker-btn,
+  .bb-pill-btn {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+
+  .bb-step-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+
+  .bb-reader-stream {
+    padding: 10px 8px 24px;
+  }
+
+  .bb-chapter-banner {
+    padding: 6px 10px;
+    margin: 2px 0 8px;
+  }
+
+  .bb-chapter-num {
+    font-size: 17px;
+  }
+
+  .bb-section {
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .bb-sec-head {
+    gap: 4px 8px;
+    padding-left: 8px;
+  }
+
+  .bb-sec-title {
+    font-size: 16.5px;
+  }
+
+  .bb-sec-ref,
+  .bb-globe-chip {
+    font-size: 11px;
+    padding: 2px 7px;
+  }
+
+  .bb-sec-explain {
+    font-size: 12.8px;
+    padding: 5px 8px;
+  }
+
+  .bb-para {
+    font-size: 16.5px;
+    line-height: 1.84;
+    text-indent: 1.8em;
+  }
+
+  .bb-para-ref {
+    margin-left: 1em;
+    padding-left: 8px;
+  }
+
+  .bb-verse-notes-block {
+    margin-left: 0.4em;
+    padding: 6px 9px;
+  }
+
+  .bb-vnb-num,
+  .bb-vnb-text {
+    font-size: 12.5px;
+  }
+
+  .bb-dialog {
+    width: 96vw;
+    max-height: 90vh;
+    border-radius: 12px;
+  }
+
+  .bb-dialog-head {
+    padding: 10px 14px;
+  }
+
+  .bb-dialog-head h2 {
+    font-size: 15px;
+  }
+
+  .bb-md-controls {
+    padding: 8px 14px;
+  }
+
+  .bb-toc-body {
+    padding: 12px 14px 18px;
+  }
+
+  .bb-toc-grid {
+    grid-template-columns: repeat(auto-fill, minmax(102px, 1fr));
+    gap: 6px;
+  }
+
+  .bb-ch-grid {
+    grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
+    gap: 5px;
+    padding: 8px;
+  }
+}
