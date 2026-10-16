@@ -54,8 +54,10 @@ factsModal?.addEventListener('click', (e) => {
   if (e.target === factsModal) factsModal.hidden = true;
 });
 
-const urlMode = new URLSearchParams(window.location.search).get('mode') as ArkViewMode | null;
+const urlParams = new URLSearchParams(window.location.search);
+const urlMode = urlParams.get('mode') as ArkViewMode | null;
 const initialMode: ArkViewMode = urlMode || 'overview';
+const initialRulers = urlParams.get('rulers') === '1';
 
 void bootNoahsArkWorld({
   canvas,
@@ -69,9 +71,12 @@ void bootNoahsArkWorld({
     showInspectCard(entry);
   },
   onReady: (ctrl) => {
+    if (initialRulers) {
+      ctrl.toggleRulers(true);
+    }
     const st = ctrl.getState();
     if (loadStatus) {
-      loadStatus.textContent = `✓ ${st.loadedAssetsCount} 独立模型 · ${st.placementsCount} 实体就绪`;
+      loadStatus.textContent = `✓ 1:1 真实尺度 · ${st.placementsCount} 实体就绪`;
     }
     document.body.dataset.ready = 'true';
 
@@ -102,6 +107,17 @@ void bootNoahsArkWorld({
       });
     }
 
+    // 3D Biblical Cubit Rulers button
+    const btnRulers = document.querySelector<HTMLButtonElement>('#btn-rulers');
+    if (btnRulers) {
+      btnRulers.classList.toggle('active', st.rulersVisible);
+      btnRulers.addEventListener('click', () => {
+        const vis = ctrl.toggleRulers();
+        btnRulers.classList.toggle('active', vis);
+        if (vis) syncDockButtons('overview');
+      });
+    }
+
     // Boarding procession toggle button
     const btnBoarding = document.querySelector<HTMLButtonElement>('#btn-boarding');
     const questBoarding = document.querySelector<HTMLElement>('#quest-boarding');
@@ -120,6 +136,7 @@ void bootNoahsArkWorld({
     btnBoarding?.addEventListener('click', () => {
       const active = ctrl.toggleBoardingMarch();
       updateBoardingUi(active);
+      if (active) syncDockButtons('overview');
     });
 
     // Interactive Quest list items
@@ -138,8 +155,8 @@ void bootNoahsArkWorld({
           updateBoardingUi(active);
           syncDockButtons('overview');
         } else if (q === 'cutaway') {
-          ctrl.setViewMode('cutaway');
-          syncDockButtons('cutaway');
+          ctrl.setViewMode('deck1');
+          syncDockButtons('deck1');
         } else if (q === 'covenant') {
           ctrl.setViewMode('covenant');
           syncDockButtons('covenant');

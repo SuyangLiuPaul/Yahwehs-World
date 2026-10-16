@@ -3,103 +3,104 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#e6d7b5" />
-    <title>挪亚的方舟 · NOAH'S ARK · 3D 全景与三层甲板互动沙盘 · 雅伟之界</title>
+    <meta name="theme-color" content="#344f41" />
+    <title>挪亚的方舟 · NOAH'S ARK · 1:1 真实圣经尺度 (300×50×30肘) 3D 互动世界 · 雅伟之界</title>
     <link rel="stylesheet" href="/src/scene-assembly/noahs-ark-prototype.css" />
   </head>
   <body>
-    <main id="ark-prototype" aria-label="Noah's Ark interactive 3D world and 3-deck cutaway">
-      <canvas id="stage" aria-label="可旋转、可互动的挪亚方舟 3D 场景与三层甲板剖面"></canvas>
+    <main id="ark-prototype" aria-label="Noah's Ark interactive 1:1 3D world and 3-deck cutaway">
+      <canvas id="stage" aria-label="可旋转、可互动的 1:1 真实圣经尺度挪亚方舟 3D 场景与三层甲板剖面"></canvas>
 
-      <!-- Top-Left Title & Scripture Banner (Matching 174.jpeg Parchment Scroll Style) -->
+      <!-- Top-Left Title, 1:1 Scale Badge & Scripture Scroll -->
       <div class="hud-top-left">
         <header class="brand-scroll parchment-card">
           <a href="/" class="back-link" title="返回雅伟之界地球仪">←</a>
           <div class="brand-titles">
             <h1>挪亚的方舟</h1>
-            <p>NOAH’S ARK · GENESIS 6–9</p>
+            <p>NOAH’S ARK · 300 × 50 × 30 CUBITS</p>
           </div>
-          <a href="/ark.html" class="walk-pill" title="切换至 1:1 第一人称漫游">1:1 漫游 ↗</a>
+          <a href="/ark.html" class="walk-pill" title="切换至第一人称漫游">漫游 ↗</a>
         </header>
 
         <section class="scripture-scroll parchment-card">
           <div class="scroll-header">
-            <strong>歌斐木 · 三百肘 · 分上中下三层</strong>
+            <strong>300 × 50 × 30 肘 · 135 × 22.5 × 13.5 m</strong>
             <span class="scripture-tag">创世记 6:14–16</span>
           </div>
           <p class="verse-quote">
             “你要用歌斐木造一只方舟，分一间一间的造，里外抹上松香。方舟的长要三百肘，宽五十肘，高三十肘。上边要留一肘高的透光处，门要开在旁边，要在方舟里分上、中、下三层。”
           </p>
           <div class="fact-pills">
-            <span class="pill gold">一家八口得救（创 7:13）</span>
+            <span class="pill gold">1:1 真实比例（0.45m/肘）</span>
             <span class="pill green">洁净七公七母 · 不洁净一公一母（创 7:2）</span>
           </div>
         </section>
       </div>
 
-      <!-- Top-Right Resource Counters & Lighting / Reference Controls (Matching 174.jpeg) -->
+      <!-- Top-Right Resource Counters & Lighting / Rulers / Reference Controls -->
       <div class="hud-top-right">
         <div class="resource-bar parchment-card">
-          <div class="res-item" title="歌斐木板（创 6:14）">
+          <div class="res-item" title="歌斐木船体（创 6:14–15）">
             <span class="res-icon">🪵</span>
-            <div><small>歌斐木</small><strong id="res-wood">300 肘</strong></div>
+            <div><small>歌斐木长</small><strong id="res-wood">300 肘 · 135m</strong></div>
           </div>
-          <div class="res-item" title="里外抹松香（创 6:14）">
+          <div class="res-item" title="里外抹松香与三层甲板（创 6:14, 16）">
             <span class="res-icon">🏺</span>
-            <div><small>防水松香</small><strong id="res-pitch">100%</strong></div>
+            <div><small>三层舱室</small><strong id="res-pitch">32 畜栏 + 20 舱</strong></div>
           </div>
-          <div class="res-item" title="各样食物储备（创 6:21）">
-            <span class="res-icon">🍎</span>
-            <div><small>粮草果物</small><strong id="res-food">已备齐</strong></div>
+          <div class="res-item" title="得救的八口人（创 7:13）">
+            <span class="res-icon">👨‍👩‍👦</span>
+            <div><small>挪亚全家</small><strong id="res-food">8 口人</strong></div>
           </div>
-          <div class="res-item" title="洁净与不洁净活物（创 7:2–3）">
+          <div class="res-item" title="前庭 16 座围栏与三层舱内活物（创 7:2–3）">
             <span class="res-icon">🦁</span>
-            <div><small>活物登船</small><strong id="res-animals">98 实体</strong></div>
+            <div><small>真实 3D 资产</small><strong id="res-animals">95+ 实体</strong></div>
           </div>
         </div>
 
         <div class="utility-bar">
-          <button type="button" class="util-btn active" data-light="morning">☀️ 暖阳晨光</button>
-          <button type="button" class="util-btn" data-light="dusk">🌅 洪水前夕</button>
+          <button type="button" id="btn-rulers" class="util-btn">📏 尺度标尺</button>
+          <button type="button" class="util-btn active" data-light="morning">☀️ 日间晴光</button>
+          <button type="button" class="util-btn" data-light="dusk">🌅 黄昏暮色</button>
           <button type="button" class="util-btn" data-light="rainbow">🌈 彩虹晴空</button>
-          <button type="button" id="btn-facts" class="util-btn gold">📜 圣经事实考据</button>
+          <button type="button" id="btn-facts" class="util-btn gold">📜 经文与考据</button>
           <button type="button" id="reference" class="util-btn gold">🖼️ 对照原图</button>
         </div>
       </div>
 
-      <!-- Right-Side Interactive Quest Panel (Matching 174.jpeg "任务" Scroll, Fully Playable!) -->
+      <!-- Right-Side Interactive Quest Panel -->
       <aside class="quest-scroll parchment-card" aria-label="互动任务面板">
         <div class="quest-header">
-          <h2>任务 · QUESTS</h2>
+          <h2>探索与预备 · GENESIS 6–9</h2>
           <span id="load-status" class="status-pill">正在载入 3D 资产…</span>
         </div>
         <ul class="quest-list">
           <li class="quest-item done" data-quest="yard">
             <span class="q-check">✓</span>
             <div class="q-body">
-              <strong>1. 砍伐歌斐木、里外抹松香</strong>
-              <small>查看木工台、起重吊车、脚手架与松香桶（创 6:14）</small>
+              <strong>1. 检视 1:1 歌斐木方舟与侧门栈桥</strong>
+              <small>查看 x=+10m 双扇侧门、防滑栈桥、木工台与起重架（创 6:14–16）</small>
             </div>
           </li>
           <li class="quest-item" data-quest="boarding" id="quest-boarding">
             <span class="q-check">▶</span>
             <div class="q-body">
-              <strong>2. 引领百兽各从其类登船</strong>
-              <small>点击启动成对动物沿鹅卵石大道走上木栈桥（创 7:2–9）</small>
+              <strong>2. 引领百兽各从其类成对登船</strong>
+              <small>启动 10 对动物沿大道走上栈桥进入第一层底舱（创 7:2–9）</small>
             </div>
           </li>
           <li class="quest-item" data-quest="cutaway">
             <span class="q-check">◈</span>
             <div class="q-body">
-              <strong>3. 查验上、中、下三层隔间与透光窗</strong>
-              <small>剖开船体查看三层甲板、饲槽、粮仓与一肘透光处（创 6:16）</small>
+              <strong>3. 分层揭顶观察下、中、上三层</strong>
+              <small>查看下层 32 间动物舱、中层粮仓与上层挪亚家室（创 6:16）</small>
             </div>
           </li>
           <li class="quest-item" data-quest="covenant">
             <span class="q-check">🌈</span>
             <div class="q-body">
               <strong>4. 洪水消退 · 筑坛献祭与彩虹立约</strong>
-              <small>放飞乌鸦与叼橄榄叶白鸽，在山上筑坛仰望彩虹（创 8:7–9:17）</small>
+              <small>放飞乌鸦与叼橄榄叶白鸽，在坛前仰望横跨方舟的彩虹（创 8–9）</small>
             </div>
           </li>
         </ul>
@@ -124,43 +125,43 @@
         <p id="inspect-art" class="inspect-art"></p>
       </section>
 
-      <!-- Bottom Interactive Game Dock (Matching 174.jpeg Bottom Bar + 3-Deck Switcher) -->
-      <nav class="bottom-dock" aria-label="场景模式与甲板切换">
+      <!-- Bottom Interactive Game Dock (Overview, Yard, Enclosures, 3 Peel-Away Decks, Full Cutaway & Covenant) -->
+      <nav class="bottom-dock" aria-label="场景模式与三层甲板切换">
         <div class="dock-container parchment-card">
           <button type="button" class="dock-btn active" data-mode="overview">
             <span class="dock-icon">⛵</span>
-            <strong>全景登船</strong>
+            <strong>1:1 全景</strong>
             <small>Overview</small>
           </button>
           <button type="button" class="dock-btn" data-mode="yard">
-            <span class="dock-icon">🔨</span>
-            <strong>建造工坊</strong>
-            <small>Build Yard</small>
+            <span class="dock-icon">🚪</span>
+            <strong>侧门与工坊</strong>
+            <small>Entrance</small>
           </button>
           <button type="button" class="dock-btn" data-mode="animals">
             <span class="dock-icon">🦒</span>
-            <strong>百兽围栏</strong>
-            <small>Animals</small>
+            <strong>16 座围栏</strong>
+            <small>Enclosures</small>
           </button>
-          <button type="button" class="dock-btn highlight" data-mode="cutaway">
+          <button type="button" class="dock-btn highlight" data-mode="deck1">
+            <span class="dock-icon">1️⃣</span>
+            <strong>下层 · 畜棚舱</strong>
+            <small>Deck 1 (32 Stalls)</small>
+          </button>
+          <button type="button" class="dock-btn highlight" data-mode="deck2">
+            <span class="dock-icon">2️⃣</span>
+            <strong>中层 · 粮草舱</strong>
+            <small>Deck 2 (Granary)</small>
+          </button>
+          <button type="button" class="dock-btn highlight" data-mode="deck3">
+            <span class="dock-icon">3️⃣</span>
+            <strong>上层 · 家室舱</strong>
+            <small>Deck 3 (Quarters)</small>
+          </button>
+          <button type="button" class="dock-btn" data-mode="cutaway">
             <span class="dock-icon">📦</span>
             <strong>三层全剖</strong>
-            <small>3-Deck Cutaway</small>
-          </button>
-          <button type="button" class="dock-btn" data-mode="deck1">
-            <span class="dock-icon">1️⃣</span>
-            <strong>第一层底舱</strong>
-            <small>Lower Deck</small>
-          </button>
-          <button type="button" class="dock-btn" data-mode="deck2">
-            <span class="dock-icon">2️⃣</span>
-            <strong>第二层中舱</strong>
-            <small>Middle Deck</small>
-          </button>
-          <button type="button" class="dock-btn" data-mode="deck3">
-            <span class="dock-icon">3️⃣</span>
-            <strong>第三层上舱</strong>
-            <small>Upper Deck</small>
+            <small>Front Cutaway</small>
           </button>
           <button type="button" class="dock-btn covenant" data-mode="covenant">
             <span class="dock-icon">🌈</span>
@@ -168,7 +169,9 @@
             <small>Covenant</small>
           </button>
         </div>
-        <div class="dock-hint">💡 提示：点击场景中任意动物、人物、方舟或祭坛可查看《创世记》经文考据 · 拖拽旋转 · 滚轮缩放</div>
+        <div class="dock-hint">
+          💡 点击任意动物、人物、135 米方舟或祭坛查看《创世记》考据 · 拖拽旋转 · 滚轮缩放 · 右键平移
+        </div>
       </nav>
 
       <!-- Reference Image Modal -->
@@ -180,7 +183,7 @@
           </div>
           <img id="reference-image" src="/assets/scene-assembly-references/174.jpeg" alt="挪亚方舟场景参考图" />
           <p class="modal-note">
-            三维场景由 70 个经 YahwehWord 版权签名的 Tripo 3D 2K 模型与 Blender 5.2 三层剖面山谷环境实时渲染组成。
+            三维世界结合 1:1 真实圣经尺度（300×50×30 肘 = 135.0×22.5×13.5 米）三层木构方舟、绵延山谷背景与 95+ 实拍级 Tripo 3D H3.1 Ultra 模型实时渲染。
           </p>
         </div>
       </div>
@@ -189,27 +192,27 @@
       <div id="facts-modal" class="modal" hidden>
         <div class="modal-card parchment-card wide">
           <div class="modal-head">
-            <h3>📖 挪亚方舟圣经事实与考据（创世记 6–9 章）</h3>
+            <h3>📖 挪亚方舟圣经事实与 1:1 复原考据（创世记 6–9 章）</h3>
             <button type="button" id="close-facts" class="close-btn" aria-label="关闭">×</button>
           </div>
           <div class="facts-grid">
             <article class="fact-box">
-              <h4>1. 方舟尺寸与结构（创 6:14–16）</h4>
-              <p><strong>长 300 肘 × 宽 50 肘 × 高 30 肘</strong>（按普通肘约 44.5 厘米计算，长约 133.5 米、宽 22.3 米、高 13.4 米；按皇家肘约 52 厘米则长约 156 米）。</p>
-              <p>采用<strong>歌斐木（Gopher wood）</strong>建造，内分<strong>一间一间的舱室（希伯来文 קִנִּים Qinnim）</strong>，里外涂抹<strong>松香/沥青（כֹּפֶר Kopher）</strong>防水。顶部留<strong>一肘高的透光处（צֹהַר Tzohar）</strong>，<strong>门开在旁边</strong>，内分<strong>上、中、下三层</strong>。</p>
+              <h4>1. 1:1 真实尺寸与三层结构（创 6:14–16）</h4>
+              <p><strong>长 300 肘 × 宽 50 肘 × 高 30 肘</strong>（按 0.45 米/肘换算，主体精确为 <strong>135.0 米 × 22.5 米 × 13.5 米</strong>）。</p>
+              <p>采用<strong>歌斐木（Gopher wood）</strong>建造，内分<strong>一间一间的舱室（Qinnim）</strong>，里外涂抹<strong>松香/沥青（Kopher）</strong>。顶部留<strong>一肘高透光处（Tzohar，0.45 米）</strong>，<strong>门开在旁边（x = +10m）</strong>，内分<strong>下层（0.55m，32 间畜栏）、中层（5.50m，10 跨粮草与洁净畜舱）、上层（9.15m，10 跨挪亚家室与飞鸟栖架）</strong>。</p>
             </article>
             <article class="fact-box">
               <h4>2. 洁净与不洁净活物（创 7:2–3, 8–9）</h4>
-              <p><strong>洁净的畜类与空中的飞鸟：各带七公七母（7 对）</strong>——包括牛、绵羊、山羊、鹿、斑鸠、雏鸽等，既为洪水后繁衍，更为出方舟后向耶和华献燔祭（创 8:20）。</p>
-              <p><strong>不洁净的畜类：各带一公一母（1 对）</strong>——包括大象、狮子、骆驼（倒嚼不分蹄，利 11:4）、驴（单蹄，出 13:13）、狼、斑马等，各从其类进入方舟保全生命。</p>
+              <p><strong>洁净的畜类与空中的飞鸟：各带七公七母（7 对）</strong>——包括牛、绵羊、山羊、鹿、鸽子等，既为洪水后繁衍，更为出方舟后向耶和华献燔祭（创 8:20）。</p>
+              <p><strong>不洁净的畜类：各带一公一母（1 对）</strong>——包括大象、狮子、骆驼（倒嚼不分蹄，利 11:4）、驴与马（单蹄，出 13:13）、狼、斑马等，各从其类进入方舟保全生命。</p>
             </article>
             <article class="fact-box">
               <h4>3. 得救的八口人（创 7:7, 13；彼前 3:20）</h4>
-              <p>进入方舟的人共有<strong>八口</strong>：义人<strong>挪亚</strong>、<strong>挪亚的妻子</strong>、三个儿子<strong>闪（Shem）、含（Ham）、雅弗（Japheth）</strong>以及<strong>三个儿妇</strong>。耶和华亲自把门关上（创 7:16）。</p>
+              <p>进入方舟的人共有<strong>八口</strong>：义人<strong>挪亚</strong>、<strong>挪亚的妻子</strong>、三个儿子<strong>闪（Shem）、含（Ham）、雅弗（Japheth）</strong>以及<strong>三个儿妇</strong>（经文以关系称呼四位女性，不虚构个人名字）。耶和华亲自把门关上（创 7:16）。</p>
             </article>
             <article class="fact-box">
               <h4>4. 乌鸦、橄榄叶白鸽与彩虹之约（创 8:6–9:17）</h4>
-              <p>水退后方舟停在<strong>亚拉腊山（Mountains of Ararat）</strong>。挪亚先后放出<strong>乌鸦</strong>与<strong>鸽子</strong>；鸽子第二次带回<strong>新拧下来的橄榄叶</strong>。出方舟后挪亚筑坛献洁净畜鸟为燔祭，神以<strong>云中彩虹</strong>立定永约。</p>
+              <p>水退后方舟停在<strong>亚拉腊山</strong>。挪亚先后放出<strong>乌鸦</strong>与<strong>鸽子</strong>；鸽子第二次带回<strong>新拧下来的橄榄叶</strong>。出方舟后挪亚筑坛献洁净畜鸟为燔祭，神以<strong>云中彩虹</strong>立定永约。</p>
             </article>
           </div>
         </div>
