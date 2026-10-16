@@ -640,3 +640,113 @@ body {
     bottom: 92px;
   }
 }
+
+/* Boarding speed control */
+.speed-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 7px;
+  font-size: 10.5px;
+  color: var(--ink-muted);
+}
+
+.speed-row span {
+  margin-right: auto;
+  font-weight: 600;
+}
+
+.speed-btn {
+  padding: 3px 8px;
+  border-radius: 7px;
+  border: 1px solid var(--gold-border);
+  background: rgba(255, 250, 236, 0.92);
+  color: var(--wood-dark);
+  font-size: 10.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.speed-btn.active {
+  background: var(--green-banner);
+  border-color: var(--gold-bright);
+  color: #f8f1df;
+}
+
+/* Full-screen loading page (shown from the first paint until the 3D world is ready) */
+#ark-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(255, 244, 214, 0.9), transparent 60%),
+    linear-gradient(180deg, #9cc2d6 0%, #d9e6e2 55%, #b7c39e 100%);
+  color: var(--wood-dark);
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+#ark-loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#ark-loader .loader-ark {
+  font-size: 54px;
+  animation: ark-bob 2.4s ease-in-out infinite;
+}
+
+@keyframes ark-bob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-7px) rotate(2deg); }
+}
+
+#ark-loader h2 {
+  margin: 0;
+  font-size: 24px;
+  letter-spacing: 0.08em;
+}
+
+#ark-loader .loader-sub {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+  font-family: system-ui, sans-serif;
+}
+
+#ark-loader .loader-bar {
+  width: min(360px, 72vw);
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 252, 242, 0.7);
+  border: 1px solid var(--gold-border);
+  overflow: hidden;
+}
+
+#ark-loader .loader-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--green-bright), var(--gold-bright));
+  transition: width 0.25s ease;
+}
+
+#ark-loader .loader-text {
+  font-size: 12px;
+  font-weight: 600;
+  min-height: 1.2em;
+}
+
+#ark-loader .loader-verse {
+  max-width: min(460px, 84vw);
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--ink-main);
+}

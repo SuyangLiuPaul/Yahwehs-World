@@ -583,11 +583,10 @@ function buildTrueScaleArkAndValley(scene: THREE.Scene): TrueScaleArkNodes {
     '#c4af87',
     0.08
   );
-  // Central & side north-south boarding avenues
+  // Central north-south boarding avenue (x = 10) — every pair walks up this to the gangway
   addRibbonPath(
     [
-      [10.0, 64.0],
-      [10.0, 34.0],
+      [10.0, 36.0],
       [10.0, 18.0],
       [10.0, 2.6],
     ],
@@ -595,29 +594,17 @@ function buildTrueScaleArkAndValley(scene: THREE.Scene): TrueScaleArkNodes {
     '#cbb68d',
     0.09
   );
-  addRibbonPath(
-    [
-      [0.0, 64.0],
-      [0.0, 18.0],
-      [0.0, 2.6],
-      [10.0, 2.6],
-    ],
-    3.8,
-    '#c0ab83',
-    0.075
-  );
-  // 4 cross-lanes servicing the 16 animal enclosures (z = 18.5, 33.5, 48.5, 63.5)
-  for (let row = 0; row < 4; row++) {
-    const z = 18.5 + row * 15.0;
+  // Cross-lanes in front of each enclosure row's gate (z = 5.0, 18.5, 33.5)
+  for (const z of [5.0, 18.5, 33.5]) {
     addRibbonPath(
       [
-        [-70, z],
+        [-60, z],
         [-25, z],
-        [0, z],
+        [10, z],
         [25, z],
-        [70, z],
+        [60, z],
       ],
-      2.8,
+      z === 5.0 ? 4.2 : 3.4,
       '#bda77f',
       0.072
     );
@@ -918,10 +905,16 @@ function buildTrueScaleArkAndValley(scene: THREE.Scene): TrueScaleArkNodes {
           addBox(deckGrp, sx - 1.9, fy + 1.05, sz + dz, 2.7, 0.09, 0.08, '#a9885b', true);
           addBox(deckGrp, sx + 1.9, fy + 1.05, sz + dz, 2.7, 0.09, 0.08, '#a9885b', true);
         }
-        // Golden hay bedding & water trough in every stall
-        addBox(deckGrp, sx - 1.7, fy + 0.24, sz + (i < 16 ? 1.5 : -1.5), 1.4, 0.36, 1.0, '#c8ae68');
-        addBox(deckGrp, sx + 1.7, fy + 0.25, sz - (i < 16 ? 1.4 : -1.4), 1.35, 0.38, 0.62, '#6d5439', true);
-        addBox(deckGrp, sx + 1.7, fy + 0.39, sz - (i < 16 ? 1.4 : -1.4), 1.18, 0.08, 0.46, '#4d9195');
+        // Golden hay bedding & water trough (south-row stalls house the boarded pairs, so their trough
+        // hangs on the aisle side of the rail and the floor is left clear)
+        if (i < 16) {
+          addBox(deckGrp, sx - 1.7, fy + 0.24, sz + 1.5, 1.4, 0.36, 1.0, '#c8ae68');
+          addBox(deckGrp, sx + 1.7, fy + 0.25, sz - 1.4, 1.35, 0.38, 0.62, '#6d5439', true);
+          addBox(deckGrp, sx + 1.7, fy + 0.39, sz - 1.4, 1.18, 0.08, 0.46, '#4d9195');
+        } else {
+          addBox(deckGrp, sx, fy + 0.25, sz + 3.45, 2.4, 0.38, 0.62, '#6d5439', true);
+          addBox(deckGrp, sx, fy + 0.39, sz + 3.45, 2.2, 0.08, 0.46, '#4d9195');
+        }
         if (i % 2 === 0) {
           // Warm hanging oil lamp
           const lamp = new THREE.Mesh(sphereGeo, getMat('#ffba63', 0.3, 0.0, false, '#ffae42'));
@@ -1109,13 +1102,14 @@ function buildTrueScaleArkAndValley(scene: THREE.Scene): TrueScaleArkNodes {
     pad.receiveShadow = true;
     pen.add(pad);
 
-    // Perimeter posts & twin horizontal rails (leaving a 3.2m open gate on the north -Z side facing the Ark)
+    // Perimeter posts & twin horizontal rails (leaving a 6.4m open gate on the north -Z side facing the Ark,
+    // wide enough for a pair to walk out side by side)
     const w = 5.0;
     const d = 4.3;
     const postCoords: Array<[number, number]> = [
       [-w, -d],
-      [-1.6, -d],
-      [1.6, -d],
+      [-3.2, -d],
+      [3.2, -d],
       [w, -d],
       [w, 0],
       [w, d],
@@ -1128,8 +1122,8 @@ function buildTrueScaleArkAndValley(scene: THREE.Scene): TrueScaleArkNodes {
     }
     for (const ry of [0.44, 0.92]) {
       // North fence left & right of gate
-      addBox(pen, -3.3, ry, -d, 3.4, 0.09, 0.09, '#9f7f56', true);
-      addBox(pen, 3.3, ry, -d, 3.4, 0.09, 0.09, '#9f7f56', true);
+      addBox(pen, -4.1, ry, -d, 1.8, 0.09, 0.09, '#9f7f56', true);
+      addBox(pen, 4.1, ry, -d, 1.8, 0.09, 0.09, '#9f7f56', true);
       // South fence
       addBox(pen, 0, ry, d, w * 2, 0.09, 0.09, '#9f7f56', true);
       // East & West fences
@@ -1142,10 +1136,10 @@ function buildTrueScaleArkAndValley(scene: THREE.Scene): TrueScaleArkNodes {
     addBox(pen, -3.2, 0.45, 2.6, 1.52, 0.08, 0.54, '#4d9195');
     addBox(pen, 3.2, 0.28, 2.6, 1.35, 0.48, 0.95, '#c7ae68');
 
-    // Woven shade canopy on alternating enclosures
+    // Woven shade canopy over the trough on alternating enclosures (kept clear of the gate path)
     if (idx % 2 === 0) {
       const canopy = new THREE.Group();
-      canopy.position.set(-2.9, 0, -2.4);
+      canopy.position.set(-3.2, 0, 2.6);
       pen.add(canopy);
       for (const cx of [-1.4, 1.4]) {
         for (const cz of [-1.1, 1.1]) {
@@ -1504,8 +1498,9 @@ function buildTrueScaleArkAndValley(scene: THREE.Scene): TrueScaleArkNodes {
   };
 }
 
-// 16 Forecourt Enclosure Centers (4 columns × 4 rows)
-const exportEnclosureZones: ReadonlyArray< readonly [number, number]> = [
+// 12 Forecourt Enclosure Centers (4 columns × 3 rows) — each holds exactly one male–female pair that
+// walks out through the north gate and up the gangway during the boarding sequence
+const exportEnclosureZones: ReadonlyArray<readonly [number, number]> = [
   [-54, 12],
   [-18, 12],
   [24, 12],
@@ -1518,10 +1513,6 @@ const exportEnclosureZones: ReadonlyArray< readonly [number, number]> = [
   [-18, 42],
   [24, 42],
   [54, 42],
-  [-54, 57],
-  [-18, 57],
-  [24, 57],
-  [54, 57],
 ];
 
 // ============================================================================
@@ -1559,18 +1550,18 @@ const SCENE_PLACEMENTS: PlacementDef[] = [
   { id: 'ark-right-crane', assetId: 'ark-crane', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [28.0, 0.0, -4.5], targetHeight: 8.5, yaw: -0.25 },
   { id: 'ark-right-scaffold-2', assetId: 'ark-scaffold', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [-28.5, 0.0, -7.2], targetHeight: 7.2, yaw: 0 },
   { id: 'ark-right-tent-1', assetId: 'ark-tent', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [38.5, 0.0, -1.8], targetWidth: 4.8, yaw: -0.25 },
-  { id: 'ark-faith-sign', assetId: 'ark-wooden-sign', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [16.2, 0.0, 5.2], targetHeight: 2.95, yaw: -0.18 },
-  { id: 'ark-blue-banner-R', assetId: 'ark-banner', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [14.5, 0.0, 3.2], targetHeight: 3.8, yaw: Math.PI / 2 - 0.15 },
-  { id: 'ark-blue-banner-L', assetId: 'ark-banner', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [5.5, 0.0, 3.2], targetHeight: 3.8, yaw: Math.PI / 2 + 0.15 },
+  { id: 'ark-faith-sign', assetId: 'ark-wooden-sign', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [0.8, 0.0, 1.8], targetHeight: 2.95, yaw: 0.12 },
+  { id: 'ark-blue-banner-R', assetId: 'ark-banner', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [15.1, 0.0, 1.9], targetHeight: 3.8, yaw: Math.PI / 2 - 0.15 },
+  { id: 'ark-blue-banner-L', assetId: 'ark-banner', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [4.9, 0.0, 1.9], targetHeight: 3.8, yaw: Math.PI / 2 + 0.15 },
 
   // Shipyard Supplies near the Gangway Entrance (x = 3..20, z = -3..+4)
-  { id: 'apple-crate-L1', assetId: 'ark-produce-crate', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [4.2, 0.0, 1.2], targetWidth: 1.4, yaw: 0.2 },
-  { id: 'apple-crate-R1', assetId: 'ark-produce-crate', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [15.8, 0.0, 1.4], targetWidth: 1.4, yaw: -0.2 },
+  { id: 'apple-crate-L1', assetId: 'ark-produce-crate', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [3.6, 0.0, 0.5], targetWidth: 1.4, yaw: 0.2 },
+  { id: 'apple-crate-R1', assetId: 'ark-produce-crate', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [16.4, 0.0, 0.8], targetWidth: 1.4, yaw: -0.2 },
   { id: 'crate-yard-L1', assetId: 'ark-crate', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [3.2, 0.0, -0.5], targetWidth: 1.25, yaw: 0.15 },
   { id: 'crate-yard-R1', assetId: 'ark-crate', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [17.2, 0.0, -0.4], targetWidth: 1.25, yaw: -0.15 },
   { id: 'barrel-yard-L1', assetId: 'ark-barrel', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [2.2, 0.0, -1.8], targetHeight: 1.15, yaw: 0 },
   { id: 'barrel-yard-R1', assetId: 'ark-barrel', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [18.4, 0.0, -1.6], targetHeight: 1.15, yaw: 0 },
-  { id: 'sack-yard-1', assetId: 'ark-sack', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [16.8, 0.0, 0.8], targetHeight: 0.95, yaw: -0.3 },
+  { id: 'sack-yard-1', assetId: 'ark-sack', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [18.1, 0.0, 1.0], targetHeight: 0.95, yaw: -0.3 },
   { id: 'jar-yard-1', assetId: 'ark-jar', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [4.8, 0.0, -1.2], targetHeight: 0.95, yaw: 0 },
   { id: 'planks-yard-L', assetId: 'ark-wood-planks', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [-11.5, 0.0, -2.2], targetWidth: 2.4, yaw: 0.25 },
   { id: 'mallet-yard-L', assetId: 'ark-mallet', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [-14.2, 0.0, -1.2], targetWidth: 0.9, yaw: 0.5 },
@@ -1578,86 +1569,14 @@ const SCENE_PLACEMENTS: PlacementDef[] = [
   { id: 'ladder-yard-L', assetId: 'ark-ladder', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [-4.5, 0.0, -8.2], targetHeight: 6.2, yaw: 0 },
 
   // Hero Tripo 3D Trees & Rocks Framing the Forecourt
-  { id: 'tree-L-hero-1', assetId: 'ark-tree', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [-38.0, 0.0, 4.0], targetHeight: 7.8, yaw: 0 },
-  { id: 'tree-R-hero-1', assetId: 'ark-tree', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [42.0, 0.0, 4.5], targetHeight: 7.8, yaw: -0.4 },
+  { id: 'tree-L-hero-1', assetId: 'ark-tree', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [-38.0, 0.0, -2.6], targetHeight: 7.8, yaw: 0 },
+  { id: 'tree-R-hero-1', assetId: 'ark-tree', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [44.0, 0.0, -2.4], targetHeight: 7.8, yaw: -0.4 },
   { id: 'tree-L-hero-2', assetId: 'ark-tree', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [-68.0, 0.0, 14.0], targetHeight: 8.2, yaw: 0.3 },
   { id: 'tree-R-hero-2', assetId: 'ark-tree', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [68.0, 0.0, 14.0], targetHeight: 8.2, yaw: -0.3 },
 
-  // ================= NOAH, FAMILY OF 8 & CARPENTERS AT THE GANGWAY ENTRANCE (x = 6..15, z = 2..7) =================
-  { id: 'noah-patriarch', assetId: 'ark-noah', biblicalKey: 'ark-noah', zone: 'family', deck: 0, pos: [6.4, 0.06, 4.2], targetHeight: 2.22, yaw: 0.35, clip: 'idle' },
-  { id: 'noah-wife', assetId: 'ark-woman-blue', biblicalKey: 'ark-woman-blue', zone: 'family', deck: 0, pos: [5.0, 0.06, 5.2], targetHeight: 2.02, yaw: 0.35, clip: 'idle' },
-  { id: 'son-shem', assetId: 'ark-man-cream', biblicalKey: 'ark-sons', zone: 'family', deck: 0, pos: [13.6, 0.06, 4.2], targetHeight: 2.05, yaw: -0.35, clip: 'idle' },
-  { id: 'wife-shem', assetId: 'ark-woman-green-v08', biblicalKey: 'ark-sons', zone: 'family', deck: 0, pos: [15.0, 0.06, 5.2], targetHeight: 1.96, yaw: -0.35, clip: 'clasped_breathing' },
-  { id: 'son-ham', assetId: 'ark-man-bearded-v06', biblicalKey: 'ark-sons', zone: 'family', deck: 0, pos: [6.2, 0.06, 7.2], targetHeight: 2.04, yaw: 0.4, clip: 'gentle_look' },
-  { id: 'wife-ham', assetId: 'ark-woman-rust-v06', biblicalKey: 'ark-sons', zone: 'family', deck: 0, pos: [4.8, 0.06, 8.2], targetHeight: 1.96, yaw: 0.4, clip: 'attentive_glance' },
-  { id: 'son-japheth', assetId: 'ark-boy-green', biblicalKey: 'ark-sons', zone: 'family', deck: 0, pos: [13.8, 0.06, 7.2], targetHeight: 1.92, yaw: -0.4, clip: 'idle' },
-  { id: 'wife-japheth', assetId: 'genesis-8-1-purple-pale-veiled-ramp-woman', biblicalKey: 'ark-sons', zone: 'family', deck: 0, pos: [15.2, 0.06, 8.2], targetHeight: 1.94, yaw: -0.4, clip: 'idle' },
-  { id: 'carpenter-left', assetId: 'ark-worker', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [-14.2, 0.0, -1.8], targetHeight: 2.0, yaw: -0.5, clip: 'idle' },
-  { id: 'carpenter-right', assetId: 'ark-worker-carrying', biblicalKey: 'ark-structure', zone: 'yard', deck: 0, pos: [21.5, 0.0, -2.5], targetHeight: 2.0, yaw: -0.35, clip: 'walk' },
-
-  // ================= 16 FORECOURT ANIMAL ENCLOSURES (Real Tripo 3D Animals in Every Pen!) =================
-  // Row 1 (z = 12): Pen 1 (-54, 12) Elephants | Pen 2 (-18, 12) Giraffes | Pen 3 (24, 12) Camels | Pen 4 (54, 12) Cattle
-  { id: 'pen1-elephant-1', assetId: 'ark-elephant', biblicalKey: 'ark-elephant', zone: 'animals_left', deck: 0, pos: [-55.8, 0.04, 11.5], targetHeight: 3.1, yaw: 0.25 },
-  { id: 'pen1-elephant-2', assetId: 'genesis-6-9-gray-elephant-v01-v61', biblicalKey: 'ark-elephant', zone: 'animals_left', deck: 0, pos: [-51.8, 0.04, 12.2], targetHeight: 2.95, yaw: -0.2, clip: 'trunk_reach' },
-
-  { id: 'pen2-giraffe-1', assetId: 'ark-giraffe', biblicalKey: 'ark-giraffe', zone: 'animals_left', deck: 0, pos: [-19.8, 0.04, 11.4], targetHeight: 4.4, yaw: 0.28 },
-  { id: 'pen2-giraffe-2', assetId: 'psalms-104-giraffe-v04', biblicalKey: 'ark-giraffe', zone: 'animals_left', deck: 0, pos: [-16.2, 0.04, 12.0], targetHeight: 4.2, yaw: -0.18, clip: 'look_around' },
-  { id: 'pen2-giraffe-3', assetId: 'ark-giraffe', biblicalKey: 'ark-giraffe', zone: 'animals_left', deck: 0, pos: [-18.0, 0.04, 14.2], targetHeight: 3.9, yaw: 0.1 },
-
-  { id: 'pen3-camel-1', assetId: 'ark-camel', biblicalKey: 'ark-camel', zone: 'animals_right', deck: 0, pos: [22.2, 0.04, 11.4], targetHeight: 2.55, yaw: -0.2 },
-  { id: 'pen3-camel-2', assetId: 'psalms-117-camel-v02', biblicalKey: 'ark-camel', zone: 'animals_right', deck: 0, pos: [25.8, 0.04, 12.2], targetHeight: 2.48, yaw: -0.35, clip: 'look_around' },
-
-  { id: 'pen4-cow-1', assetId: 'ark-cow', biblicalKey: 'ark-cow', zone: 'animals_right', deck: 0, pos: [52.0, 0.04, 11.2], targetHeight: 1.85, yaw: -0.2 },
-  { id: 'pen4-cow-2', assetId: 'jeroboam-brown-white-cow-v02', biblicalKey: 'ark-cow', zone: 'animals_right', deck: 0, pos: [55.4, 0.04, 11.8], targetHeight: 1.82, yaw: 0.25, clip: 'graze' },
-  { id: 'pen4-cow-3', assetId: 'ark-cow', biblicalKey: 'ark-cow', zone: 'animals_right', deck: 0, pos: [53.8, 0.04, 14.0], targetHeight: 1.78, yaw: -0.15 },
-
-  // Row 2 (z = 27): Pen 5 (-54, 27) Horses | Pen 6 (-18, 27) Cattle & Oxen | Pen 7 (24, 27) Lions & Cubs | Pen 8 (54, 27) Donkeys & Zebras
-  { id: 'pen5-horse-1', assetId: 'royal-white-horse-v1-v11', biblicalKey: 'ark-donkey', zone: 'animals_left', deck: 0, pos: [-55.6, 0.04, 26.5], targetHeight: 1.98, yaw: 0.25, clip: 'idle' },
-  { id: 'pen5-horse-2', assetId: 'horse-saddled-brown-v03', biblicalKey: 'ark-donkey', zone: 'animals_left', deck: 0, pos: [-52.2, 0.04, 27.2], targetHeight: 1.94, yaw: -0.2, clip: 'idle' },
-
-  { id: 'pen6-cow-1', assetId: 'ark-cow', biblicalKey: 'ark-cow', zone: 'animals_left', deck: 0, pos: [-20.0, 0.04, 26.2], targetHeight: 1.85, yaw: 0.22 },
-  { id: 'pen6-cow-2', assetId: 'jeroboam-brown-white-cow-v02', biblicalKey: 'ark-cow', zone: 'animals_left', deck: 0, pos: [-16.4, 0.04, 26.8], targetHeight: 1.82, yaw: -0.18, clip: 'graze' },
-  { id: 'pen6-cow-3', assetId: 'ark-cow', biblicalKey: 'ark-cow', zone: 'animals_left', deck: 0, pos: [-18.2, 0.04, 28.8], targetHeight: 1.76, yaw: 0.1 },
-
-  { id: 'pen7-lion-1', assetId: 'ark-lion', biblicalKey: 'ark-lion', zone: 'animals_right', deck: 0, pos: [22.2, 0.04, 26.4], targetHeight: 1.72, yaw: -0.25 },
-  { id: 'pen7-lion-2', assetId: 'psalms-148-adult-lion-v02', biblicalKey: 'ark-lion', zone: 'animals_right', deck: 0, pos: [25.6, 0.04, 26.8], targetHeight: 1.68, yaw: -0.35, clip: 'idle' },
-  { id: 'pen7-lion-cub', assetId: 'ark-lion-cub-v02', biblicalKey: 'ark-lion', zone: 'animals_right', deck: 0, pos: [23.8, 0.04, 28.6], targetHeight: 1.08, yaw: -0.15, clip: 'sniff' },
-
-  { id: 'pen8-donkey-1', assetId: 'ark-donkey', biblicalKey: 'ark-donkey', zone: 'animals_right', deck: 0, pos: [52.0, 0.04, 26.4], targetHeight: 1.72, yaw: 0.1 },
-  { id: 'pen8-donkey-2', assetId: 'balaam-donkey-packed-v04', biblicalKey: 'ark-donkey', zone: 'animals_right', deck: 0, pos: [55.2, 0.04, 26.8], targetHeight: 1.72, yaw: -0.25, clip: 'idle' },
-  { id: 'pen8-zebra-1', assetId: 'ark-zebra-v02', biblicalKey: 'ark-donkey', zone: 'animals_right', deck: 0, pos: [53.6, 0.04, 28.8], targetHeight: 1.76, yaw: -0.3, clip: 'idle' },
-
-  // Row 3 (z = 42): Pen 9 (-54, 42) Fallow Deer | Pen 10 (-18, 42) Clean Sheep (7 Pairs) | Pen 11 (24, 42) Horned Goats (7 Pairs) | Pen 12 (54, 42) Wolves & Foxes
-  { id: 'pen9-deer-1', assetId: 'ark-deer-v02', biblicalKey: 'ark-deer-v02', zone: 'animals_left', deck: 0, pos: [-55.8, 0.04, 41.2], targetHeight: 1.78, yaw: 0.25, clip: 'graze' },
-  { id: 'pen9-deer-2', assetId: 'psalms-42-drinking-deer-alpha-clean-02', biblicalKey: 'ark-deer-v02', zone: 'animals_left', deck: 0, pos: [-52.4, 0.04, 41.8], targetHeight: 1.75, yaw: -0.2 },
-  { id: 'pen9-deer-3', assetId: 'ark-deer-v02', biblicalKey: 'ark-deer-v02', zone: 'animals_left', deck: 0, pos: [-54.0, 0.04, 43.8], targetHeight: 1.7, yaw: 0.1, clip: 'idle' },
-
-  { id: 'pen10-sheep-1', assetId: 'ark-lamb', biblicalKey: 'ark-lamb', zone: 'animals_left', deck: 0, pos: [-20.2, 0.04, 40.8], targetHeight: 1.28, yaw: 0.2 },
-  { id: 'pen10-sheep-2', assetId: 'genesis-8-20-grazing-sheep-v11', biblicalKey: 'ark-lamb', zone: 'animals_left', deck: 0, pos: [-17.8, 0.04, 41.2], targetHeight: 1.3, yaw: -0.25, clip: 'graze' },
-  { id: 'pen10-sheep-3', assetId: 'israelite-sheep-v08', biblicalKey: 'ark-lamb', zone: 'animals_left', deck: 0, pos: [-15.6, 0.04, 41.6], targetHeight: 1.28, yaw: 0.15, clip: 'idle' },
-  { id: 'pen10-sheep-4', assetId: 'ark-lamb', biblicalKey: 'ark-lamb', zone: 'animals_left', deck: 0, pos: [-19.0, 0.04, 43.4], targetHeight: 1.22, yaw: 0.3 },
-
-  { id: 'pen11-goat-1', assetId: 'ark-goat-v03', biblicalKey: 'ark-goat-v03', zone: 'animals_right', deck: 0, pos: [21.8, 0.04, 40.8], targetHeight: 1.34, yaw: -0.2, clip: 'graze' },
-  { id: 'pen11-goat-2', assetId: 'genesis-8-20-grazing-horned-caprine-v06', biblicalKey: 'ark-goat-v03', zone: 'animals_right', deck: 0, pos: [24.4, 0.04, 41.4], targetHeight: 1.32, yaw: 0.25, clip: 'idle' },
-  { id: 'pen11-goat-3', assetId: 'ark-fixed-gray-horned-caprine-right', biblicalKey: 'ark-goat-v03', zone: 'animals_right', deck: 0, pos: [26.4, 0.04, 42.0], targetHeight: 1.3, yaw: -0.3 },
-
-  { id: 'pen12-wolf-1', assetId: 'ark-wolf-v02', biblicalKey: 'ark-lion', zone: 'animals_right', deck: 0, pos: [52.4, 0.04, 41.4], targetHeight: 1.28, yaw: -0.25, clip: 'sniff' },
-  { id: 'pen12-wolf-2', assetId: 'ark-wolf', biblicalKey: 'ark-lion', zone: 'animals_right', deck: 0, pos: [55.4, 0.04, 42.0], targetHeight: 1.26, yaw: 0.2 },
-
-  // Row 4 (z = 57): Pen 13 (-54, 57) Tortoises | Pen 14 (-18, 57) Rabbits & Squirrels | Pen 15 (24, 57) Peacocks & Fowl | Pen 16 (54, 57) Eagles & Birds
-  { id: 'pen13-turtle-1', assetId: 'psalms-139-sea-turtle-v02', biblicalKey: 'ark-elephant', zone: 'animals_left', deck: 0, pos: [-55.2, 0.04, 56.4], targetWidth: 1.35, yaw: 0.3 },
-  { id: 'pen13-turtle-2', assetId: 'psalms-139-sea-turtle', biblicalKey: 'ark-elephant', zone: 'animals_left', deck: 0, pos: [-52.6, 0.04, 57.2], targetWidth: 1.3, yaw: -0.25 },
-
-  { id: 'pen14-rabbit-1', assetId: 'ark-rabbit-v04', biblicalKey: 'ark-lion', zone: 'animals_left', deck: 0, pos: [-19.4, 0.04, 56.2], targetHeight: 0.78, yaw: 0.25, clip: 'look_around' },
-  { id: 'pen14-rabbit-2', assetId: 'ark-rabbit-v02', biblicalKey: 'ark-lion', zone: 'animals_left', deck: 0, pos: [-17.4, 0.04, 56.8], targetHeight: 0.76, yaw: -0.2 },
-  { id: 'pen14-squirrel-1', assetId: 'ark-squirrel', biblicalKey: 'ark-deer-v02', zone: 'animals_left', deck: 0, pos: [-16.2, 0.04, 55.6], targetHeight: 0.68, yaw: 0.3 },
-
-  { id: 'pen15-peacock-1', assetId: 'psalms-49-peacock-v02', biblicalKey: 'ark-dove-olive-v07', zone: 'birds', deck: 0, pos: [22.4, 0.04, 56.2], targetHeight: 1.25, yaw: -0.25 },
-  { id: 'pen15-rooster-1', assetId: 'psalms-55-rooster-v02', biblicalKey: 'ark-dove-olive-v07', zone: 'birds', deck: 0, pos: [24.6, 0.04, 56.8], targetHeight: 0.88, yaw: 0.2 },
-  { id: 'pen15-hen-1', assetId: 'ark-hen', biblicalKey: 'ark-dove-olive-v07', zone: 'birds', deck: 0, pos: [26.0, 0.04, 56.4], targetHeight: 0.78, yaw: -0.3 },
-
-  { id: 'pen16-eagle-1', assetId: 'psalms-148-eagle-v05', biblicalKey: 'ark-dove-olive-v07', zone: 'birds', deck: 0, pos: [52.6, 0.04, 56.4], targetHeight: 1.28, yaw: -0.2 },
-  { id: 'pen16-bluebird-1', assetId: 'psalms-8-bluebird-v04', biblicalKey: 'ark-dove-olive-v07', zone: 'birds', deck: 0, pos: [55.2, 0.04, 56.8], targetHeight: 0.78, yaw: 0.25, clip: 'look_around' },
+  // NOTE: Noah's family of 8 (Gen 7:13) and the 12 enclosure pairs are NOT static placements any more.
+  // Each person/animal exists exactly once as a boarding actor (see BOARDING_GROUPS in bootNoahsArkWorld):
+  // it stands in the forecourt / its pen, walks up the gangway, and is then shown in its deck stall/quarters.
 
   // ================= SKY & ROOF BIRDS ABOVE THE 135m ARK =================
   { id: 'dove-roof-perched', assetId: 'ark-dove', biblicalKey: 'ark-dove-olive-v07', zone: 'birds', deck: 0, pos: [6.0, 13.55, -14.0], targetHeight: 0.95, yaw: 0.25, clip: 'walk' },
@@ -1666,42 +1585,13 @@ const SCENE_PLACEMENTS: PlacementDef[] = [
   { id: 'raven-flying', assetId: 'genesis-8-1-raven-asymmetric-flight', biblicalKey: 'ark-dove-olive-v07', zone: 'birds', deck: 0, pos: [2.0, 17.4, -12.0], targetHeight: 1.3, yaw: -0.6 },
 
   // ================= DECK 1 (Lower Deck, y = 0.55m): 32 Animal Stalls across x = -56..+56m =================
-  { id: 'd1-giraffe-1', assetId: 'ark-giraffe', biblicalKey: 'ark-giraffe', zone: 'deck1', deck: 1, pos: [-52.0, 0.62, -13.9], targetHeight: 4.15, yaw: 0.15 },
-  { id: 'd1-giraffe-2', assetId: 'psalms-104-giraffe-v04', biblicalKey: 'ark-giraffe', zone: 'deck1', deck: 1, pos: [-44.0, 0.62, -26.1], targetHeight: 4.1, yaw: -0.15, clip: 'look_around' },
-  { id: 'd1-elephant-1', assetId: 'genesis-6-9-gray-elephant-v01-v61', biblicalKey: 'ark-elephant', zone: 'deck1', deck: 1, pos: [-36.0, 0.62, -13.9], targetHeight: 2.85, yaw: 0.25, clip: 'idle' },
-  { id: 'd1-elephant-2', assetId: 'psalms-104-elephant-v09', biblicalKey: 'ark-elephant', zone: 'deck1', deck: 1, pos: [-28.0, 0.62, -26.1], targetHeight: 2.8, yaw: -0.2, clip: 'graze' },
-  { id: 'd1-camel-1', assetId: 'psalms-117-camel-v02', biblicalKey: 'ark-camel', zone: 'deck1', deck: 1, pos: [-20.0, 0.62, -13.9], targetHeight: 2.38, yaw: 0.2, clip: 'idle' },
-  { id: 'd1-camel-2', assetId: 'ark-camel', biblicalKey: 'ark-camel', zone: 'deck1', deck: 1, pos: [-12.0, 0.62, -26.1], targetHeight: 2.38, yaw: -0.2 },
-  { id: 'd1-cow-1', assetId: 'jeroboam-brown-white-cow-v02', biblicalKey: 'ark-cow', zone: 'deck1', deck: 1, pos: [-4.0, 0.62, -13.9], targetHeight: 1.78, yaw: -0.2, clip: 'idle' },
-  { id: 'd1-cow-2', assetId: 'ark-cow', biblicalKey: 'ark-cow', zone: 'deck1', deck: 1, pos: [4.0, 0.62, -26.1], targetHeight: 1.78, yaw: 0.15 },
-  { id: 'd1-horse-1', assetId: 'royal-white-horse-v1-v11', biblicalKey: 'ark-donkey', zone: 'deck1', deck: 1, pos: [12.0, 0.62, -13.9], targetHeight: 1.88, yaw: -0.25, clip: 'idle' },
-  { id: 'd1-zebra-1', assetId: 'ark-zebra-v02', biblicalKey: 'ark-donkey', zone: 'deck1', deck: 1, pos: [20.0, 0.62, -26.1], targetHeight: 1.75, yaw: 0.2, clip: 'idle' },
-  { id: 'd1-donkey-1', assetId: 'genesis-8-20-unladen-gray-donkey', biblicalKey: 'ark-donkey', zone: 'deck1', deck: 1, pos: [28.0, 0.62, -13.9], targetHeight: 1.68, yaw: -0.2, clip: 'idle' },
-  { id: 'd1-lion-1', assetId: 'psalms-148-adult-lion-v02', biblicalKey: 'ark-lion', zone: 'deck1', deck: 1, pos: [36.0, 0.62, -26.1], targetHeight: 1.65, yaw: 0.25, clip: 'idle' },
-  { id: 'd1-deer-1', assetId: 'ark-deer-v02', biblicalKey: 'ark-deer-v02', zone: 'deck1', deck: 1, pos: [44.0, 0.62, -13.9], targetHeight: 1.72, yaw: -0.25, clip: 'graze' },
-  { id: 'd1-wolf-1', assetId: 'ark-wolf-v02', biblicalKey: 'ark-lion', zone: 'deck1', deck: 1, pos: [52.0, 0.62, -26.1], targetHeight: 1.25, yaw: 0.3, clip: 'idle' },
 
   // ================= DECK 2 (Middle Deck, y = 5.50m): 10 Granary & Clean Ruminant Bays across x = -54..+46m =================
-  { id: 'd2-sheep-1', assetId: 'genesis-8-20-grazing-sheep-v11', biblicalKey: 'ark-lamb', zone: 'deck2', deck: 2, pos: [-52.0, 5.58, -16.5], targetHeight: 1.28, yaw: 0.3, clip: 'graze' },
-  { id: 'd2-sheep-2', assetId: 'ark-lamb', biblicalKey: 'ark-lamb', zone: 'deck2', deck: 2, pos: [-40.0, 5.58, -22.5], targetHeight: 1.24, yaw: 0.15 },
-  { id: 'd2-sheep-3', assetId: 'israelite-sheep-v08', biblicalKey: 'ark-lamb', zone: 'deck2', deck: 2, pos: [-28.0, 5.58, -16.5], targetHeight: 1.28, yaw: -0.2, clip: 'idle' },
-  { id: 'd2-goat-1', assetId: 'ark-goat-v03', biblicalKey: 'ark-goat-v03', zone: 'deck2', deck: 2, pos: [-16.0, 5.58, -22.5], targetHeight: 1.32, yaw: -0.25, clip: 'graze' },
-  { id: 'd2-goat-2', assetId: 'genesis-8-20-grazing-horned-caprine-v06', biblicalKey: 'ark-goat-v03', zone: 'deck2', deck: 2, pos: [-4.0, 5.58, -16.5], targetHeight: 1.3, yaw: 0.2, clip: 'idle' },
-  { id: 'd2-deer-1', assetId: 'ark-deer-v02', biblicalKey: 'ark-deer-v02', zone: 'deck2', deck: 2, pos: [8.0, 5.58, -22.5], targetHeight: 1.68, yaw: -0.25, clip: 'graze' },
-  { id: 'd2-deer-2', assetId: 'psalms-42-drinking-deer-alpha-clean-02', biblicalKey: 'ark-deer-v02', zone: 'deck2', deck: 2, pos: [20.0, 5.58, -16.5], targetHeight: 1.68, yaw: 0.2 },
-  { id: 'd2-rabbit-1', assetId: 'ark-rabbit-v04', biblicalKey: 'ark-lion', zone: 'deck2', deck: 2, pos: [32.0, 5.58, -22.5], targetHeight: 0.78, yaw: -0.3, clip: 'look_around' },
   { id: 'd2-apple-crate-1', assetId: 'ark-produce-crate', biblicalKey: 'ark-structure', zone: 'deck2', deck: 2, pos: [2.0, 5.58, -13.5], targetWidth: 1.35, yaw: 0.1 },
   { id: 'd2-apple-crate-2', assetId: 'ark-produce-crate', biblicalKey: 'ark-structure', zone: 'deck2', deck: 2, pos: [14.0, 5.58, -13.5], targetWidth: 1.35, yaw: -0.1 },
   { id: 'd2-jar-1', assetId: 'ark-jar', biblicalKey: 'ark-structure', zone: 'deck2', deck: 2, pos: [-10.0, 5.58, -13.5], targetHeight: 0.95, yaw: 0 },
 
   // ================= DECK 3 (Upper Deck, y = 9.15m): Family Living Quarters & Clean Birds across x = -48..+48m =================
-  { id: 'd3-noah-guiding', assetId: 'ark-noah-guiding-v05', biblicalKey: 'ark-noah', zone: 'deck3', deck: 3, pos: [-4.0, 9.23, -18.5], targetHeight: 1.92, yaw: 0.15, clip: 'guiding_idle' },
-  { id: 'd3-noah-wife', assetId: 'ark-woman-blue', biblicalKey: 'ark-woman-blue', zone: 'deck3', deck: 3, pos: [-8.0, 9.23, -18.8], targetHeight: 1.84, yaw: 0.25, clip: 'idle' },
-  { id: 'd3-shem', assetId: 'ark-man-cream', biblicalKey: 'ark-sons', zone: 'deck3', deck: 3, pos: [8.0, 9.23, -18.5], targetHeight: 1.88, yaw: -0.2, clip: 'idle' },
-  { id: 'd3-shem-wife', assetId: 'ark-woman-green-v08', biblicalKey: 'ark-sons', zone: 'deck3', deck: 3, pos: [12.0, 9.23, -18.8], targetHeight: 1.82, yaw: -0.3, clip: 'gentle_prayer' },
-  { id: 'd3-ham', assetId: 'ark-man-bearded-v06', biblicalKey: 'ark-sons', zone: 'deck3', deck: 3, pos: [-22.0, 9.23, -18.5], targetHeight: 1.88, yaw: 0.25, clip: 'gentle_look' },
-  { id: 'd3-ham-wife', assetId: 'ark-woman-rust-v06', biblicalKey: 'ark-sons', zone: 'deck3', deck: 3, pos: [-26.0, 9.23, -18.8], targetHeight: 1.82, yaw: 0.3, clip: 'clasped_breathing' },
-  { id: 'd3-japheth', assetId: 'ark-boy-green', biblicalKey: 'ark-sons', zone: 'deck3', deck: 3, pos: [24.0, 9.23, -18.5], targetHeight: 1.8, yaw: -0.25, clip: 'idle' },
   { id: 'd3-dove-1', assetId: 'ark-dove-olive-v07', biblicalKey: 'ark-dove-olive-v07', zone: 'deck3', deck: 3, pos: [-6.8, 11.25, -12.2], targetHeight: 0.95, yaw: 0.2, clip: 'flight_look' },
   { id: 'd3-peacock-1', assetId: 'psalms-49-peacock-v02', biblicalKey: 'ark-dove-olive-v07', zone: 'deck3', deck: 3, pos: [-34.0, 9.23, -16.0], targetHeight: 1.25, yaw: 0.3 },
   { id: 'd3-eagle-1', assetId: 'psalms-148-eagle-v05', biblicalKey: 'ark-dove-olive-v07', zone: 'deck3', deck: 3, pos: [17.2, 11.25, -12.2], targetHeight: 1.18, yaw: -0.25 },
@@ -1740,6 +1630,8 @@ export interface NoahsArkWorldController {
   setViewMode: (mode: ArkViewMode) => void;
   setLighting: (preset: LightingPreset) => void;
   toggleBoardingMarch: (force?: boolean) => boolean;
+  /** Playback speed of the boarding sequence (0.25–8×). */
+  setBoardingSpeed: (mult: number) => number;
   toggleMotion: (force?: boolean) => boolean;
   toggleRulers: (force?: boolean) => boolean;
   focusPlacement: (placementId: string) => void;
@@ -1747,6 +1639,7 @@ export interface NoahsArkWorldController {
     viewMode: ArkViewMode;
     lighting: LightingPreset;
     boardingActive: boolean;
+    boardingSpeed: number;
     moving: boolean;
     rulersVisible: boolean;
     loadedAssetsCount: number;
@@ -2048,193 +1941,466 @@ export async function bootNoahsArkWorld(options: {
     spawnedById.set(def.id, record);
   }
 
-  // 4. Dedicated 10-Pair (20-Animal) Boarding Procession along the x = +10.0m Avenue & 1:1 Gangway Ramp!
-  const boardingProcessionGroup = new THREE.Group();
-  boardingProcessionGroup.name = 'BoardingProcessionGroup';
-  boardingProcessionGroup.visible = false;
-  scene.add(boardingProcessionGroup);
+  // 4. Boarding actors — Noah's family of 8 (Gen 7:13) and 12 male–female pairs. Every person/animal exists
+  //    exactly ONCE: it waits in the forecourt / its own pen, walks out through the pen gate, along the lane,
+  //    up the x = 10 avenue and gangway, and is then shown in its stall (Deck 1/2) or quarters (Deck 3).
+  //    Order follows Gen 7:7–9, 13–16: the family goes in first, then the animals two by two, then the LORD
+  //    shuts the door.
+  const boardingGroup = new THREE.Group();
+  boardingGroup.name = 'BoardingActors';
+  scene.add(boardingGroup);
 
-  // Only rigged Tripo assets (with a `head` bone and a real `walk` clip) are used in the procession.
-  // Facing is NOT hand-tuned: it is derived from each model's head bone so every animal walks head-first.
-  const BOARDING_PAIR_SPECIES: Array<{
-    assetIds: [string, string];
+  interface MemberDef {
+    assetId: string;
+    height: number;
+    label: string;
+    /** Stretch along the body axis (used to turn the maneless young lion into a lean lioness). */
+    stretch?: number;
+  }
+  interface GroupDef {
+    id: string;
     biblicalKey: string;
-    targetHeight: number;
-    laneOffset: number;
-  }> = [
-    { assetIds: ['genesis-6-9-gray-elephant-v01-v61', 'psalms-104-elephant-v09'], biblicalKey: 'ark-elephant', targetHeight: 2.75, laneOffset: 1.75 },
-    { assetIds: ['psalms-104-giraffe-v04', 'psalms-104-giraffe-v04'], biblicalKey: 'ark-giraffe', targetHeight: 4.1, laneOffset: 1.2 },
-    { assetIds: ['psalms-117-camel-v02', 'psalms-117-camel-v02'], biblicalKey: 'ark-camel', targetHeight: 2.4, laneOffset: 1.2 },
-    { assetIds: ['royal-white-horse-v1-v11', 'horse-saddled-brown-v03'], biblicalKey: 'ark-donkey', targetHeight: 1.88, laneOffset: 1.1 },
-    { assetIds: ['jeroboam-brown-white-cow-v02', 'jeroboam-brown-white-cow-v02'], biblicalKey: 'ark-cow', targetHeight: 1.7, laneOffset: 1.1 },
-    { assetIds: ['psalms-148-adult-lion-v02', 'psalms-148-adult-lion-v02'], biblicalKey: 'ark-lion', targetHeight: 1.6, laneOffset: 1.0 },
-    { assetIds: ['ark-zebra-v02', 'ark-zebra-v02'], biblicalKey: 'ark-donkey', targetHeight: 1.72, laneOffset: 1.0 },
-    { assetIds: ['genesis-8-20-unladen-gray-donkey', 'genesis-8-20-unladen-gray-donkey'], biblicalKey: 'ark-donkey', targetHeight: 1.62, laneOffset: 1.0 },
-    { assetIds: ['ark-deer-v02', 'ark-deer-v02'], biblicalKey: 'ark-deer-v02', targetHeight: 1.7, laneOffset: 0.95 },
-    { assetIds: ['genesis-8-20-grazing-sheep-v11', 'genesis-8-20-grazing-sheep-v11'], biblicalKey: 'ark-lamb', targetHeight: 1.22, laneOffset: 0.85 },
-    { assetIds: ['ark-goat-v03', 'ark-goat-v03'], biblicalKey: 'ark-goat-v03', targetHeight: 1.28, laneOffset: 0.85 },
+    human: boolean;
+    lat: number; // half spacing between the two members, perpendicular to the walking direction (m)
+    members: [MemberDef, MemberDef];
+    route: Array<[number, number]>; // centre line (x, z) from home to just inside the side door
+    homeYaw: number; // heading while waiting (0 = facing the Ark / -Z, π = facing the camera / +Z)
+    inside: { x: number; y: number; z: number; deck: 1 | 2 | 3; yaw: number };
+  }
+
+  const AVENUE_X = 10.0;
+  const DOOR_Z = -10.4;
+  const LANE_Z: Record<number, number> = { 12: 5.0, 27: 18.5, 42: 33.5 };
+  const FACE_CAMERA = Math.PI;
+  const headingOf = (dx: number, dz: number) => Math.atan2(-dx, -dz);
+  const penRoute = (ex: number, ez: number): Array<[number, number]> => {
+    const laneZ = LANE_Z[ez]!;
+    return [
+      [ex, ez - 1.0],
+      [ex, laneZ],
+      [AVENUE_X, laneZ],
+      [AVENUE_X, DOOR_Z],
+    ];
+  };
+  const familyRoute = (cx: number, cz: number): Array<[number, number]> => [
+    [cx, cz],
+    [cx, 3.9],
+    [AVENUE_X, 3.9],
+    [AVENUE_X, DOOR_Z],
+  ];
+  const deck1 = (sx: number) => ({ x: sx, y: 0.62, z: -25.7, deck: 1 as const, yaw: FACE_CAMERA });
+  const deck2 = (x: number) => ({ x, y: 5.58, z: -19.0, deck: 2 as const, yaw: FACE_CAMERA });
+  const deck3 = (x: number) => ({ x, y: 9.23, z: -19.6, deck: 3 as const, yaw: FACE_CAMERA });
+  const pen = (ex: number, ez: number) => ({ route: penRoute(ex, ez), homeYaw: FACE_CAMERA + (ex < AVENUE_X ? -0.35 : 0.35) });
+
+  const BOARDING_GROUPS: GroupDef[] = [
+    // ——— Noah's household: exactly eight souls (Gen 7:13; 1 Pet 3:20) ———
+    {
+      id: 'noah', biblicalKey: 'ark-noah', human: true, lat: 0.55,
+      members: [{ assetId: 'ark-noah', height: 2.0, label: '挪亚' }, { assetId: 'ark-woman-blue', height: 1.86, label: '挪亚的妻子' }],
+      route: familyRoute(6.6, 5.4), homeYaw: headingOf(0.35, 1), inside: deck3(-8.8),
+    },
+    {
+      id: 'shem', biblicalKey: 'ark-sons', human: true, lat: 0.55,
+      members: [{ assetId: 'ark-man-cream', height: 1.92, label: '闪' }, { assetId: 'genesis-8-1-purple-pale-veiled-ramp-woman', height: 1.8, label: '闪的妻子' }],
+      route: familyRoute(4.0, 5.4), homeYaw: headingOf(0.35, 1), inside: deck3(-20.8),
+    },
+    {
+      id: 'ham', biblicalKey: 'ark-sons', human: true, lat: 0.55,
+      members: [{ assetId: 'genesis-8-1-middle-ramp-green-bearded-adult', height: 1.92, label: '含' }, { assetId: 'genesis-8-1-blue-pale-veiled-ramp-woman', height: 1.8, label: '含的妻子' }],
+      route: familyRoute(6.6, 7.8), homeYaw: headingOf(0.35, 1), inside: deck3(15.2),
+    },
+    {
+      id: 'japheth', biblicalKey: 'ark-sons', human: true, lat: 0.55,
+      members: [{ assetId: 'ark-boy-green', height: 1.88, label: '雅弗' }, { assetId: '1-thessalonians-4-1-veiled-woman-rust-blue-a01', height: 1.8, label: '雅弗的妻子' }],
+      route: familyRoute(4.0, 7.8), homeYaw: headingOf(0.35, 1), inside: deck3(27.2),
+    },
+    // ——— 12 enclosures, one pair each: "two of every sort … male and female" (Gen 6:19; 7:9) ———
+    {
+      id: 'elephant', biblicalKey: 'ark-elephant', human: false, lat: 1.35,
+      members: [{ assetId: 'genesis-6-9-gray-elephant-v01-v61', height: 2.9, label: '公象' }, { assetId: 'psalms-104-elephant-v09', height: 2.6, label: '母象' }],
+      ...pen(-54, 12), inside: deck1(-52),
+    },
+    {
+      id: 'giraffe', biblicalKey: 'ark-giraffe', human: false, lat: 1.1,
+      members: [{ assetId: 'psalms-104-giraffe-v04', height: 4.25, label: '公长颈鹿' }, { assetId: 'psalms-104-giraffe-v04', height: 3.9, label: '母长颈鹿' }],
+      ...pen(-18, 12), inside: deck1(-36),
+    },
+    {
+      id: 'camel', biblicalKey: 'ark-camel', human: false, lat: 1.1,
+      members: [{ assetId: 'psalms-117-camel-v02', height: 2.45, label: '公骆驼' }, { assetId: 'psalms-117-camel-v02', height: 2.28, label: '母骆驼' }],
+      ...pen(24, 12), inside: deck1(-20),
+    },
+    {
+      id: 'cattle', biblicalKey: 'ark-cow', human: false, lat: 1.05,
+      members: [{ assetId: 'jeroboam-brown-white-cow-v02', height: 1.82, label: '公牛' }, { assetId: 'jeroboam-brown-white-cow-v02', height: 1.68, label: '母牛' }],
+      ...pen(54, 12), inside: deck1(-4),
+    },
+    {
+      id: 'horse', biblicalKey: 'ark-donkey', human: false, lat: 1.05,
+      members: [{ assetId: 'royal-white-horse-v1-v11', height: 1.95, label: '公马' }, { assetId: 'horse-saddled-brown-v03', height: 1.84, label: '母马' }],
+      ...pen(-54, 27), inside: deck1(12),
+    },
+    {
+      id: 'sheep', biblicalKey: 'ark-lamb', human: false, lat: 0.75,
+      members: [{ assetId: 'abraham-ram-v03', height: 1.3, label: '公绵羊' }, { assetId: 'genesis-8-20-grazing-sheep-v11', height: 1.18, label: '母绵羊' }],
+      ...pen(-18, 27), inside: deck2(-42),
+    },
+    {
+      id: 'lion', biblicalKey: 'ark-lion', human: false, lat: 0.95,
+      members: [
+        { assetId: 'psalms-148-adult-lion-v02', height: 1.6, label: '雄狮' },
+        { assetId: 'ark-lion-cub-v02', height: 1.3, label: '母狮', stretch: 1.28 },
+      ],
+      ...pen(24, 27), inside: deck1(28),
+    },
+    {
+      id: 'zebra', biblicalKey: 'ark-donkey', human: false, lat: 0.95,
+      members: [{ assetId: 'ark-zebra-v02', height: 1.75, label: '公斑马' }, { assetId: 'ark-zebra-v02', height: 1.64, label: '母斑马' }],
+      ...pen(54, 27), inside: deck1(44),
+    },
+    {
+      id: 'donkey', biblicalKey: 'ark-donkey', human: false, lat: 0.95,
+      members: [{ assetId: 'genesis-8-20-unladen-gray-donkey', height: 1.66, label: '公驴' }, { assetId: 'genesis-8-20-unladen-gray-donkey', height: 1.54, label: '母驴' }],
+      ...pen(-54, 42), inside: deck1(52),
+    },
+    {
+      id: 'goat', biblicalKey: 'ark-goat-v03', human: false, lat: 0.75,
+      members: [{ assetId: 'ark-goat-v03', height: 1.3, label: '公山羊' }, { assetId: 'genesis-8-20-grazing-horned-caprine-v06', height: 1.2, label: '母山羊' }],
+      ...pen(-18, 42), inside: deck2(-18),
+    },
+    {
+      id: 'wolf', biblicalKey: 'ark-lion', human: false, lat: 0.7,
+      members: [{ assetId: 'ark-wolf-v02', height: 1.15, label: '公狼' }, { assetId: 'ark-wolf-v02', height: 1.06, label: '母狼' }],
+      ...pen(24, 42), inside: deck2(6),
+    },
+    {
+      id: 'rabbit', biblicalKey: 'ark-lion', human: false, lat: 0.5,
+      members: [{ assetId: 'ark-rabbit-v04', height: 0.72, label: '公兔' }, { assetId: 'ark-rabbit-v02', height: 0.66, label: '母兔' }],
+      ...pen(54, 42), inside: deck2(30),
+    },
   ];
 
-  // Load any procession assets that are not already used by static placements
+  // Load every actor asset (plus the shared Mixamo walk used by family members whose GLB only has an idle)
+  const HUMAN_WALK_SOURCE = 'ark-man-cream';
+  const actorAssetIds = Array.from(
+    new Set([...BOARDING_GROUPS.flatMap((g) => g.members.map((m) => m.assetId)), HUMAN_WALK_SOURCE])
+  ).filter((id) => !loadedAssets.has(id));
+  let actorLoaded = 0;
   await Promise.all(
-    Array.from(new Set(BOARDING_PAIR_SPECIES.flatMap((s) => s.assetIds)))
-      .filter((id) => !loadedAssets.has(id))
-      .map(async (assetId) => {
-        try {
-          const gltf = await loader.loadAsync(`/models/bible-cutouts/${assetId}.glb`);
-          loadedAssets.set(assetId, { scene: gltf.scene, animations: gltf.animations ?? [] });
-        } catch (err) {
-          console.warn(`Could not load boarding asset ${assetId}:`, err);
-        }
-      })
+    actorAssetIds.map(async (assetId) => {
+      try {
+        const gltf = await loader.loadAsync(`/models/bible-cutouts/${assetId}.glb`);
+        loadedAssets.set(assetId, { scene: gltf.scene, animations: gltf.animations ?? [] });
+      } catch (err) {
+        console.warn(`Could not load boarding asset ${assetId}:`, err);
+      } finally {
+        actorLoaded++;
+        onProgress?.(uniqueAssetIds.length + actorLoaded, uniqueAssetIds.length + actorAssetIds.length, assetId);
+      }
+    })
   );
 
-  interface BoardingActor {
-    pairIndex: number;
-    isLeft: boolean;
-    root: THREE.Group;
-    mixer: THREE.AnimationMixer | null;
-    laneOffset: number;
-    queueOffset: number; // metres behind the lead pair along the path
-    boarded: boolean;
+  // Mixamo walk clips carry forward root motion on the hips; pin X/Z so the path (not the clip) moves the body
+  const inPlaceCache = new Map<THREE.AnimationClip, THREE.AnimationClip>();
+  const inPlace = (clip: THREE.AnimationClip) => {
+    let c = inPlaceCache.get(clip);
+    if (c) return c;
+    c = clip.clone();
+    for (const track of c.tracks) {
+      if (/hips\.position$/i.test(track.name)) {
+        const v = track.values;
+        for (let i = 0; i < v.length; i += 3) {
+          v[i] = v[0]!;
+          v[i + 2] = v[2]!;
+        }
+      }
+    }
+    inPlaceCache.set(clip, c);
+    return c;
+  };
+  const humanWalkClip = loadedAssets.get(HUMAN_WALK_SOURCE)?.animations.find((a) => /walk/i.test(a.name)) ?? null;
+
+  // ——— dense centre-line with rounded corners so the paired lateral offset never jumps at a turn ———
+  interface DensePath {
+    pts: Array<[number, number]>;
+    tans: Array<[number, number]>;
+    cum: number[];
+    length: number;
   }
-  const boardingActors: BoardingActor[] = [];
-  const tmpHead = new THREE.Vector3();
-  let queueCursor = 0;
+  function buildDensePath(src: Array<[number, number]>, radius = 3.0): DensePath {
+    const pts: Array<[number, number]> = [src[0]!];
+    for (let i = 1; i < src.length - 1; i++) {
+      const [ax, az] = src[i - 1]!;
+      const [bx, bz] = src[i]!;
+      const [cx, cz] = src[i + 1]!;
+      const l1 = Math.hypot(bx - ax, bz - az);
+      const l2 = Math.hypot(cx - bx, cz - bz);
+      const r = Math.min(radius, l1 * 0.45, l2 * 0.45);
+      if (l1 < 1e-3 || l2 < 1e-3 || r < 0.05) {
+        pts.push([bx, bz]);
+        continue;
+      }
+      const p1: [number, number] = [bx - ((bx - ax) / l1) * r, bz - ((bz - az) / l1) * r];
+      const p2: [number, number] = [bx + ((cx - bx) / l2) * r, bz + ((cz - bz) / l2) * r];
+      for (let k = 0; k <= 14; k++) {
+        const t = k / 14;
+        const u = 1 - t;
+        pts.push([u * u * p1[0] + 2 * u * t * bx + t * t * p2[0], u * u * p1[1] + 2 * u * t * bz + t * t * p2[1]]);
+      }
+    }
+    pts.push(src[src.length - 1]!);
+    // drop duplicates
+    const clean: Array<[number, number]> = [pts[0]!];
+    for (const p of pts.slice(1)) {
+      const q = clean[clean.length - 1]!;
+      if (Math.hypot(p[0] - q[0], p[1] - q[1]) > 1e-3) clean.push(p);
+    }
+    const cum = [0];
+    for (let i = 1; i < clean.length; i++) {
+      cum.push(cum[i - 1]! + Math.hypot(clean[i]![0] - clean[i - 1]![0], clean[i]![1] - clean[i - 1]![1]));
+    }
+    const segDir = (i: number): [number, number] => {
+      const a = clean[i]!;
+      const b = clean[i + 1]!;
+      const L = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+      return [(b[0] - a[0]) / L, (b[1] - a[1]) / L];
+    };
+    const tans: Array<[number, number]> = clean.map((_, i) => {
+      const d0 = segDir(Math.max(0, i - 1));
+      const d1 = segDir(Math.min(clean.length - 2, i));
+      const x = d0[0] + d1[0];
+      const z = d0[1] + d1[1];
+      const L = Math.hypot(x, z) || 1;
+      return [x / L, z / L];
+    });
+    return { pts: clean, tans, cum, length: cum[cum.length - 1]! };
+  }
+  function samplePath(p: DensePath, d: number) {
+    const dd = Math.max(0, Math.min(d, p.length));
+    let i = 0;
+    let lo = 0;
+    let hi = p.cum.length - 1;
+    while (lo < hi - 1) {
+      const mid = (lo + hi) >> 1;
+      if (p.cum[mid]! <= dd) lo = mid;
+      else hi = mid;
+    }
+    i = lo;
+    const L = p.cum[i + 1]! - p.cum[i]!;
+    const t = L > 0 ? (dd - p.cum[i]!) / L : 0;
+    const a = p.pts[i]!;
+    const b = p.pts[i + 1] ?? a;
+    const ta = p.tans[i]!;
+    const tb = p.tans[i + 1] ?? ta;
+    let tx = mix(ta[0], tb[0], t);
+    let tz = mix(ta[1], tb[1], t);
+    const tl = Math.hypot(tx, tz) || 1;
+    tx /= tl;
+    tz /= tl;
+    return { x: mix(a[0], b[0], t), z: mix(a[1], b[1], t), tx, tz };
+  }
+  // Ground / gangway height: the ramp climbs from z = 2.8 (y 0.06) to the door sill at z = -8.75 (y 0.55)
+  const RAMP_SLOPE = Math.atan2(0.49, 11.55);
+  const groundAt = (x: number, z: number) => {
+    if (Math.abs(x - AVENUE_X) < 3.4 && z < 2.8) {
+      if (z <= -8.75) return { y: 0.56, pitch: 0 };
+      return { y: mix(0.06, 0.55, (2.8 - z) / 11.55), pitch: RAMP_SLOPE };
+    }
+    return { y: 0.06, pitch: 0 };
+  };
 
-  for (let pairIndex = 0; pairIndex < BOARDING_PAIR_SPECIES.length; pairIndex++) {
-    const spec = BOARDING_PAIR_SPECIES[pairIndex]!;
-    let pairLength = 0;
-    const pairActors: BoardingActor[] = [];
+  type ActorState = 'home' | 'walk' | 'inside';
+  interface Actor {
+    root: THREE.Group;
+    side: -1 | 1;
+    mixer: THREE.AnimationMixer | null;
+    walk: THREE.AnimationAction | null;
+    idle: THREE.AnimationAction | null;
+    current: THREE.AnimationAction | null;
+    yaw: number;
+    state: ActorState | null;
+    label: string;
+  }
+  interface GroupRuntime {
+    def: GroupDef;
+    actors: Actor[];
+    path: DensePath;
+    bodyLen: number;
+    startT: number;
+    arriveT: number;
+  }
 
-    for (let side = 0; side < 2; side++) {
-      const isLeft = side === 0;
-      const source = loadedAssets.get(spec.assetIds[side]!);
-      if (!source) continue;
+  const tmpA = new THREE.Vector3();
+  const tmpB = new THREE.Vector3();
+  const groups: GroupRuntime[] = [];
+
+  for (const def of BOARDING_GROUPS) {
+    const rt: GroupRuntime = { def, actors: [], path: buildDensePath(def.route), bodyLen: 0.6, startT: 0, arriveT: 0 };
+    def.members.forEach((m, idx) => {
+      const source = loadedAssets.get(m.assetId);
+      if (!source) return;
       const cloned = cloneSkeleton(source.scene) as THREE.Group;
       cloned.updateMatrixWorld(true);
       const box = new THREE.Box3().setFromObject(cloned, true);
       const size = box.getSize(new THREE.Vector3());
       const center = box.getCenter(new THREE.Vector3());
 
-      // Forward axis = direction from body centre to head bone (fallback: longest horizontal axis, +X)
-      let fx = size.x >= size.z ? 1 : 0;
-      let fz = size.x >= size.z ? 0 : 1;
-      let headBone: THREE.Object3D | null = null;
+      // Forward axis: humans → toe minus ankle (Mixamo rig); animals → body centre to head bone.
+      let fx = 0;
+      let fz = 1;
+      let found = false;
+      const bones: THREE.Object3D[] = [];
       cloned.traverse((o) => {
-        if (!headBone && (o as THREE.Bone).isBone && /head/i.test(o.name)) headBone = o;
+        if ((o as THREE.Bone).isBone) bones.push(o);
       });
-      if (headBone) {
-        (headBone as THREE.Object3D).getWorldPosition(tmpHead);
-        const dx = tmpHead.x - center.x;
-        const dz = tmpHead.z - center.z;
-        if (Math.hypot(dx, dz) > 1e-4) {
-          // Snap to the dominant axis — Tripo rigs are axis-aligned
-          if (Math.abs(dx) >= Math.abs(dz)) {
-            fx = Math.sign(dx);
-            fz = 0;
-          } else {
-            fx = 0;
-            fz = Math.sign(dz);
-          }
+      if (def.human) {
+        const toe = bones.find((b) => /LeftToeBase$/i.test(b.name));
+        const foot = bones.find((b) => /LeftFoot$/i.test(b.name));
+        if (toe && foot) {
+          toe.getWorldPosition(tmpA);
+          foot.getWorldPosition(tmpB);
+          fx = tmpA.x - tmpB.x;
+          fz = tmpA.z - tmpB.z;
+          found = Math.hypot(fx, fz) > 1e-4;
+        }
+      } else {
+        const head = bones.find((b) => /head/i.test(b.name));
+        if (head) {
+          head.getWorldPosition(tmpA);
+          fx = tmpA.x - center.x;
+          fz = tmpA.z - center.z;
+          found = Math.hypot(fx, fz) > 1e-4;
         }
       }
-      // Yaw that maps the model's forward (fx, fz) onto world -Z (the root's local forward)
-      const facingYaw = Math.atan2(fx, -fz);
+      if (!found) {
+        fx = size.x >= size.z ? 1 : 0;
+        fz = size.x >= size.z ? 0 : 1;
+      }
+      // Snap to the dominant axis — Tripo / Mixamo rigs are axis-aligned
+      if (Math.abs(fx) >= Math.abs(fz)) {
+        fx = Math.sign(fx);
+        fz = 0;
+      } else {
+        fz = Math.sign(fz);
+        fx = 0;
+      }
 
-      const hTarget = spec.targetHeight * (isLeft ? 1.0 : 0.95);
-      const scaleFactor = hTarget / Math.max(size.y, 0.001);
-      const bodyLength = Math.max(Math.abs(fx) * size.x, Math.abs(fz) * size.z) * scaleFactor;
-      pairLength = Math.max(pairLength, bodyLength);
+      const s = m.height / Math.max(size.y, 0.001);
+      const st = m.stretch ?? 1;
+      const sx = s * (fx !== 0 ? st : 1);
+      const sz = s * (fz !== 0 ? st : 1);
+      cloned.scale.set(sx, s, sz);
+      cloned.position.set(-center.x * sx, -box.min.y * s, -center.z * sz);
+      const bodyLen = def.human ? 0.6 : (fx !== 0 ? size.x * sx : size.z * sz);
+      rt.bodyLen = Math.max(rt.bodyLen, bodyLen);
 
       const orient = new THREE.Group();
-      orient.rotation.y = facingYaw;
-      cloned.scale.setScalar(scaleFactor);
-      cloned.position.set(-center.x * scaleFactor, -box.min.y * scaleFactor, -center.z * scaleFactor);
+      orient.rotation.y = Math.atan2(fx, -fz); // model forward → root -Z
       orient.add(cloned);
-
       const root = new THREE.Group();
-      root.name = `boarding-pair-${pairIndex}-${isLeft ? 'L' : 'R'}`;
+      root.name = `actor-${def.id}-${idx}`;
       root.rotation.order = 'YXZ';
       root.add(orient);
+      boardingGroup.add(root);
 
       cloned.traverse((obj) => {
         if (obj instanceof THREE.Mesh) {
           obj.castShadow = true;
           obj.receiveShadow = true;
-          obj.frustumCulled = false; // skinned bounds don't follow the walk cycle
-          obj.userData.placementId = `boarding-${spec.assetIds[side]}`;
-          obj.userData.biblicalKey = spec.biblicalKey;
+          obj.frustumCulled = false; // skinned bounds don't follow the animation
+          obj.userData.placementId = root.name;
+          obj.userData.biblicalKey = def.biblicalKey;
+          const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+          for (const mat of mats) {
+            if (mat && 'roughness' in mat) {
+              const std = mat as THREE.MeshStandardMaterial;
+              std.roughness = Math.max(0.68, std.roughness ?? 0.78);
+              std.metalness = Math.min(0.12, std.metalness ?? 0.04);
+            }
+          }
         }
       });
 
       let mixer: THREE.AnimationMixer | null = null;
-      const walkClip =
-        source.animations.find((c) => c.name === 'walk') ?? source.animations.find((c) => /walk/i.test(c.name));
-      if (walkClip) {
+      let walk: THREE.AnimationAction | null = null;
+      let idle: THREE.AnimationAction | null = null;
+      const clips = source.animations;
+      let walkClip =
+        clips.find((c) => c.name === 'walk') ?? clips.find((c) => /walk/i.test(c.name)) ?? clips.find((c) => c.name === 'hop') ?? null;
+      if (!walkClip && def.human && humanWalkClip) walkClip = humanWalkClip; // same 65-bone Mixamo skeleton
+      const idleClip =
+        clips.find((c) => c.name === 'idle') ??
+        clips.find((c) => /standing_idle|idle/i.test(c.name)) ??
+        clips.find((c) => c !== walkClip && !/walk|trot|run|hop/i.test(c.name)) ??
+        null;
+      if (walkClip || idleClip) {
         mixer = new THREE.AnimationMixer(cloned);
-        const act = mixer.clipAction(walkClip);
-        act.play();
-        mixer.setTime((pairIndex * 0.37 + side * 0.5) % Math.max(walkClip.duration, 0.5));
-      } else {
-        console.warn(`Boarding asset ${spec.assetIds[side]} has no walk clip`);
+        if (walkClip) walk = mixer.clipAction(def.human ? inPlace(walkClip) : walkClip);
+        if (idleClip) idle = mixer.clipAction(idleClip);
       }
+      if (!walkClip) console.warn(`Boarding asset ${m.assetId} has no walk clip`);
 
-      boardingProcessionGroup.add(root);
-      const actor: BoardingActor = {
-        pairIndex,
-        isLeft,
+      rt.actors.push({
         root,
+        side: idx === 0 ? -1 : 1,
         mixer,
-        laneOffset: spec.laneOffset,
-        queueOffset: 0,
-        boarded: false,
-      };
-      pairActors.push(actor);
-      boardingActors.push(actor);
-    }
-
-    // Size-aware spacing: each pair starts one body-length + 1.6 m behind the previous one
-    if (pairIndex > 0) queueCursor += pairLength * 0.5 + 1.6;
-    for (const a of pairActors) a.queueOffset = queueCursor;
-    queueCursor += pairLength * 0.5;
+        walk,
+        idle,
+        current: null,
+        yaw: def.homeYaw,
+        state: null,
+        label: m.label,
+      });
+    });
+    groups.push(rt);
   }
 
-  // Boarding path: forecourt avenue (x = 10) → foot of gangway → up the ramp → through the side door → into Deck 1
-  const BOARDING_PATH: Array<[number, number, number]> = [
-    [10.0, 0.06, 78.0],
-    [10.0, 0.06, 2.8],
-    [10.0, 0.55, -8.75],
-    [10.0, 0.56, -15.5],
-  ];
-  const pathSegLengths = BOARDING_PATH.slice(1).map((p, i) => {
-    const a = BOARDING_PATH[i]!;
-    return Math.hypot(p[0] - a[0], p[1] - a[1], p[2] - a[2]);
-  });
-  const BOARDING_PATH_LENGTH = pathSegLengths.reduce((s, v) => s + v, 0);
-  // Lead pair starts near the enclosure rows so the whole column is on screen from the first frame
-  const BOARDING_START_DIST = 52.0;
-  const BOARDING_SPEED = 1.55; // m/s — a calm walking pace that matches the walk clips
-  const samplePath = (d: number) => {
-    let rem = Math.max(0, Math.min(d, BOARDING_PATH_LENGTH));
-    for (let i = 0; i < pathSegLengths.length; i++) {
-      const L = pathSegLengths[i]!;
-      if (rem <= L || i === pathSegLengths.length - 1) {
-        const a = BOARDING_PATH[i]!;
-        const b = BOARDING_PATH[i + 1]!;
-        const t = L > 0 ? rem / L : 0;
-        return {
-          x: mix(a[0], b[0], t),
-          y: mix(a[1], b[1], t),
-          z: mix(a[2], b[2], t),
-          heading: Math.atan2(-(b[0] - a[0]), -(b[2] - a[2])),
-          pitch: Math.atan2(b[1] - a[1], Math.hypot(b[0] - a[0], b[2] - a[2])),
-        };
+  // ——— Timeline: everyone walks at the same pace, so ordering arrivals at the door with a body-length gap
+  //     guarantees no two groups overlap anywhere on a shared stretch of path ———
+  const WALK_SPEED = 1.55; // m/s
+  {
+    const family = groups.filter((g) => g.def.human);
+    const animals = groups.filter((g) => !g.def.human).sort((a, b) => a.path.length - b.path.length);
+    const order = [...family, ...animals];
+    let prev: GroupRuntime | null = null;
+    for (const g of order) {
+      if (!prev) {
+        g.arriveT = g.path.length / WALK_SPEED;
+      } else {
+        const gap = prev.bodyLen / 2 + g.bodyLen / 2 + (prev.def.human && g.def.human ? 0.9 : 2.8);
+        g.arriveT = prev.arriveT + gap / WALK_SPEED;
       }
-      rem -= L;
+      g.startT = g.arriveT - g.path.length / WALK_SPEED;
+      prev = g;
     }
-    return { x: 10, y: 0.06, z: 0, heading: 0, pitch: 0 };
+    // Animals only leave their pens once the whole family has passed the foot of the gangway
+    const familyClear = Math.max(
+      ...family.map((g) => g.startT + (g.path.length - (3.9 - DOOR_Z)) / WALK_SPEED + 1.0)
+    );
+    const firstAnimal = Math.min(...animals.map((g) => g.startT));
+    if (firstAnimal < familyClear) {
+      for (const g of animals) {
+        g.startT += familyClear - firstAnimal;
+        g.arriveT += familyClear - firstAnimal;
+      }
+    }
+    const t0 = Math.min(...groups.map((g) => g.startT));
+    for (const g of groups) {
+      g.startT -= t0;
+      g.arriveT -= t0;
+    }
+  }
+  const LAST_ARRIVAL = Math.max(...groups.map((g) => g.arriveT));
+  const allActors = groups.flatMap((g) => g.actors);
+
+  const playClip = (a: Actor, action: THREE.AnimationAction | null, fade = 0.25) => {
+    if (!action || a.current === action) return;
+    action.reset().setEffectiveWeight(1).fadeIn(fade).play();
+    if (a.current) a.current.fadeOut(fade);
+    a.current = action;
   };
+  const wrapAngle = (v: number) => Math.atan2(Math.sin(v), Math.cos(v));
 
   let currentViewMode: ArkViewMode = initialMode;
   let currentLighting: LightingPreset = 'morning';
@@ -2310,8 +2476,75 @@ export async function bootNoahsArkWorld(options: {
       }
     }
 
-    boardingProcessionGroup.visible = boardingActive && !hideFrontWall && !isCovenant;
     altarFireLight.intensity = isCovenant ? 8.5 : 0.0;
+    updateActors(0, true);
+  }
+
+  const INTERIOR_MODES = new Set<ArkViewMode>(['deck1', 'deck2', 'deck3', 'cutaway']);
+  let boardingSpeed = 1;
+
+  function groupState(g: GroupRuntime): ActorState {
+    if (currentViewMode === 'covenant') return 'home'; // after the flood they all went forth (Gen 8:18–19)
+    if (boardingPhase === 'marching' || boardingPhase === 'closing') {
+      if (boardingClock < g.startT) return 'home';
+      if (boardingClock < g.arriveT) return 'walk';
+      return 'inside';
+    }
+    if (boardingPhase === 'complete') return 'inside';
+    // Before boarding: exterior views show everyone waiting outside; deck views show the voyage
+    return INTERIOR_MODES.has(currentViewMode) ? 'inside' : 'home';
+  }
+
+  /** Pose every actor for the current state. `dt` is already scaled by the boarding speed. */
+  function updateActors(dt: number, snap = false) {
+    const maxDeck = currentViewMode === 'deck1' ? 1 : currentViewMode === 'deck2' ? 2 : 3;
+    for (const g of groups) {
+      const state = groupState(g);
+      const d = (boardingClock - g.startT) * WALK_SPEED;
+      const p = state === 'walk' ? samplePath(g.path, d) : null;
+      for (const a of g.actors) {
+        const changed = a.state !== state;
+        let targetYaw = g.def.homeYaw;
+        if (state === 'home') {
+          const p0 = samplePath(g.path, 0);
+          const rx = -p0.tz;
+          const rz = p0.tx;
+          a.root.position.set(p0.x + rx * a.side * g.def.lat, 0.06, p0.z + rz * a.side * g.def.lat);
+          a.root.rotation.x = 0;
+          playClip(a, a.idle ?? a.walk);
+        } else if (state === 'walk' && p) {
+          // right-hand vector of the walking direction
+          const rx = -p.tz;
+          const rz = p.tx;
+          const x = p.x + rx * a.side * g.def.lat;
+          const z = p.z + rz * a.side * g.def.lat;
+          const gnd = groundAt(x, z);
+          a.root.position.set(x, gnd.y, z);
+          a.root.rotation.x = gnd.pitch;
+          targetYaw = headingOf(p.tx, p.tz);
+          playClip(a, a.walk ?? a.idle);
+        } else {
+          const ins = g.def.inside;
+          a.root.position.set(ins.x - a.side * g.def.lat * (g.def.human ? 1 : 1.25), ins.y, ins.z);
+          a.root.rotation.x = 0;
+          targetYaw = ins.yaw;
+          playClip(a, a.idle ?? a.walk);
+        }
+        if (snap || (changed && state !== 'walk')) {
+          a.yaw = targetYaw;
+        } else {
+          a.yaw += wrapAngle(targetYaw - a.yaw) * Math.min(1, dt * 5.5);
+        }
+        a.root.rotation.y = a.yaw;
+        a.state = state;
+
+        let visible = true;
+        if (state === 'inside') visible = g.def.inside.deck <= maxDeck;
+        // Covenant mode shows the praying Noah at the altar instead
+        if (currentViewMode === 'covenant' && g.def.id === 'noah' && a.side === -1) visible = false;
+        a.root.visible = visible;
+      }
+    }
   }
 
   function setViewMode(mode: ArkViewMode) {
@@ -2325,8 +2558,8 @@ export async function bootNoahsArkWorld(options: {
       cameraTargetGoal.set(9.0, 3.2, -3.5);
       cameraPosGoal.set(-6.0, 13.5, 22.0);
     } else if (mode === 'animals') {
-      cameraTargetGoal.set(0.0, 2.0, 32.0);
-      cameraPosGoal.set(0.0, 42.0, 96.0);
+      cameraTargetGoal.set(0.0, 2.0, 24.0);
+      cameraPosGoal.set(0.0, 40.0, 84.0);
     } else if (mode === 'cutaway') {
       cameraTargetGoal.set(0.0, 6.8, -19.0);
       cameraPosGoal.set(0.0, 19.5, 54.0);
@@ -2436,34 +2669,30 @@ export async function bootNoahsArkWorld(options: {
     if (arch) arch.root.visible = preset === 'rainbow' || currentViewMode === 'covenant';
   }
 
-  function resetBoardingActors() {
-    for (const actor of boardingActors) {
-      actor.boarded = false;
-      actor.root.visible = false;
-    }
-  }
-
   function toggleBoardingMarch(force?: boolean): boolean {
     boardingActive = force !== undefined ? force : !boardingActive;
-    resetBoardingActors();
+    boardingClock = 0;
+    doorCloseT = 0;
+    setDoorAngle(1);
     if (!boardingActive) {
+      // Stopping mid-way puts everyone back where they started
       boardingPhase = 'idle';
-      boardingProcessionGroup.visible = false;
-      setDoorAngle(1);
+      updateActors(0, true);
     } else {
       boardingPhase = 'marching';
-      boardingClock = 0;
-      doorCloseT = 0;
-      setDoorAngle(1);
-      boardingProcessionGroup.visible = true;
-      // Frame the forecourt avenue, gangway and open side door from the front-left
+      // Frame the family, the first-row pens, the avenue, gangway and open side door from the front-left
       currentViewMode = 'overview';
       applyVisibilityForMode('overview');
-      cameraTargetGoal.set(10.0, 1.8, 6.0);
-      cameraPosGoal.set(-14.0, 15.0, 40.0);
+      cameraTargetGoal.set(8.0, 1.6, 4.0);
+      cameraPosGoal.set(-16.0, 19.0, 44.0);
       cameraTransitionFrames = 42;
     }
     return boardingActive;
+  }
+
+  function setBoardingSpeed(mult: number) {
+    boardingSpeed = Math.max(0.25, Math.min(8, mult));
+    return boardingSpeed;
   }
 
   function toggleMotion(force?: boolean): boolean {
@@ -2510,7 +2739,7 @@ export async function bootNoahsArkWorld(options: {
     raycaster.setFromCamera(pointer, camera);
 
     const hits = raycaster.intersectObjects(
-      [...placementsGroup.children, ...boardingProcessionGroup.children, arkWorld.root],
+      [...placementsGroup.children, ...boardingGroup.children, arkWorld.root],
       true
     );
     const hit = hits.find((h) => {
@@ -2590,11 +2819,11 @@ export async function bootNoahsArkWorld(options: {
           item.mixer.update(dt);
         }
       }
-      if (boardingActive && boardingPhase === 'marching') {
-        for (const actor of boardingActors) {
-          if (actor.mixer && actor.root.visible) {
-            actor.mixer.update(dt);
-          }
+      // Boarding actors: the speed control scales both the walk along the path and the walk cycle
+      const bdt = dt * boardingSpeed;
+      for (const actor of allActors) {
+        if (actor.mixer && actor.root.visible) {
+          actor.mixer.update(actor.state === 'walk' ? bdt : dt);
         }
       }
 
@@ -2637,45 +2866,23 @@ export async function bootNoahsArkWorld(options: {
       mPos.needsUpdate = true;
 
       if (boardingActive && boardingPhase === 'marching') {
-        boardingClock += dt;
-        const leadDist = BOARDING_START_DIST + boardingClock * BOARDING_SPEED;
-        let remaining = 0;
-        for (const actor of boardingActors) {
-          if (actor.boarded) continue;
-          const d = leadDist - actor.queueOffset;
-          if (d >= BOARDING_PATH_LENGTH) {
-            actor.boarded = true;
-            actor.root.visible = false;
-            continue;
-          }
-          remaining++;
-          const p = samplePath(d);
-          const side = actor.isLeft ? -1 : 1;
-          // Lateral offset perpendicular to heading (path is along Z here, so offset in X)
-          actor.root.position.set(
-            p.x + side * actor.laneOffset * Math.cos(p.heading),
-            p.y,
-            p.z - side * actor.laneOffset * Math.sin(p.heading)
-          );
-          actor.root.rotation.set(p.pitch, p.heading, 0);
-          actor.root.visible = d >= 0;
-        }
-        if (remaining === 0) {
+        boardingClock += bdt;
+        if (boardingClock >= LAST_ARRIVAL) {
           boardingPhase = 'closing';
           doorCloseT = 0;
         }
       } else if (boardingActive && boardingPhase === 'closing') {
         // "And the LORD shut him in." (Gen 7:16)
-        doorCloseT = Math.min(1, doorCloseT + dt / 2.4);
+        doorCloseT = Math.min(1, doorCloseT + bdt / 2.4);
         const eased = 1 - (1 - doorCloseT) * (1 - doorCloseT);
         setDoorAngle(1 - eased);
         if (doorCloseT >= 1) {
           boardingPhase = 'complete';
           boardingActive = false;
-          boardingProcessionGroup.visible = false;
           onBoardingComplete?.();
         }
       }
+      updateActors(bdt);
     }
 
     if (selectionRing.visible) {
@@ -2693,9 +2900,13 @@ export async function bootNoahsArkWorld(options: {
       lighting: currentLighting,
       boardingActive,
       boardingPhase,
-      boardingVisibleActors: boardingActors.filter((a) => a.root.visible).length,
-      boardingBoardedActors: boardingActors.filter((a) => a.boarded).length,
-      boardingTotalActors: boardingActors.length,
+      boardingSpeed,
+      boardingClock: +boardingClock.toFixed(2),
+      boardingDuration: +LAST_ARRIVAL.toFixed(2),
+      boardingWalkingActors: allActors.filter((a) => a.state === 'walk').length,
+      boardingBoardedActors: allActors.filter((a) => a.state === 'inside').length,
+      boardingTotalActors: allActors.length,
+      humansInScene: groups.filter((g) => g.def.human).reduce((n, g) => n + g.actors.length, 0),
       moving,
       rulersVisible: arkWorld.rulersGroup.visible,
       arkDimensionsCubits: ARK_DIMENSIONS.cubits,
@@ -2714,6 +2925,7 @@ export async function bootNoahsArkWorld(options: {
     setViewMode,
     setLighting,
     toggleBoardingMarch,
+    setBoardingSpeed,
     toggleMotion,
     toggleRulers,
     focusPlacement,
@@ -2721,6 +2933,7 @@ export async function bootNoahsArkWorld(options: {
       viewMode: currentViewMode,
       lighting: currentLighting,
       boardingActive,
+      boardingSpeed,
       moving,
       rulersVisible: arkWorld.rulersGroup.visible,
       loadedAssetsCount: loadedAssets.size,

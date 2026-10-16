@@ -14,6 +14,9 @@ const inspectEn = document.querySelector<HTMLElement>('#inspect-en');
 const inspectVerse = document.querySelector<HTMLElement>('#inspect-verse');
 const inspectFact = document.querySelector<HTMLElement>('#inspect-fact');
 const inspectArt = document.querySelector<HTMLElement>('#inspect-art');
+const loader = document.querySelector<HTMLElement>('#ark-loader');
+const loaderFill = document.querySelector<HTMLElement>('#loader-fill');
+const loaderText = document.querySelector<HTMLElement>('#loader-text');
 
 function showInspectCard(entry: BiblicalEntry) {
   if (!inspectCard) return;
@@ -70,6 +73,9 @@ void bootNoahsArkWorld({
     if (loadStatus) {
       loadStatus.textContent = `载入模型 ${loaded}/${total}`;
     }
+    const pct = Math.round((loaded / Math.max(total, 1)) * 100);
+    if (loaderFill) loaderFill.style.width = `${Math.min(96, pct)}%`;
+    if (loaderText) loaderText.textContent = `正在载入 3D 模型 ${loaded} / ${total}（${pct}%）`;
   },
   onSelectEntry: (entry) => {
     showInspectCard(entry);
@@ -83,6 +89,18 @@ void bootNoahsArkWorld({
       loadStatus.textContent = `✓ 1:1 真实尺度 · ${st.placementsCount} 实体就绪`;
     }
     document.body.dataset.ready = 'true';
+    // Keep the loading page up until the first fully-populated frames have actually been drawn
+    if (loaderFill) loaderFill.style.width = '100%';
+    if (loaderText) loaderText.textContent = '方舟已备齐 · 进入场景';
+    let loaderHidden = false;
+    const hideLoader = () => {
+      if (loaderHidden) return;
+      loaderHidden = true;
+      loader?.classList.add('hidden');
+      window.setTimeout(() => loader?.remove(), 700);
+    };
+    requestAnimationFrame(() => requestAnimationFrame(hideLoader));
+    window.setTimeout(hideLoader, 450); // fallback if rAF is throttled (background tab)
 
     const syncDockButtons = (mode: ArkViewMode) => {
       for (const btn of Array.from(document.querySelectorAll<HTMLButtonElement>('[data-mode]'))) {
@@ -175,6 +193,15 @@ void bootNoahsArkWorld({
           ctrl.setViewMode('covenant');
           syncDockButtons('covenant');
         }
+      });
+    }
+
+    // Boarding speed (scales both walking pace and walk-cycle playback)
+    const speedBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-speed]'));
+    for (const btn of speedBtns) {
+      btn.addEventListener('click', () => {
+        const v = ctrl.setBoardingSpeed(Number(btn.dataset.speed) || 1);
+        for (const b of speedBtns) b.classList.toggle('active', Number(b.dataset.speed) === v);
       });
     }
 

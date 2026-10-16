@@ -8,6 +8,15 @@
     <link rel="stylesheet" href="/src/scene-assembly/noahs-ark-prototype.css" />
   </head>
   <body>
+    <!-- Loading page: visible from the very first paint, removed once every model is loaded and drawn -->
+    <div id="ark-loader" role="status" aria-live="polite">
+      <div class="loader-ark">🚢</div>
+      <h2>挪亚的方舟</h2>
+      <p class="loader-sub">NOAH’S ARK · 1:1 · 300 × 50 × 30 CUBITS</p>
+      <div class="loader-bar"><div class="loader-fill" id="loader-fill"></div></div>
+      <div class="loader-text" id="loader-text">正在准备方舟与百兽…</div>
+      <p class="loader-verse">“凡有血肉的活物，每样两个，一公一母，你要带进方舟，好在你那里保全生命。”（创世记 6:19）</p>
+    </div>
     <main id="ark-prototype" aria-label="Noah's Ark interactive 1:1 3D world and 3-deck cutaway">
       <canvas id="stage" aria-label="可旋转、可互动的 1:1 真实圣经尺度挪亚方舟 3D 场景与三层甲板剖面"></canvas>
 
@@ -52,7 +61,7 @@
             <span class="res-icon">👨‍👩‍👦</span>
             <div><small>挪亚全家</small><strong id="res-food">8 口人</strong></div>
           </div>
-          <div class="res-item" title="前庭 16 座围栏与三层舱内活物（创 7:2–3）">
+          <div class="res-item" title="前庭 12 座围栏 · 每栏一公一母（创 6:19）">
             <span class="res-icon">🦁</span>
             <div><small>真实 3D 资产</small><strong id="res-animals">95+ 实体</strong></div>
           </div>
@@ -86,7 +95,7 @@
             <span class="q-check">▶</span>
             <div class="q-body">
               <strong>2. 引领百兽各从其类成对登船</strong>
-              <small>启动 10 对动物沿大道走上栈桥进入第一层底舱（创 7:2–9）</small>
+              <small>挪亚八口先进方舟，12 对动物一公一母走出围栏、上栈桥入舱，耶和华关门（创 7:7–16）</small>
             </div>
           </li>
           <li class="quest-item" data-quest="cutaway">
@@ -107,6 +116,13 @@
         <div class="quest-actions">
           <button type="button" id="btn-boarding" class="action-cta green">🐾 启动百兽登船游行</button>
           <button type="button" id="motion" class="action-cta">⏸ 暂停动作</button>
+        </div>
+        <div class="speed-row" aria-label="登船速度">
+          <span>登船速度</span>
+          <button type="button" class="speed-btn" data-speed="0.5">0.5×</button>
+          <button type="button" class="speed-btn active" data-speed="1">1×</button>
+          <button type="button" class="speed-btn" data-speed="2">2×</button>
+          <button type="button" class="speed-btn" data-speed="4">4×</button>
         </div>
       </aside>
 
@@ -140,7 +156,7 @@
           </button>
           <button type="button" class="dock-btn" data-mode="animals">
             <span class="dock-icon">🦒</span>
-            <strong>16 座围栏</strong>
+            <strong>12 座围栏</strong>
             <small>Enclosures</small>
           </button>
           <button type="button" class="dock-btn highlight" data-mode="deck1">
