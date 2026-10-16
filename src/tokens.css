@@ -4,24 +4,27 @@
    drifted into eighteen font sizes and eleven tracking values.
    ═══════════════════════════════════════════════════════════════════════ */
 :root {
-  /* ── palette ─────────────────────────────────────────────────────── */
-  --sea:          #0b1a2b;
-  --navy:         #0d1b2a;
-  --ground:       #060d16;
-  --surface:      #0e1d2e;
-  --surface-hi:   #14243a;
+  /* ── palette (Lion & Lamb: Celestial Sky-Blue, Golden Halo & Lamb Ivory) ── */
+  --sea:          #11345a;
+  --navy:         #0e2b4b;
+  --ground:       #0a1e36;
+  --surface:      #123052;
+  --surface-hi:   #1a406b;
+  --sky:          #3ba3f8;
+  --sky-bright:   #66c3ff;
+  --meadow:       #66ab3e;
 
-  --gold:         #c9a227;
-  --gold-bright:  #e8c55a;
-  --gold-dim:     #9a7d2e;
+  --gold:         #e6ac32;
+  --gold-bright:  #f8d66d;
+  --gold-dim:     #b68422;
 
-  --ink:          #ece2cd;   /* primary text */
-  --ink-2:        #a8b4c2;   /* secondary text */
-  --ink-3:        #838f9e;   /* tertiary, captions */
-  --ink-4:        #4d5865;   /* disabled, hairlines on dark */
+  --ink:          #f9f3e6;   /* primary text: warm lamb ivory */
+  --ink-2:        #c6d8ec;   /* secondary text: soft sky-tinted ivory */
+  --ink-3:        #8fa9c4;   /* tertiary, captions */
+  --ink-4:        #557291;   /* disabled, hairlines on dark */
 
-  --line:         #22334a;
-  --line-gold:    #c9a2273d;
+  --line:         #24476e;
+  --line-gold:    #f0be4947;
 
   /* ── type scale ──────────────────────────────────────────────────────
      Raised a step at the bottom. The old scale bottomed out at 11px and
@@ -72,17 +75,17 @@
 
   /* The scrim the fixed nav lays over whatever is behind it. A gradient, not
      a flat bar: the globe has to keep showing through. */
-  --scrim: linear-gradient(180deg, #060d16e6 0%, #060d16a6 58%, transparent 100%);
+  --scrim: linear-gradient(180deg, #091c32f2 0%, #0d2744b8 62%, transparent 100%);
   /* The same job at the foot of the page, under the timeline. Without a
      token this stayed dark while the ink above it went light, and the
      credit line was dark-on-dark. */
-  --scrim-bottom: linear-gradient(180deg, transparent, #050b13ed 34%);
+  --scrim-bottom: linear-gradient(180deg, transparent, #08192ded 34%);
   /* Floating panels: a gradient rather than a flat fill, so they read as
      glass over the globe rather than as cut-outs. */
-  --panel: linear-gradient(180deg, #0e1d2ef7, #0a1622fa);
+  --panel: linear-gradient(180deg, #133154f7, #0c223cfa);
   /* A wash of the accent, for hover and pressed states on both grounds. */
-  --gold-wash: #c9a2271a;
-  --tab-hover: #0d1a2899;
+  --gold-wash: #f0be4924;
+  --tab-hover: #183d66b3;
 
   /* ── the faces ───────────────────────────────────────────────────────
      Two decisions, and the second one is the one that was wrong.

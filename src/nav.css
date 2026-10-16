@@ -9,13 +9,14 @@
   position: fixed; inset: 0; z-index: 50;
   display: grid; place-content: center; justify-items: center;
   gap: clamp(12px, 2.2vmin, 28px);
-  background: var(--ground); transition: opacity .6s ease; text-align: center;
+  background: radial-gradient(circle at 50% 42%, #18426e 0%, var(--ground) 72%);
+  transition: opacity .6s ease; text-align: center;
 }
 #loading.done { opacity: 0; pointer-events: none; }
 /* Sized against the WIDTH, not the short side: on a phone the short side is
    the width anyway, and on a desktop this keeps the globe from filling the
    screen. */
-#loading-globe { width: min(46vw, 34vh, 280px); height: auto; display: block; }
+#loading-globe { width: min(46vw, 34vh, 240px); height: auto; display: block; filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.45)); }
 /* A sentence, so it is set in the reading face, not the monospace one. Mono
    at 20px with .14em of tracking is a readout of a sentence rather than a
    sentence, and in Chinese — where the mono face has no 汉字 at all and the
@@ -26,7 +27,7 @@
 }
 #loading-bar {
   position: fixed; left: 0; top: 0; height: 2px; width: 0;
-  background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
+  background: linear-gradient(90deg, var(--sky), var(--gold-bright));
   transition: width .35s ease; z-index: 51;
 }
 
@@ -47,7 +48,16 @@
   background: var(--scrim);
 }
 .sitenav .brand {
-  display: grid; gap: 1px; pointer-events: auto; text-decoration: none; flex: none;
+  display: inline-flex; align-items: center; gap: 9px;
+  pointer-events: auto; text-decoration: none; flex: none;
+}
+.sitenav .brand-logo {
+  width: 34px; height: 34px; border-radius: 8px;
+  display: block; flex: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(248, 214, 109, 0.35);
+}
+.sitenav .brand-words {
+  display: grid; gap: 1px;
 }
 .sitenav .brand .zh {
   font-family: var(--display); font-size: var(--fs-500); font-weight: 600;
@@ -55,7 +65,7 @@
 }
 .sitenav .brand .en {
   font-family: var(--latin); font-size: 10px; font-weight: 500;
-  letter-spacing: var(--tr-mark); text-transform: uppercase; color: var(--gold);
+  letter-spacing: var(--tr-mark); text-transform: uppercase; color: var(--gold-bright);
 }
 .sitenav ol {
   list-style: none; display: flex; gap: 1px; margin: 0; padding: 0;
@@ -144,6 +154,8 @@
                      var(--sp-2) calc(var(--sp-2) + var(--safe-left)); gap: var(--sp-2); }
   .lang-switch button { padding: var(--sp-1) 5px; }
   #settings-open { width: 26px; height: 26px; font-size: var(--fs-300); }
+  .sitenav .brand { gap: 6px; }
+  .sitenav .brand-logo { width: 26px; height: 26px; border-radius: 6px; }
   .sitenav .brand .zh { font-size: var(--fs-300); letter-spacing: .08em; }
   .sitenav .brand .en { display: none; }
   /* One row that scrolls rather than a row that wraps: a wrapped tab strip
@@ -186,8 +198,15 @@
 /* 760 was too low: between there and about 980 the six tabs wrapped onto a
    second row and pushed the bar down over the page. The bar either holds the
    whole row or holds none of it — 全部 has everything either way. */
-@media (max-width: 980px) {
-  .sitenav ol { display: none; }
+@media (max-width: 1080px) {
+  .sitenav { gap: var(--sp-2); }
+  .sitenav ol {
+    flex: 1 1 auto; min-width: 0; flex-wrap: nowrap;
+    overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .sitenav ol::-webkit-scrollbar { display: none; }
+  .sitenav a.tab, #walk-open, #routes-open { white-space: nowrap; padding: var(--sp-1) var(--sp-2); }
+  .sitenav .spacer { display: none; }
 }
 
 /* ── the shelves: 走进 and 路线 ─────────────────────────────────────────
@@ -229,7 +248,7 @@
 [aria-expanded="true"] .chev { transform: rotate(180deg); }
 .dd {
   position: absolute; top: calc(100% + 6px); left: 0; z-index: 41;
-  min-width: 220px; max-width: min(320px, calc(100vw - 24px));
+  min-width: 240px; max-width: min(340px, calc(100vw - 24px));
   /* Ten journeys is 480px of list, which on a 600px-tall window reaches the
      bottom edge. It scrolls rather than running off. */
   max-height: calc(100dvh - 96px); overflow-y: auto; overscroll-behavior: contain;
@@ -249,21 +268,18 @@
 .dd-name { color: var(--ink); font-size: var(--fs-200); letter-spacing: var(--tr-cjk); }
 .dd-of { color: var(--ink-3); font: var(--fs-100)/var(--lh-snug) var(--ui); }
 .dd-none { margin: 0; padding: var(--sp-2) var(--sp-3); color: var(--ink-3); font: var(--fs-100)/var(--lh-snug) var(--ui); }
-/* The routes shelf hangs off a button near the left edge on a phone and off
-   the middle of the bar on a desktop; either way it must not run off the
-   right-hand side. */
-/* On a phone the shelf hangs off a button about 70px from the left edge, and
-   a 220px panel anchored to either edge of that button runs off the screen —
-   `right: 0` put it 13px off the LEFT. It stops being a dropdown there and
-   becomes a sheet across the width of the bar, which is the only shape that
-   fits. Measured at 360 and 390. */
+@media (max-width: 1080px) {
+  .dd {
+    position: fixed; top: calc(48px + var(--safe-top)); left: var(--sp-3); right: var(--sp-3);
+    min-width: 0; max-width: 360px;
+  }
+}
 @media (max-width: 480px) {
   .dd {
-    position: fixed; top: auto; left: var(--sp-2); right: var(--sp-2);
+    position: fixed; top: calc(44px + var(--safe-top)); left: var(--sp-2); right: var(--sp-2);
     min-width: 0; max-width: none; width: auto;
-    margin-top: 6px;
   }
-  #routes-open { padding: var(--sp-1) var(--sp-2); font-size: var(--fs-100); }
+  #routes-open, #walk-open { padding: 2px var(--sp-2); font-size: var(--fs-100); }
 }
 
 #allmenu {

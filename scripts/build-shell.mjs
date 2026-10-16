@@ -65,7 +65,7 @@ const FONTS = '  <link href="https://fonts.googleapis.com/css2?'
   + '&display=swap" rel="stylesheet">';
 
 const HEAD_END = '<!-- /shell:head -->';
-const HEAD = `  <!-- shell:head --><style>:root{color-scheme:dark}html,body{background:#060d16;margin:0}` +
+const HEAD = `  <!-- shell:head --><meta name="theme-color" content="#0e2b4b"><link rel="icon" type="image/png" href="/favicon.png"><style>:root{color-scheme:dark}html,body{background:#0a1e36;margin:0}` +
   `#loading-text i{font-style:normal;display:none}` +
   `html[lang="en"] #loading-text .l-en,html[lang="zh-Hans"] #loading-text .l-hans,` +
   `html[lang="zh-Hant"] #loading-text .l-hant{display:inline}</style>` +
@@ -128,8 +128,11 @@ const shell = (page) => `${START}
 
   <nav class="sitenav">
     <a class="brand" href="/">
-      <span class="zh" data-zh-text="雅伟之界">雅伟之界</span>
-      <span class="en">Yahweh's World</span>
+      <img class="brand-logo" src="/logo.png" alt="" width="34" height="34">
+      <span class="brand-words">
+        <span class="zh" data-zh-text="雅伟之界">雅伟之界</span>
+        <span class="en">Yahweh's World</span>
+      </span>
     </a>
     <!-- Everything there is, and everything there is going to be. The bar can
          hold six destinations and the plan has fifty-six units; a bar is the

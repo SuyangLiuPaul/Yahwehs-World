@@ -25,6 +25,7 @@ import { installUpdateChecker } from './updates.ts';
 import { installSiteMenu, onJourneyPick } from './site-shell.ts';
 import { EventsTrack, type TrackEvent } from './events-track.ts';
 import { installEventsMenu, type EventsMenu } from './events-menu.ts';
+import { eventThumbUrl, eventRawThumbUrl, openEventLightbox } from './event-media.ts';
 import { bridgesFor, eventsInJourney, href as bridgeHref, structureForJourney } from './bridges.ts';
 import { measuresHref } from './structures/specs.ts';
 import type { GeoJson, Place, PlacesBundle } from './types.ts';
@@ -100,7 +101,7 @@ const [bundle, journeyData, land, coastline, lakes, rivers] = await Promise.all(
 
 // ── scene ─────────────────────────────────────────────────────────────────
 const canvas = $<HTMLCanvasElement>('stage');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
@@ -135,7 +136,7 @@ scene.add(globe);
 // Measured relief over the biblical world, fading in as the camera closes.
 const terrain = new Terrain();
 globe.add(terrain.mesh);
-const regionLabels=new RegionLabels(bundle.places);
+const regionLabels=new RegionLabels(bundle.places,select);
 const staffage=new Staffage(land);globe.add(staffage.group);
 
 const markers = new Markers(bundle.places, bundle.events);
@@ -166,6 +167,7 @@ const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 let hovered = -1;
 let selected: Place | null = null;
+const eventsByPlaceId = new Map<string, TrackEvent[]>();
 
 function pick(ev: PointerEvent): number {
   pointer.set((ev.clientX / innerWidth) * 2 - 1, -(ev.clientY / innerHeight) * 2 + 1);
@@ -233,6 +235,47 @@ function renderPanel() {
     <dt>${T.precision[locale]}</dt><dd>${p.precisionNote || prec.label}</dd>
     <dt>${T.confidence[locale]}</dt><dd>${p.confidence}</dd>`;
 
+  // Illustrated Biblical Events occurring at this place
+  const placeEvents = p.id ? (eventsByPlaceId.get(p.id) ?? []) : [];
+  const evWrap = $('p-events-wrap');
+  const evTitle = $('p-events-title');
+  const evList = $('p-events');
+  if (placeEvents.length > 0 && evWrap && evTitle && evList) {
+    evWrap.hidden = false;
+    evTitle.textContent = locale === 'zh'
+      ? hant(`在此发生的圣经事件画卷 (${placeEvents.length})`)
+      : `Illustrated Events Here (${placeEvents.length})`;
+    evList.replaceChildren();
+    for (const ev of placeEvents.slice(0, 24)) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'p-ev-item';
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.alt = '';
+      img.src = eventThumbUrl(ev);
+      img.onerror = () => {
+        const fb = eventRawThumbUrl(ev);
+        if (img.src !== fb) img.src = fb;
+      };
+      const txt = document.createElement('div');
+      txt.className = 'p-ev-txt';
+      const b = document.createElement('b');
+      b.textContent = locale === 'zh' ? hant(ev.zh) : ev.en;
+      const span = document.createElement('span');
+      span.textContent = locale === 'zh' ? hant(ev.refZh) : ev.ref;
+      txt.append(b, span);
+      btn.append(img, txt);
+      btn.addEventListener('click', () => {
+        eventsTrack.open(ev);
+      });
+      evList.append(btn);
+    }
+  } else if (evWrap) {
+    evWrap.hidden = true;
+  }
+
   $('p-refs-title').textContent = T.refsTitle[locale];
   const shown = p.readable.slice(0, 24);
   const rest = p.verseCount - shown.length;
@@ -247,7 +290,7 @@ let route: Route | null = null;
 let routePlaying = false;
 let routeT = 0;
 let campPlayback:CampPlayback|null=null;
-const routeLabels = new RouteLabels(document.body);
+const routeLabels = new RouteLabels(document.body,(marker)=>seekStop(marker.stops[0]!));
 const routeThumbnail = new RouteThumbnail(renderer, globe, terrain, $<HTMLCanvasElement>('r-thumbnail'));
 const scenes = new Scenes($('r-scene-art'));
 void scenes.load();
@@ -311,6 +354,8 @@ function openRoute(id: string) {
   document.body.classList.add('route-active');
   $('map-tools').hidden=false;
   closePanel();
+  const ec = document.getElementById('event-card');
+  if (ec) ec.hidden = true;
   rCard.hidden = false;
   setRoutesState('active');
   renderRouteHeader(jr);
@@ -724,9 +769,13 @@ function applyCursor() {
   // The links belong to an opened event; a scrubbed verse has none, and
   // leaving the last event's links under a different verse would be a claim
   // about a passage the reader has already left.
-  if (!openEvent && $('t-links').childElementCount) {
-    $('t-links').replaceChildren();
-    updateLayout(); // the strip is shorter again — see renderEventLinks
+  if (!openEvent) {
+    const ec = document.getElementById('event-card');
+    if (ec && !ec.hidden) ec.hidden = true;
+    if ($('t-links').childElementCount) {
+      $('t-links').replaceChildren();
+      updateLayout(); // the strip is shorter again — see renderEventLinks
+    }
   }
   if (openEvent) { renderOpenEvent(); }
   else if (ev) {
@@ -781,18 +830,139 @@ const eventsTrack = new EventsTrack({
 /** The opened event takes over the readout — it is what the reader just asked
  *  about, and the verse line underneath is still true of the same moment. */
 function renderOpenEvent() {
-  if (!openEvent) return;
+  const ec = document.getElementById('event-card') as HTMLElement | null;
+  if (!openEvent) {
+    if (ec) ec.hidden = true;
+    return;
+  }
   const name = locale === 'zh' ? hant(openEvent.zh) : openEvent.en;
   const ref = locale === 'zh' ? hant(openEvent.refZh) : openEvent.ref;
   $('t-ref').textContent = `${name} · ${ref}`;
-  // summaryZh in Chinese; in English the title is all the data has, and
-  // inventing an English summary here would be authoring.
   $('t-here').textContent = locale === 'zh'
     ? hant(openEvent.sum)
-    : [...new Set(openEvent.p.map((id) => placeById.get(id)).filter(Boolean)
-        .map((p) => placeName(p as Place)))].join(' · ');
+    : (openEvent.sumEn || [...new Set(openEvent.p.map((id) => placeById.get(id)).filter(Boolean)
+        .map((p) => placeName(p as Place)))].join(' · '));
   renderEventLinks();
+
+  // Populate the floating Event Scene Illustration Card (#event-card)
+  if (ec && !route) {
+    ec.hidden = false;
+    const img = document.getElementById('ec-img') as HTMLImageElement | null;
+    if (img) {
+      const targetSrc = eventThumbUrl(openEvent);
+      if (img.dataset.evId !== openEvent.id) {
+        img.dataset.evId = openEvent.id;
+        img.src = targetSrc;
+        img.onerror = () => {
+          if (!openEvent) return;
+          const fb = eventRawThumbUrl(openEvent);
+          if (img.src !== fb) img.src = fb;
+        };
+      }
+      img.alt = name;
+    }
+    const idEl = document.getElementById('ec-id');
+    if (idEl) idEl.textContent = openEvent.id.toUpperCase();
+    const refEl = document.getElementById('ec-ref');
+    if (refEl) refEl.textContent = ref;
+    const titleEl = document.getElementById('ec-title');
+    if (titleEl) titleEl.textContent = name;
+    const sumEl = document.getElementById('ec-sum');
+    if (sumEl) {
+      sumEl.textContent = locale === 'zh'
+        ? hant(openEvent.sum)
+        : (openEvent.sumEn || openEvent.en);
+    }
+
+    const placesEl = document.getElementById('ec-places');
+    if (placesEl) {
+      placesEl.replaceChildren();
+      const seen = new Set<string>();
+      for (const pid of openEvent.p) {
+        const pl = placeById.get(pid);
+        if (!pl || seen.has(pl.slug)) continue;
+        seen.add(pl.slug);
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'ec-place-chip';
+        chip.textContent = `📍 ${placeName(pl)}`;
+        chip.addEventListener('click', () => select(pl));
+        placesEl.append(chip);
+      }
+    }
+
+    const linksEl = document.getElementById('ec-links');
+    if (linksEl) {
+      linksEl.replaceChildren();
+      const readLink = document.createElement('a');
+      readLink.className = 'ev-link';
+      readLink.href = `/bible.html#event=${encodeURIComponent(openEvent.id)}`;
+      readLink.textContent = locale === 'zh' ? hant('📖 在画卷圣经阅读本段') : '📖 Read in Illustrated Bible';
+      linksEl.append(readLink);
+      for (const b of bridgesFor(openEvent, journeyData.journeys)) {
+        const text = locale === 'zh' ? hant(b.zh) : b.en;
+        if (b.kind === 'journey') {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'ev-link';
+          btn.textContent = `↗ ${text}`;
+          btn.addEventListener('click', () => openRoute(b.id));
+          linksEl.append(btn);
+        } else {
+          const a = document.createElement('a');
+          a.className = 'ev-link';
+          a.href = bridgeHref(b);
+          a.textContent = `↗ ${text}`;
+          linksEl.append(a);
+        }
+      }
+    }
+
+    const idx = eventsTrack.all.findIndex((e) => e.id === openEvent!.id);
+    const prevBtn = document.getElementById('ec-prev') as HTMLButtonElement | null;
+    const nextBtn = document.getElementById('ec-next') as HTMLButtonElement | null;
+    if (prevBtn) prevBtn.disabled = idx <= 0;
+    if (nextBtn) nextBtn.disabled = idx < 0 || idx >= eventsTrack.all.length - 1;
+  }
 }
+
+// Event Card (#event-card) interactive controls
+document.getElementById('ec-media')?.addEventListener('click', () => {
+  if (!openEvent) return;
+  openEventLightbox(openEvent, { list: eventsTrack.all, showLocateOnGlobe: false });
+});
+document.getElementById('ec-media')?.addEventListener('keydown', (e) => {
+  if ((e.key === 'Enter' || e.key === ' ') && openEvent) {
+    e.preventDefault();
+    openEventLightbox(openEvent, { list: eventsTrack.all, showLocateOnGlobe: false });
+  }
+});
+document.getElementById('ec-prev')?.addEventListener('click', () => {
+  if (!openEvent) return;
+  const idx = eventsTrack.all.findIndex((e) => e.id === openEvent!.id);
+  if (idx > 0) eventsTrack.open(eventsTrack.all[idx - 1]!);
+});
+document.getElementById('ec-next')?.addEventListener('click', () => {
+  if (!openEvent) return;
+  const idx = eventsTrack.all.findIndex((e) => e.id === openEvent!.id);
+  if (idx >= 0 && idx < eventsTrack.all.length - 1) eventsTrack.open(eventsTrack.all[idx + 1]!);
+});
+document.getElementById('ec-close')?.addEventListener('click', () => {
+  openEvent = null;
+  eventsTrack.open(null);
+  const ec = document.getElementById('event-card');
+  if (ec) ec.hidden = true;
+  applyCursor();
+});
+
+// Clicking #r-scene-art during a journey opens the full-resolution event lightbox
+$('r-scene-art').addEventListener('click', (e) => {
+  if ((e.target as HTMLElement).closest('.r-scene-more')) return;
+  const evId = $('r-scene-art').dataset.eventId;
+  if (!evId) return;
+  const ev = eventsTrack.all.find((x) => x.id === evId);
+  if (ev) openEventLightbox(ev, { list: eventsTrack.all, showLocateOnGlobe: false });
+});
 
 /** The corridors out of this event — see src/bridges.ts. Rendered from the
  *  event itself every time, so switching reading re-renders them in the new
@@ -866,6 +1036,15 @@ function openEventFromHash() {
 
 void eventsTrack.load('/data/events.json')
   .then(() => {
+    eventsByPlaceId.clear();
+    for (const ev of eventsTrack.all) {
+      for (const pid of ev.p) {
+        let list = eventsByPlaceId.get(pid);
+        if (!list) { list = []; eventsByPlaceId.set(pid, list); }
+        list.push(ev);
+      }
+    }
+    if (selected) renderPanel();
     eventsTrack.setCursor(Number(range.value));
     eventsMenu = installEventsMenu(eventsTrack, (ev) => eventsTrack.open(ev));
     openEventFromHash();
@@ -876,6 +1055,22 @@ void eventsTrack.load('/data/events.json')
     );
   })
   .catch((err) => { console.warn('events layer unavailable:', err); });
+
+// Quick-Entry Mode Bar (#globe-modes)
+document.getElementById('gm-events')?.addEventListener('click', () => {
+  document.getElementById('t-events-open')?.click();
+});
+document.getElementById('gm-goto')?.addEventListener('click', () => {
+  document.getElementById('t-goto-open')?.click();
+});
+document.getElementById('gm-routes')?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  document.getElementById('routes-open')?.click();
+});
+document.getElementById('gm-walks')?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  document.getElementById('walk-open')?.click();
+});
 
 // ── go to book / chapter / verse ─────────────────────────────────────────
 // Reported directly: scrubbing 5,582 raw events by dragging a slider to find
