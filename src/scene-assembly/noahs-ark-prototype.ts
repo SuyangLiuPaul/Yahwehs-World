@@ -59,9 +59,13 @@ const urlMode = urlParams.get('mode') as ArkViewMode | null;
 const initialMode: ArkViewMode = urlMode || 'overview';
 const initialRulers = urlParams.get('rulers') === '1';
 
+// Assigned once the HUD is wired in onReady; called when the last pair is in and the door is shut.
+let handleBoardingComplete: () => void = () => {};
+
 void bootNoahsArkWorld({
   canvas,
   initialMode,
+  onBoardingComplete: () => handleBoardingComplete(),
   onProgress: (loaded, total) => {
     if (loadStatus) {
       loadStatus.textContent = `载入模型 ${loaded}/${total}`;
@@ -121,39 +125,49 @@ void bootNoahsArkWorld({
     // Boarding procession toggle button
     const btnBoarding = document.querySelector<HTMLButtonElement>('#btn-boarding');
     const questBoarding = document.querySelector<HTMLElement>('#quest-boarding');
-    const updateBoardingUi = (active: boolean) => {
+    type BoardingUiState = 'idle' | 'running' | 'complete';
+    const updateBoardingUi = (state: BoardingUiState) => {
       if (btnBoarding) {
-        btnBoarding.textContent = active ? '⏹ 停止登船游行（复位）' : '🐾 启动百兽登船游行';
-        btnBoarding.classList.toggle('active', active);
+        btnBoarding.textContent =
+          state === 'running' ? '⏹ 停止登船游行' : state === 'complete' ? '🔁 重播百兽登船' : '🐾 启动百兽登船游行';
+        btnBoarding.classList.toggle('active', state === 'running');
       }
       if (questBoarding) {
-        questBoarding.classList.toggle('done', active);
+        // The quest only counts as done once every pair is inside and the door has been shut
+        questBoarding.classList.toggle('done', state === 'complete');
+        questBoarding.classList.toggle('running', state === 'running');
         const check = questBoarding.querySelector('.q-check');
-        if (check) check.textContent = active ? '✓' : '▶';
+        if (check) check.textContent = state === 'complete' ? '✓' : state === 'running' ? '…' : '▶';
       }
     };
-
-    btnBoarding?.addEventListener('click', () => {
-      const active = ctrl.toggleBoardingMarch();
-      updateBoardingUi(active);
+    let boardingCompletedOnce = false;
+    handleBoardingComplete = () => {
+      boardingCompletedOnce = true;
+      updateBoardingUi('complete');
+    };
+    const startOrStopBoarding = (force?: boolean) => {
+      const active = ctrl.toggleBoardingMarch(force);
+      updateBoardingUi(active ? 'running' : boardingCompletedOnce ? 'complete' : 'idle');
       if (active) syncDockButtons('overview');
-    });
+    };
+
+    btnBoarding?.addEventListener('click', () => startOrStopBoarding());
 
     // Interactive Quest list items
     for (const item of Array.from(document.querySelectorAll<HTMLElement>('[data-quest]'))) {
       item.addEventListener('click', () => {
         const q = item.dataset.quest;
-        item.classList.add('done');
-        const check = item.querySelector('.q-check');
-        if (check) check.textContent = '✓';
+        if (q !== 'boarding') {
+          item.classList.add('done');
+          const check = item.querySelector('.q-check');
+          if (check) check.textContent = '✓';
+        }
 
         if (q === 'yard') {
           ctrl.setViewMode('yard');
           syncDockButtons('yard');
         } else if (q === 'boarding') {
-          const active = ctrl.toggleBoardingMarch(true);
-          updateBoardingUi(active);
-          syncDockButtons('overview');
+          startOrStopBoarding(true);
         } else if (q === 'cutaway') {
           ctrl.setViewMode('deck1');
           syncDockButtons('deck1');

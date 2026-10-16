@@ -385,6 +385,7 @@ interface TrueScaleArkNodes {
   doorRight: THREE.Group;
   rulersGroup: THREE.Group;
   waterTexture: THREE.CanvasTexture;
+  cloudMat: THREE.MeshLambertMaterial;
 }
 
 function buildTrueScaleArkAndValley(scene: THREE.Scene): TrueScaleArkNodes {
@@ -1322,36 +1323,6 @@ function buildTrueScaleArkAndValley(scene: THREE.Scene): TrueScaleArkNodes {
   }
   natureGroup.add(trunkInst, crownInst1, crownInst2, crownInst3, crownInst4);
 
-  // 1,500 Instanced Meadow Grass Tufts & Wildflower Clusters across the Valley & Riverbanks
-  const grassCount = 1500;
-  const grassMat = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.9, metalness: 0.01 });
-  const grassInst = new THREE.InstancedMesh(boxGeo, grassMat, grassCount);
-  const gCol = new THREE.Color();
-  const grassPalette = ['#687f42', '#7a914e', '#8b9e5b', '#5d733b', '#d9c36a', '#e3d596'];
-  for (let i = 0; i < grassCount; i++) {
-    const gx = -125 + rng() * 250;
-    const gz = -48 + rng() * 145;
-    // Skip inside the Ark hull footprint (x = -68..+68, z = -32..-8)
-    if (Math.abs(gx) < 69 && gz > -32.5 && gz < -7.5) {
-      dummy.scale.set(0, 0, 0);
-      dummy.updateMatrix();
-      grassInst.setMatrixAt(i, dummy.matrix);
-      continue;
-    }
-    const gy = heightArkValley(gx, gz);
-    const isFlower = i % 11 === 0;
-    const gh = isFlower ? 0.36 + rng() * 0.25 : 0.28 + rng() * 0.34;
-    dummy.position.set(gx, gy + gh * 0.45, gz);
-    dummy.rotation.set((rng() - 0.5) * 0.25, rng() * Math.PI, (rng() - 0.5) * 0.25);
-    dummy.scale.set(isFlower ? 0.24 : 0.14, gh, isFlower ? 0.24 : 0.42);
-    dummy.updateMatrix();
-    grassInst.setMatrixAt(i, dummy.matrix);
-    gCol.set(grassPalette[isFlower ? 4 + (i % 2) : i % 4]!);
-    grassInst.setColorAt(i, gCol);
-  }
-  grassInst.instanceMatrix.needsUpdate = true;
-  if (grassInst.instanceColor) grassInst.instanceColor.needsUpdate = true;
-  natureGroup.add(grassInst);
 
   // Riverbank Boulders (120 sculpted stones along the winding river at x = -82 & hillside)
   const rockInst = new THREE.InstancedMesh(sphereGeo, getMat('#91927a', 0.88, 0.02), 120);
@@ -1374,12 +1345,13 @@ function buildTrueScaleArkAndValley(scene: THREE.Scene): TrueScaleArkNodes {
   natureGroup.add(rockInst);
 
   // Soft Volumetric 3D Sky Clouds drifting above the Mountain Horizon (y = 38..52m, z = -115..-155m)
-  const cloudMat = new THREE.MeshStandardMaterial({
-    color: '#f7f9f8',
-    roughness: 0.95,
-    metalness: 0.0,
+  const cloudMat = new THREE.MeshLambertMaterial({
+    color: '#ffffff',
+    emissive: '#ffffff',
+    emissiveIntensity: 0.55,
     transparent: true,
-    opacity: 0.88,
+    opacity: 0.92,
+    fog: false,
   });
   for (const [cx, cy, cz, cs] of [
     [-75, 42, -125, 1.35],
@@ -1528,6 +1500,7 @@ function buildTrueScaleArkAndValley(scene: THREE.Scene): TrueScaleArkNodes {
     doorRight,
     rulersGroup,
     waterTexture,
+    cloudMat,
   };
 }
 
@@ -1788,8 +1761,10 @@ export async function bootNoahsArkWorld(options: {
   onProgress?: (loaded: number, total: number, label: string) => void;
   onSelectEntry?: (entry: BiblicalEntry, placementId: string, screenX: number, screenY: number) => void;
   onReady?: (ctrl: NoahsArkWorldController) => void;
+  /** Fired once when the last pair has entered and the door has been shut (Gen 7:16). */
+  onBoardingComplete?: () => void;
 }): Promise<NoahsArkWorldController> {
-  const { canvas, initialMode = 'overview', onProgress, onSelectEntry, onReady } = options;
+  const { canvas, initialMode = 'overview', onProgress, onSelectEntry, onReady, onBoardingComplete } = options;
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -1797,12 +1772,53 @@ export async function bootNoahsArkWorld(options: {
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.98;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
 
   const scene = new THREE.Scene();
   // Warm Mediterranean Horizon Sky & Distance Mist (Sacred Atelier A + Ark Meadow v2 palette)
   scene.background = new THREE.Color('#c2d8df');
   scene.fog = new THREE.Fog('#c8d8d4', 180, 590);
+
+  // Gradient sky dome (zenith → horizon → ground haze) with a soft sun glow; recentred on the camera each frame
+  const skyUniforms = {
+    topColor: { value: new THREE.Color('#5f97cf') },
+    horizonColor: { value: new THREE.Color('#dbe7ea') },
+    groundColor: { value: new THREE.Color('#b9c4b4') },
+    sunColor: { value: new THREE.Color('#fff3d6') },
+    sunDir: { value: new THREE.Vector3(-0.7, 0.55, 0.4).normalize() },
+  };
+  const skyDome = new THREE.Mesh(
+    new THREE.SphereGeometry(680, 48, 24),
+    new THREE.ShaderMaterial({
+      uniforms: skyUniforms,
+      side: THREE.BackSide,
+      depthWrite: false,
+      fog: false,
+      vertexShader: /* glsl */ `
+        varying vec3 vDir;
+        void main() {
+          vDir = normalize(position);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }`,
+      fragmentShader: /* glsl */ `
+        uniform vec3 topColor; uniform vec3 horizonColor; uniform vec3 groundColor;
+        uniform vec3 sunColor; uniform vec3 sunDir;
+        varying vec3 vDir;
+        void main() {
+          float h = vDir.y;
+          vec3 col = h > 0.0
+            ? mix(horizonColor, topColor, pow(smoothstep(0.0, 0.62, h), 0.75))
+            : mix(horizonColor, groundColor, smoothstep(0.0, -0.25, h));
+          float s = max(dot(normalize(vDir), normalize(sunDir)), 0.0);
+          col += sunColor * (pow(s, 380.0) * 1.4 + pow(s, 14.0) * 0.22);
+          gl_FragColor = vec4(col, 1.0);
+          #include <colorspace_fragment>
+        }`,
+    })
+  );
+  skyDome.renderOrder = -1;
+  skyDome.frustumCulled = false;
+  scene.add(skyDome);
 
   const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.4, 750);
   const controls = new OrbitControls(camera, canvas);
@@ -1821,13 +1837,14 @@ export async function bootNoahsArkWorld(options: {
   const sunLight = new THREE.DirectionalLight('#fff1d6', 2.15);
   sunLight.position.set(-72, 108, 84);
   sunLight.castShadow = true;
-  sunLight.shadow.mapSize.set(2048, 2048);
-  sunLight.shadow.camera.left = -95;
-  sunLight.shadow.camera.right = 95;
-  sunLight.shadow.camera.top = 85;
-  sunLight.shadow.camera.bottom = -85;
+  sunLight.shadow.mapSize.set(4096, 4096);
+  sunLight.shadow.camera.left = -110;
+  sunLight.shadow.camera.right = 110;
+  sunLight.shadow.camera.top = 110;
+  sunLight.shadow.camera.bottom = -110;
   sunLight.shadow.camera.near = 10;
-  sunLight.shadow.camera.far = 310;
+  sunLight.shadow.camera.far = 420;
+  sunLight.shadow.radius = 2.5;
   sunLight.shadow.normalBias = 0.03;
   sunLight.shadow.bias = -0.00025;
   scene.add(sunLight);
@@ -2037,95 +2054,200 @@ export async function bootNoahsArkWorld(options: {
   boardingProcessionGroup.visible = false;
   scene.add(boardingProcessionGroup);
 
+  // Only rigged Tripo assets (with a `head` bone and a real `walk` clip) are used in the procession.
+  // Facing is NOT hand-tuned: it is derived from each model's head bone so every animal walks head-first.
   const BOARDING_PAIR_SPECIES: Array<{
-    assetId: string;
+    assetIds: [string, string];
     biblicalKey: string;
     targetHeight: number;
-    marchYaw: number;
     laneOffset: number;
   }> = [
-    { assetId: 'ark-giraffe', biblicalKey: 'ark-giraffe', targetHeight: 4.15, marchYaw: Math.PI, laneOffset: 1.15 },
-    { assetId: 'ark-elephant', biblicalKey: 'ark-elephant', targetHeight: 2.75, marchYaw: Math.PI, laneOffset: 1.22 },
-    { assetId: 'ark-cow', biblicalKey: 'ark-cow', targetHeight: 1.78, marchYaw: Math.PI, laneOffset: 1.05 },
-    { assetId: 'ark-lamb', biblicalKey: 'ark-lamb', targetHeight: 1.24, marchYaw: Math.PI, laneOffset: 0.95 },
-    { assetId: 'ark-goat-v03', biblicalKey: 'ark-goat-v03', targetHeight: 1.28, marchYaw: -Math.PI / 2, laneOffset: 0.95 },
-    { assetId: 'ark-camel', biblicalKey: 'ark-camel', targetHeight: 2.42, marchYaw: -Math.PI / 2, laneOffset: 1.12 },
-    { assetId: 'ark-donkey', biblicalKey: 'ark-donkey', targetHeight: 1.68, marchYaw: -Math.PI / 2, laneOffset: 0.98 },
-    { assetId: 'royal-white-horse-v1-v11', biblicalKey: 'ark-donkey', targetHeight: 1.88, marchYaw: 0, laneOffset: 1.06 },
-    { assetId: 'ark-lion', biblicalKey: 'ark-lion', targetHeight: 1.62, marchYaw: Math.PI, laneOffset: 1.02 },
-    { assetId: 'ark-deer-v02', biblicalKey: 'ark-deer-v02', targetHeight: 1.72, marchYaw: Math.PI, laneOffset: 0.98 },
+    { assetIds: ['genesis-6-9-gray-elephant-v01-v61', 'psalms-104-elephant-v09'], biblicalKey: 'ark-elephant', targetHeight: 2.75, laneOffset: 1.75 },
+    { assetIds: ['psalms-104-giraffe-v04', 'psalms-104-giraffe-v04'], biblicalKey: 'ark-giraffe', targetHeight: 4.1, laneOffset: 1.2 },
+    { assetIds: ['psalms-117-camel-v02', 'psalms-117-camel-v02'], biblicalKey: 'ark-camel', targetHeight: 2.4, laneOffset: 1.2 },
+    { assetIds: ['royal-white-horse-v1-v11', 'horse-saddled-brown-v03'], biblicalKey: 'ark-donkey', targetHeight: 1.88, laneOffset: 1.1 },
+    { assetIds: ['jeroboam-brown-white-cow-v02', 'jeroboam-brown-white-cow-v02'], biblicalKey: 'ark-cow', targetHeight: 1.7, laneOffset: 1.1 },
+    { assetIds: ['psalms-148-adult-lion-v02', 'psalms-148-adult-lion-v02'], biblicalKey: 'ark-lion', targetHeight: 1.6, laneOffset: 1.0 },
+    { assetIds: ['ark-zebra-v02', 'ark-zebra-v02'], biblicalKey: 'ark-donkey', targetHeight: 1.72, laneOffset: 1.0 },
+    { assetIds: ['genesis-8-20-unladen-gray-donkey', 'genesis-8-20-unladen-gray-donkey'], biblicalKey: 'ark-donkey', targetHeight: 1.62, laneOffset: 1.0 },
+    { assetIds: ['ark-deer-v02', 'ark-deer-v02'], biblicalKey: 'ark-deer-v02', targetHeight: 1.7, laneOffset: 0.95 },
+    { assetIds: ['genesis-8-20-grazing-sheep-v11', 'genesis-8-20-grazing-sheep-v11'], biblicalKey: 'ark-lamb', targetHeight: 1.22, laneOffset: 0.85 },
+    { assetIds: ['ark-goat-v03', 'ark-goat-v03'], biblicalKey: 'ark-goat-v03', targetHeight: 1.28, laneOffset: 0.85 },
   ];
+
+  // Load any procession assets that are not already used by static placements
+  await Promise.all(
+    Array.from(new Set(BOARDING_PAIR_SPECIES.flatMap((s) => s.assetIds)))
+      .filter((id) => !loadedAssets.has(id))
+      .map(async (assetId) => {
+        try {
+          const gltf = await loader.loadAsync(`/models/bible-cutouts/${assetId}.glb`);
+          loadedAssets.set(assetId, { scene: gltf.scene, animations: gltf.animations ?? [] });
+        } catch (err) {
+          console.warn(`Could not load boarding asset ${assetId}:`, err);
+        }
+      })
+  );
 
   interface BoardingActor {
     pairIndex: number;
     isLeft: boolean;
     root: THREE.Group;
     mixer: THREE.AnimationMixer | null;
-    marchYaw: number;
     laneOffset: number;
+    queueOffset: number; // metres behind the lead pair along the path
+    boarded: boolean;
   }
   const boardingActors: BoardingActor[] = [];
+  const tmpHead = new THREE.Vector3();
+  let queueCursor = 0;
 
   for (let pairIndex = 0; pairIndex < BOARDING_PAIR_SPECIES.length; pairIndex++) {
     const spec = BOARDING_PAIR_SPECIES[pairIndex]!;
-    const source = loadedAssets.get(spec.assetId);
-    if (!source) continue;
+    let pairLength = 0;
+    const pairActors: BoardingActor[] = [];
 
     for (let side = 0; side < 2; side++) {
       const isLeft = side === 0;
+      const source = loadedAssets.get(spec.assetIds[side]!);
+      if (!source) continue;
       const cloned = cloneSkeleton(source.scene) as THREE.Group;
       cloned.updateMatrixWorld(true);
       const box = new THREE.Box3().setFromObject(cloned, true);
       const size = box.getSize(new THREE.Vector3());
       const center = box.getCenter(new THREE.Vector3());
-      const hTarget = spec.targetHeight * (isLeft ? 1.0 : 0.94);
+
+      // Forward axis = direction from body centre to head bone (fallback: longest horizontal axis, +X)
+      let fx = size.x >= size.z ? 1 : 0;
+      let fz = size.x >= size.z ? 0 : 1;
+      let headBone: THREE.Object3D | null = null;
+      cloned.traverse((o) => {
+        if (!headBone && (o as THREE.Bone).isBone && /head/i.test(o.name)) headBone = o;
+      });
+      if (headBone) {
+        (headBone as THREE.Object3D).getWorldPosition(tmpHead);
+        const dx = tmpHead.x - center.x;
+        const dz = tmpHead.z - center.z;
+        if (Math.hypot(dx, dz) > 1e-4) {
+          // Snap to the dominant axis — Tripo rigs are axis-aligned
+          if (Math.abs(dx) >= Math.abs(dz)) {
+            fx = Math.sign(dx);
+            fz = 0;
+          } else {
+            fx = 0;
+            fz = Math.sign(dz);
+          }
+        }
+      }
+      // Yaw that maps the model's forward (fx, fz) onto world -Z (the root's local forward)
+      const facingYaw = Math.atan2(fx, -fz);
+
+      const hTarget = spec.targetHeight * (isLeft ? 1.0 : 0.95);
       const scaleFactor = hTarget / Math.max(size.y, 0.001);
+      const bodyLength = Math.max(Math.abs(fx) * size.x, Math.abs(fz) * size.z) * scaleFactor;
+      pairLength = Math.max(pairLength, bodyLength);
+
+      const orient = new THREE.Group();
+      orient.rotation.y = facingYaw;
+      cloned.scale.setScalar(scaleFactor);
+      cloned.position.set(-center.x * scaleFactor, -box.min.y * scaleFactor, -center.z * scaleFactor);
+      orient.add(cloned);
 
       const root = new THREE.Group();
       root.name = `boarding-pair-${pairIndex}-${isLeft ? 'L' : 'R'}`;
-      cloned.scale.setScalar(scaleFactor);
-      cloned.position.set(-center.x * scaleFactor, -box.min.y * scaleFactor, -center.z * scaleFactor);
-      root.add(cloned);
+      root.rotation.order = 'YXZ';
+      root.add(orient);
 
       cloned.traverse((obj) => {
         if (obj instanceof THREE.Mesh) {
           obj.castShadow = true;
           obj.receiveShadow = true;
-          obj.userData.placementId = `boarding-${spec.assetId}`;
+          obj.frustumCulled = false; // skinned bounds don't follow the walk cycle
+          obj.userData.placementId = `boarding-${spec.assetIds[side]}`;
           obj.userData.biblicalKey = spec.biblicalKey;
         }
       });
 
       let mixer: THREE.AnimationMixer | null = null;
-      if (source.animations.length > 0) {
+      const walkClip =
+        source.animations.find((c) => c.name === 'walk') ?? source.animations.find((c) => /walk/i.test(c.name));
+      if (walkClip) {
         mixer = new THREE.AnimationMixer(cloned);
-        const clip =
-          source.animations.find((c) => c.name === 'walk') ??
-          source.animations.find((c) => c.name === 'graze') ??
-          source.animations[0];
-        if (clip) {
-          const act = mixer.clipAction(clip);
-          act.play();
-          mixer.setTime((pairIndex * 0.7 + side * 0.35) % Math.max(clip.duration, 0.5));
-        }
+        const act = mixer.clipAction(walkClip);
+        act.play();
+        mixer.setTime((pairIndex * 0.37 + side * 0.5) % Math.max(walkClip.duration, 0.5));
+      } else {
+        console.warn(`Boarding asset ${spec.assetIds[side]} has no walk clip`);
       }
 
       boardingProcessionGroup.add(root);
-      boardingActors.push({
+      const actor: BoardingActor = {
         pairIndex,
         isLeft,
         root,
         mixer,
-        marchYaw: spec.marchYaw,
         laneOffset: spec.laneOffset,
-      });
+        queueOffset: 0,
+        boarded: false,
+      };
+      pairActors.push(actor);
+      boardingActors.push(actor);
     }
+
+    // Size-aware spacing: each pair starts one body-length + 1.6 m behind the previous one
+    if (pairIndex > 0) queueCursor += pairLength * 0.5 + 1.6;
+    for (const a of pairActors) a.queueOffset = queueCursor;
+    queueCursor += pairLength * 0.5;
   }
+
+  // Boarding path: forecourt avenue (x = 10) → foot of gangway → up the ramp → through the side door → into Deck 1
+  const BOARDING_PATH: Array<[number, number, number]> = [
+    [10.0, 0.06, 78.0],
+    [10.0, 0.06, 2.8],
+    [10.0, 0.55, -8.75],
+    [10.0, 0.56, -15.5],
+  ];
+  const pathSegLengths = BOARDING_PATH.slice(1).map((p, i) => {
+    const a = BOARDING_PATH[i]!;
+    return Math.hypot(p[0] - a[0], p[1] - a[1], p[2] - a[2]);
+  });
+  const BOARDING_PATH_LENGTH = pathSegLengths.reduce((s, v) => s + v, 0);
+  // Lead pair starts near the enclosure rows so the whole column is on screen from the first frame
+  const BOARDING_START_DIST = 52.0;
+  const BOARDING_SPEED = 1.55; // m/s — a calm walking pace that matches the walk clips
+  const samplePath = (d: number) => {
+    let rem = Math.max(0, Math.min(d, BOARDING_PATH_LENGTH));
+    for (let i = 0; i < pathSegLengths.length; i++) {
+      const L = pathSegLengths[i]!;
+      if (rem <= L || i === pathSegLengths.length - 1) {
+        const a = BOARDING_PATH[i]!;
+        const b = BOARDING_PATH[i + 1]!;
+        const t = L > 0 ? rem / L : 0;
+        return {
+          x: mix(a[0], b[0], t),
+          y: mix(a[1], b[1], t),
+          z: mix(a[2], b[2], t),
+          heading: Math.atan2(-(b[0] - a[0]), -(b[2] - a[2])),
+          pitch: Math.atan2(b[1] - a[1], Math.hypot(b[0] - a[0], b[2] - a[2])),
+        };
+      }
+      rem -= L;
+    }
+    return { x: 10, y: 0.06, z: 0, heading: 0, pitch: 0 };
+  };
 
   let currentViewMode: ArkViewMode = initialMode;
   let currentLighting: LightingPreset = 'morning';
   let boardingActive = false;
+  // 'marching' → animals walk the path once; 'closing' → the LORD shuts the door (Gen 7:16); 'complete' → done
+  let boardingPhase: 'idle' | 'marching' | 'closing' | 'complete' = 'idle';
   let boardingClock = 0;
+  let doorCloseT = 0;
+  const DOOR_OPEN_ANGLE = 1.45;
+  const setDoorAngle = (openness: number) => {
+    arkWorld.doorLeft.rotation.y = DOOR_OPEN_ANGLE * openness;
+    arkWorld.doorRight.rotation.y = -DOOR_OPEN_ANGLE * openness;
+  };
   let moving = true;
 
   const cameraTargetGoal = new THREE.Vector3(0.0, 4.5, 2.0);
@@ -2159,7 +2281,8 @@ export async function bootNoahsArkWorld(options: {
 
     for (const item of spawned) {
       if (item.def.zone === 'covenant') {
-        item.root.visible = isCovenant;
+        item.root.visible =
+          isCovenant || (item.def.id === 'covenant-rainbow-arch' && currentLighting === 'rainbow');
         continue;
       }
       if (item.def.id === 'noah-patriarch' && isCovenant) {
@@ -2224,57 +2347,120 @@ export async function bootNoahsArkWorld(options: {
     cameraTransitionFrames = 45;
   }
 
+  const LIGHTING_PRESETS: Record<
+    LightingPreset,
+    {
+      skyTop: string;
+      skyHorizon: string;
+      skyGround: string;
+      sunGlow: string;
+      fog: [string, number, number];
+      hemi: [string, string, number];
+      sun: [string, number, [number, number, number]];
+      fill: [string, number, [number, number, number]];
+      lanterns: number;
+      exposure: number;
+      cloud: [string, number];
+    }
+  > = {
+    // Clear morning: warm key light raking across the hull from the west, cool sky fill
+    morning: {
+      skyTop: '#5f97cf',
+      skyHorizon: '#dbe7ea',
+      skyGround: '#b9c4b4',
+      sunGlow: '#fff3d6',
+      fog: ['#d6e2e3', 170, 640],
+      hemi: ['#cfe2f2', '#5f5a3e', 0.55],
+      sun: ['#ffe7c2', 3.1, [-125, 95, 70]],
+      fill: ['#b9cfe6', 0.35, [95, 45, 70]],
+      lanterns: 2.0,
+      exposure: 1.0,
+      cloud: ['#ffffff', 0.55],
+    },
+    // Dusk: very low western sun → long shadows, orange horizon over deep blue, glowing door lamps
+    dusk: {
+      skyTop: '#22345e',
+      skyHorizon: '#f0a066',
+      skyGround: '#5a4a44',
+      sunGlow: '#ffb070',
+      fog: ['#b88a70', 150, 560],
+      hemi: ['#8a92c0', '#4a3a2c', 0.68],
+      sun: ['#ff9150', 3.1, [-170, 34, 45]],
+      fill: ['#7482bb', 0.42, [110, 40, 60]],
+      lanterns: 10.0,
+      exposure: 1.1,
+      cloud: ['#ffae78', 0.42],
+    },
+    // After the rain (Gen 9:13): fresh, saturated light; sun BEHIND the viewer so the bow stands opposite it
+    rainbow: {
+      skyTop: '#4f8fd0',
+      skyHorizon: '#e3eef1',
+      skyGround: '#b8c8b8',
+      sunGlow: '#fff7e2',
+      fog: ['#dde9ec', 190, 660],
+      hemi: ['#d6eaf6', '#64704a', 0.6],
+      sun: ['#fff3da', 3.2, [70, 80, 120]],
+      fill: ['#c9dcef', 0.3, [-90, 40, 40]],
+      lanterns: 1.5,
+      exposure: 1.02,
+      cloud: ['#ffffff', 0.6],
+    },
+  };
+
   function setLighting(preset: LightingPreset) {
     currentLighting = preset;
-    if (preset === 'morning') {
-      scene.background = new THREE.Color('#c2d8df');
-      scene.fog = new THREE.Fog('#c8d8d4', 180, 590);
-      hemiLight.color.set('#dfeef2');
-      hemiLight.groundColor.set('#7c765a');
-      hemiLight.intensity = 0.98;
-      sunLight.color.set('#fff1d6');
-      sunLight.intensity = 2.15;
-      sunLight.position.set(-72, 108, 84);
-      lanternLightL.intensity = 3.5;
-      lanternLightR.intensity = 3.5;
-      renderer.toneMappingExposure = 0.98;
-    } else if (preset === 'dusk') {
-      scene.background = new THREE.Color('#475366');
-      scene.fog = new THREE.Fog('#545d6d', 150, 520);
-      hemiLight.color.set('#e8b282');
-      hemiLight.groundColor.set('#3b3730');
-      hemiLight.intensity = 0.72;
-      sunLight.color.set('#ff9e5e');
-      sunLight.intensity = 1.65;
-      sunLight.position.set(-95, 42, 62);
-      lanternLightL.intensity = 8.5;
-      lanternLightR.intensity = 8.5;
-      renderer.toneMappingExposure = 0.94;
-    } else if (preset === 'rainbow') {
-      scene.background = new THREE.Color('#b5d4e2');
-      scene.fog = new THREE.Fog('#c4dde6', 190, 620);
-      hemiLight.color.set('#eef7fa');
-      hemiLight.groundColor.set('#758259');
-      hemiLight.intensity = 1.02;
-      sunLight.color.set('#fff3d9');
-      sunLight.intensity = 2.2;
-      sunLight.position.set(55, 112, 85);
-      renderer.toneMappingExposure = 0.99;
+    const P = LIGHTING_PRESETS[preset];
+    skyUniforms.topColor.value.set(P.skyTop);
+    skyUniforms.horizonColor.value.set(P.skyHorizon);
+    skyUniforms.groundColor.value.set(P.skyGround);
+    skyUniforms.sunColor.value.set(P.sunGlow);
+    skyUniforms.sunDir.value.set(...P.sun[2]).normalize();
+    scene.background = new THREE.Color(P.skyHorizon);
+    scene.fog = new THREE.Fog(P.fog[0], P.fog[1], P.fog[2]);
+    hemiLight.color.set(P.hemi[0]);
+    hemiLight.groundColor.set(P.hemi[1]);
+    hemiLight.intensity = P.hemi[2];
+    sunLight.color.set(P.sun[0]);
+    sunLight.intensity = P.sun[1];
+    sunLight.position.set(...P.sun[2]);
+    fillLight.color.set(P.fill[0]);
+    fillLight.intensity = P.fill[1];
+    fillLight.position.set(...P.fill[2]);
+    lanternLightL.intensity = P.lanterns;
+    lanternLightR.intensity = P.lanterns;
+    renderer.toneMappingExposure = P.exposure;
+    arkWorld.cloudMat.emissive.set(P.cloud[0]);
+    arkWorld.cloudMat.emissiveIntensity = P.cloud[1];
+    // The bow appears with the post-rain sky, not only in Covenant mode
+    const arch = spawnedById.get('covenant-rainbow-arch');
+    if (arch) arch.root.visible = preset === 'rainbow' || currentViewMode === 'covenant';
+  }
+
+  function resetBoardingActors() {
+    for (const actor of boardingActors) {
+      actor.boarded = false;
+      actor.root.visible = false;
     }
   }
 
   function toggleBoardingMarch(force?: boolean): boolean {
     boardingActive = force !== undefined ? force : !boardingActive;
+    resetBoardingActors();
     if (!boardingActive) {
+      boardingPhase = 'idle';
       boardingProcessionGroup.visible = false;
+      setDoorAngle(1);
     } else {
-      boardingClock = 40.0;
+      boardingPhase = 'marching';
+      boardingClock = 0;
+      doorCloseT = 0;
+      setDoorAngle(1);
       boardingProcessionGroup.visible = true;
-      // Frame the 1:1 side door, slatted gangway ramp (x = 10m), and incoming animal pairs
+      // Frame the forecourt avenue, gangway and open side door from the front-left
       currentViewMode = 'overview';
       applyVisibilityForMode('overview');
-      cameraTargetGoal.set(9.5, 2.5, 0.5);
-      cameraPosGoal.set(-8.5, 14.5, 27.5);
+      cameraTargetGoal.set(10.0, 1.8, 6.0);
+      cameraPosGoal.set(-14.0, 15.0, 40.0);
       cameraTransitionFrames = 42;
     }
     return boardingActive;
@@ -2367,20 +2553,24 @@ export async function bootNoahsArkWorld(options: {
   window.addEventListener('resize', onResize);
   onResize();
 
+  setLighting('morning');
   setViewMode(initialMode);
   camera.position.copy(cameraPosGoal);
   controls.target.copy(cameraTargetGoal);
   controls.update();
   cameraTransitionFrames = 0;
 
+  // QA hook: lets automated screenshot scripts fly the camera to exact shots
+  (window as unknown as Record<string, unknown>).__arkCam = {
+    pos: cameraPosGoal,
+    target: cameraTargetGoal,
+    set frames(v: number) {
+      cameraTransitionFrames = v;
+    },
+  };
+
   const timer = new THREE.Timer();
   let totalElapsed = 0;
-  const WORLD_X_AXIS = new THREE.Vector3(1, 0, 0);
-  const WORLD_Y_AXIS = new THREE.Vector3(0, 1, 0);
-  const WORLD_Z_AXIS = new THREE.Vector3(0, 0, 1);
-  const qYaw = new THREE.Quaternion();
-  const qPitch = new THREE.Quaternion();
-  const qRoll = new THREE.Quaternion();
 
   function animate(timestamp: number) {
     requestAnimationFrame(animate);
@@ -2400,10 +2590,10 @@ export async function bootNoahsArkWorld(options: {
           item.mixer.update(dt);
         }
       }
-      if (boardingActive) {
+      if (boardingActive && boardingPhase === 'marching') {
         for (const actor of boardingActors) {
           if (actor.mixer && actor.root.visible) {
-            actor.mixer.update(dt * 1.35);
+            actor.mixer.update(dt);
           }
         }
       }
@@ -2446,54 +2636,44 @@ export async function bootNoahsArkWorld(options: {
       }
       mPos.needsUpdate = true;
 
-      if (boardingActive) {
-        // 10-pair conveyor loop along the x = +10.0m procession avenue (z = 36.0 -> +2.8),
-        // climbing up the 1:1 slatted gangway (z = +2.8 -> -8.75, y = 0.08 -> 0.55),
-        // and entering through the 6m-wide open double side doors into Deck 1 (z = -8.75 -> -19.5)!
-        const PAIR_SPACING = 6.2;
-        const TOTAL_CYCLE = BOARDING_PAIR_SPECIES.length * PAIR_SPACING; // 62.0m
-        boardingClock = (boardingClock + dt * 2.65) % TOTAL_CYCLE;
-
+      if (boardingActive && boardingPhase === 'marching') {
+        boardingClock += dt;
+        const leadDist = BOARDING_START_DIST + boardingClock * BOARDING_SPEED;
+        let remaining = 0;
         for (const actor of boardingActors) {
-          const dist =
-            (boardingClock + (BOARDING_PAIR_SPECIES.length - 1 - actor.pairIndex) * PAIR_SPACING) % TOTAL_CYCLE;
-          const z = 36.0 - dist;
-
-          if (z >= -18.5 && z <= 36.0) {
-            actor.root.visible = true;
-            const sign = actor.isLeft ? -1 : 1;
-            const x = ARK_DIMENSIONS.doorCenterX + sign * actor.laneOffset;
-            let y = 0.06;
-            let rampPitch = 0.0;
-
-            if (z <= 2.8 && z >= -8.75) {
-              // Climbing the 1:1 slatted gangway ramp (z = +2.8 -> -8.75, y = 0.08 -> 0.55)
-              const rampT = Math.max(0.0, Math.min(1.0, (2.8 - z) / (2.8 - -8.75)));
-              y = 0.08 + rampT * 0.47;
-              rampPitch = 0.042;
-            } else if (z < -8.75) {
-              // Walking inside Deck 1 entrance hall (y = 0.55)
-              y = 0.56;
-              if (z < -16.5) {
-                actor.root.visible = false;
-              }
-            }
-
-            const stridePhase =
-              totalElapsed * 7.6 + actor.pairIndex * 1.9 + (actor.isLeft ? 0.0 : Math.PI * 0.5);
-            const strideBob = Math.abs(Math.sin(stridePhase)) * 0.075;
-            const strideSway = Math.sin(stridePhase) * 0.028;
-            const strideNod = Math.cos(stridePhase * 2.0) * 0.02;
-
-            actor.root.position.set(x, y + strideBob, z);
-
-            qYaw.setFromAxisAngle(WORLD_Y_AXIS, actor.marchYaw);
-            qPitch.setFromAxisAngle(WORLD_X_AXIS, rampPitch + strideNod);
-            qRoll.setFromAxisAngle(WORLD_Z_AXIS, strideSway);
-            actor.root.quaternion.copy(qPitch).multiply(qRoll).multiply(qYaw);
-          } else {
+          if (actor.boarded) continue;
+          const d = leadDist - actor.queueOffset;
+          if (d >= BOARDING_PATH_LENGTH) {
+            actor.boarded = true;
             actor.root.visible = false;
+            continue;
           }
+          remaining++;
+          const p = samplePath(d);
+          const side = actor.isLeft ? -1 : 1;
+          // Lateral offset perpendicular to heading (path is along Z here, so offset in X)
+          actor.root.position.set(
+            p.x + side * actor.laneOffset * Math.cos(p.heading),
+            p.y,
+            p.z - side * actor.laneOffset * Math.sin(p.heading)
+          );
+          actor.root.rotation.set(p.pitch, p.heading, 0);
+          actor.root.visible = d >= 0;
+        }
+        if (remaining === 0) {
+          boardingPhase = 'closing';
+          doorCloseT = 0;
+        }
+      } else if (boardingActive && boardingPhase === 'closing') {
+        // "And the LORD shut him in." (Gen 7:16)
+        doorCloseT = Math.min(1, doorCloseT + dt / 2.4);
+        const eased = 1 - (1 - doorCloseT) * (1 - doorCloseT);
+        setDoorAngle(1 - eased);
+        if (doorCloseT >= 1) {
+          boardingPhase = 'complete';
+          boardingActive = false;
+          boardingProcessionGroup.visible = false;
+          onBoardingComplete?.();
         }
       }
     }
@@ -2503,6 +2683,7 @@ export async function bootNoahsArkWorld(options: {
     }
 
     controls.update();
+    skyDome.position.copy(camera.position);
     renderer.render(scene, camera);
 
     const totalTris = renderer.info.render.triangles;
@@ -2511,6 +2692,10 @@ export async function bootNoahsArkWorld(options: {
       viewMode: currentViewMode,
       lighting: currentLighting,
       boardingActive,
+      boardingPhase,
+      boardingVisibleActors: boardingActors.filter((a) => a.root.visible).length,
+      boardingBoardedActors: boardingActors.filter((a) => a.boarded).length,
+      boardingTotalActors: boardingActors.length,
       moving,
       rulersVisible: arkWorld.rulersGroup.visible,
       arkDimensionsCubits: ARK_DIMENSIONS.cubits,
