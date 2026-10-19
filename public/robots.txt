@@ -1,0 +1,4 @@
+# world.yahwehword.com — Yahweh's World (added 2026-10-20)
+User-agent: *
+Allow: /
+Sitemap: https://world.yahwehword.com/sitemap.xml
