@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Added 2026-10-20: the public pages a reader reaches from the globe. No
+     <lastmod>, because nothing computes it. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://world.yahwehword.com/</loc></url>
+  <url><loc>https://world.yahwehword.com/bible.html</loc></url>
+  <url><loc>https://world.yahwehword.com/ark.html</loc></url>
+  <url><loc>https://world.yahwehword.com/tabernacle.html</loc></url>
+  <url><loc>https://world.yahwehword.com/temple.html</loc></url>
+</urlset>
