@@ -570,6 +570,49 @@ class TestVideoRules(GateTestCase):
         self.fx.edit_row(PLAIN, lambda r: r.__setitem__("videoFile", "../../outside.mp4"))
         self.assertFailsWith("video", PLAIN, "video_file_invalid")
 
+    def legacy(self, **extra):
+        fields = dict(videoOrigin="legacy-t2v", eventMatch="yes", videoDisposition="keep")
+        fields.update(extra)
+        self.fx.edit_row(PLAIN, lambda r: r.update(fields))
+
+    def test_legacy_clip_may_differ_from_the_still_but_is_reported(self):
+        self.replace_video(PLAIN, "other.mp4")
+        self.legacy()
+        item = self.assertPasses("video", PLAIN)
+        self.assertIn("first_frame_legacy", item.warnings)
+        self.assertGreater(item.measured["firstFrameDhash"], g.DHASH_MAX)
+
+    def test_legacy_clip_needs_event_match_and_a_kept_disposition(self):
+        self.legacy(eventMatch="no")
+        self.assertFailsWith("video", PLAIN, "event_match_unverified")
+        self.legacy(eventMatch=None)
+        self.assertFailsWith("video", PLAIN, "event_match_unverified")
+        for disposition in ("retire", "redo", None):
+            self.legacy(videoDisposition=disposition)
+            self.assertFailsWith("video", PLAIN, "disposition_not_kept")
+        self.legacy(videoDisposition="polish")
+        self.assertPasses("video", PLAIN)
+
+    def test_legacy_clip_uses_a_range_not_the_tier(self):
+        self.replace_video(PLAIN, "clip8.mp4")          # A tier wants 6 s; legacy allows 8
+        self.legacy(durationSec=8)
+        self.assertPasses("video", PLAIN)
+        self.legacy(durationSec=6)
+        self.assertFailsWith("video", PLAIN, "duration_field_mismatch")
+        self.legacy(durationSec=12)
+        self.assertFailsWith("video", PLAIN, "duration_out_of_range")
+
+    def test_legacy_still_needs_no_audio_and_a_passing_still(self):
+        self.replace_video(PLAIN, "audio.mp4")
+        self.legacy()
+        self.assertFailsWith("video", PLAIN, "audio_present")
+        self.fx.edit_row(PLAIN, lambda r: r.__setitem__("imageStatus", "rework"))
+        self.assertFailsWith("video", PLAIN, "still_not_passed")
+
+    def test_unknown_video_origin_fails(self):
+        self.fx.edit_row(PLAIN, lambda r: r.__setitem__("videoOrigin", "veo-api"))
+        self.assertFailsWith("video", PLAIN, "video_origin_invalid")
+
 
 class TestCommandLine(GateTestCase):
     def tree_state(self):

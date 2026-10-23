@@ -40,6 +40,12 @@ DHASH_MAX = 20                   # of 256 bits (16x16 dHash)
 TIER_SECONDS = {"S": 8.0}        # every other tier: DEFAULT_TIER_SECONDS
 DEFAULT_TIER_SECONDS = 6.0
 DURATION_TOLERANCE = 0.5
+# Existing text-to-video clips (owner 2026-10-23: no new videos, improve the 651). They were never
+# made from the still, so the first-frame rule is reported, not enforced; instead the clip must be
+# checked against its event (they were mapped by grid position) and kept or polished, not retired.
+LEGACY_ORIGIN = "legacy-t2v"
+LEGACY_SECONDS = (3.0, 8.5)
+LEGACY_DISPOSITIONS = ("keep", "polish")
 ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 # 最终方案 §1.5. A reviewer answers every key with "pass" (no violation seen, including
@@ -531,10 +537,24 @@ def check_video(ctx, event_id):
     path = video_path(ctx, item, row)
     sha = check_subject_file(item, path, [("videoSha256", row.get("videoSha256"))]) if path else None
 
+    origin = row.get("videoOrigin")
+    legacy = origin == LEGACY_ORIGIN
+    if origin is not None and not legacy:
+        item.fail("video_origin_invalid", origin)
+    if legacy:
+        if row.get("eventMatch") != "yes":
+            item.fail("event_match_unverified", row.get("eventMatch"))
+        if row.get("videoDisposition") not in LEGACY_DISPOSITIONS:
+            item.fail("disposition_not_kept", row.get("videoDisposition"))
+
     target = TIER_SECONDS.get(row.get("tier"), DEFAULT_TIER_SECONDS)
     declared = row.get("durationSec")
     if not isinstance(declared, (int, float)) or isinstance(declared, bool):
         item.fail("duration_missing")
+        declared = None
+    elif legacy:
+        if not LEGACY_SECONDS[0] <= declared <= LEGACY_SECONDS[1]:
+            item.fail("duration_out_of_range", f"durationSec={declared} range={LEGACY_SECONDS}")
     elif abs(declared - target) > DURATION_TOLERANCE:
         item.fail("duration_out_of_tier", f"durationSec={declared} tier={row.get('tier')} target={target}")
 
@@ -555,6 +575,11 @@ def check_video(ctx, event_id):
             item.measured["durationSec"] = measured
             if measured is None:
                 item.fail("probe_failed", "duration")
+            elif legacy:
+                if not LEGACY_SECONDS[0] <= measured <= LEGACY_SECONDS[1]:
+                    item.fail("duration_measured_out_of_range", f"measured={measured:.2f}")
+                if declared is not None and abs(measured - declared) > DURATION_TOLERANCE:
+                    item.fail("duration_field_mismatch", f"durationSec={declared} measured={measured:.2f}")
             elif abs(measured - target) > DURATION_TOLERANCE:
                 item.fail("duration_measured_out_of_tier", f"measured={measured:.2f} target={target}")
             first = grab_frame(path, 0.0)
@@ -575,7 +600,10 @@ def check_video(ctx, event_id):
                         distance = hamming(dhash(first), dhash(still))
                     item.measured["firstFrameDhash"] = distance
                     if distance > DHASH_MAX:
-                        item.fail("first_frame_mismatch", f"{distance}/256")
+                        if legacy:
+                            item.warnings.append("first_frame_legacy")
+                        else:
+                            item.fail("first_frame_mismatch", f"{distance}/256")
 
     if not check_still(ctx, event_id).passed:
         item.fail("still_not_passed")
