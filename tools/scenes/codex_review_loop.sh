@@ -18,6 +18,8 @@ while true; do
   release
   n=0
   for f in $(ls -tr "$Q"/still-*.json 2>/dev/null); do
+    # never review an image Codex drew itself: those stay in the queue for the Gemini reviewer
+    python3 -I -c 'import json,sys; m=str(json.load(open(sys.argv[1])).get("generator",{}).get("model","")).lower(); sys.exit(1 if "gpt" in m or "codex" in m else 0)' "$f" 2>/dev/null || continue
     mv -n "$f" "$C/" 2>/dev/null && n=$((n+1)); [ "$n" -ge "$BATCH" ] && break
   done
   if [ "$n" = "0" ]; then echo "$(date '+%F %T') no still requests; waiting 15 min"; [ "$ONCE" = 1 ] && exit 0; sleep 900; continue; fi
@@ -26,7 +28,7 @@ while true; do
   ( cd "$REPO" && CODEX_REVIEW_RUN="$run" codex exec -m gpt-6.1-sol -s workspace-write --skip-git-repo-check \
       --ephemeral -C "$REPO" --add-dir "$S" "$(cat "$REPO/tools/scenes/codex_review_prompt.md")
 
-Your run id is $run: use it where the prompt says $CODEX_REVIEW_RUN." ) >"$log" 2>&1
+Your run id is $run: use it where the prompt says \$CODEX_REVIEW_RUN." ) >"$log" 2>&1
   status=$?
   tail -n 15 "$log"
   release
