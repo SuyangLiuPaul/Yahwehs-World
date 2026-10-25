@@ -32,6 +32,6 @@ Your run id is $run: use it where the prompt says \$CODEX_REVIEW_RUN." ) >"$log"
   status=$?
   tail -n 15 "$log"
   release
-  if [ $status -ne 0 ]; then echo "codex exited $status; waiting 15 min (quota?)"; [ "$ONCE" = 1 ] && exit $status; sleep 900; fi
+  if [ $status -ne 0 ]; then w=900; grep -qiE "spend cap|usage limit|quota" "$log" && w=3600; echo "codex exited $status; waiting $((w/60)) min (quota?)"; [ "$ONCE" = 1 ] && exit $status; sleep $w; fi
   [ "$ONCE" = 1 ] && exit 0
 done

@@ -65,8 +65,11 @@ json.dump({"model":"gpt-6.1-sol-image","sha256":hashlib.sha256(open(out,'rb').re
 PY
     mv "$job" "$J/done/$name.json"; echo "  done $name"
   else
-    mv "$job" "$J/failed/$name.json"; echo "  FAILED $name (exit $status) log $log"
-    grep -qiE "rate limit|usage limit|quota|429" "$log" && { echo "  quota? waiting 30 min"; sleep 1800; }
+    if grep -qiE "rate limit|usage limit|spend cap|quota|429" "$log"; then
+      mv "$job" "$J/$name.json"; echo "  QUOTA $name: job put back; waiting 30 min"; sleep 1800
+    else
+      mv "$job" "$J/failed/$name.json"; echo "  FAILED $name (exit $status) log $log"
+    fi
   fi
   [ "$ONCE" = 1 ] && exit 0
 done
