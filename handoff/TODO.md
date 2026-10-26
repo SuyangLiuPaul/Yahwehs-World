@@ -64,6 +64,20 @@ python3 tools/scenes/gate_check.py video --all --summary
 ### D. 以后（不在现在的范围里）
 - [ ] **头显沉浸版**（Apple Vision Pro / Android XR）：业主 10-26 同意，Words 和 Sword 只做最省事的兼容，真正适合做沉浸体验的是雅伟之界，在圣地和场景里走一走。等图片和视频完成后再评估。
 
+### E. 改成只有一个入口（业主 10-26 同意；**业主说开始才开始**，现在先专心做 Words / Sword 1.8.2）
+- [ ] 目标：业主只跟 Claude 主会话说话，由它调度其他模型，取代现在的三个 Antigravity 窗口。
+  - **Claude（主会话）**：总管。派活、看闸门读数、修脚本、更新这份 TODO。
+  - **Gemini**（`agy` CLI，Gemini 4 Argon / 3.8 Flash，用 Google 的额度）：主力出图。
+  - **另一个模型盲审**：Claude Opus 5.5 走 `agy`；或者等 Monash 额度恢复后用 Codex（gpt-6.1-sol）。出图和审图必须是不同的模型。
+  - **Higgsfield**（付费，10-26 时剩 1,200 点）：只用在难图上，比如三次都没过的、耶稣的场景、多人物又要和母本一致的。**不用它做视频**，除非业主决定。
+- [ ] 步骤，一次只转一条线：
+  1. 试点：`agy` 在后台能不能直接出图。现在的出图窗口是在 Chrome 里用 Gemini 网页版画的；如果 `agy` 不行，出图仍要用 Chrome，而 Chrome 同一时间只能一方用。
+  2. 转出图线，然后请业主关掉出图窗口。
+  3. 再转审图线，最后转视频线（等它手上这批做完）。
+- [ ] 2026-10-26 已核对的工具：
+  - `agy` 1.3.5 能用：`agy -p` 有回答；`agy models` 列出 Gemini 4 Argon、3.8 Flash、Claude Opus/Sonnet 5.5、GPT-OSS；`--conversation <ID>` 可以接着现有的对话说。
+  - `codex` 0.163.0 已配置好，10 月的额度用完了。
+
 ## 要业主做的（汇总）
 1. 在 Flow 里生成那 4 段视频。
 2. 看 3 个「三次不过」的事件。
