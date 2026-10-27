@@ -81,9 +81,11 @@ python3 tools/scenes/gate_check.py video --all --summary
 ### F. 方块图交给 CLI（2026-10-27 业主：用 Codex + Gemini 的额度，不用 Claude 的）
 - Codex 后台在画：`KIND=square tools/scenes/codex_gen_loop.sh`（nohup，日志 `codex-jobs/logs/gen-loop-square.out`）。月额度显示 0% 仍能出图（实测 1-timothy-1-1，约 2 分钟一张）；碰到上限就把任务放回、30 分钟后再试，所以 5 小时额度一重置就自动接着画。
 - 队列：371 个重画 + 883 个新建（`tools/scenes/build_square_jobs.py`，原图 `non-gamified-merged-live-v3/<id>.png`，对照 fact-cards）。
-- 定时接手（launchd，一次性，跑完自己卸载；脚本和日志在 `~/Library/Application Support/yahwehs-world-kick/`）：
-  - 10-30 21:15、10-31 10:30：恢复审图对话 5fa120d6（方块图优先）；
-  - 10-31 10:00：恢复出图对话 409c44fd（升格 Codex 候选、送审，再自己出方块图，认领到 `claimed-gemini/`）。
+- 自动接力（业主 10-27 定：慢慢来，全部定时做）：
+  - Codex：后台 `codex_gen_loop.sh` 一直在，碰到额度上限就放回、30 分钟后再试。
+  - Gemini：launchd `com.yahwehsworld.drawloop` 每小时看一次，没有在画就开一轮（新账号 monash，只有 Gemini 3.8 Flash，`gemini-3.8-flash-medium`）；额度空了几秒就失败，下个小时再试。脚本和日志在 `~/Library/Application Support/yahwehs-world-kick/`（`draw-loop.sh`、`draw-*.log`）。
+  - 审图：10-30 21:15 和 10-31 10:30 各启动一次一次性的审图会话。
+  - Copilot：`tools/scenes/copilot_claim.py` / `copilot_save.py`，由 Haiku 在 Chrome 里操作（每张新开聊天；Copilot 一张要 2 分钟以上，启示录 21-9 三次卡住）。不能定时，要手动叫起。
 - Codex 画的图不能由 Codex 审；Gemini 画的图不能由 Gemini 审。
 
 ## 要业主做的（汇总）
