@@ -78,6 +78,14 @@ python3 tools/scenes/gate_check.py video --all --summary
   - `agy` 1.3.5 能用：`agy -p` 有回答；`agy models` 列出 Gemini 4 Argon、3.8 Flash、Claude Opus/Sonnet 5.5、GPT-OSS；`--conversation <ID>` 可以接着现有的对话说。
   - `codex` 0.163.0 已配置好，10 月的额度用完了。
 
+### F. 方块图交给 CLI（2026-10-27 业主：用 Codex + Gemini 的额度，不用 Claude 的）
+- Codex 后台在画：`KIND=square tools/scenes/codex_gen_loop.sh`（nohup，日志 `codex-jobs/logs/gen-loop-square.out`）。月额度显示 0% 仍能出图（实测 1-timothy-1-1，约 2 分钟一张）；碰到上限就把任务放回、30 分钟后再试，所以 5 小时额度一重置就自动接着画。
+- 队列：371 个重画 + 883 个新建（`tools/scenes/build_square_jobs.py`，原图 `non-gamified-merged-live-v3/<id>.png`，对照 fact-cards）。
+- 定时接手（launchd，一次性，跑完自己卸载；脚本和日志在 `~/Library/Application Support/yahwehs-world-kick/`）：
+  - 10-30 21:15、10-31 10:30：恢复审图对话 5fa120d6（方块图优先）；
+  - 10-31 10:00：恢复出图对话 409c44fd（升格 Codex 候选、送审，再自己出方块图，认领到 `claimed-gemini/`）。
+- Codex 画的图不能由 Codex 审；Gemini 画的图不能由 Gemini 审。
+
 ## 要业主做的（汇总）
 1. 在 Flow 里生成那 4 段视频。
 2. 看 3 个「三次不过」的事件。

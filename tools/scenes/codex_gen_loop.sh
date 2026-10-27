@@ -19,7 +19,7 @@ trap 'for f in "$CL"/*-$$.json; do [ -e "$f" ] && mv -n "$f" "$J/$(basename "${f
 while true; do
   if [ ! -d "$S" ]; then echo "$(date '+%F %T') T7 not mounted"; sleep 600; continue; fi
   job=""
-  for f in $(ls -tr "$J"/*.json 2>/dev/null); do
+  for f in $(ls -tr "$J"/${KIND:+$KIND-}*.json 2>/dev/null); do  # KIND=square draws only squares
     c="$CL/$(basename "${f%.json}")-$$.json"
     if mv -n "$f" "$c" 2>/dev/null && [ -e "$c" ]; then job="$c"; break; fi
   done
