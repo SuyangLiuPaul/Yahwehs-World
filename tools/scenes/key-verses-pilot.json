@@ -1,0 +1,86 @@
+{
+  "genesis-1-1": {
+    "book": 1,
+    "chapter": 1,
+    "verses": [3, 6, 7, 9, 11, 12],
+    "refEn": "Genesis 1:3, 6–7, 9, 11–12",
+    "refZh": "创世记 1:3、6–7、9、11–12"
+  },
+  "genesis-2-1": {
+    "book": 1,
+    "chapter": 2,
+    "verses": [2, 3],
+    "refEn": "Genesis 2:2–3",
+    "refZh": "创世记 2:2–3"
+  },
+  "genesis-9-18": {
+    "book": 1,
+    "chapter": 9,
+    "verses": [23],
+    "refEn": "Genesis 9:23",
+    "refZh": "创世记 9:23"
+  },
+  "genesis-41-1": {
+    "book": 1,
+    "chapter": 41,
+    "verses": [25],
+    "refEn": "Genesis 41:25",
+    "refZh": "创世记 41:25"
+  },
+  "exodus-12-29": {
+    "book": 2,
+    "chapter": 12,
+    "verses": [37],
+    "refEn": "Exodus 12:37",
+    "refZh": "出埃及记 12:37"
+  },
+  "exodus-14-1": {
+    "book": 2,
+    "chapter": 14,
+    "verses": [21, 22],
+    "refEn": "Exodus 14:21–22",
+    "refZh": "出埃及记 14:21–22"
+  },
+  "joshua-10-12": {
+    "book": 6,
+    "chapter": 10,
+    "verses": [12, 13],
+    "refEn": "Joshua 10:12–13",
+    "refZh": "约书亚记 10:12–13"
+  },
+  "1-samuel-31-1": {
+    "book": 9,
+    "chapter": 31,
+    "verses": [2, 6],
+    "refEn": "1 Samuel 31:2, 6",
+    "refZh": "撒母耳记上 31:2、6"
+  },
+  "matthew-14-13": {
+    "book": 40,
+    "chapter": 14,
+    "verses": [19, 20, 21],
+    "refEn": "Matthew 14:19–21",
+    "refZh": "马太福音 14:19–21"
+  },
+  "john-11-1": {
+    "book": 43,
+    "chapter": 11,
+    "verses": [43, 44],
+    "refEn": "John 11:43–44",
+    "refZh": "约翰福音 11:43–44"
+  },
+  "acts-2-1": {
+    "book": 44,
+    "chapter": 2,
+    "verses": [3, 4],
+    "refEn": "Acts 2:3–4",
+    "refZh": "使徒行传 2:3–4"
+  },
+  "revelation-21-1": {
+    "book": 66,
+    "chapter": 21,
+    "verses": [1, 2, 3, 4],
+    "refEn": "Revelation 21:1–4",
+    "refZh": "启示录 21:1–4"
+  }
+}

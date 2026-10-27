@@ -9,7 +9,7 @@ Root: S=/Volumes/T7/yahwehs-globe-scenes   Repo: /Users/pliu0036/Documents/Codin
 Schema and rules: read handoff/28-gate-schema.md §3 and §5, and handoff/29-claude-reviewer.md, once.
 Veto table: run `python3 tools/scenes/gate_check.py veto-table` and use it word for word.
 
-Work loop: the requests for this run have already been claimed for you and moved to S/review-queue/claimed-codex/. They are all kind=still.
+Work loop: the requests for this run have already been claimed for you and moved to S/review-queue/claimed-codex/. Each request has a "kind" field (still or square); use that kind in the gate_check call and for the review path (square reviews go to S/no-text-derivatives-v2/review/<id>.json, see handoff/29 §3).
 1. List S/review-queue/claimed-codex/*.json (ignore .tmp-* files). If empty, say "nothing claimed" and stop.
 2. For each request: check `shasum -a 256 S/<subject.path>` equals subject.sha256. If not, move the
    request to S/review-queue/done/ with suffix .stale and continue.

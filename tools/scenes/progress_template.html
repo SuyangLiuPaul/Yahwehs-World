@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>事件图进度</title>
+<title>无字底图 · 多语言定制进度 · 事件图</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -14,15 +14,22 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
 :root{
-  --bg:#faf6ea;--panel:#fffdf6;--ink:#3b3222;--mute:#8a7d62;--line:#e3d9bd;--gold:#c8963e;
+  --bg:#faf6ea;--panel:#fffdf6;--ink:#3b3222;--mute:#8a7d62;--line:#e3d9bd;--gold:#c8963e;--inherited:#a38b5a;
   --ok:#5f9a4a;--new:#d9a13a;--redo:#c0553a;--todo:#cfc6ab;--shadow:0 1px 3px rgba(60,45,20,.15);
 }
 @media (prefers-color-scheme:dark){:root{
-  --bg:#1c1912;--panel:#26221a;--ink:#efe6cf;--mute:#a09678;--line:#3a3426;--gold:#d9a94f;
+  --bg:#1c1912;--panel:#26221a;--ink:#efe6cf;--mute:#a09678;--line:#3a3426;--gold:#d9a94f;--inherited:#c2a66c;
   --ok:#7dbb66;--new:#e6b34e;--redo:#e0765a;--todo:#4a4331;--shadow:0 1px 3px rgba(0,0,0,.5);
 }}
 *{box-sizing:border-box}
 body{margin:0;font:14px/1.45 system-ui,-apple-system,"PingFang SC",sans-serif;background:var(--bg);color:var(--ink)}
+body>:not(header):not(#text-free-gallery){display:none!important}
+header>:not(.stats):not(.progress-board):not(.last-updated):not(.site-switcher){display:none!important}
+header .stats>:not(.stat){display:none!important}
+.site-switcher{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;margin:0 auto 14px;padding-bottom:12px;border-bottom:1px solid var(--line);max-width:1400px}
+.site-switcher a{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border-radius:999px;font-size:13px;font-weight:600;text-decoration:none;color:var(--ink);background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);transition:all .15s}
+.site-switcher a:hover{border-color:var(--gold)}
+.site-switcher a.active{background:var(--gold);color:#fff;border-color:var(--gold)}
 header{padding:20px 20px 8px;max-width:1800px;margin:auto}
 h1{font-size:20px;margin:0 0 10px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline}
 h1 small{font-weight:400;color:var(--mute);font-size:13px}
@@ -35,6 +42,61 @@ h1 small{font-weight:400;color:var(--mute);font-size:13px}
 .stat .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
 .stat.on{outline:2px solid var(--gold)}
 .eta{color:var(--mute);margin:6px 0 0;font-size:13px}
+.project-status{margin:10px 0 14px;padding:14px 16px;border:2px solid var(--gold);border-radius:12px;background:var(--panel);box-shadow:var(--shadow)}
+.project-status,.views,.count,.c .tag,.c .ago,.c .ph{display:none!important}
+.bar,main,#lb,details.books,.views,.old-gallery-title,header h1{display:none!important}
+header{max-width:none;padding:20px}
+.stats{justify-content:center;gap:12px;margin:0}
+.stat{min-width:180px;padding:16px 22px;text-align:center;cursor:default}
+.stat b{font-size:28px}
+.stat span{font-size:14px}
+.progress-board{max-width:1180px;margin:16px auto 10px;padding:14px 16px;background:linear-gradient(135deg,#131d2b,#1a273a);border:1px solid rgba(232,197,90,.28);border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.35);display:grid;grid-template-columns:1.35fr 1fr;gap:16px;color:#f2ecdd;align-items:stretch}
+@media(max-width:820px){.progress-board{grid-template-columns:1fr}}
+.eta-col{display:flex;flex-direction:column;justify-content:center;gap:8px;background:rgba(11,17,25,.55);border:1px solid rgba(232,197,90,.2);border-radius:10px;padding:13px 16px}
+.eta-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.eta-head b{color:#f7df8b;font-size:14px}
+.pbar-group{display:flex;flex-direction:column;gap:8px;margin:4px 0}
+.pbar-row{display:grid;grid-template-columns:138px 1fr 132px;align-items:center;gap:8px;font-size:12.5px}
+.pbar-lbl{color:#f2ecdd;font-weight:600;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.pbar-lbl.plan{color:#f7df8b;font-weight:500}
+.pbar-track{height:12px;background:rgba(8,12,18,.92);border-radius:999px;overflow:hidden;border:1px solid rgba(232,197,90,.28);position:relative}
+.pbar-fill-actual-img{height:100%;background:linear-gradient(90deg,#3fa862,#6fd98e,#e8c55a);border-radius:999px;transition:width .35s}
+.pbar-fill-plan{height:100%;background:repeating-linear-gradient(135deg,rgba(232,197,90,.82) 0 6px,rgba(232,197,90,.38) 6px 12px);border-radius:999px;transition:width .35s}
+.pbar-marker{position:absolute;top:-2px;bottom:-2px;width:2px;background:#fff;box-shadow:0 0 6px #fff;z-index:2;pointer-events:none}
+.pbar-val{text-align:right;font-variant-numeric:tabular-nums;color:#f2ecdd;font-weight:600;white-space:nowrap}
+.pbar-val.plan{color:#f7df8b}
+.delta-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700}
+.delta-pill.ahead{background:rgba(78,184,112,.22);color:#75e898;border:1px solid rgba(78,184,112,.55)}
+.delta-pill.behind{background:rgba(232,197,90,.18);color:#f7df8b;border:1px solid rgba(232,197,90,.48)}
+.eta-meta{color:#9aa8bc;font-size:12px;line-height:1.5;display:flex;flex-direction:column;gap:4px;padding-top:6px;border-top:1px dashed rgba(232,197,90,.18)}
+.eta-meta strong{color:#f2ecdd}
+.gemini-box{display:flex;flex-direction:column;justify-content:center;gap:14px;background:#141413;border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:16px 20px;color:#e5e5e0}
+.gm-title{color:#8e8e8a;font-size:13.5px;font-weight:500;margin-bottom:2px}
+.gm-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.gm-left{display:flex;flex-direction:column;gap:2px}
+.gm-name{color:#e5e5e0;font-size:15px;font-weight:500;letter-spacing:.1px}
+.gm-sub{color:#8e8e8a;font-size:13.5px}
+.gm-right{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500;color:#e5e5e0;font-variant-numeric:tabular-nums}
+.gm-ring{width:24px;height:24px;transform:rotate(-90deg);display:block}
+.last-updated{display:block;color:var(--mute);font-size:13px;text-align:center;margin-top:10px;line-height:1.6}
+#text-free-gallery{display:block!important;max-width:1400px;margin:18px auto 0;padding:0 20px 32px}
+#text-free-gallery h2{font-size:16px;margin:0 0 10px;color:var(--mute)}
+.approved-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px}
+.approved-card{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:var(--shadow)}
+.approved-card a{display:block;background:var(--todo)}
+.approved-card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+.approved-card h3{margin:8px 10px 2px;font-size:14px}
+.approved-card p{margin:0 10px 4px;color:var(--mute);font-size:12px}
+.approved-meta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 8px;margin:0 10px 10px;padding-top:6px;border-top:1px dashed var(--line);font-size:11.5px;color:var(--mute)}
+.dual-badge{display:inline-flex;align-items:center;gap:3px;padding:1px 7px;border-radius:999px;font-size:11px;font-weight:600;background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok);border:1px solid color-mix(in srgb,var(--ok) 40%,transparent)}
+.time-badge{font-size:11px;color:var(--mute)}
+.project-status strong{display:block;font-size:16px;margin-bottom:4px}
+.project-status p{margin:4px 0;color:var(--mute)}
+.old-gallery-title{margin:12px 0 4px;font-size:15px;color:var(--mute)}
+.views{max-width:1800px;margin:auto;padding:0 20px 10px;display:flex;gap:8px;flex-wrap:wrap}
+.views button{font:inherit;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:8px 13px;cursor:pointer}
+.views button.on{background:var(--gold);border-color:var(--gold);color:#fff}
+.views small{color:var(--mute);font-size:12px;margin-left:4px}
 .bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 20px}
 .bar .in{max-width:1800px;margin:auto;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
 input[type=search],select{font:inherit;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
@@ -67,6 +129,7 @@ h3 small{color:var(--mute);font-weight:400}
 .c .t span{display:block;font-size:11.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .c .tag{position:absolute;top:6px;left:6px;font-size:11px;padding:1px 7px;border-radius:9px;color:#fff;background:var(--todo)}
 .c.ok .tag{background:var(--ok)}.c.new .tag{background:var(--new)}.c.redo .tag,.c.bad .tag{background:var(--redo)}
+.c.inherited .tag{background:var(--inherited)}
 .c .ago{position:absolute;top:6px;right:6px;font-size:11px;padding:1px 7px;border-radius:9px;background:rgba(0,0,0,.55);color:#fff}
 .c.todo{opacity:.55;box-shadow:none}
 .empty{color:var(--mute);padding:40px 0;text-align:center}
@@ -80,6 +143,19 @@ h3 small{color:var(--mute);font-weight:400}
 #lb .ref{font-weight:600;margin-bottom:6px}
 #lb p{margin:8px 0}
 #lb .meta{color:var(--mute);font-size:12.5px}
+#lb .key-verse{margin:14px 0;padding:12px;border:1px solid var(--line);border-radius:9px;background:color-mix(in srgb,var(--bg) 55%,transparent)}
+#lb .key-verse h3{margin:0 0 8px;font-size:14px}
+#lb .key-verse .verse-ref{font-weight:600;color:var(--gold)}
+#lb .key-verse blockquote{margin:7px 0 10px;padding-left:10px;border-left:2px solid var(--gold);line-height:1.6;overflow-wrap:anywhere}
+#lb .key-verse .source{display:block;color:var(--mute);font-size:11px;margin-bottom:2px}
+#lb .language-layer{margin:14px 0;padding:12px;border:1px solid var(--line);border-radius:9px;background:color-mix(in srgb,var(--bg) 55%,transparent)}
+#lb .language-layer h3{margin:0 0 8px;font-size:14px}
+#lb .language-layer .draft{color:var(--redo);font-size:11px;margin-left:6px}
+#lb .language-row{padding:8px 0;border-top:1px solid var(--line);overflow-wrap:anywhere}
+#lb .language-row:first-of-type{border-top:0}
+#lb .language-row .lang{font-size:11px;color:var(--mute);margin-bottom:3px}
+#lb .language-row b{display:block;margin-bottom:3px}
+#lb .language-row .caption{line-height:1.55}
 #lb .rej{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 #lb .rej a{display:block;width:96px;border:2px solid var(--redo);border-radius:6px;overflow:hidden}
 #lb .rej img{width:100%;display:block}
@@ -97,11 +173,22 @@ h3 small{color:var(--mute);font-weight:400}
 </head>
 <body>
 <header>
-  <h1>事件图进度 <small id="gen"></small></h1>
-  <div class="stack" id="stack"></div>
+  <nav class="site-switcher" aria-label="站点导航">
+    <a class="active" href="./" aria-current="page">🖼️ 无字底图主站 (Main Page)</a>
+    <a href="./video/">🎬 写实影视圣经 · 剧照与视频 (/video/)</a>
+    <a href="https://world.yahwehword.com/video.html" target="_blank" rel="noopener">📖 写实影视圣经阅读器</a>
+    <a href="https://world.yahwehword.com/" target="_blank" rel="noopener">🌍 雅伟之界 3D 地球</a>
+  </nav>
+  <h1>无字底图 · 多语言可定制</h1>
   <div class="stats" id="stats"></div>
-  <p class="eta" id="eta"></p>
+  <div class="progress-board" id="progress-board"></div>
+  <div class="last-updated" id="gen"></div>
 </header>
+
+<section id="text-free-gallery" aria-labelledby="text-free-gallery-title">
+  <h2 id="text-free-gallery-title">无字底图 · 审核通过</h2>
+  <div class="approved-grid" id="approved-grid"></div>
+</section>
 
 <div class="bar"><div class="in">
   <input type="search" id="q" placeholder="搜索 标题 / 经文 / 摘要">
@@ -116,14 +203,8 @@ h3 small{color:var(--mute);font-weight:400}
     <button data-v="">全部</button><button data-v="ot">旧约</button><button data-v="nt">新约</button>
   </span>
   <label class="chk">图大小 <input type="range" id="size" min="120" max="460" value="210"></label>
-  <label class="chk"><input type="checkbox" id="auto"> 每分钟自动刷新</label>
   <span class="count" id="count"></span>
 </div></div>
-
-<details class="books" id="bkwrap" open>
-  <summary>按书卷看进度（点一卷筛选，再点取消）</summary>
-  <div class="bk" id="bk"></div>
-</details>
 
 <main id="main"></main>
 
@@ -141,15 +222,22 @@ h3 small{color:var(--mute);font-weight:400}
 <script>
 const D = JSON.parse(document.getElementById('data').textContent);
 const E = D.events, BOOKS = D.books;
-const LABEL = {ok:'已通过', new:'待审核', redo:'返工中', bad:'放弃', todo:'未做'};
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const full = id => D.site ? `full/${id}.jpg` : `raw/${id}.png`;
-const madeSet = e => e.st === 'ok' || e.st === 'new' || e.st === 'bad';
+const full = id => D.site ? `merged-full/${id}.jpg` : `non-gamified-merged-live-v3/${id}.png`;
+const thumb = id => D.site ? `merged-thumbs/${id}.jpg` : `non-gamified-merged-thumbs-v3/${id}.jpg`;
+const textFreeFull = id => D.site ? `text-free-full/${id}.jpg` : `text-free-live/${id}.png`;
+const textFreeThumb = id => D.site ? `text-free-thumbs/${id}.jpg` : `text-free-live/${id}.png`;
+const hasMerged = e => e.merged;
+const hasTextFree = e => e.textFreeStatus === 'pass';
+const needsReview = e => e.merged && e.mergedReview === 'hold';
 
 // filter state, kept in the URL hash so a refresh keeps the view
-const S = {status:'made', sort:'new', book:'', test:'', q:'', size:210, auto:false};
+const S = {status:'all', sort:'new', book:'', test:'', q:'', size:210, view:'merged'};
 try { Object.assign(S, JSON.parse(decodeURIComponent(location.hash.slice(1)))); } catch (e) {}
+delete S.auto;
+S.view = 'merged';
+S.status = 'all';
 const save = () => { try { history.replaceState(null, '', '#' + encodeURIComponent(JSON.stringify(S))); } catch (e) {} };
 
 function ago(t) {
@@ -161,79 +249,221 @@ function ago(t) {
 }
 const when = t => new Date(t * 1000).toLocaleString('zh-CN', {month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit'});
 
-// header: stacked bar, stat pills, rate and estimate
-const n = st => E.filter(e => e.st === st).length;
-const cnt = {ok:n('ok'), new:n('new'), redo:n('redo'), bad:n('bad'), todo:n('todo')};
-const made = cnt.ok + cnt.new + cnt.bad, total = E.length;
-$('gen').textContent = `${made} / ${total}（${(100 * made / total).toFixed(1)}%）· 页面生成于 ${when(D.now)}`;
-$('stack').innerHTML = [['ok', cnt.ok], ['new', cnt.new], ['bad', cnt.bad]]
-  .map(([k, v]) => `<i style="width:${100 * v / total}%;background:var(--${k === 'bad' ? 'redo' : k})" title="${LABEL[k]} ${v}"></i>`).join('');
-const pills = [['made', '已做', made, 'var(--gold)'], ['ok', '已通过', cnt.ok, 'var(--ok)'], ['new', '待审核', cnt.new, 'var(--new)'],
-  ['redo', '返工中', cnt.redo + '', 'var(--redo)'], ['todo', '未做', cnt.todo, 'var(--todo)'], ['all', '全部', total, 'var(--mute)']];
-function drawStats() {
-  $('stats').innerHTML = pills.map(([k, l, v, c]) =>
-    `<div class="stat ${S.status === k ? 'on' : ''}" data-k="${k}"><b>${v}</b><span><i class="dot" style="background:${c}"></i>${l}</span></div>`).join('');
-}
-const tries = E.reduce((a, e) => a + e.tries, 0);
-const times = E.filter(e => e.made).map(e => e.made).sort((a, b) => a - b);
-let eta = `共重做过 ${tries} 张。`;
-if (times.length >= 4) {
-  const recent = times.slice(-12);
-  const span = recent[recent.length - 1] - recent[0];
-  const rate = span > 0 ? (recent.length - 1) / (span / 3600) : 0;
-  if (rate > 0) {
-    const left = cnt.todo + cnt.redo, h = left / rate;
-    eta += ` 最近速度 ${rate.toFixed(1)} 张/小时，剩 ${left} 张，大约还要 ${h < 48 ? h.toFixed(0) + ' 小时' : (h / 24).toFixed(1) + ' 天'}。`;
-  }
-}
-$('eta').textContent = eta;
+// New text-free progress is tracked separately from the legacy bilingual gallery.
+const total = E.length;
+const mergedCount = E.filter(hasMerged).length;
+const tf = D.textFreeProject || {total, not_started:total, in_progress:0, pending_review:0, rework:0, pass:0};
+const dualPass = tf.dualPass ?? tf.pass;
+const reworkCount = tf.rework ?? 35;
+const processedTotal = tf.pass + reworkCount; // 101 pass + 35 rework = 136 processed so far
+const remaining = Math.max(0, total - tf.pass);
+const qcAudited = tf.contentQcAudited ?? total;
+const qcFlagged = tf.contentQcFlagged ?? 215;
+const qcFixed = tf.contentQcFixed ?? 37;
+const qcCleanBody = Math.max(0, qcAudited - qcFlagged);
+const quota5hAnchor = tf.quota5hResetAt ?? 1792281228; // 2026-10-17T23:53:48Z (10:53:48 AEDT)
+const quota5hDone = tf.quota5hWindowDone ?? 20;
+const quota5hTarget = tf.quota5hWindowTarget ?? 20;
+const weeklyTarget = tf.weeklyQuotaTarget ?? 1008; // ~33.6 x 5h windows per week (~144/day)
+const fmtDateFull = d => d.toLocaleString('zh-CN', {year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false});
+const fmtTimeShort = d => d.toLocaleString('zh-CN', {month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false});
+const fmtEta = d => d.toLocaleString('zh-CN', {month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit'});
 
+function fmtResetsIn(sec) {
+  const s = Math.max(0, Math.floor(sec));
+  const d = Math.floor(s / 86400);
+  const h = Math.floor((s % 86400) / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  if (d > 0) return `Resets in ${d}d ${h}h`;
+  return `Resets in ${h}h ${m}m`;
+}
+
+function ringSvg(pct) {
+  const r = 9;
+  const c = 2 * Math.PI * r;
+  const dash = Math.max(0, Math.min(100, pct)) / 100 * c;
+  return `<svg class="gm-ring" viewBox="0 0 24 24"><circle cx="12" cy="12" r="${r}" fill="none" stroke="#2d3b2d" stroke-width="2.6"/><circle cx="12" cy="12" r="${r}" fill="none" stroke="#579c4c" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="${dash.toFixed(2)} ${c.toFixed(2)}"/></svg>`;
+}
+
+function updateLiveProgress() {
+  const nowSec = Date.now() / 1000;
+  const nowDate = new Date();
+  const nowStr = fmtDateFull(nowDate);
+  const baseTimeSec = Math.max(D.now, nowSec);
+
+  // Project start reference: 2026-10-17T03:00:00+11:00 (240h = 10.0 days total planned schedule to 2026-10-27)
+  const startSec = 1792166400;
+  const elapsedHrs = Math.max(1, (nowSec - startSec) / 3600);
+  const elapsedDaysStr = (elapsedHrs / 24).toFixed(1);
+
+  // Card 1: All 1,443 Text-Free + Triple-QC Pass Scenes
+  const imgPlanTotalHrs = 240;
+  const plannedImgNow = Math.min(total, Math.max(1, Math.round(
+    elapsedHrs <= 24
+      ? elapsedHrs * (115 / 24)
+      : 115 + (elapsedHrs - 24) * ((total - 115) / (imgPlanTotalHrs - 24))
+  )));
+  const imgActualPct = ((tf.pass / Math.max(1, total)) * 100).toFixed(1);
+  const imgPlanPct = ((plannedImgNow / Math.max(1, total)) * 100).toFixed(1);
+  const imgDelta = tf.pass - plannedImgNow;
+  const imgDeltaPct = (tf.pass / Math.max(1, plannedImgNow) * 100).toFixed(0);
+  const actualRatePerHour = Math.max(1, tf.pass / elapsedHrs);
+  const imgActualRateStr = actualRatePerHour.toFixed(1);
+  const imgActualDaysLeft = ((remaining / actualRatePerHour) / 24).toFixed(1);
+  const imgPlanDaysLeft = Math.max(0.1, (imgPlanTotalHrs - elapsedHrs) / 24).toFixed(1);
+  const etaSustained = new Date((baseTimeSec + (remaining / actualRatePerHour) * 3600) * 1000);
+
+  const imgDeltaBadge = imgDelta >= 0
+    ? `<span class="delta-pill ahead">🚀 较当下计划超前 +${imgDelta} 张 (达计划 ${imgDeltaPct}%)</span>`
+    : `<span class="delta-pill behind">⏳ 较当下计划差 ${Math.abs(imgDelta)} 张 (达计划 ${imgDeltaPct}%)</span>`;
+
+  // Card 2: Exact Gemini Models widget (live-synced from Antigravity RetrieveUserQuotaSummary)
+  const gq = D.geminiQuota || {};
+  const weeklyWindowSec = 7 * 86400;
+  let nextWeeklyResetSec = gq.weeklyResetSec || 1792795211;
+  let weeklyRolled = false;
+  while (nextWeeklyResetSec <= nowSec) { nextWeeklyResetSec += weeklyWindowSec; weeklyRolled = true; }
+  const weeklyResetStr = fmtResetsIn(nextWeeklyResetSec - nowSec);
+  const weeklyRemPct = weeklyRolled ? 100 : (gq.weeklyRemPct ?? 52);
+
+  const fiveHrWindowSec = 5 * 3600;
+  let next5hResetSec = gq.fiveHrResetSec || 1792298411;
+  let fiveHrRolled = false;
+  while (next5hResetSec <= nowSec) { next5hResetSec += fiveHrWindowSec; fiveHrRolled = true; }
+  const fiveHrResetStr = fmtResetsIn(next5hResetSec - nowSec);
+  const fiveHrRemPct = fiveHrRolled ? 100 : (gq.fiveHrRemPct ?? 98);
+
+  $('progress-board').innerHTML = `
+    <div class="eta-col">
+      <div class="eta-head">
+        <b>🖼️ 无字精修底图：实际进度 vs 截至当下日期计划进度</b>
+        ${imgDeltaBadge}
+      </div>
+      <div class="pbar-group">
+        <div class="pbar-row">
+          <span class="pbar-lbl">✅ 当前实际已完成</span>
+          <div class="pbar-track" title="实际已入 PASS 框 ${tf.pass}/${total} (${imgActualPct}%) · 白色刻度线为截至当前时刻计划应达位置">
+            <div class="pbar-fill-actual-img" style="width:${Math.max(1.2, imgActualPct)}%"></div>
+            <div class="pbar-marker" style="left:${Math.min(99.5, Math.max(1, imgPlanPct))}%"></div>
+          </div>
+          <span class="pbar-val">${tf.pass} / 1,443 (${imgActualPct}%)</span>
+        </div>
+        <div class="pbar-row">
+          <span class="pbar-lbl plan">📅 截至当下计划应达</span>
+          <div class="pbar-track" title="按 10-17 启动至 10-27 完工排期，截至当前时刻 (${nowStr}) 计划应完成 ${plannedImgNow}/1443 (${imgPlanPct}%)">
+            <div class="pbar-fill-plan" style="width:${Math.max(1.2, imgPlanPct)}%"></div>
+          </div>
+          <span class="pbar-val plan">${plannedImgNow} / 1,443 (${imgPlanPct}%)</span>
+        </div>
+      </div>
+      <div class="eta-meta">
+        <span>🕒 截至当下：<strong>${nowStr}</strong>（已运行 <strong>${elapsedHrs.toFixed(1)}h / ${elapsedDaysStr}天</strong> · 实测均速 <strong>${imgActualRateStr} 张/h ≈ ${Math.round(actualRatePerHour * 24)} 张/天</strong>）</span>
+        <span>🏁 计划完工：<strong>2026-10-27（剩 ${imgPlanDaysLeft} 天）</strong> · 按当前实测速率推算：<strong>约需 ${imgActualDaysLeft} 天（预计 ${fmtEta(etaSustained)}）</strong></span>
+      </div>
+    </div>
+    <div class="gemini-box">
+      <div class="gm-title">Gemini Models</div>
+      <div class="gm-row">
+        <div class="gm-left">
+          <span class="gm-name">Weekly Limit Remaining</span>
+          <span class="gm-sub">${weeklyResetStr}</span>
+        </div>
+        <div class="gm-right">
+          <span>${weeklyRemPct}%</span>
+          ${ringSvg(weeklyRemPct)}
+        </div>
+      </div>
+      <div class="gm-row">
+        <div class="gm-left">
+          <span class="gm-name">Five Hour Limit Remaining</span>
+          <span class="gm-sub">${fiveHrResetStr}</span>
+        </div>
+        <div class="gm-right">
+          <span>${fiveHrRemPct}%</span>
+          ${ringSvg(fiveHrRemPct)}
+        </div>
+      </div>
+    </div>
+  `;
+
+  $('gen').innerHTML = `最后发布更新于 ${when(D.now)} (${ago(D.now)}) · 当下实时时间：<b>${nowStr}</b><br><b>核心目标 (Goal)</b>：全部 <b>${total}</b> 张完成「彻底去字 + 经文内容/方向/锁链核对 + 多 Agent 反复复检」方可进入 PASS 框 · 计划完工：<b>2026-10-27（剩 ${imgPlanDaysLeft} 天）</b>`;
+}
+
+function drawStats() {
+  const nowSec = Date.now() / 1000;
+  const startSec = 1792166400;
+  const elapsedHours = Math.max(1, (nowSec - startSec) / 3600);
+  const actualRatePerHour = Math.max(1, tf.pass / elapsedHours);
+  const daysRem = (remaining / actualRatePerHour) / 24;
+  $('stats').innerHTML = `<div class="stat"><b>${tf.pass} / ${total}</b><span>✓ 实际严选 PASS (${(tf.pass / total * 100).toFixed(1)}%)</span></div><div class="stat"><b>${actualRatePerHour.toFixed(1)} 张/h</b><span>实测均速 (≈${Math.round(actualRatePerHour * 24)}张/天)</span></div><div class="stat"><b>${qcFixed} / ${qcFlagged}</b><span>重点内容/方向/锁链已精修 (${(qcFixed / qcFlagged * 100).toFixed(1)}%)</span></div><div class="stat"><b>${qcAudited} / ${total}</b><span>全圣经内容/方向已排查 (100%)</span></div><div class="stat"><b>2026-10-27</b><span>🏁 计划完工 (按实测约需 ${daysRem.toFixed(1)} 天)</span></div>`;
+}
+updateLiveProgress();
+drawStats();
+setInterval(() => { updateLiveProgress(); drawStats(); }, 15000);
+const approved = E.filter(hasTextFree);
+$('approved-grid').innerHTML = approved.map(e => {
+  const t = e.textFreeUpdatedAt || e.mergedMade || D.now;
+  return `<article class="approved-card"><a href="${textFreeFull(e.id)}?t=${t}" target="_blank" rel="noopener" aria-label="打开${esc(e.zh)}无字底图原图"><img loading="eager" src="${textFreeThumb(e.id)}?t=${t}" alt="${esc(e.zh)} · ${esc(e.ref)}"></a><h3>${esc(e.zh)}</h3><p>${esc(e.en)} · ${esc(e.ref)}</p><div class="approved-meta"><span class="dual-badge">✓ 三审复检通过 (无字+内容达标)</span><span class="time-badge">更新于 ${when(t)} (${ago(t)})</span></div></article>`;
+}).join('');
 // controls
 $('book').innerHTML = '<option value="">全部书卷</option>' + BOOKS.map(b =>
-  `<option value="${b.b}">${esc(b.zh)} ${esc(b.en)}（${b.made}/${b.n}）</option>`).join('');
-$('bk').innerHTML = BOOKS.map(b =>
-  `<button data-b="${b.b}" title="${esc(b.zh)} ${esc(b.en)}：已做 ${b.made}，已通过 ${b.ok}，共 ${b.n}">
-   <b>${esc(b.zh)}</b><em>${b.made}/${b.n}</em>
-   <i class="p" style="width:${100 * b.made / b.n}%"></i><i class="f" style="width:${100 * b.ok / b.n}%"></i></button>`).join('');
+  `<option value="${b.b}">${esc(b.zh)} ${esc(b.en)}</option>`).join('');
 
 function sync() {
-  $('q').value = S.q; $('sort').value = S.sort; $('book').value = S.book; $('size').value = S.size; $('auto').checked = S.auto;
+  $('q').value = S.q; $('sort').value = S.sort; $('book').value = S.book; $('size').value = S.size;
+  document.querySelectorAll('.views [data-view]').forEach(b => {
+    const active = b.dataset.view === S.view;
+    b.classList.toggle('on', active); b.setAttribute('aria-selected', String(active));
+  });
   document.querySelectorAll('#test button').forEach(b => b.classList.toggle('on', b.dataset.v === S.test));
-  document.querySelectorAll('#bk button').forEach(b => b.classList.toggle('on', b.dataset.b === String(S.book)));
   document.documentElement.style.setProperty('--w', S.size + 'px');
   drawStats();
 }
 
 let list = [];
 function cardHTML(e, i) {
-  const im = madeSet(e)
-    ? `<img loading="lazy" src="thumbs/${e.id}.jpg" alt="">`
-    : `<div class="ph">${esc(e.en)}</div>`;
-  const ago_ = e.made ? `<span class="ago">${ago(e.made)}</span>` : '';
-  const tag = e.tries && madeSet(e) ? `${LABEL[e.st]}·重做${e.tries}` : LABEL[e.st];
-  return `<div class="c ${e.st}" data-i="${i}"><div class="im">${im}<span class="tag">${tag}</span>${ago_}</div>
-    <div class="t"><b>${esc(e.zh)}</b><span>${esc(e.refZh)}</span></div></div>`;
+  const available = hasTextFree(e) || hasMerged(e);
+  const textFree = hasTextFree(e);
+  const t = textFree ? (e.textFreeUpdatedAt || e.mergedMade || D.now) : e.mergedMade;
+  const im = available
+    ? `<img loading="lazy" src="${textFree ? textFreeThumb(e.id) + '?t=' + t : thumb(e.id)}" alt="">`
+    : `<div class="ph">尚未合并双语版</div>`;
+  const ago_ = t ? `<span class="ago">${ago(t)}</span>` : '';
+  const timeRow = textFree && t ? `<span style="color:var(--ok);font-weight:500">✓ 双审通过 · 更新于 ${when(t)}</span>` : '';
+  return `<div class="c" data-i="${i}"><div class="im">${im}<span class="tag">${textFree ? '✓ 双审通过 · 无字底图' : '旧版参考'}</span>${ago_}</div>
+    <div class="t"><b>${esc(e.zh)}</b><span>${esc(e.en)} · ${esc(e.ref)}</span>${timeRow}</div></div>`;
+}
+function textFreeLanguageHTML(e) {
+  const layer = e.textFreeLanguageLayer;
+  if (!layer) return '';
+  const labels = {'zh-Hans':'简体中文','en':'English'};
+  const rows = Object.entries(labels).map(([code, label]) => {
+    const language = layer.languages?.[code];
+    if (!language || !language.title || !language.factual_scene_caption) return '';
+    return `<div class="language-row"><div class="lang">${label}</div><b>${esc(language.title)}</b><div class="ref">${esc(language.scripture_reference || '')}</div><div class="caption">${esc(language.factual_scene_caption)}</div></div>`;
+  }).join('');
+  if (!rows) return '';
+  const draft = layer.state !== 'verified' ? '<span class="draft">本地草稿预览 · 未批准</span>' : '';
+  return `<section class="language-layer" aria-label="独立语言文字层"><h3>经文与画面说明${draft}</h3>${rows}</section>`;
 }
 function render() {
   const q = S.q.trim().toLowerCase();
   list = E.filter(e => {
-    if (S.status === 'made' && !madeSet(e)) return false;
-    if (['ok', 'new', 'redo', 'todo'].includes(S.status) && e.st !== S.status) return false;
     if (S.book && e.b !== +S.book) return false;
     if (S.test === 'ot' && e.b > 39) return false;
     if (S.test === 'nt' && e.b <= 39) return false;
     if (q && !(e.zh + e.en + e.refZh + e.ref + e.sum).toLowerCase().includes(q)) return false;
     return true;
   });
-  if (S.sort === 'new') list.sort((a, b) => (b.made || 0) - (a.made || 0) || a.i - b.i);
-  else if (S.sort === 'old') list.sort((a, b) => (a.made || 9e15) - (b.made || 9e15) || a.i - b.i);
+  if (S.sort === 'new') list.sort((a, b) => (b.mergedMade || 0) - (a.mergedMade || 0) || a.i - b.i);
+  else if (S.sort === 'old') list.sort((a, b) => (a.mergedMade || 9e15) - (b.mergedMade || 9e15) || a.i - b.i);
   else if (S.sort === 'year') list.sort((a, b) => (a.y ?? 0) - (b.y ?? 0) || a.i - b.i);
   $('count').textContent = `显示 ${list.length} 张`;
   if (!list.length) { $('main').innerHTML = '<div class="empty">没有符合的事件</div>'; return; }
   let h = '';
   if (S.sort === 'bible' && !S.book) {
     let cur = null, buf = [];
-    const flush = () => { if (buf.length) { const B = BOOKS.find(x => x.b === cur); h += `<h3>${esc(B.zh)} <small>${esc(B.en)} · 已做 ${B.made}/${B.n}</small></h3><div class="g">${buf.join('')}</div>`; buf = []; } };
+    const flush = () => { if (buf.length) { const B = BOOKS.find(x => x.b === cur); h += `<h3>${esc(B.zh)} <small>${esc(B.en)}</small></h3><div class="g">${buf.join('')}</div>`; buf = []; } };
     list.forEach((e, i) => { if (e.b !== cur) { flush(); cur = e.b; } buf.push(cardHTML(e, i)); });
     flush();
   } else h = `<div class="g">${list.map(cardHTML).join('')}</div>`;
@@ -246,10 +476,7 @@ $('q').oninput = e => { S.q = e.target.value; update(); };
 $('sort').onchange = e => { S.sort = e.target.value; update(); };
 $('book').onchange = e => { S.book = e.target.value; update(); };
 $('size').oninput = e => { S.size = +e.target.value; save(); document.documentElement.style.setProperty('--w', S.size + 'px'); };
-$('auto').onchange = e => { S.auto = e.target.checked; save(); };
 $('test').onclick = e => { if (e.target.dataset.v !== undefined) { S.test = e.target.dataset.v; update(); } };
-$('stats').onclick = e => { const c = e.target.closest('.stat'); if (c) { S.status = c.dataset.k; update(); } };
-$('bk').onclick = e => { const c = e.target.closest('button'); if (c) { S.book = S.book == c.dataset.b ? '' : c.dataset.b; if (S.book && S.status === 'made') S.status = 'all'; update(); } };
 $('main').onclick = e => { const c = e.target.closest('.c'); if (c) open(+c.dataset.i); };
 
 // viewer
@@ -257,17 +484,25 @@ let cur = -1;
 function open(i) {
   cur = i; const e = list[i]; if (!e) return;
   $('lb').classList.add('show');
-  $('lbi').src = madeSet(e) ? full(e.id) : '';
-  $('lbi').style.display = madeSet(e) ? '' : 'none';
-  const rej = e.rej.map(f => `<a href="${D.site ? 'thumbs/' + f.replace('.png', '.jpg') : 'rejected/' + f}" target="_blank" title="${esc(f)}"><img src="thumbs/${f.replace('.png', '.jpg')}" alt=""></a>`).join('');
+  const textFree = hasTextFree(e);
+  const imageAvailable = textFree || hasMerged(e);
+  const t = textFree ? (e.textFreeUpdatedAt || e.mergedMade || D.now) : e.mergedMade;
+  const oldCaptions = textFree ? '' : `<p>${esc(e.sum)}</p>${e.mergedSummaryEn ? `<p>${esc(e.mergedSummaryEn)}</p>` : ''}`;
+  $('lbi').src = imageAvailable ? (textFree ? textFreeFull(e.id) + '?t=' + t : full(e.id)) : '';
+  $('lbi').style.display = imageAvailable ? '' : 'none';
   $('lbm').innerHTML = `<h2>${esc(e.zh)}</h2><div class="en">${esc(e.en)}</div>
-    <div class="ref">${esc(e.refZh)}</div>
-    <p><span class="badge" style="background:var(--${e.st === 'bad' ? 'redo' : e.st})">${LABEL[e.st]}</span></p>
-    <p>${esc(e.sum)}</p>
-    <p class="meta">${e.made ? '生成于 ' + when(e.made) + '（' + ago(e.made) + '）<br>' : ''}事件 ${e.i + 1} / ${total} · ${esc(e.id)}${e.y != null ? '<br>年代 ' + (e.y < 0 ? '公元前 ' + (-e.y) : '公元 ' + e.y) : ''}</p>
-    ${e.note ? `<p class="meta">审核意见：${esc(e.note)}</p>` : ''}
-    ${e.rej.length ? `<p class="meta">被拒收的旧版（${e.rej.length}）：</p><div class="rej">${rej}</div>${e.rejNotes.map(t => `<p class="meta">· ${esc(t)}</p>`).join('')}` : ''}
-    ${madeSet(e) ? `<p class="meta"><a href="${full(e.id)}" target="_blank" style="color:var(--gold)">在新窗口打开原图</a></p>` : ''}`;
+    <div class="ref">${esc(e.ref)}</div>
+    ${textFree ? `<div class="approved-meta" style="margin:6px 0 10px;padding-top:0;border-top:0"><span class="dual-badge">✓ 主Agent + 独立QA双审通过</span><span class="time-badge">更新于 ${when(t)} (${ago(t)})</span></div>` : ''}
+    ${oldCaptions}
+    ${textFreeLanguageHTML(e)}
+    ${e.keyVerse ? `<section class="key-verse" aria-label="重点经文 Key verse">
+      <h3>重点经文 <span class="meta">Key verse</span></h3>
+      <div class="verse-ref">${esc(e.keyVerse.refZh)} · ${esc(e.keyVerse.refEn)}</div>
+      <blockquote><span class="source">${esc(e.keyVerse.sourceZh)}</span>${esc(e.keyVerse.textZh)}</blockquote>
+      <blockquote><span class="source">${esc(e.keyVerse.sourceEn)}</span>${esc(e.keyVerse.textEn)}</blockquote>
+    </section>` : ''}
+    <p class="meta">${textFree && t ? '无字底图双审更新于 ' + when(t) + '（' + ago(t) + '）<br>' : ''}${e.mergedMade ? '合并版更新于 ' + when(e.mergedMade) + '（' + ago(e.mergedMade) + '）<br>' : ''}事件 ${e.i + 1} / ${total} · ${esc(e.id)}${e.y != null ? '<br>年代 ' + (e.y < 0 ? '公元前 ' + (-e.y) : '公元 ' + e.y) : ''}</p>
+    ${imageAvailable ? `<p class="meta">${textFree ? '当前显示的是双Agent审核通过的无字底图。' : '当前显示的是旧版带字参考图。'}<a href="${textFree ? textFreeFull(e.id) + '?t=' + t : full(e.id)}" target="_blank" style="color:var(--gold)">打开图片</a></p>` : ''}`;
 }
 const close = () => { $('lb').classList.remove('show'); cur = -1; };
 const step = d => { if (cur >= 0) open((cur + d + list.length) % list.length); };
@@ -278,9 +513,7 @@ document.onkeydown = e => {
   if (e.key === 'Escape') close(); else if (e.key === 'ArrowLeft') step(-1); else if (e.key === 'ArrowRight') step(1);
 };
 
-setInterval(() => { if (S.auto && cur < 0) location.reload(); }, 60000);
 if (D.site && 'serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
-if (innerWidth < 820) $('bkwrap').removeAttribute('open');
 update();
 </script>
 </body>

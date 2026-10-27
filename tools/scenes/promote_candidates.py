@@ -17,7 +17,8 @@ if not os.path.exists(OCR):
 now = lambda: datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
 sha = lambda p: hashlib.sha256(open(p, 'rb').read()).hexdigest()
 done = 0
-for cdir, model in ((f'{R}/candidates-copilot', 'm365-copilot-image'), (f'{R}/candidates-codex', 'gpt-6.1-sol-image')):
+for cdir, model in ((f'{R}/candidates-copilot', 'm365-copilot-image'), (f'{R}/candidates-gemini0', 'gemini-web-image'), (f'{R}/candidates-gemini1', 'gemini-web-image'),
+                    (f'{R}/candidates-chatgpt', 'chatgpt-web-image'), (f'{R}/candidates-codex', 'gpt-6.1-sol-image')):
     rej_p = f'{cdir}/promote-rejected.json'; rej = json.load(open(rej_p)) if os.path.exists(rej_p) else {}
     for f in sorted(glob.glob(f'{cdir}/*.png')):
         id = os.path.basename(f)[:-4]; sp = f'{R}/status/{id}.json'
