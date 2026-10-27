@@ -6,7 +6,8 @@
 set -u
 REPO="$(cd "$(dirname "$0")/../.." && pwd)"
 S="${SCENES_ROOT:-/Volumes/T7/yahwehs-globe-scenes}"
-Q="$S/review-queue"; C="$Q/claimed-codex"
+LOOP="${LOOP:-0}"
+Q="$S/review-queue"; C="$Q/claimed-codex-$LOOP"   # one folder per loop so parallel loops never release each other's claims
 BATCH="${BATCH:-10}"; ONCE="${ONCE:-0}"
 mkdir -p "$C" "$Q/done" "$Q/logs"
 
@@ -19,14 +20,14 @@ while true; do
   n=0
   for f in $(ls -tr "$Q"/${KIND:-still}-*.json 2>/dev/null); do
     # never review an image Codex drew itself: those stay in the queue for the Gemini reviewer
-    python3 -I -c 'import json,sys; m=str(json.load(open(sys.argv[1])).get("generator",{}).get("model","")).lower(); sys.exit(1 if any(k in m for k in ("gpt","codex","openai","copilot")) else 0)' "$f" 2>/dev/null || continue
+    python3 -I -c 'import json,sys; m=str(json.load(open(sys.argv[1])).get("generator",{}).get("model","")).lower(); sys.exit(1 if any(k in m for k in ("gpt","codex"))   # owner 2026-10-28: the rule is per model, so Copilot-drawn images may be reviewed by Codex else 0)' "$f" 2>/dev/null || continue
     mv -n "$f" "$C/" 2>/dev/null && n=$((n+1)); [ "$n" -ge "$BATCH" ] && break
   done
   if [ "$n" = "0" ]; then echo "$(date '+%F %T') no ${KIND:-still} requests; waiting 15 min"; [ "$ONCE" = 1 ] && exit 0; sleep 900; continue; fi
   run="$(date +%H%M%S)-$$"; log="$Q/logs/codex-$(date +%F)-$run.log"
   echo "$(date '+%F %T') claimed $n; run $run -> $log"
   ( cd "$REPO" && CODEX_REVIEW_RUN="$run" codex exec -m gpt-6.1-sol -s workspace-write --skip-git-repo-check \
-      --ephemeral -C "$REPO" --add-dir "$S" "$(cat "$REPO/tools/scenes/codex_review_prompt.md")
+      --ephemeral -C "$REPO" --add-dir "$S" "$(sed "s#claimed-codex#claimed-codex-$LOOP#g" "$REPO/tools/scenes/codex_review_prompt.md")
 
 Your run id is $run: use it where the prompt says \$CODEX_REVIEW_RUN." ) >"$log" 2>&1
   status=$?
