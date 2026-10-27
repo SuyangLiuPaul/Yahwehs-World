@@ -20,7 +20,8 @@ while true; do
   n=0
   for f in $(ls -tr "$Q"/${KIND:-still}-*.json 2>/dev/null); do
     # never review an image Codex drew itself: those stay in the queue for the Gemini reviewer
-    python3 -I -c 'import json,sys; m=str(json.load(open(sys.argv[1])).get("generator",{}).get("model","")).lower(); sys.exit(1 if any(k in m for k in ("gpt","codex"))   # owner 2026-10-28: the rule is per model, so Copilot-drawn images may be reviewed by Codex else 0)' "$f" 2>/dev/null || continue
+    # owner 2026-10-28: the rule is per model, so Copilot-drawn images may be reviewed by Codex; only gpt/codex-drawn ones are skipped
+    python3 -I -c 'import json,sys; m=str(json.load(open(sys.argv[1])).get("generator",{}).get("model","")).lower(); sys.exit(1 if any(k in m for k in ("gpt","codex")) else 0)' "$f" 2>/dev/null || continue
     mv -n "$f" "$C/" 2>/dev/null && n=$((n+1)); [ "$n" -ge "$BATCH" ] && break
   done
   if [ "$n" = "0" ]; then echo "$(date '+%F %T') no ${KIND:-still} requests; waiting 15 min"; [ "$ONCE" = 1 ] && exit 0; sleep 900; continue; fi
