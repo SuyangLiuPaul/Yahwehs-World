@@ -29,7 +29,7 @@ for cdir, model in ((f'{R}/candidates-copilot', 'm365-copilot-image'), (f'{R}/ca
         if rej.get(id) == h: continue
         w, hh = Image.open(f).size
         reason = None
-        if w < 1536 or abs(w / hh - 16 / 9) > 0.02: reason = f'size {w}x{hh}'
+        if w < 1280 or abs(w / hh - 16 / 9) > 0.02: reason = f'size {w}x{hh}'
         else:
             out = subprocess.run([OCR, f], capture_output=True, text=True).stdout.strip().splitlines()
             hits = json.loads(out[-1]).get('hits', []) if out else None
