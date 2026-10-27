@@ -17,7 +17,10 @@ for f in jobs:
     Image.open(j['refs'][0]).convert('RGB').save(src, quality=90)
     p = j['prompt'].replace('\n', ' ')
     print(json.dumps({'id': j['id'], 'src': src, 'prompt':
-        "Generate ONE new image (16:9 landscape) by editing the attached picture. Keep its exact cute 3D voxel/block diorama style, palette, lighting and camera, and keep the small 3D voxel emblem in the top-left corner. "
-        "Every man must have short natural scissor-cut hair well above the collar, varied from person to person (never shaved, never buzz-cut, never collar-length). God is never shown in human form. No Roman or medieval armour, no heraldic banners. "
-        "Strictly NO text, letters, numbers or inscriptions anywhere. " + p}, ensure_ascii=False)); sys.exit(0)
+        "IMPORTANT: the attached picture is ONLY a style and composition guide, and it contains text: Chinese and English title cards, a scripture-reference box, caption boxes, and a scroll-icon label (top-left, top-right, sometimes over the scene). "
+        "Draw a NEW 16:9 image of the same scene in the same cute 3D voxel/block diorama style, camera, palette and lighting, but WITHOUT any of those cards, boxes, banners, labels or writing. "
+        "Do not copy them and do not redraw them: continue the scenery (sky, walls, ground, trees) where they were. The final picture must contain no text, no letters, no numbers, no card or label of any kind. "
+        "Keep only the small 3D voxel emblem icon in the very top-left corner, with no box behind it. "
+        "Every man has short natural scissor-cut hair well above the collar, varied from person to person (never shaved, never buzz-cut, never collar-length). God is never shown in human form. No Roman or medieval armour, no heraldic banners. "
+        "Scene to draw: " + p + " REMINDER: absolutely no text or caption cards anywhere in the picture."}, ensure_ascii=False)); sys.exit(0)
 print('{"id": null}')
