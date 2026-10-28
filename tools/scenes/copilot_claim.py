@@ -7,13 +7,24 @@ import json, os, glob, sys
 from PIL import Image
 S = os.environ.get('SCENES_ROOT', '/Volumes/T7/yahwehs-globe-scenes'); J = f'{S}/codex-jobs'
 SP = os.environ.get('COPILOT_TMP', '/tmp/copilot-src'); os.makedirs(SP, exist_ok=True)
+import time
+CL = f'{J}/copilot-claims.json'   # {id: [claim times]}: a job claimed twice in 3 h without a candidate appearing is skipped for 3 h
+try: claims = json.load(open(CL))
+except Exception: claims = {}
+now_t = time.time()
+def stuck(id):
+    ts = [t for t in claims.get(id, []) if now_t - t < 3 * 3600]
+    if len(ts) < 2: return False
+    cand = [f for d in glob.glob(f'{S}/no-text-derivatives-v2/candidates-*/') for f in glob.glob(f'{d}{id}.png')]
+    return not any(os.path.getmtime(f) > ts[-2] for f in cand)   # nothing saved since the earlier claim
 jobs = sorted(glob.glob(f'{J}/square-*.json'), key=os.path.getmtime, reverse=True)
 for f in jobs:
     if any(w in open(f, encoding='utf-8').read() for w in ('耶稣', '基督', 'Jesus', 'Christ')): continue   # Jesus scenes need the master reference; Codex/Gemini only
+    if stuck(os.path.basename(f)[7:-5]): continue
     c = f'{J}/claimed-copilot/' + os.path.basename(f); os.makedirs(os.path.dirname(c), exist_ok=True)
     try: os.rename(f, c)
     except OSError: continue
-    j = json.load(open(c)); src = f"{SP}/{j['id']}.jpg"
+    j = json.load(open(c)); claims.setdefault(j['id'], []).append(now_t); json.dump({k: [t for t in v if now_t - t < 6 * 3600] for k, v in claims.items()}, open(CL, 'w')); src = f"{SP}/{j['id']}.jpg"
     Image.open(j['refs'][0]).convert('RGB').save(src, quality=90)
     import re
     # ASCII only and short: Haiku copied the long Chinese prompts with small errors, so the web sites get an English prompt
