@@ -37,3 +37,8 @@ Never edit images, videos, fact cards, manifest, status or registry. Never use C
 Never write keys or passwords anywhere. End with one line per item: id, kind, verdict, and the failed keys.
 
 The veto object must use exactly these ten keys: jesusHair, mensHair, godDepiction, trinityComposition, anachronism, headCount, modesty, fakeText, duplicatedPerson, registryFix. For stills registryFix is "na". You judge only the veto table.
+
+Reading rules (the gate marks a review invalid, and it is thrown away and redone, if you declare anything but the picture, the fact card and the veto table):
+- The ONLY repo documents you may open are handoff/28-gate-schema.md (§3 and §5) and handoff/29-claude-reviewer.md, once, for the schema. They are general rules, not notes about any picture, so they are NOT an input: never list them under "inputs".
+- Do NOT open handoff/README.md, handoff/EVENT-REVIEW.md, handoff/05-decisions.md, any other handoff file, status/, manifest, registry or prompts. If you do, the review is wasted.
+- "inputs" must contain exactly three entries: the picture ("image"), "factCard" and "vetoTable". Nothing else.
