@@ -19,7 +19,7 @@ def stuck(id):
     return not any(os.path.getmtime(f) > ts[-2] for f in cand)   # nothing saved since the earlier claim
 jobs = sorted(glob.glob(f'{J}/square-*.json'), key=os.path.getmtime, reverse=True)
 for f in jobs:
-    if any(w in open(f, encoding='utf-8').read() for w in ('耶稣', '基督', 'Jesus', 'Christ')): continue   # Jesus scenes need the master reference; Codex/Gemini only
+    if any(w in open(f, encoding='utf-8').read() for w in ('耶稣', '基督', '弥赛亚', '受膏', 'Jesus', 'Christ', 'Messiah')): continue   # Jesus scenes need the master reference; Codex/Gemini only
     if stuck(os.path.basename(f)[7:-5]): continue
     c = f'{J}/claimed-copilot/' + os.path.basename(f); os.makedirs(os.path.dirname(c), exist_ok=True)
     try: os.rename(f, c)
