@@ -23,7 +23,8 @@ for f in jobs:
     fix = ''
     if '这次要改正：' in j['prompt']:
         fix = j['prompt'].split('这次要改正：', 1)[1].replace('\n', ' ')
-        fix = re.sub(r'[^\x20-\x7e]', ' ', fix); fix = re.sub(r'\s+', ' ', fix).strip()[:700]
+        fix = re.sub(r'[^\x20-\x7e]', ' ', fix); fix = re.sub(r'\s+', ' ', fix).strip()
+        if len(fix) > 700: fix = fix[:700].rsplit(' ', 1)[0].rstrip(' ,;:(') + ' ...'   # cut at a word, never mid-word
     prompt = ("The attached picture is a style and composition guide for the Bible scene " + ref + ". It may contain text cards or boxes: do NOT copy any text, cards, boxes or labels. "
               "Draw a NEW 16:9 image of the same scene in the same cute 3D voxel/block diorama style, camera, palette and lighting, with scenery continuing where any cards were. "
               "No text, letters, numbers or labels anywhere; keep only the small 3D voxel emblem icon in the top-left corner, with no box behind it. "

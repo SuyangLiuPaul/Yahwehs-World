@@ -14,12 +14,25 @@ for d in ('', 'claimed/', 'claimed-gemini/', 'claimed-copilot/'):
 esc = set()
 try: esc = set(json.load(open(f'{S}/escalations/three-strikes.json')).get('escalatedIds', []))
 except Exception: pass
+import hashlib
+def sha(path):
+    return hashlib.sha256(open(path, 'rb').read()).hexdigest()
+def pending_candidate(id, st):
+    """A drawn candidate that promote_candidates.py has not processed yet (not live, not rejected): a new job would draw it twice."""
+    for d in glob.glob(f'{R}/candidates-*/'):
+        c = f'{d}{id}.png'
+        if not os.path.isfile(c): continue
+        try: rej = json.load(open(f'{d}promote-rejected.json'))
+        except Exception: rej = {}
+        h = sha(c)
+        if h != st.get('live_sha256') and rej.get(id) != h: return True
+    return False
 n = 0
 for f in sorted(glob.glob(f'{R}/status/*.json')):
     st = json.load(open(f)); id = st['id']
     if st.get('state') != 'rework' or id in active or id in esc or st.get('escalated_three_strikes'): continue
     live = f'{R}/live/{id}.png'
-    if not os.path.isfile(live): continue
+    if not os.path.isfile(live) or pending_candidate(id, st): continue
     try: fc = json.load(open(f'{S}/fact-cards/{id}.json'))
     except Exception: continue
     who = json.dumps(fc.get('mustShow', []), ensure_ascii=False)
