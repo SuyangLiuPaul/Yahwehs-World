@@ -1,10 +1,10 @@
-"""Promote drawn square candidates (state=not_started) into live/ and the review queue. No model involved.
+"""Promote drawn square candidates (state=not_started or rework) into live/ and the review queue. No model involved.
 
     python3 tools/scenes/promote_candidates.py [--dry-run]
 
 For each candidates-copilot/<id>.png (sidecar <id>.png.json): check size/aspect, run Apple Vision OCR (0 hits required),
 copy to no-text-derivatives-v2/live/<id>.png, write evidence/<id>-ocr.json, set status/<id>.json to pending_review
-and queue a review-request-v1 in review-queue/. Same steps Gemini's image session does. Rework/pending items are left alone.
+and queue a review-request-v1 in review-queue/. Same steps Gemini's image session does. Rework items (a new picture replacing a failed one) are archived to archive-rework/ and re-queued; pending items are left alone.
 An image with OCR hits or a bad size is recorded in candidates-*/promote-rejected.json and not retried.
 """
 import json, os, glob, hashlib, subprocess, shutil, sys, datetime
@@ -24,8 +24,9 @@ for cdir, model in ((f'{R}/candidates-copilot', 'm365-copilot-image'), (f'{R}/ca
         id = os.path.basename(f)[:-4]; sp = f'{R}/status/{id}.json'
         if not os.path.exists(sp): continue
         st = json.load(open(sp))
-        if st.get('state') != 'not_started': continue
+        if st.get('state') not in ('not_started', 'rework'): continue
         h = sha(f)
+        if st.get('state') == 'rework' and (h == st.get('live_sha256') or h == st.get('candidate_sha256')): continue   # already promoted and reviewed
         if rej.get(id) == h: continue
         w, hh = Image.open(f).size
         reason = None
@@ -40,7 +41,12 @@ for cdir, model in ((f'{R}/candidates-copilot', 'm365-copilot-image'), (f'{R}/ca
             if not dry: json.dump(rej, open(rej_p, 'w'), ensure_ascii=False, indent=1)
             continue
         if dry: print('would promote', id); done += 1; continue
-        live = f'{R}/live/{id}.png'; shutil.copyfile(f, live)
+        live = f'{R}/live/{id}.png'
+        if os.path.exists(live) and st.get('state') == 'rework':   # keep the failed picture: archive-rework/<id>-<sha12>.png
+            os.makedirs(f'{R}/archive-rework', exist_ok=True)
+            shutil.copyfile(live, f"{R}/archive-rework/{id}-{sha(live)[:12]}.png")
+        shutil.copyfile(f, live)
+        for k in ('independent_review', 'root_review', 'rework_reason', 'failed_vetoes', 'triple_verified'): st.pop(k, None)
         json.dump({"id": id, "image_path": live, "image_sha256": h, "ocr_hits": 0, "raw_hits": [], "checked_at": now(), "tool": "tools/scenes/ocr_text_free_images.swift"},
                   open(f'{R}/evidence/{id}-ocr.json', 'w'), ensure_ascii=False, indent=2)
         st.update({"state": "pending_review", "status": "pending_review", "evidenceState": "pending_independent_review", "candidate_sha256": h, "live_sha256": h,
