@@ -5,6 +5,7 @@ import { applyStatic, bindSwitch, hant, locale as currentLocale, onLocale, t } f
 import { installSiteMenu, loadingStep, loadingSteps, pageReady } from './site-shell.ts';
 import type { TrackEvent } from './events-track.ts';
 import { eventRawThumbUrl, eventThumbUrl, openEventLightbox } from './event-media.ts';
+import lqipUrl from './scene-lqip.json?url';
 
 loadingSteps(2);
 loadingStep();
@@ -17,9 +18,24 @@ interface EventsPayload {
   events: TrackEvent[];
 }
 
+// Placeholder colours for the cards (scripts/build-scene-lqip.py). Requested
+// together with events.json; if it is missing or late the cards simply have
+// the plain frame they had before.
+const lqipRequest = fetch(lqipUrl).then((r) => (r.ok ? r.json() : null)).catch(() => null);
 const res = await fetch('/data/events.json');
 const payload = (await res.json()) as EventsPayload;
 const allEvents = payload.events;
+const lqip: Record<string, string> = ((await lqipRequest) as { c?: Record<string, string> } | null)?.c ?? {};
+
+/** "<8 chars>" = base64url of top RGB + bottom RGB -> a vertical gradient. */
+function lqipGradient(code: string | undefined): string | null {
+  if (!code || code.length !== 8) return null;
+  try {
+    const b = atob(code.replace(/-/g, '+').replace(/_/g, '/'));
+    const c = (i: number) => `rgb(${b.charCodeAt(i)},${b.charCodeAt(i + 1)},${b.charCodeAt(i + 2)})`;
+    return `linear-gradient(180deg, ${c(0)}, ${c(3)})`;
+  } catch { return null; }
+}
 loadingStep();
 
 type ScopeFilter = 'all' | 'ot' | 'nt' | 'mapped';
@@ -229,6 +245,8 @@ function createCard(ev: TrackEvent, idxInFiltered: number, canonicalIdx: number)
   const img = card.querySelector<HTMLImageElement>('img')!;
   img.alt = titlePrimary;
   const media = card.querySelector<HTMLElement>('.sg-card-media')!;
+  const ph = lqipGradient(lqip[ev.id]);
+  if (ph) media.style.background = ph;
   img.onload = () => media.classList.add('is-loaded');
   img.onerror = () => {
     if (img.src !== rawThumb) img.src = rawThumb;
