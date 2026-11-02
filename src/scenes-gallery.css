@@ -225,7 +225,7 @@ html, body {
 }
 
 .sg-book-chip small {
-  color: var(--ink-3);
+  color: var(--ink-2); /* ink-3 on the chip fill was 4.47:1, 0.03 short */
   margin-left: 4px;
   font-family: var(--mono);
 }

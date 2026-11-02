@@ -33,13 +33,16 @@
      strokes inside the same square a Latin letter fills with two. The
      owner read the site and said 费劲. Nothing here is below 12 now, and
      the sizes a reader actually reads at length start at 15. */
-  --fs-100: 12px;   /* micro: legend, credits, ordinals */
-  --fs-200: 13px;   /* meta, captions */
-  --fs-300: 14px;   /* interface default */
-  --fs-400: 15px;   /* body */
-  --fs-500: 17px;   /* emphasis, readout */
-  --fs-600: 22px;   /* section title */
-  --fs-700: 30px;   /* page title */
+  /* In rem, not px: 16 px at the default root, so nothing moves, but a reader
+     who raises the browser's default text size (the web's Dynamic Type; apple-look
+     typography.md › Supporting Dynamic Type) now gets bigger text. */
+  --fs-100: .75rem;   /* micro: legend, credits, ordinals */
+  --fs-200: .8125rem;   /* meta, captions */
+  --fs-300: .875rem;   /* interface default */
+  --fs-400: .9375rem;   /* body */
+  --fs-500: 1.0625rem;   /* emphasis, readout */
+  --fs-600: 1.375rem;   /* section title */
+  --fs-700: 1.875rem;   /* page title */
 
   /* Chinese needs more room between lines than Latin does, because the
      glyphs fill their box top to bottom and leave no natural gap. */

@@ -244,6 +244,17 @@ export function installSiteMenu() {
   });
   menu.addEventListener('click', (e) => { if (e.target === menu) close(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && open) close(); });
+  // The sheet says aria-modal, so the page behind it must not be reachable by
+  // keyboard: Tab cycled through all 65 links and then walked out into the
+  // page underneath, which a screen-reader or switch user cannot see is dimmed.
+  menu.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab' || !open) return;
+    const items = Array.from(menu.querySelectorAll<HTMLElement>('a[href], button:not(:disabled)')).filter((el) => el.checkVisibility());
+    if (!items.length) return;
+    const first = items[0]!, last = items[items.length - 1]!, at = document.activeElement;
+    if (e.shiftKey && (at === first || !menu.contains(at))) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && (at === last || !menu.contains(at))) { e.preventDefault(); first.focus(); }
+  });
   // The sheet is built from the plan and the plan is bilingual: redraw it, or
   // a reader who switches language while it is open gets the other one.
   onLocale(() => { if (drawn) draw(); applyStatic(document.querySelector('.sitenav') ?? document); });

@@ -332,7 +332,7 @@ body {
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
 
 @media (max-width: 900px) {
-  :root { --fs-600: 19px; --fs-700: 24px; }
+  :root { --fs-600: 1.1875rem; --fs-700: 1.5rem; }
   /* The legend costs two lines on a phone and explains a colour key most
      readers will not consult before they have tapped something. */
   .legend { display: none; }
