@@ -1,0 +1,5 @@
+mobile   /               fcp   712 ms  ready   4819 ms  wire@ready   637 KB (raw  2233)  total wire   640 KB (raw  2238)  req 17  cls 0.002
+mobile   /scenes.html    fcp   500 ms  ready   1679 ms  wire@ready   197 KB (raw   913)  total wire   389 KB (raw  1104)  req 14  cls 0
+mobile   /bible.html     fcp   532 ms  ready   1620 ms  wire@ready   182 KB (raw   548)  total wire   182 KB (raw   548)  req 13  cls 0
+mobile   /figures.html   fcp   452 ms  ready   2430 ms  wire@ready   345 KB (raw   394)  total wire   345 KB (raw   394)  req 18  cls 0
+mobile   /plan.html      fcp   460 ms  ready   1641 ms  wire@ready   210 KB (raw   957)  total wire   210 KB (raw   957)  req 12  cls 0.01

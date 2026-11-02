@@ -1,0 +1,4 @@
+100% -> /:ok tabFs=14px navH=46 | /scenes.html:ok tabFs=16px navH=46 | /plan.html:ok tabFs=14px navH=46 | /figures.html:ok tabFs=16px navH=46 | /bible.html:ok tabFs=16px navH=47
+125% -> /:ok tabFs=17.5px navH=49 | /scenes.html:ok tabFs=20px navH=47 | /plan.html:ok tabFs=17.5px navH=52 | /figures.html:ok tabFs=20px navH=47 | /bible.html:ok tabFs=20px navH=50
+150% -> /:ok tabFs=21px navH=54 | /scenes.html:ok tabFs=24px navH=51 | /plan.html:ok tabFs=21px navH=57 | /figures.html:ok tabFs=24px navH=51 | /bible.html:ok tabFs=24px navH=55
+200% -> /:ok tabFs=28px navH=63 | /scenes.html:ok tabFs=32px navH=59 | /plan.html:ok tabFs=28px navH=67 | /figures.html:ok tabFs=32px navH=59 | /bible.html:ok tabFs=32px navH=64

@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Yahweh's World - motion mock-up for owner approval</title>
+<style>
+  /* Tokens copied from src/tokens.css so the mock-up is the same material. Nothing here ships. */
+  :root{--ground:#0a1e36;--navy:#0e2b4b;--surface:#123052;--surface-hi:#1a406b;--ink:#f9f3e6;--ink-2:#c6d8ec;--ink-3:#8fa9c4;
+    --gold:#e6ac32;--gold-bright:#f8d66d;--line:#24476e;--line-gold:#f0be4947;--gold-wash:#f0be4924;color-scheme:dark}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font:15px/1.55 Inter,system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif}
+  main{max-width:980px;margin:0 auto;padding:24px 16px 64px}
+  h1{font:600 22px/1.3 Georgia,"Songti SC",serif;color:var(--gold-bright);margin:0 0 4px}
+  h2{font:600 17px/1.3 Georgia,serif;color:var(--gold-bright);margin:0 0 6px}
+  p{margin:0 0 10px;color:var(--ink-2)} small,.note{color:var(--ink-3);font-size:13px}
+  nav.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0}
+  button{font:inherit;color:var(--ink-2);background:transparent;border:1px solid var(--line);border-radius:2px;padding:10px 14px;min-height:44px;cursor:pointer}
+  button[aria-pressed=true],button[aria-selected=true]{color:var(--gold-bright);border-color:var(--line-gold);background:var(--gold-wash)}
+  button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  @media (hover:hover){button:hover{color:var(--ink);border-color:var(--line-gold)}}
+  button:active{filter:brightness(1.18)}
+  section[hidden]{display:none}
+  .row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0}
+  .row b{font-weight:600;color:var(--ink-3);font-size:13px;margin-right:4px}
+  .stage{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+  @media (min-width:860px){.stage.two{grid-template-columns:1fr 1fr}}
+  canvas#g{width:100%;max-width:420px;aspect-ratio:1;background:radial-gradient(circle at 50% 40%,#0e2b4b,#08182b);border:1px solid var(--line);border-radius:2px;touch-action:none;display:block}
+  .readout{font:13px/1.5 ui-monospace,Menlo,monospace;color:var(--ink-3);min-height:3.2em}
+  /* phone frame */
+  .phone{width:min(100%,375px);height:640px;border:1px solid var(--line-gold);border-radius:28px;background:#08182b;position:relative;overflow:hidden;margin:0 auto}
+  .phone .map{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 35%,#1d4f7e,#0a1e36 70%)}
+  .phone .map i{position:absolute;left:50%;top:34%;width:14px;height:14px;margin:-7px;border-radius:50%;background:var(--gold-bright);box-shadow:0 0 18px #e8c55a}
+  .sheet{position:absolute;left:0;right:0;top:0;height:560px;background:linear-gradient(180deg,#133154f7,#0c223cfa);border-top:1px solid var(--line-gold);
+    border-radius:14px 14px 0 0;box-shadow:0 -12px 40px #0008;touch-action:none;will-change:transform}
+  .sheet .grab{width:36px;height:5px;border-radius:3px;background:#ffffff40;margin:8px auto 10px}
+  .sheet .body{padding:0 18px;color:var(--ink-2);font-size:14px}
+  .sheet h3{font:600 20px/1.3 Georgia,serif;color:var(--gold-bright);margin:0 0 6px}
+  .scrim{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none}
+  /* nav comparison */
+  .bar{display:flex;align-items:center;gap:8px;padding:8px;background:linear-gradient(180deg,#091c32f2,#0d2744b8);width:375px;max-width:100%}
+  .bar .logo{width:26px;height:26px;border-radius:6px;background:var(--gold);flex:none}
+  .bar .name{font:600 14px Georgia,serif;color:var(--ink);letter-spacing:.08em;white-space:nowrap}
+  .bar .pillb{border:1px solid var(--line-gold);color:var(--gold);padding:2px 10px;font-size:13px;border-radius:2px;white-space:nowrap;min-height:0}
+  .bar .strip{flex:1;min-width:0;overflow:hidden;white-space:nowrap;color:var(--ink-3);font-size:12px}
+  .bar .strip span.cur{color:var(--gold-bright);border:1px solid var(--line-gold);background:var(--gold-wash);padding:2px 8px}
+  .bar .lang{display:flex;border:1px solid var(--line-gold);font-size:12px;color:var(--ink-3)} .bar .lang span{padding:3px 6px;border-left:1px solid var(--line-gold)} .bar .lang span:first-child{border:0;color:var(--gold-bright);background:var(--gold-wash)}
+  .tabbar{position:absolute;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:#0b1f36e6;border-top:1px solid var(--line);padding-bottom:10px}
+  .tabbar span{display:grid;place-items:center;gap:1px;padding:8px 0 4px;font-size:11px;color:var(--ink-3);min-height:49px}
+  .tabbar span b{font-size:18px;line-height:1;font-weight:400} .tabbar span.cur{color:var(--gold-bright)}
+  .cmp{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+  .cmp .col{min-width:0}
+  .tag{display:inline-block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+  ul{margin:6px 0 0 18px;padding:0;color:var(--ink-2)} li{margin:2px 0}
+  .ask{border:1px solid var(--line-gold);background:var(--gold-wash);padding:10px 14px;margin:18px 0 0}
+</style>
+</head>
+<body>
+<main>
+  <h1>Yahweh's World - motion and phone-nav mock-up</h1>
+  <p>For owner approval. Nothing on this page is in the app. It shows three feel changes from the Apple motion audit
+     (<code>docs/apple-design-audit-2026-11-03.md</code>) that change how the product looks and behaves, so they need a yes before anyone builds them.
+     Try each on a touch device if you can. Honours your system's reduced-motion setting.</p>
+  <nav class="tabs" role="tablist" aria-label="Mock-ups">
+    <button role="tab" aria-selected="true" data-tab="globe">1 - Globe release, zoom, fly-to</button>
+    <button role="tab" aria-selected="false" data-tab="sheet">2 - Panels as sheets</button>
+    <button role="tab" aria-selected="false" data-tab="nav">3 - Phone navigation</button>
+  </nav>
+
+  <!-- ───────────────────────── 1 GLOBE ───────────────────────── -->
+  <section id="globe">
+    <h2>1 - Globe: what happens when you let go</h2>
+    <p>Today the globe stops the instant your finger lifts (decided in BATCH-5 because the old damping left a 213-250 px tail). Apple's behaviour is the opposite:
+       the globe keeps the speed your finger had and slows the way a scroll view does. Drag the globe below, flick it, and compare.</p>
+    <div class="stage two">
+      <div>
+        <canvas id="g" width="840" height="840" aria-label="Demonstration globe. Drag to rotate."></canvas>
+        <div class="readout" id="out" aria-live="off"></div>
+      </div>
+      <div>
+        <div class="row" role="group" aria-label="Release behaviour"><b>On release</b>
+          <button data-rel="stop" aria-pressed="true">Stops at once (today)</button>
+          <button data-rel="short" aria-pressed="false">Short coast (about 0.1 s of travel)</button>
+          <button data-rel="apple" aria-pressed="false">Long coast (Apple scroll, about 0.5 s)</button>
+        </div>
+        <div class="row" role="group" aria-label="Zoom behaviour"><b>Zoom</b>
+          <button data-zoom="step" aria-pressed="true">One jump per notch (today)</button>
+          <button data-zoom="spring" aria-pressed="false">Spring to target, rubber-band at the ends</button>
+        </div>
+        <div class="row" role="group" aria-label="Fly to"><b>Fly to</b>
+          <button id="fly-j">Jerusalem</button><button id="fly-r">Rome</button>
+          <button data-fly="cut" aria-pressed="true">Cut (today)</button>
+          <button data-fly="spring" aria-pressed="false">Glide (spring, interruptible)</button>
+        </div>
+        <p class="note">Glide: grab the globe while it is travelling and it follows your finger from where it is, carrying its speed - nothing finishes first.
+          Zoom buttons: <button id="zi" style="min-height:36px;padding:4px 12px">+</button> <button id="zo" style="min-height:36px;padding:4px 12px">-</button> or scroll / pinch over the globe.</p>
+        <ul>
+          <li><b>What it costs:</b> a flick can carry the globe past the place you aimed at. Apple accepts that because a drag is exploring; a tap on a place is unaffected.</li>
+          <li><b>Reduced motion:</b> coast and glide turn off automatically (cut, stop); zoom becomes a fast fade of the step.</li>
+          <li><b>Risk:</b> it reverses a recorded decision (BATCH-5), and the on-screen label scale in <code>markers.ts</code> assumes the camera is still when it is read.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── 2 SHEET ───────────────────────── -->
+  <section id="sheet" hidden>
+    <h2>2 - Panels as sheets</h2>
+    <p>Today the place panel, event card, route card and menus appear and disappear with no motion at all (10 of 10 surfaces measured: transition 0 s, no animation).
+       Below, the same card as a sheet: it rises from where it was opened, follows the finger one-to-one, snaps to the nearest of three heights using the throw
+       (projected landing, not the release point), and resists with rubber-banding at the top.</p>
+    <div class="stage two">
+      <div class="phone" id="phone">
+        <div class="map"><i></i></div>
+        <div class="scrim" id="scrim"></div>
+        <div class="sheet" id="sh">
+          <div class="grab"></div>
+          <div class="body">
+            <h3>Jerusalem</h3>
+            <p><small>Place - 2 Samuel 5 - Psalm 122</small></p>
+            <p>David took the stronghold of Zion and it became the City of David. Drag this sheet by anywhere on its face: up for more, down to put it away.</p>
+            <p>The middle height shows the card without hiding the map; the full height is for reading.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="row"><b>Behaviour</b>
+          <button data-sh="spring" aria-pressed="true">Spring sheet (proposal)</button>
+          <button data-sh="cut" aria-pressed="false">Instant show / hide (today)</button>
+        </div>
+        <div class="row"><b>Open</b><button id="sh-open">Show Jerusalem</button><button id="sh-close">Close</button></div>
+        <ul>
+          <li><b>Spring:</b> response 0.30 s, damping 0.8 when thrown, 1.0 when tapped to open (Apple's drawer values).</li>
+          <li><b>Velocity handoff:</b> the spring starts at the finger's release speed, so there is no seam between drag and settle.</li>
+          <li><b>Symmetry:</b> it leaves the way it came (down), and a grab mid-close reverses it from where it is.</li>
+          <li><b>Scrim:</b> only at the full height, so the map stays usable at the middle height.</li>
+          <li><b>Alternative to a gesture:</b> the existing close button stays; Escape closes.</li>
+        </ul>
+        <div class="readout" id="shout"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── 3 NAV ───────────────────────── -->
+  <section id="nav" hidden>
+    <h2>3 - Phone navigation</h2>
+    <p>At 375 px the top bar spends its width on the brand, 全部, 路线 and the language switch, and leaves the tab strip <b>28-34 px</b> wide: one tab, cut in half
+       ("Glo"). The current page is off the edge on four of five pages (fixed so it scrolls into view; this is the structural fix).
+       Apple's answer for top-level destinations on a phone is a bottom tab bar (<code>tab-bars.md</code>: a tab bar for navigation, tabs never hidden).</p>
+    <div class="cmp">
+      <div class="col">
+        <span class="tag">Today (375 px)</span>
+        <div class="bar"><div class="logo"></div><span class="name">雅伟之界</span><span class="pillb">≡ All</span><span class="pillb" style="color:var(--ink-3);border-color:transparent">Routes ▾</span>
+          <span class="strip"><span class="cur">Glo</span></span><span class="lang"><span>EN</span><span>简</span><span>繁</span></span></div>
+        <ul><li>Tab strip 28 px: only a fragment of one tab shows</li><li>Two rows of chrome over the globe (bar + mode pills)</li><li>Six top-level places reachable only by sideways scroll or via 全部</li></ul>
+      </div>
+      <div class="col">
+        <span class="tag">Proposal (375 px)</span>
+        <div class="bar"><div class="logo"></div><span class="name">Biblical Globe</span><span style="flex:1"></span><span class="pillb">≡ All</span><span class="lang"><span>EN</span><span>简</span><span>繁</span></span></div>
+        <div class="phone" style="height:300px;margin-top:8px;border-radius:18px"><div class="map"><i></i></div>
+          <div class="tabbar"><span class="cur"><b>◍</b>Globe</span><span><b>▦</b>Scenes</span><span><b>▤</b>Bible</span><span><b>☺</b>Figures</span><span><b>≣</b>Plan</span></div></div>
+        <ul><li>The bar says where you are (page name instead of the brand's second line); routes move into 全部</li><li>Five tabs at 49 pt in the thumb zone, current one marked in gold and by weight, not colour alone</li><li>The top bar stops scrolling sideways at all</li></ul>
+      </div>
+    </div>
+    <div class="ask"><b>Needs your call:</b> a bottom bar is a visible change to every page's identity. The alternative that keeps today's look is to drop the wordmark text on phones
+      (logo only) so the strip gets about 60 px; that fits two tabs, not six.</div>
+  </section>
+</main>
+
+<script>
+/* ------------------------------------------------------------------ shared */
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+$$('nav.tabs button').forEach(b => b.onclick = () => {
+  $$('nav.tabs button').forEach(x => x.setAttribute('aria-selected', x === b));
+  ['globe', 'sheet', 'nav'].forEach(id => $('#' + id).hidden = id !== b.dataset.tab);
+});
+const pressGroup = (sel, attr, cb) => $$(sel).forEach(b => b.onclick = () => { $$(sel).forEach(x => x.setAttribute('aria-pressed', x === b)); cb(b.dataset[attr]); });
+
+/* Apple's two-parameter spring: response T (s) and damping ratio z. mass 1, k=(2pi/T)^2, c=4 pi z/T. */
+function Spring(x, v = 0) { this.x = x; this.v = v; this.target = x; this.z = 1; this.T = .4; }
+Spring.prototype.step = function (dt) {
+  const w = 2 * Math.PI / this.T, k = w * w, c = 4 * Math.PI * this.z / this.T;
+  const n = Math.max(1, Math.ceil(dt / .004)), h = dt / n;
+  for (let i = 0; i < n; i++) { const a = -k * (this.x - this.target) - c * this.v; this.v += a * h; this.x += this.v * h; }
+  return Math.abs(this.v) < .02 && Math.abs(this.x - this.target) < .02;
+};
+const project = (v /* units/s */, d = .998) => (v / 1000) * d / (1 - d);   // Apple's exponential-decay projection
+const rubber = (over, dim, c = .55) => (over * dim * c) / (dim + c * Math.abs(over));
+
+/* ------------------------------------------------------------------ 1 globe */
+const cv = $('#g'), cx = cv.getContext('2d'), W = cv.width;
+let lon = 35, lat = 28, R = 300, rel = 'stop', zoomMode = 'step', flyMode = 'cut';
+let vLon = 0, vLat = 0, dragging = false, last = null, hist = [];
+const places = [['Jerusalem', 35.2, 31.8], ['Rome', 12.5, 41.9], ['Babylon', 44.4, 32.5], ['Cairo', 31.2, 30], ['Ephesus', 27.3, 37.9], ['Antioch', 36.2, 36.2]];
+const rad = d => d * Math.PI / 180;
+function proj(lo, la) { // orthographic
+  const dl = rad(lo - lon), p = rad(la), p0 = rad(lat);
+  const x = Math.cos(p) * Math.sin(dl), y = Math.cos(p0) * Math.sin(p) - Math.sin(p0) * Math.cos(p) * Math.cos(dl);
+  const z = Math.sin(p0) * Math.sin(p) + Math.cos(p0) * Math.cos(p) * Math.cos(dl);
+  return [W / 2 + x * R, W / 2 - y * R, z];
+}
+function draw() {
+  cx.clearRect(0, 0, W, W);
+  const g = cx.createRadialGradient(W / 2 - R * .3, W / 2 - R * .35, R * .1, W / 2, W / 2, R);
+  g.addColorStop(0, '#d9c79b'); g.addColorStop(1, '#8d7a4f');
+  cx.fillStyle = g; cx.beginPath(); cx.arc(W / 2, W / 2, R, 0, 7); cx.fill();
+  cx.strokeStyle = '#3a2f1a55'; cx.lineWidth = 2;
+  for (let la = -60; la <= 60; la += 30) { cx.beginPath(); let s = false; for (let lo = -180; lo <= 180; lo += 4) { const [x, y, z] = proj(lo, la); if (z > 0) { s ? cx.lineTo(x, y) : cx.moveTo(x, y); s = true } else s = false } cx.stroke(); }
+  for (let lo = -180; lo < 180; lo += 30) { cx.beginPath(); let s = false; for (let la = -90; la <= 90; la += 4) { const [x, y, z] = proj(lo, la); if (z > 0) { s ? cx.lineTo(x, y) : cx.moveTo(x, y); s = true } else s = false } cx.stroke(); }
+  cx.font = '600 26px Georgia'; cx.textBaseline = 'middle';
+  for (const [n, lo, la] of places) { const [x, y, z] = proj(lo, la); if (z < .05) continue; cx.fillStyle = '#6b4a10'; cx.beginPath(); cx.arc(x, y, 8, 0, 7); cx.fill(); cx.fillStyle = '#2a1d06'; cx.fillText(n, x + 14, y); }
+  cx.strokeStyle = '#e6ac32'; cx.lineWidth = 4; cx.beginPath(); cx.arc(W / 2, W / 2, R, 0, 7); cx.stroke();
+}
+const k = () => 90 / R * 1.0 * (W / cv.getBoundingClientRect().width); // degrees of rotation per CSS px so the surface tracks the finger
+let tpos = 0, flyS = null, zS = new Spring(R);
+function clampLat() { lat = Math.max(-80, Math.min(80, lat)); }
+cv.addEventListener('pointerdown', e => { cv.setPointerCapture(e.pointerId); dragging = true; flyS = null; vLon = vLat = 0; last = [e.clientX, e.clientY]; hist = [[performance.now(), e.clientX, e.clientY]]; });
+cv.addEventListener('pointermove', e => {
+  if (!dragging) return; const s = k();
+  lon -= (e.clientX - last[0]) * s; lat += (e.clientY - last[1]) * s; clampLat();
+  last = [e.clientX, e.clientY]; hist.push([performance.now(), e.clientX, e.clientY]); if (hist.length > 6) hist.shift();
+});
+const release = () => {
+  if (!dragging) return; dragging = false;
+  const a = hist[0], b = hist[hist.length - 1], dt = (b[0] - a[0]) / 1000;
+  if (dt > 0 && performance.now() - b[0] < 80) { const s = k(); vLon = -(b[1] - a[1]) / dt * s; vLat = (b[2] - a[2]) / dt * s; } else vLon = vLat = 0;
+  if (rel === 'stop' || RM) vLon = vLat = 0;
+  const d = rel === 'apple' ? .998 : .990;
+  document.getElementById('out').textContent = rel === 'stop' || RM ? 'Released: stopped (0 deg of travel).' :
+    `Released at ${Math.hypot(vLon, vLat).toFixed(0)} deg/s; it will travel about ${Math.hypot(project(vLon, d), project(vLat, d)).toFixed(0)} deg more (projected).`;
+};
+cv.addEventListener('pointerup', release); cv.addEventListener('pointercancel', release);
+cv.addEventListener('wheel', e => { e.preventDefault(); zoomBy(e.deltaY < 0 ? 1.15 : 1 / 1.15); }, { passive: false });
+const Rmin = 220, Rmax = 560;
+function zoomBy(f) {
+  const t = zoomMode === 'spring' ? zS.target * f : R * f;
+  if (zoomMode === 'step' || RM) { R = Math.max(Rmin, Math.min(Rmax, R * f)); zS.x = zS.target = R; return; }
+  zS.target = t; zS.z = 1; zS.T = .35;     // may land past the end: the draw loop pushes back with rubber-banding
+}
+$('#zi').onclick = () => zoomBy(1.25); $('#zo').onclick = () => zoomBy(1 / 1.25);
+pressGroup('[data-rel]', 'rel', v => rel = v); pressGroup('[data-zoom]', 'zoom', v => zoomMode = v); pressGroup('[data-fly]', 'fly', v => flyMode = v);
+function fly(lo, la) {
+  if (flyMode === 'cut' || RM) { lon = lo; lat = la; vLon = vLat = 0; flyS = null; return; }
+  const sx = new Spring(lon, vLon), sy = new Spring(lat, vLat); sx.target = lo; sy.target = la; sx.T = sy.T = .55; sx.z = sy.z = 1;
+  flyS = { sx, sy };
+}
+$('#fly-j').onclick = () => fly(35.2, 31.8); $('#fly-r').onclick = () => fly(12.5, 41.9);
+let tprev = performance.now();
+function frame(t) {
+  const dt = Math.min(.05, (t - tprev) / 1000); tprev = t;
+  if (flyS && !dragging) { const a = flyS.sx.step(dt), b = flyS.sy.step(dt); lon = flyS.sx.x; lat = flyS.sy.x; vLon = vLat = 0; if (a && b) flyS = null; }
+  else if (!dragging && (vLon || vLat)) {
+    const d = rel === 'apple' ? .998 : .990, f = Math.pow(d, dt * 1000);
+    lon += vLon * dt; lat += vLat * dt; vLon *= f; vLat *= f; clampLat(); if (Math.hypot(vLon, vLat) < 1) vLon = vLat = 0;
+  }
+  if (zoomMode === 'spring' && !RM) {
+    // rubber-band: past the limits the target resists; at rest it springs back inside
+    if (zS.target > Rmax || zS.target < Rmin) { const lim = zS.target > Rmax ? Rmax : Rmin; if (Math.abs(zS.x - zS.target) < 1) zS.target = lim; }
+    zS.step(dt); const over = zS.x > Rmax ? zS.x - Rmax : zS.x < Rmin ? zS.x - Rmin : 0;
+    R = over ? (over > 0 ? Rmax : Rmin) + rubber(over, 300) * .6 : zS.x;
+  }
+  lon = ((lon + 540) % 360) - 180; draw(); requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* ------------------------------------------------------------------ 2 sheet */
+const sh = $('#sh'), scrim = $('#scrim'), phone = $('#phone'), PH = 640, SH = 560;
+const detents = () => ({ closed: PH, mid: PH - 300, full: PH - SH + 24 });   // sheet top y
+let y = PH, shMode = 'spring', ys = new Spring(PH), sd = false, sLast = 0, sHist = [], ySpringActive = false;
+function setY(v) { y = v; sh.style.transform = `translateY(${v}px)`; const full = detents().full, mid = detents().mid; scrim.style.opacity = Math.max(0, Math.min(.5, (mid - v) / (mid - full) * .5)); }
+setY(PH);
+pressGroup('[data-sh]', 'sh', v => shMode = v);
+function goto(target, v = 0) {
+  if (shMode === 'cut' || RM) { ys.x = ys.target = target; ys.v = 0; setY(target); ySpringActive = false; return; }
+  ys.x = y; ys.v = v; ys.target = target; ys.T = .30; ys.z = Math.abs(v) > 200 ? .8 : 1; ySpringActive = true;   // bounce only when the gesture carried momentum
+}
+$('#sh-open').onclick = () => goto(detents().mid); $('#sh-close').onclick = () => goto(PH);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') goto(PH); });
+sh.addEventListener('pointerdown', e => { sh.setPointerCapture(e.pointerId); sd = true; ySpringActive = false; sLast = e.clientY; sHist = [[performance.now(), e.clientY]]; });
+sh.addEventListener('pointermove', e => {
+  if (!sd) return; const dy = e.clientY - sLast; sLast = e.clientY; let ny = y + dy; const full = detents().full;
+  if (ny < full) ny = full + rubber(ny - full, 300);              // resist past the top
+  setY(ny); sHist.push([performance.now(), e.clientY]); if (sHist.length > 6) sHist.shift();
+});
+const sEnd = () => {
+  if (!sd) return; sd = false; const a = sHist[0], b = sHist[sHist.length - 1], dt = (b[0] - a[0]) / 1000;
+  const v = dt > 0 && performance.now() - b[0] < 80 ? (b[1] - a[1]) / dt : 0;              // px/s, positive = down
+  const landing = y + project(v);                                                   // projected rest point, not the release point
+  const d = detents(), cand = [d.full, d.mid, d.closed];
+  const to = cand.reduce((m, c) => Math.abs(c - landing) < Math.abs(m - landing) ? c : m, cand[0]);
+  document.getElementById('shout').textContent = `release ${v.toFixed(0)} px/s, projected rest ${landing.toFixed(0)} px -> ${to === d.full ? 'full' : to === d.mid ? 'middle' : 'closed'}`;
+  goto(to, v);
+};
+sh.addEventListener('pointerup', sEnd); sh.addEventListener('pointercancel', sEnd);
+let pSheet = performance.now();
+(function f(t) {
+  const dt = Math.min(.05, (t - pSheet) / 1000); pSheet = t;
+  if (ySpringActive) { const done = ys.step(dt); setY(ys.x); if (done) { ySpringActive = false; setY(ys.target); } }
+  requestAnimationFrame(f);
+})(pSheet);
+</script>
+</body>
+</html>

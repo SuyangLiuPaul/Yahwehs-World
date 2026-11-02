@@ -1,0 +1,3842 @@
+{
+ "/ 375x812": {
+  "targets": {
+   "checked": 21,
+   "small": [
+    {
+     "below": false,
+     "sel": "#all-open",
+     "w": 60.2,
+     "h": 30,
+     "text": "☰ All"
+    },
+    {
+     "below": false,
+     "sel": "#routes-open",
+     "w": 68.4,
+     "h": 30,
+     "text": "Routes▾"
+    },
+    {
+     "below": true,
+     "sel": "#walk-open",
+     "w": 91,
+     "h": 21,
+     "text": "3D Spaces▾"
+    },
+    {
+     "below": false,
+     "sel": "a.tab",
+     "w": 43.3,
+     "h": 44,
+     "text": "Plan"
+    },
+    {
+     "below": false,
+     "sel": "button",
+     "w": 34,
+     "h": 44,
+     "text": "EN"
+    },
+    {
+     "below": false,
+     "sel": "#gm-events",
+     "w": 110.9,
+     "h": 28,
+     "text": "🖼️\n      1,443 Events"
+    },
+    {
+     "below": false,
+     "sel": "#gm-goto",
+     "w": 97.8,
+     "h": 28,
+     "text": "📖\n      Find Verse"
+    },
+    {
+     "below": false,
+     "sel": "#gm-routes",
+     "w": 106.3,
+     "h": 28,
+     "text": "🧭\n      10 Journeys"
+    },
+    {
+     "below": false,
+     "sel": "#gm-walks",
+     "w": 98.7,
+     "h": 28,
+     "text": "🏛️\n      3D Spaces"
+    },
+    {
+     "below": false,
+     "sel": "a.gm-pill.gm-pill--link",
+     "w": 137.5,
+     "h": 28,
+     "text": "📖 Illustrated Bible ↗"
+    },
+    {
+     "below": true,
+     "sel": "a.gm-pill.gm-pill--link",
+     "w": 115.1,
+     "h": 23,
+     "text": "Scenes Gallery ↗"
+    },
+    {
+     "below": true,
+     "sel": "#t-goto-open",
+     "w": 60.8,
+     "h": 22,
+     "text": "Go to…"
+    },
+    {
+     "below": true,
+     "sel": "#t-range",
+     "w": 343,
+     "h": 2,
+     "text": ""
+    }
+   ],
+   "hard": 28
+  },
+  "type": {
+   "under12": [
+    {
+     "sel": "span",
+     "fs": 11,
+     "text": "🖼️"
+    },
+    {
+     "sel": "span",
+     "fs": 10,
+     "text": "Place data"
+    },
+    {
+     "sel": "a",
+     "fs": 10,
+     "text": "OpenBible.info"
+    },
+    {
+     "sel": "p.credit",
+     "fs": 10,
+     "text": "· CC BY 4.0 ·"
+    }
+   ],
+   "sizes": {
+    "10": 4,
+    "11": 10,
+    "12": 13,
+    "13": 13,
+    "14": 1,
+    "17": 1
+   }
+  },
+  "contrast": {
+   "checked": 42,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 13,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    46
+   ],
+   "#globe-modes": [
+    52,
+    28
+   ],
+   "#t-range": [
+    761,
+    2
+   ],
+   ".readout": [
+    709,
+    30
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-sphere"
+    }
+   ],
+   "infinite": 1
+  },
+  "sheets": {
+   "hoverUnguarded": 35,
+   "hoverGuarded": 0,
+   "active": 1,
+   "focusVisible": 26,
+   "navCurrentVisible": 0.54,
+   "navStripWidth": 28,
+   "backdrop": 10,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 35,
+   "hoverGuarded": 0,
+   "active": 1,
+   "focusVisible": 26,
+   "navCurrentVisible": 0.54,
+   "navStripWidth": 28,
+   "backdrop": 10,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "feel": {
+   "checked": 13,
+   "noHover": [],
+   "noActive": [
+    "a.tab \"Globe\"",
+    "button \"EN\"",
+    "#t-range \"\""
+   ],
+   "noFocus": [],
+   "slowPress": []
+  },
+  "errors": []
+ },
+ "/scenes.html 375x812": {
+  "targets": {
+   "checked": 100,
+   "small": [
+    {
+     "below": false,
+     "sel": "#all-open",
+     "w": 60.2,
+     "h": 30,
+     "text": "☰ All"
+    },
+    {
+     "below": false,
+     "sel": "#routes-open",
+     "w": 68.4,
+     "h": 30,
+     "text": "Routes▾"
+    },
+    {
+     "below": true,
+     "sel": "#walk-open",
+     "w": 91,
+     "h": 21,
+     "text": "3D Spaces▾"
+    },
+    {
+     "below": false,
+     "sel": "a.tab",
+     "w": 43.3,
+     "h": 44,
+     "text": "Plan"
+    },
+    {
+     "below": false,
+     "sel": "button",
+     "w": 34,
+     "h": 44,
+     "text": "EN"
+    },
+    {
+     "below": false,
+     "sel": "a.sg-quick-link",
+     "w": 140.6,
+     "h": 39,
+     "text": "🌍 Open 3D Globe"
+    },
+    {
+     "below": false,
+     "sel": "a.sg-quick-link",
+     "w": 157.8,
+     "h": 39,
+     "text": "📜 56 Narrative Units"
+    },
+    {
+     "below": false,
+     "sel": "a.sg-quick-link",
+     "w": 205.4,
+     "h": 39,
+     "text": "🧍 3D Figures & 394 Cuto"
+    },
+    {
+     "below": false,
+     "sel": "#sg-search",
+     "w": 325,
+     "h": 40,
+     "text": ""
+    },
+    {
+     "below": false,
+     "sel": "#sg-unit",
+     "w": 325,
+     "h": 40,
+     "text": "Filter by narrative unit"
+    },
+    {
+     "below": false,
+     "sel": "#sg-book",
+     "w": 325,
+     "h": 40,
+     "text": "Filter by book"
+    },
+    {
+     "below": false,
+     "sel": "#sg-mode-btn",
+     "w": 311.3,
+     "h": 40,
+     "text": "🖼️ Showing: Bilingual E"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip.active",
+     "w": 100.2,
+     "h": 27,
+     "text": "All Books1443"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 83.2,
+     "h": 27,
+     "text": "Genesis83"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 78.9,
+     "h": 27,
+     "text": "Exodus38"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 88.1,
+     "h": 27,
+     "text": "Leviticus20"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 88.8,
+     "h": 27,
+     "text": "Numbers27"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 114,
+     "h": 27,
+     "text": "Deuteronomy24"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 58.3,
+     "h": 27,
+     "text": "Ruth6"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 90.2,
+     "h": 27,
+     "text": "2 Samuel24"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 78.4,
+     "h": 27,
+     "text": "1 Kings30"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 80.1,
+     "h": 27,
+     "text": "2 Kings33"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 104.4,
+     "h": 27,
+     "text": "1 Chronicles17"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 106.6,
+     "h": 27,
+     "text": "2 Chronicles21"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 60.8,
+     "h": 27,
+     "text": "Ezra10"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 90.8,
+     "h": 27,
+     "text": "Nehemiah11"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 72.2,
+     "h": 27,
+     "text": "Esther12"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 56.9,
+     "h": 27,
+     "text": "Job16"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 82.1,
+     "h": 27,
+     "text": "Psalms150"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 86.3,
+     "h": 27,
+     "text": "Proverbs16"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 106,
+     "h": 27,
+     "text": "Ecclesiastes10"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 114.6,
+     "h": 27,
+     "text": "Song of Songs8"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 70.8,
+     "h": 27,
+     "text": "Isaiah28"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 108.4,
+     "h": 27,
+     "text": "Lamentations6"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 75.7,
+     "h": 27,
+     "text": "Ezekiel18"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 67.3,
+     "h": 27,
+     "text": "Hosea7"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 55.4,
+     "h": 27,
+     "text": "Joel4"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 63.4,
+     "h": 27,
+     "text": "Amos7"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 66.2,
+     "h": 27,
+     "text": "Jonah5"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 64.9,
+     "h": 27,
+     "text": "Luke56"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 109.5,
+     "h": 27,
+     "text": "1 Corinthians19"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 111.1,
+     "h": 27,
+     "text": "2 Corinthians14"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 93.6,
+     "h": 27,
+     "text": "Ephesians12"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 95.2,
+     "h": 27,
+     "text": "Philippians11"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 93.1,
+     "h": 27,
+     "text": "Colossians9"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 121,
+     "h": 27,
+     "text": "1 Thessalonians7"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 123.2,
+     "h": 27,
+     "text": "2 Thessalonians5"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 60.1,
+     "h": 27,
+     "text": "Titus4"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 84.1,
+     "h": 27,
+     "text": "Philemon3"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 72.7,
+     "h": 27,
+     "text": "James10"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 70.2,
+     "h": 27,
+     "text": "2 John2"
+    },
+    {
+     "below": true,
+     "sel": "button.sg-book-chip",
+     "w": 96.6,
+     "h": 27,
+     "text": "Revelation30"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-card-btn.sg-open-lb",
+     "w": 82.3,
+     "h": 32,
+     "text": "🔍 Inspect"
+    },
+    {
+     "below": false,
+     "sel": "a.sg-card-btn",
+     "w": 68.9,
+     "h": 32,
+     "text": "📖 Read"
+    },
+    {
+     "below": false,
+     "sel": "a.sg-card-btn.sg-card-globe",
+     "w": 88,
+     "h": 32,
+     "text": "🌍 Timeline"
+    }
+   ],
+   "hard": 28
+  },
+  "type": {
+   "under12": [
+    {
+     "sel": "small",
+     "fs": 10,
+     "text": "1443"
+    },
+    {
+     "sel": "span.sg-card-badge",
+     "fs": 11,
+     "text": "#1"
+    },
+    {
+     "sel": "span.sg-card-ver",
+     "fs": 10,
+     "text": "Bilingual"
+    }
+   ],
+   "sizes": {
+    "10": 127,
+    "11": 60,
+    "12": 386,
+    "13": 70,
+    "14": 3,
+    "15": 60,
+    "22": 4,
+    "24": 1
+   }
+  },
+  "contrast": {
+   "checked": 711,
+   "fail": [
+    {
+     "sel": "small",
+     "cr": 4.47,
+     "need": 4.5,
+     "fs": 10,
+     "text": "1443"
+    }
+   ],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 15,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    46
+   ],
+   ".source-credit": [
+    759,
+    53
+   ],
+   ".sg-controls": [
+    812,
+    328
+   ]
+  },
+  "motionReduced": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    }
+   ],
+   "infinite": 57
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    }
+   ],
+   "infinite": 59
+  },
+  "sheets": {
+   "hoverUnguarded": 17,
+   "hoverGuarded": 0,
+   "active": 0,
+   "focusVisible": 8,
+   "navCurrentVisible": 0,
+   "navStripWidth": 28,
+   "backdrop": 61,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 17,
+   "hoverGuarded": 0,
+   "active": 0,
+   "focusVisible": 8,
+   "navCurrentVisible": 0,
+   "navStripWidth": 28,
+   "backdrop": 61,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "feel": {
+   "checked": 15,
+   "noHover": [],
+   "noActive": [
+    "button \"EN\"",
+    "button.sg-stat-btn \"1,443\n      All Bi\"",
+    "a \"OpenBible.info\""
+   ],
+   "noFocus": [],
+   "slowPress": []
+  },
+  "errors": []
+ },
+ "/plan.html 375x812": {
+  "targets": {
+   "checked": 23,
+   "small": [
+    {
+     "below": false,
+     "sel": "#all-open",
+     "w": 60.2,
+     "h": 30,
+     "text": "☰ All"
+    },
+    {
+     "below": false,
+     "sel": "#routes-open",
+     "w": 68.4,
+     "h": 30,
+     "text": "Routes▾"
+    },
+    {
+     "below": true,
+     "sel": "#walk-open",
+     "w": 91,
+     "h": 21,
+     "text": "3D Spaces▾"
+    },
+    {
+     "below": false,
+     "sel": "a.tab",
+     "w": 43.3,
+     "h": 44,
+     "text": "Plan"
+    },
+    {
+     "below": false,
+     "sel": "button",
+     "w": 34,
+     "h": 44,
+     "text": "EN"
+    }
+   ],
+   "hard": 28
+  },
+  "type": {
+   "under12": [],
+   "sizes": {
+    "12": 16,
+    "13": 534,
+    "14": 64,
+    "15": 56,
+    "22": 1
+   }
+  },
+  "contrast": {
+   "checked": 671,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 8,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    46
+   ],
+   ".source-credit": [
+    756,
+    56
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    }
+   ],
+   "infinite": 5
+  },
+  "sheets": {
+   "hoverUnguarded": 9,
+   "hoverGuarded": 0,
+   "active": 0,
+   "focusVisible": 8,
+   "navCurrentVisible": 0,
+   "navStripWidth": 28,
+   "backdrop": 0,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 9,
+   "hoverGuarded": 0,
+   "active": 0,
+   "focusVisible": 8,
+   "navCurrentVisible": 0,
+   "navStripWidth": 28,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "feel": {
+   "checked": 8,
+   "noHover": [],
+   "noActive": [
+    "button \"EN\"",
+    "a \"OpenBible.info\""
+   ],
+   "noFocus": [],
+   "slowPress": []
+  },
+  "errors": []
+ },
+ "/figures.html 375x812": {
+  "targets": {
+   "checked": 23,
+   "small": [
+    {
+     "below": false,
+     "sel": "#all-open",
+     "w": 60.2,
+     "h": 30,
+     "text": "☰ All"
+    },
+    {
+     "below": false,
+     "sel": "#routes-open",
+     "w": 68.4,
+     "h": 30,
+     "text": "Routes▾"
+    },
+    {
+     "below": true,
+     "sel": "#walk-open",
+     "w": 91,
+     "h": 21,
+     "text": "3D Spaces▾"
+    },
+    {
+     "below": false,
+     "sel": "a.tab",
+     "w": 40.3,
+     "h": 44,
+     "text": "Plan"
+    },
+    {
+     "below": false,
+     "sel": "button",
+     "w": 34,
+     "h": 44,
+     "text": "EN"
+    }
+   ],
+   "hard": 28
+  },
+  "type": {
+   "under12": [],
+   "sizes": {
+    "12": 96,
+    "13": 10,
+    "14": 27,
+    "15": 3,
+    "17": 5,
+    "22": 1
+   }
+  },
+  "contrast": {
+   "checked": 142,
+   "fail": [
+    {
+     "sel": "#g-note",
+     "cr": 3.36,
+     "need": 4.5,
+     "fs": 12,
+     "text": "Some models are gene"
+    }
+   ],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 9,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    46
+   ],
+   ".source-credit": [
+    740,
+    72
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 2
+  },
+  "sheets": {
+   "hoverUnguarded": 12,
+   "hoverGuarded": 0,
+   "active": 0,
+   "focusVisible": 10,
+   "navCurrentVisible": 0,
+   "navStripWidth": 28,
+   "backdrop": 0,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 12,
+   "hoverGuarded": 0,
+   "active": 0,
+   "focusVisible": 10,
+   "navCurrentVisible": 0,
+   "navStripWidth": 28,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "feel": {
+   "checked": 9,
+   "noHover": [],
+   "noActive": [
+    "button \"EN\""
+   ],
+   "noFocus": [],
+   "slowPress": []
+  },
+  "errors": []
+ },
+ "/bible.html 375x812": {
+  "targets": {
+   "checked": 22,
+   "small": [
+    {
+     "below": false,
+     "sel": "#all-open",
+     "w": 70.2,
+     "h": 30,
+     "text": "☰ 全部"
+    },
+    {
+     "below": false,
+     "sel": "#routes-open",
+     "w": 52.2,
+     "h": 30,
+     "text": "路线▾"
+    },
+    {
+     "below": false,
+     "sel": "a.tab",
+     "w": 42.5,
+     "h": 44,
+     "text": "地球"
+    },
+    {
+     "below": true,
+     "sel": "#walk-open",
+     "w": 72.6,
+     "h": 23,
+     "text": "走进 3D▾"
+    },
+    {
+     "below": false,
+     "sel": "button",
+     "w": 34,
+     "h": 44,
+     "text": "EN"
+    },
+    {
+     "below": false,
+     "sel": "#bb-open-toc",
+     "w": 131,
+     "h": 32,
+     "text": "📖 书卷目录 · 搜经文"
+    },
+    {
+     "below": false,
+     "sel": "#bb-book-select",
+     "w": 118,
+     "h": 28,
+     "text": "Select Book"
+    },
+    {
+     "below": false,
+     "sel": "#bb-chapter-select",
+     "w": 78,
+     "h": 28,
+     "text": "Select Chapter"
+    },
+    {
+     "below": false,
+     "sel": "#bb-prev-ch",
+     "w": 28,
+     "h": 28,
+     "text": "Previous Chapter"
+    },
+    {
+     "below": false,
+     "sel": "#bb-next-ch",
+     "w": 28,
+     "h": 28,
+     "text": "Next Chapter"
+    },
+    {
+     "below": false,
+     "sel": "#bb-pdf-btn",
+     "w": 89.8,
+     "h": 32,
+     "text": "📥 下载 PDF"
+    },
+    {
+     "below": false,
+     "sel": "summary",
+     "w": 330,
+     "h": 41,
+     "text": "📘 《创世记》书卷导读：起源——创造、堕落与救"
+    },
+    {
+     "below": true,
+     "sel": "a.bb-globe-chip",
+     "w": 90.4,
+     "h": 24,
+     "text": "🌍 地球仪定位"
+    }
+   ],
+   "hard": 28
+  },
+  "type": {
+   "under12": [
+    {
+     "sel": "span.bb-sec-ref",
+     "fs": 11,
+     "text": "创世记 1:1–1:13 · 画卷 #1"
+    },
+    {
+     "sel": "a.bb-globe-chip",
+     "fs": 11,
+     "text": "🌍 地球仪定位"
+    },
+    {
+     "sel": "span.bb-plate-zoom-hint",
+     "fs": 11.5,
+     "text": "🔍 点击全屏放大画卷"
+    },
+    {
+     "sel": "span.bb-vnum",
+     "fs": 11.22,
+     "text": "1"
+    }
+   ],
+   "sizes": {
+    "11": 6,
+    "12": 22,
+    "13": 2,
+    "14": 6,
+    "17": 1,
+    "13.5": 1,
+    "16.5": 35,
+    "12.8": 3,
+    "11.5": 3,
+    "11.22": 31,
+    "12.54": 1,
+    "12.5": 3
+   }
+  },
+  "contrast": {
+   "checked": 114,
+   "fail": [
+    {
+     "sel": "#bb-prev-ch",
+     "cr": 2.37,
+     "need": 4.5,
+     "fs": 14,
+     "text": "‹"
+    },
+    {
+     "sel": "#bb-pager-prev",
+     "cr": 1.93,
+     "need": 4.5,
+     "fs": 14,
+     "text": "已是全书第一章"
+    }
+   ],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 15,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    47
+   ],
+   ".source-credit": [
+    3272,
+    89
+   ],
+   ".bb-reader-bar": [
+    47,
+    84
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    }
+   ],
+   "infinite": 5
+  },
+  "sheets": {
+   "hoverUnguarded": 16,
+   "hoverGuarded": 0,
+   "active": 0,
+   "focusVisible": 8,
+   "navCurrentVisible": 0,
+   "navStripWidth": 34,
+   "backdrop": 2,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 16,
+   "hoverGuarded": 0,
+   "active": 0,
+   "focusVisible": 8,
+   "navCurrentVisible": 0,
+   "navStripWidth": 34,
+   "backdrop": 2,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "feel": {
+   "checked": 15,
+   "noHover": [],
+   "noActive": [
+    "button \"简\"",
+    "#bb-prev-ch \"Previous Chapter\"",
+    "summary \"📘 《创世记》书卷导读：起源——创\""
+   ],
+   "noFocus": [],
+   "slowPress": []
+  },
+  "errors": []
+ },
+ "/ 1440x900": {
+  "targets": {
+   "checked": 21,
+   "small": [
+    {
+     "below": false,
+     "sel": "#walk-open",
+     "w": 103.6,
+     "h": 26,
+     "text": "3D Spaces▾"
+    },
+    {
+     "below": false,
+     "sel": "a.gm-pill.gm-pill--link",
+     "w": 126.7,
+     "h": 27,
+     "text": "Scenes Gallery ↗"
+    },
+    {
+     "below": false,
+     "sel": "#t-goto-open",
+     "w": 60.8,
+     "h": 22,
+     "text": "Go to…"
+    },
+    {
+     "below": true,
+     "sel": "#t-range",
+     "w": 1392,
+     "h": 2,
+     "text": ""
+    }
+   ],
+   "hard": 20
+  },
+  "type": {
+   "under12": [
+    {
+     "sel": "span.en",
+     "fs": 10,
+     "text": "Yahweh's World"
+    }
+   ],
+   "sizes": {
+    "10": 1,
+    "12": 29,
+    "13": 10,
+    "14": 10,
+    "17": 2
+   }
+  },
+  "contrast": {
+   "checked": 52,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 21,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    64
+   ],
+   "#globe-modes": [
+    58,
+    32
+   ],
+   "#t-range": [
+    819,
+    2
+   ],
+   ".readout": [
+    775,
+    22
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-sphere"
+    }
+   ],
+   "infinite": 1
+  },
+  "sheets": {
+   "hoverUnguarded": 35,
+   "hoverGuarded": 0,
+   "active": 1,
+   "focusVisible": 26,
+   "navCurrentVisible": 1,
+   "navStripWidth": 529,
+   "backdrop": 10,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 35,
+   "hoverGuarded": 0,
+   "active": 1,
+   "focusVisible": 26,
+   "navCurrentVisible": 1,
+   "navStripWidth": 529,
+   "backdrop": 10,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "feel": {
+   "checked": 21,
+   "noHover": [
+    "a.brand \"雅伟之界\n        Yahwe\"",
+    "a.tab \"Globe\"",
+    "button \"EN\"",
+    "#t-range \"\""
+   ],
+   "noActive": [
+    "#all-open \"☰ All\"",
+    "#routes-open \"Routes▾\"",
+    "a.tab \"Globe\"",
+    "a.tab \"Illustrated Bible\"",
+    "a.tab \"Scenes\"",
+    "#walk-open \"3D Spaces▾\"",
+    "a.tab \"Figures\"",
+    "a.tab \"Panorama\"",
+    "button \"EN\"",
+    "button \"简\"",
+    "button \"繁\"",
+    "#gm-events \"🖼️\n      1,443 Ev\"",
+    "#gm-goto \"📖\n      Find Vers\"",
+    "#gm-routes \"🧭\n      10 Journe\"",
+    "#gm-walks \"🏛️\n      3D Space\"",
+    "a.gm-pill \"📖 Illustrated Bib\"",
+    "a.gm-pill \"Scenes Gallery ↗\"",
+    "#t-goto-open \"Go to…\"",
+    "#t-range \"\"",
+    "a \"OpenBible.info\""
+   ],
+   "noFocus": [],
+   "slowPress": []
+  },
+  "errors": []
+ },
+ "/scenes.html 1440x900": {
+  "targets": {
+   "checked": 151,
+   "small": [
+    {
+     "below": false,
+     "sel": "a.tab",
+     "w": 63,
+     "h": 26,
+     "text": "Globe"
+    },
+    {
+     "below": false,
+     "sel": "a.tab",
+     "w": 124.5,
+     "h": 26,
+     "text": "Illustrated Bible"
+    },
+    {
+     "below": false,
+     "sel": "a.tab",
+     "w": 71.9,
+     "h": 26,
+     "text": "Scenes"
+    },
+    {
+     "below": false,
+     "sel": "#walk-open",
+     "w": 103.6,
+     "h": 26,
+     "text": "3D Spaces▾"
+    },
+    {
+     "below": false,
+     "sel": "a.tab",
+     "w": 88.5,
+     "h": 26,
+     "text": "Panorama"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip.active",
+     "w": 100.2,
+     "h": 27,
+     "text": "All Books1443"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 83.2,
+     "h": 27,
+     "text": "Genesis83"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 78.9,
+     "h": 27,
+     "text": "Exodus38"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 88.1,
+     "h": 27,
+     "text": "Leviticus20"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 88.8,
+     "h": 27,
+     "text": "Numbers27"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 114,
+     "h": 27,
+     "text": "Deuteronomy24"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 58.3,
+     "h": 27,
+     "text": "Ruth6"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 90.2,
+     "h": 27,
+     "text": "2 Samuel24"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 78.4,
+     "h": 27,
+     "text": "1 Kings30"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 80.1,
+     "h": 27,
+     "text": "2 Kings33"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 104.4,
+     "h": 27,
+     "text": "1 Chronicles17"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 106.6,
+     "h": 27,
+     "text": "2 Chronicles21"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 60.8,
+     "h": 27,
+     "text": "Ezra10"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 90.8,
+     "h": 27,
+     "text": "Nehemiah11"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 72.2,
+     "h": 27,
+     "text": "Esther12"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 56.9,
+     "h": 27,
+     "text": "Job16"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 82.1,
+     "h": 27,
+     "text": "Psalms150"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 86.3,
+     "h": 27,
+     "text": "Proverbs16"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 106,
+     "h": 27,
+     "text": "Ecclesiastes10"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 114.6,
+     "h": 27,
+     "text": "Song of Songs8"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 70.8,
+     "h": 27,
+     "text": "Isaiah28"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 108.4,
+     "h": 27,
+     "text": "Lamentations6"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 75.7,
+     "h": 27,
+     "text": "Ezekiel18"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 67.3,
+     "h": 27,
+     "text": "Hosea7"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 55.4,
+     "h": 27,
+     "text": "Joel4"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 63.4,
+     "h": 27,
+     "text": "Amos7"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 66.2,
+     "h": 27,
+     "text": "Jonah5"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 64.9,
+     "h": 27,
+     "text": "Luke56"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 109.5,
+     "h": 27,
+     "text": "1 Corinthians19"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 111.1,
+     "h": 27,
+     "text": "2 Corinthians14"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 93.6,
+     "h": 27,
+     "text": "Ephesians12"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 95.2,
+     "h": 27,
+     "text": "Philippians11"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 93.1,
+     "h": 27,
+     "text": "Colossians9"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 121,
+     "h": 27,
+     "text": "1 Thessalonians7"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 123.2,
+     "h": 27,
+     "text": "2 Thessalonians5"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 60.1,
+     "h": 27,
+     "text": "Titus4"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 84.1,
+     "h": 27,
+     "text": "Philemon3"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 72.7,
+     "h": 27,
+     "text": "James10"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 70.2,
+     "h": 27,
+     "text": "2 John2"
+    },
+    {
+     "below": false,
+     "sel": "button.sg-book-chip",
+     "w": 96.6,
+     "h": 27,
+     "text": "Revelation30"
+    }
+   ],
+   "hard": 20
+  },
+  "type": {
+   "under12": [
+    {
+     "sel": "span.en",
+     "fs": 10,
+     "text": "Yahweh's World"
+    },
+    {
+     "sel": "small",
+     "fs": 10,
+     "text": "1443"
+    },
+    {
+     "sel": "span.sg-card-badge",
+     "fs": 11,
+     "text": "#1"
+    },
+    {
+     "sel": "span.sg-card-ver",
+     "fs": 10,
+     "text": "Bilingual"
+    }
+   ],
+   "sizes": {
+    "10": 128,
+    "11": 60,
+    "12": 379,
+    "13": 77,
+    "14": 2,
+    "15": 60,
+    "17": 1,
+    "22": 4,
+    "36": 1
+   }
+  },
+  "contrast": {
+   "checked": 712,
+   "fail": [
+    {
+     "sel": "small",
+     "cr": 4.47,
+     "need": 4.5,
+     "fs": 10,
+     "text": "1443"
+    }
+   ],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 51,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    62
+   ],
+   ".source-credit": [
+    860,
+    40
+   ],
+   ".sg-controls": [
+    384,
+    144
+   ]
+  },
+  "motionReduced": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    }
+   ],
+   "infinite": 44
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "sg-sweep",
+     "dur": 1800,
+     "iter": null,
+     "target": "div.sg-card-media"
+    }
+   ],
+   "infinite": 47
+  },
+  "sheets": {
+   "hoverUnguarded": 17,
+   "hoverGuarded": 0,
+   "active": 0,
+   "focusVisible": 8,
+   "navCurrentVisible": 1,
+   "navStripWidth": 529,
+   "backdrop": 61,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 17,
+   "hoverGuarded": 0,
+   "active": 0,
+   "focusVisible": 8,
+   "navCurrentVisible": 1,
+   "navStripWidth": 529,
+   "backdrop": 61,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "feel": {
+   "checked": 38,
+   "noHover": [
+    "a.brand \"雅伟之界\n        Yahwe\"",
+    "a.tab \"Scenes\"",
+    "button \"EN\"",
+    "button.sg-stat-btn \"1,443\n      All Bi\"",
+    "#sg-unit \"Filter by narrativ\"",
+    "#sg-book \"Filter by book\"",
+    "button.sg-book-chip \"All Books1443\"",
+    "a \"OpenBible.info\""
+   ],
+   "noActive": [
+    "#all-open \"☰ All\"",
+    "#routes-open \"Routes▾\"",
+    "a.tab \"Globe\"",
+    "a.tab \"Illustrated Bible\"",
+    "a.tab \"Scenes\"",
+    "#walk-open \"3D Spaces▾\"",
+    "a.tab \"Figures\"",
+    "a.tab \"Panorama\"",
+    "button \"EN\"",
+    "button \"简\"",
+    "button \"繁\"",
+    "a.sg-quick-link \"🌍 Open 3D Globe\"",
+    "a.sg-quick-link \"📜 56 Narrative Un\"",
+    "a.sg-quick-link \"🧍 3D Figures & 39\"",
+    "button.sg-stat-btn \"1,443\n      All Bi\"",
+    "button.sg-stat-btn \"777\n      Hebrew S\"",
+    "button.sg-stat-btn \"666\n      Greek Sc\"",
+    "button.sg-stat-btn \"894\n      Geolocat\"",
+    "#sg-mode-btn \"🖼️ Showing: Bilin\"",
+    "button.sg-book-chip \"All Books1443\"",
+    "button.sg-book-chip \"Genesis83\"",
+    "button.sg-book-chip \"Exodus38\"",
+    "button.sg-book-chip \"Leviticus20\"",
+    "button.sg-book-chip \"Numbers27\"",
+    "button.sg-book-chip \"Deuteronomy24\"",
+    "button.sg-book-chip \"Joshua22\"",
+    "button.sg-book-chip \"Judges22\"",
+    "button.sg-book-chip \"Ruth6\"",
+    "button.sg-book-chip \"1 Samuel33\"",
+    "button.sg-book-chip \"2 Samuel24\"",
+    "button.sg-book-chip \"1 Kings30\"",
+    "button.sg-book-chip \"2 Kings33\"",
+    "button.sg-book-chip \"1 Chronicles17\"",
+    "button.sg-book-chip \"2 Chronicles21\"",
+    "a \"OpenBible.info\""
+   ],
+   "noFocus": [],
+   "slowPress": []
+  },
+  "errors": []
+ },
+ "/plan.html 1440x900": {
+  "targets": {
+   "checked": 41,
+   "small": [
+    {
+     "below": false,
+     "sel": "#walk-open",
+     "w": 103.6,
+     "h": 26,
+     "text": "3D Spaces▾"
+    }
+   ],
+   "hard": 20
+  },
+  "type": {
+   "under12": [
+    {
+     "sel": "span.en",
+     "fs": 10,
+     "text": "Yahweh's World"
+    }
+   ],
+   "sizes": {
+    "10": 1,
+    "12": 9,
+    "13": 541,
+    "14": 7,
+    "15": 112,
+    "17": 1,
+    "22": 1
+   }
+  },
+  "contrast": {
+   "checked": 672,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 15,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    66
+   ],
+   ".source-credit": [
+    844,
+    56
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    }
+   ],
+   "infinite": 5
+  },
+  "sheets": {
+   "hoverUnguarded": 9,
+   "hoverGuarded": 0,
+   "active": 0,
+   "focusVisible": 8,
+   "navCurrentVisible": 1,
+   "navStripWidth": 529,
+   "backdrop": 0,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 9,
+   "hoverGuarded": 0,
+   "active": 0,
+   "focusVisible": 8,
+   "navCurrentVisible": 1,
+   "navStripWidth": 529,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "feel": {
+   "checked": 15,
+   "noHover": [
+    "a.brand \"雅伟之界\n        Yahwe\"",
+    "a.tab \"Panorama\"",
+    "button \"EN\"",
+    "a \"OpenBible.info\""
+   ],
+   "noActive": [
+    "#all-open \"☰ All\"",
+    "#routes-open \"Routes▾\"",
+    "a.tab \"Globe\"",
+    "a.tab \"Illustrated Bible\"",
+    "a.tab \"Scenes\"",
+    "#walk-open \"3D Spaces▾\"",
+    "a.tab \"Figures\"",
+    "a.tab \"Panorama\"",
+    "button \"EN\"",
+    "button \"简\"",
+    "button \"繁\"",
+    "a.chip \"Passage 6 events\"",
+    "a.chip \"On the map 1 locat\"",
+    "a \"OpenBible.info\""
+   ],
+   "noFocus": [],
+   "slowPress": []
+  },
+  "errors": []
+ },
+ "/figures.html 1440x900": {
+  "targets": {
+   "checked": 36,
+   "small": [
+    {
+     "below": false,
+     "sel": "a.tab",
+     "w": 59.1,
+     "h": 25,
+     "text": "Globe"
+    },
+    {
+     "below": false,
+     "sel": "a.tab",
+     "w": 114.5,
+     "h": 25,
+     "text": "Illustrated Bible"
+    },
+    {
+     "below": false,
+     "sel": "a.tab",
+     "w": 63.7,
+     "h": 25,
+     "text": "Scenes"
+    },
+    {
+     "below": false,
+     "sel": "#walk-open",
+     "w": 103.6,
+     "h": 26,
+     "text": "3D Spaces▾"
+    },
+    {
+     "below": false,
+     "sel": "a.tab",
+     "w": 66.8,
+     "h": 25,
+     "text": "Figures"
+    },
+    {
+     "below": false,
+     "sel": "a.tab",
+     "w": 80.1,
+     "h": 25,
+     "text": "Panorama"
+    }
+   ],
+   "hard": 20
+  },
+  "type": {
+   "under12": [
+    {
+     "sel": "span.en",
+     "fs": 10,
+     "text": "Yahweh's World"
+    }
+   ],
+   "sizes": {
+    "10": 1,
+    "12": 89,
+    "13": 17,
+    "14": 26,
+    "15": 3,
+    "17": 6,
+    "30": 1
+   }
+  },
+  "contrast": {
+   "checked": 143,
+   "fail": [
+    {
+     "sel": "#g-note",
+     "cr": 3.36,
+     "need": 4.5,
+     "fs": 12,
+     "text": "Some models are gene"
+    }
+   ],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 18,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    62
+   ],
+   ".source-credit": [
+    844,
+    56
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 3
+  },
+  "sheets": {
+   "hoverUnguarded": 12,
+   "hoverGuarded": 0,
+   "active": 0,
+   "focusVisible": 10,
+   "navCurrentVisible": 1,
+   "navStripWidth": 493,
+   "backdrop": 0,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 12,
+   "hoverGuarded": 0,
+   "active": 0,
+   "focusVisible": 10,
+   "navCurrentVisible": 1,
+   "navStripWidth": 493,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "feel": {
+   "checked": 18,
+   "noHover": [
+    "a.brand \"雅伟之界\n        Yahwe\"",
+    "a.tab \"Figures\"",
+    "button \"EN\""
+   ],
+   "noActive": [
+    "#all-open \"☰ All\"",
+    "#routes-open \"Routes▾\"",
+    "a.tab \"Globe\"",
+    "a.tab \"Illustrated Bible\"",
+    "a.tab \"Scenes\"",
+    "#walk-open \"3D Spaces▾\"",
+    "a.tab \"Figures\"",
+    "a.tab \"Panorama\"",
+    "button \"EN\"",
+    "button \"简\"",
+    "button \"繁\"",
+    "button.g-card \"1.74 m\n      6 mot\"",
+    "button.g-card \"1.72 m\n      6 mot\"",
+    "button.g-card \"1.7 m\n      6 moti\"",
+    "button.g-card \"1.66 m\n      6 mot\"",
+    "button.g-card \"1.62 m\n      6 mot\""
+   ],
+   "noFocus": [],
+   "slowPress": []
+  },
+  "errors": []
+ },
+ "/bible.html 1440x900": {
+  "targets": {
+   "checked": 22,
+   "small": [
+    {
+     "below": false,
+     "sel": "summary",
+     "w": 751,
+     "h": 22,
+     "text": "📘 《创世记》书卷导读：起源——创造、堕落与救"
+    },
+    {
+     "below": false,
+     "sel": "a.bb-globe-chip",
+     "w": 100.6,
+     "h": 26,
+     "text": "🌍 地球仪定位"
+    }
+   ],
+   "hard": 20
+  },
+  "type": {
+   "under12": [
+    {
+     "sel": "span.en",
+     "fs": 10,
+     "text": "Yahweh's World"
+    },
+    {
+     "sel": "span.bb-plate-zoom-hint",
+     "fs": 11.5,
+     "text": "🔍 点击全屏放大画卷"
+    }
+   ],
+   "sizes": {
+    "10": 1,
+    "12": 19,
+    "13": 10,
+    "14": 3,
+    "17": 3,
+    "20": 3,
+    "21": 1,
+    "13.8": 1,
+    "13.5": 3,
+    "13.2": 3,
+    "11.5": 3,
+    "13.26": 31,
+    "19.5": 32,
+    "14.82": 1,
+    "12.5": 1
+   }
+  },
+  "contrast": {
+   "checked": 115,
+   "fail": [
+    {
+     "sel": "#bb-prev-ch",
+     "cr": 2.37,
+     "need": 4.5,
+     "fs": 17,
+     "text": "‹"
+    },
+    {
+     "sel": "#bb-pager-prev",
+     "cr": 1.93,
+     "need": 4.5,
+     "fs": 14,
+     "text": "已是全书第一章"
+    }
+   ],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 20,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    59
+   ],
+   ".source-credit": [
+    3368,
+    73
+   ],
+   ".bb-reader-bar": [
+    59,
+    61
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-line"
+    }
+   ],
+   "infinite": 5
+  },
+  "sheets": {
+   "hoverUnguarded": 16,
+   "hoverGuarded": 0,
+   "active": 0,
+   "focusVisible": 8,
+   "navCurrentVisible": 1,
+   "navStripWidth": 498,
+   "backdrop": 2,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 16,
+   "hoverGuarded": 0,
+   "active": 0,
+   "focusVisible": 8,
+   "navCurrentVisible": 1,
+   "navStripWidth": 498,
+   "backdrop": 2,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "feel": {
+   "checked": 20,
+   "noHover": [
+    "a.brand \"雅伟之界\n        Yahwe\"",
+    "a.tab \"画卷圣经\"",
+    "button \"简\"",
+    "#bb-book-select \"Select Book\"",
+    "#bb-chapter-select \"Select Chapter\"",
+    "#bb-prev-ch \"Previous Chapter\"",
+    "summary \"📘 《创世记》书卷导读：起源——创\""
+   ],
+   "noActive": [
+    "#all-open \"☰ 全部\"",
+    "#routes-open \"路线▾\"",
+    "a.tab \"圣经世界\"",
+    "a.tab \"画卷圣经\"",
+    "a.tab \"圣经画卷\"",
+    "#walk-open \"走进 3D▾\"",
+    "a.tab \"人物与活物\"",
+    "a.tab \"圣经全景\"",
+    "button \"EN\"",
+    "button \"简\"",
+    "button \"繁\"",
+    "#bb-open-toc \"📖 书卷目录 · 搜经文\"",
+    "#bb-prev-ch \"Previous Chapter\"",
+    "#bb-next-ch \"Next Chapter\"",
+    "#bb-pdf-btn \"📥 下载 PDF\"",
+    "summary \"📘 《创世记》书卷导读：起源——创\"",
+    "a.bb-globe-chip \"🌍 地球仪定位\""
+   ],
+   "noFocus": [],
+   "slowPress": []
+  },
+  "errors": []
+ }
+}

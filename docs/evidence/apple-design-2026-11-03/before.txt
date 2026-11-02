@@ -1,0 +1,110 @@
+
+## / 375x812
+targets: 13 below the platform default of 21 checked (4 below the Apple minimum of 28px); overflow-x: false; errors: 0
+hit-test: 13 control centres, 0 answered by another element
+layout [top,height]: {".sitenav":[0,46],"#globe-modes":[52,28],"#t-range":[761,2],".readout":[709,30]}
+type: 4 elements < 12px; sizes in use: 6 (10, 11, 12, 13, 14, 17)
+contrast: 0 failing of 42 measured (0 on gradient/image/canvas, not measured)
+rules: :hover unguarded 35 / guarded 0; :active 1; :focus-visible 26; share of the current nav tab inside the strip: 0.54 (strip 28px wide)
+materials: backdrop-blur elements 10; under reduced-transparency+more-contrast still 10 (media supported: rt=true, contrast=true)
+motion: reduced -> 0 CSS animations running (0 infinite); normal -> 1 (1 infinite)
+feel: checked 13; no hover 0; no pressed 3; slow press 0; no focus ring 0
+
+## /scenes.html 375x812
+targets: 55 below the platform default of 100 checked (41 below the Apple minimum of 28px); overflow-x: false; errors: 0
+hit-test: 15 control centres, 0 answered by another element
+layout [top,height]: {".sitenav":[0,46],".source-credit":[759,53],".sg-controls":[812,328]}
+type: 3 elements < 12px; sizes in use: 8 (10, 11, 12, 13, 14, 15, 22, 24)
+contrast: 1 failing of 711 measured (0 on gradient/image/canvas, not measured)
+rules: :hover unguarded 17 / guarded 0; :active 0; :focus-visible 8; share of the current nav tab inside the strip: 0 (strip 28px wide)
+materials: backdrop-blur elements 61; under reduced-transparency+more-contrast still 61 (media supported: rt=true, contrast=true)
+motion: reduced -> 57 CSS animations running (57 infinite); normal -> 59 (59 infinite)
+feel: checked 15; no hover 0; no pressed 3; slow press 0; no focus ring 0
+
+## /plan.html 375x812
+targets: 5 below the platform default of 23 checked (1 below the Apple minimum of 28px); overflow-x: false; errors: 0
+hit-test: 8 control centres, 0 answered by another element
+layout [top,height]: {".sitenav":[0,46],".source-credit":[756,56]}
+type: 0 elements < 12px; sizes in use: 5 (12, 13, 14, 15, 22)
+contrast: 0 failing of 671 measured (0 on gradient/image/canvas, not measured)
+rules: :hover unguarded 9 / guarded 0; :active 0; :focus-visible 8; share of the current nav tab inside the strip: 0 (strip 28px wide)
+materials: backdrop-blur elements 0; under reduced-transparency+more-contrast still 0 (media supported: rt=true, contrast=true)
+motion: reduced -> 0 CSS animations running (0 infinite); normal -> 5 (5 infinite)
+feel: checked 8; no hover 0; no pressed 2; slow press 0; no focus ring 0
+
+## /figures.html 375x812
+targets: 5 below the platform default of 23 checked (1 below the Apple minimum of 28px); overflow-x: false; errors: 0
+hit-test: 9 control centres, 0 answered by another element
+layout [top,height]: {".sitenav":[0,46],".source-credit":[740,72]}
+type: 0 elements < 12px; sizes in use: 6 (12, 13, 14, 15, 17, 22)
+contrast: 1 failing of 142 measured (0 on gradient/image/canvas, not measured)
+rules: :hover unguarded 12 / guarded 0; :active 0; :focus-visible 10; share of the current nav tab inside the strip: 0 (strip 28px wide)
+materials: backdrop-blur elements 0; under reduced-transparency+more-contrast still 0 (media supported: rt=true, contrast=true)
+motion: reduced -> 0 CSS animations running (0 infinite); normal -> 2 (2 infinite)
+feel: checked 9; no hover 0; no pressed 1; slow press 0; no focus ring 0
+
+## /bible.html 375x812
+targets: 13 below the platform default of 22 checked (2 below the Apple minimum of 28px); overflow-x: false; errors: 0
+hit-test: 15 control centres, 0 answered by another element
+layout [top,height]: {".sitenav":[0,47],".source-credit":[3272,89],".bb-reader-bar":[47,84]}
+type: 4 elements < 12px; sizes in use: 12 (11, 11.22, 11.5, 12, 12.5, 12.54, 12.8, 13, 13.5, 14, 16.5, 17)
+contrast: 2 failing of 114 measured (0 on gradient/image/canvas, not measured)
+rules: :hover unguarded 16 / guarded 0; :active 0; :focus-visible 8; share of the current nav tab inside the strip: 0 (strip 34px wide)
+materials: backdrop-blur elements 2; under reduced-transparency+more-contrast still 2 (media supported: rt=true, contrast=true)
+motion: reduced -> 0 CSS animations running (0 infinite); normal -> 5 (5 infinite)
+feel: checked 15; no hover 0; no pressed 3; slow press 0; no focus ring 0
+
+## / 1440x900
+targets: 4 below the platform default of 21 checked (1 below the Apple minimum of 20px); overflow-x: false; errors: 0
+hit-test: 21 control centres, 0 answered by another element
+layout [top,height]: {".sitenav":[0,64],"#globe-modes":[58,32],"#t-range":[819,2],".readout":[775,22]}
+type: 1 elements < 12px; sizes in use: 5 (10, 12, 13, 14, 17)
+contrast: 0 failing of 52 measured (0 on gradient/image/canvas, not measured)
+rules: :hover unguarded 35 / guarded 0; :active 1; :focus-visible 26; share of the current nav tab inside the strip: 1 (strip 529px wide)
+materials: backdrop-blur elements 10; under reduced-transparency+more-contrast still 10 (media supported: rt=true, contrast=true)
+motion: reduced -> 0 CSS animations running (0 infinite); normal -> 1 (1 infinite)
+feel: checked 21; no hover 4; no pressed 20; slow press 0; no focus ring 0
+
+## /scenes.html 1440x900
+targets: 45 below the platform default of 151 checked (0 below the Apple minimum of 20px); overflow-x: false; errors: 0
+hit-test: 51 control centres, 0 answered by another element
+layout [top,height]: {".sitenav":[0,62],".source-credit":[860,40],".sg-controls":[384,144]}
+type: 4 elements < 12px; sizes in use: 9 (10, 11, 12, 13, 14, 15, 17, 22, 36)
+contrast: 1 failing of 712 measured (0 on gradient/image/canvas, not measured)
+rules: :hover unguarded 17 / guarded 0; :active 0; :focus-visible 8; share of the current nav tab inside the strip: 1 (strip 529px wide)
+materials: backdrop-blur elements 61; under reduced-transparency+more-contrast still 61 (media supported: rt=true, contrast=true)
+motion: reduced -> 44 CSS animations running (44 infinite); normal -> 47 (47 infinite)
+feel: checked 38; no hover 8; no pressed 35; slow press 0; no focus ring 0
+
+## /plan.html 1440x900
+targets: 1 below the platform default of 41 checked (0 below the Apple minimum of 20px); overflow-x: false; errors: 0
+hit-test: 15 control centres, 0 answered by another element
+layout [top,height]: {".sitenav":[0,66],".source-credit":[844,56]}
+type: 1 elements < 12px; sizes in use: 7 (10, 12, 13, 14, 15, 17, 22)
+contrast: 0 failing of 672 measured (0 on gradient/image/canvas, not measured)
+rules: :hover unguarded 9 / guarded 0; :active 0; :focus-visible 8; share of the current nav tab inside the strip: 1 (strip 529px wide)
+materials: backdrop-blur elements 0; under reduced-transparency+more-contrast still 0 (media supported: rt=true, contrast=true)
+motion: reduced -> 0 CSS animations running (0 infinite); normal -> 5 (5 infinite)
+feel: checked 15; no hover 4; no pressed 14; slow press 0; no focus ring 0
+
+## /figures.html 1440x900
+targets: 6 below the platform default of 36 checked (0 below the Apple minimum of 20px); overflow-x: false; errors: 0
+hit-test: 18 control centres, 0 answered by another element
+layout [top,height]: {".sitenav":[0,62],".source-credit":[844,56]}
+type: 1 elements < 12px; sizes in use: 7 (10, 12, 13, 14, 15, 17, 30)
+contrast: 1 failing of 143 measured (0 on gradient/image/canvas, not measured)
+rules: :hover unguarded 12 / guarded 0; :active 0; :focus-visible 10; share of the current nav tab inside the strip: 1 (strip 493px wide)
+materials: backdrop-blur elements 0; under reduced-transparency+more-contrast still 0 (media supported: rt=true, contrast=true)
+motion: reduced -> 0 CSS animations running (0 infinite); normal -> 3 (3 infinite)
+feel: checked 18; no hover 3; no pressed 16; slow press 0; no focus ring 0
+
+## /bible.html 1440x900
+targets: 2 below the platform default of 22 checked (0 below the Apple minimum of 20px); overflow-x: false; errors: 0
+hit-test: 20 control centres, 0 answered by another element
+layout [top,height]: {".sitenav":[0,59],".source-credit":[3368,73],".bb-reader-bar":[59,61]}
+type: 2 elements < 12px; sizes in use: 15 (10, 11.5, 12, 12.5, 13, 13.2, 13.26, 13.5, 13.8, 14, 14.82, 17, 19.5, 20, 21)
+contrast: 2 failing of 115 measured (0 on gradient/image/canvas, not measured)
+rules: :hover unguarded 16 / guarded 0; :active 0; :focus-visible 8; share of the current nav tab inside the strip: 1 (strip 498px wide)
+materials: backdrop-blur elements 2; under reduced-transparency+more-contrast still 2 (media supported: rt=true, contrast=true)
+motion: reduced -> 0 CSS animations running (0 infinite); normal -> 5 (5 infinite)
+feel: checked 20; no hover 7; no pressed 17; slow press 0; no focus ring 0
