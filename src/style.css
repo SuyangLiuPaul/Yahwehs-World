@@ -678,6 +678,7 @@ body.route-active #globe-modes { display: none; }
   box-shadow: var(--shadow); text-decoration: none;
   transition: opacity .2s ease, border-color .16s, background .16s;
   will-change: transform, opacity;
+  touch-action: none; -webkit-user-drag: none; user-select: none;
 }
 @media (hover: hover) { .door:hover { border-color: var(--gold); } }
 .door b {
@@ -741,3 +742,11 @@ body.route-active #globe-modes { display: none; }
   font: 600 11px/1.5 var(--ui); text-align: center; letter-spacing: 0;
 }
 .door--dot[data-count]:not([data-count=""]) { width: 17px; height: 17px; }
+
+/* ── the globe is a focus target (keyboard turning, zoom, fit, close) ─────
+   The shared :focus-visible ring, inset so the full-viewport canvas does not clip it. */
+#stage:focus-visible { outline-offset: -3px; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}

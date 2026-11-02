@@ -151,6 +151,7 @@ const placeLabels = new PlaceLabels(bundle.places);
 // correction there reaches them and the map and the door cannot disagree.
 const bySlug = new Map(bundle.places.map((p) => [p.slug, p]));
 const doors = new Doors(placeDoors((slug) => bySlug.get(slug)), document.body);
+doors.handOver = (ev, go) => navigation.handOver(ev, go);
 markers.setMask(placeLabels.shown);
 
 // A ring that snaps to the selected place — cheaper and clearer than
@@ -642,12 +643,41 @@ $('r-art').setAttribute('aria-pressed',String(scenes.showing));
 
 $('r-sources-close').addEventListener('click',()=>$<HTMLDialogElement>('r-sources').close());
 $('map-fit').addEventListener('click',()=>{if(route)frameRoute(route.journey);});
-for(const [id,factor] of [['map-in',.75],['map-out',1.3]] as const){
-  $(id).addEventListener('click',()=>{
-    const distance=THREE.MathUtils.clamp(GLOBE_RADIUS+(camera.position.length()-GLOBE_RADIUS)*factor,controls.minDistance,controls.maxDistance);
-    camera.position.setLength(distance);controls.update();
-  });
+function zoomStep(factor:number){
+  const distance=THREE.MathUtils.clamp(GLOBE_RADIUS+(camera.position.length()-GLOBE_RADIUS)*factor,controls.minDistance,controls.maxDistance);
+  camera.position.setLength(distance);controls.update();
 }
+for(const [id,factor] of [['map-in',.75],['map-out',1.3]] as const)$(id).addEventListener('click',()=>zoomStep(factor));
+
+// Keyboard alternative to the drag and the wheel (apple-look › accessibility › Mobility). Only while
+// the canvas itself has focus; a dialog, select or input never reaches this listener. A key press is
+// one step of the pointer's own gain: 24 px of drag (Shift: 120 px), altitude-scaled exactly like a
+// drag, and no coast, as on pointer release.
+const KEY_TURN=24,KEY_TURN_FAST=120;
+canvas.addEventListener('keydown',(e)=>{
+  if(e.ctrlKey||e.metaKey||e.altKey||e.defaultPrevented)return;
+  const px=e.shiftKey?KEY_TURN_FAST:KEY_TURN;
+  // The view moves toward the arrow (OrbitControls' own key convention): ArrowLeft is a drag to the right.
+  const turns:Record<string,[number,number]>={ArrowLeft:[px,0],ArrowRight:[-px,0],ArrowUp:[0,px],ArrowDown:[0,-px]};
+  const turn=turns[e.key];
+  if(turn){navigation.turn(turn[0],turn[1]);}
+  else if(e.key==='+'||e.key==='='){zoomStep(.75);}
+  else if(e.key==='-'||e.key==='_'){zoomStep(1.3);}
+  else if(e.key==='Home'){
+    // Fit: the open route, else the selected place, else the opening view.
+    if(route)frameRoute(route.journey);
+    else if(selected)framePoints([{lat:selected.lat,lon:selected.lon}]);
+    else{controls.update();camera.position.copy(lonLatToVec3(35,31,300));controls.update();}
+  }
+  else if(e.key==='Escape'){
+    const ec=document.getElementById('event-card');
+    if(ec&&!ec.hidden)document.getElementById('ec-close')?.click();
+    else if(!$('panel').hidden)closePanel();
+    else return;
+  }
+  else return;
+  e.preventDefault();
+});
 let swipe:{x:number;y:number}|null=null;
 $('rplay').addEventListener('pointerdown',e=>{if(e.pointerType==='touch'&&!(e.target as HTMLElement).closest('button'))swipe={x:e.clientX,y:e.clientY};});
 $('rplay').addEventListener('pointerup',e=>{

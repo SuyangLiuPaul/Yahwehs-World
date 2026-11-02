@@ -201,7 +201,9 @@ export function applyStatic(root: ParentNode = document) {
   root.querySelectorAll<HTMLElement>('[data-en]').forEach((el) => {
     const en = (small && el.dataset.enNarrow) || el.dataset.en || '';
     const zh = (small && el.dataset.zhNarrow) || el.dataset.zh || en;
-    el.textContent = t(en, zh);
+    // A canvas has no text: its words are its accessible name (its children would be read as well).
+    if (el instanceof HTMLCanvasElement) el.setAttribute('aria-label', t(en, zh));
+    else el.textContent = t(en, zh);
   });
   // Chinese written straight into an element — the wordmark — rather than
   // paired with an English original.

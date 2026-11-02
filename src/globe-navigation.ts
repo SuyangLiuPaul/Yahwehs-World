@@ -28,8 +28,12 @@ export function installGlobeNavigation(controls: OrbitControls, camera: Perspect
   const pointers = new Map<number, { x: number; y: number }>();
   let cancelled = false;
   let tap: PointerEvent | null = null;
+  // Cards that sit over the canvas (the doors) hand their pointerdown over so
+  // this module owns the gesture from the first event. The card's own action
+  // runs only if the same pointer comes up as a tap, under the 5 px rule.
+  const handed = new Map<number, () => void>();
   const clear = () => {
-    pointers.clear(); cancelled = true; tap = null;
+    pointers.clear(); handed.clear(); cancelled = true; tap = null;
     canvas.classList.remove('dragging');
   };
   canvas.addEventListener('pointerdown', ev => {
@@ -51,6 +55,10 @@ export function installGlobeNavigation(controls: OrbitControls, camera: Perspect
     track(ev);
     const known = pointers.delete(ev.pointerId);
     tap = known && !cancelled && !pointers.size ? ev : null;
+    const action = handed.get(ev.pointerId);
+    handed.delete(ev.pointerId);
+    // A tap that began on a card belongs to the card, not to the marker below it.
+    if (action && tap === ev) { tap = null; action(); }
     if (!pointers.size) canvas.classList.remove('dragging');
   }, options);
   canvas.ownerDocument.addEventListener('pointercancel', ev => {
@@ -63,6 +71,26 @@ export function installGlobeNavigation(controls: OrbitControls, camera: Perspect
 
   return {
     get active() { return pointers.size > 0; },
+    /** Turns the globe by the surface distance a pointer drag of (dx, dy) px would, at the current altitude.
+     *  Same gain as a drag (rotateSpeed already follows altitude), no coast. */
+    turn(dx: number, dy: number) {
+      updateSensitivity();
+      const h = canvas.clientHeight || 1;
+      controls.rotateLeft(2 * Math.PI * controls.rotateSpeed * dx / h);
+      controls.rotateUp(2 * Math.PI * controls.rotateSpeed * dy / h);
+      controls.update();
+    },
+    /** Re-dispatches a pointerdown that landed on an overlay as if it had landed on the canvas. */
+    handOver(ev: PointerEvent, onTap: () => void) {
+      ev.preventDefault();
+      handed.set(ev.pointerId, onTap);
+      canvas.dispatchEvent(new PointerEvent('pointerdown', {
+        bubbles: true, cancelable: true, pointerId: ev.pointerId, pointerType: ev.pointerType, isPrimary: ev.isPrimary,
+        width: ev.width, height: ev.height, pressure: ev.pressure,
+        clientX: ev.clientX, clientY: ev.clientY, screenX: ev.screenX, screenY: ev.screenY,
+        button: ev.button, buttons: ev.buttons, ctrlKey: ev.ctrlKey, shiftKey: ev.shiftKey, altKey: ev.altKey, metaKey: ev.metaKey,
+      }));
+    },
     consumeTap(ev: PointerEvent) { const result = tap === ev; tap = null; return result; },
     dispose() { clear(); abort.abort(); controls.removeEventListener('change', updateSensitivity); },
   };

@@ -99,6 +99,9 @@ export class Doors {
   private readonly cameraLocal = new THREE.Vector3();
   private readonly v = new THREE.Vector3();
 
+  /** Set by the page: hands a pointerdown on a card to the globe's gesture owner. */
+  handOver: ((ev: PointerEvent, go: () => void) => void) | null = null;
+
   constructor(doors: Placed[], parent: HTMLElement) {
     this.root = document.createElement('div');
     this.root.id = 'doors';
@@ -120,14 +123,32 @@ export class Doors {
       const world = lonLatToVec3(door.lon, door.lat, 0);
       this.marks.push({ door, world });
 
-      const card = document.createElement('a');
-      card.className = 'door';
-      card.href = door.href;
-      this.root.appendChild(card);
-      this.cards.set(door.id, card);
+      this.cards.set(door.id, this.makeCard(door));
     }
     this.write();
     onLocale(() => this.write());
+  }
+
+  private makeCard(door: Placed): HTMLAnchorElement {
+    const card = document.createElement('a');
+    card.className = 'door';
+    card.href = door.href;
+    card.draggable = false;
+    // Direct manipulation wins over the card: a press that moves is a drag of
+    // the globe; only a tap under 5 px opens the walk. Keyboard Enter and a
+    // modified click keep the anchor's own behaviour.
+    card.addEventListener('pointerdown', (ev) => {
+      if (!this.handOver || ev.button !== 0 || ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey) return;
+      this.handOver(ev, () => card.click());
+    });
+    card.addEventListener('click', (ev) => {
+      // A pointer click was already decided by the tap rule; do not let the
+      // browser navigate on the tail of a drag. detail 0 is the keyboard.
+      if (this.handOver && ev.detail > 0 && !ev.ctrlKey && !ev.metaKey && !ev.shiftKey && !ev.altKey) ev.preventDefault();
+    });
+    card.addEventListener('dragstart', (ev) => ev.preventDefault());
+    this.root.appendChild(card);
+    return card;
   }
 
   private write() {
@@ -147,11 +168,7 @@ export class Doors {
   add(doors: Placed[]) {
     for (const door of doors) {
       this.marks.push({ door, world: lonLatToVec3(door.lon, door.lat, 0) });
-      const card = document.createElement('a');
-      card.className = 'door';
-      card.href = door.href;
-      this.root.appendChild(card);
-      this.cards.set(door.id, card);
+      this.cards.set(door.id, this.makeCard(door));
     }
     this.write();
   }

@@ -15,8 +15,6 @@ try {
       const page = await context.newPage();
       page.on('pageerror', e => report.errors.push(e.message));
       await page.goto((process.env.TEST_URL ?? 'http://127.0.0.1:5175') + '/');
-  // The door cards are DOM overlays that sit over the Levant at these camera poses and swallow the drag these checks start on.
-  await page.addStyleTag({ content: '#doors { display: none !important; }' });
       await page.waitForFunction(() => window.__globe);
       const cdp = await context.newCDPSession(page);
       for (const radius of [108, 125, 200, 400]) {
@@ -48,6 +46,8 @@ try {
               else await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x, y, id: 1 }] });
               await page.waitForTimeout(16);
             }
+            // CDP touch moves are coalesced into the next frame; let the last one land before the 'held' sample.
+            await page.waitForTimeout(60);
             const held = await sample();
             if (input === 'mouse') await page.mouse.up();
             else await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });

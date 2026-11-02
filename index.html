@@ -102,7 +102,14 @@
   <div id="allmenu" hidden></div>
   <!-- shell:end -->
 
-  <canvas id="stage"></canvas>
+  <canvas id="stage" tabindex="0" role="application"
+    aria-roledescription="interactive globe" aria-describedby="stage-help"
+    data-en="Biblical world globe. Drag to turn it, scroll or pinch to zoom, arrow keys to turn, plus and minus to zoom, Home to fit the current route."
+    data-zh="圣经世界地球。拖动可转动，滚轮或双指可缩放；方向键转动，加减号缩放，Home 键回到当前路线。"
+    aria-label="Biblical world globe. Drag to turn it, scroll or pinch to zoom, arrow keys to turn, plus and minus to zoom, Home to fit the current route."></canvas>
+  <p id="stage-help" class="sr-only"
+    data-en="Biblical world globe. Drag to turn it, scroll or pinch to zoom, arrow keys to turn, plus and minus to zoom, Home to fit the current route."
+    data-zh="圣经世界地球。拖动可转动，滚轮或双指可缩放；方向键转动，加减号缩放，Home 键回到当前路线。">Biblical world globe. Drag to turn it, scroll or pinch to zoom, arrow keys to turn, plus and minus to zoom, Home to fit the current route.</p>
 
   <!-- The opening screen: the globe itself, turning, at a size that reads on a
        phone. A 27 px star and 11 px of mono text in the middle of a black
