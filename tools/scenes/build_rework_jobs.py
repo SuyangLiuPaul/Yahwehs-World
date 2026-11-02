@@ -2,19 +2,25 @@
 
     python3 tools/scenes/build_rework_jobs.py [--dry-run] [--limit N] [--ids a,b,c [--include-escalated]]
 
+--replace-unclaimed (only with --ids) overwrites the unclaimed job of those squares with the fresh prompt.
 --ids restricts the run to those squares; --include-escalated (only with --ids) lets owner-approved 3-strike
 squares through. Without --ids nothing changes: escalated squares are still skipped.
 
 The job redraws the failing picture (live/<id>.png as the reference) with the reviewer's failure notes under 「这次要改正」,
 the same shape as the first 371 rework jobs. Run after sync_reviews.py.
 """
-import json, os, glob, sys
+import json, os, glob, re, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import square_exceptions as sx   # per-square exceptions (handoff/32)
 S = os.environ.get('SCENES_ROOT', '/Volumes/T7/yahwehs-globe-scenes'); J = f'{S}/codex-jobs'; R = f'{S}/no-text-derivatives-v2'
 dry = '--dry-run' in sys.argv
+REPLACE = '--replace-unclaimed' in sys.argv   # with --ids: overwrite the same square's UNCLAIMED job (claimed ones are never touched)
 limit = int(sys.argv[sys.argv.index('--limit') + 1]) if '--limit' in sys.argv else None
 active = set()
 for d in ('', 'claimed/', 'claimed-gemini/', 'claimed-drawargon/', 'claimed-antigravity/', 'claimed-copilot/', 'claimed-higgsfield/'):
-    for f in glob.glob(f'{J}/{d}square-*.json'): active.add(os.path.basename(f)[7:-5])
+    for f in glob.glob(f'{J}/{d}square-*.json'):
+        if d == '' and REPLACE and os.path.basename(f)[7:-5] in (sys.argv[sys.argv.index('--ids') + 1].split(',') if '--ids' in sys.argv else ()): continue  # unclaimed job being replaced
+        active.add(os.path.basename(f)[7:-5])
 only = set(sys.argv[sys.argv.index('--ids') + 1].split(',')) if '--ids' in sys.argv else None
 include_esc = only is not None and '--include-escalated' in sys.argv
 esc = set()
@@ -51,11 +57,25 @@ def icon_sentence(st):
     reason = (st.get('rework_reason') or '').lower()
     if 'faketext' in reason and any(w in reason for w in EMBLEM_WORDS): return ICON_BLANK
     return ICON_KEEP
+def exception_for(id):
+    try: return sx.get(id)
+    except (OSError, ValueError): return None
+def reason_for(id, st):
+    """The reviewer's failure note. For an exception square the notes about the vetoes the exception supersedes
+    (they ask for writing-like strokes or letters) are dropped so the generator is never told to draw letters."""
+    reason = st.get('rework_reason', '')
+    exc = exception_for(id)
+    if not exc: return reason
+    drop = {f'veto.{k}'.lower() for k in exc.get('rework_drop_veto_notes', [])}
+    parts = re.split(r';\s*(?=veto\.)', reason)
+    kept = [p for p in parts if p.split('=', 1)[0].strip().lower() not in drop]
+    return '; '.join(kept)
 def extra_for(id, st):
     out = ''
     if 'fakeText' in (st.get('failed_vetoes') or []) or 'veto.faketext' in (st.get('rework_reason') or '').lower():
         out += NOTEXT_EXTRA
-    r = REG.get(id)
+    exc = exception_for(id)
+    r = exc['registry_override'] if exc else REG.get(id)
     if r: out += f" Registry-required change (must be clearly, visibly made; removing text alone does not count): {r if isinstance(r, str) else json.dumps(r, ensure_ascii=False)}"
     return out
 def main():
@@ -75,12 +95,13 @@ def main():
                   f"Event: {fc['verses']['ref']}. What must be shown: {who}. Key action: {act}"
                   + (" No people in the scene." if fc.get('noPeople') else "") + extra_for(id, st) +
                   "\n" + icon_sentence(st) +
-                  f"\n这次要改正：{st.get('rework_reason', '')}")
+                  f"\n这次要改正：{reason_for(id, st)}")
         job = {"schema": "codex-job-v1", "kind": "square", "id": id, "prompt": prompt, "refs": [live],
                "out": f"{R}/candidates-codex/{id}.png", "minWidth": 1536, "source": "build_rework_jobs.py"}
         if limit is not None and n >= limit: break
         n += 1; ids.append(id)
-        if not dry: json.dump(job, open(f'{J}/square-{id}.json', 'w'), ensure_ascii=False, indent=1)
+        if not dry:
+            json.dump(job, open(f'{J}/.tmp-square-{id}.json', 'w'), ensure_ascii=False, indent=1); os.replace(f'{J}/.tmp-square-{id}.json', f'{J}/square-{id}.json')
     print(f"{'would write' if dry else 'wrote'} {n} rework jobs")
     if dry: print(' '.join(ids))
 

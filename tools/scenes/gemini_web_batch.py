@@ -352,6 +352,7 @@ def process_one_scene(tab_index: int, scene_id: str, meta: dict, from_candidate:
     }
 
 
+import square_exceptions
 def main():
     raw_args = [a for a in sys.argv[1:] if not a.startswith("--")]
     global_from_cand = "--from-candidate" in sys.argv[1:]
@@ -361,6 +362,7 @@ def main():
 
     cache = json.load(open(CACHE_PATH))
     reg = json.load(open(REG_PATH))
+    reg.update(square_exceptions.registry_overrides())   # per-square exceptions replace the registry text (handoff/32)
 
     gemini_tabs = find_gemini_tabs()
     tab_idx = gemini_tabs[0]

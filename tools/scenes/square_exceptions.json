@@ -1,0 +1,47 @@
+{
+ "schema": "square-exceptions-v1",
+ "doc": "Per-square exceptions to the generic square rules. Each entry is narrowly scoped to one id. The veto table (gate_check.VETO_TABLE, so VETO_TABLE_SHA256) is NOT changed and fakeText still applies in full to every live/<id>.png, including this square's: the live picture stays text-free. See handoff/32-square-inscription-exception.md.",
+ "exceptions": {
+  "daniel-5-1": {
+   "decision": "Owner ruling 2026-11-03: the Bible governs. The registry demand (writing on the wall) and the fakeText veto contradicted each other; the writing IS shown, as the real words of Daniel 5:25.",
+   "ref": "Daniel 5:25",
+   "verse_s": 27005025,
+   "verse_e": 27005025,
+   "text_he_pointed": "מְנֵא מְנֵא תְּקֵל וּפַרְסִין",
+   "text_he_consonants": "מנא מנא תקל ופרסין",
+   "translit": "Mene, Mene, Tekel, Upharsin",
+   "interpreted_in": "Daniel 5:26-28 as MENE, TEKEL, PERES",
+   "render": {
+    "script": "Imperial Aramaic (U+10840-U+10855), right-to-left, one glyph per Hebrew square-script consonant; no vowel points",
+    "font_family": "Noto Sans Imperial Aramaic",
+    "font_path": "/System/Library/Fonts/Supplemental/NotoSansImperialAramaic-Regular.ttf",
+    "layout": "two lines, each read right to left, first line MENE MENE, second line TEKEL UPHARSIN",
+    "lines": [
+     [
+      0,
+      1
+     ],
+     [
+      2,
+      3
+     ]
+    ],
+    "box_norm": [
+     0.4,
+     0.12,
+     0.66,
+     0.4
+    ],
+    "style": "incised into the plaster, lit by the lampstand; pale gold edge glow (the registry already demands luminous)",
+    "max_box_stddev": 14.0
+   },
+   "live_picture_rule": "live/daniel-5-1.png and candidates must show a disembodied hand and a BLANK, lit plaster wall area: no letters, no glyph-like strokes, no sparkle trails that read as writing. fakeText is judged on it exactly as for every other square.",
+   "registry_override": "Show the glowing disembodied hand of Daniel 5:5 writing at the lampstand on the plaster wall of the king's palace, with a large, plain, evenly lit, EMPTY area of smooth plaster beside the fingertips. The wall area is deliberately blank: NO letters, NO glyphs, NO lines, NO carved or luminous strokes, NO sparkle trails. The real inscription is added later by a script.",
+   "rework_drop_veto_notes": [
+    "fakeText",
+    "registryFix"
+   ],
+   "inscribed_output_dir": "inscribed"
+  }
+ }
+}

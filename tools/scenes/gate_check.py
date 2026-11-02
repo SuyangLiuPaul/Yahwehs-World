@@ -24,6 +24,9 @@ from collections import Counter
 
 from PIL import Image
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import square_exceptions  # noqa: E402  per-square exceptions (handoff/32)
+
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DEFAULT_SCENES_ROOT = "/Volumes/T7/yahwehs-globe-scenes"
 DEFAULT_EVENTS = os.path.join(REPO, "data", "events", "all-events.json")
@@ -168,6 +171,11 @@ class Context:
         self.books = bible["books"]
         self._registry = self._manifest = None
         self._still_cache = {}
+        self.exceptions_path = square_exceptions.EXCEPTIONS_PATH
+        try:
+            self.exception_ids = set(square_exceptions.load(self.exceptions_path))
+        except (OSError, ValueError):
+            self.exception_ids = set()
 
     @property
     def registry(self):
@@ -452,6 +460,44 @@ def legacy_contradictions(status):
     return bad
 
 
+def check_inscription(ctx, item, live_sha):
+    """Squares with an inscription exception (square_exceptions.json): the live picture is checked like any other
+    (fakeText unchanged); in addition the script-composited inscribed/<id>.png must exist, be bound to this live
+    SHA and carry exactly the exception's text. Nothing else about the veto table is relaxed."""
+    try:
+        exc = square_exceptions.get(item.id, ctx.exceptions_path)
+    except (OSError, ValueError) as err:
+        item.fail("inscription_exception_unreadable", str(err))
+        return
+    if not exc:
+        return
+    out_dir = exc.get("inscribed_output_dir", "inscribed")
+    png = os.path.join(ctx.square_root, out_dir, f"{item.id}.png")
+    ev, err = read_json(os.path.join(ctx.square_root, out_dir, f"{item.id}.inscription.json"))
+    if err or not isinstance(ev, dict):
+        item.fail("inscription_evidence_missing", err or "not an object")
+        return
+    problems = []
+    if ev.get("schema") != "inscription-evidence-v1" or ev.get("id") != item.id:
+        problems.append("schema")
+    if live_sha is None or ev.get("base_sha256") != live_sha:
+        problems.append("base_sha_not_live")
+    if not os.path.isfile(png) or file_sha256(png) != ev.get("output_sha256"):
+        problems.append("output_sha")
+    expected = square_exceptions.strip_points(exc["text_he_consonants"])
+    lines = ev.get("rendered_lines")
+    got = " ".join(" ".join(square_exceptions.from_imperial(w) for w in line.split()) for line in lines) \
+        if isinstance(lines, list) and all(isinstance(x, str) for x in lines) else None
+    if got is None or sorted(got.split()) != sorted(expected.split()):
+        problems.append("text_mismatch")
+    font = exc["render"]["font_path"]
+    if not (os.path.isfile(font) and ev.get("font_sha256") == file_sha256(font)):
+        problems.append("font_sha")
+    if problems:
+        item.fail("inscription_evidence_invalid", ",".join(problems))
+    item.measured["inscription"] = {"png": png, "problems": problems}
+
+
 def check_square(ctx, event_id):
     item = Item("square", event_id)
     status, err = read_json(os.path.join(ctx.square_root, "status", f"{event_id}.json"))
@@ -484,6 +530,8 @@ def check_square(ctx, event_id):
     card_sha = check_fact_card(ctx, item)
     check_review(ctx, item, os.path.join(ctx.square_root, "review", f"{event_id}.json"),
                  "image", sha, card_sha, registry_applies=registered)
+    if event_id in ctx.exception_ids:
+        check_inscription(ctx, item, sha)
     return item
 
 
