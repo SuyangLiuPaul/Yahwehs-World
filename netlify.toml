@@ -1,7 +1,7 @@
 # Only read during CI builds — a direct zip deploy ignores it, so anything that
 # must hold for both paths belongs in public/ as well.
 [build]
-  command = "npm run build"
+  command = "npm run build && node scripts/check-budget.mjs"
   publish = "dist"
 
 [build.environment]
