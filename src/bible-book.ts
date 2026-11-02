@@ -292,9 +292,24 @@ function renderReaderBar() {
     ? `${hant(bMeta.zh)} 第 ${currentChapter} 章 · ${hant('画卷圣经')}`
     : `${bMeta.en} ${currentChapter} · Illustrated Bible`;
 
-  $('bb-open-toc').textContent = zh
-    ? hant('📖 书卷目录 · 搜经文')
-    : '📖 Books & Search';
+  // Two faces for one button: pointer devices keep the descriptive label next to the
+  // book/chapter selects; coarse pointers hide the selects and this becomes the one
+  // control, reading "Genesis 1 ⌄" (CSS picks the face).
+  const toc = $('bb-open-toc');
+  toc.replaceChildren();
+  const full = document.createElement('span');
+  full.className = 'bb-picker-full';
+  full.textContent = zh ? hant('📖 书卷目录 · 搜经文') : '📖 Books & Search';
+  const cur = document.createElement('span');
+  cur.className = 'bb-picker-cur';
+  cur.textContent = zh ? hant(`${bMeta.zh} ${currentChapter}`) : `${bMeta.en} ${currentChapter}`;
+  const chev = document.createElement('span');
+  chev.className = 'bb-picker-chev';
+  chev.setAttribute('aria-hidden', 'true');
+  chev.textContent = '⌄';
+  cur.append(chev);
+  toc.append(full, cur);
+  toc.setAttribute('aria-label', zh ? hant(`选择书卷与章，现在是 ${bMeta.zh} 第 ${currentChapter} 章`) : `Choose book and chapter, now ${bMeta.en} ${currentChapter}`);
 
   const bookSelect = $('bb-book-select') as HTMLSelectElement;
   const hebrewOpts = BOOKS.slice(0, 39)

@@ -552,7 +552,12 @@ body:not(.bb-ready) #bible-book-page {
 } }
 
 .bb-pager-btn:disabled {
-  opacity: 0.35;
+  /* The label is information ("already the first chapter"), so it stays readable (>= 3:1);
+     the button is still disabled and looks inert through the missing fill, not through fading. */
+  opacity: 1;
+  color: var(--ink-3, #8fa9c4);
+  background: transparent;
+  border-color: rgba(143, 169, 196, 0.28);
   cursor: default;
 }
 
@@ -915,13 +920,23 @@ body:not(.bb-ready) #bible-book-page {
   }
 }
 
-/* ── touch (apple-look › accessibility): 28 px steppers and 24 px chips ── */
+/* ── touch (apple-look › accessibility) ──────────────────────────────────
+   Steppers: 40 px box (38 px padding box inside the 1 px border) + invisible 3 px extension on every side = 44 px target, layout unchanged.
+   The two <select>s cannot take a pseudo-element, and a 44 px select would grow the sticky bar,
+   so on coarse pointers they give way to the one picker button (book + chapter dialog), 44 px
+   tall. Fine pointers keep the selects. */
+.bb-picker-cur { display: none; }
 @media (pointer: coarse) {
   .bb-step-btn { width: 40px; height: 40px; position: relative; }
-  .bb-step-btn::after { content: ''; position: absolute; inset: -2px; }
+  .bb-step-btn::after { content: ''; position: absolute; top: -3px; right: -3px; bottom: -3px; left: -3px; }
   .bb-picker-btn, .bb-pill-btn, .bb-globe-chip { position: relative; }
-  .bb-picker-btn::after, .bb-pill-btn::after, .bb-globe-chip::after {
+  .bb-pill-btn::after, .bb-globe-chip::after {
     content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 44px; transform: translateY(-50%);
   }
-  .bb-select { min-height: 36px; }
+  .bb-select { display: none; }
+  /* the negative block margin keeps the row at its old 40 px, so the sticky bar does not grow */
+  .bb-picker-btn { min-height: 44px; margin-block: -2px; flex: 1 1 auto; justify-content: space-between; }
+  .bb-picker-full { display: none; }
+  .bb-picker-cur { display: inline-flex; align-items: center; gap: 8px; }
+  .bb-picker-chev { font-size: 1.1em; line-height: 1; }
 }
