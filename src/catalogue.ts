@@ -1,4 +1,4 @@
-import { FIGURES } from './walk/figures.ts';
+import { FIGURES } from './walk/figures-data.ts';
 
 // WHAT THIS APP HAS ACTUALLY BUILT, IN ONE PLACE YOU CAN LOOK AT.
 //
