@@ -24,6 +24,34 @@
   status = 301
   force = true
 
+# Caching, by whether the file name can change under the same URL.
+#
+#   hashed   Vite writes /assets/<name>-<content hash>.js|css and the packed map
+#            /assets/world.bin-<hash>.gz: a new build is a new URL, so the old
+#            one can be kept for a year.
+#   stable   everything else keeps its name when its content changes (pages, the
+#            /data/*.json files, version.json, models, images), so it must be
+#            revalidated: "no-cache" stores it but asks the server (a 304 is a
+#            few hundred bytes) before every use.
+# Netlify applies the matching rules in order and a later Cache-Control replaces
+# an earlier one. /assets/ also holds a few unhashed folders copied from public/
+# (character-cutouts, ark-cutouts, scene-assembly-references); the patterns below
+# name file types, not the folder, so those stay revalidated.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, no-cache"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, no-cache"
+
+[[headers]]
+  for = "/version.json"
+  [headers.values]
+    Cache-Control = "public, max-age=0, no-cache"
+
 # Public data filenames are stable. Revalidate them so source corrections
 # reach returning readers; only Vite's content-hashed assets are immutable.
 [[headers]]
@@ -32,7 +60,17 @@
     Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
-  for = "/assets/*"
+  for = "/assets/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*.gz"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
