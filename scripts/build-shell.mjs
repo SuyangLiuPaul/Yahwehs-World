@@ -183,7 +183,7 @@ const skeleton = (kind) => {
   }
   return `    <div class="ld-art" aria-hidden="true">
       <i class="ld-sk ld-sphere"></i>
-      <img id="loading-globe" src="/loading-globe.svg" alt="" width="180" height="180" decoding="async" fetchpriority="low" onload="this.parentNode.classList.add('ready')">
+      <img id="loading-globe" src="/loading-globe-sm.svg" alt="" width="180" height="180" decoding="async" fetchpriority="low" onload="this.parentNode.classList.add('ready')">
     </div>`;
 };
 
@@ -207,7 +207,7 @@ ${skeleton(page.sk)}
 
   <nav class="sitenav">
     <a class="brand" href="/">
-      <img class="brand-logo" src="/logo.png" alt="" width="34" height="34">
+      <img class="brand-logo" src="/brand-logo.webp" alt="" width="34" height="34">
       <span class="brand-words">
         <span class="zh" data-zh-text="雅伟之界">雅伟之界</span>
         <span class="en">Yahweh's World</span>
@@ -271,6 +271,9 @@ for (const page of PAGES) {
   }
   // …the font link, which is the same in all six…
   html = html.replace(/[ \t]*<link href="https:\/\/fonts\.googleapis\.com\/css2[^>]*>(\s*<noscript>[\s\S]*?<\/noscript>)?/, FONTS);
+
+  // …the tab icon (a 7 KB stand-in for the 297 KB icon.svg; scripts/build-small-brand.py)…
+  html = html.replace('<link rel="icon" href="/icon.svg" type="image/svg+xml">', '<link rel="icon" href="/icon-sm.svg" type="image/svg+xml">');
 
   // …and the anti-flash rule in the head, BETWEEN TWO MARKERS.
   //
