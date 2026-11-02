@@ -49,6 +49,18 @@ body {
   padding-bottom: 40px;
 }
 
+/* Layout shift (loading audit 2026-11-14, "What remains" 1: CLS 0.925 on a
+   phone). The reader bar fills in (its height depends on the width and the
+   language), then the chapter lands, and everything under it moved. The
+   loading screen already covers the page until the first chapter is rendered,
+   so the reader's own boxes stay invisible until then (visibility keeps the
+   box and its space, and a box that is not painted cannot be reported as
+   shifting). bible-book.ts adds .bb-ready just before the screen lifts. The
+   100vh minimum above keeps the footer below the fold the whole time. */
+body:not(.bb-ready) #bible-book-page {
+  visibility: hidden;
+}
+
 /* ── Clean Sticky Reader Bar (Spacious, never overlaps .sitenav) ───────── */
 .bb-reader-bar {
   position: sticky;

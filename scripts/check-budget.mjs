@@ -34,7 +34,9 @@ const PAGES = {
   // The figures page's cards are 300 KB of lazy JPEGs on top of this (the 3D viewer
   // and three.js load only when a card is opened); the budget is its code.
   'figures.html':  { budget: 80,   js: 40,  extra: [] },
-  'bible.html':    { budget: 3100, js: 60,  extra: ['/data/bible/bsb-yhwh.json', '/data/bible/cuvs-yhwh.json', '/data/bible/meta.json', '/data/events.json', '/data/places.json'] },
+  // Reader data is split by book (scripts/build-bible-split.mjs): Genesis in both languages is the
+  // start-up load of an English reader. The old figure was 3,100 KB (both whole Bibles + meta + events + places).
+  'bible.html':    { budget: 220,  js: 60,  extra: ['/data/bible/split/core.json', '/data/bible/split/book/1.json', '/data/bible/split/text/cuvs/1.json', '/data/bible/split/text/bsb/1.json'] },
   // The walks are model pages: their budget is the code and styles needed to
   // start; the models themselves are loaded behind the walk's own progress UI.
   'tabernacle.html': { budget: 480, js: 420, extra: [] },

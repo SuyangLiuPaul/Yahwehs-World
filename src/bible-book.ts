@@ -29,27 +29,18 @@ interface WordsSectionInfo {
   contextEn: string;
 }
 
-interface BibleMeta {
-  stats: {
-    books: number;
-    chapters: number;
-    verses: number;
-    illustrations: number;
-    yhwhOccurrences: number;
-    notesCount: number;
-    referentMarkersTotal: number;
-    referentYhwh: number;
-    referentJesus: number;
-    referentChrist: number;
-    suppliedH0: number;
-    suppliedG0: number;
-  };
-  intros: (BookIntro | null)[];
+/** One book's slice of the reader data (public/data/bible/split/book/<n>.json,
+ *  written by scripts/build-bible-split.mjs). `ci` is the event's 1-based place
+ *  in the full 1,443-event list, which numbers the sections. */
+interface BookData {
+  intro: BookIntro | null;
   paraStarts: number[];
-  refVerses?: number[];
-  wordsSections?: Record<string, WordsSectionInfo>;
+  refVerses: number[];
+  words: Record<string, WordsSectionInfo>;
+  events: (TrackEvent & { ci: number })[];
 }
 
+/** The whole-Bible text, fetched only when the reader searches. */
 interface BibleCorpus {
   books: string[][][];
 }
@@ -78,81 +69,86 @@ bindSwitch(document.querySelector('.lang-switch') as HTMLElement);
 applyStatic();
 installSiteMenu();
 
-const [eventsRes, metaRes, placesRes] = await Promise.all([
-  fetch('/data/events.json').then((r) => r.json() as Promise<{ events: TrackEvent[] }>),
-  fetch('/data/bible/meta.json').then((r) => r.json() as Promise<BibleMeta>),
-  fetch('/data/places.json').then((r) => r.json() as Promise<{ places: { id?: string; name: string; zh?: string }[] }>),
-]);
-const allEvents = eventsRes.events;
-loadingStep();
-
-const placeLabels = new Map<string, { en: string; zh: string }>();
-placesRes.places.forEach((p, idx) => {
-  const key = p.id ?? String(idx);
-  placeLabels.set(key, { en: p.name, zh: p.zh ?? p.name });
-  placeLabels.set(String(idx), { en: p.name, zh: p.zh ?? p.name });
-});
-
-const paraStartSet = new Set<number>(metaRes.paraStarts);
-const refVerseSet = new Set<number>(metaRes.refVerses ?? []);
-const wordsSections = metaRes.wordsSections ?? {};
-
-let cuvsCorpus: BibleCorpus | null = null;
-let cuvtCorpus: BibleCorpus | null = null;
-let bsbCorpus: BibleCorpus | null = null;
-
-async function ensureCorpora() {
-  const loc = rawLocale();
-  const tasks: Promise<void>[] = [];
-  if (loc === 'zh-Hant') {
-    if (!cuvtCorpus) {
-      tasks.push(
-        fetch('/data/bible/cuvt-yhwh.json')
-          .then((r) => r.json())
-          .then((d) => { cuvtCorpus = d; }),
-      );
-    }
-  } else {
-    if (!cuvsCorpus) {
-      tasks.push(
-        fetch('/data/bible/cuvs-yhwh.json')
-          .then((r) => r.json())
-          .then((d) => { cuvsCorpus = d; }),
-      );
-    }
-  }
-  if (loc === 'en' && !bsbCorpus) {
-    tasks.push(
-      fetch('/data/bible/bsb-yhwh.json')
-        .then((r) => r.json())
-        .then((d) => { bsbCorpus = d; }),
-    );
-  }
-  if (tasks.length) await Promise.all(tasks);
-}
-
-await ensureCorpora();
-loadingStep();
-
-// Group the 1,443 events by book (1..66) and record global 1-based index
-const eventsByBook = new Map<number, TrackEvent[]>();
-const canonicalIndexMap = new Map<string, number>();
-allEvents.forEach((ev: TrackEvent, idx: number) => {
-  canonicalIndexMap.set(ev.id, idx + 1);
-  const list = eventsByBook.get(ev.b) ?? [];
-  list.push(ev);
-  eventsByBook.set(ev.b, list);
-});
-
 // Reader State (Defaults to Genesis Chapter 1, chapter-by-chapter mode like Yahweh's Words)
 let currentBook = 1; // 1..66
 let currentChapter = 1; // 1..N
 let fullBookMode = false; // false = single chapter (fast, clean), true = whole book
 
-function getActiveZhBooks(): string[][][] {
-  if (rawLocale() === 'zh-Hant' && cuvtCorpus) return cuvtCorpus.books;
-  return (cuvsCorpus ?? cuvtCorpus)!.books;
+// Parse initial URL params (?book=1&ch=1 or ?book=Gen&ch=18)
+const initParams = new URLSearchParams(window.location.search);
+const rawBookParam = (initParams.get('book') ?? '').trim();
+const pBookNum = Number(rawBookParam);
+if (pBookNum >= 1 && pBookNum <= 66) {
+  currentBook = pBookNum;
+} else if (rawBookParam) {
+  const q = rawBookParam.toLowerCase();
+  const matchIdx = BOOKS.findIndex(
+    (b) =>
+      b.en.toLowerCase().startsWith(q) ||
+      b.zh === rawBookParam ||
+      b.en.toLowerCase().replace(/\s+/g, '') === q.replace(/\s+/g, ''),
+  );
+  if (matchIdx >= 0) currentBook = matchIdx + 1;
 }
+const pCh = Number(initParams.get('ch'));
+if (pCh >= 1) currentChapter = pCh;
+
+type Translation = 'bsb' | 'cuvs' | 'cuvt';
+const SPLIT = '/data/bible/split';
+const bookCache = new Map<number, Promise<BookData>>();
+const textCache = new Map<string, Promise<string[][]>>();
+
+function loadBookData(b: number): Promise<BookData> {
+  let p = bookCache.get(b);
+  if (!p) {
+    p = fetch(`${SPLIT}/book/${b}.json`).then((r) => r.json());
+    p.catch(() => bookCache.delete(b)); // a failed fetch is retried, not remembered
+    bookCache.set(b, p);
+  }
+  return p;
+}
+
+function loadText(tr: Translation, b: number): Promise<string[][]> {
+  const key = `${tr}/${b}`;
+  let p = textCache.get(key);
+  if (!p) {
+    p = fetch(`${SPLIT}/text/${tr}/${b}.json`).then((r) => r.json());
+    p.catch(() => textCache.delete(key));
+    textCache.set(key, p);
+  }
+  return p;
+}
+
+/** Chinese text follows the script the reader chose; English adds the BSB beside it. */
+function zhTranslation(): Translation {
+  return rawLocale() === 'zh-Hant' ? 'cuvt' : 'cuvs';
+}
+
+// Start the first book's three small files together with the chapter counts,
+// not one after the other.
+void loadBookData(currentBook).catch(() => {});
+void loadText(zhTranslation(), currentBook).catch(() => {});
+if (rawLocale() === 'en') void loadText('bsb', currentBook).catch(() => {});
+
+// Chapter counts for all 66 books (183 bytes): the pickers and the prev/next
+// labels need them before any book's text has arrived.
+const chapterCounts: number[] = (await fetch('/data/bible/split/core.json').then((r) => r.json())).chapters;
+loadingStep();
+
+// Full-text search needs every verse: those two files (about 1 MB each on the
+// wire) are fetched on the first query, never for reading.
+let fullZh: { tr: Translation; books: string[][][] } | null = null;
+let fullZhPending: Promise<void> | null = null;
+function ensureFullZh(): Promise<void> {
+  const tr = zhTranslation();
+  if (fullZh?.tr === tr) return Promise.resolve();
+  fullZhPending = fetch(`/data/bible/${tr}-yhwh.json`)
+    .then((r) => r.json() as Promise<BibleCorpus>)
+    .then((d) => { fullZh = { tr, books: d.books }; });
+  return fullZhPending;
+}
+
+const chaptersIn = (b: number): number => chapterCounts[b - 1] ?? 1;
 
 function circledNumber(n: number): string {
   if (n >= 1 && n <= 20) return String.fromCodePoint(0x2460 + n - 1);
@@ -285,8 +281,7 @@ function renderVerseNotesBlock(
 function renderReaderBar() {
   const zh = currentLocale() === 'zh';
   const bMeta = BOOKS[currentBook - 1]!;
-  const bookChs = getActiveZhBooks()[currentBook - 1] ?? [];
-  const totalCh = bookChs.length;
+  const totalCh = chaptersIn(currentBook);
 
   document.title = zh
     ? `${hant(bMeta.zh)} 第 ${currentChapter} 章 · ${hant('画卷圣经')}`
@@ -318,12 +313,9 @@ function renderReaderBar() {
   bookSelect.value = String(currentBook);
 
   const chSelect = $('bb-chapter-select') as HTMLSelectElement;
-  chSelect.innerHTML = bookChs
-    .map(
-      (_, idx) =>
-        `<option value="${idx + 1}">${zh ? hant(`第 ${idx + 1} 章`) : `Ch ${idx + 1}`}</option>`,
-    )
-    .join('');
+  chSelect.innerHTML = Array.from({ length: totalCh }, (_, idx) =>
+    `<option value="${idx + 1}">${zh ? hant(`第 ${idx + 1} 章`) : `Ch ${idx + 1}`}</option>`,
+  ).join('');
   chSelect.value = String(currentChapter);
 
   const prevBtn = $('bb-prev-ch') as HTMLButtonElement;
@@ -337,13 +329,22 @@ function renderReaderBar() {
 async function renderReadingStream() {
   const zh = currentLocale() === 'zh';
   const isHant = rawLocale() === 'zh-Hant';
-  await ensureCorpora();
+  const renderBook = currentBook;
+  const showEn = rawLocale() === 'en';
+  const [bookData, zhChs, enChs] = await Promise.all([
+    loadBookData(renderBook),
+    loadText(zhTranslation(), renderBook),
+    showEn ? loadText('bsb', renderBook) : Promise.resolve([] as string[][]),
+  ]);
+  // A faster click elsewhere (or a language switch) made this render stale.
+  if (renderBook !== currentBook || showEn !== (rawLocale() === 'en')) return;
 
   const bMeta = BOOKS[currentBook - 1]!;
-  const bookEvs = eventsByBook.get(currentBook) ?? [];
-  const zhChs = getActiveZhBooks()[currentBook - 1] ?? [];
-  const enChs = bsbCorpus?.books[currentBook - 1] ?? [];
-  const intro = metaRes.intros[currentBook - 1];
+  const bookEvs = bookData.events;
+  const intro = bookData.intro;
+  const paraStartSet = new Set<number>(bookData.paraStarts);
+  const refVerseSet = new Set<number>(bookData.refVerses);
+  const wordsSections = bookData.words;
 
   // 1. Book Intro (Shown on Chapter 1 or in Full Book Mode)
   const coverEl = $('bb-book-cover');
@@ -405,7 +406,7 @@ async function renderReadingStream() {
 
   targetSections.forEach((ev) => {
     const bookSecIdx = bookEvs.indexOf(ev);
-    const globalIdx = canonicalIndexMap.get(ev.id) ?? bookSecIdx + 1;
+    const globalIdx = ev.ci;
 
     const evCStart = Math.floor(ev.s / 1000) % 1000;
     const evVStart = ev.s % 1000;
@@ -561,8 +562,7 @@ async function renderReadingStream() {
 function renderBottomPager() {
   const zh = currentLocale() === 'zh';
   const pagerEl = $('bb-book-pager');
-  const bookChs = getActiveZhBooks()[currentBook - 1] ?? [];
-  const totalCh = bookChs.length;
+  const totalCh = chaptersIn(currentBook);
 
   let prevLabel = '';
   if (currentChapter > 1) {
@@ -572,7 +572,7 @@ function renderBottomPager() {
       : `‹ Prev: ${bMeta.en} ${currentChapter - 1}`;
   } else if (currentBook > 1) {
     const prevBook = BOOKS[currentBook - 2]!;
-    const prevBookChs = getActiveZhBooks()[currentBook - 2]?.length ?? 1;
+    const prevBookChs = chaptersIn(currentBook - 1);
     prevLabel = zh
       ? hant(`‹ 上一章：${prevBook.zh} 第 ${prevBookChs} 章`)
       : `‹ Prev: ${prevBook.en} ${prevBookChs}`;
@@ -614,13 +614,13 @@ function stepPrevChapter() {
   if (currentChapter > 1) {
     navigateTo(currentBook, currentChapter - 1, true);
   } else if (currentBook > 1) {
-    const prevChCount = getActiveZhBooks()[currentBook - 2]?.length ?? 1;
+    const prevChCount = chaptersIn(currentBook - 1);
     navigateTo(currentBook - 1, prevChCount, true);
   }
 }
 
 function stepNextChapter() {
-  const totalCh = getActiveZhBooks()[currentBook - 1]?.length ?? 1;
+  const totalCh = chaptersIn(currentBook);
   if (currentChapter < totalCh) {
     navigateTo(currentBook, currentChapter + 1, true);
   } else if (currentBook < 66) {
@@ -630,7 +630,7 @@ function stepNextChapter() {
 
 async function navigateTo(bookNum: number, chapterNum: number, updateUrl: boolean, targetVerseId?: number) {
   currentBook = Math.max(1, Math.min(66, bookNum));
-  const maxCh = getActiveZhBooks()[currentBook - 1]?.length ?? 1;
+  const maxCh = chaptersIn(currentBook);
   currentChapter = Math.max(1, Math.min(maxCh, chapterNum));
 
   if (updateUrl) {
@@ -676,7 +676,19 @@ function renderTocBody(query: string) {
 
   if (query.length >= 1) {
     const qLower = query.toLowerCase();
-    const zhBooks = getActiveZhBooks();
+    if (fullZh?.tr !== zhTranslation()) {
+      // First search (or a script switch): the whole text is fetched once, then the query re-runs.
+      bodyEl.innerHTML = `<p style="padding:18px;color:var(--ink-2)">${zh ? hant('正在载入全书经文…') : 'Loading the full text…'}</p>`;
+      ensureFullZh().then(
+        () => {
+          const input = $('bb-global-search') as HTMLInputElement;
+          if (input.value.trim() === query) renderTocBody(query);
+        },
+        () => { bodyEl.innerHTML = `<p style="padding:18px;color:var(--ink-2)">${zh ? hant('经文载入失败，请重试。') : 'The text could not be loaded. Try again.'}</p>`; },
+      );
+      return;
+    }
+    const zhBooks = fullZh.books;
     const hits: { b: number; c: number; v: number; vid: number; raw: string }[] = [];
 
     for (let bIdx = 0; bIdx < zhBooks.length && hits.length < 80; bIdx++) {
@@ -727,7 +739,7 @@ function renderTocBody(query: string) {
   }
 
   const curBookMeta = BOOKS[currentBook - 1]!;
-  const curBookChs = getActiveZhBooks()[currentBook - 1] ?? [];
+  const curBookChs = Array.from({ length: chaptersIn(currentBook) });
 
   const chCellsHtml = curBookChs
     .map(
@@ -740,7 +752,7 @@ function renderTocBody(query: string) {
     BOOKS.slice(startB - 1, endB)
       .map((b, idx) => {
         const bNum = startB + idx;
-        const chCnt = getActiveZhBooks()[bNum - 1]?.length ?? 0;
+        const chCnt = chaptersIn(bNum);
         const label = zh ? hant(b.zh) : b.en;
         return `
           <button type="button" class="bb-toc-card${bNum === currentBook ? ' active' : ''}" data-pick-b="${bNum}">
@@ -806,25 +818,7 @@ onLocale(() => {
   renderReadingStream();
 });
 
-// Parse initial URL params (?book=1&ch=1 or ?book=Gen&ch=18)
-const initParams = new URLSearchParams(window.location.search);
-const rawBookParam = (initParams.get('book') ?? '').trim();
-const pBookNum = Number(rawBookParam);
-if (pBookNum >= 1 && pBookNum <= 66) {
-  currentBook = pBookNum;
-} else if (rawBookParam) {
-  const q = rawBookParam.toLowerCase();
-  const matchIdx = BOOKS.findIndex(
-    (b) =>
-      b.en.toLowerCase().startsWith(q) ||
-      b.zh === rawBookParam ||
-      b.en.toLowerCase().replace(/\s+/g, '') === q.replace(/\s+/g, ''),
-  );
-  if (matchIdx >= 0) currentBook = matchIdx + 1;
-}
-const pCh = Number(initParams.get('ch'));
-if (pCh >= 1) currentChapter = pCh;
-
 await navigateTo(currentBook, currentChapter, false);
 loadingStep();
+document.body.classList.add('bb-ready'); // see bible-book.css: the reader paints only now
 pageReady();
