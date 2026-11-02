@@ -555,7 +555,8 @@ function visibleBand() {
 }
 
 function updateLayout() {
-  document.body.style.setProperty('--footer-height',$('timeline').getBoundingClientRect().height+'px');
+  // The phone tab bar sits under the timeline, so everything stacked above the timeline clears both.
+  document.body.style.setProperty('--footer-height',($('timeline').getBoundingClientRect().height+(document.querySelector('.tabbar')?.getBoundingClientRect().height||0))+'px');
   safeBand=visibleBand();
   document.body.style.setProperty('--map-bottom',(safeBand.top+safeBand.height-10)+'px');
 }

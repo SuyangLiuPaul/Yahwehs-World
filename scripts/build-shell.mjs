@@ -187,6 +187,36 @@ const skeleton = (kind) => {
     </div>`;
 };
 
+
+// PHONE NAVIGATION (Fable ruling 3). Under 768 px the top strip showed a fragment of one tab beside "Routes",
+// so the destinations move to a bottom tab bar: visible, five slots, labelled (tab-bars.md). Globe, Bible and
+// Scenes are pages; 3D Spaces and All open the menus the bar already has. Figures, Panorama, Routes and the
+// language switch live inside All. Tablet and desktop never see it (CSS). The icons are monochrome line glyphs
+// and the current tab is gold AND heavier, not colour alone.
+const ICON = {
+  globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18"/>',
+  bible: '<path d="M4 5.5c2.7-1.2 5.3-1.2 8 .5 2.7-1.7 5.3-1.7 8-.5V19c-2.7-1.2-5.3-1.2-8 .5-2.7-1.7-5.3-1.7-8-.5z"/><path d="M12 6v13.5"/>',
+  scenes: '<rect x="3.5" y="5" width="17" height="14" rx="1.5"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17l5-4.5 3.5 3 3-2.5 4.5 4"/>',
+  space: '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/>',
+  all: '<rect x="4" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.2"/>',
+};
+const svg = (name) => `<svg class="tb-i" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[name]}</svg>`;
+const tabbar = (page) => {
+  const inWalks = !!page.walk;
+  const inAll = page.file === 'figures.html' || page.file === 'plan.html';
+  const link = (file, href, icon, en, zh) =>
+    `    <a class="tb" href="${href}"${page.file === file ? ' aria-current="page"' : ''}>${svg(icon)}<span data-en="${en}" data-zh="${zh}">${en}</span></a>`;
+  const opener = (opens, icon, en, zh, here) =>
+    `    <button type="button" class="tb" data-opens="${opens}" aria-haspopup="true" aria-expanded="false" aria-controls="${opens}"${here ? ' aria-current="page"' : ''}>${svg(icon)}<span data-en="${en}" data-zh="${zh}">${en}</span></button>`;
+  return `  <nav class="tabbar" aria-label="Sections">
+${link('index.html', '/', 'globe', 'Globe', '地球')}
+${link('bible.html', '/bible.html', 'bible', 'Bible', '圣经')}
+${link('scenes.html', '/scenes.html', 'scenes', 'Scenes', '画卷')}
+${opener('walkmenu', 'space', '3D Spaces', '走进 3D', inWalks)}
+${opener('allmenu', 'all', 'All', '全部', inAll)}
+  </nav>`;
+};
+
 const shell = (page) => `${START}
   <!-- The opening screen. It is markup rather than something the page's own
        script draws, because the whole point of it is to be on screen BEFORE
@@ -211,6 +241,7 @@ ${skeleton(page.sk)}
       <span class="brand-words">
         <span class="zh" data-zh-text="雅伟之界">雅伟之界</span>
         <span class="en">Yahweh's World</span>
+        <span class="pg" data-en="${page.en}" data-zh="${page.zh}">${page.en}</span>
       </span>
     </a>
     <!-- Everything there is, and everything there is going to be. The bar can
@@ -244,6 +275,7 @@ ${tabs(page.file)}
       <button type="button" data-locale="zh-Hant" lang="zh-Hant">繁</button>
     </div>
   </nav>
+${tabbar(page)}
   <!-- Filled by src/site-shell.ts from the same plan the Plan page reads. -->
   <div id="allmenu" hidden></div>
 ${END}`;

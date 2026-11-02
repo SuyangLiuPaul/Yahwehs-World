@@ -217,7 +217,7 @@ body {
 
 /* ── timeline ────────────────────────────────────────────────────────── */
 #timeline {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  position: fixed; left: 0; right: 0; bottom: var(--tabbar-h, 0px); z-index: 20;
   padding: var(--sp-4) calc(var(--sp-5) + var(--safe-right))
            calc(var(--sp-4) + var(--safe-bottom)) calc(var(--sp-5) + var(--safe-left));
   background: var(--scrim-bottom);
@@ -338,7 +338,7 @@ body {
   .legend { display: none; }
   .credit { font-size: 11px; }
   #routes {
-    top: auto; bottom: 76px; left: var(--sp-3); right: var(--sp-3); width: auto;
+    top: auto; bottom: calc(76px + var(--tabbar-h, 0px)); left: var(--sp-3); right: var(--sp-3); width: auto;
   }
   /* The card was a block in the middle of the screen sitting on top of the
      route it describes. On a phone it becomes one line at the bottom edge. */
@@ -369,7 +369,7 @@ body {
   }
   #r-basis { max-height: 64px; }
   #panel {
-    top: auto; bottom: 188px; right: var(--sp-3); left: var(--sp-3);
+    top: auto; bottom: calc(188px + var(--tabbar-h, 0px)); right: var(--sp-3); left: var(--sp-3);
     width: auto; max-height: 40vh;
   }
   #timeline { padding: var(--sp-3) var(--sp-4); }

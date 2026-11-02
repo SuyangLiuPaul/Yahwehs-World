@@ -318,3 +318,80 @@ html[lang^="zh"] .am-sheet h3 { text-transform: none; letter-spacing: var(--tr-c
 .am-live .am-state { color: var(--gold-bright); border-color: var(--line-gold); background: var(--gold-wash); }
 .am-building .am-state { color: var(--ink-2); border-style: dashed; }
 .am-planned .am-state { color: var(--ink-3); border-style: dashed; opacity: .8; }
+
+/* ── Phone navigation: a bottom tab bar under 768 px (Fable ruling 3) ───────────
+   The strip beside the wordmark showed a fragment of one tab; the bar below is visible at all times,
+   has five labelled slots (tab-bars.md) and leaves the top bar with the logo, the page name and the
+   language switch. Tablet and desktop keep the top strip untouched. Height 49 + the safe-area inset;
+   --tabbar-h is what fixed bottom furniture adds to its own offset. */
+.tabbar { display: none; }
+.sitenav .brand .pg { display: none; }
+@media (max-width: 767px) {
+  :root { --tabbar-h: calc(49px + var(--safe-bottom)); }
+
+  /* top bar: logo, current page name where the wordmark's second line was, language */
+  .sitenav .brand .pg {
+    /* Fixed like the English line it replaces (10 px): it must not grow the bar at large text sizes. */
+    display: block; font-family: var(--ui); font-size: 12px; font-weight: 500;
+    letter-spacing: var(--tr-cjk); line-height: 1.1; color: var(--gold-bright);
+    max-width: 38vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .sitenav .spacer { display: block; flex: 1; }
+  /* The tabs, 全部 and 路线 leave the top bar. The row is hidden by visibility, not display, because the
+     3D-space menu is a child of it; the menus themselves are shown again below. 路线's button goes, its
+     menu stays (the globe's journeys pill and the All sheet open it). */
+  .sitenav ol { position: absolute; width: 0; height: 0; overflow: hidden; visibility: hidden; flex: none; }
+  .sitenav ol .dd:not([hidden]) { visibility: visible; }
+  #all-open, #routes-open { display: none; }
+  #routes-group { position: static; }
+
+  .tabbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 44;
+    display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+    height: var(--tabbar-h); padding: 0 var(--safe-right) var(--safe-bottom) var(--safe-left);
+    background: color-mix(in srgb, var(--ground) 94%, transparent);
+    -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+    border-top: 1px solid var(--line-gold);
+  }
+  .tb {
+    position: relative; margin: 0; padding: 0; background: transparent; border: 0; cursor: pointer;
+    display: grid; justify-items: center; align-content: center; gap: 2px; min-width: 0;
+    color: var(--ink-2); text-decoration: none; font-family: var(--ui);
+    /* Like a system tab bar, the label stops growing at 14 px; "3D Spaces" has to fit a fifth of the width. */
+    font-size: min(var(--fs-100), 14px); font-weight: 500; letter-spacing: var(--tr-cjk); line-height: 1.1;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tb span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tb-i { display: block; }
+  .tb[aria-current], .tb[aria-expanded="true"] { color: var(--gold-bright); font-weight: 700; }
+  .tb:focus-visible { outline: 2px solid var(--gold); outline-offset: -4px; }
+
+  /* The menus open upward from the bar, as sheets: 3D Spaces and Routes. */
+  .dd {
+    top: auto; bottom: calc(var(--tabbar-h) + var(--sp-2)); left: var(--sp-2); right: var(--sp-2);
+    max-width: none; width: auto; max-height: calc(100dvh - var(--tabbar-h) - 72px - var(--safe-top));
+  }
+
+  /* Everything fixed to the bottom edge sits above the bar. */
+  .source-credit { bottom: var(--tabbar-h); }
+  body:not(:has(#stage)) { padding-bottom: var(--tabbar-h); }
+}
+@media (min-width: 768px) { .am-phone { display: none; } }
+.am-phone { display: flex; gap: var(--sp-3); align-items: center; margin: var(--sp-3) 0 0; }
+.am-routes {
+  flex: 1; min-height: 44px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--sp-3); background: transparent; color: var(--gold-bright); cursor: pointer;
+  border: 1px solid var(--line-gold); border-radius: var(--radius);
+  font: 500 var(--fs-200)/1 var(--ui); letter-spacing: var(--tr-cjk);
+}
+.am-routes i { font-style: normal; font-size: var(--fs-400); }
+.am-lang { display: flex; border: 1px solid var(--line-gold); border-radius: var(--radius); overflow: hidden; flex: none; }
+.am-lang button {
+  min-width: 44px; min-height: 44px; margin: 0; padding: 0 var(--sp-2); background: transparent; color: var(--ink-3);
+  border: 0; border-left: 1px solid var(--line-gold); cursor: pointer;
+  font-family: var(--mono); font-size: var(--fs-100); font-weight: 500; letter-spacing: var(--tr-caps);
+}
+.am-lang button:first-child { border-left: 0; }
+.am-lang button[lang^="zh"] { font-family: var(--ui); letter-spacing: 0; }
+.am-lang button[aria-pressed="true"] { color: var(--gold-bright); background: var(--gold-wash); }
+.am-lang button:focus-visible, .am-routes:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }

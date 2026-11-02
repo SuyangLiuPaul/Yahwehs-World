@@ -1,4 +1,4 @@
-import { applyStatic, hant, onLocale, t } from './locale.ts';
+import { applyStatic, fullLocale, hant, onLocale, setLocale, t, type Locale } from './locale.ts';
 import { UNITS } from './plan-units.ts';
 
 // Two things every page shares, and neither of them belonged to any one page.
@@ -95,6 +95,11 @@ function render(menu: HTMLElement) {
       <h2>${t("Yahweh's World · Full Guide", '雅伟之界 · 全景导览')}</h2>
       <button type="button" id="all-close" aria-label="${t('Close', '关闭')}">✕</button>
     </header>
+    <div class="am-phone">
+      <button type="button" id="am-routes" class="am-routes"><span>${t('Routes', '路线')}</span><i aria-hidden="true">›</i></button>
+      <div class="am-lang" role="group" aria-label="Language / 语言">${(['en', 'zh-Hans', 'zh-Hant'] as const).map((l) =>
+        `<button type="button" data-locale="${l}" lang="${l}" aria-pressed="${fullLocale() === l}">${l === 'en' ? 'EN' : l === 'zh-Hans' ? '简' : '繁'}</button>`).join('')}</div>
+    </div>
     <p class="am-lede">${t(
       `Explore the entire Bible across 1,443 canonical events, 1,332 geographical places, 10 animated journeys, 394 character cutouts, 85+ rigged 3D models, and 1:1 measured 3D spaces across 56 narrative units.`,
       `汇集整本圣经 1,443 个正典事件与双语画卷、1,332 处考据地名、10 条动态行程路线、394 张透明立绘、85+ 骨骼动画 3D 模型，以及按圣经尺寸 1:1 建造的 3D 空间（共 56 个叙事单元）。`)}</p>
@@ -106,7 +111,7 @@ function render(menu: HTMLElement) {
     <h3>${t('All 56 Biblical Narrative Units', '整本圣经 56 个叙事单元目录')}</h3>
     <ol class="am-units">${rows}</ol>
   </div>`;
-  menu.querySelector('#all-close')?.addEventListener('click', close);
+  menu.querySelector('#all-close')?.addEventListener('click', () => close());
 }
 
 // ── the two shelves in the bar ───────────────────────────────────────────
@@ -115,33 +120,44 @@ function render(menu: HTMLElement) {
 // thing: both are lists that were going to outgrow a row of tabs, and both
 // are opened the same way, so they are opened by the same function.
 
-type Shelf = { button: HTMLElement; panel: HTMLElement; fill?: () => Promise<void> | void };
+/** The controls that open a menu: the one in the top bar and, on a phone, the one in the tab bar
+ *  (`data-opens`). Both are kept in step; focus goes back to whichever one is on screen. */
+const triggersOf = (id: string, own: HTMLElement | null) =>
+  [own, ...Array.from(document.querySelectorAll<HTMLElement>(`[data-opens="${id}"]`))].filter((b): b is HTMLElement => !!b);
+const onScreen = (els: HTMLElement[]) => els.find((b) => b.getClientRects().length > 0) ?? els[0];
+const setExpanded = (els: HTMLElement[], v: boolean) => els.forEach((b) => b.setAttribute('aria-expanded', String(v)));
+
+type Shelf = { buttons: HTMLElement[]; panel: HTMLElement; fill?: () => Promise<void> | void };
 const shelves: Shelf[] = [];
 
 function closeShelves(except?: Shelf) {
   for (const s of shelves) {
     if (s === except) continue;
     s.panel.hidden = true;
-    s.button.setAttribute('aria-expanded', 'false');
+    setExpanded(s.buttons, false);
   }
 }
 
 function shelf(buttonId: string, panelId: string, fill?: Shelf['fill']) {
-  const button = $(buttonId), panel = $(panelId);
-  if (!button || !panel) return;
-  const s: Shelf = { button, panel, fill };
+  const panel = $(panelId);
+  const buttons = triggersOf(panelId, $(buttonId));
+  if (!buttons.length || !panel) return;
+  const s: Shelf = { buttons, panel, fill };
   shelves.push(s);
   let filled = false;
-  button.addEventListener('click', async () => {
+  const toggle = async () => {
     const showing = !panel.hidden;
     closeShelves(s);
-    if (showing) { panel.hidden = true; button.setAttribute('aria-expanded', 'false'); return; }
+    // An All sheet that is open gives way to the shelf, the way one tab replaces another.
+    if (open) close(false);
+    if (showing) { panel.hidden = true; setExpanded(buttons, false); return; }
     if (!filled && fill) { await fill(); filled = true; }
     panel.hidden = false;
-    button.setAttribute('aria-expanded', 'true');
+    setExpanded(buttons, true);
     (panel.querySelector('a, button') as HTMLElement | null)?.focus();
-  });
-  panel.addEventListener('click', () => { panel.hidden = true; button.setAttribute('aria-expanded', 'false'); });
+  };
+  buttons.forEach((b) => b.addEventListener('click', toggle));
+  panel.addEventListener('click', () => { panel.hidden = true; setExpanded(buttons, false); });
 }
 
 /** The globe page takes journeys itself rather than through the address bar,
@@ -189,13 +205,14 @@ function drawRoutes() {
 }
 
 let open = false;
-function close() {
-  const menu = $('allmenu'), button = $('all-open');
+function close(refocus = true) {
+  const menu = $('allmenu');
   if (!menu) return;
   menu.hidden = true;
   open = false;
-  button?.setAttribute('aria-expanded', 'false');
-  (button as HTMLElement | null)?.focus();
+  const buttons = triggersOf('allmenu', $('all-open'));
+  setExpanded(buttons, false);
+  if (refocus) onScreen(buttons)?.focus();
 }
 
 /** On a phone the tab strip scrolls sideways, and it opens at the left, so on
@@ -226,23 +243,32 @@ export function installSiteMenu() {
   // One press anywhere else puts them away — a shelf left hanging over the
   // map after the reader has moved on is the same fault as the pill was.
   document.addEventListener('click', (e) => {
-    if (!(e.target as HTMLElement).closest('.tab-group')) closeShelves();
+    if (!(e.target as HTMLElement).closest('.tab-group, .tabbar, #allmenu')) closeShelves();
   });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeShelves(); });
 
-  const menu = $('allmenu'), button = $('all-open');
-  if (!menu || !button) return;
+  const menu = $('allmenu');
+  const buttons = triggersOf('allmenu', $('all-open'));
+  if (!menu || !buttons.length) return;
   let drawn = false;
   const draw = () => { render(menu); drawn = true; };
-  button.addEventListener('click', () => {
+  buttons.forEach((button) => button.addEventListener('click', () => {
     if (open) return close();
+    closeShelves();
     if (!drawn) draw();
     menu.hidden = false;
     open = true;
-    button.setAttribute('aria-expanded', 'true');
+    setExpanded(buttons, true);
     (menu.querySelector('#all-close') as HTMLElement | null)?.focus();
+  }));
+  menu.addEventListener('click', (e) => {
+    if (e.target === menu) return close();
+    // The phone-only rows at the top of the sheet: the journeys, and the language.
+    const target = e.target as HTMLElement;
+    const lang = target.closest<HTMLElement>('[data-locale]');
+    if (lang) { void setLocale(lang.dataset.locale as Locale); return; }
+    if (target.closest('#am-routes')) { close(false); $('routes-open')?.click(); }
   });
-  menu.addEventListener('click', (e) => { if (e.target === menu) close(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && open) close(); });
   // The sheet says aria-modal, so the page behind it must not be reachable by
   // keyboard: Tab cycled through all 65 links and then walked out into the
@@ -268,7 +294,11 @@ const TRIGGERS: Record<string, string> = {
   't-goto': 't-goto-open', 't-events-menu': 't-events-open',
 };
 function pointAtTrigger(menu: HTMLElement) {
-  const trigger = document.getElementById(TRIGGERS[menu.id] ?? '');
+  const own = document.getElementById(TRIGGERS[menu.id] ?? '');
+  // The top-bar button is not on screen on a phone: use the one in the tab bar, or the pill that opened it.
+  const fallbacks = [...Array.from(document.querySelectorAll<HTMLElement>(`[data-opens="${menu.id}"]`)),
+    ...(menu.id === 'routemenu' ? [document.getElementById('gm-routes'), ...Array.from(document.querySelectorAll<HTMLElement>('[data-opens="allmenu"]'))] : [])];
+  const trigger = [own, ...fallbacks].find((b): b is HTMLElement => !!b && b.getClientRects().length > 0);
   if (!trigger) return;
   const m = menu.getBoundingClientRect(), t = trigger.getBoundingClientRect();
   menu.style.setProperty('--origin-x', `${Math.round(t.left + t.width / 2 - m.left)}px`);
