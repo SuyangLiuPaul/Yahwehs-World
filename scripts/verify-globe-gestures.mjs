@@ -10,7 +10,9 @@ try {
   const context = await browser.newContext({ viewport: { width: 375, height: 812 }, deviceScaleFactor: 2, hasTouch: true });
   const page = await context.newPage(), cdp = await context.newCDPSession(page);
   page.on('pageerror', e => report.errors.push(e.message));
-  await page.goto('http://127.0.0.1:5175/');
+  await page.goto((process.env.TEST_URL ?? 'http://127.0.0.1:5175') + '/');
+  // The door cards are DOM overlays that sit over the Levant at these camera poses and swallow the drag these checks start on.
+  await page.addStyleTag({ content: '#doors { display: none !important; }' });
   await page.waitForFunction(() => window.__globe);
   const pose = () => page.evaluate(() => ({ position: __globe.camera.position.toArray(), distance: __globe.camera.position.length(), selected: __globe.selected?.name, speed: __globe.controls.rotateSpeed }));
   const reset = async (radius = 125, lat = 31, lon = 35) => page.evaluate(async ({ radius, lat, lon }) => {

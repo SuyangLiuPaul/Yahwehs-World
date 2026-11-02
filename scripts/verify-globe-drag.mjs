@@ -14,7 +14,9 @@ try {
       await context.addInitScript(l => localStorage.setItem('ydh.locale', l), locale);
       const page = await context.newPage();
       page.on('pageerror', e => report.errors.push(e.message));
-      await page.goto('http://127.0.0.1:5175/');
+      await page.goto((process.env.TEST_URL ?? 'http://127.0.0.1:5175') + '/');
+  // The door cards are DOM overlays that sit over the Levant at these camera poses and swallow the drag these checks start on.
+  await page.addStyleTag({ content: '#doors { display: none !important; }' });
       await page.waitForFunction(() => window.__globe);
       const cdp = await context.newCDPSession(page);
       for (const radius of [108, 125, 200, 400]) {
