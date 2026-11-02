@@ -166,7 +166,8 @@ try {
   await page.keyboard.press('-'); assert.ok((await pose()).distance > d1);
   await page.evaluate(() => __globe.select(__globe.bundle.places.find(p => p.name === 'Jerusalem')));
   await stage.focus(); await page.keyboard.press('Escape');
-  assert.equal(await page.locator('#panel').isHidden(), true, 'Escape did not close the place card');
+  // The card fades out (220 ms) before it stops rendering, so the attribute is the state to assert.
+  assert.equal(await page.locator('#panel').evaluate(el => el.hidden), true, 'Escape did not close the place card');
   await page.evaluate(() => { document.getElementById('t-range')?.focus(); });
   const rangeBefore = (await pose()).position; await page.keyboard.press('ArrowLeft');
   same((await pose()).position, rangeBefore, 'Arrow keys turned the globe while another control had focus');

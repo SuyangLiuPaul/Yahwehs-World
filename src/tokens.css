@@ -181,6 +181,70 @@ html[lang^="zh"] kbd { letter-spacing: normal; }
   }
 }
 
+/* ── Surface motion (Fable ruling 2a; apple-motion §7 spatial continuity) ─────
+   Nothing appears or disappears between two frames. Panels and cards take 220 ms of opacity plus a
+   12 px translate from the edge they live on (bottom on phones, the right for the place card on wider
+   screens); menus take 160 ms of opacity plus scale(.96) from their trigger. Entry uses @starting-style
+   (display none -> shown) and exit keeps the element rendered until the fade ends (display with
+   allow-discrete), so JS keeps toggling plain `hidden` / `open`: the attribute is still the end state and
+   the source of truth. Individual `translate` / `scale` properties compose with any transform the
+   element already has. The trigger origin comes from site-shell (--origin-x/--origin-y).
+   Reduced motion: opacity only, 120 ms.
+   Dialogs are kept out of the id-bearing lists on purpose: an :is() takes its most specific argument, which
+   would let the "open" rule outrank dialog:not([open]) and the exit would never fade. */
+:is(#panel, #event-card, #r-card, .bb-dialog) {
+  --enter: 0 12px;
+  opacity: 1; translate: 0 0;
+  transition: opacity .22s ease-out, translate .22s ease-out, display .22s allow-discrete;
+}
+@media (min-width: 768px) { #panel { --enter: 12px 0; } }
+:is(#panel, #event-card, #r-card, .bb-dialog)[hidden] {
+  opacity: 0; translate: var(--enter); pointer-events: none;
+  transition: opacity .22s ease-in, translate .22s ease-in, display .22s allow-discrete;
+}
+@starting-style { :is(#panel, #event-card, #r-card, .bb-dialog) { opacity: 0; translate: var(--enter); } }
+
+dialog {
+  --enter: 0 12px;
+  opacity: 1; translate: 0 0;
+  transition: opacity .22s ease-out, translate .22s ease-out, display .22s allow-discrete, overlay .22s allow-discrete;
+}
+dialog:not([open]) {
+  opacity: 0; translate: var(--enter); pointer-events: none;
+  transition: opacity .22s ease-in, translate .22s ease-in, display .22s allow-discrete, overlay .22s allow-discrete;
+}
+@starting-style { dialog[open] { opacity: 0; translate: var(--enter); } }
+dialog::backdrop { opacity: 1; transition: opacity .22s ease-out, display .22s allow-discrete, overlay .22s allow-discrete; }
+dialog:not([open])::backdrop { opacity: 0; transition-timing-function: ease-in; }
+@starting-style { dialog[open]::backdrop { opacity: 0; } }
+
+:is(.dd, #t-goto, #t-events-menu, #allmenu) {
+  opacity: 1; scale: 1; transform-origin: var(--origin-x, 0) var(--origin-y, 0);
+  transition: opacity .16s ease-out, scale .16s ease-out, display .16s allow-discrete;
+}
+:is(.dd, #t-goto, #t-events-menu, #allmenu)[hidden] {
+  opacity: 0; scale: .96; pointer-events: none;
+  transition: opacity .16s ease-in, scale .16s ease-in, display .16s allow-discrete;
+}
+@starting-style { :is(.dd, #t-goto, #t-events-menu, #allmenu) { opacity: 0; scale: .96; } }
+/* The 全部 overlay is a full-screen scrim: it only fades; its sheet is the part that scales from the trigger. */
+#allmenu, #allmenu[hidden] { scale: none; }
+#allmenu .am-sheet { transform-origin: var(--origin-x, 0) var(--origin-y, 0); scale: 1; transition: scale .16s ease-out; }
+#allmenu[hidden] .am-sheet { scale: .96; transition: scale .16s ease-in; }
+@starting-style { #allmenu .am-sheet { scale: .96; } }
+
+@media (prefers-reduced-motion: reduce) {
+  :is(#panel, #event-card, #r-card, .bb-dialog, .dd, #t-goto, #t-events-menu, #allmenu),
+  :is(#panel, #event-card, #r-card, .bb-dialog, .dd, #t-goto, #t-events-menu, #allmenu)[hidden],
+  dialog, dialog:not([open]), dialog::backdrop {
+    translate: none !important; scale: none !important;
+    transition-property: opacity, display, overlay !important;
+    transition-behavior: normal, allow-discrete, allow-discrete !important;
+    transition-duration: .12s !important;
+  }
+  #allmenu .am-sheet, #allmenu[hidden] .am-sheet { scale: none !important; transition: none !important; }
+}
+
 /* Reduced transparency: every blurred surface here already sits on a fill of
    at least 84% opacity, so dropping the blur costs no legibility. */
 @media (prefers-reduced-transparency: reduce) {

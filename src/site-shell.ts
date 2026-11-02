@@ -259,3 +259,26 @@ export function installSiteMenu() {
   // a reader who switches language while it is open gets the other one.
   onLocale(() => { if (drawn) draw(); applyStatic(document.querySelector('.sitenav') ?? document); });
 }
+
+/* Menus and sheets grow out of the control that opened them (apple-motion §7): when one is shown, point its
+   transform-origin at the trigger's centre so the 160 ms scale-from-.96 reads as coming from the button.
+   Done here because every page loads this module and the menus toggle plain `hidden`. */
+const TRIGGERS: Record<string, string> = {
+  routemenu: 'routes-open', walkmenu: 'walk-open', allmenu: 'all-open',
+  't-goto': 't-goto-open', 't-events-menu': 't-events-open',
+};
+function pointAtTrigger(menu: HTMLElement) {
+  const trigger = document.getElementById(TRIGGERS[menu.id] ?? '');
+  if (!trigger) return;
+  const m = menu.getBoundingClientRect(), t = trigger.getBoundingClientRect();
+  menu.style.setProperty('--origin-x', `${Math.round(t.left + t.width / 2 - m.left)}px`);
+  menu.style.setProperty('--origin-y', `${Math.round(t.top + t.height / 2 - m.top)}px`);
+}
+if (typeof MutationObserver !== 'undefined') {
+  new MutationObserver((records) => {
+    for (const r of records) {
+      const el = r.target as HTMLElement;
+      if (!el.hidden && el.id in TRIGGERS) pointAtTrigger(el);
+    }
+  }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['hidden'] });
+}
