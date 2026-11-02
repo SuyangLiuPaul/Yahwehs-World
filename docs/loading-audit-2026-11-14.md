@@ -80,22 +80,128 @@ per-scene value that does not exist yet (scene data is out of scope here).
   time out on selectors (`#r-open` etc.) that no longer exist in the source;
   they were stale before this change.
 
-## Proposals (not done)
+## Pass 2 (owner approved the bigger wins, same day)
 
-1. The real wait is globe data (6 MB raw): quantise the 50m
-   coastline/land/lakes/rivers to TopoJSON or a binary format, or draw the first
-   frame from 110m and upgrade after.
-2. Confirm Netlify sends brotli for `/data/*`; add long cache headers for the
-   versioned URLs.
-3. `terrain-color.webp` (1.2 MB): tiny version first, full one after.
-4. Replace `loading-globe.svg`, `icon.svg` (about 290 KB each) and `logo.png`
-   (218 KB) with few-KB versions.
-5. Code-split three.js / GLTFLoader / OrbitControls; manual chunks.
-6. KTX2/Basis texture compression and meshopt for models (public/models is
-   377 MB; the walk pages are the heavy ones).
-7. Scene LQIPs: a dominant colour or 16-px blur per scene, emitted into
-   events.json by the generator.
-8. Self-host subset WOFF2 fonts (drops other-origin round trips and the CJK
-   font CSS).
-9. Split events.json (897 KB): first 60 inline, rest on demand.
-10. Asset budget check in CI (for example JS < 300 KB gz, first-view data < 1.5 MB).
+Method change: pass 1 was measured on `vite preview` (no compression, raw
+bytes). Pass 2 uses `scripts/measure-loading.mjs`: it serves `dist/` itself with
+brotli (quality 5, close to Netlify) and reports **wire** bytes (what is
+transferred, Content-Encoding applied) next to **raw** bytes (decoded). Same
+phone profile as before (390x844, 1.6 Mbit/s, 150 ms RTT, CPU 4x slower), cold
+context per run, Google Fonts blocked so a third party does not move the
+numbers, one run per cell (differences under ~10% are noise). "Ready" = the
+page's loading screen lifts. "Before" = the tree after pass 1, built and
+measured with this tool on 2026-11-14 (so the pass-1 skeleton is in both columns).
+
+### Before / after, wire bytes at ready (raw in brackets)
+
+| Page, profile | Metric | Before | After |
+|---|---|---|---|
+| / mobile-4G | First contentful paint | 1,636 ms | 664 ms |
+| / mobile-4G | Home fully ready | 14.4 s | 5.1 s |
+| / mobile-4G | Transferred by ready | 2,590 KB (7,790) | 659 KB (2,330) |
+| / desktop | Ready / transferred by ready | 902 ms / 2,363 KB | 511 ms / 659 KB |
+| /scenes.html mobile-4G | Ready | 2.65 s | 2.06 s |
+| /scenes.html mobile-4G | Transferred by ready | 420 KB (1,193) | 235 KB (1,032) |
+| /figures.html mobile-4G | Ready / transferred | 4.3 s / 754 KB | 2.6 s / 370 KB |
+| /plan.html mobile-4G | Ready / transferred | 2.8 s / 451 KB | 2.0 s / 253 KB |
+| /bible.html mobile-4G | Ready / transferred | 16.4 s / 3,089 KB | 14.5 s / 2,663 KB |
+
+Layout shift is 0.000-0.002 on /, /scenes and /figures, unchanged elsewhere
+(bible 0.925 on mobile and plan 0.01 are untouched, see "What remains").
+The 1.2 MB terrain texture is no longer in the first view on any profile; it is
+fetched on first zoom-in or about 4 s after the home page is ready (desktop
+"transferred in total" for / is therefore 843 KB at ready+1.5 s and 2.0 MB once
+the texture lands).
+
+### What changed
+
+1. **Geography data, 4.9 MB raw / 1.47 MB wire -> 170 KB.** `scripts/build-geo.mjs`
+   packs the four Natural Earth layers into `src/geo/world.bin.gz`: coordinates
+   snapped to 0.01 deg, Douglas-Peucker at 0.02 deg (never a chord over 30 deg,
+   antimeridian runs simplified on their own), only the river rank kept, varint
+   deltas, gzip -9 (a browser can undo gzip with `DecompressionStream`, and a
+   `.gz` is sent as it is; brotli of the same data is no smaller). 166,504 ->
+   94,265 points. `src/geo-codec.ts` decodes to the same GeoJSON shape, so
+   `basemap.ts` and `staffage.ts` did not change; `src/geo.ts` falls back to the
+   original GeoJSON in a browser without `DecompressionStream`. Vite hashes the
+   file name and a small plugin (`geoPreload` in `vite.config.ts`) preloads it.
+   Checks: `scripts/verify-geo.mjs` (every original vertex within 0.035 deg of
+   the decoded outline, same features and rings), and a pixel comparison of the
+   painted 4096x2048 basemap against the old data: 0.084% of pixels differ by
+   more than 40/255, all on single edge pixels. A first version of the
+   simplifier merged the collinear bottom edge of Antarctica into one 360-degree
+   chord, which the basemap's antimeridian cut then removed (7% of the canvas
+   wrong); the 30-degree chord limit is the fix and the comparison is what found it.
+   "Detail by region/zoom" was not built: the code paints one 4096x2048 canvas
+   and never swaps it, so there is no zoom-dependent geometry to attach detail to.
+2. **Terrain texture on demand** (`src/terrain.ts`): fetched when the camera
+   gets within 0.5 radii of the zoom band where it fades in, when the route
+   thumbnail asks for it, or after ~4 s of idle (not on Save-Data).
+3. **Brand images** (`scripts/build-small-brand.py`): `logo.png` (218 KB, shown
+   at 34 px), `icon.svg` (290 KB, a tab icon) and `loading-globe.svg` (291 KB,
+   shown at 180 px) each embedded a 512 px PNG. New files at display size, as
+   WebP: `brand-logo.webp` 3.9 KB, `icon-sm.svg` 7 KB, `loading-globe-sm.svg`
+   27 KB. `build-shell.mjs` points the pages at them; the originals are untouched.
+4. **Figures page no longer loads three.js** at first view: `catalogue.ts` only
+   needed the register of figures, which sat in the same module as the GLTF
+   loader. Split into `src/walk/figures-data.ts` (re-exported from `figures.ts`).
+   The 3D viewer and three.js now load when a card is opened (checked).
+5. **Scene placeholders** (`scripts/build-scene-lqip.py` -> `src/scene-lqip.json`,
+   37 KB raw / 14 KB gzip, hashed by Vite): the top-half and bottom-half average
+   colour of each of the 1,443 thumbnails, painted as a gradient in the card frame
+   until the picture is in. Read from `assets-scenes/`, nothing there changed.
+6. **Size budget** (`scripts/check-budget.mjs`): static, from `dist/`, wire bytes
+   (brotli q5), per page: HTML + everything it references + the start-up data
+   the page fetches. Budgets are the measured sizes plus ~20%. The Netlify build
+   command now ends with it, so an over-budget build fails. Static numbers match
+   the browser run within 1-5%.
+7. **Headers** (`netlify.toml`): immutable only for `/assets/*.js|css|gz` (the
+   hashed files; `/assets/` also holds unhashed copies from `public/`, which the
+   old `/assets/*` rule covered); `no-cache` for `*.html`, `/` and
+   `/version.json`; `/data/*` stays `must-revalidate`. Parsed and matched with
+   Netlify's own `@netlify/headers-parser` (from the installed netlify-cli).
+8. Tests: `#loading.done` is `visibility:hidden` once lifted (pass 1), so
+   `waitForSelector` (visible) raced it; the four scripts that waited on it now
+   wait for `attached`. `verify-routes.mjs` passes on a production build.
+
+### Not done, and why
+
+- **JS bundle split by route**: the site already is one entry per page; only the
+  figures page paid for three.js without using it (fixed). The home page is the
+  globe, so there is no earlier moment to defer the engine to. What is left on
+  home is 251 KB wire of JS, of which three.js is 171 KB. A further 30-40 KB
+  (GLTFLoader, bridges, specs, event-media) could be deferred out of the 1,300
+  line `main.ts`; not done, risk higher than the gain.
+- **Texture compression (KTX2/Basis)**: no loader for it exists in the code
+  (`TextureLoader` + webp), and the only large texture, `terrain-color.webp`,
+  is already webp and now off the first view. Models and scene art are in other
+  sessions' pipelines.
+- **Self-hosted subset fonts, events.json split (897 KB raw / 172 KB wire,
+  gates scenes/plan/bible)**: not asked for in this pass.
+
+## What remains
+
+1. `bible.html`: 2.6 MB wire at ready (both Bible texts, 1.0 MB + 0.96 MB, and
+   a 277 KB `meta.json` are loaded before anything shows) and a layout shift of
+   0.925 on mobile. Load the second translation on demand, and give the reading
+   column a reserved height.
+2. `events.json` (172 KB wire) gates scenes, plan and bible; the first 60 events
+   inline and the rest on demand would take ~140 KB off each.
+3. `figures.html`: 300 KB of card JPEGs load with the page; sizes are 25-50 KB
+   each and could be a 2x-sized WebP set.
+4. `ark.html` carries a 465 KB reference JPEG in its own markup
+   (`/assets/scene-assembly-references/174.jpeg`); the other walk pages are code only.
+5. `terrain-color.webp`: 1.2 MB when it does load; a half-size first pass
+   would make the first zoom-in softer-then-sharper instead of empty-then-sharp.
+6. Fonts (Google Fonts, other origin) are outside every number here.
+7. `public/` is not mirrored by a `_headers` file; a direct (non-Git) deploy that
+   ignores `netlify.toml` would not get the new cache rules or the budget check.
+8. Scene thumbnails come from yahwehs-scenes.netlify.app, a separate site with its
+   own headers; this repo cannot set them.
+
+## Checks run (pass 2)
+
+`tsc --noEmit`; `vite build`; `verify-loading.mjs`; `verify-geo.mjs`;
+`check-budget.mjs`; `verify-routes.mjs` (phone/tablet/desktop, en/zh, against a
+production build served by `vite preview`); a browser check that the globe, the
+terrain fade-in, the figures 3D viewer and the scene placeholders work.
