@@ -73,8 +73,26 @@ function stagePublicPlugin(): Plugin {
   };
 }
 
+/** Adds <link rel="preload"> for the packed world map to index.html. Its file
+ *  name carries a content hash that only exists once the bundle is built, so
+ *  the tag cannot be written by hand like the other two (see index.html). */
+function geoPreload(): Plugin {
+  return {
+    name: 'geo-preload',
+    apply: 'build',
+    transformIndexHtml: {
+      order: 'post',
+      handler(_html, ctx) {
+        const file = Object.keys(ctx.bundle ?? {}).find((k) => /^assets\/world\.bin-.*\.gz$/.test(k));
+        if (!file || ctx.path !== '/index.html') return;
+        return [{ tag: 'link', attrs: { rel: 'preload', as: 'fetch', crossorigin: '', href: `/${file}` }, injectTo: 'head' }];
+      },
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [recorder(), stagePublicPlugin()],
+  plugins: [recorder(), stagePublicPlugin(), geoPreload()],
   build: {
     copyPublicDir: false,
     rollupOptions: {

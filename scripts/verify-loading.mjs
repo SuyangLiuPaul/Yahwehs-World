@@ -3,7 +3,8 @@
 // 1. every page carries the loading block with one live region (role=status,
 //    aria-busy) and the retry state, and the critical CSS is inline;
 // 2. the Google Fonts stylesheet is not render-blocking on any page;
-// 3. index.html preloads exactly the URLs src/main.ts fetches (same ?v=);
+// 3. index.html preloads exactly the JSON URLs src/main.ts fetches (same ?v=),
+//    and the hashed world map is preloaded by the geoPreload build plugin;
 // 4. nothing in src/*.css redefines the #loading rules (they live in the head).
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -31,9 +32,12 @@ const idx = readFileSync(join(ROOT, 'index.html'), 'utf8');
 const pre = [...idx.matchAll(/<link rel="preload" as="fetch" crossorigin href="([^"]+)"/g)].map((m) => m[1]);
 const fetched = [...main.matchAll(/\bj<.*?>\('(\/data\/[^']+)'\)/g)].map((m) => m[1]);
 if (!ver) fail('main.ts: could not find the ?v= version');
-if (fetched.length < 6) fail(`main.ts: found ${fetched.length} start-up fetches, expected 6`);
+if (fetched.length < 2) fail(`main.ts: found ${fetched.length} start-up fetches, expected 2 (places, journeys)`);
 for (const u of fetched) if (!pre.includes(`${u}?v=${ver}`)) fail(`index.html does not preload ${u}?v=${ver}`);
 for (const u of pre) if (!fetched.some((f) => u === `${f}?v=${ver}`)) fail(`index.html preloads ${u} that main.ts no longer fetches`);
+// The packed world map is hashed at build time; vite.config.ts adds its preload.
+if (!/geoPreload\(\)/.test(readFileSync(join(ROOT, 'vite.config.ts'), 'utf8'))) fail('vite.config.ts: geoPreload plugin missing');
+if (!/loadWorld\(\)/.test(main)) fail('main.ts does not load the packed world map');
 
 for (const f of readdirSync(join(ROOT, 'src')).filter((f) => f.endsWith('.css'))) {
   if (/^\s*#loading(-globe|-bar)?\s*[{,.]/m.test(readFileSync(join(ROOT, 'src', f), 'utf8'))) fail(`src/${f} redefines #loading (belongs in build-shell.mjs)`);

@@ -6,17 +6,14 @@
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <title>雅伟之界 · 圣经世界 | Yahweh's World</title>
-  <!-- The six payloads src/main.ts awaits before it can draw. Without these the
-       fetches only start once the 100 KB module has downloaded and run; with
-       them they start as the HTML is parsed. The ?v= must stay identical to the
+  <!-- The payloads src/main.ts awaits before it can draw. Without these the
+       fetches only start once the module has downloaded and run; with them
+       they start as the HTML is parsed. The ?v= must stay identical to the
        one in main.ts or the browser fetches twice (scripts/verify-loading.mjs
-       checks it). -->
+       checks it). The packed world map (src/geo.ts) has a content-hashed name,
+       so its preload is added at build time (vite.config.ts, geoPreload). -->
   <link rel="preload" as="fetch" crossorigin href="/data/places.json?v=2026-09-15">
   <link rel="preload" as="fetch" crossorigin href="/data/journeys.json?v=2026-09-15">
-  <link rel="preload" as="fetch" crossorigin href="/data/ne_50m_land.geojson?v=2026-09-15">
-  <link rel="preload" as="fetch" crossorigin href="/data/ne_50m_coastline.geojson?v=2026-09-15">
-  <link rel="preload" as="fetch" crossorigin href="/data/ne_50m_lakes.geojson?v=2026-09-15">
-  <link rel="preload" as="fetch" crossorigin href="/data/ne_50m_rivers_lake_centerlines.geojson?v=2026-09-15">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Spectral:wght@500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@500;600&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">

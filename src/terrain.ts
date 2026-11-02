@@ -28,7 +28,9 @@ const FAR = 2.45;
 
 export class Terrain {
   readonly mesh: THREE.Mesh;
-  readonly ready: Promise<boolean>;
+  private readonly _ready: Promise<boolean>;
+  private readonly fetchMap: () => void;
+  private started = false;
   private loadFailed = false;
   private readonly material: THREE.MeshBasicMaterial;
   private target = 0;
@@ -46,10 +48,24 @@ export class Terrain {
       GLOBE_RADIUS + 0.05, 192, 160, phiStart, phiLength, thetaStart, thetaLength,
     );
 
+    // The texture (1.2 MB) is not fetched here. It is invisible until the
+    // camera is within FAR radii of the globe and the page opens at 3.0, so
+    // fetching it with the first-view data only delayed the first frame on a
+    // phone. load() runs when the camera starts to close in, when something
+    // asks for `ready` (the route thumbnail), or once the page has been idle
+    // for a few seconds (not on a Save-Data connection).
     const loader = new THREE.TextureLoader();
     let loaded!: (success: boolean) => void;
-    this.ready = new Promise<boolean>(resolve => { loaded=resolve; });
-    const map = loader.load('data/terrain-color.webp?v=etopo-2022-r1', () => loaded(true), undefined, () => { this.loadFailed=true; loaded(false); });
+    this._ready = new Promise<boolean>(resolve => { loaded=resolve; });
+    const map = new THREE.Texture();
+    this.fetchMap = () => {
+      loader.load('data/terrain-color.webp?v=etopo-2022-r1', (tex) => {
+        map.image = tex.image;
+        map.needsUpdate = true;
+        tex.dispose();
+        loaded(true);
+      }, undefined, () => { this.loadFailed=true; loaded(false); });
+    };
     map.colorSpace = THREE.SRGBColorSpace;
     map.anisotropy = 16;
 
@@ -84,9 +100,31 @@ export class Terrain {
     this.mesh.renderOrder = 1;
   }
 
+  /** Starts the texture download, once. */
+  load() {
+    if (this.started) return;
+    this.started = true;
+    this.fetchMap();
+  }
+
+  /** Resolves when the texture is in (false if it failed). Asking starts it. */
+  get ready(): Promise<boolean> {
+    this.load();
+    return this._ready;
+  }
+
+  /** Fetches the texture a few seconds after first paint, when nothing else is
+   *  competing for the connection. */
+  loadWhenIdle() {
+    const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    if (conn?.saveData) return;
+    setTimeout(() => ('requestIdleCallback' in window ? requestIdleCallback(() => this.load()) : this.load()), 4000);
+  }
+
   /** Called every frame with the camera's distance from the globe centre. */
   update(cameraDistance: number, dt: number) {
     const r = cameraDistance / GLOBE_RADIUS;
+    if (r < FAR + 0.5) this.load();
     this.target = this.loadFailed ? 0 : THREE.MathUtils.clamp((FAR - r) / (FAR - NEAR), 0, 1);
     const k = 1 - Math.exp(-dt * 6);   // frame-rate independent ease
     this.material.opacity += (this.target - this.material.opacity) * k;

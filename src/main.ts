@@ -22,13 +22,14 @@ import { Scenes } from './scenes.ts';
 import { Cartography, measureMap } from './cartography.ts';
 import { applyStatic, bindSwitch, fullLocale, hant, localized, locale as currentLocale, onLocale } from './locale.ts';
 import { installUpdateChecker } from './updates.ts';
+import { loadWorld } from './geo.ts';
 import { installSiteMenu, onJourneyPick } from './site-shell.ts';
 import { EventsTrack, type TrackEvent } from './events-track.ts';
 import { installEventsMenu, type EventsMenu } from './events-menu.ts';
 import { eventThumbUrl, eventRawThumbUrl, openEventLightbox } from './event-media.ts';
 import { bridgesFor, eventsInJourney, href as bridgeHref, structureForJourney } from './bridges.ts';
 import { measuresHref } from './structures/specs.ts';
-import type { GeoJson, Place, PlacesBundle } from './types.ts';
+import type { Place, PlacesBundle } from './types.ts';
 
 type Locale = 'zh' | 'en';
 let locale: Locale = currentLocale();
@@ -74,10 +75,11 @@ const T = localized({
 // One-time migration away from the former year-long immutable /data cache.
 // New responses revalidate via Netlify; returning readers must also leave
 // their already-cached, pre-correction URL behind.
-// How far the opening screen has got. Six payloads, then the scene, then the
-// first frame: eight steps, counted as they happen. A progress bar that is
+// How far the opening screen has got. Three payloads (places, journeys, the
+// packed world map), then the scene, then the first frame: five steps, counted
+// as they happen. A progress bar that is
 // really a timer is a lie with a nice easing curve.
-const STEPS = 8;
+const STEPS = 5;
 let stepsDone = 0;
 function step() {
   stepsDone++;
@@ -90,14 +92,12 @@ const j = <T,>(u: string) => fetch(`${u}?v=2026-09-15`).then((r) => {
   return (r.json() as Promise<T>).then((v) => { step(); return v; });
 });
 
-const [bundle, journeyData, land, coastline, lakes, rivers] = await Promise.all([
+const [bundle, journeyData, world] = await Promise.all([
   j<PlacesBundle>('/data/places.json'),
   j<{ journeys: Journey[] }>('/data/journeys.json'),
-  j<GeoJson>('/data/ne_50m_land.geojson'),
-  j<GeoJson>('/data/ne_50m_coastline.geojson'),
-  j<GeoJson>('/data/ne_50m_lakes.geojson'),
-  j<GeoJson>('/data/ne_50m_rivers_lake_centerlines.geojson'),
+  loadWorld().then((w) => { step(); return w; }),
 ]);
+const { land, coastline, lakes, rivers } = world;
 
 // ── scene ─────────────────────────────────────────────────────────────────
 const canvas = $<HTMLCanvasElement>('stage');
@@ -1280,6 +1280,7 @@ updateLayout();
 step();                       // the scene is built
 step();                       // …and this is the frame that shows it
 $('loading').classList.add('done');
+terrain.loadWhenIdle();
 console.info(
   `%c雅伟之界 · 圣经世界%c  ${bundle.meta.located} located / ${bundle.meta.unlocated} unlocated  ·  ${bundle.meta.source} (${bundle.meta.license})`,
   'color:#e8c55a;font-weight:600', 'color:#7d8896',
