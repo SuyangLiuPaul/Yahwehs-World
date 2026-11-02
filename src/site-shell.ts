@@ -198,8 +198,29 @@ function close() {
   (button as HTMLElement | null)?.focus();
 }
 
+/** On a phone the tab strip scrolls sideways, and it opens at the left, so on
+ *  every page but the first the tab you are standing on was off the edge or
+ *  cut in half ("Glo"). Wayfinding has to answer "where am I" without a swipe:
+ *  bring the current tab to the middle of the strip. Instant, not animated:
+ *  it happens before the reader has seen the bar. */
+function centreCurrentTab() {
+  const strip = document.querySelector<HTMLElement>('.sitenav ol');
+  const cur = strip?.querySelector<HTMLElement>('[aria-current]');
+  if (!strip || !cur || strip.scrollWidth <= strip.clientWidth) return;
+  const to = cur.getBoundingClientRect(), from = strip.getBoundingClientRect();
+  // A tab wider than the strip (the strip is ~34 px at 375 px wide, beside the
+  // brand, 全部, 路线 and the language switch) cannot be centred: start it at
+  // the left edge so its first characters, not its middle, are what shows.
+  const slack = strip.clientWidth - to.width;
+  strip.scrollLeft += to.left - from.left - (slack > 0 ? slack / 2 : 0);
+}
+
 /** Wires 全部, 走进 and 路线. Every page calls this. */
 export function installSiteMenu() {
+  centreCurrentTab();
+  // Webfonts and the language switch change the tabs' widths after first paint.
+  window.addEventListener('load', centreCurrentTab, { once: true });
+  onLocale(centreCurrentTab);
   shelf('walk-open', 'walkmenu');
   shelf('routes-open', 'routemenu', fillRoutes);
   // One press anywhere else puts them away — a shelf left hanging over the

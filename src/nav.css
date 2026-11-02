@@ -49,7 +49,7 @@
   font-size: var(--fs-200); letter-spacing: var(--tr-cjk); color: var(--ink-3);
   transition: color .16s, border-color .16s, background .16s;
 }
-.sitenav a.tab:hover { color: var(--ink); border-color: var(--line); background: var(--tab-hover); }
+@media (hover: hover) { .sitenav a.tab:hover { color: var(--ink); border-color: var(--line); background: var(--tab-hover); } }
 .sitenav a.tab[aria-current="page"] {
   color: var(--gold-bright); border-color: var(--line-gold); background: var(--gold-wash);
 }
@@ -74,7 +74,7 @@
   transition: background .18s, color .18s;
 }
 .lang-switch button:first-child { border-left: 0; }
-.lang-switch button:hover { background: var(--gold-wash); color: var(--gold-bright); }
+@media (hover: hover) { .lang-switch button:hover { background: var(--gold-wash); color: var(--gold-bright); } }
 .lang-switch button[aria-pressed="true"] { color: var(--gold-bright); background: var(--gold-wash); }
 /* 简/繁 want the Chinese face, not the mono Latin one. */
 .lang-switch button[lang^="zh"] { font-family: var(--ui); letter-spacing: 0; }
@@ -107,7 +107,7 @@
   font-size: var(--fs-400); line-height: 1; cursor: pointer;
   transition: background .18s, color .18s, border-color .18s;
 }
-#settings-open:hover { background: var(--gold-wash); color: var(--gold-bright); border-color: var(--gold); }
+@media (hover: hover) { #settings-open:hover { background: var(--gold-wash); color: var(--gold-bright); border-color: var(--gold); } }
 #settings-open:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 #settings-open[hidden] { display: none; }
 /* Reaching a 44pt target without growing the bar. */
@@ -146,6 +146,8 @@
     content: ''; position: absolute; left: 0; right: 0;
     top: 50%; height: 44px; transform: translateY(-50%);
   }
+  /* The narrowest tab (Plan, 40 px) came out 4 px short of 44 across. */
+  .sitenav a.tab::after { left: -2px; right: -2px; }
   .sitenav .spacer { display: none; }
 }
 
@@ -162,9 +164,17 @@
   font-family: var(--ui); font-size: var(--fs-200); letter-spacing: var(--tr-cjk);
   cursor: pointer; transition: background .18s, color .18s;
 }
-#all-open:hover { background: var(--gold-wash); color: var(--gold-bright); }
+@media (hover: hover) { #all-open:hover { background: var(--gold-wash); color: var(--gold-bright); } }
 #all-open:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 #all-open b { font-weight: 500; }
+/* 全部, 路线 and 走进 are 30, 30 and 21 px tall at phone width. Reach 44 with
+   an invisible extension, as the tabs beside them already do, so the bar does
+   not grow over the map. */
+#all-open, #routes-open, #walk-open { position: relative; }
+#all-open::after, #routes-open::after, #walk-open::after {
+  content: ''; position: absolute; left: 0; right: 0;
+  top: 50%; height: 44px; transform: translateY(-50%);
+}
 /* Below this the tabs come out of the bar and live in the sheet instead. The
    brand, 全部 and the three readings fit in 360 px; seven tabs never did. */
 /* 760 was too low: between there and about 980 the six tabs wrapped onto a
@@ -197,7 +207,7 @@
   transition: color .16s, border-color .16s, background .16s;
 }
 #routes-open b, #walk-open b { font-weight: 400; }
-#routes-open:hover, #walk-open:hover { color: var(--ink); border-color: var(--line); background: var(--tab-hover); }
+@media (hover: hover) { #routes-open:hover, #walk-open:hover { color: var(--ink); border-color: var(--line); background: var(--tab-hover); } }
 #routes-open:focus-visible, #walk-open:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
 /* The group's own button carries the current mark when the reader is standing
    inside the series, or walking into the temple would leave the bar showing
@@ -234,7 +244,7 @@
   padding: var(--sp-2) var(--sp-3); border-radius: var(--radius); min-height: 44px;
   align-content: center;
 }
-.dd a:hover { background: var(--tab-hover); }
+@media (hover: hover) { .dd a:hover { background: var(--tab-hover); } }
 .dd a:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
 .dd a[aria-current="page"] .dd-name { color: var(--gold-bright); }
 .dd-name { color: var(--ink); font-size: var(--fs-200); letter-spacing: var(--tr-cjk); }
@@ -273,9 +283,9 @@
 }
 #all-close {
   background: transparent; border: 1px solid var(--line); border-radius: var(--radius);
-  color: var(--ink-2); width: 34px; height: 34px; cursor: pointer; font-size: var(--fs-300);
+  color: var(--ink-2); width: 44px; height: 44px; cursor: pointer; font-size: var(--fs-300);
 }
-#all-close:hover { color: var(--ink); border-color: var(--line-gold); }
+@media (hover: hover) { #all-close:hover { color: var(--ink); border-color: var(--line-gold); } }
 .am-lede {
   margin: var(--sp-3) 0 var(--sp-5); color: var(--ink-2);
   font: var(--fs-200)/var(--lh-normal) var(--ui);
@@ -293,7 +303,7 @@ html[lang^="zh"] .am-sheet h3 { text-transform: none; letter-spacing: var(--tr-c
   align-items: baseline; text-decoration: none; padding: var(--sp-2) var(--sp-2);
   border-bottom: 1px solid var(--line); border-radius: var(--radius);
 }
-.am-sheet a:hover { background: var(--tab-hover); }
+@media (hover: hover) { .am-sheet a:hover { background: var(--tab-hover); } }
 .am-sheet a:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
 .am-name { color: var(--ink); font-size: var(--fs-300); letter-spacing: var(--tr-cjk); }
 .am-what {

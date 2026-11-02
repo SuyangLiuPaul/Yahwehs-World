@@ -141,3 +141,58 @@ html[lang^="zh"] b, html[lang^="zh"] strong { font-weight: 600; }
    — should not inherit CJK tracking. */
 html[lang^="zh"] [lang="en"], html[lang^="zh"] .en, html[lang^="zh"] code,
 html[lang^="zh"] kbd { letter-spacing: normal; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   The feel layer, shared by every page (apple-motion §1 and §14;
+   apple-look › Accessibility). Everything here is :where() so it has zero
+   specificity: a page's own rule for the same control always wins, and the
+   layer only fills in what a page never wrote.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Keyboard focus. Four of the five stylesheets wrote a ring for some
+   controls and left the rest on whatever the browser draws. */
+:where(a[href], button, summary, input, select, textarea, [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 2px solid var(--gold); outline-offset: 2px;
+}
+
+/* Press. Feedback has to start on pointer-down, not on release, and it has
+   to start now: `filter` and `scale` are not in any control's transition
+   list, so they change in the same frame as the press. `scale` is the
+   individual property, so it composes with the inline `transform` that
+   positions the door cards and place labels instead of replacing it.
+   The scale is dropped for readers who asked for less motion; the
+   brightening stays, because it carries the information. */
+:where(button:not(:disabled), summary, [role="button"], a[href][class]):active {
+  filter: brightness(1.18);
+}
+@media (prefers-reduced-motion: no-preference) {
+  :where(button:not(:disabled), summary, [role="button"], a[href][class]):active { scale: .97; }
+}
+
+/* Reduced motion, for the pages that did not write their own. style.css
+   already had this line; scenes, plan, figures and the Bible reader did not,
+   and the Scenes shimmer ran forever. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important; transition-duration: .01ms !important; scroll-behavior: auto !important;
+  }
+}
+
+/* Reduced transparency: every blurred surface here already sits on a fill of
+   at least 84% opacity, so dropping the blur costs no legibility. */
+@media (prefers-reduced-transparency: reduce) {
+  *, *::before, *::after { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+  :root {
+    --scrim: linear-gradient(180deg, #091c32 0%, #0d2744 62%, transparent 100%);
+    --panel: linear-gradient(180deg, #133154, #0c223c);
+  }
+}
+
+/* Increased contrast: the captions and hairlines that sit under 4.5:1 or 3:1
+   come up, and the gold line stops being a ghost. */
+@media (prefers-contrast: more) {
+  :root {
+    --ink-3: #b3c7dc; --ink-4: #8fa9c4;
+    --line: #4a79a8; --line-gold: #f0be49b3;
+  }
+}

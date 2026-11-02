@@ -51,6 +51,11 @@ export interface FootnoteItem {
   text: string;
 }
 
+/** Programmatic scrolls ignore the CSS `scroll-behavior` property when they ask for
+ *  'smooth' by name, so the reader's reduced-motion setting has to be read here. */
+const scrollBehavior = (): ScrollBehavior =>
+  matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 
@@ -606,7 +611,7 @@ function renderBottomPager() {
   $('bb-pager-prev')?.addEventListener('click', stepPrevChapter);
   $('bb-pager-next')?.addEventListener('click', stepNextChapter);
   $('bb-pager-top')?.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: scrollBehavior() });
   });
 }
 
@@ -646,7 +651,7 @@ async function navigateTo(bookNum: number, chapterNum: number, updateUrl: boolea
   if (targetVerseId) {
     const vEl = document.getElementById(`v-${targetVerseId}`);
     if (vEl) {
-      vEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      vEl.scrollIntoView({ behavior: scrollBehavior(), block: 'center' });
       return;
     }
   }

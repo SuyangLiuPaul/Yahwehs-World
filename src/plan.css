@@ -26,7 +26,7 @@ body { margin: 0; background: var(--ground); color: var(--ink); font: var(--fs-3
 .unit .counts b { display: block; color: var(--ink); font-size: var(--fs-400); font-weight: 500; }
 .unit .chips { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); padding: 5px 10px; font-size: var(--fs-200); color: var(--ink-2); text-decoration: none; min-height: 32px; }
-a.chip:hover { border-color: var(--line-gold); color: var(--ink); }
+@media (hover: hover) { a.chip:hover { border-color: var(--line-gold); color: var(--ink); } }
 .chip.live { border-color: var(--line-gold); color: var(--gold-bright); }
 .chip.walk.live { background: #c9a2271f; }
 .chip.building { border-style: dashed; border-color: var(--line-gold); color: var(--gold); }

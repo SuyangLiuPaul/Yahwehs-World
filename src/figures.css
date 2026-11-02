@@ -43,7 +43,7 @@
   padding: 0 0 var(--sp-3); overflow: hidden;
   transition: border-color .16s, transform .16s;
 }
-.g-card:hover { border-color: var(--line-gold); transform: translateY(-2px); }
+@media (hover: hover) { .g-card:hover { border-color: var(--line-gold); transform: translateY(-2px); } }
 .g-card:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .g-card img {
   width: 100%; height: auto; display: block; margin-bottom: var(--sp-2);
@@ -90,13 +90,13 @@ a.g-card { text-decoration: none; }
   background: var(--surface); border: 1px solid var(--line-gold); border-radius: var(--radius);
   transition: background .16s;
 }
-.g-built-card:hover { background: var(--gold-wash); }
+@media (hover: hover) { .g-built-card:hover { background: var(--gold-wash); } }
 .g-built-card .g-name { color: var(--ink); font-size: var(--fs-400); letter-spacing: var(--tr-cjk); }
 .g-built-card .g-ref { color: var(--ink-3); font: var(--fs-100)/var(--lh-snug) var(--ui); }
 .g-built-card .g-go { color: var(--gold-bright); font-size: var(--fs-200); margin-top: var(--sp-2); }
 
 #g-note {
-  margin: var(--sp-7) 0 0; max-width: 72ch; color: var(--ink-4);
+  margin: var(--sp-7) 0 0; max-width: 72ch; color: var(--ink-3);
   font: var(--fs-100)/var(--lh-normal) var(--ui);
 }
 
@@ -121,7 +121,7 @@ a.g-card { text-decoration: none; }
   background: transparent; border: 1px solid var(--line); border-radius: var(--radius);
   color: var(--ink-2); font-size: var(--fs-400);
 }
-#gv-close:hover { color: var(--ink); border-color: var(--line-gold); }
+@media (hover: hover) { #gv-close:hover { color: var(--ink); border-color: var(--line-gold); } }
 #gv-stage { position: relative; margin: 0 var(--sp-4); }
 #gv-canvas {
   width: 100%; height: min(52dvh, 420px); display: block;
@@ -141,7 +141,7 @@ a.g-card { text-decoration: none; }
   color: var(--ink-2); background: var(--surface); border: 1px solid var(--line);
   border-radius: 999px; padding: 7px 12px;
 }
-#gv-clips button:hover { color: var(--ink); border-color: var(--line-gold); }
+@media (hover: hover) { #gv-clips button:hover { color: var(--ink); border-color: var(--line-gold); } }
 #gv-clips button[aria-pressed="true"] { color: var(--ground); background: var(--gold); border-color: var(--gold); }
 #gv-clips button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 #gv-facts {

@@ -85,7 +85,7 @@
   display: inline-block; margin: 0 0 var(--sp-4); color: var(--gold); text-decoration: none;
   font: var(--fs-100) var(--ui); letter-spacing: var(--tr-cjk);
 }
-#measures-panel .s-back:hover { color: var(--gold-bright); text-decoration: underline; }
+@media (hover: hover) { #measures-panel .s-back:hover { color: var(--gold-bright); text-decoration: underline; } }
 #measures-panel .s-back:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: var(--radius); }
 #measures-panel blockquote {
   margin: 0 0 var(--sp-4); padding-left: var(--sp-3); border-left: 2px solid var(--gold);
@@ -121,7 +121,7 @@
   text-transform: uppercase; color: var(--ink-2); list-style: none;
 }
 #measures-panel details.unstated summary::-webkit-details-marker { display: none; }
-#measures-panel details.unstated summary:hover { color: var(--gold); }
+@media (hover: hover) { #measures-panel details.unstated summary:hover { color: var(--gold); } }
 #measures-panel details.unstated ul { margin: var(--sp-2) 0 0; padding-left: var(--sp-4); font-size: var(--fs-300); color: var(--ink-2); line-height: 1.7; }
 #measures-panel details.unstated li { margin-bottom: var(--sp-1); }
 
@@ -137,7 +137,7 @@
 }
 #measures-panel .vbtn b { font-size: var(--fs-300); font-weight: 600; color: var(--ink); }
 #measures-panel .vbtn span { font-size: var(--fs-100); color: var(--ink-2); line-height: 1.5; }
-#measures-panel .vbtn:hover { border-color: #c9a22766; }
+@media (hover: hover) { #measures-panel .vbtn:hover { border-color: #c9a22766; } }
 #measures-panel .vbtn.on { border-color: var(--gold); background: #c9a2271a; }
 #measures-panel .vbtn.on b { color: var(--gold-bright); }
 #measures-panel .vbtn:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
@@ -179,7 +179,7 @@
   color: var(--gold); padding: var(--sp-2);
   font: var(--fs-100) var(--ui); letter-spacing: var(--tr-cjk); white-space: nowrap;
 }
-#gate-measures:hover { color: var(--gold-bright); text-decoration: underline; }
+@media (hover: hover) { #gate-measures:hover { color: var(--gold-bright); text-decoration: underline; } }
 #gate-measures:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: var(--radius); }
 
 @media (prefers-reduced-motion: reduce) { #measures-panel * { transition: none !important; } }

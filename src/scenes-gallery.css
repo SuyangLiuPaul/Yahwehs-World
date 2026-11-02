@@ -71,10 +71,10 @@ html, body {
   transition: background 150ms, border-color 150ms;
 }
 
-.sg-quick-link:hover {
+@media (hover: hover) { .sg-quick-link:hover {
   background: rgba(248, 214, 109, 0.24);
   border-color: var(--gold-bright);
-}
+} }
 
 .sg-lede {
   margin: var(--sp-3) 0 var(--sp-4);
@@ -106,10 +106,10 @@ html, body {
   transition: border-color 150ms, background 150ms, transform 150ms;
 }
 
-.sg-stat-btn:hover {
+@media (hover: hover) { .sg-stat-btn:hover {
   border-color: var(--line-gold);
   background: var(--surface-hi);
-}
+} }
 
 .sg-stat-btn.active {
   border-color: var(--gold);
@@ -185,10 +185,10 @@ html, body {
   white-space: nowrap;
 }
 
-.sg-pill-btn:hover {
+@media (hover: hover) { .sg-pill-btn:hover {
   background: var(--gold-wash);
   border-color: var(--gold);
-}
+} }
 
 .sg-books-strip {
   display: flex;
@@ -213,10 +213,10 @@ html, body {
   transition: border-color 140ms, color 140ms, background 140ms;
 }
 
-.sg-book-chip:hover {
+@media (hover: hover) { .sg-book-chip:hover {
   color: var(--ink);
   border-color: var(--line-gold);
-}
+} }
 
 .sg-book-chip.active {
   color: var(--gold-bright);
@@ -261,11 +261,11 @@ html, body {
   transition: border-color 160ms, transform 160ms, box-shadow 160ms;
 }
 
-.sg-card:hover {
+@media (hover: hover) { .sg-card:hover {
   border-color: var(--line-gold);
   transform: translateY(-2px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.48);
-}
+} }
 
 .sg-card-media {
   position: relative;
@@ -297,13 +297,15 @@ html, body {
 }
 @keyframes sg-sweep { to { transform: translateX(100%); } }
 @media (prefers-reduced-motion: reduce) {
-  .sg-card-media:not(.is-loaded)::before { animation: none; transform: none; opacity: .5; }
+  /* Same specificity as the rule above: with one fewer :not() this lost to
+     it and the shimmer ran forever (57 animations under reduced motion). */
+  .sg-card-media:not(.is-loaded):not(.is-failed)::before { animation: none; transform: none; opacity: .5; }
   .sg-card-media img { transition: none; }
 }
 
-.sg-card:hover .sg-card-media img {
+@media (hover: hover) { .sg-card:hover .sg-card-media img {
   transform: scale(1.03);
-}
+} }
 
 .sg-card-badge {
   position: absolute;
@@ -327,7 +329,7 @@ html, body {
   border-radius: 999px;
   background: rgba(6, 13, 22, 0.78);
   color: var(--ink-2);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .sg-card-body {
@@ -395,9 +397,9 @@ html, body {
   gap: 4px;
 }
 
-.sg-card-btn:hover {
+@media (hover: hover) { .sg-card-btn:hover {
   background: rgba(232, 197, 90, 0.2);
-}
+} }
 
 .sg-card-globe {
   color: var(--ink-2);
@@ -405,10 +407,10 @@ html, body {
   background: transparent;
 }
 
-.sg-card-globe:hover {
+@media (hover: hover) { .sg-card-globe:hover {
   color: var(--gold-bright);
   border-color: var(--line-gold);
-}
+} }
 
 .sg-more-wrap {
   display: flex;
@@ -426,9 +428,9 @@ html, body {
   cursor: pointer;
 }
 
-.sg-load-more:hover {
+@media (hover: hover) { .sg-load-more:hover {
   background: rgba(232, 197, 90, 0.26);
-}
+} }
 
 @media (max-width: 720px) {
   #scenes-page {
@@ -438,4 +440,18 @@ html, body {
   .sg-controls { top: 48px; padding: 10px 12px; }
   #sg-unit, #sg-book { flex: 1 1 140px; max-width: none; }
   .sg-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+}
+
+/* ── touch: Apple's 44 pt default, from 27 to 40 px (apple-look › accessibility) ──
+   Pill chips and card buttons get an invisible extension so the look does not
+   change; fields and buttons that already read as controls grow outright. */
+@media (pointer: coarse) {
+  .sg-quick-link, #sg-search, #sg-unit, #sg-book, .sg-pill-btn { min-height: 44px; }
+  .sg-book-chip, .sg-card-btn { position: relative; }
+  .sg-book-chip::after, .sg-card-btn::after {
+    content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 44px; transform: translateY(-50%);
+  }
+  /* The strip scrolls sideways, which clips anything hanging out of it: the
+     room is padding, so the extension has somewhere to live. */
+  .sg-books-strip { padding: 10px 0 12px; }
 }

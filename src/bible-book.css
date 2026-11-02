@@ -98,10 +98,10 @@ body:not(.bb-ready) #bible-book-page {
   transition: background 140ms, border-color 140ms;
 }
 
-.bb-picker-btn:hover {
+@media (hover: hover) { .bb-picker-btn:hover {
   background: rgba(248, 214, 109, 0.3);
   border-color: var(--gold-bright, #f8d66d);
-}
+} }
 
 .bb-select {
   padding: 7px 12px;
@@ -140,10 +140,10 @@ body:not(.bb-ready) #bible-book-page {
   transition: background 140ms, border-color 140ms;
 }
 
-.bb-step-btn:hover:not(:disabled) {
+@media (hover: hover) { .bb-step-btn:hover:not(:disabled) {
   background: rgba(232, 197, 90, 0.18);
   border-color: var(--gold, #e8c55a);
-}
+} }
 
 .bb-step-btn:disabled {
   opacity: 0.35;
@@ -170,11 +170,11 @@ body:not(.bb-ready) #bible-book-page {
   transition: background 140ms, border-color 140ms, color 140ms;
 }
 
-.bb-pill-btn:hover {
+@media (hover: hover) { .bb-pill-btn:hover {
   background: rgba(232, 197, 90, 0.15);
   border-color: rgba(232, 197, 90, 0.45);
   color: var(--gold-bright, #f6e29c);
-}
+} }
 
 .bb-pill-gold {
   background: rgba(232, 197, 90, 0.18);
@@ -322,9 +322,9 @@ body:not(.bb-ready) #bible-book-page {
   transition: background 140ms;
 }
 
-.bb-globe-chip:hover {
+@media (hover: hover) { .bb-globe-chip:hover {
   background: rgba(232, 197, 90, 0.24);
-}
+} }
 
 /* Section Context Explanation (from Words section_titles.json + Globe sum) */
 .bb-sec-explain {
@@ -546,10 +546,10 @@ body:not(.bb-ready) #bible-book-page {
   transition: background 140ms, transform 140ms;
 }
 
-.bb-pager-btn:hover:not(:disabled) {
+@media (hover: hover) { .bb-pager-btn:hover:not(:disabled) {
   background: rgba(232, 197, 90, 0.25);
   transform: translateY(-1px);
-}
+} }
 
 .bb-pager-btn:disabled {
   opacity: 0.35;
@@ -651,10 +651,10 @@ body:not(.bb-ready) #bible-book-page {
   transition: border-color 120ms, background 120ms;
 }
 
-.bb-toc-card:hover {
+@media (hover: hover) { .bb-toc-card:hover {
   border-color: var(--gold, #e6ac32);
   background: rgba(248, 214, 109, 0.15);
-}
+} }
 
 .bb-toc-card.active {
   border-color: var(--gold, #e6ac32);
@@ -691,12 +691,18 @@ body:not(.bb-ready) #bible-book-page {
   cursor: pointer;
 }
 
-.bb-ch-cell:hover,
+
 .bb-ch-cell.active {
   background: rgba(248, 214, 109, 0.26);
   border-color: var(--gold, #e6ac32);
   color: var(--gold-bright, #f8d66d);
 }
+
+@media (hover: hover) { .bb-ch-cell:hover {
+  background: rgba(248, 214, 109, 0.26);
+  border-color: var(--gold, #e6ac32);
+  color: var(--gold-bright, #f8d66d);
+} }
 
 .bb-search-hit {
   display: block;
@@ -711,9 +717,9 @@ body:not(.bb-ready) #bible-book-page {
   cursor: pointer;
 }
 
-.bb-search-hit:hover {
+@media (hover: hover) { .bb-search-hit:hover {
   border-color: var(--gold, #e8c55a);
-}
+} }
 
 .bb-search-hit-ref {
   font-size: 12.5px;
@@ -907,4 +913,15 @@ body:not(.bb-ready) #bible-book-page {
     gap: 5px;
     padding: 8px;
   }
+}
+
+/* ── touch (apple-look › accessibility): 28 px steppers and 24 px chips ── */
+@media (pointer: coarse) {
+  .bb-step-btn { width: 40px; height: 40px; position: relative; }
+  .bb-step-btn::after { content: ''; position: absolute; inset: -2px; }
+  .bb-picker-btn, .bb-pill-btn, .bb-globe-chip { position: relative; }
+  .bb-picker-btn::after, .bb-pill-btn::after, .bb-globe-chip::after {
+    content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 44px; transform: translateY(-50%);
+  }
+  .bb-select { min-height: 36px; }
 }
