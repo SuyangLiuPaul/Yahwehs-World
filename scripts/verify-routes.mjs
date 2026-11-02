@@ -19,7 +19,7 @@ try {
       page.on('pageerror',e=>consoleErrors.push(e.message));
       page.on('console',e=>{if(e.type()==='error')consoleErrors.push(e.text());});
       await page.goto(url);
-      await page.waitForSelector('#loading.done');
+      await page.waitForSelector('#loading.done',{state:'attached'});
       await page.evaluate(()=>document.fonts.ready);
       for(const route of ['exodus-wilderness','paul-1']){
         await page.click('#r-open');

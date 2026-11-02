@@ -8,7 +8,7 @@ try{
  for(const [name,width,height] of [['phone',375,812],['tablet',768,1024],['desktop',1440,900]])for(const lang of ['en','zh']){
   const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,hasTouch:name==='phone'});
   await context.addInitScript(l=>localStorage.setItem('ydh.locale',l),lang);const page=await context.newPage();page.on('pageerror',e=>report.errors.push(e.message));page.on('console',e=>{if(e.type()==='error')report.errors.push(e.text());});
-  await page.goto(url);await page.waitForSelector('#loading.done');await page.evaluate(()=>document.fonts.ready);
+  await page.goto(url);await page.waitForSelector('#loading.done',{state:'attached'});await page.evaluate(()=>document.fonts.ready);
   const choose=async id=>{if(await page.locator('#r-clear').isVisible())await page.click('#r-clear');await page.click('#r-open');await page.click(`[data-id="${id}"]`);};
   for(const id of ['paul-1','exodus-wilderness','elijah']){
    await choose(id);

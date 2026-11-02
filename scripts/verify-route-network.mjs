@@ -16,7 +16,7 @@ try{
       await route.fulfill({path:'public/data/terrain-color.webp',contentType:'image/webp'});
     });
     await page.goto('http://127.0.0.1:5175/',{waitUntil:'domcontentloaded'});
-    await page.waitForSelector('#loading.done');
+    await page.waitForSelector('#loading.done',{state:'attached'});
     await page.waitForFunction(()=>Number(getComputedStyle(document.querySelector('#loading')).opacity)<.01);
     await page.click('#r-open');await page.click('[data-id="exodus-wilderness"]');
     await page.locator('.r-step[data-stop="6"]').click();

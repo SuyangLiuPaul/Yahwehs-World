@@ -16,7 +16,7 @@ try {
       const page = await context.newPage(), cdp = await context.newCDPSession(page);
       page.on('pageerror', e => report.errors.push(e.message));
       page.on('console', e => { if (e.type() === 'error') report.errors.push(e.text()); });
-      await page.goto(url); await page.waitForSelector('#loading.done'); await page.evaluate(() => document.fonts.ready);
+      await page.goto(url); await page.waitForSelector('#loading.done',{state:'attached'}); await page.evaluate(() => document.fonts.ready);
       if (process.env.PRODUCTION === '1') assert.equal(await page.evaluate(() => typeof window.__globe), 'undefined');
       await page.click('#r-open'); await page.click('[data-id="paul-1"]'); await page.locator('.r-step').last().click();
       await page.waitForFunction(() => document.querySelector('#r-thumbnail').dataset.state === 'ready');
