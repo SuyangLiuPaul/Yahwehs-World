@@ -228,8 +228,11 @@ function createCard(ev: TrackEvent, idxInFiltered: number, canonicalIdx: number)
 
   const img = card.querySelector<HTMLImageElement>('img')!;
   img.alt = titlePrimary;
+  const media = card.querySelector<HTMLElement>('.sg-card-media')!;
+  img.onload = () => media.classList.add('is-loaded');
   img.onerror = () => {
     if (img.src !== rawThumb) img.src = rawThumb;
+    else media.classList.add('is-failed');
   };
   img.src = thumbSrc;
 

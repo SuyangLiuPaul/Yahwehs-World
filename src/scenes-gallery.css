@@ -280,7 +280,25 @@ html, body {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 280ms ease;
+  opacity: 0;
+  transition: transform 280ms ease, opacity 320ms ease;
+}
+.sg-card-media.is-loaded img { opacity: 1; }
+
+/* The frame is the same 16:9 box before and after the picture arrives (no
+   layout shift); until then a slow sweep marks it as "a picture is coming".
+   A dead image (both URLs failed) stops the sweep and leaves a quiet frame. */
+.sg-card-media:not(.is-loaded):not(.is-failed)::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(105deg, transparent 30%, rgba(248, 214, 109, 0.10) 50%, transparent 70%);
+  transform: translateX(-100%);
+  animation: sg-sweep 1.8s ease-in-out infinite;
+}
+@keyframes sg-sweep { to { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) {
+  .sg-card-media:not(.is-loaded)::before { animation: none; transform: none; opacity: .5; }
+  .sg-card-media img { transition: none; }
 }
 
 .sg-card:hover .sg-card-media img {

@@ -25,9 +25,9 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PAGES = [
   { file: 'index.html', href: '/', en: 'Globe', narrowEn: 'Globe', zh: '圣经世界', narrowZh: '地球',
     loadEn: 'Drawing the world…', loadHans: '正在绘制世界…', loadHant: '正在繪製世界…' },
-  { file: 'bible.html', href: '/bible.html', en: 'Illustrated Bible', narrowEn: 'Bible', zh: '画卷圣经', narrowZh: '圣经',
+  { file: 'bible.html', sk: 'lines', href: '/bible.html', en: 'Illustrated Bible', narrowEn: 'Bible', zh: '画卷圣经', narrowZh: '圣经',
     loadEn: 'Opening the Illustrated CUV-Yahweh Bible…', loadHans: '正在展开《和合本雅伟版 · 画卷圣经》…', loadHant: '正在展開《和合本雅偉版 · 畫卷聖經》…' },
-  { file: 'scenes.html', href: '/scenes.html', en: 'Scenes', narrowEn: 'Scenes', zh: '圣经画卷', narrowZh: '画卷',
+  { file: 'scenes.html', sk: 'cards', href: '/scenes.html', en: 'Scenes', narrowEn: 'Scenes', zh: '圣经画卷', narrowZh: '画卷',
     loadEn: 'Opening the 1,443 scenes…', loadHans: '正在展开 1,443 幅圣经画卷…', loadHant: '正在展開 1,443 幅聖經畫卷…' },
   { file: 'tabernacle.html', href: '/tabernacle.html', en: 'Tabernacle', narrowEn: 'Tent', zh: '走进会幕', narrowZh: '会幕',
     walk: true, inEn: 'The tabernacle (1:1 Walk)', inZh: '摩西会幕（第一人称漫游）', ofEn: 'Exodus 26–27 · Measured 3D', ofZh: '出埃及记 26–27 · 实尺建造',
@@ -38,9 +38,9 @@ const PAGES = [
   { file: 'ark.html', href: '/ark.html', en: 'Ark', narrowEn: 'Ark', zh: '走进方舟', narrowZh: '方舟',
     walk: true, inEn: "Noah's ark (1:1 Walk)", inZh: '挪亚方舟（第一人称漫游）', ofEn: 'Genesis 6–8 · Measured 3D', ofZh: '创世记 6–8 · 实尺建造',
     loadEn: 'Building the ark…', loadHans: '正在造方舟…', loadHant: '正在造方舟…' },
-  { file: 'figures.html', href: '/figures.html', en: 'Figures', narrowEn: 'Figures', zh: '人物与活物', narrowZh: '人物',
+  { file: 'figures.html', sk: 'cards', href: '/figures.html', en: 'Figures', narrowEn: 'Figures', zh: '人物与活物', narrowZh: '人物',
     loadEn: 'Standing the figures up…', loadHans: '正在把人物立起来…', loadHant: '正在把人物立起來…' },
-  { file: 'plan.html', href: '/plan.html', en: 'Panorama', narrowEn: 'Plan', zh: '圣经全景', narrowZh: '全景',
+  { file: 'plan.html', sk: 'lines', href: '/plan.html', en: 'Panorama', narrowEn: 'Plan', zh: '圣经全景', narrowZh: '全景',
     loadEn: 'Laying out the plan…', loadHans: '正在整理全部计划…', loadHant: '正在整理全部計劃…' },
 ];
 
@@ -54,7 +54,7 @@ const EXTRA_WALKS = [
 const START = '  <!-- shell:start — written by scripts/build-shell.mjs. Edit that, not this. -->';
 const END = '  <!-- shell:end -->';
 
-const FONTS = '  <link href="https://fonts.googleapis.com/css2?'
+const FONT_URL = 'https://fonts.googleapis.com/css2?'
   + 'family=Inter:wght@400;500;600'
   + '&family=Spectral:wght@500;600'
   + '&family=IBM+Plex+Mono:wght@400;500'
@@ -62,13 +62,58 @@ const FONTS = '  <link href="https://fonts.googleapis.com/css2?'
   + '&family=Noto+Serif+SC:wght@500;600'
   + '&family=Noto+Sans+TC:wght@400;500;600'
   + '&family=Noto+Serif+TC:wght@500;600'
-  + '&display=swap" rel="stylesheet">';
+  + '&display=swap';
+
+// A stylesheet in <head> blocks the first paint until it arrives, and this one
+// lives on another origin (measured: it was the difference between a 0.9 s and
+// a multi-second first paint on a phone). media="print" lets the page paint
+// at once; onload flips it to "all" and the faces swap in (display=swap was
+// already set, so the fallback face has always been what shows first).
+// The <noscript> twin keeps the fonts for a reader without JavaScript.
+const FONTS = `  <link href="${FONT_URL}" rel="stylesheet" media="print" onload="this.media='all'">\n`
+  + `  <noscript><link href="${FONT_URL}" rel="stylesheet"></noscript>`;
 
 const HEAD_END = '<!-- /shell:head -->';
-const HEAD = `  <!-- shell:head --><meta name="theme-color" content="#0e2b4b"><link rel="icon" type="image/png" href="/favicon.png"><style>:root{color-scheme:dark}html,body{background:#0a1e36;margin:0}` +
-  `#loading-text i{font-style:normal;display:none}` +
-  `html[lang="en"] #loading-text .l-en,html[lang="zh-Hans"] #loading-text .l-hans,` +
-  `html[lang="zh-Hant"] #loading-text .l-hant{display:inline}</style>` +
+// The opening screen's CSS lives HERE, inline, and nowhere else. The page's
+// own stylesheet (src/nav.css) is a render-blocking request that arrives with
+// the bundle; before this rule moved into the head the first paint was a plain
+// dark page, and the screen below only appeared once that file had come down.
+// Inline, the placeholder is on screen with the HTML itself.
+const CRITICAL = [
+  '#loading{position:fixed;inset:0;z-index:50;display:grid;place-content:center;justify-items:center;gap:clamp(12px,2.2vmin,28px);padding:0 20px;box-sizing:border-box;background:radial-gradient(circle at 50% 42%,#18426e 0,#0a1e36 72%);text-align:center;transition:opacity .6s ease,visibility 0s linear .6s}',
+  '#loading.done{opacity:0;visibility:hidden;pointer-events:none}',
+  '#loading-bar{position:fixed;left:0;top:0;height:2px;width:0;background:linear-gradient(90deg,#3ba3f8,#f8d66d);transition:width .35s ease;z-index:51}',
+  '.tri i{font-style:normal;display:none}',
+  'html[lang="en"] .tri .l-en,html[lang="zh-Hans"] .tri .l-hans,html[lang="zh-Hant"] .tri .l-hant{display:inline}',
+  // The shapes. .ld-sk is any block that stands where content will be.
+  '.ld-sk{position:relative;overflow:hidden;background:rgba(198,216,236,.09)}',
+  '.ld-sk::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(248,214,109,.16) 50%,transparent 70%);transform:translateX(-100%);animation:ld-sh 2.2s ease-in-out infinite}',
+  '@keyframes ld-sh{to{transform:translateX(100%)}}',
+  '.ld-art{position:relative;width:min(46vw,34vh,240px);aspect-ratio:1}',
+  '.ld-sphere{position:absolute;inset:6%;border-radius:50%;background:radial-gradient(circle at 36% 30%,#2b6199,#144070 52%,#0b2745);box-shadow:0 12px 28px rgba(0,0,0,.45),inset -10px -14px 28px rgba(4,14,28,.5),0 0 0 1px rgba(248,214,109,.28);transition:opacity .5s ease}',
+  '.ld-art.ready .ld-sphere{opacity:0}',
+  '#loading-globe{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity .5s ease;filter:drop-shadow(0 12px 28px rgba(0,0,0,.45))}',
+  '.ld-art.ready #loading-globe{opacity:1}',
+  '.ld-cards{display:grid;grid-template-columns:repeat(3,minmax(0,150px));gap:12px;width:min(88vw,490px)}',
+  '.ld-card{border-radius:12px;aspect-ratio:16/9}',
+  '.ld-card:nth-child(n+4){display:none}',
+  '@media(max-width:520px){.ld-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.ld-card:nth-child(3){display:none}}',
+  '.ld-lines{display:grid;gap:10px;width:min(80vw,380px)}',
+  '.ld-line{height:12px;border-radius:6px}',
+  '.ld-line:nth-child(1){width:55%;height:18px}.ld-line:nth-child(3){width:92%}.ld-line:nth-child(5){width:70%}',
+  '#loading-title{margin:0;font:600 clamp(18px,4.6vw,26px)/1.2 Spectral,Georgia,"Songti SC","Noto Serif SC",serif;color:#f8d66d;letter-spacing:.06em}',
+  '#loading-text{margin:0;font:500 clamp(15px,3.8vw,21px)/1.4 Inter,system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;letter-spacing:.04em;color:#c6d8ec}',
+  // The failure state: the same screen, the shapes stop, a sentence and a button appear.
+  '#loading-error{display:none;gap:14px;justify-items:center;max-width:min(88vw,420px);margin:0;font:500 clamp(15px,3.8vw,18px)/1.5 Inter,system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;color:#c6d8ec}',
+  '#loading.failed #loading-error{display:grid}',
+  '#loading.failed #loading-text{display:none}',
+  '#loading.failed .ld-sk::after{animation:none}',
+  '#loading-retry{font:inherit;min-height:44px;padding:10px 28px;border:0;border-radius:999px;background:#f8d66d;color:#0a1e36;cursor:pointer}',
+  '#loading-retry:focus-visible{outline:2px solid #fff;outline-offset:3px}',
+  '@media(prefers-reduced-motion:reduce){.ld-sk::after{animation:none}#loading,#loading-bar,.ld-sphere,#loading-globe{transition-duration:.01s}}',
+].join('');
+
+const HEAD = `  <!-- shell:head --><meta name="theme-color" content="#0e2b4b"><link rel="icon" type="image/png" href="/favicon.png"><style>:root{color-scheme:dark}html,body{background:#0a1e36;margin:0}${CRITICAL}</style>` +
   `<script>(function(){try{var l=localStorage.getItem("ydh.locale");` +
   `if(l!=="en"&&l!=="zh-Hans"&&l!=="zh-Hant"){l="en";` +
   `var t=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||""];` +
@@ -115,16 +160,50 @@ ${walkItems(self)}
   return out.join('\n');
 };
 
+// Runs the moment the loading block exists, before any module. It lives in the
+// HTML on purpose: if the bundle itself fails to download there is no other
+// code that could notice. Three jobs: tell assistive tech the page is no
+// longer busy once the screen lifts (aria-busy), show the retry state when a
+// script fails to load / a start-up promise rejects / 90 s pass, and take the
+// retry state away again if the page does finish after all.
+const GUARD = '(function(){var L=document.getElementById("loading");if(!L)return;var t=setTimeout(fail,90000);'
+  + 'function fail(){if(L.classList.contains("done"))return;L.classList.add("failed");L.setAttribute("aria-busy","false")}'
+  + 'var o=new MutationObserver(function(){if(L.classList.contains("done")){o.disconnect();L.classList.remove("failed");L.setAttribute("aria-busy","false");clearTimeout(t)}});o.observe(L,{attributes:true,attributeFilter:["class"]});'
+  + 'addEventListener("error",function(e){var n=e.target;if(n&&n.tagName==="SCRIPT")fail()},true);addEventListener("unhandledrejection",fail);'
+  + 'document.getElementById("loading-retry").onclick=function(){location.reload()}})()';
+
+/** The shape of what is coming: a globe where there is a globe, a card grid
+ *  where there is a grid of scenes, lines of text where there is reading. */
+const skeleton = (kind) => {
+  if (kind === 'cards') {
+    return '    <div class="ld-cards" aria-hidden="true">' + '<i class="ld-sk ld-card"></i>'.repeat(3) + '</div>';
+  }
+  if (kind === 'lines') {
+    return '    <div class="ld-lines" aria-hidden="true">' + '<i class="ld-sk ld-line"></i>'.repeat(5) + '</div>';
+  }
+  return `    <div class="ld-art" aria-hidden="true">
+      <i class="ld-sk ld-sphere"></i>
+      <img id="loading-globe" src="/loading-globe.svg" alt="" width="180" height="180" decoding="async" fetchpriority="low" onload="this.parentNode.classList.add('ready')">
+    </div>`;
+};
+
 const shell = (page) => `${START}
   <!-- The opening screen. It is markup rather than something the page's own
        script draws, because the whole point of it is to be on screen BEFORE
        that script has run. The globe is a standalone SVG turning on its own
        CSS, so it costs no WebGL context and no module. -->
-  <div id="loading">
-    <i id="loading-bar"></i>
-    <img id="loading-globe" src="/loading-globe.svg" alt="" width="180" height="180">
-    <p id="loading-text"><i class="l-en">${page.loadEn}</i><i class="l-hans">${page.loadHans}</i><i class="l-hant">${page.loadHant}</i></p>
+  <div id="loading" role="status" aria-live="polite" aria-busy="true">
+    <i id="loading-bar" aria-hidden="true"></i>
+${skeleton(page.sk)}
+    <p id="loading-title" class="tri" aria-hidden="true"><i class="l-en">Yahweh's World</i><i class="l-hans">雅伟之界</i><i class="l-hant">雅偉之界</i></p>
+    <p id="loading-text" class="tri"><i class="l-en">${page.loadEn}</i><i class="l-hans">${page.loadHans}</i><i class="l-hant">${page.loadHant}</i></p>
+    <div id="loading-error" role="alert">
+      <p class="tri" style="margin:0"><i class="l-en">Loading did not finish. Check your connection and try again.</i><i class="l-hans">加载没有完成。请检查网络后重试。</i><i class="l-hant">載入沒有完成。請檢查網路後重試。</i></p>
+      <button type="button" id="loading-retry" class="tri"><i class="l-en">Try again</i><i class="l-hans">重试</i><i class="l-hant">重試</i></button>
+    </div>
   </div>
+  <script>${GUARD}</script>
+  <noscript><style>#loading{display:none}</style></noscript>
 
   <nav class="sitenav">
     <a class="brand" href="/">
@@ -191,7 +270,7 @@ for (const page of PAGES) {
     html = html.slice(0, at) + '\n' + block + '\n' + html.slice(at);
   }
   // …the font link, which is the same in all six…
-  html = html.replace(/[ \t]*<link href="https:\/\/fonts\.googleapis\.com\/css2[^>]*>/, FONTS);
+  html = html.replace(/[ \t]*<link href="https:\/\/fonts\.googleapis\.com\/css2[^>]*>(\s*<noscript>[\s\S]*?<\/noscript>)?/, FONTS);
 
   // …and the anti-flash rule in the head, BETWEEN TWO MARKERS.
   //

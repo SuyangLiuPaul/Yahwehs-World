@@ -1,35 +1,7 @@
-/* The opening screen. It used to be a 28 px mark and 11 px of text pinned to
-   the middle of whatever the screen was, which on a tablet is a very small
-   thing alone in a very large dark field — the owner photographed it. The mark
-   and the text are now sized against the viewport's short side, so they keep
-   the same presence on a phone and on a 27-inch display, and a hairline of
-   gold under the nav says how far the loading has actually got instead of
-   leaving a pulse to imply it. */
-#loading {
-  position: fixed; inset: 0; z-index: 50;
-  display: grid; place-content: center; justify-items: center;
-  gap: clamp(12px, 2.2vmin, 28px);
-  background: radial-gradient(circle at 50% 42%, #18426e 0%, var(--ground) 72%);
-  transition: opacity .6s ease; text-align: center;
-}
-#loading.done { opacity: 0; pointer-events: none; }
-/* Sized against the WIDTH, not the short side: on a phone the short side is
-   the width anyway, and on a desktop this keeps the globe from filling the
-   screen. */
-#loading-globe { width: min(46vw, 34vh, 240px); height: auto; display: block; filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.45)); }
-/* A sentence, so it is set in the reading face, not the monospace one. Mono
-   at 20px with .14em of tracking is a readout of a sentence rather than a
-   sentence, and in Chinese — where the mono face has no 汉字 at all and the
-   whole line fell through to a system fallback — it was worse than that. */
-#loading p {
-  margin: 0; font-family: var(--ui); font-size: clamp(15px, 3.8vw, 21px);
-  font-weight: 500; letter-spacing: .04em; color: var(--ink-2);
-}
-#loading-bar {
-  position: fixed; left: 0; top: 0; height: 2px; width: 0;
-  background: linear-gradient(90deg, var(--sky), var(--gold-bright));
-  transition: width .35s ease; z-index: 51;
-}
+/* The opening screen's CSS is NOT here. It is inline in each page's <head>
+   (scripts/build-shell.mjs, const CRITICAL) so the placeholder is on screen
+   with the HTML, before this file has been fetched. Keeping a second copy here
+   would only let the two drift; edit the generator. */
 
 /* One nav across all three surfaces. Without it they are three URLs a visitor
    has no way to discover from one another, which is the difference between
