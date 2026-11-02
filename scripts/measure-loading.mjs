@@ -2,6 +2,7 @@
 //
 //   node scripts/measure-loading.mjs [--dir dist] [--profile mobile|desktop|both]
 //        [--pages /,/scenes.html,/bible.html,/figures.html,/plan.html] [--json out.json]
+//        [--top] [--shifts]   (--shifts lists each layout shift with the elements that moved)
 //
 // It serves a built dist/ itself (so it never depends on `vite preview`, which
 // sends no compression) and compresses text the way Netlify does: brotli when
@@ -69,9 +70,9 @@ async function measure(browser, base, page, profile) {
   await ctx.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
   await ctx.addInitScript(() => {
     localStorage.setItem('ydh.locale', 'en');
-    window.__m = { fcp: null, cls: 0 };
+    window.__m = { fcp: null, cls: 0, shifts: [] };
     new PerformanceObserver((l) => { for (const e of l.getEntries()) if (e.name === 'first-contentful-paint') window.__m.fcp = e.startTime; }).observe({ type: 'paint', buffered: true });
-    new PerformanceObserver((l) => { for (const e of l.getEntries()) if (!e.hadRecentInput) window.__m.cls += e.value; }).observe({ type: 'layout-shift', buffered: true });
+    new PerformanceObserver((l) => { for (const e of l.getEntries()) if (!e.hadRecentInput) { window.__m.cls += e.value; window.__m.shifts.push({ t: Math.round(e.startTime), v: +e.value.toFixed(3), n: (e.sources || []).slice(0, 3).map((x) => { const n = x.node; return n ? (n.nodeName || '#') + (n.id ? '#' + n.id : '') + (n.className && n.className.baseVal === undefined ? '.' + String(n.className).split(' ')[0] : '') : '?'; }) }); } }).observe({ type: 'layout-shift', buffered: true });
   });
   const pg = await ctx.newPage();
   const cdp = await ctx.newCDPSession(pg);
@@ -98,7 +99,7 @@ async function measure(browser, base, page, profile) {
   const all = [...reqs.values()].filter((r) => r.done !== null);
   const sum = (a, k) => a.reduce((s, r) => s + r[k], 0);
   const out = {
-    page, profile, readyMs: ready, fcpMs: m.fcp && Math.round(m.fcp), cls: +m.cls.toFixed(3), errors,
+    page, profile, readyMs: ready, fcpMs: m.fcp && Math.round(m.fcp), cls: +m.cls.toFixed(3), shifts: m.shifts, errors,
     requestsAtReady: atReady.length, wireAtReadyKB: Math.round(sum(atReady, 'wire') / 1024), rawAtReadyKB: Math.round(sum(atReady, 'raw') / 1024),
     requestsTotal: all.length, wireTotalKB: Math.round(sum(all, 'wire') / 1024), rawTotalKB: Math.round(sum(all, 'raw') / 1024),
     top: all.sort((a, b) => b.wire - a.wire).slice(0, 8).map((r) => `${(r.wire / 1024).toFixed(0)} KB wire / ${(r.raw / 1024).toFixed(0)} KB raw  ${r.url.slice(0, 70)}`),
@@ -116,6 +117,7 @@ try {
     const r = await measure(browser, base, page, profile);
     results.push(r);
     console.log(`${profile.padEnd(8)} ${page.padEnd(15)} fcp ${String(r.fcpMs).padStart(5)} ms  ready ${String(r.readyMs).padStart(6)} ms  wire@ready ${String(r.wireAtReadyKB).padStart(5)} KB (raw ${String(r.rawAtReadyKB).padStart(5)})  total wire ${String(r.wireTotalKB).padStart(5)} KB (raw ${String(r.rawTotalKB).padStart(5)})  req ${r.requestsTotal}  cls ${r.cls}${r.errors.length ? '  ERR ' + r.errors[0] : ''}`);
+    if (args.shifts) for (const sh of r.shifts) console.log(`      shift ${sh.v} at ${sh.t} ms  ${sh.n.join(' ')}`);
     if (args.top) for (const t of r.top) console.log('      ' + t);
   }
 } finally { await browser.close(); server.close(); }

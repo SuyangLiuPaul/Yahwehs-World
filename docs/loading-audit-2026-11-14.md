@@ -181,12 +181,9 @@ the texture lands).
 
 ## What remains
 
-1. `bible.html`: 2.6 MB wire at ready (both Bible texts, 1.0 MB + 0.96 MB, and
-   a 277 KB `meta.json` are loaded before anything shows) and a layout shift of
-   0.925 on mobile. Load the second translation on demand, and give the reading
-   column a reserved height.
-2. `events.json` (172 KB wire) gates scenes, plan and bible; the first 60 events
-   inline and the rest on demand would take ~140 KB off each.
+1. ~~`bible.html`: 2.6 MB wire at ready, layout shift 0.925~~ done in pass 3 below.
+2. `events.json` (135 KB wire) still gates scenes and plan (bible no longer reads it);
+   the first 60 events inline and the rest on demand would take ~100 KB off each.
 3. `figures.html`: 300 KB of card JPEGs load with the page; sizes are 25-50 KB
    each and could be a 2x-sized WebP set.
 4. `ark.html` carries a 465 KB reference JPEG in its own markup
@@ -205,3 +202,100 @@ the texture lands).
 `check-budget.mjs`; `verify-routes.mjs` (phone/tablet/desktop, en/zh, against a
 production build served by `vite preview`); a browser check that the globe, the
 terrain fade-in, the figures 3D viewer and the scene placeholders work.
+
+## Pass 3: the Bible reader (/bible.html)
+
+Same tool and profile as pass 2 (`scripts/measure-loading.mjs`, brotli q5, 390x844,
+1.6 Mbit/s, 150 ms RTT, CPU 4x, Google Fonts blocked, one cold run per cell, English).
+Layout shifts are now itemised with `--shifts`. "Before" = HEAD `dbc0e3d`
+(pass-2 tree) built and measured on 2026-11-03: it reproduces the pass-2 figure
+(2,624 KB against 2,663 KB). Raw JSON on disk, not on the wire, in brackets.
+
+### Before / after, /bible.html, wire bytes at ready (Genesis 1, English)
+
+| Profile | Metric | Before | After |
+|---|---|---|---|
+| mobile-4G | Ready (screen lifts) | 14,480 ms | 1,584 ms |
+| mobile-4G | Transferred by ready | 2,624 KB (10,101 raw) | 182 KB (546 raw) |
+| mobile-4G | Requests at ready | 14 | 13 |
+| mobile-4G | First contentful paint | 552 ms | 500 ms |
+| mobile-4G | CLS | 0.924 | 0.000 |
+| desktop | Ready / transferred by ready | 576 ms / 2,624 KB | 244 ms / 182 KB |
+| desktop | CLS | 0.545 | 0.000 |
+| budget (`check-budget.mjs`, static) | first view | 3,100 KB allowed, ~2,600 used | 220 KB allowed, 179 used |
+
+CLS across widths (320, 360, 375, 390, 414, 430, 480, 481, 520, 560, 600, 640,
+700, 768, 769, 900, 1024, 1440 px, English and Simplified, unthrottled): before
+0.545-0.939 at every width; after 0.000-0.001 (the 0.001 is the site nav's
+`routes-group`/`tab-group`, shared shell, not the reader). `verify-bible-reader.mjs`
+asserts < 0.02 at 375/768/1440 in en, zh-Hans and zh-Hant: all 0.000.
+
+### What was wrong
+
+1. Data: the page fetched both whole Bibles it might show (BSB 1,035 KB + CUV 962 KB
+   wire), `meta.json` (277 KB; 385 KB raw of it, `referents`, is read by no code),
+   `places.json` (164 KB, loaded into a map that nothing used) and `events.json`
+   (135 KB), then rendered one chapter.
+2. Shift: the reader bar fills in after the data (its height is 47-93 px depending
+   on width and language, so it cannot be reserved with one number), the chapter
+   lands under it, and the bar, article and pager all moved when the screen lifted.
+
+### What changed
+
+1. `scripts/build-bible-split.mjs` cuts the existing files by book into
+   `public/data/bible/split/`: `core.json` (183 B, chapters per book), `text/<bsb|cuvs|cuvt>/<n>.json`,
+   `book/<n>.json` (that book's intro, paragraph starts, reference verses, section titles, and its events
+   with their global position `ci`). Nothing new is written by hand. `--check` rebuilds in
+   memory and proves the files on disk are current and reassemble to the originals
+   (text of all three Bibles, paraStarts, refVerses, intros, wordsSections, all 1,443 events).
+   Wired into `npm run build` after `events`. Genesis costs 59 KB (BSB) + 56 KB (CUV) + 26 KB (book)
+   gzip; the largest book (Psalms) about 72 + 73 + 39 KB.
+2. `src/bible-book.ts`: reads `core.json`, then only the opened book, in the language shown
+   (English adds the BSB, Chinese does not fetch it; Traditional fetches the Traditional file only). The
+   first book's files are requested together with `core.json`, from the URL's `?book=&ch=`, instead of
+   one after another. Next/prev and the pickers use the chapter counts, so crossing a book
+   boundary loads one small book. A render superseded by a faster click is dropped.
+   Full-text search is the one thing that needs every verse: the whole Chinese text
+   (`cuvs-yhwh.json` or `cuvt`, about 1 MB wire) is now fetched on the first query, once, with a
+   "Loading" line; it used to be paid by every visit.
+   `places.json` and the unread `events.json`/`meta.json` fetches are gone.
+3. `src/bible-book.css`: until the first chapter is rendered, `#bible-book-page` is
+   `visibility:hidden` (its box and space stay; a box that is not painted cannot shift),
+   and `bible-book.ts` adds `body.bb-ready` right before the loading screen lifts. The
+   screen already covers the page until then, so nothing the reader sees changes.
+   The skeleton is the existing loading screen; the 100vh minimum on the page keeps the
+   footer below the fold. A height-reservation per breakpoint was tried on paper and
+   rejected: the bar wraps at 47/52/61/84/93 px depending on width and language.
+4. `scripts/measure-loading.mjs --shifts` lists each layout shift with the elements that moved;
+   `scripts/verify-bible-reader.mjs` (new) is the behaviour check: Genesis renders in all
+   three languages at three viewports with no whole-Bible/meta/places/events fetch, next/prev
+   including Genesis 50 <-> Exodus 1, book and chapter pickers (Psalms: 150 chapters), the
+   picker dialog, search (one fetch, only then), `?book=Rev&ch=22`, `?book=43&ch=3` in Traditional.
+
+### Regression (the pass-2 checks, same tool, this tree)
+
+| Page, mobile-4G | Transferred by ready: pass 2 after -> now | CLS |
+|---|---|---|
+| / | 659 KB -> 637 KB | 0.002 |
+| /scenes.html | 235 KB -> 197 KB | 0.000 |
+| /figures.html | 370 KB -> 344 KB | 0.000 |
+| /plan.html | 253 KB -> 209 KB | 0.010 |
+
+(Lower than the pass-2 table on all four. None of these pages reads a file this pass
+touched, so I read it as run-to-run and tree differences; I did not isolate the cause.) `verify-loading.mjs` ok, `verify-geo.mjs` ok (worst river
+deviation 0.025 deg), `check-budget.mjs` ok for index/scenes/plan/figures/bible,
+`build-bible-split.mjs --check` ok, `verify-bible-reader.mjs` all ok.
+
+### Not done / left for the owner
+
+- The monolithic `*-yhwh.json` and `meta.json` stay in `public/data/bible/`
+  (the epub/pdf builders and search read them); about 11 MB is shipped that a reader
+  never downloads unless they search. Moving them out of `public/` needs those scripts and
+  `gate_check.py` (which defaults to `bsb-yhwh.json`) repointed.
+- The first plate (`merged-full/*.jpg`, 360-410 KB, another site) loads right after ready
+  on desktop; a `srcset` with the 520 px `merged-thumbs` would only help screens that
+  need <= 520 px, and the mobile profile (2x) would still pick the full image.
+- Build caveat in this session: HEAD `dbc0e3d` does not build on its own (vite.config.ts
+  names pages that are only in another session's uncommitted work), so the
+  before/after were built from a worktree with the page list trimmed to the five measured
+  pages; that trim is not committed. `tsc --noEmit` reports `sumEn`/`img` errors that exist at HEAD too.
