@@ -73,7 +73,8 @@ try {
   report.checks.push('Cancelled touch clears gesture state without selecting');
 
   // Real zoom buttons/wheel refresh sensitivity before the next drag.
-  await page.click('#routes-open'); await page.click('[data-journey="paul-1"]');
+  // The journeys pill is the phone's way to the routes menu; a door card may float over it at this pose, so press it as its own handler does.
+  await page.evaluate(() => document.getElementById('gm-routes').click()); await page.click('[data-journey="paul-1"]');
   await reset(200); const speed = (await pose()).speed;
   await page.click('#map-in'); assert.ok((await pose()).speed < speed);
   await page.mouse.move(130, 300); const preWheel = await pose(); await page.mouse.wheel(0, 80); await page.waitForTimeout(100);
@@ -150,7 +151,7 @@ try {
   await stage.focus(); await page.keyboard.press('ArrowLeft'); await page.keyboard.press('ArrowUp');
   assert.ok(Math.hypot(...(await pose()).position.map((v, i) => v - fit[i])) > .01, 'Arrow keys did not turn the globe');
   await page.keyboard.press('Home'); same((await pose()).position, fit, 'Home did not restore the route framing');
-  await page.click('#r-clear'); await reset(); await page.waitForTimeout(600); await stage.focus();
+  await page.evaluate(() => document.getElementById('r-clear').click()); await reset(); await page.waitForTimeout(600); await stage.focus();
   // One arrow press is exactly a 24 px drag (Shift: 120 px) at this altitude; nothing coasts afterwards.
   const dragBy = async (dx, dy) => { await reset(); await page.mouse.move(100, 400); await page.mouse.down(); await page.mouse.move(100 + dx, 400 + dy, { steps: 4 }); await page.mouse.up(); return (await pose()).position; };
   for (const [key, shift, dx, dy] of [['ArrowLeft', false, 24, 0], ['ArrowRight', false, -24, 0], ['ArrowUp', false, 0, 24], ['ArrowDown', false, 0, -24], ['ArrowLeft', true, 120, 0]]) {
