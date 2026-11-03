@@ -3,7 +3,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { allVerses } from './_data.ts';
-import { displayPlain, englishDivineName, normalizeDivineNames, sanitizeForCopy, tokenize, tokensToHtml, notesHtml } from '../../src/reader/text.ts';
+import { displayPlain, englishDivineName, normalizeDivineNames, sanitizeForCopy, tokenize, tokensToHtml } from '../../src/reader/text.ts';
 
 const key = (b: number, c: number, v: number) => `${b}:${c}:${v}`;
 const shown = new Map<string, Map<string, string>>();
@@ -110,8 +110,10 @@ test('tokens: notes become numbered markers per verse; editor marks keep bracket
   assert.ok(!en.includes('['));
   assert.match(en, /Yahweh/);
   const withNote = tokenize('a<note: x < y & "z">b', 'kjv');
-  assert.match(notesHtml(withNote, 'p'), /x &lt; y &amp; &quot;z&quot;/);
-  assert.match(tokensToHtml(withNote, 'kjv', 'p', (n) => `Note ${n}`), /aria-expanded="false"/);
+  const noteHtml = tokensToHtml(withNote, 'kjv', 'p', (n) => `Note ${n}`);
+  assert.match(noteHtml, /x &lt; y &amp; &quot;z&quot;/);
+  assert.match(noteHtml, /aria-expanded="false" aria-controls="p-1"/);
+  assert.match(noteHtml, /<span class="yr-note" id="p-1" role="note" hidden>/);
 });
 
 test('markup in the data never reaches the screen as markup: no < or > or { or [ in any rendered verse of the six editions', () => {

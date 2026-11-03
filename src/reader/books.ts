@@ -29,6 +29,7 @@ export function matchUiTag(tag: string | null | undefined): UiLang | null {
   const parts = tag.replace(/_/g, '-').split('-');
   const l = parts[0]!.toLowerCase();
   if (l === 'en') return 'en';
+  if (l === 'ru') return 'ru';
   if (l === 'zh') {
     let script: string | undefined;
     let region: string | undefined;
@@ -118,12 +119,16 @@ function index(): Map<string, number> {
   const m = new Map<string, number>();
   const add = (alias: string, n: number) => { const k = normalize(alias); if (k) m.set(k, n); };
   for (const b of BOOKS) {
-    add(b.en, b.n); add(b['zh-Hans'], b.n); add(b['zh-Hant'], b.n);
+    add(b.en, b.n); add(b['zh-Hans'], b.n); add(b['zh-Hant'], b.n); add(b.ru, b.n);
     for (const a of CATALOGUE.enAliases[b.en] ?? []) add(a, b.n);
   }
   for (const [zh, en] of Object.entries(CATALOGUE.zhAliases)) {
     const b = BOOKS.find((x) => x.en === en);
     if (b) add(zh, b.n);
+  }
+  for (const [ru, en] of Object.entries(CATALOGUE.ruAliases)) {
+    const b = BOOKS.find((x) => x.en === en);
+    if (b) add(ru, b.n);
   }
   // Traditional spellings of the single-character abbreviations Words only lists in Simplified
   const trad: Record<string, string> = {

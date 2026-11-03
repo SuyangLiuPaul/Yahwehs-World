@@ -2,9 +2,12 @@
 //
 //   node scripts/reader-editions.mjs [--words <path>] [--check] [--update-lock]
 //
-// The six editions the gallery release may serve (owner, 2026-11-03: the first few we
-// hold rights to; no church packs, no Russian, no beta languages, nothing online):
-//   bsb-yhwh, kjv, web-yhwh, asv-yhwh, cuvs-yhwh, cuvs-yhwh-tr
+// The editions the gallery release may serve (owner, 2026-11-03: the first few we hold rights to;
+// languages Chinese (Simplified and Traditional), English and Russian; no church packs, no beta
+// languages, nothing online):
+//   bsb-yhwh, kjv, web-yhwh, asv-yhwh, cuvs-yhwh, cuvs-yhwh-tr, rst-yhwh, rst
+// (rst and rst-yhwh are the plain eBible.org Synodal 1876, public domain; the Strong's-tagged LIO text is
+// licensed, test-only, and is not read here.)
 //
 // The bytes are Words' bytes. This script never re-imports a text: it reads
 // <words>/assets/<id>.json, checks its SHA-256 against src/reader/sources.lock.json
@@ -13,7 +16,7 @@
 //
 // Inputs (all read-only, from the Words checkout named in the lock):
 //   assets/<id>.json                 flat verse lists  { book, chapter, verse, text, id }
-//   assets/section_titles.json       headings, sets cuv / cuv-tr / english-classic (ru is not read)
+//   assets/section_titles.json       headings, sets cuv / cuv-tr / english-classic / ru
 //   lib/constants/bible_versions.dart  labels + language (regex; fails loudly if the shape moves)
 //   lib/constants/book_name_mapping.dart  Chinese (Hans/Hant) book names
 //   lib/utils/reference_parser.dart  English and Chinese book abbreviations
@@ -66,6 +69,7 @@ const EDITIONS = [
         en: 'Public domain (CC0) since 2023-04-30. The divine name is restored as Yahweh; the edition is called BSB (Yahweh), not "Berean".',
         'zh-Hans': '自 2023-04-30 起属公有领域（CC0）。神名还原为雅伟；本版称 BSB (Yahweh)，不称“Berean”。',
         'zh-Hant': '自 2023-04-30 起屬公有領域（CC0）。神名還原為雅偉；本版稱 BSB (Yahweh)，不稱「Berean」。',
+        ru: 'Общественное достояние (CC0) с 2023-04-30. Божье имя восстановлено как Яхве (Yahweh); издание называется BSB (Yahweh), а не «Berean».',
       },
     },
   },
@@ -79,6 +83,7 @@ const EDITIONS = [
         en: 'Public domain. The divine name (LORD in capitals) is shown as Yahweh, as in Yahweh’s Words.',
         'zh-Hans': '公有领域。神名（大写的 LORD）显示为 Yahweh，与雅伟之言一致。',
         'zh-Hant': '公有領域。神名（大寫的 LORD）顯示為 Yahweh，與雅偉之言一致。',
+        ru: 'Общественное достояние. Божье имя (LORD заглавными буквами) показано как Yahweh, как в «Слове Яхве».',
       },
     },
   },
@@ -92,6 +97,7 @@ const EDITIONS = [
         en: 'Public domain. The World English Bible with the divine name as Yahweh; supplied by Yahwehdehua (from eBible.org). The Apocrypha is not included.',
         'zh-Hans': '公有领域。World English Bible，神名作 Yahweh；雅伟的话提供（来自 eBible.org）。不含次经。',
         'zh-Hant': '公有領域。World English Bible，神名作 Yahweh；雅偉的話提供（來自 eBible.org）。不含次經。',
+        ru: 'Общественное достояние. World English Bible с Божьим именем Yahweh; предоставлено Yahwehdehua (с eBible.org). Неканонические книги не включены.',
       },
     },
   },
@@ -105,6 +111,7 @@ const EDITIONS = [
         en: 'Public domain (1901). The divine name is Yahweh where the ASV printed Jehovah, an editorial restoration by Yahweh De Hua Ministry.',
         'zh-Hans': '1901 年版本属公有领域。神名由 Jehovah 还原为 Yahweh，为雅伟的话事工的编辑成果。',
         'zh-Hant': '1901 年版本屬公有領域。神名由 Jehovah 還原為 Yahweh，為雅偉的話事工的編輯成果。',
+        ru: 'Общественное достояние (1901). Божье имя — Yahweh там, где в ASV напечатано Jehovah; редакторское восстановление служения Yahweh De Hua Ministry.',
       },
     },
   },
@@ -118,6 +125,7 @@ const EDITIONS = [
         en: 'Chinese Union Version, public domain. The divine name is written as Yahweh (雅伟).',
         'zh-Hans': '和合本，公有领域。神名作雅伟。',
         'zh-Hant': '和合本，公有領域。神名作雅偉。',
+        ru: 'Китайский перевод Union Version (和合本), общественное достояние. Божье имя написано как 雅伟 (Яхве).',
       },
     },
   },
@@ -131,6 +139,35 @@ const EDITIONS = [
         en: 'Chinese Union Version in Traditional characters, public domain. The divine name is written as Yahweh (雅偉).',
         'zh-Hans': '和合本繁体字版，公有领域。神名作雅伟。',
         'zh-Hant': '和合本，公有領域。神名作雅偉。',
+        ru: 'Китайский перевод Union Version (和合本) традиционными иероглифами, общественное достояние. Божье имя написано как 雅偉 (Яхве).',
+      },
+    },
+  },
+  {
+    id: 'rst-yhwh', language: 'ru', headingSet: 'ru',
+    copyName: 'Синодальный перевод, издание Яхве',
+    credit: { ru: 'СП (Яхве) · Синодальный перевод (1876), общественное достояние; имя Божие восстановлено как Яхве по еврейскому тексту (Yahweh\u2019s Words).' },
+    licence: {
+      kind: 'public-domain', holder: 'eBible.org (russyn); name restored by Yahweh\u2019s Words', url: 'https://ebible.org/rus/',
+      note: {
+        en: "The Russian Synodal translation (1876, public domain). In this edition the name Яхве (Yahweh) is restored where the Hebrew has יהוה; אֲדֹנָי יְהוִה is «Владыка Яхве». Otherwise the text is unchanged, and «Господь» in the New Testament stays as printed. The list of changed verses is public: yahwehword.com/rst-yhwh/changes.csv",
+        'zh-Hans': "俄文 Synodal 译本（1876，公有领域）。本版在希伯来原文为 יהוה 之处恢复神的名字「Яхве」；אֲדֹנָי יְהוִה 作 «Владыка Яхве»。其余文字未改，新约的 «Господь» 保持原样。改动清单公开：yahwehword.com/rst-yhwh/changes.csv",
+        'zh-Hant': "俄文 Synodal 譯本（1876，公有領域）。本版在希伯來原文為 יהוה 之處恢復神的名字「Яхве」；אֲדֹנָי יְהוִה 作 «Владыка Яхве»。其餘文字未改，新約的 «Господь» 保持原樣。改動清單公開：yahwehword.com/rst-yhwh/changes.csv",
+        ru: "Синодальный перевод 1876 г. (общественное достояние). В этом издании имя Божие Яхве восстановлено там, где в еврейском тексте стоит יהוה; в сочетании אֲדֹנָי יְהוִה оно передано как «Владыка Яхве». В остальном текст не изменён; в Новом Завете «Господь» оставлено как в оригинале. Список изменённых стихов открыт: yahwehword.com/rst-yhwh/changes.csv",
+      },
+    },
+  },
+  {
+    id: 'rst', language: 'ru', headingSet: 'ru',
+    copyName: 'Синодальный перевод',
+    credit: { ru: 'СП · Синодальный перевод (1876), общественное достояние.' },
+    licence: {
+      kind: 'public-domain', holder: 'eBible.org (russyn)', url: 'https://ebible.org/rus/',
+      note: {
+        en: 'Synodal Translation (1876), public domain, from eBible.org, as printed.',
+        'zh-Hans': '俄文《synodal》译本（1876），公有领域，来自 eBible.org，保持原貌。',
+        'zh-Hant': '俄文《synodal》譯本（1876），公有領域，來自 eBible.org，保持原貌。',
+        ru: 'Синодальный перевод (1876), общественное достояние, с eBible.org, без изменений.',
       },
     },
   },
@@ -138,7 +175,7 @@ const EDITIONS = [
 // Chinese credit lines for the English editions when the reader reads in Chinese chrome are not
 // needed: credit is in the edition's language. The other-language keys above exist for the licence table.
 // Fill the other UI languages' credit from the licence note so every edition has all three.
-const UI = ['en', 'zh-Hans', 'zh-Hant'];
+const UI = ['en', 'zh-Hans', 'zh-Hant', 'ru'];
 
 // ── read Words ─────────────────────────────────────────────────────────────
 if (!existsSync(join(WORDS, 'assets/kjv.json'))) fail(`no Words checkout at ${WORDS} (use --words <path>)`);
@@ -217,10 +254,16 @@ const enAliases = {};
 for (const m of enAliasBody.matchAll(/'([^']+)'\s*:\s*\[([^\]]*)\]/g)) enAliases[m[1]] = [...m[2].matchAll(/'([^']+)'/g)].map((x) => x[1]);
 const zhShort = Object.fromEntries(pairs(dartMap(refDart, 'Map<String, String> _chineseShortAliases')));
 const zhAliasHtml = Object.fromEntries(pairs(dartMap(nameDart, '_zhAliasToEn')));
+const enToRu = Object.fromEntries(pairs(dartMap(nameDart, 'englishToRussian')));
+const ruFull = Object.fromEntries(pairs(dartMap(nameDart, '_ruAliasToEn')));
+const ruAbbrBody = dartMap(refDart, 'Map<String, List<String>> _russianAliases').replace(/\/\/.*$/gm, '');
+const ruAbbr = {};
+for (const m of ruAbbrBody.matchAll(/'([^']+)'\s*:\s*\[([^\]]*)\]/g)) ruAbbr[m[1]] = [...m[2].matchAll(/'([^']+)'/g)].map((x) => x[1]);
 
 const BOOKS_EN = ['Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi', 'Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews', 'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation'];
 for (const b of BOOKS_EN) {
   if (!enToHans[b] || !enToHant[b]) fail(`no Chinese name for ${b}`);
+  if (!enToRu[b]) fail(`no Russian name for ${b}`);
 }
 
 // ── load the six editions ─────────────────────────────────────────────────
@@ -276,24 +319,27 @@ const editionsOut = EDITIONS.map((e) => {
 const aliases = {};
 for (const [en, list] of Object.entries(enAliases)) aliases[en] = list;
 const booksOut = BOOKS_EN.map((en, i) => ({
-  n: i + 1, en, 'zh-Hans': enToHans[en], 'zh-Hant': enToHant[en], chapters: chapters[i], vc: vcount[i],
+  n: i + 1, en, 'zh-Hans': enToHans[en], 'zh-Hant': enToHant[en], ru: enToRu[en], chapters: chapters[i], vc: vcount[i],
 }));
 const zhAliases = { ...zhShort };
 // full Chinese names (every spelling, both scripts) so a typed 創世紀 or 创世记 resolves
 for (const [zh, en] of Object.entries(zhAliasHtml)) zhAliases[zh] = en;
+const ruAliases = { ...ruFull };
+for (const [en, list] of Object.entries(ruAbbr)) for (const a of list) ruAliases[a] = en;
 const catalogue = {
   v: 1,
   wordsCommit,
-  defaults: { en: 'bsb-yhwh', 'zh-Hans': 'cuvs-yhwh', 'zh-Hant': 'cuvs-yhwh-tr' },
+  defaults: { en: 'bsb-yhwh', 'zh-Hans': 'cuvs-yhwh', 'zh-Hant': 'cuvs-yhwh-tr', ru: 'rst-yhwh' },
   editions: editionsOut,
   books: booksOut,
   enAliases: aliases,
   zhAliases,
+  ruAliases,
 };
 
 // ── headings ───────────────────────────────────────────────────────────────
 const titles = JSON.parse(readBuf('assets/section_titles.json').toString('utf8'));
-const sets = ['cuv', 'cuv-tr', 'english-classic'];
+const sets = ['cuv', 'cuv-tr', 'english-classic', 'ru'];
 for (const s of sets) if (!titles.sets[s]) fail(`section_titles.json has no set ${s}`);
 
 // ── paragraph starts (this repo's meta.json) ───────────────────────────────

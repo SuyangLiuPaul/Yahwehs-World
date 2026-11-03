@@ -19,7 +19,7 @@ import { sanitizeForCopy } from './text.ts';
 
 export const COPY_VERSE_CAP = 100;
 
-const SITE: Record<UiLang, string> = { en: 'Yahweh’s World', 'zh-Hans': '雅伟之界', 'zh-Hant': '雅偉之界' };
+const SITE: Record<UiLang, string> = { en: 'Yahweh’s World', 'zh-Hans': '雅伟之界', 'zh-Hant': '雅偉之界', ru: 'Мир Яхве' };
 export const DEFAULT_ORIGIN = 'https://world.yahwehword.com';
 
 /** The notice appended when a copy was cut; in the language of the page the reader is on. */
@@ -27,15 +27,21 @@ export const CUT_NOTICE: Record<UiLang, (cap: number) => string> = {
   en: (n) => `(Copy is limited to ${n} verses; the rest were left out.)`,
   'zh-Hans': (n) => `（复制以 ${n} 节为限，其余未复制。）`,
   'zh-Hant': (n) => `（複製以 ${n} 節為限，其餘未複製。）`,
+  ru: (n) => `(Копирование ограничено ${n} стихами; остальное не скопировано.)`,
 };
+
+/** A verse of a passage that may cross chapters: chapter * 1000 + verse. */
+export const vkey = (chapter: number, verse: number): number => chapter * 1000 + verse;
+export const keyChapter = (k: number): number => Math.floor(k / 1000);
+export const keyVerse = (k: number): number => k % 1000;
 
 export interface CopyInput {
   book: number;
-  chapter: number;
-  /** selected verse numbers, any order */
+  /** Given: `verses` are verse numbers of this chapter. Absent: `verses` are composite keys (vkey), possibly across chapters. */
+  chapter?: number;
   verses: readonly number[];
   /** raw text for a verse of the main edition, or null */
-  text: (v: number) => string | null;
+  text: (v: number, chapter: number) => string | null;
   edition: EditionInfo;
   ui: UiLang;
   origin?: string;
@@ -51,7 +57,7 @@ export interface CopyResult {
   ref: Ref;
 }
 
-const paren = (lang: UiLang, s: string): string => (lang === 'en' ? ` (${s})` : `（${s}）`);
+const paren = (lang: UiLang, s: string): string => (lang === 'zh-Hans' || lang === 'zh-Hant' ? `（${s}）` : ` (${s})`);
 
 export function defaultLink(ref: Ref, edition: string, origin = DEFAULT_ORIGIN): string {
   return `${origin}/bible.html#ref=${encodeURIComponent(canonicalRef(ref))}&ed=${edition}`;
@@ -60,29 +66,46 @@ export function defaultLink(ref: Ref, edition: string, origin = DEFAULT_ORIGIN):
 /** The credit line of an edition, in its own language. */
 export const creditLine = (e: EditionInfo): string => e.credit[e.language];
 
-export function heading(book: number, chapter: number, verses: readonly number[], e: EditionInfo): string {
-  const name = bookNameIn(book, e.language);
-  const sorted = [...new Set(verses)].sort((a, b) => a - b);
-  return `${name} ${chapter}:${formatVerseRange(sorted)}${paren(e.language, e.copyName)}`;
+const toKeys = (chapter: number | undefined, verses: readonly number[]): number[] =>
+  [...new Set(verses.map((v) => (chapter == null ? v : vkey(chapter, v))))].sort((a, b) => a - b);
+
+/** "Genesis 1:1–3, 5" within a chapter; "Genesis 15:5–16:2" across chapters. */
+export function passageLabel(book: number, keys: readonly number[], lang: UiLang): string {
+  const name = bookNameIn(book, lang);
+  const first = keys[0]!, last = keys[keys.length - 1]!;
+  if (keyChapter(first) === keyChapter(last)) return `${name} ${keyChapter(first)}:${formatVerseRange(keys.map(keyVerse))}`;
+  return `${name} ${keyChapter(first)}:${keyVerse(first)}\u2013${keyChapter(last)}:${keyVerse(last)}`;
+}
+
+export function heading(book: number, chapter: number | undefined, verses: readonly number[], e: EditionInfo): string {
+  return `${passageLabel(book, toKeys(chapter, verses), e.language)}${paren(e.language, e.copyName)}`;
+}
+
+function refOf(book: number, keys: readonly number[]): Ref {
+  const first = keys[0]!, last = keys[keys.length - 1]!;
+  // a link to a passage that crosses chapters points at its first chapter
+  const sameChapter = keyChapter(first) === keyChapter(last);
+  return { book, chapter: keyChapter(first), v1: keyVerse(first), v2: sameChapter ? keyVerse(last) : undefined };
 }
 
 export function buildCopy(i: CopyInput): CopyResult | null {
   const cap = i.cap ?? COPY_VERSE_CAP;
-  const all = [...new Set(i.verses)].sort((a, b) => a - b);
+  const all = toKeys(i.chapter, i.verses);
   const picked = all.slice(0, cap);
   const lines: string[] = [];
   const carried: number[] = [];
-  for (const v of picked) {
-    const t = i.text(v);
+  const multi = new Set(picked.map(keyChapter)).size > 1;
+  for (const k of picked) {
+    const t = i.text(keyVerse(k), keyChapter(k));
     if (t == null) continue; // the edition has no such verse: it is not invented
-    lines.push(`${v} ${sanitizeForCopy(t)}`);
-    carried.push(v);
+    lines.push(`${multi ? `${keyChapter(k)}:` : ''}${keyVerse(k)} ${sanitizeForCopy(t)}`);
+    carried.push(k);
   }
   if (!carried.length) return null;
   const cut = all.length > cap;
-  const ref: Ref = { book: i.book, chapter: i.chapter, v1: carried[0], v2: carried[carried.length - 1] };
+  const ref = refOf(i.book, carried);
   const link = (i.linkFor ?? ((r, e) => defaultLink(r, e, i.origin)))(ref, i.edition.id);
-  const out = [heading(i.book, i.chapter, carried, i.edition), ...lines, '', creditLine(i.edition)];
+  const out = [heading(i.book, undefined, carried, i.edition), ...lines, '', creditLine(i.edition)];
   if (cut) out.push(CUT_NOTICE[i.ui](cap));
   out.push(`— ${SITE[i.ui]} · ${link}`);
   return { text: out.join('\n'), count: carried.length, cut, ref };
@@ -145,12 +168,12 @@ export function formatParallelCopy(o: { heading: string; editions: ParallelCopyE
 
 export interface ParallelCopyInput {
   book: number;
-  chapter: number;
+  chapter?: number;
   verses: readonly number[];
   /** set order; the first is the main edition */
   editions: readonly EditionInfo[];
   /** cells[verse] = raw text per edition in set order */
-  cell: (v: number, editionIndex: number) => string | null;
+  cell: (v: number, editionIndex: number, chapter: number) => string | null;
   ui: UiLang;
   origin?: string;
   linkFor?: (ref: Ref, edition: string) => string;
@@ -159,27 +182,27 @@ export interface ParallelCopyInput {
 
 export function buildParallelCopy(i: ParallelCopyInput): CopyResult | null {
   const cap = i.cap ?? COPY_VERSE_CAP;
-  const all = [...new Set(i.verses)].sort((a, b) => a - b);
+  const all = toKeys(i.chapter, i.verses);
   const picked = all.slice(0, cap);
   const main = i.editions[0]!;
   const rows: ParallelCopyRow[] = [];
   const carried: number[] = [];
-  for (const v of picked) {
-    const texts = i.editions.map((_e, k) => { const t = i.cell(v, k); return t == null ? null : sanitizeForCopy(t); });
+  for (const k of picked) {
+    const texts = i.editions.map((_e, e) => { const t = i.cell(keyVerse(k), e, keyChapter(k)); return t == null ? null : sanitizeForCopy(t); });
     if (texts.every((t) => t == null)) continue;
-    rows.push({ ref: `${i.chapter}:${v}`, texts });
-    carried.push(v);
+    rows.push({ ref: `${keyChapter(k)}:${keyVerse(k)}`, texts });
+    carried.push(k);
   }
   if (!carried.length) return null;
   const cut = all.length > cap;
   const names = i.editions.map((e) => e.narrow);
-  const head = `${bookNameIn(i.book, main.language)} ${i.chapter}:${formatVerseRange(carried)}`;
+  const head = passageLabel(i.book, carried, main.language);
   const body = formatParallelCopy({
     heading: head,
     editions: i.editions.map((e, k) => ({ label: names[k]!, fullName: e.menu, credit: creditLine(e) })),
     rows,
   });
-  const ref: Ref = { book: i.book, chapter: i.chapter, v1: carried[0], v2: carried[carried.length - 1] };
+  const ref = refOf(i.book, carried);
   const link = (i.linkFor ?? ((r, e) => defaultLink(r, e, i.origin)))(ref, main.id);
   const tail = [cut ? CUT_NOTICE[i.ui](cap) : null, `— ${SITE[i.ui]} · ${link}`].filter(Boolean).join('\n');
   return { text: `${body}\n${tail}`, count: carried.length, cut, ref };

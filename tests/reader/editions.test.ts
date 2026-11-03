@@ -11,9 +11,9 @@ import { sanitizeForCopy } from '../../src/reader/text.ts';
 
 const lock = JSON.parse(readFileSync(join(ROOT, 'src/reader/sources.lock.json'), 'utf8')) as { wordsCommit: string; files: Record<string, { sha256: string; bytes: number }> };
 
-test('exactly the six editions the owner allowed, in this order', () => {
+test('exactly the eight editions the owner allowed (English, Chinese in both scripts, Russian), in this order', () => {
   assert.deepEqual(CATALOGUE.editions.map((e) => e.id), [...EDITION_IDS]);
-  assert.deepEqual(CATALOGUE.defaults, { en: 'bsb-yhwh', 'zh-Hans': 'cuvs-yhwh', 'zh-Hant': 'cuvs-yhwh-tr' });
+  assert.deepEqual(CATALOGUE.defaults, { en: 'bsb-yhwh', 'zh-Hans': 'cuvs-yhwh', 'zh-Hant': 'cuvs-yhwh-tr', ru: 'rst-yhwh' });
 });
 
 test('the catalogue pins the Words commit and every edition SHA equals the lock', () => {
@@ -61,6 +61,8 @@ test('all six number the verses the same way: 31,102 in the union, the omissions
   assert.equal(per.get('kjv')!.size, 31102);
   assert.equal(per.get('cuvs-yhwh')!.size, 31102);
   assert.equal(per.get('cuvs-yhwh-tr')!.size, 31102);
+  assert.equal(per.get('rst-yhwh')!.size, 31102, 'Words numbers the Synodal like the others');
+  assert.equal(per.get('rst')!.size, 31102);
   assert.equal(31102 - per.get('bsb-yhwh')!.size, 16);
   assert.equal(31102 - per.get('asv-yhwh')!.size, 16);
   assert.equal(31102 - per.get('web-yhwh')!.size, 4);
@@ -97,7 +99,28 @@ test('credit lines name the Union Version without a year, as public domain', () 
   assert.match(hans.credit.en, /public domain/);
   assert.match(hant.credit['zh-Hant'], /和合本雅偉版/);
   assert.match(hant.credit['zh-Hant'], /公有領域/);
-  for (const e of CATALOGUE.editions) for (const l of ['en', 'zh-Hans', 'zh-Hant'] as const) assert.ok(e.credit[l] && e.licence.note[l], `${e.id} ${l}`);
+  for (const e of CATALOGUE.editions) for (const l of ['en', 'zh-Hans', 'zh-Hant', 'ru'] as const) assert.ok(e.credit[l] && e.licence.note[l], `${e.id} ${l}`);
+});
+
+test('Russian: the Яхве edition never says Иегова; the plain Synodal is as printed (a handful of Иегова are in the publisher\u2019s text)', () => {
+  let plain = 0;
+  for (const [b, c, v, s] of allVerses('rst-yhwh')) assert.ok(!/Иегов/.test(s), `rst-yhwh ${b}:${c}:${v}`);
+  for (const [, , , s] of allVerses('rst')) if (/Иегов/.test(s)) plain++;
+  assert.equal(plain, 7);
+  let yahve = 0;
+  for (const [, , , s] of allVerses('rst-yhwh')) if (/Яхве/.test(s)) yahve++;
+  assert.ok(yahve > 4000, `Яхве in ${yahve} verses`);
+});
+
+test('Russian editions are the plain eBible.org Synodal (public domain), never the licensed Strong\u2019s-tagged text', () => {
+  for (const id of ['rst', 'rst-yhwh']) {
+    const e = CATALOGUE.editions.find((x) => x.id === id)!;
+    assert.equal(e.language, 'ru');
+    assert.equal(e.licence.kind, 'public-domain');
+    assert.match(e.credit.ru, /общественное достояние/);
+    assert.match(e.licence.holder, /eBible\.org/);
+    for (const [, , , s] of allVerses(id)) assert.ok(!/<[^>]*(strong|lio)[^>]*>/i.test(s));
+  }
 });
 
 test('the divine name is spelled for each script: 雅伟 in Simplified credits, 雅偉 in Traditional', () => {

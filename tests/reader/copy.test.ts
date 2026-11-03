@@ -163,3 +163,24 @@ test('clipboard: no async API at all falls to the legacy path; a failing legacy 
   assert.equal(await copyText('x', { doc: fakeDoc('throw').doc, nav: { clipboard: { writeText: async () => { throw new Error('x'); } } as unknown as Clipboard } }), 'failed');
   assert.equal(legacyCopy('x', undefined), false);
 });
+
+test('Russian: heading in Synodal names with ASCII brackets, the Russian credit, the Russian site line and cut notice', () => {
+  const r = buildCopy({ book: 43, chapter: 3, verses: [16], text: textOf('rst-yhwh', 43, 3), edition: ed('rst-yhwh'), ui: 'ru' })!;
+  const lines = r.text.split('\n');
+  assert.equal(lines[0], 'От Иоанна 3:16 (Синодальный перевод, издание Яхве)');
+  assert.equal(lines[3], 'СП (Яхве) · Синодальный перевод (1876), общественное достояние; имя Божие восстановлено как Яхве по еврейскому тексту (Yahweh’s Words).');
+  assert.match(lines[4]!, /^— Мир Яхве · https:\/\/world\.yahwehword\.com\/bible\.html#ref=John/);
+  const long = buildCopy({ book: 19, chapter: 119, verses: Array.from({ length: 176 }, (_v, i) => i + 1), text: textOf('rst', 19, 119), edition: ed('rst'), ui: 'ru' })!;
+  assert.ok(long.text.includes('(Копирование ограничено 100 стихами; остальное не скопировано.)'));
+});
+
+test('a passage that crosses a chapter: one heading from the first verse to the last, chapter-numbered lines, a link to the first chapter', () => {
+  const r = buildCopy({ book: 1, verses: [15020, 15021, 16001, 16002], text: (v, c) => bookText('kjv', 1)[c - 1]?.[v - 1] ?? null, edition: ed('kjv'), ui: 'en', origin: 'https://x.test' })!;
+  const lines = r.text.split('\n');
+  assert.equal(lines[0], 'Genesis 15:20\u201316:2 (KJV)');
+  assert.match(lines[1]!, /^15:20 /);
+  assert.match(lines[3]!, /^16:1 Now Sarai/);
+  assert.equal(r.count, 4);
+  assert.deepEqual(r.ref, { book: 1, chapter: 15, v1: 20, v2: undefined });
+  assert.ok(r.text.endsWith('https://x.test/bible.html#ref=Genesis%2015%3A20&ed=kjv'));
+});

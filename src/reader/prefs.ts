@@ -1,6 +1,6 @@
 // Reader preferences: one small JSON value, every access guarded (private windows and blocked
 // storage throw or come back empty; the reader must read the same without it).
-import type { Mode, Prefs, ThemePref, UiLang } from './types.ts';
+import { UI_LANGS, type Mode, type Prefs, type ThemePref } from './types.ts';
 import { editionById } from './books.ts';
 
 export const PREFS_KEY = 'yr.prefs.v1';
@@ -18,7 +18,7 @@ export function sanitizePrefs(raw: unknown): Prefs {
   if (!raw || typeof raw !== 'object') return p;
   const r = raw as Record<string, unknown>;
   if (r.edition && typeof r.edition === 'object') {
-    for (const l of ['en', 'zh-Hans', 'zh-Hant'] as UiLang[]) {
+    for (const l of UI_LANGS) {
       const id = (r.edition as Record<string, unknown>)[l];
       if (typeof id === 'string' && editionById(id)) p.edition[l] = id;
     }

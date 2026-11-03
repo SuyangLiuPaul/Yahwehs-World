@@ -9,8 +9,8 @@ import { t, STRINGS } from '../../src/reader/strings.ts';
 test('prefs: garbage in, defaults out; unknown editions, sizes and modes are dropped', () => {
   assert.deepEqual(sanitizePrefs(null), defaultPrefs());
   assert.deepEqual(sanitizePrefs('x'), defaultPrefs());
-  const p = sanitizePrefs({ edition: { en: 'kjv', 'zh-Hans': 'niv-online', ru: 'rst' }, mode: 'sideways', parallel: ['kjv', 'kjv', 'bogus', 'asv-yhwh', 'web-yhwh', 'bsb-yhwh'], size: 7, theme: 'pink', recent: ['1:1', 'x', '19:119'] });
-  assert.deepEqual(p.edition, { en: 'kjv' });
+  const p = sanitizePrefs({ edition: { en: 'kjv', 'zh-Hans': 'niv-online', ru: 'rst', fr: 'x' }, mode: 'sideways', parallel: ['kjv', 'kjv', 'bogus', 'asv-yhwh', 'web-yhwh', 'bsb-yhwh'], size: 7, theme: 'pink', recent: ['1:1', 'x', '19:119'] });
+  assert.deepEqual(p.edition, { en: 'kjv', ru: 'rst' });
   assert.equal(p.mode, 'verse');
   assert.deepEqual(p.parallel, ['kjv', 'asv-yhwh', 'web-yhwh']);
   assert.equal(p.size, 1);
@@ -98,7 +98,7 @@ test('store: a body that is not JSON says parse, and is not retried', async () =
 
 test('strings: every key has all three languages; placeholders survive; overrides win', () => {
   for (const [k, row] of Object.entries(STRINGS)) {
-    for (const l of ['en', 'zh-Hans', 'zh-Hant'] as const) {
+    for (const l of ['en', 'zh-Hans', 'zh-Hant', 'ru'] as const) {
       assert.ok(row[l]?.length, `${k} ${l}`);
       const ph = (s: string) => [...s.matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort().join();
       assert.equal(ph(row[l]), ph(row.en), `${k} ${l} placeholders`);
@@ -111,8 +111,13 @@ test('strings: every key has all three languages; placeholders survive; override
 
 test('strings: nothing Chinese in the English column, and the Chinese columns hold no Latin sentences', () => {
   for (const [k, row] of Object.entries(STRINGS)) {
+    if (k.startsWith('group')) continue; // language names are written in their own script everywhere
     assert.ok(!/[一-鿿]/.test(row.en), `${k} en`);
+    assert.ok(!/[\u0400-\u04ff]/.test(row.en), `${k} en has Cyrillic`);
+    assert.ok(!/[\u4e00-\u9fff]/.test(row.ru), `${k} ru has Chinese`);
+    assert.ok(!/[A-Za-z]{4,}/.test(row.ru.replace(/\{\w+\}/g, '').replace(/CC0/g, '')), `${k} ru has Latin words: ${row.ru}`);
     for (const l of ['zh-Hans', 'zh-Hant'] as const) {
+      assert.ok(!/[\u0400-\u04ff]/.test(row[l]), `${k} ${l} has Cyrillic`);
       const stripped = row[l].replace(/\{\w+\}/g, '').replace(/CC0|English|·/g, '');
       assert.ok(!/[A-Za-z]{3,}/.test(stripped), `${k} ${l}: ${row[l]}`);
     }

@@ -18,7 +18,7 @@ if (!existsSync(join(DATA, 'catalogue.json'))) {
 export const readJson = <T>(rel: string): T => JSON.parse(readFileSync(join(DATA, rel), 'utf8')) as T;
 export const text = (ed: string, book: number): BookText => readJson<BookText>(`text/${ed}/${book}.json`);
 export const headings = (set: string, book: number): BookHeadings => readJson<BookHeadings>(`headings/${set}/${book}.json`);
-export const EDITION_IDS = ['bsb-yhwh', 'kjv', 'web-yhwh', 'asv-yhwh', 'cuvs-yhwh', 'cuvs-yhwh-tr'] as const;
+export const EDITION_IDS = ['bsb-yhwh', 'kjv', 'web-yhwh', 'asv-yhwh', 'cuvs-yhwh', 'cuvs-yhwh-tr', 'rst-yhwh', 'rst'] as const;
 
 /** All verses of an edition as [book, chapter, verse, raw text]. */
 export function* allVerses(ed: string): Generator<[number, number, number, string]> {

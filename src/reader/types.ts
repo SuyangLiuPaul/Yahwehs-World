@@ -1,13 +1,22 @@
 // Shared shapes of the reader module. Nothing here touches the DOM.
 
-/** The three interface languages of this release (owner, 2026-11-03). */
-export type UiLang = 'en' | 'zh-Hans' | 'zh-Hant';
-export const UI_LANGS: readonly UiLang[] = ['en', 'zh-Hans', 'zh-Hant'];
+/** The interface languages of this release (owner, 2026-11-03): English, Chinese in both scripts, Russian. */
+export type UiLang = 'en' | 'zh-Hans' | 'zh-Hant' | 'ru';
+export const UI_LANGS: readonly UiLang[] = ['en', 'zh-Hans', 'zh-Hant', 'ru'];
+
+/** Words' convention (tools/i18n/languages.json): a language is "reviewed" only when a named person has read the whole pack.
+ *  Russian ships bundled in Words with no reviewer, so it is shown as not yet read by a native speaker. */
+export const UI_LANG_INFO: Record<UiLang, { endonym: string; dir: 'ltr' | 'rtl'; reviewed: boolean }> = {
+  en: { endonym: 'English', dir: 'ltr', reviewed: true },
+  'zh-Hans': { endonym: '简体中文', dir: 'ltr', reviewed: true },
+  'zh-Hant': { endonym: '繁體中文', dir: 'ltr', reviewed: true },
+  ru: { endonym: 'Русский', dir: 'ltr', reviewed: false },
+};
 
 /** Reading layout: one verse a line, paragraphs, or the interleaved 对照 layout. */
 export type Mode = 'verse' | 'paragraph' | 'parallel';
 export type ThemePref = 'auto' | 'dark' | 'light' | 'paper';
-export type HeadingSet = 'cuv' | 'cuv-tr' | 'english-classic';
+export type HeadingSet = 'cuv' | 'cuv-tr' | 'english-classic' | 'ru';
 
 export interface EditionInfo {
   id: string;
@@ -38,6 +47,7 @@ export interface BookInfo {
   en: string;
   'zh-Hans': string;
   'zh-Hant': string;
+  ru: string;
   chapters: number;
   /** Verse count per chapter (the union of the six editions). */
   vc: number[];
@@ -51,6 +61,8 @@ export interface Catalogue {
   books: BookInfo[];
   enAliases: Record<string, string[]>;
   zhAliases: Record<string, string>;
+  /** Russian full names and abbreviations -> English book name */
+  ruAliases: Record<string, string>;
 }
 
 /** A passage inside one chapter. `v1`/`v2` absent = the whole chapter. */

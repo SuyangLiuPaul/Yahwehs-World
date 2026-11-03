@@ -19,6 +19,7 @@ test('first-time pairing: an English reader gets 和合本雅伟版 in their scr
   assert.deepEqual(defaultPairing('kjv', 'zh-Hant'), ['kjv', 'cuvs-yhwh-tr']);
   assert.deepEqual(defaultPairing('cuvs-yhwh'), ['cuvs-yhwh', 'bsb-yhwh']);
   assert.deepEqual(defaultPairing('cuvs-yhwh-tr'), ['cuvs-yhwh-tr', 'bsb-yhwh']);
+  assert.deepEqual(defaultPairing('rst-yhwh'), ['rst-yhwh', 'bsb-yhwh'], 'a Russian reader gets the BSB (Yahweh)');
   assert.equal(chineseScriptOf(['en-AU', 'zh-TW']), 'zh-Hant');
   assert.equal(chineseScriptOf(['en-AU', 'zh-CN']), 'zh-Hans');
   assert.equal(chineseScriptOf(['en']), 'zh-Hans');
@@ -37,7 +38,7 @@ test('toggle and move: the cap holds, the main edition cannot be removed, moving
 
 test('picker rows: grouped by language, the other Chinese script folded unless in use, the cap explained', () => {
   const en = pickerRows(['bsb-yhwh', 'cuvs-yhwh'], 'en');
-  assert.equal(en.length, 6);
+  assert.equal(en.length, 8);
   assert.equal(en.find((r) => r.id === 'cuvs-yhwh-tr')!.folded, true);
   assert.equal(en.find((r) => r.id === 'cuvs-yhwh')!.folded, false);
   const hant = pickerRows(['cuvs-yhwh-tr', 'bsb-yhwh'], 'zh-Hant');
@@ -61,7 +62,7 @@ test('rows: a verse appears if any edition has it; an omission is null, never a 
   assert.deepEqual(buildRows(t, 99), []);
 });
 
-test('alignment audit: all 31,102 verses, every ordered pair of the six editions', () => {
+test('alignment audit: all 31,102 verses, every ordered pair of the eight editions', () => {
   const books = Object.fromEntries(EDITION_IDS.map((id) => [id, Array.from({ length: 66 }, (_x, b) => text(id, b + 1))]));
   const missing: Record<string, number> = {};
   for (const main of EDITION_IDS) {
@@ -96,6 +97,10 @@ test('alignment audit: all 31,102 verses, every ordered pair of the six editions
   assert.equal(missing['kjv->web-yhwh'], 4);
   assert.equal(missing['kjv->cuvs-yhwh'], 0);
   assert.equal(missing['bsb-yhwh->cuvs-yhwh-tr'], 0);
+  assert.equal(missing['kjv->rst-yhwh'], 0, 'the Synodal is numbered like the KJV in Words');
+  assert.equal(missing['rst->kjv'], 0);
+  assert.equal(missing['rst-yhwh->bsb-yhwh'], 16);
+  console.log('# gaps by pair: ' + JSON.stringify(missing));
 });
 
 test('Psalm 119 in three editions: 176 rows, and the rows plus their tokens are built in well under 120 ms', () => {

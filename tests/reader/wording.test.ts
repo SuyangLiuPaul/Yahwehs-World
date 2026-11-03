@@ -6,6 +6,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CATALOGUE } from '../../src/reader/catalogue.gen.ts';
 import { STRINGS } from '../../src/reader/strings.ts';
+import { UI_LANG_INFO } from '../../src/reader/types.ts';
 import { CUT_NOTICE } from '../../src/reader/copy.ts';
 import { headings } from './_data.ts';
 
@@ -15,6 +16,8 @@ export const BANNED = [
   '先存', '神成为人', '神成為人', '道成肉身', '祂',
   'trinit', 'triune', 'godhead', 'god the son', 'second person', 'divinity', 'deity', 'divine nature', 'fully god', 'fully man',
   'pre-exist', 'preexist', 'pre-incarnate', 'incarnat', 'god became man', 'jesus is god', 'god became',
+  // the Russian list of Words' tests
+  'троиц', 'триедин', 'бог-сын', 'ипостас', 'воплощ', 'божествен', 'предсуществ',
 ];
 
 function walk(o: unknown, path: string, visit: (s: string, path: string) => void): void {
@@ -33,9 +36,9 @@ const scan = (label: string, o: unknown): string[] => {
   return hits;
 };
 
-test('no creedal vocabulary in any heading or background note, in the three sets', () => {
+test('no creedal vocabulary in any heading or background note, in the four sets', () => {
   const hits: string[] = [];
-  for (const set of ['cuv', 'cuv-tr', 'english-classic']) for (let b = 1; b <= 66; b++) hits.push(...scan(`${set}/${b}`, headings(set, b)));
+  for (const set of ['cuv', 'cuv-tr', 'english-classic', 'ru']) for (let b = 1; b <= 66; b++) hits.push(...scan(`${set}/${b}`, headings(set, b)));
   assert.deepEqual(hits, [], hits.slice(0, 20).join('\n'));
 });
 
@@ -59,18 +62,20 @@ test('Traditional text writes 雅偉 and never the Simplified 雅伟; Simplified
   assert.deepEqual(hans, []);
 });
 
-test('headings: 2,597 in each set (the number Words\' own asset holds), same verses in all three', () => {
+test('headings: 2,597 in each set (the number Words\' own asset holds), same verses in all four', () => {
   const keys = (set: string): string[] => {
     const out: string[] = [];
     for (let b = 1; b <= 66; b++) for (const [ch, list] of Object.entries(headings(set, b))) for (const h of list) out.push(`${b}:${ch}:${h.v}`);
     return out;
   };
-  const a = keys('cuv'), b = keys('cuv-tr'), c = keys('english-classic');
+  const a = keys('cuv'), b = keys('cuv-tr'), c = keys('english-classic'), d = keys('ru');
   assert.equal(a.length, 2597);
   assert.equal(b.length, 2597);
   assert.equal(c.length, 2597);
   assert.deepEqual(b, a);
   assert.deepEqual(c, a);
+  assert.equal(d.length, 2597);
+  assert.deepEqual(d, a, 'the Russian set covers every verse the others do, so Words\' fall-back to English is never taken');
 });
 
 test('every heading has a title and a background note; none is empty', () => {
@@ -80,6 +85,14 @@ test('every heading has a title and a background note; none is empty', () => {
       assert.ok(h.v >= 1);
     }
   }
+});
+
+test('the Russian set: Яхве is the name, never Иегова; snapshots at Genesis 15, Psalm 119', () => {
+  const g = (b: number, ch: number) => (headings('ru', b)[String(ch)] ?? []).map((h) => `${h.v} ${h.t}`);
+  assert.deepEqual(g(1, 15), ['1 Завет Бога с Аврамом']);
+  assert.equal(g(19, 119).length, 22);
+  assert.equal(g(19, 119)[0], '1 Слово Твоё — светильник ноге моей');
+  for (let b = 1; b <= 66; b++) assert.ok(!/Иегов/.test(JSON.stringify(headings('ru', b))), `ru ${b}`);
 });
 
 test('snapshots: Genesis 1, Psalm 119 and John 1 read what the church wrote', () => {
@@ -100,6 +113,13 @@ test('snapshots: Genesis 1, Psalm 119 and John 1 read what the church wrote', ()
 test('English headings are the BSB\u2019s (public domain), pinned at Romans 8 where the NASB and NIV titles differ', () => {
   const t = (headings('english-classic', 45)['8'] ?? []).map((h) => h.t);
   assert.deepEqual(t, ['Walking by the Spirit', 'Future Glory', 'The Love of God']);
+});
+
+test('the Russian chrome says Яхве and nothing creedal, and the Words convention is kept: not yet read by a native speaker', () => {
+  for (const [k, row] of Object.entries(STRINGS)) assert.ok(!/Иегов/.test(row.ru), k);
+  assert.equal(UI_LANG_INFO.ru.reviewed, false);
+  assert.equal(UI_LANG_INFO.en.reviewed && UI_LANG_INFO['zh-Hans'].reviewed && UI_LANG_INFO['zh-Hant'].reviewed, true);
+  assert.match(STRINGS.notReviewed.ru, /не вычитан/);
 });
 
 test('Hant chrome strings use the Traditional forms for words that differ', () => {

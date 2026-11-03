@@ -11,6 +11,8 @@ import { hasWords, headings, WORDS } from './_data.ts';
 test('heading set follows the edition: cuv for 和合本 Simplified, cuv-tr for Traditional, english-classic for English', () => {
   assert.equal(headingSetFor('cuvs-yhwh'), 'cuv');
   assert.equal(headingSetFor('cuvs-yhwh-tr'), 'cuv-tr');
+  assert.equal(headingSetFor('rst'), 'ru');
+  assert.equal(headingSetFor('rst-yhwh'), 'ru');
   for (const e of ['kjv', 'bsb-yhwh', 'web-yhwh', 'asv-yhwh']) assert.equal(headingSetFor(e), 'english-classic', e);
 });
 
@@ -26,10 +28,11 @@ test('script parity is not crossed: no Traditional edition reads the Simplified 
     if (e.language === 'zh-Hant') assert.equal(e.headingSet, 'cuv-tr');
     if (e.language === 'zh-Hans') assert.equal(e.headingSet, 'cuv');
     if (e.language === 'en') assert.equal(e.headingSet, 'english-classic');
+    if (e.language === 'ru') assert.equal(e.headingSet, 'ru');
   }
 });
 
-test('equals Words\' section_title_map.dart for the six editions (skipped without a Words checkout)', { skip: !hasWords }, () => {
+test('equals Words\' section_title_map.dart for the eight editions (skipped without a Words checkout)', { skip: !hasWords }, () => {
   const dart = readFileSync(join(WORDS, 'lib/constants/section_title_map.dart'), 'utf8');
   for (const [id, set] of Object.entries(SET_BY_EDITION)) {
     const m = dart.match(new RegExp(`'${id}':\\s*'([^']+)'`));

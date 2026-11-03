@@ -11,7 +11,8 @@ test('ui resolver: explicit wins, then the device list in order, then English', 
   assert.equal(resolveUi('zh-Hant', ['en']), 'zh-Hant');
   assert.equal(resolveUi(null, ['fr-FR', 'zh-TW']), 'zh-Hant');
   assert.equal(resolveUi(null, ['fr-FR']), 'en');
-  assert.equal(resolveUi(null, ['ru-RU', 'en-AU']), 'en');
+  assert.equal(resolveUi(null, ['ru-RU', 'en-AU']), 'ru');
+  assert.equal(resolveUi(null, ['de-DE', 'fr']), 'en', 'German and French are not shipped');
 });
 
 test('script and region matching for Chinese', () => {
@@ -22,7 +23,9 @@ test('script and region matching for Chinese', () => {
   assert.equal(matchUiTag('zh'), 'zh-Hans');
   assert.equal(matchUiTag('en-AU'), 'en');
   assert.equal(matchUiTag('fr'), null);
-  assert.equal(matchUiTag('ru'), null); // no Russian in this release
+  assert.equal(matchUiTag('ru'), 'ru');
+  assert.equal(matchUiTag('ru-RU'), 'ru');
+  assert.equal(matchUiTag('de'), null);
 });
 
 test('the edition names the book; the interface names it when no edition is given', () => {
@@ -32,6 +35,10 @@ test('the edition names the book; the interface names it when no edition is give
   assert.equal(referenceLabel({ book: 45, chapter: 12 }, 'en'), 'Romans 12');
   assert.equal(referenceLabel({ book: 45, chapter: 12 }, 'zh-Hant', 'kjv'), 'Romans 12', 'a Chinese reader on the KJV sees English book names over the text');
   assert.equal(referenceLabel({ book: 45, chapter: 12 }, 'en', 'cuvs-yhwh-tr'), '羅馬書 12');
+  assert.equal(referenceLabel({ book: 40, chapter: 5 }, 'en', 'rst-yhwh'), 'От Матфея 5', 'Words: Matthew 5 in the Synodal');
+  assert.equal(referenceLabel({ book: 45, chapter: 12 }, 'ru'), 'Римлянам 12');
+  assert.equal(referenceLabel({ book: 45, chapter: 12 }, 'ru', 'kjv'), 'Romans 12');
+  assert.equal(bookName(12, 'en', 'rst'), '4 Царств', 'the Synodal numbers the Kings 3 and 4');
   assert.equal(labelLanguage('zh-Hans', 'bsb-yhwh'), 'en');
   assert.equal(labelLanguage('en'), 'en');
   assert.equal(bookName(66, 'zh-Hans', 'cuvs-yhwh'), '启示录');
@@ -62,6 +69,11 @@ test('typed references: English, abbreviations, Chinese, tight forms', () => {
   assert.deepEqual(ref('约翰福音三章十六节'), { book: 43, chapter: 3, v1: 16 });
   assert.deepEqual(ref('Psalm 23'), { book: 19, chapter: 23 });
   assert.deepEqual(ref('2 Kings 19-20'), { book: 12, chapter: 19 }, 'a chapter span navigates to its start');
+  assert.deepEqual(ref('Рим 2:5'), { book: 45, chapter: 2, v1: 5 });
+  assert.deepEqual(ref('Ин 3:16'), { book: 43, chapter: 3, v1: 16 });
+  assert.deepEqual(ref('1Кор 13'), { book: 46, chapter: 13 });
+  assert.deepEqual(ref('От Матфея 5:3'), { book: 40, chapter: 5, v1: 3 });
+  assert.deepEqual(ref('4 Царств 2'), { book: 12, chapter: 2 });
 });
 
 test('single-chapter books: "Jude 5" is verse 5', () => {
@@ -80,7 +92,7 @@ test('things that are not references', () => {
 
 test('resolveBook covers every name in all three scripts and the English abbreviations', () => {
   for (let n = 1; n <= 66; n++) {
-    for (const lang of ['en', 'zh-Hans', 'zh-Hant'] as const) assert.equal(resolveBook(bookName(n, lang)), n, `${n} ${lang}`);
+    for (const lang of ['en', 'zh-Hans', 'zh-Hant', 'ru'] as const) assert.equal(resolveBook(bookName(n, lang)), n, `${n} ${lang}`);
   }
   assert.equal(resolveBook('Rev'), 66);
   assert.equal(resolveBook('Ps'), 19);

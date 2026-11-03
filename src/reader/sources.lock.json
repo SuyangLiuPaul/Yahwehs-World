@@ -1,5 +1,5 @@
 {
- "wordsCommit": "0814f39e2f4bbed3539b4ca7f3da1010a0269154",
+ "wordsCommit": "eba531d86aa27bbd2c7a71f5cd710651a5a74001",
  "files": {
   "assets/bsb-yhwh.json": {
    "sha256": "a0c40adc98debfbcabe3a6214a6430caae28d9de0094cdac9b510eb64a4b20bb",
@@ -24,6 +24,14 @@
   "assets/cuvs-yhwh-tr.json": {
    "sha256": "0f6a405632cda0d222b2cad6d6a31697609e3eeaa458dd8424c2efb66b716fa9",
    "bytes": 6719276
+  },
+  "assets/rst-yhwh.json": {
+   "sha256": "5bd65c794bb0bcd26646675e1339ca0968be19dce17a543ee21a17e6f2a135fc",
+   "bytes": 8283566
+  },
+  "assets/rst.json": {
+   "sha256": "dd4ff6810ed7430105703b5603095bb4668513e4ee87465df9abbf2c96e38b33",
+   "bytes": 9445836
   },
   "assets/section_titles.json": {
    "sha256": "f42aa3a669930eea551394bec8f19c91f043b5b7bd76052388eb0264647676ea",

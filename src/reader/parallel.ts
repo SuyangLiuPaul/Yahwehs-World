@@ -25,6 +25,7 @@ export function normalizeSet(ids: readonly string[], main: string): string[] {
  *  `chinese` is the script an English reader gets (from their device, default Simplified). */
 export function defaultPairing(main: string, chinese: 'zh-Hans' | 'zh-Hant' = 'zh-Hans'): string[] {
   const lang = editionById(main)?.language ?? 'en';
+  // English reader: the 和合本雅伟版 in their own script. Chinese and Russian readers: the BSB (Yahweh).
   if (lang === 'en') return [main, chinese === 'zh-Hant' ? 'cuvs-yhwh-tr' : 'cuvs-yhwh'];
   return [main, 'bsb-yhwh'];
 }
@@ -54,7 +55,7 @@ export function pickerRows(set: readonly string[], ui: UiLang): PickerRow[] {
   const full = set.length >= MAX_PARALLEL;
   return EDITIONS.map((e) => {
     const otherScript = (e.language === 'zh-Hans' && ui === 'zh-Hant') || (e.language === 'zh-Hant' && ui !== 'zh-Hant');
-    // an English UI shows Simplified; a Hant UI shows Traditional; the other is folded unless in use
+    // an English or Russian UI shows Simplified; a Hant UI shows Traditional; the other is folded unless in use
     const folded = otherScript && !inSet.has(e.id);
     return { id: e.id, group: e.language, checked: inSet.has(e.id), disabledReason: !inSet.has(e.id) && full ? 'max' as const : null, folded };
   });

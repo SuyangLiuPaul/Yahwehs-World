@@ -116,19 +116,18 @@ export function editorMark(s: string, edition: string): string {
 const esc = (s: string): string => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 export const escapeHtml = esc;
 
-/** HTML for the tokens of a verse. Footnote markers are buttons; `idPrefix` makes their ids unique. */
+/** HTML for the tokens of a verse. A footnote is a numbered button with its note right after it (hidden until
+ *  the button is pressed): an inline popover, reachable by keyboard, working the same in every layout. */
 export function tokensToHtml(tokens: readonly Token[], edition: string, idPrefix: string, noteLabel: (n: number) => string): string {
   let html = '';
   for (const t of tokens) {
     if (t.k === 'text') html += esc(t.s);
     else if (t.k === 'ed') html += `<span class="yr-ed">${esc(editorMark(t.s, edition))}</span>`;
-    else html += `<button type="button" class="yr-fn" data-fn="${idPrefix}" aria-expanded="false" aria-controls="${idPrefix}-notes" aria-label="${esc(noteLabel(t.n))}"><span aria-hidden="true">${t.n}</span></button>`;
+    else {
+      const id = `${idPrefix}-${t.n}`;
+      html += `<button type="button" class="yr-fn" aria-expanded="false" aria-controls="${id}" aria-label="${esc(noteLabel(t.n))}"><span aria-hidden="true">${t.n}</span></button>` +
+        `<span class="yr-note" id="${id}" role="note" hidden>${esc(t.s)}</span>`;
+    }
   }
   return html;
-}
-
-export function notesHtml(tokens: readonly Token[], idPrefix: string): string {
-  const notes = tokens.filter((t): t is Extract<Token, { k: 'note' }> => t.k === 'note');
-  if (!notes.length) return '';
-  return `<ol class="yr-notes" id="${idPrefix}-notes" hidden>${notes.map((n) => `<li value="${n.n}">${esc(n.s)}</li>`).join('')}</ol>`;
 }

@@ -3,7 +3,7 @@
 // The set follows the EDITION, as in Words' lib/constants/section_title_map.dart:
 //   CUV-derived editions read the church's Chinese set (`cuv`, `cuv-tr` for Traditional);
 //   English editions read the neutral `english-classic` set (the BSB's own headings, public
-//   domain), never NIV/NASB headings. The headings are the app's furniture, not part of any text.
+//   domain), never NIV/NASB headings; the Synodal reads the Russian set. The headings are the app's furniture, not part of any text.
 import type { BookHeadings, HeadingEntry, HeadingSet } from './types.ts';
 import { editionById } from './books.ts';
 
@@ -15,6 +15,10 @@ export const SET_BY_EDITION: Readonly<Record<string, HeadingSet>> = {
   'asv-yhwh': 'english-classic',
   'cuvs-yhwh': 'cuv',
   'cuvs-yhwh-tr': 'cuv-tr',
+  // 2026-10-20 in Words: the Synodal reads the Russian set (docs/headings/ru/). Words falls back to english-classic for a verse
+  // the Russian set lacks; the Russian set covers every verse the others do (tests/reader/wording.test.ts), so the fallback is never taken.
+  rst: 'ru',
+  'rst-yhwh': 'ru',
 };
 
 export function headingSetFor(edition: string): HeadingSet {
