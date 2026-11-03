@@ -175,7 +175,7 @@ Decision needed per group: (a) queue another redraw round with `--ids <group> --
 | Stills (realistic-cinema-v1) | 241 pass, 1,169 rework, 29 not_started, 4 pending_review | manifest `imagesPass` 241 |
 | Still jobs | 848 queued, 237 done (drawn, candidates in `candidates-codex/`, awaiting promote and review), 84 rework + 29 not_started + 4 pending with no job, 1 claimed (ecclesiastes-12-1, claimed-drawstill and a copy in claimed-higgsfield, which I must not touch) | drawstill lane: 13 stills drawn this run, ended 14:41, no quota failure |
 | Still blockers | no promote tool for stills; no builder for the 84+29 jobless; Gemini-drawn stills need a non-Gemini review (Claude agy exhausted) | not fixed, see section 5 |
-| Videos | manifest: 1 pass, 792 not_started, 631 retired, 19 redo_pending; 651 files in videos-live | the site does not use stills or videos (src has no reference to realistic-cinema; src/video-bible.ts is unrelated to these files as far as grep shows). `gate_check video --all` is slow (>2 min) and was left running in the background |
+| Videos | gate-passing: 0 (corrected: an earlier version of this table said 1; the manifest status field reads 1 pass, but no video passes the gate); manifest: 1 "pass" status, 792 not_started, 631 retired, 19 redo_pending; 651 files in videos-live | the site does not use stills or videos (src has no reference to realistic-cinema; src/video-bible.ts is unrelated to these files as far as grep shows). `gate_check video --all` is slow (>2 min) and was left running in the background |
 
 ## 5. Loops and schedules
 
@@ -193,7 +193,7 @@ Decision needed per group: (a) queue another redraw round with `--ids <group> --
 - Group A (8 squares): draw about 1 hour (the lanes draw roughly 13 pictures per hourly session), promote within 30 min, review by Claude subagents the same day. Expect about 3-5 passes of 8 given the 4-strike history (pass rate of redraws on these squares is low).
 - Squares overall: 1,361 of 1,443 (94.3%) pass. The remaining 74 cannot finish without an owner decision; with (b) accepted on Bible-principle grounds they are done immediately; with (a) each round costs about 1 hour of drawing and 74 Claude reviews, and with a 20-30% redraw pass rate it takes 4-6 rounds, roughly 1-2 days of loops plus Claude reviewer capacity.
 - Stills (1,202 not passing): drawing 848 queued at about 13 per hour is roughly 65 hours (about 3 days); the 237 drawn need a promote step and about 1,100+ independent reviews by non-Gemini models. Claude agy returns about 2026-11-06 21:20 AEDT; until then reviews must be done by Claude subagents or Codex gpt-6.1-sol.
-- Videos: 1 of 1,443 passes; not started in earnest, and no consumer on the site. Not estimated.
+- Videos: 0 of 1,443 pass the gate (corrected from 1; the manifest's one "pass" status is not a gate pass); not started in earnest, and no consumer on the site. Not estimated.
 - Merged bilingual 491 holds: depends on building the composite step; not estimated until that tool exists.
 
 ## 7. Waiting on
