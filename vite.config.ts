@@ -8,6 +8,7 @@ import {
   readdirSync,
   writeFileSync,
 } from 'node:fs';
+import { SURFACE, galleryInput, gallerySurface, isExcluded } from './scripts/lib/vite-gallery-surface.mjs';
 
 function recorder(): Plugin {
   return {
@@ -34,6 +35,17 @@ function recorder(): Plugin {
   };
 }
 
+/** An entry whose file is not in this checkout is dropped with a warning instead of failing the whole build
+ *  (a fresh worktree has none of the untracked pages that live in the main checkout). */
+function existing(input: Record<string, string>): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const [name, file] of Object.entries(input)) {
+    if (existsSync(file)) out[name] = file;
+    else console.warn(`[vite.config] skipped missing entry ${name}: ${file}`);
+  }
+  return out;
+}
+
 /** Copies public/ (excluding external symlinks and unshipped raw test GLBs)
  *  and merges t7-web-stage/ into dist/ so builds are 100% self-contained. */
 function stagePublicPlugin(): Plugin {
@@ -50,6 +62,8 @@ function stagePublicPlugin(): Plugin {
       if (entry === '.DS_Store') continue;
       const rel = relBase ? `${relBase}/${entry}` : entry;
       if (skipRel.has(rel)) continue;
+      // The gallery surface publishes none of the globe, walk, figure or lab assets (scripts/lib/vite-gallery-surface.mjs).
+      if (SURFACE === 'gallery' && isExcluded(rel)) continue;
       const srcPath = join(srcDir, entry);
       const destPath = join(destDir, entry);
       const st = lstatSync(srcPath);
@@ -68,7 +82,7 @@ function stagePublicPlugin(): Plugin {
     closeBundle() {
       const distDir = resolve(__dirname, 'dist');
       copyTree(resolve(__dirname, 'public'), distDir);
-      copyTree(resolve(__dirname, 't7-web-stage'), distDir);
+      if (SURFACE !== 'gallery') copyTree(resolve(__dirname, 't7-web-stage'), distDir);
     },
   };
 }
@@ -91,32 +105,31 @@ function geoPreload(): Plugin {
   };
 }
 
+/** The pages of the full surface. The lab pages (crowd-test, voxel, lowpoly, ark-blender, rig-test, elephant-3d,
+ *  the fable-* and *-compare pages, props-sheet, terrain-lab, tripo-test) are not here on purpose: they build
+ *  nowhere, and `npm run dev` still serves every html file in the repo root. */
+const fullInput = (): Record<string, string> => existing({
+  main: resolve(__dirname, 'index.html'),
+  bible: resolve(__dirname, 'bible.html'),
+  scenes: resolve(__dirname, 'scenes.html'),
+  tabernacle: resolve(__dirname, 'tabernacle.html'),
+  temple: resolve(__dirname, 'temple.html'),
+  ark: resolve(__dirname, 'ark.html'),
+  sceneAssembly: resolve(__dirname, 'scene-assembly.html'),
+  previewArk: resolve(__dirname, 'previews/noahs-ark-v01/index.html'),
+  previewTabernacle: resolve(__dirname, 'previews/moses-tabernacle-v04/index.html'),
+  previewTemple: resolve(__dirname, 'previews/solomon-temple-v02/index.html'),
+  figures: resolve(__dirname, 'figures.html'),
+  plan: resolve(__dirname, 'plan.html'),
+  springs: resolve(__dirname, 'figures-springs.html'),
+});
+
 export default defineConfig({
-  plugins: [recorder(), stagePublicPlugin(), geoPreload()],
+  plugins: [recorder(), ...gallerySurface({ root: __dirname }), stagePublicPlugin(), geoPreload()],
   build: {
     copyPublicDir: false,
     rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html'),
-        bible: resolve(__dirname, 'bible.html'),
-        scenes: resolve(__dirname, 'scenes.html'),
-        tabernacle: resolve(__dirname, 'tabernacle.html'),
-        temple: resolve(__dirname, 'temple.html'),
-        ark: resolve(__dirname, 'ark.html'),
-        sceneAssembly: resolve(__dirname, 'scene-assembly.html'),
-        previewArk: resolve(__dirname, 'previews/noahs-ark-v01/index.html'),
-        previewTabernacle: resolve(__dirname, 'previews/moses-tabernacle-v04/index.html'),
-        previewTemple: resolve(__dirname, 'previews/solomon-temple-v02/index.html'),
-        figures: resolve(__dirname, 'figures.html'),
-        plan: resolve(__dirname, 'plan.html'),
-        crowd: resolve(__dirname, 'crowd-test.html'),
-        springs: resolve(__dirname, 'figures-springs.html'),
-        voxel: resolve(__dirname, 'voxel.html'),
-        lowpoly: resolve(__dirname, 'lowpoly.html'),
-        arkBlender: resolve(__dirname, 'ark-blender.html'),
-        rigTest: resolve(__dirname, 'rig-test.html'),
-        elephantStudy: resolve(__dirname, 'elephant-3d.html'),
-      },
+      input: SURFACE === 'gallery' ? galleryInput(__dirname) : fullInput(),
     },
   },
 });

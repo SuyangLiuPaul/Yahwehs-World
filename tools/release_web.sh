@@ -129,7 +129,13 @@ deploy_sites() {
   fi
 }
 
-echo "==> building web bundle"
+# The picture-gallery surface is the web release now (home, scenes, reader). VITE_SURFACE=full tools/release_web.sh builds the whole site.
+export VITE_SURFACE="${VITE_SURFACE:-gallery}"
+if [ "$VITE_SURFACE" = "gallery" ]; then
+  export GALLERY_REQUIRE_PICTURES=1
+  echo "==> gallery surface: pictures are read from public/pictures (npm run pictures builds them from the T7 drive)"
+fi
+echo "==> building web bundle ($VITE_SURFACE surface)"
 VITE_DISPLAY_VERSION="$DISPLAY_VERSION" npm run build
 
 # "id:name:host" — the host is what verify_site re-fetches version.json

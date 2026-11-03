@@ -10,7 +10,7 @@
 // It rewrites the region between the two markers. Everything outside them is
 // each page's own.
 import { readFileSync, writeFileSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -51,10 +51,10 @@ const EXTRA_WALKS = [
   { href: '/previews/solomon-temple-v02/index.html', inEn: "Solomon's Temple Courtyard 3D", inZh: '所罗门圣殿献殿 3D', ofEn: '2 Chronicles 2–7 · Temple 3D', ofZh: '历代志下 2–7 · 圣殿建造与献殿' },
 ];
 
-const START = '  <!-- shell:start — written by scripts/build-shell.mjs. Edit that, not this. -->';
-const END = '  <!-- shell:end -->';
+export const START = '  <!-- shell:start — written by scripts/build-shell.mjs. Edit that, not this. -->';
+export const END = '  <!-- shell:end -->';
 
-const FONT_URL = 'https://fonts.googleapis.com/css2?'
+export const FONT_URL = 'https://fonts.googleapis.com/css2?'
   + 'family=Inter:wght@400;500;600'
   + '&family=Spectral:wght@500;600'
   + '&family=IBM+Plex+Mono:wght@400;500'
@@ -70,16 +70,16 @@ const FONT_URL = 'https://fonts.googleapis.com/css2?'
 // at once; onload flips it to "all" and the faces swap in (display=swap was
 // already set, so the fallback face has always been what shows first).
 // The <noscript> twin keeps the fonts for a reader without JavaScript.
-const FONTS = `  <link href="${FONT_URL}" rel="stylesheet" media="print" onload="this.media='all'">\n`
+export const FONTS = `  <link href="${FONT_URL}" rel="stylesheet" media="print" onload="this.media='all'">\n`
   + `  <noscript><link href="${FONT_URL}" rel="stylesheet"></noscript>`;
 
-const HEAD_END = '<!-- /shell:head -->';
+export const HEAD_END = '<!-- /shell:head -->';
 // The opening screen's CSS lives HERE, inline, and nowhere else. The page's
 // own stylesheet (src/nav.css) is a render-blocking request that arrives with
 // the bundle; before this rule moved into the head the first paint was a plain
 // dark page, and the screen below only appeared once that file had come down.
 // Inline, the placeholder is on screen with the HTML itself.
-const CRITICAL = [
+export const CRITICAL = [
   '#loading{position:fixed;inset:0;z-index:50;display:grid;place-content:center;justify-items:center;gap:clamp(12px,2.2vmin,28px);padding:0 20px;box-sizing:border-box;background:radial-gradient(circle at 50% 42%,#18426e 0,#0a1e36 72%);text-align:center;transition:opacity .6s ease,visibility 0s linear .6s}',
   '#loading.done{opacity:0;visibility:hidden;pointer-events:none}',
   '#loading-bar{position:fixed;left:0;top:0;height:2px;width:0;background:linear-gradient(90deg,#3ba3f8,#f8d66d);transition:width .35s ease;z-index:51}',
@@ -113,7 +113,7 @@ const CRITICAL = [
   '@media(prefers-reduced-motion:reduce){.ld-sk::after{animation:none}#loading,#loading-bar,.ld-sphere,#loading-globe{transition-duration:.01s}}',
 ].join('');
 
-const HEAD = `  <!-- shell:head --><meta name="theme-color" content="#0e2b4b"><link rel="icon" type="image/png" href="/favicon.png"><style>:root{color-scheme:dark}html,body{background:#0a1e36;margin:0}${CRITICAL}</style>` +
+export const HEAD = `  <!-- shell:head --><meta name="theme-color" content="#0e2b4b"><link rel="icon" type="image/png" href="/favicon.png"><style>:root{color-scheme:dark}html,body{background:#0a1e36;margin:0}${CRITICAL}</style>` +
   `<script>(function(){try{var l=localStorage.getItem("ydh.locale");` +
   `if(l!=="en"&&l!=="zh-Hans"&&l!=="zh-Hant"){l="en";` +
   `var t=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||""];` +
@@ -166,7 +166,7 @@ ${walkItems(self)}
 // longer busy once the screen lifts (aria-busy), show the retry state when a
 // script fails to load / a start-up promise rejects / 90 s pass, and take the
 // retry state away again if the page does finish after all.
-const GUARD = '(function(){var L=document.getElementById("loading");if(!L)return;var t=setTimeout(fail,90000);'
+export const GUARD = '(function(){var L=document.getElementById("loading");if(!L)return;var t=setTimeout(fail,90000);'
   + 'function fail(){if(L.classList.contains("done"))return;L.classList.add("failed");L.setAttribute("aria-busy","false")}'
   + 'var o=new MutationObserver(function(){if(L.classList.contains("done")){o.disconnect();L.classList.remove("failed");L.setAttribute("aria-busy","false");clearTimeout(t)}});o.observe(L,{attributes:true,attributeFilter:["class"]});'
   + 'addEventListener("error",function(e){var n=e.target;if(n&&n.tagName==="SCRIPT")fail()},true);addEventListener("unhandledrejection",fail);'
@@ -280,8 +280,12 @@ ${tabbar(page)}
   <div id="allmenu" hidden></div>
 ${END}`;
 
+// The gallery surface (scripts/lib/vite-gallery-surface.mjs) takes the head block, the loading-screen script and the
+// font link from here, so the two surfaces cannot drift. Importing this file must not rewrite the pages.
+const isMain = process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1]);
+
 let changed = 0;
-for (const page of PAGES) {
+for (const page of isMain ? PAGES : []) {
   const path = join(ROOT, page.file);
   let html = readFileSync(path, 'utf8');
   const block = shell(page);
@@ -329,4 +333,4 @@ for (const page of PAGES) {
   const before = readFileSync(path, 'utf8');
   if (before !== html) { writeFileSync(path, html); changed++; }
 }
-console.log(`shell: ${PAGES.length} pages, ${changed} rewritten`);
+if (isMain) console.log(`shell: ${PAGES.length} pages, ${changed} rewritten`);

@@ -17,3 +17,8 @@ dist-app/
 # Worktrees the agent tooling creates beside the checkout.
 .claude/worktrees/
 __pycache__/
+
+# The gallery surface's pictures: derived from the T7 gate-passed squares by
+# scripts/build-pictures.mjs, so never committed (about 260 MB). The small
+# index of them, public/data/gallery/pictures.json, IS committed.
+public/pictures/

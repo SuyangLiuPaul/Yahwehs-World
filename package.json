@@ -6,7 +6,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run shell && npm run zh && npm run events && npm run bible && node scripts/build-version.mjs && tsc --noEmit && vite build",
+    "build": "npm run shell && npm run zh && npm run events && npm run bible && npm run gallery-data && node scripts/build-version.mjs && tsc --noEmit && vite build",
+    "build:gallery": "VITE_SURFACE=gallery npm run build",
+    "dev:gallery": "VITE_SURFACE=gallery vite",
+    "pictures": "node scripts/build-pictures.mjs",
+    "gallery-data": "node scripts/build-gallery-data.mjs",
     "check": "tsc --noEmit",
     "preview": "vite preview",
     "test:routes": "node scripts/verify-routes.mjs && node scripts/verify-route-behavior.mjs && node scripts/verify-route-network.mjs",

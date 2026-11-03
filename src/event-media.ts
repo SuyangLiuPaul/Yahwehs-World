@@ -1,10 +1,15 @@
 import { locale as currentLocale, hant } from './locale.ts';
 import type { TrackEvent } from './events-track.ts';
 
-const SCENES_HOST = 'https://yahwehs-scenes.netlify.app';
+// The gallery surface (VITE_SURFACE=gallery) serves the text-free squares from this site's own /pictures/
+// (scripts/build-pictures.mjs): one picture for every language, no merged bilingual composites, no other host.
+// The full surface keeps the old host until TODO section C takes it down, after the gallery release is verified.
+const GALLERY = import.meta.env.VITE_SURFACE === 'gallery';
+const SCENES_HOST = (import.meta.env.VITE_SCENES_HOST as string | undefined) ?? (GALLERY ? '' : 'https://yahwehs-scenes.netlify.app');
 
 export function eventThumbUrl(ev: { id: string; img?: 'm' | 'r' } | string, mode?: 'm' | 'r'): string {
   const id = typeof ev === 'string' ? ev : ev.id;
+  if (GALLERY) return `${SCENES_HOST}/pictures/thumb/${id}.webp`;
   const m = typeof ev === 'string' ? (mode ?? 'm') : (ev.img ?? 'm');
   return m === 'r'
     ? `${SCENES_HOST}/thumbs/${id}.jpg`
@@ -13,6 +18,7 @@ export function eventThumbUrl(ev: { id: string; img?: 'm' | 'r' } | string, mode
 
 export function eventFullUrl(ev: { id: string; img?: 'm' | 'r' } | string, mode?: 'm' | 'r'): string {
   const id = typeof ev === 'string' ? ev : ev.id;
+  if (GALLERY) return `${SCENES_HOST}/pictures/full/${id}.webp`;
   const m = typeof ev === 'string' ? (mode ?? 'm') : (ev.img ?? 'm');
   return m === 'r'
     ? `${SCENES_HOST}/full/${id}.jpg`
@@ -21,11 +27,13 @@ export function eventFullUrl(ev: { id: string; img?: 'm' | 'r' } | string, mode?
 
 export function eventRawThumbUrl(ev: { id: string } | string): string {
   const id = typeof ev === 'string' ? ev : ev.id;
+  if (GALLERY) return `${SCENES_HOST}/pictures/thumb/${id}.webp`;
   return `${SCENES_HOST}/thumbs/${id}.jpg`;
 }
 
 export function eventRawFullUrl(ev: { id: string } | string): string {
   const id = typeof ev === 'string' ? ev : ev.id;
+  if (GALLERY) return `${SCENES_HOST}/pictures/full/${id}.webp`;
   return `${SCENES_HOST}/full/${id}.jpg`;
 }
 
@@ -379,6 +387,11 @@ export function openEventLightbox(
   first: LightboxOptions | TrackEvent,
   extra?: { list?: readonly TrackEvent[]; showLocateOnGlobe?: boolean; onSelectOnGlobe?: (ev: TrackEvent) => void },
 ) {
+  // On the gallery surface a plate opens its own page (the picture, its caption and its verses) instead of a dialog.
+  if (GALLERY) {
+    const id = 'events' in first ? first.events[first.index]?.id : first.id;
+    if (id) { location.assign(`/scenes.html#p=${encodeURIComponent(id)}`); return; }
+  }
   const d = ensureDialog();
   if ('events' in first) {
     currentOpts = { ...first };

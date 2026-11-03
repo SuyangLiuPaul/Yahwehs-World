@@ -1,0 +1,180 @@
+[
+ {
+  "page": "/",
+  "profile": "mobile",
+  "readyMs": 4941,
+  "fcpMs": 764,
+  "cls": 0.002,
+  "shifts": [
+   {
+    "t": 4930,
+    "v": 0.002,
+    "n": [
+     "FOOTER#timeline",
+     "?"
+    ]
+   }
+  ],
+  "errors": [],
+  "requestsAtReady": 18,
+  "wireAtReadyKB": 643,
+  "rawAtReadyKB": 2252,
+  "requestsTotal": 19,
+  "wireTotalKB": 645,
+  "rawTotalKB": 2257,
+  "top": [
+   "170 KB wire / 169 KB raw  /assets/world.bin-qJmqmzFf.gz",
+   "164 KB wire / 1024 KB raw  /data/places.json?v=2026-09-15",
+   "148 KB wire / 619 KB raw  /assets/three.module-Cd2ZrxKb.js",
+   "42 KB wire / 127 KB raw  /assets/main-b4h4kkIR.js",
+   "22 KB wire / 77 KB raw  /data/journeys.json?v=2026-09-15",
+   "20 KB wire / 26 KB raw  /loading-globe-sm.svg",
+   "13 KB wire / 43 KB raw  /assets/GLTFLoader-CmG5of2b.js",
+   "11 KB wire / 27 KB raw  /assets/site-shell-CTDeEKwJ.js"
+  ]
+ },
+ {
+  "page": "/scenes.html",
+  "profile": "mobile",
+  "readyMs": 1915,
+  "fcpMs": 496,
+  "cls": 0,
+  "shifts": [],
+  "errors": [],
+  "requestsAtReady": 11,
+  "wireAtReadyKB": 237,
+  "rawAtReadyKB": 1045,
+  "requestsTotal": 11,
+  "wireTotalKB": 237,
+  "rawTotalKB": 1045,
+  "top": [
+   "172 KB wire / 897 KB raw  /data/events.json",
+   "13 KB wire / 36 KB raw  /assets/scene-lqip-jFJ4wyrL.json",
+   "11 KB wire / 27 KB raw  /assets/site-shell-CTDeEKwJ.js",
+   "10 KB wire / 10 KB raw  /favicon.png",
+   "6 KB wire / 17 KB raw  /scenes.html",
+   "6 KB wire / 7 KB raw  /icon-sm.svg",
+   "6 KB wire / 26 KB raw  /assets/scenes-Be2sA44-.css",
+   "4 KB wire / 9 KB raw  /assets/scenes-C6ulFjSQ.js"
+  ]
+ },
+ {
+  "page": "/bible.html",
+  "profile": "mobile",
+  "readyMs": 1600,
+  "fcpMs": 524,
+  "cls": 0,
+  "shifts": [],
+  "errors": [],
+  "requestsAtReady": 13,
+  "wireAtReadyKB": 185,
+  "rawAtReadyKB": 558,
+  "requestsTotal": 13,
+  "wireTotalKB": 185,
+  "rawTotalKB": 558,
+  "top": [
+   "57 KB wire / 186 KB raw  /data/bible/split/text/bsb/1.json",
+   "53 KB wire / 157 KB raw  /data/bible/split/text/cuvs/1.json",
+   "19 KB wire / 90 KB raw  /data/bible/split/book/1.json",
+   "11 KB wire / 27 KB raw  /assets/site-shell-CTDeEKwJ.js",
+   "10 KB wire / 10 KB raw  /favicon.png",
+   "7 KB wire / 32 KB raw  /assets/bible-DYYQhbYg.css",
+   "6 KB wire / 15 KB raw  /assets/bible-CAVt51Uk.js",
+   "6 KB wire / 18 KB raw  /bible.html"
+  ]
+ },
+ {
+  "page": "/",
+  "profile": "desktop",
+  "readyMs": 553,
+  "fcpMs": 100,
+  "cls": 0.004,
+  "shifts": [
+   {
+    "t": 548,
+    "v": 0.004,
+    "n": [
+     "FOOTER#timeline",
+     "?"
+    ]
+   }
+  ],
+  "errors": [],
+  "requestsAtReady": 17,
+  "wireAtReadyKB": 637,
+  "rawAtReadyKB": 2245,
+  "requestsTotal": 23,
+  "wireTotalKB": 818,
+  "rawTotalKB": 3154,
+  "top": [
+   "172 KB wire / 897 KB raw  /data/events.json",
+   "170 KB wire / 169 KB raw  /assets/world.bin-qJmqmzFf.gz",
+   "164 KB wire / 1024 KB raw  /data/places.json?v=2026-09-15",
+   "148 KB wire / 619 KB raw  /assets/three.module-Cd2ZrxKb.js",
+   "42 KB wire / 127 KB raw  /assets/main-b4h4kkIR.js",
+   "22 KB wire / 77 KB raw  /data/journeys.json?v=2026-09-15",
+   "20 KB wire / 26 KB raw  /loading-globe-sm.svg",
+   "13 KB wire / 43 KB raw  /assets/GLTFLoader-CmG5of2b.js"
+  ]
+ },
+ {
+  "page": "/scenes.html",
+  "profile": "desktop",
+  "readyMs": 165,
+  "fcpMs": 80,
+  "cls": 0.007,
+  "shifts": [
+   {
+    "t": 159,
+    "v": 0.007,
+    "n": [
+     "SELECT#sg-unit",
+     "SELECT#sg-book",
+     "BUTTON#sg-mode-btn.sg-pill-btn"
+    ]
+   }
+  ],
+  "errors": [],
+  "requestsAtReady": 11,
+  "wireAtReadyKB": 237,
+  "rawAtReadyKB": 1045,
+  "requestsTotal": 27,
+  "wireTotalKB": 1276,
+  "rawTotalKB": 2081,
+  "top": [
+   "172 KB wire / 897 KB raw  /data/events.json",
+   "73 KB wire / 73 KB raw  https://yahwehs-scenes.netlify.app/merged-thumbs/genesis-2-4.jpg",
+   "73 KB wire / 73 KB raw  https://yahwehs-scenes.netlify.app/merged-thumbs/genesis-3-1.jpg",
+   "72 KB wire / 72 KB raw  https://yahwehs-scenes.netlify.app/merged-thumbs/genesis-3-14.jpg",
+   "71 KB wire / 71 KB raw  https://yahwehs-scenes.netlify.app/merged-thumbs/genesis-2-1.jpg",
+   "69 KB wire / 69 KB raw  https://yahwehs-scenes.netlify.app/merged-thumbs/genesis-2-18.jpg",
+   "67 KB wire / 67 KB raw  https://yahwehs-scenes.netlify.app/merged-thumbs/genesis-1-26.jpg",
+   "67 KB wire / 66 KB raw  https://yahwehs-scenes.netlify.app/merged-thumbs/genesis-3-22.jpg"
+  ]
+ },
+ {
+  "page": "/bible.html",
+  "profile": "desktop",
+  "readyMs": 162,
+  "fcpMs": 104,
+  "cls": 0,
+  "shifts": [],
+  "errors": [],
+  "requestsAtReady": 13,
+  "wireAtReadyKB": 185,
+  "rawAtReadyKB": 558,
+  "requestsTotal": 15,
+  "wireTotalKB": 958,
+  "rawTotalKB": 1331,
+  "top": [
+   "409 KB wire / 409 KB raw  https://yahwehs-scenes.netlify.app/merged-full/genesis-1-14.jpg",
+   "364 KB wire / 364 KB raw  https://yahwehs-scenes.netlify.app/merged-full/genesis-1-1.jpg",
+   "57 KB wire / 186 KB raw  /data/bible/split/text/bsb/1.json",
+   "53 KB wire / 157 KB raw  /data/bible/split/text/cuvs/1.json",
+   "19 KB wire / 90 KB raw  /data/bible/split/book/1.json",
+   "11 KB wire / 27 KB raw  /assets/site-shell-CTDeEKwJ.js",
+   "10 KB wire / 10 KB raw  /favicon.png",
+   "7 KB wire / 32 KB raw  /assets/bible-DYYQhbYg.css"
+  ]
+ }
+]

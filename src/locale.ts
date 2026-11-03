@@ -16,7 +16,11 @@
 /** What code branches on: which language is being read. */
 export type Lang = 'en' | 'zh';
 /** What the reader actually chose, script included. */
-export type Locale = 'en' | 'zh-Hans' | 'zh-Hant';
+export type Locale = 'en' | 'zh-Hans' | 'zh-Hant' | 'ru';
+// Russian was added for the gallery surface (owner, 2026-11-03). It is a fourth READING, not a third branch of
+// the old two-way test: `locale()` still answers 'en' or 'zh', and a Russian reader gets 'en' from it, so every
+// older page that branches on it keeps working and shows English. Code that knows Russian asks `fullLocale()`
+// and writes its strings with the optional third argument of `t()` / a `data-ru` attribute.
 
 const KEY = 'ydh.locale';
 
@@ -33,6 +37,7 @@ function fromSystem(): Locale {
       return 'zh-Hans';
     }
     if (tag === 'en' || tag.startsWith('en-')) return 'en';
+    if (tag === 'ru' || tag.startsWith('ru-')) return 'ru';
   }
   return 'en';
 }
@@ -40,7 +45,7 @@ function fromSystem(): Locale {
 function initial(): Locale {
   try {
     const saved = localStorage.getItem(KEY);
-    if (saved === 'en' || saved === 'zh-Hans' || saved === 'zh-Hant') return saved;
+    if (saved === 'en' || saved === 'zh-Hans' || saved === 'zh-Hant' || saved === 'ru') return saved;
     // Written by the two-language version of this site.
     if (saved === 'zh') return 'zh-Hans';
   } catch { /* private mode, blocked storage — fall through */ }
@@ -50,14 +55,14 @@ function initial(): Locale {
 let current: Locale = initial();
 const listeners = new Set<(l: Lang) => void>();
 
-const langOf = (l: Locale): Lang => (l === 'en' ? 'en' : 'zh');
+const langOf = (l: Locale): Lang => (l === 'en' || l === 'ru' ? 'en' : 'zh');
 
 export const locale = (): Lang => langOf(current);
 export const fullLocale = (): Locale => current;
 
 /** The BCP-47 tag for <html lang>, which CSS and screen readers both read. */
 const htmlLang = (l: Locale): string =>
-  l === 'en' ? 'en' : l === 'zh-Hant' ? 'zh-Hant' : 'zh-Hans';
+  l === 'en' ? 'en' : l === 'ru' ? 'ru' : l === 'zh-Hant' ? 'zh-Hant' : 'zh-Hans';
 
 // ── 繁體 ──────────────────────────────────────────────────────────────────
 // public/data/zh-hant.json, built by scripts/build-zh-hant.mjs: place names
@@ -117,8 +122,9 @@ export function hant(s: string): string {
 }
 
 /** Picks the reading, and puts Chinese into the reader's script. */
-export const t = <T>(en: T, zh: T): T => {
+export const t = <T>(en: T, zh: T, ru?: T): T => {
   if (current === 'en') return en;
+  if (current === 'ru') return ru ?? en;
   return (typeof zh === 'string' ? hant(zh) as unknown as T : zh);
 };
 
@@ -201,9 +207,10 @@ export function applyStatic(root: ParentNode = document) {
   root.querySelectorAll<HTMLElement>('[data-en]').forEach((el) => {
     const en = (small && el.dataset.enNarrow) || el.dataset.en || '';
     const zh = (small && el.dataset.zhNarrow) || el.dataset.zh || en;
+    const ru = el.dataset.ru || en;
     // A canvas has no text: its words are its accessible name (its children would be read as well).
-    if (el instanceof HTMLCanvasElement) el.setAttribute('aria-label', t(en, zh));
-    else el.textContent = t(en, zh);
+    if (el instanceof HTMLCanvasElement) el.setAttribute('aria-label', t(en, zh, ru));
+    else el.textContent = t(en, zh, ru);
   });
   // Chinese written straight into an element — the wordmark — rather than
   // paired with an English original.
