@@ -1,5 +1,7 @@
 # Gallery + reader integration: before and after (2026-11-03, branch gallery/integrate-1)
 
+> Superseded where it differs by `NUMBERS-final.md` (gate 1,443 / 1,443, dist 293.3 MiB at WebP q76, Russian check, final screenshots). The tables below are the state at the first integration.
+
 "Before" = `gallery/release-1` as measured in `NUMBERS.md` (the old shipped reader on `/bible.html`, the passage drawn by the gallery's own code, 1,368 pictures).
 "After" = `gallery/integrate-1`: release-1 + reader-1 + the committed gate state of `main` (52 owner-accepted squares), the reader module wired into the picture page and the
 Bible page, the feedback button. Same scripts (`audit-apple-design.mjs`, `measure-loading.mjs`, `check-budget.mjs`, `verify-gallery.mjs`). Raw files in this folder:

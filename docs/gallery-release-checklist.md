@@ -1,6 +1,6 @@
 # 雅伟之界 gallery release: what a release would involve
 
-Status: **nothing in this file has been done.** No deploy (not even a Netlify draft), no push, no key, no e-mail. Branch `gallery/integrate-1`
+Status: **nothing in this file has been done** (the ordered, exact steps are in `docs/gallery-release-runbook.md`, also NOT EXECUTED). No deploy (not even a Netlify draft), no push, no key, no e-mail. Branch `gallery/integrate-1`
 (local commits only). This is the list a person would work down when the owner says 「release」 and names the version
 (the owner sets the version; no bump before that).
 
@@ -20,10 +20,10 @@ Editions (eight, Words' bytes pinned in `src/reader/sources.lock.json`, Words `e
 ## 1. Before anything: the gate, the pictures, the data
 
 1. The owner says 「release」 and the version number.
-2. Mount the T7 drive. `python3 tools/scenes/gate_check.py square --all --summary`: today **1,420 PASS / 23 FAIL** (52 squares owner-accepted 2026-11-03, bound to the
-   live SHA in `tools/scenes/square_accepts.json`). The 23 show the plain "still being drawn" plate until their redraws pass (another agent is redrawing them).
-   Every id must be `pass` or listed in `tools/scenes/release-exclusions.json` with the owner's reason (the file does not exist yet; `--strict-pictures` is the gate).
-3. `npm run pictures` (rebuilds `public/pictures/` from the passed squares and `data/gallery/pictures.json`; seconds when nothing changed). Commit `data/gallery/pictures.json`.
+2. Mount the T7 drive. `python3 tools/scenes/gate_check.py square --all --summary`: today **1,443 PASS / 0 FAIL** (the 23 redraws passed; 24 owner-accepted squares were replaced by clean Higgsfield redraws, 28 owner acceptances remain bound to the
+   live SHA in `tools/scenes/square_accepts.json`). Every id must be `pass` or listed in `tools/scenes/release-exclusions.json` with the owner's reason (the file does not exist and is not needed now; `--strict-pictures` is the gate).
+3. `npm run pictures` (rebuilds `public/pictures/` from the passed squares and `data/gallery/pictures.json`; seconds when nothing changed, 50 s with `--force`). WebP q76 for thumb and full
+   (`docs/evidence/gallery-2026-11/pictures-quality-sweep.md`). Commit `data/gallery/pictures.json`. Check: `"pass": 1443`, 1,443 distinct full-file hashes (no placeholder plate is served).
 4. `npm run reader:data` (needs the Words checkout, default `/Volumes/androidbuild/Words-184`; verifies SHA-256 against the lock; regenerates `public/data/reader/`).
    If Words changed an edition since the lock, review the change, then `--update-lock` on purpose. `node scripts/reader-editions.mjs --check` must pass (the release script runs it).
 5. `npm run gallery-data` (done by the build as well).
@@ -52,6 +52,18 @@ Site settings, Environment variables. These are the names Words uses for its own
 
 Nothing else. No other secret, no database, no third-party script.
 
+**The owner's steps for the feedback button (the only steps that need him; each a person's action, none done):**
+
+1. Decide which address receives the feedback (it becomes the value of `FEEDBACK_TO`). Until a domain is verified in Resend, only the address tied to the Resend account receives mail.
+2. Netlify, the gallery site (dev first, then prod), Site configuration, Environment variables: add `RESEND_API_KEY` (the Resend key Words already uses) and `FEEDBACK_TO`. Optionally `FEEDBACK_FROM` (after a sending domain is verified) and `ERROR_IP_SALT`.
+   Type the values into the Netlify page yourself; they are not to be pasted into a chat, a file in the repo or a terminal log.
+3. Deploy (`tools/release_web.sh`; a function reads its variables from the deploy that carries it, so set them first, deploy after).
+4. On the dev site press the flag on one picture, write a word, Send. The mail must arrive at `FEEDBACK_TO` with the picture id, reference, page, language, edition, theme, browser and time. This is the one real mail.
+5. Repeat 2 to 4 on prod before `--include-prod`.
+
+Tests that stand behind it (green, 21/21 in `npm run test:gallery`): validation, honeypot, 3 a minute and 10 a day per IP, origin rule (a browser POST from another site is 403), 12 KB cap, mail shape,
+no secret or upstream text in a reply, and the four environment-variable names above.
+
 - **What the function does**: `POST /api/feedback`. Origin allow-list (this site's hosts; a script with no Origin passes as in Words), 12 KB cap, honeypot field `website`,
   3 a minute and 10 a day per IP (salted hash), field validation, one mail through Resend. Nothing is stored. Failure answers: 503 not configured, 502 mail service,
   429 limit; the page turns every one of them into a clear message plus a prefilled mailto: to `support@yahwehword.com`.
@@ -67,12 +79,13 @@ npm run build:gallery                 # reader:data, shell, zh, events, bible, g
 npm run verify:gallery                # test:gallery, budget profile, verify-gallery, verify-redirects, verify-gallery-ui
 npm run test:reader && npm run reader:demo && npm run verify:reader
 node scripts/verify-gallery.mjs --strict-pictures    # every scene passed or owner-excluded
+node scripts/verify-ru.mjs            # Russian completeness (also part of verify:gallery)
 node scripts/audit-apple-design.mjs ... ; node scripts/measure-loading.mjs ...   # numbers into docs/evidence/gallery-2026-11/
-node scripts/gallery-shots.mjs        # 375 / 768 / 1440, en / 简 / 繁 / ru, dark / light / paper
+node scripts/gallery-shots.mjs --viewports 375x812,1440x900 --langs en,zh-Hans,zh-Hant,ru --all-themes   # dark / light / paper
 ```
 
-Record `du -sh dist` (measured 2026-11-03: 302 MB, over the plan's 300 MB cap because eight editions' text is 37.6 MB; the check now allows 320 MB: owner to accept
-or trim, §6).
+Record the real byte size of `dist/` (`verify-gallery.mjs` prints it; `du` counts whole disk blocks and reads about 12 MiB higher on this volume): measured 2026-11-03 with all 1,443 pictures,
+**293.3 MiB** (pictures 253.0 at WebP q76, reader data 37.6, share stubs 1.8, pages 0.9), inside the plan's 300 MB cap; the check is back to 300. (Before the q76 rule it was 308.3 MiB.)
 
 ## 4. Redirects, links, sitemap
 
@@ -97,9 +110,11 @@ or script still names the old host. **Do not take the old host down before the r
 
 ## 6. Decisions and open items for the owner (none blocks the build)
 
-1. **dist size**: 302.0 MB vs the plan's 300 MB cap (1,420 pictures 261.6 MB + 37.6 MB of Bible text). Accept 320 MB (current check) or trim (thumbnail quality, drop `rst`).
-2. **The 23 held pictures**: redraws in progress; re-run `npm run pictures` and the build at the end. Release needs each `pass` or an exclusion.
-3. **Russian**: captions and the reader's Russian chrome are machine-written and not read by a native speaker; the footer says so (Words' convention). Name a reader or ship as is.
+1. **dist size**: solved, 293.3 MiB (cap 300), by one documented rule (full pictures at WebP q76, SSIM 0.952 vs 0.956, indistinguishable side by side). In decimal megabytes it is 307.6 MB:
+   if the owner means decimal, the next step is full q74 (298.4 MB decimal), see `pictures-quality-sweep.md`. Nothing for the owner to accept unless he reads the cap as decimal.
+2. **Pictures**: all 1,443 pass the gate and are served; no placeholder. If a square is redrawn again, re-run `npm run pictures` and the build.
+3. **Russian**: complete (1,443 captions and titles, the 2,597 headings from Words' Russian set, the interface, `rst-yhwh` and `rst`: `scripts/verify-ru.mjs`, 74 checks). Machine-written and not read by a
+   native speaker; the home page note and the reader's display sheet say so (Words' convention). Name a reader or ship as is. `rst` has 8 empty verses: Synodal verse merges in Words' bytes (Acts 19:41 into 19:40, 2 Cor 11:33 ...), shown as a dash in 对照.
 4. **Union Version credit**: Words' record reads "© Yahweh De Hua Ministry · used with permission", not public domain. The reader catalogue, the licence sheet and the copy credit now say exactly that
    with the (c) chip; no year anywhere (tests: `tests/gallery/no-1919.test.ts`, `tests/reader/editions.test.ts`, `verify-gallery.mjs`).
 5. **The small golden icon in the top-left of every square**: part of the picture pixels, kept by owner direction (TODO §A). See `NUMBERS-integration.md`. Nothing to do.
@@ -121,10 +136,12 @@ the mailto: way out); the old host stays up until §5 step 2.
 
 ## 8. Corrections to the plan document (`handoff/fable-gallery-release-2026-11-03.md`, lives only in the main checkout, not edited from here)
 
+The exact replacement text, line by line, is in `docs/gallery-plan-corrections.md` (the Union Version rows and credit example: "church edition, © Yahweh De Hua Ministry, used with permission", never public domain). Summary:
+
 - §2.2, rows `cuvs-yhwh` and `cuvs-yhwh-tr`, column Licence: "CUV public domain; church edition" should read "church edition, © Yahweh De Hua Ministry, used with permission (Words
   `aboutLicenseCuvsYhwh`); chip (c)". §2.4's example credit line "和合本，公有领域；神名改为雅伟" must go the same way.
 - §2.2 "21 editions": this version ships **eight** (owner, 2026-11-03); the twelve church packs are out.
-- Squares "1,361 pass / 82 fail" (and §5.3's 74 waiting): now **1,420 / 23** after the 52 owner acceptances.
-- §5.5 "about 210 MB of pictures": measured 261.6 MB for 1,420 served.
+- Squares "1,361 pass / 82 fail" (and §5.3's 74 waiting): now **1,443 / 0**.
+- §5.5 "about 210 MB of pictures": measured 253.0 MiB for 1,443 served (WebP q76); dist 293.3 MiB.
 - §3's feature table: the picture page, the Bible page, vertical 对照 (max three), headings, copy with credit and the edition sheet are built (src/reader, wired in src/gallery);
   "Continue in Words", footnote popovers and the sticky text size beyond the five steps follow the reader module's own list.

@@ -40,4 +40,4 @@ In decimal megabytes (1 MB = 1,000,000 bytes) the same `dist/` is 307.6 MB. The 
 If the owner means decimal, the next step is full-size q74 (about -8.7 MB more, 284.6 MiB = 298.4 MB decimal). `verify-gallery.mjs` now fails above 300 MiB (it allowed 320 while the
 owner had not decided).
 
-`du -sh dist` shows about 367 MB on this volume: that counts disk blocks of 5,000 small files on the external drive, not bytes. The tools that matter (Netlify's upload, the verify script) count bytes.
+`du -sk dist` reads 312,580 KB (305 MiB) on this volume: it counts whole disk blocks for about 5,200 small files, not bytes, so it is 12 MiB above the byte count. The tools that matter (Netlify's upload, `verify-gallery.mjs`) count bytes.
