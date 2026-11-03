@@ -62,7 +62,7 @@
 .yr-ib { min-inline-size: 2.75rem; min-block-size: 2.75rem; display: inline-grid; place-items: center; border-radius: 999px; color: var(--yr-ink-2); font-size: calc(1.5rem * var(--yr-scale)); line-height: 1; }
 .yr-ib:hover { background: var(--yr-surface-hi); }
 .yr-aa { font: 600 calc(.9375rem * var(--yr-scale)) / 1 var(--yr-read); }
-.yr-caret { font-size: .7em; color: var(--yr-ink-3); }
+.yr-caret { font-size: max(.75rem, .7em); color: var(--yr-ink-3); }
 
 /* ── tools row ────────────────────────────────────────────────────────────── */
 .yr-chapter .yr-bar { padding-inline: max(.5rem, calc((100% - 46rem) / 2)); }
