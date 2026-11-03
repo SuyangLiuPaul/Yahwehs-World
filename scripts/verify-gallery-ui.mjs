@@ -296,7 +296,7 @@ for (const vp of [[375, 812], [1440, 900]]) {
     check(!small.length, `${tag}: every control in the sheet is at least 44 px tall`, `${tag}: small controls ${small}`);
     const unlabeled = await page.evaluate(() => [...document.querySelectorAll('dialog.gx-fb textarea, dialog.gx-fb input:not(.fb-hp input)')].filter((e) => !e.labels?.length && !e.getAttribute('aria-label')).length);
     check(unlabeled === 0, `${tag}: the text box and the e-mail field have labels`);
-    check(/no cookies, no tracking/.test(await page.locator('.fb-privacy').innerText()), `${tag}: a short privacy line says what happens to the note`);
+    check(/sets no cookies and does not track you/.test(await page.locator('.fb-privacy').innerText()), `${tag}: a short privacy line says what happens to the note`);
     // accessibility (axe), with the sheet open and finished sliding in (axe reads the colours of a half-transparent sheet wrongly)
     await page.waitForTimeout(450);
     await page.addScriptTag({ path: join(ROOT, 'node_modules/axe-core/axe.min.js') });
