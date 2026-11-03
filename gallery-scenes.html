@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="icon" href="/icon-sm.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <title>Scenes · Yahweh's World | 画卷 · 雅伟之界</title>
+  <meta name="description" content="1,443 scenes of the Bible, each one drawn and each one opening onto its verses. 圣经里的 1,443 幕画卷。">
+  <link rel="canonical" href="https://world.yahwehword.com/scenes.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- gallery-fonts -->
+<!-- gallery-head -->
+</head>
+<body class="gx-scenes">
+<!-- gallery-shell -->
+
+  <main id="scenes-page">
+    <h1 class="gx-sr" data-en="Scenes" data-zh="画卷" data-ru="Сцены">Scenes</h1>
+    <!-- the browse view (a hash without p=) -->
+    <section id="sc-browse" aria-label="">
+      <header class="sc-head">
+        <div class="gx-kicker" id="sc-kicker"></div>
+        <h2 class="gx-h2" id="sc-title"></h2>
+        <div class="sc-count" id="sc-count"></div>
+        <div class="sc-strip" id="sc-strip" role="group"></div>
+      </header>
+      <div class="sc-grid" id="sc-grid" aria-live="polite">
+        <span class="gx-sk plate"></span><span class="gx-sk plate"></span><span class="gx-sk plate"></span><span class="gx-sk plate"></span>
+      </div>
+      <div class="sc-more" id="sc-more"><button type="button" class="gx-btn quiet" id="sc-more-btn" hidden></button></div>
+    </section>
+
+    <!-- the picture view (#p=<id>) -->
+    <section id="sc-picture" hidden>
+      <div class="pc-wrap">
+        <div class="pc-left">
+          <div class="pc-top">
+            <button type="button" class="gx-iconbtn" id="pc-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg></button>
+            <span class="gx-mono" id="pc-pos"></span>
+            <span class="pc-spacer"></span>
+            <button type="button" class="gx-iconbtn" id="pc-share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 7l4-4 4 4M5 13v6h14v-6"/></svg></button>
+          </div>
+          <button type="button" class="pc-plate" id="pc-plate"></button>
+          <div class="pc-nav">
+            <a class="gx-iconbtn" id="pc-prev" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg></a>
+            <span class="gx-mono" id="pc-nav-t"></span>
+            <span class="pc-spacer"></span>
+            <a class="gx-iconbtn" id="pc-next" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/></svg></a>
+          </div>
+          <div class="pc-caption">
+            <h2 class="gx-h2" id="pc-title"></h2>
+            <p class="gx-lede" id="pc-sum"></p>
+            <div class="gx-mono" id="pc-ref"></div>
+            <div class="pc-credit" id="pc-credit"></div>
+          </div>
+        </div>
+        <div class="pc-right paperable">
+          <div class="passage" id="pc-passage"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="/src/gallery/scenes-page.ts"></script>
+</body>
+</html>
