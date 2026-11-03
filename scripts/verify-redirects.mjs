@@ -51,14 +51,18 @@ const errors = [];
 page.on('pageerror', (e) => errors.push(e.message));
 const land = async (url) => { await page.goto(base + url); await page.waitForLoadState('load'); await page.waitForTimeout(400); const u = new URL(page.url()); return u.pathname + u.search + u.hash; };
 
-{ const u = await land('/#ref=Exodus%2025:10'); u.startsWith('/bible.html?book=Exodus&ch=25') && u.includes('#ref=') ? pass(`/#ref=Exodus 25:10 -> ${u}`) : fail(`/#ref=Exodus 25:10 -> ${u}`);
-  await page.waitForSelector('body.bb-ready', { timeout: 15000 });
-  const book = await page.locator('#bb-book-select').inputValue(); const ch = await page.locator('#bb-chapter-select').inputValue();
-  book === '2' && ch === '25' ? pass('the reader opened Exodus 25') : fail(`the reader opened book ${book} chapter ${ch}, wanted 2 / 25`); }
-{ const u = await land('/#ref=1%20Samuel%203:1'); u.startsWith('/bible.html?book=1%20Samuel&ch=3') ? pass(`/#ref=1 Samuel 3:1 -> ${u}`) : fail(`/#ref=1 Samuel 3:1 -> ${u}`);
-  await page.waitForSelector('body.bb-ready', { timeout: 15000 }); const book = await page.locator('#bb-book-select').inputValue(); book === '9' ? pass('the reader opened 1 Samuel') : fail(`the reader opened book ${book}, wanted 9`); }
+{ const u = await land('/#ref=Exodus%2025:10'); u.startsWith('/bible.html#ref=Exodus') ? pass(`/#ref=Exodus 25:10 -> ${u}`) : fail(`/#ref=Exodus 25:10 -> ${u}`);
+  await page.waitForSelector('.yr-chapter .yr-title', { timeout: 15000 });
+  const t = await page.locator('.yr-title').first().innerText();
+  const hl = await page.locator('.yr-v.is-hl, .yr-v.is-sel').count();
+  /Exodus 25/.test(t) ? pass(`the reader opened ${t.trim()}`) : fail(`the reader opened "${t}", wanted Exodus 25`);
+  hl >= 1 ? pass('...with verse 10 marked') : fail('verse 10 is not marked'); }
+{ const u = await land('/#ref=1%20Samuel%203:1'); u.startsWith('/bible.html#ref=1%20Samuel') ? pass(`/#ref=1 Samuel 3:1 -> ${u}`) : fail(`/#ref=1 Samuel 3:1 -> ${u}`);
+  await page.waitForSelector('.yr-chapter .yr-title', { timeout: 15000 }); const t = await page.locator('.yr-title').first().innerText(); /1 Samuel 3/.test(t) ? pass('the reader opened 1 Samuel 3') : fail(`the reader opened "${t}", wanted 1 Samuel 3`); }
+{ const u = await land('/bible.html?book=43&ch=3'); u.startsWith('/bible.html#ref=John') ? pass(`the old /bible.html?book=43&ch=3 -> ${u}`) : fail(`/bible.html?book=43&ch=3 -> ${u}`);
+  await page.waitForSelector('.yr-chapter .yr-title', { timeout: 15000 }); const t = await page.locator('.yr-title').first().innerText(); /John 3/.test(t) ? pass('...and opens John 3') : fail(`opened "${t}"`); }
 { const u = await land('/#event=genesis-15-1'); u === '/scenes.html#p=genesis-15-1' ? pass(`/#event=genesis-15-1 -> ${u}`) : fail(`/#event=genesis-15-1 -> ${u}`);
-  await page.waitForSelector('#pc-verses .v', { timeout: 15000 }); pass('the picture page showed its verses'); }
+  await page.waitForSelector('.yr-passage .yr-v', { timeout: 15000 }); pass('the picture page showed its verses'); }
 for (const h of ['#journey=paul-1', '#place=jerusalem']) {
   const u = await land('/' + h);
   const shown = await page.locator('#hm-notice').isVisible();

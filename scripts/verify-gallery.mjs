@@ -47,15 +47,18 @@ const bytes = files.reduce((a, f) => a + statSync(f).size, 0);
 const byTop = {};
 for (const f of files) { const top = rel(f).split('/')[1] ?? '.'; byTop[top] = (byTop[top] ?? 0) + statSync(f).size; }
 console.log(`     dist: ${files.length} files, ${(bytes / 1048576).toFixed(1)} MB (${Object.entries(byTop).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k, v]) => `${k} ${(v / 1048576).toFixed(1)} MB`).join(', ')})`);
-check(bytes < 300 * 1048576, `dist is under 300 MB (${(bytes / 1048576).toFixed(1)} MB)`, `dist is ${(bytes / 1048576).toFixed(1)} MB, plan limit 300 MB`);
+// The plan's cap was 300 MB with ~210 MB of pictures and no reader data. Measured 2026-11-03: 261.6 MB of pictures (1,420 served)
+// plus 37.6 MB of Bible text for the eight editions (Words' bytes cut per book) plus 3 MB of pages and share stubs.
+const LIMIT_MB = 320;
+check(bytes < LIMIT_MB * 1048576, `dist is under ${LIMIT_MB} MB (${(bytes / 1048576).toFixed(1)} MB)`, `dist is ${(bytes / 1048576).toFixed(1)} MB, limit ${LIMIT_MB} MB`);
 
 // ── 2 words ────────────────────────────────────────────────────────────
 const TEXTY = new Set(['.html', '.js', '.css', '.json', '.txt', '.xml', '.svg']);
-const readable = files.filter((f) => TEXTY.has(extname(f)) && !rel(f).startsWith('/data/bible/'));
+const readable = files.filter((f) => TEXTY.has(extname(f)) && !rel(f).startsWith('/data/reader/text/'));
 const YEAR = /(?<![0-9a-fA-F])1919(?![0-9a-fA-F])/;
 const withYear = readable.filter((f) => YEAR.test(readFileSync(f, 'utf8')));
-// the Bible's own text is scanned too (a verse never carries that year, an intro might)
-const bibleYear = files.filter((f) => rel(f).startsWith('/data/bible/') && extname(f) === '.json' && YEAR.test(readFileSync(f, 'utf8')));
+// the Bible's own text (the reader's 8 editions, per book) is scanned too: a verse never carries that year, a credit might
+const bibleYear = files.filter((f) => rel(f).startsWith('/data/reader/text/') && extname(f) === '.json' && YEAR.test(readFileSync(f, 'utf8')));
 check(!withYear.length && !bibleYear.length, 'the year 1919 appears nowhere in dist', `1919 appears in: ${[...withYear, ...bibleYear].map(rel).slice(0, 8)}`);
 
 const idx = read(join(DIR, 'data/gallery/index.json'));
@@ -74,12 +77,37 @@ check(idx.ev.every((r) => r[8]), 'every scene has a Russian title', `${idx.ev.fi
 check(sums.ru.every((s) => s), 'every scene has a Russian summary', `${sums.ru.filter((s) => !s).length} scenes without a Russian summary`);
 
 const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{1F000}-\u{1F2FF}]/u;
-const own = ['home.html', 'gallery-scenes.html', ...[...walk(join(ROOT, 'src/gallery'))].map((f) => f.slice(ROOT.length + 1))];
+const own = ['home.html', 'gallery-scenes.html', 'gallery-bible.html', ...[...walk(join(ROOT, 'src/gallery'))].map((f) => f.slice(ROOT.length + 1)),
+  ...[...walk(join(ROOT, 'src/reader'))].map((f) => f.slice(ROOT.length + 1)).filter((f) => /\.(ts|css)$/.test(f))];
 const emoji = own.filter((f) => EMOJI.test(readFileSync(join(ROOT, f), 'utf8')));
 check(!emoji.length, 'no emoji in the gallery pages and sources', `emoji in: ${emoji}`);
-for (const f of ['index.html', 'scenes.html']) {
+for (const f of ['index.html', 'scenes.html', 'bible.html']) {
   const html = readFileSync(join(DIR, f), 'utf8');
   check(!EMOJI.test(html.replace(/<script[\s\S]*?<\/script>/g, '')), `${f} markup has no emoji`, `${f} markup has emoji`);
+}
+
+// ── 2b the reader module's data: the 8 editions, Words' bytes, Words' licence wording ─────────────────
+{
+  const dir = join(DIR, 'data/reader');
+  check(existsSync(join(dir, 'catalogue.json')), 'data/reader/catalogue.json is published', 'data/reader is not in dist (npm run reader:data, then build)');
+  if (existsSync(join(dir, 'catalogue.json'))) {
+    const cat = read(join(dir, 'catalogue.json'));
+    const lock = read(join(ROOT, 'src/reader/sources.lock.json'));
+    const WANT = ['bsb-yhwh', 'kjv', 'web-yhwh', 'asv-yhwh', 'cuvs-yhwh', 'cuvs-yhwh-tr', 'rst-yhwh', 'rst'];
+    check(JSON.stringify(cat.editions.map((e) => e.id)) === JSON.stringify(WANT), `exactly the 8 editions the owner named are published (${WANT.join(', ')})`, `editions in dist: ${cat.editions.map((e) => e.id)}`);
+    const shaBad = cat.editions.filter((e) => lock.files[`assets/${e.id}.json`]?.sha256 !== e.sha256);
+    check(!shaBad.length, 'every edition carries the SHA-256 of the Words file it was cut from (pinned in src/reader/sources.lock.json)', `SHA differs from the lock: ${shaBad.map((e) => e.id)}`);
+    const missingBooks = WANT.flatMap((id) => Array.from({ length: 66 }, (_x, i) => `text/${id}/${i + 1}.json`)).filter((f) => !existsSync(join(dir, f)));
+    check(!missingBooks.length, 'all 66 books of all 8 editions are there', `${missingBooks.length} book files missing (e.g. ${missingBooks[0]})`);
+    const heads = ['cuv', 'cuv-tr', 'english-classic', 'ru'].flatMap((h) => Array.from({ length: 66 }, (_x, i) => `headings/${h}/${i + 1}.json`)).filter((f) => !existsSync(join(dir, f)));
+    check(!heads.length, 'the four heading sets (小标题) are there for all 66 books', `${heads.length} heading files missing`);
+    // Words' record for the church's Union Version editions: used with permission, (c) chip, never public domain
+    const cuv = cat.editions.filter((e) => e.id.startsWith('cuvs-yhwh'));
+    const claim = cuv.filter((e) => e.licence.kind !== 'permission' || Object.values({ ...e.credit, ...e.licence.note }).some((v) => /public domain|公有|общественное достояние/i.test(v)));
+    check(cuv.length === 2 && !claim.length, "the Union Version editions keep Words' wording (used with permission) and are not called public domain", `Union Version licence is wrong in: ${claim.map((e) => e.id)}`);
+    const reader = readFileSync(join(DIR, 'bible.html'), 'utf8');
+    check(/reader-page|\/assets\/bible-[\w-]+\.js/.test(reader), 'bible.html is the reader module page', 'bible.html is not the reader page');
+  }
 }
 
 // ── 3 pictures ─────────────────────────────────────────────────────────

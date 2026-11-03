@@ -52,7 +52,8 @@ const FULL_PAGES = {
 const GALLERY_PAGES = {
   'index.html':  { budget: 135, js: 15, extra: ['/data/gallery/index.json'] },   // measured 110 KB, js 12 KB
   'scenes.html': { budget: 135, js: 19, extra: ['/data/gallery/index.json'] },   // measured 112 KB, js 15 KB
-  'bible.html':  FULL_PAGES['bible.html'],
+  // measured 130 KB, js 32 KB (+20 %): the reader module's chapter view. Genesis is the largest book file (56 KB) in the default English edition, its headings and paragraph starts
+  'bible.html':  { budget: 160, js: 40, extra: ['/data/reader/text/bsb-yhwh/1.json', '/data/reader/headings/english-classic/1.json', '/data/reader/para/1.json'] },
 };
 const PROFILE = argv.includes('--profile') ? argv[argv.indexOf('--profile') + 1] : (process.env.VITE_SURFACE === 'gallery' ? 'gallery' : 'full');
 const PAGES = PROFILE === 'gallery' ? GALLERY_PAGES : FULL_PAGES;

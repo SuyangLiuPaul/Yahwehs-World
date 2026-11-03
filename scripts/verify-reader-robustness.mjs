@@ -440,8 +440,8 @@ async function copy() {
   // 1. a verse range, with the credit, in every language edition
   const cases = [
     ['en', 'bsb-yhwh', 'Genesis 1:1–2 (BSB, Yahweh edition)', 'BSB (Yahweh) · Berean Standard Bible, public domain (CC0)'],
-    ['zh-Hans', 'cuvs-yhwh', '创世记 1:1–2（和合本雅伟版）', '和合本雅伟版 · 和合本，公有领域；神名作雅伟。'],
-    ['zh-Hant', 'cuvs-yhwh-tr', '創世記 1:1–2（和合本雅偉版）', '和合本雅偉版 · 和合本，公有領域；神名作雅偉。'],
+    ['zh-Hans', 'cuvs-yhwh', '创世记 1:1–2（和合本雅伟版）', '和合本雅伟版 · © 雅伟的话事工 · 经授权使用。'],
+    ['zh-Hant', 'cuvs-yhwh-tr', '創世記 1:1–2（和合本雅偉版）', '和合本雅偉版 · © 雅偉的話事工 · 經授權使用。'],
     ['ru', 'rst-yhwh', 'Бытие 1:1–2 (Синодальный перевод, издание Яхве)', 'СП (Яхве) · Синодальный перевод (1876), общественное достояние'],
   ];
   for (const [lang, ed, head, credit] of cases) {
