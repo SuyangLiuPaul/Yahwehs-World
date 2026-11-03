@@ -88,7 +88,8 @@ echo "==> regenerating the app icons"
 cargo tauri icon "$PROJECT/brand/icon-1024.png" >/dev/null
 
 echo "==> building the release APK"
-cargo tauri android build --apk
+# arm64 only: the content (88 MiB) is embedded in every ABI's native library, so a four-ABI APK would be about 4x as large
+cargo tauri android build --apk --target ${ANDROID_TARGETS:-aarch64}
 
 APK="$(find "$ANDROID_DIR/app/build/outputs/apk/universal/release" -name '*.apk' 2>/dev/null | head -1)"
 if [ -z "$APK" ]; then

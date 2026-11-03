@@ -12,6 +12,10 @@
 # Without the path the AAB is built unsigned (Play will not take it; sign it with bundletool/jarsigner or set the variables).
 # ORG_GRADLE_PROJECT_ywBuildNumber=2 (1-9) re-uploads the same visible version with a higher versionCode.
 # The GitHub APK (package com.yahwehsworld.globe, the old release key) is tools/build_apk.sh.
+#
+# ABIs: Tauri embeds the app content (88 MiB) into every native library, so each extra ABI adds about 90 MB to a universal file (the
+# four-ABI debug APK is 975 MB). Defaults are therefore --debug: aarch64 only (phones, Apple-silicon emulators), --aab: aarch64 + armv7
+# (Play delivers one ABI per device, about 95 MB each). Override with ANDROID_TARGETS="aarch64 armv7 x86_64".
 set -euo pipefail
 
 PROJECT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -32,15 +36,16 @@ cd "$PROJECT"
 python3 tools/shell/android_patch.py src-tauri/gen/android
 
 OUT="$PROJECT/dist-app"; mkdir -p "$OUT"
+if [ "$MODE" = aab ]; then read -r -a TARGETS <<< "${ANDROID_TARGETS:-aarch64 armv7}"; else read -r -a TARGETS <<< "${ANDROID_TARGETS:-aarch64}"; fi
 VERSION="$(awk -F'"' '/^[[:space:]]*"version":/ {print $4; exit}' src-tauri/tauri.conf.json)"
 if [ "$MODE" = aab ]; then
   [ -n "${ORG_GRADLE_PROJECT_ywKeystorePath:-}" ] || echo "note: ywKeystorePath is not set; the bundle will be UNSIGNED" >&2
-  cargo tauri android build --aab
+  cargo tauri android build --aab --target "${TARGETS[@]}"
   ART="$(find src-tauri/gen/android/app/build/outputs/bundle -name '*.aab' | head -1)"
   [ -n "$ART" ] || { echo "no .aab was produced" >&2; exit 1; }
   NAMED="$OUT/YahwehsWorld-$VERSION-play.aab"
 else
-  cargo tauri android build --debug --apk
+  cargo tauri android build --debug --apk --target "${TARGETS[@]}"
   ART="$(find src-tauri/gen/android/app/build/outputs/apk -name '*debug*.apk' | head -1)"
   [ -n "$ART" ] || { echo "no debug .apk was produced" >&2; exit 1; }
   NAMED="$OUT/YahwehsWorld-$VERSION-debug.apk"

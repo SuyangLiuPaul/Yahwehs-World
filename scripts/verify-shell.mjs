@@ -7,7 +7,7 @@
 //
 // Exit 1 on any failure; every line says what it checked.
 import { execFileSync, spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -19,7 +19,8 @@ let failed = 0, passed = 0;
 const check = (ok, what, detail = '') => {
   if (ok) { passed++; console.log(`ok    ${what}`); } else { failed++; console.log(`FAIL  ${what}${detail ? `\n        ${detail}` : ''}`); }
 };
-const walk = (dir) => readdirSync(dir).flatMap((n) => { const p = join(dir, n); return statSync(p).isDirectory() ? walk(p) : [p]; });
+const SKIP = new Set(['target', 'gen', 'node_modules', '__pycache__']);
+const walk = (dir) => readdirSync(dir).filter((n) => !SKIP.has(n)).flatMap((n) => { const p = join(dir, n); return lstatSync(p).isDirectory() ? walk(p) : [p]; });
 const rel = (p) => relative(ROOT, p);
 
 // ---------------------------------------------------------------------------------------------------------------- names and ids
