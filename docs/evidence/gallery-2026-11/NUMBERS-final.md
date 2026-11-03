@@ -37,7 +37,8 @@ Decimal check: 293.3 MiB = 307.6 MB (1 MB = 10^6 bytes). The plan's cap and all 
    line sat on unshaded foliage (low contrast, not measurable by the audit because it is over an image). Now the stage grows with its words (plate and words share one grid cell), the
    words start 88 px into a stronger scrim. Layout shift stays 0.
 2. 对照: the edition pill read "Parallel · 2" beside the switch reading "Parallel" (two neighbouring pills named alike). The pill now reads "2 editions" / "2 个译本" / "2 個譯本" / "2 издания".
-3. Russian: landmark names (site nav, language switch, tab bar, testament switch, reading-theme group) were English or bilingual; now they follow the language (`data-aria-*`). The licences sheet
+3. The licences sheet on a phone in Russian: the chip "Общественное достояние" broke inside its own border; it now wraps as one unit.
+4. Russian: landmark names (site nav, language switch, tab bar, testament switch, reading-theme group) were English or bilingual; now they follow the language (`data-aria-*`). The licences sheet
    printed "Public domain" and two English phrases in the holder line under a Russian page; now translated.
 
 ## Russian
@@ -48,6 +49,6 @@ URLs, e-mail, the version. `rst` has 8 empty verses (Acts 19:41, 2 Cor 11:33 and
 
 ## Screenshots
 
-`shots/` (JPEG; 375x812 and 1440x900 in en, zh-Hans, zh-Hant, ru; 768x1024 in en). home, gallery, picture page, 对照 and the feedback sheet in dark, light and paper for all four languages and both sizes
+`shots/` (244 JPEG files, all taken from the final build; the 234 of the first integration were replaced, the stale 768 ones removed; 375x812 and 1440x900 in en, zh-Hans, zh-Hant, ru; 768x1024 in en for home, gallery, picture, reader). home, gallery, picture page, 对照 and the feedback sheet in dark, light and paper for all four languages and both sizes
 (`--all-themes`: home and gallery switch their reading surfaces, the plate area stays dark by design); reader page and Psalm 119 对照; the edition sheet from home and from a picture; the licences sheet;
 a picture that used to be held (`held-*`, now a normal picture); the feedback sheet after a failed send (with the mailto: way out) and after a good one. Served by `vite preview` on 127.0.0.1 (`--base`).
