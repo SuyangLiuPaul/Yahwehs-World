@@ -8,7 +8,8 @@
 // full surface. This file is the whole boundary, so the diff shows it in one place:
 //
 //   INPUT       index.html (the globe) is replaced by home.html, written out as /index.html; scenes.html is
-//               replaced by gallery-scenes.html, written out as /scenes.html; bible.html is the shipped reader.
+//               replaced by gallery-scenes.html, written out as /scenes.html; gallery-bible.html (the reader module's chapter view, src/reader)
+//               is written out as /bible.html.
 //   NAV         the shell block of every page becomes the three-item gallery shell (首页 · 画卷 · 圣经);
 //               the head block, loading-screen guard and font link are the ones scripts/build-shell.mjs owns.
 //   PUBLISH     models, figures, materials, film, the geo files and the like are not copied into dist/.
@@ -27,13 +28,13 @@ export const SURFACE = process.env.VITE_SURFACE === 'gallery' ? 'gallery' : 'ful
 export const ORIGIN = 'https://world.yahwehword.com';
 
 /** Source page -> the file name it is published under. */
-export const RENAME = { 'home.html': 'index.html', 'gallery-scenes.html': 'scenes.html' };
+export const RENAME = { 'home.html': 'index.html', 'gallery-scenes.html': 'scenes.html', 'gallery-bible.html': 'bible.html' };
 
 /** The pages a reader of the gallery build can reach, by input name. */
 export const galleryInput = (root) => ({
   main: join(root, 'home.html'),
   scenes: join(root, 'gallery-scenes.html'),
-  bible: join(root, 'bible.html'),
+  bible: join(root, 'gallery-bible.html'),
 });
 
 /** Inside `public/`, relative paths NOT copied into the gallery dist (a name matches itself and everything below it). */
@@ -44,7 +45,8 @@ export const PUBLISH_EXCLUDE = [
   'data/ne_110m_land.geojson', 'data/ne_50m_coastline.geojson', 'data/ne_50m_lakes.geojson',
   'data/ne_50m_land.geojson', 'data/ne_50m_rivers_lake_centerlines.geojson', 'data/terrain-color.webp',
   'data/places.json', 'data/journeys.json', 'data/inventory.json', 'data/scenes.json',
-  'data/events.json',       // the gallery reads data/gallery/*.json; the reader reads data/bible/split/book/*.json
+  'data/events.json',       // the gallery reads data/gallery/*.json
+  'data/bible',             // the globe's own Bible data (11 MB + split): the reader module reads data/reader/ (editions, headings)
 ];
 export const isExcluded = (rel) => PUBLISH_EXCLUDE.some((x) => rel === x || rel.startsWith(`${x}/`));
 
@@ -73,7 +75,7 @@ const TABS = [
 const PAGES = {
   'home.html': { key: 'home', pg: ['The scenes', '画卷', 'Сцены'], load: ['Opening the scenes…', '正在展开画卷…', '正在展開畫卷…', 'Открываем сцены…'] },
   'gallery-scenes.html': { key: 'scenes', pg: ['Scenes', '画卷', 'Сцены'], load: ['Opening the 1,443 scenes…', '正在展开 1,443 幅画卷…', '正在展開 1,443 幅畫卷…', 'Открываем 1 443 сцены…'] },
-  'bible.html': { key: 'bible', pg: ['Bible', '圣经', 'Библия'], load: ['Opening the Bible…', '正在展开圣经…', '正在展開聖經…', 'Открываем Библию…'] },
+  'gallery-bible.html': { key: 'bible', pg: ['Bible', '圣经', 'Библия'], load: ['Opening the Bible…', '正在展开圣经…', '正在展開聖經…', 'Открываем Библию…'] },
 };
 
 export function galleryShell(file) {
@@ -226,6 +228,7 @@ export function gallerySurface({ root }) {
         const u = (req.url ?? '').split('?');
         if (u[0] === '/' || u[0] === '/index.html') req.url = `/home.html${u[1] ? `?${u[1]}` : ''}`;
         else if (u[0] === '/scenes.html') req.url = `/gallery-scenes.html${u[1] ? `?${u[1]}` : ''}`;
+        else if (u[0] === '/bible.html') req.url = `/gallery-bible.html${u[1] ? `?${u[1]}` : ''}`;
         next();
       });
     },
@@ -251,6 +254,12 @@ export function gallerySurface({ root }) {
       order: 'post',
       handler() {
         if (!existsSync(join(outDir, 'index.html'))) return;
+        const reader = existsSync(join(root, 'public/data/reader/catalogue.json'));
+        if (!reader) {
+          const msg = 'gallery build: public/data/reader is missing (run npm run reader:data; it needs the Words checkout)';
+          if (process.env.NETLIFY || process.env.GALLERY_REQUIRE_PICTURES) throw new Error(msg);
+          console.warn(`\n[gallery-surface] WARNING ${msg}\n`);
+        }
         const have = existsSync(join(root, 'public/pictures/full')) ? readdirSync(join(root, 'public/pictures/full')).length : 0;
         if (have < 1443) {
           const msg = `gallery build: public/pictures/full has ${have} of 1443 files (run node scripts/build-pictures.mjs; it needs the T7 drive)`;

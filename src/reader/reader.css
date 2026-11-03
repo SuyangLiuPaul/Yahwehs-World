@@ -40,11 +40,14 @@
 }
 /* a host that owns the colours sets data-yr-theme="inherit" on the container and defines the --yr-* tokens itself */
 
-.yr button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-align: inherit; }
+.yr :where(button) { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-align: inherit; }
 .yr button:disabled { opacity: .35; cursor: default; }
 .yr :focus-visible { outline: 2px solid var(--yr-gold-bright); outline-offset: 2px; border-radius: 4px; }
 .yr [hidden] { display: none !important; }
 .yr-sr { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; user-select: none; -webkit-user-select: none; }
+
+/* NB: the button reset above is wrapped in :where() so it carries no specificity; written as `.yr button` it outranked every
+   single-class button style below (.yr-pill, .yr-btn, .yr-opt, ...) and stripped their borders, padding and backgrounds. */
 
 /* ── chapter bar ──────────────────────────────────────────────────────────── */
 .yr-bar {

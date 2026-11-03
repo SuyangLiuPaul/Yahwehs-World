@@ -1,0 +1,17 @@
+@import '../tokens.css';
+@import '../nav.css';
+
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--ui); }
+body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
+.gx-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+[hidden] { display: none !important; }
+
+/* The Bible page: the reader module's own styles do the work (src/reader/reader.css); this only fits it to the site. */
+#reader-page { min-height: 70vh; }
+/* the tab bar is fixed at the foot of a phone: the reader's selection bar and toast sit above it */
+@media (max-width: 767px) {
+  #reader-page { padding-bottom: calc(var(--tabbar-h, 0px) + 12px); }
+  html[data-surface="gallery"] .yr-selbar { inset-block-end: calc(var(--tabbar-h, 0px) + .75rem); }
+  html[data-surface="gallery"] .yr-toast { inset-block-end: calc(var(--tabbar-h, 0px) + 1rem); }
+}

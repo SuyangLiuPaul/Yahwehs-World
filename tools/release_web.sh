@@ -97,7 +97,7 @@ deploy_sites() {
     # above — and with it VITE_DISPLAY_VERSION, which only exists in this
     # shell. The first run of this script deployed a bundle with no dev
     # version in it and still reported success.
-    "$NETLIFY" deploy --prod --no-build --site "$id" --dir dist \
+    "$NETLIFY" deploy --prod --no-build --site "$id" --dir dist --functions netlify/functions \
       --message "v$APP_VERSION $name" &
     pids+=("$!")
     names+=("$name")
@@ -134,6 +134,8 @@ export VITE_SURFACE="${VITE_SURFACE:-gallery}"
 if [ "$VITE_SURFACE" = "gallery" ]; then
   export GALLERY_REQUIRE_PICTURES=1
   echo "==> gallery surface: pictures are read from public/pictures (npm run pictures builds them from the T7 drive)"
+  # the reader's Bible data (public/data/reader) is Words' bytes, cut per book: it must equal a fresh build from the pinned Words commit
+  node scripts/reader-editions.mjs --check || { echo "!!! public/data/reader differs from the pinned Words data (npm run reader:data)" >&2; exit 1; }
 fi
 echo "==> building web bundle ($VITE_SURFACE surface)"
 VITE_DISPLAY_VERSION="$DISPLAY_VERSION" npm run build

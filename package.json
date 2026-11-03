@@ -7,10 +7,10 @@
   "scripts": {
     "dev": "vite",
     "build": "npm run shell && npm run zh && npm run events && npm run bible && npm run gallery-data && node scripts/build-version.mjs && tsc --noEmit && vite build",
-    "build:gallery": "VITE_SURFACE=gallery npm run build",
+    "build:gallery": "npm run reader:data && VITE_SURFACE=gallery npm run build",
     "dev:gallery": "VITE_SURFACE=gallery vite",
     "pictures": "node scripts/build-pictures.mjs",
-    "verify:gallery": "node scripts/check-budget.mjs --profile gallery && node scripts/verify-gallery.mjs && node scripts/verify-redirects.mjs && node scripts/verify-gallery-ui.mjs && node scripts/verify-bible-reader.mjs",
+    "verify:gallery": "npm run test:gallery && node scripts/check-budget.mjs --profile gallery && node scripts/verify-gallery.mjs && node scripts/verify-redirects.mjs && node scripts/verify-gallery-ui.mjs",
     "gallery-data": "node scripts/build-gallery-data.mjs",
     "check": "tsc --noEmit",
     "preview": "vite preview",
@@ -23,6 +23,7 @@
     "reader:data": "node scripts/reader-editions.mjs",
     "reader:demo": "node scripts/reader-editions.mjs && vite build --config vite.reader.config.ts",
     "test:reader": "node --test \"tests/reader/*.test.ts\"",
+    "test:gallery": "node --test \"tests/gallery/*.test.ts\"",
     "verify:reader": "node scripts/verify-reader-robustness.mjs"
   },
   "dependencies": {

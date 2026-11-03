@@ -3,8 +3,7 @@ import { applyStatic, bindSwitch, fullLocale, onLocale, t } from '../locale.ts';
 import { loadingStep, loadingSteps, pageReady } from '../site-shell.ts';
 import { bookTitle, isOldTestament, loadIndex, refText, sceneTitle, type GalleryIndex, type Scene } from './data.ts';
 import { plate } from './media.ts';
-import { openEditionSheet, openLicences } from './edition-sheet.ts';
-import { EDITIONS, available, current, defaultFor, byId, word } from './editions.ts';
+import { BRIEFS, briefOf, choice, defaultFor } from './editions.ts';
 import { readTheme, setReadTheme, type ReadTheme } from './chrome.ts';
 
 loadingSteps(1);
@@ -41,12 +40,26 @@ const dateOf = (offset: number) => {
   return new Intl.DateTimeFormat(htmlLang(), { day: 'numeric', month: 'short' }).format(d);
 };
 
+/** The reader module (its data tables and sheets) is loaded when a sheet is opened, not with the home page. */
+const reader = () => import('./reader-bridge.ts');
+
+/** The edition chip: the reader's remembered choice, read without loading the reader. */
+function editionLabel(): { text: string; aria: string } {
+  const c = choice();
+  const name = c.parallel ? t(`Parallel · ${c.parallel}`, `对照 · ${c.parallel}`, `Параллельно · ${c.parallel}`) : briefOf(c.id)?.label ?? c.id;
+  return { text: `${name} ▾`, aria: `${t('Edition', '译本', 'Издание')}: ${name}` };
+}
+function paintEdition() {
+  const l = editionLabel();
+  $('hm-edition').textContent = l.text;
+  $('hm-edition').setAttribute('aria-label', l.aria);
+}
+
 async function paintHero() {
   if (!ix) return;
   const passed = ix.scenes.filter((s) => s.ok);
   if (!passed.length) return;
   const sc = pickOfDay(passed, today() - back);
-  const edition = await current();
   $('hm-kicker').textContent = back === 0
     ? `${t("Today's scene", '今日一幕', 'Сцена дня')} · ${dateOf(0)}`
     : `${t('An earlier scene', '往日一幕', 'Сцена прошлых дней')} · ${dateOf(back)}`;
@@ -56,8 +69,7 @@ async function paintHero() {
   link.href = `/scenes.html#p=${sc.id}`;
   link.replaceChildren(plate(sc, { kind: 'full', eager: true }));
   $<HTMLAnchorElement>('hm-read').href = `/scenes.html#p=${sc.id}`;
-  $('hm-edition').textContent = `${word(edition.name)} ▾`;
-  $('hm-edition').setAttribute('aria-label', `${t('Edition', '译本', 'Издание')}: ${word(edition.name)}`);
+  paintEdition();
   $('hm-day').textContent = back === 0 ? t('Today', '今天', 'Сегодня') : back === 1 ? t('Yesterday', '昨天', 'Вчера') : dateOf(back);
   $('hm-prev').setAttribute('aria-label', t('The day before', '前一天', 'Предыдущий день'));
   $('hm-next').setAttribute('aria-label', t('The day after', '后一天', 'Следующий день'));
@@ -85,15 +97,14 @@ function paintBrowse() {
 }
 
 // ── the footer ──────────────────────────────────────────────────────────
-async function paintLicences() {
-  const have = await available();
-  const ids = [defaultFor(), 'bsb-yhwh', 'cuvs-yhwh', 'rst-yhwh'].filter((id, i, a) => a.indexOf(id) === i && have.has(id)).slice(0, 3);
+function paintLicences() {
+  const ids = [defaultFor(), 'bsb-yhwh', 'cuvs-yhwh', 'rst-yhwh'].filter((id, i, a) => a.indexOf(id) === i).slice(0, 3);
   $('hm-licences').innerHTML = ids.map((id) => {
-    const e = byId(id)!;
-    const how = e.lic === 'PD' ? t('public domain', '公有领域', 'общественное достояние') : t('church edition, used with permission', '教会版，经授权使用', 'издание церкви, с разрешения');
-    return `<a href="#licences" data-lic>${word(e.name).replace(/&/g, '&amp;')} · ${how}</a>`;
+    const e = briefOf(id)!;
+    const how = e.lic === '©' ? t('church edition, used with permission', '教会版，经授权使用', 'издание церкви, с разрешения') : e.lic === 'CC0' ? t('public domain (CC0)', '公有领域（CC0）', 'общественное достояние (CC0)') : t('public domain', '公有领域', 'общественное достояние');
+    return `<a href="#licences" data-lic>${e.label.replace(/&/g, '&amp;')} · ${how}</a>`;
   }).join('');
-  const n = EDITIONS.filter((e) => have.has(e.id)).length;
+  const n = BRIEFS.length;
   $('hm-all-licences').textContent = t(`All ${n} editions and licences ›`, `全部 ${n} 个译本与授权 ›`, `Все издания и лицензии (${n}) ›`);
 }
 
@@ -113,17 +124,21 @@ function paintNotice() {
   if (a && target) { a.href = `/scenes.html#p=${target}`; a.textContent = t('See the first scene of that journey', '看这条路线的第一幕', 'Первая сцена этого путешествия'); }
 }
 
-function paintAll() { void paintHero(); paintBrowse(); void paintLicences(); paintTheme(); paintNotice(); }
+function paintAll() { void paintHero(); paintBrowse(); paintLicences(); paintTheme(); paintNotice(); }
 
 // ── wiring ──────────────────────────────────────────────────────────────
 $('hm-prev').addEventListener('click', () => { back++; void paintHero(); });
 $('hm-next').addEventListener('click', () => { if (back > 0) { back--; void paintHero(); } });
-$('hm-edition').addEventListener('click', (e) => openEditionSheet(e.currentTarget as HTMLElement));
-$('hm-all-licences').addEventListener('click', (e) => openLicences(e.currentTarget as HTMLElement));
-$('hm-licences').addEventListener('click', (e) => { const a = (e.target as HTMLElement).closest('[data-lic]'); if (a) { e.preventDefault(); openLicences(a as HTMLElement); } });
+const openLic = (from: HTMLElement) => void Promise.all([reader(), import('./licences.ts')]).then(([, m]) => m.openLicences(from));
+$('hm-edition').addEventListener('click', (e) => {
+  const from = e.currentTarget as HTMLElement;
+  void reader().then(async (m) => (await import('../reader/index.ts')).openEditionPicker(m.readerSession(), from));
+});
+$('hm-all-licences').addEventListener('click', (e) => openLic(e.currentTarget as HTMLElement));
+$('hm-licences').addEventListener('click', (e) => { const a = (e.target as HTMLElement).closest('[data-lic]'); if (a) { e.preventDefault(); openLic(a as HTMLElement); } });
 document.querySelectorAll<HTMLButtonElement>('.hm-seg button').forEach((b) => b.addEventListener('click', () => { testament = b.dataset.t as 'ot' | 'nt'; paintBrowse(); }));
 document.querySelectorAll<HTMLButtonElement>('[data-read]').forEach((b) => b.addEventListener('click', () => { setReadTheme(b.dataset.read as ReadTheme); paintTheme(); }));
-document.addEventListener('gx:edition', () => void paintHero());
+document.addEventListener('gx:edition', paintEdition);
 onLocale(() => { applyStatic(); paintAll(); });
 window.addEventListener('hashchange', () => location.reload());
 
@@ -148,6 +163,6 @@ async function start() {
   }).catch(() => {});
 }
 paintTheme();
-void paintLicences();
-void current().then((ed) => { if (!$('hm-edition').textContent) $('hm-edition').textContent = `${word(ed.name)} ▾`; });
+paintLicences();
+paintEdition();
 void start();

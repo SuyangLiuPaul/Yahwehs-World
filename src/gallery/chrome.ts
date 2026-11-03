@@ -4,16 +4,29 @@
 import { applyStatic, onLocale } from '../locale.ts';
 
 // ── the reading theme (paper) ────────────────────────────────────────────
-// 'auto' follows the system, 'dark' keeps the navy, 'paper' forces the paper. Only .paperable regions use it.
-export type ReadTheme = 'auto' | 'dark' | 'paper';
-const KEY = 'ydh.read';
+// One setting for the whole site, kept in the reader's own preference record ('yr.prefs.v1', field `theme`) so the
+// picture page's passage, the Bible page and the home page's switch always agree. 'auto' follows the system, 'dark'
+// keeps the navy, 'light' and 'paper' are the reader's two light grounds. Only the reading surfaces use it: the home
+// page and the gallery stay dark because the plates were drawn to sit on dark. html[data-read] mirrors it for CSS.
+export type ReadTheme = 'auto' | 'dark' | 'light' | 'paper';
+const PREFS = 'yr.prefs.v1';
+const THEMES: readonly ReadTheme[] = ['auto', 'dark', 'light', 'paper'];
 export function readTheme(): ReadTheme {
-  try { const v = localStorage.getItem(KEY); if (v === 'dark' || v === 'paper') return v; } catch { /* blocked storage: follow the system */ }
+  try {
+    const v = (JSON.parse(localStorage.getItem(PREFS) ?? '{}') as { theme?: string }).theme;
+    if (THEMES.includes(v as ReadTheme)) return v as ReadTheme;
+  } catch { /* blocked storage or a damaged record: follow the system */ }
   return 'auto';
 }
-export function setReadTheme(v: ReadTheme) {
+/** `save` false = the reader module has already saved it (its own record is the one source). */
+export function setReadTheme(v: ReadTheme, save = true) {
   document.documentElement.dataset.read = v;
-  try { localStorage.setItem(KEY, v); } catch { /* nothing to do */ }
+  if (save) {
+    try {
+      const p = JSON.parse(localStorage.getItem(PREFS) ?? '{}') as Record<string, unknown>;
+      localStorage.setItem(PREFS, JSON.stringify({ ...p, theme: v }));
+    } catch { /* nothing to do */ }
+  }
   document.dispatchEvent(new CustomEvent('gx:read', { detail: v }));
 }
 document.documentElement.dataset.read = readTheme();

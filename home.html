@@ -6,8 +6,7 @@
   <!-- Old globe links arrive here with a hash (/#ref=…, /#event=…, /#journey=…). A server cannot see a hash, so this
        runs before first paint and sends each form where it now lives. Tested by scripts/verify-redirects.mjs. -->
   <script>(function(){try{var h=location.hash.slice(1);if(!h)return;var m;
-  if(m=/(?:^|&)ref=([^&]+)/.exec(h)){var raw=decodeURIComponent(m[1].replace(/\+/g,' '));var r=/^(.+?)\s+(\d+)(?::(\d+))?/.exec(raw);
-    location.replace('/bible.html'+(r?'?book='+encodeURIComponent(r[1])+'&ch='+r[2]:'')+'#ref='+encodeURIComponent(raw));return}
+  if(/(?:^|&)ref=/.test(h)){location.replace('/bible.html#'+h);return}
   if(m=/(?:^|&)event=([^&]+)/.exec(h)){location.replace('/scenes.html#p='+m[1]);return}
   }catch(e){}})()</script>
   <link rel="icon" href="/icon-sm.svg" type="image/svg+xml">
@@ -97,6 +96,7 @@
           <div class="hm-theme" role="group" aria-label="Reading theme"><span class="gx-mono" data-en="Reading surface" data-zh="阅读面" data-ru="Чтение">Reading surface</span>
             <button type="button" class="gx-pill" data-read="auto" data-en="System" data-zh="跟随系统" data-ru="Как в системе">System</button>
             <button type="button" class="gx-pill" data-read="dark" data-en="Dark" data-zh="深色" data-ru="Тёмная">Dark</button>
+ <button type="button" class="gx-pill" data-read="light" data-en="Light" data-zh="浅色" data-ru="Светлая">Light</button>
             <button type="button" class="gx-pill" data-read="paper" data-en="Paper" data-zh="纸" data-ru="Бумага">Paper</button>
           </div>
           <div class="gx-mono hm-version" id="hm-version"></div>

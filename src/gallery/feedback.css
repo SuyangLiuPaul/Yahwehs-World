@@ -1,0 +1,52 @@
+/* The feedback sheet (src/gallery/feedback.ts). It is a gx-sheet; it takes the reading theme so it matches the passage beside it. */
+dialog.gx-fb[data-theme="light"], dialog.gx-fb[data-theme="paper"] {
+  --ink: #1e2a3a; --ink-2: #34455a; --ink-3: #55657a; --ink-4: #7a8798;
+  --gold-bright: #7a500a; --gold-wash: #96650f1a; --on-gold: #fffaf0; color-scheme: light;
+}
+dialog.gx-fb[data-theme="light"] { --ground: #f8f9fb; --surface: #ffffff; --line: #d3d9e2; --line-gold: #9a6a1266; --gold: #9a6a12; --panel: linear-gradient(#ffffff, #ffffff); --shadow: 0 12px 40px #1a2a4022; }
+dialog.gx-fb[data-theme="paper"] { --ground: #f4efe4; --surface: #fbf8f1; --line: #d8cfba; --line-gold: #96650f66; --gold: #96650f; --panel: linear-gradient(#fbf8f1, #fbf8f1); --shadow: 0 12px 40px #3a2e1a2a; }
+dialog.gx-fb[data-theme="light"]::backdrop, dialog.gx-fb[data-theme="paper"]::backdrop { background: #1a2a4059; }
+@media (min-width: 768px) { dialog.gx-fb { width: 420px; } dialog.gx-fb[data-theme="light"]::backdrop, dialog.gx-fb[data-theme="paper"]::backdrop { background: transparent; } }
+dialog.gx-fb .gx-grab { background: var(--ink-4); }
+
+dialog.gx-fb { max-height: 90dvh; }
+@media (min-width: 768px) { dialog.gx-fb { max-height: calc(100dvh - 100px); } }
+.fb { display: grid; gap: var(--sp-3); }
+.fb-ctx { margin: 0; color: var(--ink-3); font-size: var(--fs-200); line-height: 1.5; overflow-wrap: anywhere; }
+.fb-set { margin: 0; padding: 0; border: 0; min-width: 0; display: grid; gap: var(--sp-2); }
+.fb-l { display: block; margin: 0 0 6px; padding: 0; font: 600 var(--fs-300)/1.4 var(--ui); color: var(--ink-2); }
+.fb-set .fb-l { margin: 0; float: none; }
+.fb-chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.fb-chips .gx-pill { min-height: 44px; padding: 0 16px; font-size: var(--fs-300); }
+.fb-f { display: grid; }
+.fb textarea, .fb input[type="email"] {
+  box-sizing: border-box; width: 100%; min-height: 44px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r-2);
+  background: var(--surface); color: var(--ink); font: 400 max(16px, var(--fs-400))/1.55 var(--ui); resize: vertical;
+}
+.fb textarea { min-height: 92px; }
+.fb textarea::placeholder, .fb input::placeholder { color: var(--ink-3); }
+.fb textarea:focus-visible, .fb input[type="email"]:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 1px; border-color: var(--line-gold); }
+.fb input[aria-invalid="true"] { border-color: #d9534f; }
+.fb-err { margin: 6px 0 0; color: #ff9d98; font-size: var(--fs-200); line-height: 1.5; }
+dialog.gx-fb[data-theme="light"] .fb-err, dialog.gx-fb[data-theme="paper"] .fb-err { color: #a3261f; }
+/* the honeypot: off screen, not display:none (a bot reads the DOM), never focusable, never announced */
+.fb-hp { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+.fb-privacy { margin: 0; color: var(--ink-3); font-size: var(--fs-200); line-height: 1.6; }
+.fb-live { min-height: 0; color: var(--ink-2); font-size: var(--fs-300); line-height: 1.55; }
+.fb-live:empty { display: none; }
+.fb-fallback { display: grid; }
+.fb-fallback[hidden] { display: none; }
+.fb-fallback .gx-btn { width: 100%; text-align: center; overflow-wrap: anywhere; height: auto; padding-block: 12px; line-height: 1.35; }
+.fb-actions { display: flex; gap: var(--sp-3); justify-content: flex-end; }
+.fb-actions .gx-btn { flex: 1 1 0; }
+@media (min-width: 768px) { .fb-actions .gx-btn { flex: 0 0 auto; min-width: 112px; } }
+.fb-done { display: grid; justify-items: center; gap: var(--sp-3); padding: var(--sp-5) 0 var(--sp-2); text-align: center; }
+.fb-done[hidden] { display: none; }
+.fb-done:focus { outline: none; }
+.fb-tick { width: 56px; height: 56px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--line-gold); background: var(--gold-wash); color: var(--gold-bright); }
+.fb-tick svg { width: 26px; height: 26px; }
+.fb-thanks { margin: 0; font: 600 var(--fs-600)/1.2 var(--display); }
+.fb-sub { margin: 0; color: var(--ink-2); font-size: var(--fs-400); line-height: 1.6; max-width: 30ch; }
+.fb-done .gx-btn { min-width: 140px; margin-top: var(--sp-2); }
+dialog.gx-fb .gx-btn.primary { color: var(--on-gold, #1a1405); }
+@media (prefers-reduced-motion: reduce) { dialog.gx-fb, dialog.gx-fb::backdrop { transition-duration: .01ms; } }

@@ -16,29 +16,9 @@ html[data-surface="gallery"] {
   scroll-padding-top: 72px;
 }
 
-/* ── paper: for the READING surfaces only (the picture page's text column, the reader).
-   Follows the system by default; the switch in the footer writes html[data-read]. The home page and the
-   gallery stay dark because the plates were drawn to sit on dark. */
-html[data-read="paper"] .paperable {
-  --ground: #f4efe4; --navy: #e9e1d0; --surface: #fbf8f1; --surface-hi: #efe7d6;
-  --ink: #1e2a3a; --ink-2: #3b4a5e; --ink-3: #566478; --ink-4: #7a8798;
-  --gold: #8f5f0f; --gold-bright: #7a500a; --gold-dim: #8f5f0f;
-  --line: #dcd3c0; --line-gold: #8f5f0f55; --gold-wash: #8f5f0f1a;
-  --panel: linear-gradient(180deg, #fbf8f1f7, #f4efe4fa);
-  --shadow: 0 12px 40px #3a2e1a2a;
-  color-scheme: light;
-}
-@media (prefers-color-scheme: light) {
-  html[data-read="auto"] .paperable {
-    --ground: #f4efe4; --navy: #e9e1d0; --surface: #fbf8f1; --surface-hi: #efe7d6;
-    --ink: #1e2a3a; --ink-2: #3b4a5e; --ink-3: #566478; --ink-4: #7a8798;
-    --gold: #8f5f0f; --gold-bright: #7a500a; --gold-dim: #8f5f0f;
-    --line: #dcd3c0; --line-gold: #8f5f0f55; --gold-wash: #8f5f0f1a;
-    --panel: linear-gradient(180deg, #fbf8f1f7, #f4efe4fa);
-    --shadow: 0 12px 40px #3a2e1a2a;
-    color-scheme: light;
-  }
-}
+/* ── paper: the reader module paints the reading surfaces itself (data-theme on its root: dark, light, paper, or the
+   system's); html[data-read] only mirrors the choice for the pages' own chrome. The home page and the gallery stay dark
+   because the plates were drawn to sit on dark. */
 
 /* ── the bar ─────────────────────────────────────────────────────────── */
 html[data-surface="gallery"] .sitenav {

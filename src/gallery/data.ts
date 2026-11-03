@@ -87,6 +87,3 @@ export const isOldTestament = (b: number) => b <= 39;
 
 /** The scene that stands before / after this one in canon order, or null. */
 export const neighbour = (ix: GalleryIndex, sc: Scene, d: -1 | 1) => ix.scenes[sc.i + d] ?? null;
-
-/** Where "read the whole chapter" goes today: the shipped reader's own ?book=&ch= address. */
-export const chapterHref = (sc: Pick<Scene, 'b' | 's'>) => `/bible.html?book=${sc.b}&ch=${chapterOf(sc.s)}`;

@@ -4,10 +4,16 @@
   command = "npm run build && node scripts/check-budget.mjs"
   publish = "dist"
 
+# The picture feedback button posts to /api/feedback (netlify/functions/feedback.mjs). It needs RESEND_API_KEY and FEEDBACK_TO set on
+# the site (names only here; docs/gallery-release-checklist.md); without them the function answers 503 and the page offers a mailto: link.
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 [build.environment]
   NODE_VERSION = "22"
   # The picture-gallery release builds only the home page, the scenes and the reader (vite.config.ts, scripts/lib/vite-gallery-surface.mjs).
-  # `VITE_SURFACE=full npm run build` is the whole site. The build needs public/pictures/ (scripts/build-pictures.mjs, T7 drive), so a
+  # `VITE_SURFACE=full npm run build` is the whole site. The build needs public/pictures/ (scripts/build-pictures.mjs, T7 drive) and public/data/reader/ (scripts/reader-editions.mjs, the Words checkout), so a
   # Netlify CI build of the gallery fails on purpose; deploy with tools/release_web.sh, which builds locally.
   VITE_SURFACE = "gallery"
 

@@ -1,92 +1,70 @@
-// The passage under a picture: the verses an event covers, in the reader's edition, with the heading they sit under.
+// The passage under a picture: the verses an event covers, in the reader module (src/reader).
 //
-// INTEGRATION POINT (the reader work in the other worktree: editions, copy, headings, vertical parallel).
-// This file is the whole seam between the picture page and Bible text. The page calls `loadPassage()` and
-// `copyText()`; both go through a PassageProvider. The default provider below reads the data this repo already
-// ships (split text files, the Words-derived headings in book/<n>.json). To swap in the shared reader core:
+// This file is the whole seam between the picture page and Bible text. It used to carry its own PassageProvider
+// (split text files, one hand-written edition table, its own copy format). Now the reader module does all of it,
+// from the same data and the same Session as the Bible page:
 //
-//     import { setPassageProvider } from './passage.ts';
-//     setPassageProvider({ load, copyText, parallel });   // same shape as PassageProvider
+//   editions   bsb-yhwh, kjv, web-yhwh, asv-yhwh, cuvs-yhwh, cuvs-yhwh-tr, rst-yhwh, rst: one sheet, grouped by language
+//   对照       vertical parallel (up to three editions, the reader's 对照 control), verse by verse
+//   headings   小标题 in the heading set of the edition (cuv, cuv-tr, english-classic, ru), from Words' data
+//   copy       the verses with their citation, the edition's credit line, and a link to this picture (/p/<id>)
+//   chapter    "Read the whole chapter" opens /bible.html at that chapter with the picture's verses marked
 //
-// `parallel` is optional: while it is absent the picture page shows no 对照 control. Nothing outside this file
-// and editions.ts knows how verses are fetched, numbered, headed or copied.
-import { t } from '../locale.ts';
-import { chapterOf, refText, verseOf, type Scene } from './data.ts';
-import { word, type Edition } from './editions.ts';
+// The reader module is loaded here, on the first picture, and not with the page: the gallery grid does not need it.
+import type { PassageSpec, ReaderHandle, Ref } from '../reader/index.ts';
+import { chapterOf, verseOf, type Scene } from './data.ts';
 
-export interface Verse { key: number; ch: number; n: number; text: string }
-export interface Heading { key: number; text: string }
-export interface Passage { edition: Edition; verses: Verse[]; headings: Heading[]; scene: Scene }
+type Reader = typeof import('../reader/index.ts');
 
-export interface PassageProvider {
-  /** The verses of scene.s..scene.e in this edition (missing verses are left out of `verses`, never invented). */
-  load(scene: Scene, edition: Edition): Promise<Passage>;
-  /** The text for the clipboard: the chosen verses with their citation (and a licence line where the edition needs one). */
-  copyText(p: Passage, keys: readonly number[]): string;
-  /** Interleaves up to three editions verse by verse. Absent until the vertical-parallel work lands. */
-  parallel?(scene: Scene, editions: readonly Edition[]): Promise<Passage[]>;
+/** The verses of a scene as the reader module wants them. */
+export function specOf(sc: Pick<Scene, 'b' | 's' | 'e'>): PassageSpec {
+  return { book: sc.b, from: { chapter: chapterOf(sc.s), verse: verseOf(sc.s) }, to: { chapter: chapterOf(sc.e), verse: verseOf(sc.e) }, limit: 12 };
 }
 
-const SPLIT = '/data/bible/split';
-type Book = { words?: Record<string, { titleHans?: string; titleHant?: string; titleEn?: string }> };
-const textCache = new Map<string, Promise<string[][]>>();
-const bookCache = new Map<number, Promise<Book>>();
-function fetchJson<T>(url: string, cache: Map<string | number, Promise<T>>, k: string | number): Promise<T> {
-  let p = cache.get(k);
-  if (!p) {
-    p = fetch(url).then((r) => { if (!r.ok) throw new Error(`${url} ${r.status}`); return r.json() as Promise<T>; });
-    p.catch(() => cache.delete(k)); // a failed fetch is retried, not remembered
-    cache.set(k, p);
-  }
-  return p;
+/** Where "whole chapter" goes: the Bible page at the chapter the picture starts in, with the picture's own verses
+ *  marked when it sits inside one chapter and does not simply cover all of it. English book names in the hash. */
+export function chapterRef(sc: Pick<Scene, 'b' | 's' | 'e'>, verses: number | null): Ref {
+  const c = chapterOf(sc.s);
+  if (chapterOf(sc.e) !== c) return { book: sc.b, chapter: c };
+  const v1 = verseOf(sc.s), v2 = verseOf(sc.e);
+  if (v1 <= 1 && verses != null && v2 >= verses) return { book: sc.b, chapter: c };
+  return { book: sc.b, chapter: c, v1, v2 };
 }
-const textOf = (ed: Edition, b: number) =>
-  fetchJson<string[][]>(ed.legacyDir ? `${SPLIT}/text/${ed.legacyDir}/${b}.json` : `/data/bible/${ed.id}/${b}.json`, textCache as Map<string | number, Promise<string[][]>>, `${ed.id}/${b}`);
-const bookOf = (b: number) => fetchJson<Book>(`${SPLIT}/book/${b}.json`, bookCache as Map<string | number, Promise<Book>>, b);
 
-/** The shipped text carries markup the reader turns into footnote badges and "supplied word" tags (<H0>, <G0>, <note: …>).
- *  A passage under a picture is plain reading text, so the tags go; the bracketed referent marks (主[雅伟], Lord [Yahweh]) stay,
- *  exactly as the edition prints them. */
-const clean = (s: string | null | undefined) => (s ?? '').replace(/<[^>]*>/g, '').replace(/\s{2,}/g, ' ').trim();
+export interface ScenePassage {
+  /** Shows this scene's verses (mounts the first time). Resolves when they are on screen or their error state is. */
+  show(sc: Scene): Promise<void>;
+  handle(): ReaderHandle | null;
+}
 
-const defaultProvider: PassageProvider = {
-  async load(scene, edition) {
-    const [text, book] = await Promise.all([textOf(edition, scene.b), bookOf(scene.b).catch((): Book => ({}))]);
-    const verses: Verse[] = [];
-    for (let ch = chapterOf(scene.s); ch <= chapterOf(scene.e); ch++) {
-      const rows = text[ch - 1] ?? [];
-      const from = ch === chapterOf(scene.s) ? verseOf(scene.s) : 1;
-      const to = ch === chapterOf(scene.e) ? verseOf(scene.e) : rows.length;
-      for (let n = from; n <= Math.min(to, rows.length); n++) {
-        const s = clean(rows[n - 1]);
-        if (s) verses.push({ key: scene.b * 1_000_000 + ch * 1000 + n, ch, n, text: s });
-      }
-    }
-    // The heading the event starts under (the Words-derived titles in book/<n>.json), in the edition's own script.
-    const w = book.words?.[String(scene.s)];
-    const hd = w && (edition.group === 'zh-Hans' ? w.titleHans : edition.group === 'zh-Hant' ? w.titleHant : edition.group === 'en' ? w.titleEn : '');
-    const headings: Heading[] = hd ? [{ key: scene.s, text: hd }] : [];
-    return { edition, verses, headings, scene };
-  },
-  copyText(p, keys) {
-    const picked = p.verses.filter((v) => keys.includes(v.key));
-    if (!picked.length) return '';
-    const first = picked[0]!, last = picked[picked.length - 1]!;
-    const lang = p.edition.group === 'ru' ? 'ru' : p.edition.group === 'en' ? 'en' : 'zh';
-    const cite = refText({ b: p.scene.b, s: first.key, e: last.key }, lang);
-    // "BSB (Yahweh)" -> "BSB, Yahweh", so the citation's own parentheses are the only ones
-    const name = word(p.edition.name).replace(/\s*[(（]([^)）]*)[)）]/, ', $1');
-    const body = picked.map((v) => `${v.n} ${v.text}`).join('\n');
-    const open = lang === 'zh' ? '（' : ' (', shut = lang === 'zh' ? '）' : ')';
-    return `${cite}${open}${name}${shut}\n${body}\n\n— ${t("Yahweh's World", '雅伟之界', 'Мир Яхве')} · world.yahwehword.com/p/${p.scene.id}`;
-  },
-};
-
-let provider: PassageProvider = defaultProvider;
-export function setPassageProvider(p: PassageProvider) { provider = p; }
-export const hasParallel = () => typeof provider.parallel === 'function';
-export const loadPassage = (scene: Scene, edition: Edition) => provider.load(scene, edition);
-export const copyText = (p: Passage, keys: readonly number[]) => provider.copyText(p, keys);
-export const parallel = (scene: Scene, editions: readonly Edition[]) => provider.parallel!(scene, editions);
-
-
+export function mountScenePassage(host: HTMLElement): ScenePassage {
+  let now: Scene | null = null;
+  let h: ReaderHandle | null = null;
+  let mounting: Promise<void> | null = null;
+  return {
+    handle: () => h,
+    async show(sc) {
+      now = sc;
+      if (mounting) await mounting;
+      if (h) { await h.goto(specOf(sc)); return; }
+      mounting = (async () => {
+        const [reader, bridge] = await Promise.all([import('../reader/index.ts') as Promise<Reader>, import('./reader-bridge.ts')]);
+        h = await reader.mountPassage(host, {
+          session: bridge.readerSession(),
+          route: 'none',
+          origin: bridge.ORIGIN,
+          // a selection copied from a picture links back to the picture (it unfurls with its own title and plate)
+          linkFor: () => `${bridge.ORIGIN}/p/${now?.id ?? ''}`,
+          onOpenChapter: () => {
+            if (!now) return;
+            const vc = reader.BOOKS[now.b - 1]?.vc[chapterOf(now.s) - 1] ?? null;
+            location.href = `/bible.html${reader.formatHash({ ref: chapterRef(now, vc) })}`;
+          },
+        }, specOf(sc));
+      })();
+      try { await mounting; } finally { mounting = null; }
+      // the scene may have moved on while the first mount was loading
+      if (now && now !== sc) await h!.goto(specOf(now));
+    },
+  };
+}

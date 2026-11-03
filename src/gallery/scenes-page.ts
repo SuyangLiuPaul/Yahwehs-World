@@ -2,13 +2,11 @@ import './scenes-page.css';
 import { applyStatic, bindSwitch, onLocale, t } from '../locale.ts';
 import { loadingStep, loadingSteps, pageReady } from '../site-shell.ts';
 import {
-  bookTitle, chapterHref, isOldTestament, lang, loadIndex, loadSummaries, neighbour, refText, sceneSummary, sceneTitle,
+  bookTitle, isOldTestament, lang, loadIndex, loadSummaries, neighbour, refText, sceneSummary, sceneTitle,
   type GalleryIndex, type Scene, type Summaries,
 } from './data.ts';
 import { plate, fullUrl } from './media.ts';
-import { openEditionSheet } from './edition-sheet.ts';
-import { current, word, type Edition } from './editions.ts';
-import { copyText, hasParallel, loadPassage, type Passage } from './passage.ts';
+import { mountScenePassage } from './passage.ts';
 import { toast } from './sheet.ts';
 
 loadingSteps(1);
@@ -126,11 +124,9 @@ if ('IntersectionObserver' in window) {
 
 // ── the picture and its passage ─────────────────────────────────────────
 let scene: Scene | null = null;
-const selected = new Set<number>();
-let expanded = false;
-let passage: Passage | null = null;
-
-const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+// The verses under the picture are the reader module's passage view (src/gallery/passage.ts): edition sheet, 对照,
+// headings, copy and "whole chapter" are all its own, on the session the Bible page shares.
+const passage = mountScenePassage($('pc-passage'));
 
 function paintPicture(sc: Scene) {
   if (!ix) return;
@@ -153,6 +149,9 @@ function paintPicture(sc: Scene) {
   setNav('pc-next', next, t('Next scene', '下一幕', 'Следующая сцена'));
   $('pc-back').setAttribute('aria-label', t('Back to the scenes', '回到画卷', 'Назад к сценам'));
   $('pc-share').setAttribute('aria-label', t('Share this scene', '分享这一幕', 'Поделиться сценой'));
+  const fbLabel = t('Report a problem or send feedback about this picture', '反馈这幅画的问题或意见', 'Сообщить о проблеме или оставить отзыв об этой картине');
+  $('pc-feedback').setAttribute('aria-label', fbLabel);
+  $('pc-feedback').title = fbLabel;
   $('pc-plate').setAttribute('aria-label', t('View the picture full screen', '全屏看画', 'Открыть картину на весь экран'));
   const pl = plate(sc, { kind: 'full', eager: true, alt: sceneTitle(sc) });
   $('pc-plate').replaceChildren(pl);
@@ -166,86 +165,9 @@ function passageSkeleton() {
 }
 
 async function paintPassage(sc: Scene) {
-  const host = $('pc-passage');
-  host.innerHTML = passageSkeleton();
-  selected.clear();
-  const edition: Edition = await current();
-  let p: Passage;
-  try { p = await loadPassage(sc, edition); } catch {
-    if (scene?.id !== sc.id) return;
-    host.innerHTML = `<div class="gx-fail"><p></p><button type="button" class="gx-btn primary"></button></div>`;
-    host.querySelector('p')!.textContent = t('The verses did not load. Check your connection and try again.', '经文没有载入。请检查网络后重试。', 'Стихи не загрузились. Проверьте соединение и попробуйте снова.');
-    const b = host.querySelector('button')!;
-    b.textContent = t('Try again', '重试', 'Повторить');
-    b.addEventListener('click', () => void paintPassage(sc));
-    return;
-  }
-  if (scene?.id !== sc.id) return; // the reader moved on while this was loading
-  passage = p;
-  drawPassage();
-}
-
-function drawPassage() {
-  const sc = scene, p = passage;
-  if (!sc || !p) return;
-  const host = $('pc-passage');
-  const SHOW = 12;
-  const verses = expanded ? p.verses : p.verses.slice(0, SHOW);
-  const rest = p.verses.length - verses.length;
-  const heading = p.headings[0]?.text;
-  host.innerHTML = `
-    <div class="ptools">
-      <button type="button" class="gx-pill gold" id="pc-ed" aria-haspopup="dialog"></button>
-      ${hasParallel() ? `<button type="button" class="gx-pill" id="pc-par" aria-pressed="false">${t('Parallel', '对照', 'Параллельно')}</button>` : ''}
-      <button type="button" class="gx-pill" id="pc-copy">${t('Copy', '复制', 'Копировать')}</button>
-      <span class="spacer"></span>
-      <a class="gx-pill" id="pc-chapter" href="${chapterHref(sc)}">${t('Whole chapter ›', '读整章 ›', 'Вся глава ›')}</a>
-    </div>
-    ${heading ? `<div class="heading" role="heading" aria-level="3">${esc(heading)}</div>` : ''}
-    <div class="verses" id="pc-verses"></div>
-    ${rest > 0 ? `<button type="button" class="gx-pill" id="pc-more" style="justify-self:start">${t(`Show the other ${rest} verses`, `展开其余 ${rest} 节`, `Показать остальные стихи (${rest})`)}</button>` : ''}
-    <div class="selbar" id="pc-sel"><span class="gx-mono"></span><button type="button" class="gx-btn sm primary" id="pc-sel-copy">${t('Copy', '复制', 'Копировать')}</button><button type="button" class="gx-btn sm quiet" id="pc-sel-link">${t('Share link', '分享链接', 'Ссылка')}</button></div>
-    <div class="ed-credit"></div>`;
-  $('pc-ed').textContent = `${word(p.edition.name)} ▾`;
-  host.querySelector('.ed-credit')!.textContent = `${word(p.edition.name)} · ${word(p.edition.credit)} ${t('Tap a verse number to select and copy.', '点经文节号可选取、复制。', 'Нажмите на номер стиха, чтобы выбрать и скопировать.')}`;
-  const box = $('pc-verses');
-  for (const v of verses) {
-    const row = document.createElement('p');
-    row.className = 'v';
-    row.dataset.key = String(v.key);
-    row.innerHTML = `<button type="button" class="vn" aria-pressed="false"></button><span class="tx"></span>`;
-    const vn = row.querySelector<HTMLElement>('.vn')!;
-    vn.textContent = String(v.n);
-    vn.setAttribute('aria-label', t(`Verse ${v.n}`, `第 ${v.n} 节`, `Стих ${v.n}`));
-    row.querySelector('.tx')!.textContent = v.text;
-    box.append(row);
-  }
-  $('pc-ed').addEventListener('click', (e) => openEditionSheet(e.currentTarget as HTMLElement));
-  $('pc-copy').addEventListener('click', () => void doCopy(verses.map((v) => v.key)));
-  $('pc-more')?.addEventListener('click', () => { expanded = true; drawPassage(); });
-  box.addEventListener('click', (e) => {
-    const vn = (e.target as HTMLElement).closest<HTMLElement>('.vn');
-    if (!vn) return;
-    const row = vn.parentElement!;
-    const k = Number(row.dataset.key);
-    if (selected.has(k)) selected.delete(k); else selected.add(k);
-    row.classList.toggle('sel', selected.has(k));
-    vn.setAttribute('aria-pressed', String(selected.has(k)));
-    paintSel();
-  });
-  $('pc-sel-copy').addEventListener('click', () => void doCopy([...selected]));
-  $('pc-sel-link').addEventListener('click', () => void doShare());
-  paintSel();
-}
-
-function paintSel() {
-  const bar = $('pc-sel');
-  const keys = [...selected].sort((a, b) => a - b);
-  bar.classList.toggle('on', keys.length > 0);
-  if (!keys.length || !scene) return;
-  const first = keys[0]!, last = keys[keys.length - 1]!;
-  const n = keys.length;
-  bar.querySelector('.gx-mono')!.textContent = `${t(`${n} verse${n > 1 ? 's' : ''}`, `已选 ${n} 节`, `Выбрано стихов: ${n}`)} · ${refText({ b: scene.b, s: first, e: last })}`;
+  // the first picture waits for the reader module: its skeleton stands in the passage's place meanwhile
+  if (!passage.handle()) $('pc-passage').innerHTML = passageSkeleton();
+  await passage.show(sc);
 }
 
 async function writeClipboard(text: string): Promise<boolean> {
@@ -260,14 +182,6 @@ async function writeClipboard(text: string): Promise<boolean> {
   } catch { return false; }
 }
 
-async function doCopy(keys: number[]) {
-  if (!passage) return;
-  const text = copyText(passage, keys.sort((a, b) => a - b));
-  const ok = await writeClipboard(text);
-  const first = keys[0]!, last = keys[keys.length - 1]!;
-  toast(ok ? `${t('Copied', '已复制', 'Скопировано')} · ${refText({ b: passage.scene.b, s: first, e: last })} (${word(passage.edition.name)})` : t('Copying did not work on this browser', '这个浏览器没能复制', 'Не удалось скопировать в этом браузере'));
-}
-
 async function doShare() {
   if (!scene) return;
   const url = `${location.origin}/p/${scene.id}`;
@@ -277,6 +191,8 @@ async function doShare() {
   toast((await writeClipboard(url)) ? `${t('Link copied', '链接已复制', 'Ссылка скопирована')} · ${url.replace(/^https?:\/\//, '')}` : url);
 }
 $('pc-share').addEventListener('click', () => void doShare());
+// feedback: loaded on the first tap; nothing is sent until the reader presses Send inside the sheet
+$('pc-feedback').addEventListener('click', (e) => { const from = e.currentTarget as HTMLElement; if (scene) void import('./feedback.ts').then((m) => m.openFeedback(scene!, from)); });
 $('pc-back').addEventListener('click', () => {
   let from = false;
   try { from = sessionStorage.getItem('gx.from') === '1'; } catch { /* no storage */ }
@@ -313,7 +229,6 @@ async function route(restore = false) {
     const sc = ix.byId.get(r.p);
     if (!sc) { history.replaceState(null, '', '#'); showBrowse({ p: null, b: 0, scope: 'all' }); return; }
     scene = sc;
-    expanded = false;
     window.scrollTo(0, 0);
     paintPicture(sc);
     void paintPassage(sc);
@@ -346,12 +261,11 @@ window.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') { const n = neighbour(ix, scene, -1); if (n) go(`#p=${n.id}`); }
   else if (e.key === 'ArrowRight') { const n = neighbour(ix, scene, 1); if (n) go(`#p=${n.id}`); }
 });
-document.addEventListener('gx:edition', () => { if (scene) void paintPassage(scene); });
-document.addEventListener('gx:read', () => { /* paper follows html[data-read] in CSS; nothing to repaint */ });
 onLocale(() => {
   applyStatic();
   if (!ix) return;
   const r = parse();
-  if (scene) { paintPicture(scene); void paintPassage(scene); } else { listNow = inScope(r); paintBrowseHead(r, listNow.length); paintGrid(true); }
+  // the passage follows the language by itself (it shares the reader's session)
+  if (scene) paintPicture(scene); else { listNow = inScope(r); paintBrowseHead(r, listNow.length); paintGrid(true); }
 });
 void start();
