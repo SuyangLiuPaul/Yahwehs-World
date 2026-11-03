@@ -122,9 +122,9 @@ export function openFeedback(sc: Scene, returnFocus?: HTMLElement | null): HTMLD
       const mail = $<HTMLInputElement>('#fb-mail');
       form.querySelector('label[for="fb-mail"]')!.textContent = t('Your e-mail, if you would like a reply (optional)', '你的邮箱，如需回复（可不填）', 'Ваш e-mail, если нужен ответ (необязательно)');
       $('.fb-privacy').textContent = t(
-        'Nothing is sent until you press Send. Your note goes by e-mail to the team with the picture, your language, edition and browser type. This site stores nothing about you: no cookies, no tracking.',
-        '点“发送”之前不会发出任何内容。你的留言连同这幅画、语言、译本和浏览器类型，会以电子邮件发给团队。本站不保存任何关于你的信息，没有 cookie，也不做追踪。',
-        'Ничего не отправляется, пока вы не нажмёте «Отправить». Сообщение уходит команде по e-mail вместе с картиной, языком, изданием и типом браузера. Сайт ничего о вас не хранит: ни cookie, ни отслеживания.');
+        'Nothing is sent until you press Send. Your note goes by e-mail to the team with the picture, your language, edition and browser type. The note is kept only in that e-mail; this site sets no cookies and does not track you.',
+        '点“发送”之前不会发出任何内容。你的留言连同这幅画、语言、译本和浏览器类型，会以电子邮件发给团队。留言只保存在那封邮件里；本站不设 cookie，也不追踪你。',
+        'Ничего не отправляется, пока вы не нажмёте «Отправить». Сообщение уходит команде по e-mail вместе с картиной, языком, изданием и типом браузера. Сообщение хранится только в этом письме; сайт не использует cookie и не отслеживает вас.');
       const live = $('.fb-live');
       const send = $<HTMLButtonElement>('[data-send]');
       const cancel = $<HTMLButtonElement>('[data-cancel]');
