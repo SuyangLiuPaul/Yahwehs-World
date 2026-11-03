@@ -28,7 +28,9 @@ export interface TrackEvent {
   id: string; zh: string; en: string;
   b: number; s: number; e: number;
   ref: string; refZh: string;
-  sum: string; basis: string;
+  sum: string; sumEn?: string;
+  img?: 'm' | 'r';
+  basis: string;
   c: 'anchored' | 'inferred' | 'disputed' | 'none';
   p: string[];
   y0?: number; y1?: number;

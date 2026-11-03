@@ -27,14 +27,15 @@ export const REGION_NAMES=new Set(ANCHORS.map(([name])=>name));
 const overlap=(a:DOMRect,b:DOMRect)=>a.left<b.right+6&&a.right>b.left-6&&a.top<b.bottom+4&&a.bottom>b.top-4;
 export class RegionLabels{
  private readonly root=document.createElement('div');
- private labels:{el:HTMLSpanElement;point:THREE.Vector3;place:Place}[]=[];
+ private labels:{el:HTMLButtonElement;point:THREE.Vector3;place:Place}[]=[];
  private last=''; private time=0;
- constructor(places:Place[]){
-  this.root.id='region-labels';this.root.setAttribute('aria-hidden','true');document.body.append(this.root);
+ constructor(places:Place[],private readonly onSelect?: (place:Place)=>void){
+  this.root.id='region-labels';document.body.append(this.root);
   for(const [name,lon,lat,kind] of ANCHORS){
    const place=places.find(p=>p.name===name);if(!place)throw Error(`Missing region gazetteer entry ${name}`);
-   const el=document.createElement('span');el.className=`region-label ${kind}`;
+   const el=document.createElement('button');el.type='button';el.className=`region-label ${kind}`;
    el.dataset.source=place.refs[0]||'';el.title=`${place.refs[0]} · cartographic label, not a boundary`;
+   el.addEventListener('click',()=>this.onSelect?.(place));
    this.root.append(el);this.labels.push({el,point:lonLatToVec3(lon,lat,.06),place});
   }
  }
@@ -42,7 +43,10 @@ export class RegionLabels{
   this.time+=dt;if(this.time<.09)return;this.time=0;
   const dist=camera.position.length()/100;
   this.root.hidden=dist>3||dist<1.08;if(this.root.hidden)return;
-  if(this.last!==locale){this.labels.forEach(l=>l.el.textContent=placeLabel(l.place.name,l.place.zh,locale));this.last=locale;}
+  if(this.last!==locale){this.labels.forEach(l=>{
+   const text=placeLabel(l.place.name,l.place.zh,locale);
+   l.el.textContent=text;l.el.setAttribute('aria-label',text);
+  });this.last=locale;}
   this.root.style.opacity=String(Math.min(1,(3-dist)/.5));
   const occupied=Array.from(document.querySelectorAll<HTMLElement>('.rlab,.place-label')).filter(e=>e.style.display!=='none'&&e.style.visibility!=='hidden').map(e=>e.getBoundingClientRect()).filter(r=>r.width>0);
   if(actorBox)occupied.push(actorBox);

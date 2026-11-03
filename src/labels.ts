@@ -19,7 +19,10 @@ export class RouteLabels {
   private readonly world = new THREE.Vector3();
   private readonly direction = new THREE.Vector3();
   private readonly near = new THREE.Vector3();
-  constructor(parent: HTMLElement) { this.root.className='route-labels'; parent.appendChild(this.root); }
+  constructor(parent: HTMLElement, private readonly onSelect?: (marker: RouteMarker) => void) {
+    this.root.className='route-labels';
+    parent.appendChild(this.root);
+  }
 
   build(markers: THREE.Object3D[], locale: 'zh'|'en') {
     this.clear();
@@ -29,7 +32,8 @@ export class RouteLabels {
     this.root.appendChild(svg);
     this.items=markers.map((mesh,i)=>{
       const m=mesh.userData.marker as RouteMarker;
-      const el=document.createElement('div');
+      const el=document.createElement('button');
+      el.type='button';
       el.className='rlab'+(i===0?' start':i===markers.length-1?' end':'')+(m.stops.length>1?' many':'');
       el.dataset.marker=String(mesh.userData.index ?? i);
       const ord=document.createElement('b');
@@ -43,6 +47,9 @@ export class RouteLabels {
         el.appendChild(tag);
       }
       if(m.stops.length>1)el.title=locale==='zh'?hant('多个营站共用区域坐标；实际位置未定'):'Multiple camps share a regional coordinate; exact sites are uncertain.';
+      const readable=placeLabel(m.place,m.zh,locale);
+      el.setAttribute('aria-label',`${m.stops.length>1?m.stops[0]+'–'+m.stops.at(-1):m.n} · ${readable}`);
+      el.addEventListener('click',()=>this.onSelect?.(m));
       el.style.display='none';
       this.root.appendChild(el);
       const leader=document.createElementNS(svg.namespaceURI,'line') as SVGLineElement;
@@ -99,7 +106,10 @@ export class RouteLabels {
       if(box.left<edge||box.right>w-edge||box.top<top||box.bottom>bottom)continue;
       placed.push({c,box});
     }
-    const clashes=(a:Box,b:Box)=>a.left<b.right+2&&a.right>b.left-2&&a.top<b.bottom+2&&a.bottom>b.top-2;
+    // The plate itself already supplies a crisp one-pixel edge. Treat actual
+    // box contact as the collision boundary so short English labels are not
+    // discarded merely for an invisible two-pixel moat.
+    const clashes=(a:Box,b:Box)=>a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top;
     const fixed:typeof placed=[];
     for(const p of placed.filter(p=>p.c.rank<2))if(!fixed.some(f=>clashes(p.box,f.box)))fixed.push(p);
     const pool=placed.filter(p=>p.c.rank>=2&&!fixed.some(f=>clashes(p.box,f.box)));

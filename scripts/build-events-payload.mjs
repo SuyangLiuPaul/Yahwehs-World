@@ -39,6 +39,8 @@ const events = src.events.map((e) => {
     ref: e.ref,
     refZh: e.refZh,
     sum: e.summaryZh,
+    sumEn: e.summaryEn ?? '',
+    img: e.imgMode ?? 'm',
     basis: e.dateBasis,
     c: e.dateConfidence,
     p: e.placeIds ?? [],
