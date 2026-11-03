@@ -43,6 +43,8 @@ export const STRINGS = {
   mainEdition: r('Main', '主', '主', 'Основной'),
   licencePD: r('Public domain', '公有领域', '公有領域', 'Общественное достояние'),
   licenceCC0: r('CC0', 'CC0', 'CC0', 'CC0'),
+  // the church's own edition, used with permission (Words' record: not public domain): the chip is the (c) sign
+  licencePermission: r('©', '©', '©', '©'),
   notInEdition: r('not in this edition', '本译本没有这一节', '本譯本沒有這一節', 'в этом переводе нет этого стиха'),
   editionSwitched: r('Now reading {name}', '现在读 {name}', '現在讀 {name}', 'Теперь читаете: {name}'),
   // selection and copy

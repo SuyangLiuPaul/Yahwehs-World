@@ -23,15 +23,17 @@ test('single edition, English: heading with the edition name, numbered verses, c
   assert.deepEqual(r.ref, { book: 1, chapter: 1, v1: 1, v2: 3 });
 });
 
-test('single edition, Chinese: the heading is in the edition’s language with full-width brackets; the credit says 和合本, public domain, no year', () => {
+test('single edition, Chinese: the heading is in the edition’s language with full-width brackets; the credit is the Words wording (© Yahweh De Hua Ministry, used with permission), never public domain, no year', () => {
   const hans = buildCopy({ book: 1, chapter: 1, verses: [1, 2, 3], text: textOf('cuvs-yhwh', 1, 1), edition: ed('cuvs-yhwh'), ui: 'zh-Hans' })!;
   assert.equal(hans.text.split('\n')[0], '创世记 1:1–3（和合本雅伟版）');
-  assert.match(hans.text, /\n和合本雅伟版 · 和合本，公有领域；神名作雅伟。\n/);
+  assert.match(hans.text, /\n和合本雅伟版 · © 雅伟的话事工 · 经授权使用。\n/);
+  assert.ok(!hans.text.includes('公有'));
   assert.match(hans.text, /\n— 雅伟之界 · https:\/\/world\.yahwehword\.com\/bible\.html#ref=Genesis/);
   assert.ok(!hans.text.includes('1919'));
   const hant = buildCopy({ book: 43, chapter: 3, verses: [16], text: textOf('cuvs-yhwh-tr', 43, 3), edition: ed('cuvs-yhwh-tr'), ui: 'zh-Hant' })!;
   assert.equal(hant.text.split('\n')[0], '約翰福音 3:16（和合本雅偉版）');
-  assert.match(hant.text, /和合本，公有領域；神名作雅偉。/);
+  assert.match(hant.text, /和合本雅偉版 · © 雅偉的話事工 · 經授權使用。/);
+  assert.ok(!hant.text.includes('公有'));
   assert.match(hant.text, /— 雅偉之界/);
   // a Chinese reader copying the BSB gets an English heading and credit, with the Chinese site line
   const mixed = buildCopy({ book: 43, chapter: 3, verses: [16], text: textOf('kjv', 43, 3), edition: ed('kjv'), ui: 'zh-Hans' })!;

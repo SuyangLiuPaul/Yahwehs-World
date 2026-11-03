@@ -93,6 +93,6 @@ test('footnotes: the marker is a button with aria-expanded and its note follows,
 test('the credit block lists one line per edition, in its own language', () => {
   const h = renderCredit([ed('kjv'), ed('cuvs-yhwh'), ed('rst')], 'en');
   assert.equal(count(h, /<li /g), 3);
-  assert.match(h, /lang="zh-Hans">和合本雅伟版 · 和合本，公有领域/);
+  assert.match(h, /lang="zh-Hans">和合本雅伟版 · © 雅伟的话事工 · 经授权使用/);
   assert.match(h, /lang="ru">СП · Синодальный перевод \(1876\), общественное достояние/);
 });

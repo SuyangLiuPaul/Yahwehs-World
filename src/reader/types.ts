@@ -32,7 +32,7 @@ export interface EditionInfo {
   copyName: string;
   credit: Record<UiLang, string>;
   licence: {
-    kind: 'cc0' | 'public-domain';
+    kind: 'cc0' | 'public-domain' | 'permission';
     holder: string;
     url?: string;
     note: Record<UiLang, string>;

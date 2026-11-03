@@ -85,7 +85,7 @@ Made from crops of the owner's concept picture as the style reference; 1 credit 
 
 ## Reader data (gallery release, branch `gallery/reader-1`, 2026-11-03)
 
-Copied from the Words checkout by `scripts/reader-editions.mjs` (pinned in `src/reader/sources.lock.json`, Words `eba531d8`); the files under `public/data/reader/` are generated and gitignored, the bundle carries `src/reader/catalogue.gen.ts`. The Synodal is the plain eBible.org text (public domain), never the licensed Strong's-tagged one. No year is printed for the Union Version.
+Copied from the Words checkout by `scripts/reader-editions.mjs` (pinned in `src/reader/sources.lock.json`, Words `eba531d8`); the files under `public/data/reader/` are generated and gitignored, the bundle carries `src/reader/catalogue.gen.ts`. The Synodal is the plain eBible.org text (public domain), never the licensed Strong's-tagged one. The Union Version editions (cuvs-yhwh, cuvs-yhwh-tr) carry Words' own wording, "© Yahweh De Hua Ministry · used with permission" (assets/i18n/ui/*.json aboutLicenseCuvsYhwh), with the © chip, and are not described as public domain; no year is printed for them.
 
 | Path | What | Source / generation | Licence | Commit | Status |
 |---|---|---|---|---|---|

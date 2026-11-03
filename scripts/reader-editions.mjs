@@ -52,7 +52,7 @@ const fail = (m) => { console.error('reader-editions: ' + m); process.exit(1); }
 
 // ── what we serve ──────────────────────────────────────────────────────────
 // Credit lines are the church's wording for this site (owner, 2026-11-03):
-//   * the Union Version is "和合本 / Chinese Union Version, public domain" and no year is printed;
+//   * the Union Version editions carry Words' wording "© Yahweh De Hua Ministry · used with permission" (not public domain) and no year is printed;
 //   * the divine name is written as the edition does;
 //   * never person/Trinity vocabulary (tests/reader/wording.test.ts walks every string here).
 // `credit` is in the EDITION's language (plan §2.4); `licence.note` has all three UI languages.
@@ -116,30 +116,41 @@ const EDITIONS = [
     },
   },
   {
+    // Words' own record (assets/i18n/ui/*.json "aboutLicenseCuvsYhwh") says "© Yahweh De Hua Ministry · used with
+    // permission", not public domain: the church's edition is shown with that wording and the © chip, word for word.
+    // (The 2026-11-03 integration fixed an earlier "public domain" line here. No year is printed anywhere.)
     id: 'cuvs-yhwh', language: 'zh-Hans', headingSet: 'cuv',
     copyName: '和合本雅伟版',
-    credit: { 'zh-Hans': '和合本雅伟版 · 和合本，公有领域；神名作雅伟。', en: 'Chinese Union Version (Yahweh edition), public domain; the divine name written as Yahweh.' },
+    credit: {
+      'zh-Hans': '和合本雅伟版 · © 雅伟的话事工 · 经授权使用。', 'zh-Hant': '和合本雅偉版 · © 雅偉的話事工 · 經授權使用。',
+      en: 'Chinese Union Version, Yahweh edition · © Yahweh De Hua Ministry · used with permission.',
+      ru: 'Chinese Union Version, издание «Яхве» · © Yahweh De Hua Ministry · используется с разрешения.',
+    },
     licence: {
-      kind: 'public-domain', holder: 'Yahweh De Hua Ministry (editorial)', url: 'https://yahwehdehua.net/cn/bible',
+      kind: 'permission', holder: 'Yahweh De Hua Ministry', url: 'https://yahwehdehua.net/cn/bible',
       note: {
-        en: 'Chinese Union Version, public domain. The divine name is written as Yahweh (雅伟).',
-        'zh-Hans': '和合本，公有领域。神名作雅伟。',
-        'zh-Hant': '和合本，公有領域。神名作雅偉。',
-        ru: 'Китайский перевод Union Version (和合本), общественное достояние. Божье имя написано как 雅伟 (Яхве).',
+        en: '© Yahweh De Hua Ministry · used with permission.',
+        'zh-Hans': '© 雅伟的话事工 · 经授权使用。',
+        'zh-Hant': '© 雅偉的話事工 · 經授權使用。',
+        ru: '© Yahweh De Hua Ministry · используется с разрешения.',
       },
     },
   },
   {
     id: 'cuvs-yhwh-tr', language: 'zh-Hant', headingSet: 'cuv-tr',
     copyName: '和合本雅偉版',
-    credit: { 'zh-Hant': '和合本雅偉版 · 和合本，公有領域；神名作雅偉。', en: 'Chinese Union Version (Yahweh edition, Traditional), public domain; the divine name written as Yahweh.' },
+    credit: {
+      'zh-Hant': '和合本雅偉版 · © 雅偉的話事工 · 經授權使用。', 'zh-Hans': '和合本雅伟版 · © 雅伟的话事工 · 经授权使用。',
+      en: 'Chinese Union Version, Yahweh edition (Traditional) · © Yahweh De Hua Ministry · used with permission.',
+      ru: 'Chinese Union Version, издание «Яхве» (традиционное письмо) · © Yahweh De Hua Ministry · используется с разрешения.',
+    },
     licence: {
-      kind: 'public-domain', holder: 'Yahweh De Hua Ministry (editorial)', url: 'https://yahwehdehua.net/cn/bible',
+      kind: 'permission', holder: 'Yahweh De Hua Ministry', url: 'https://yahwehdehua.net/cn/bible',
       note: {
-        en: 'Chinese Union Version in Traditional characters, public domain. The divine name is written as Yahweh (雅偉).',
-        'zh-Hans': '和合本繁体字版，公有领域。神名作雅伟。',
-        'zh-Hant': '和合本，公有領域。神名作雅偉。',
-        ru: 'Китайский перевод Union Version (和合本) традиционными иероглифами, общественное достояние. Божье имя написано как 雅偉 (Яхве).',
+        en: '© Yahweh De Hua Ministry · used with permission.',
+        'zh-Hans': '© 雅伟的话事工 · 经授权使用。',
+        'zh-Hant': '© 雅偉的話事工 · 經授權使用。',
+        ru: '© Yahweh De Hua Ministry · используется с разрешения.',
       },
     },
   },

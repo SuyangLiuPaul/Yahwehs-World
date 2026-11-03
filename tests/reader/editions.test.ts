@@ -90,15 +90,24 @@ test('the year the owner ruled out is not written anywhere user-visible', () => 
   }
 });
 
-test('credit lines name the Union Version without a year, as public domain', () => {
+test('the Union Version editions use Words\u2019 wording: © Yahweh De Hua Ministry, used with permission (not public domain), no year', () => {
   const hans = CATALOGUE.editions.find((e) => e.id === 'cuvs-yhwh')!;
   const hant = CATALOGUE.editions.find((e) => e.id === 'cuvs-yhwh-tr')!;
-  assert.match(hans.credit['zh-Hans'], /和合本/);
-  assert.match(hans.credit['zh-Hans'], /公有领域/);
+  assert.equal(hans.licence.kind, 'permission');
+  assert.equal(hant.licence.kind, 'permission');
+  // Words' assets/i18n/ui/<lang>.json aboutLicenseCuvsYhwh, word for word
+  assert.equal(hans.licence.note.en, '© Yahweh De Hua Ministry · used with permission.');
+  assert.equal(hans.licence.note['zh-Hans'], '© 雅伟的话事工 · 经授权使用。');
+  assert.equal(hans.licence.note['zh-Hant'], '© 雅偉的話事工 · 經授權使用。');
+  assert.equal(hans.licence.note.ru, '© Yahweh De Hua Ministry · используется с разрешения.');
+  assert.match(hans.credit['zh-Hans'], /^和合本雅伟版 · © 雅伟的话事工 · 经授权使用。$/);
+  assert.match(hant.credit['zh-Hant'], /^和合本雅偉版 · © 雅偉的話事工 · 經授權使用。$/);
   assert.match(hans.credit.en, /Chinese Union Version/);
-  assert.match(hans.credit.en, /public domain/);
-  assert.match(hant.credit['zh-Hant'], /和合本雅偉版/);
-  assert.match(hant.credit['zh-Hant'], /公有領域/);
+  assert.match(hans.credit.en, /used with permission/);
+  for (const e of [hans, hant]) for (const l of ['en', 'zh-Hans', 'zh-Hant', 'ru'] as const) {
+    assert.ok(!/public domain|公有|общественное достояние/i.test(e.credit[l] + e.licence.note[l]), `${e.id} ${l} must not claim public domain`);
+    assert.ok(!/1919/.test(e.credit[l] + e.licence.note[l]), `${e.id} ${l} prints a year`);
+  }
   for (const e of CATALOGUE.editions) for (const l of ['en', 'zh-Hans', 'zh-Hant', 'ru'] as const) assert.ok(e.credit[l] && e.licence.note[l], `${e.id} ${l}`);
 });
 

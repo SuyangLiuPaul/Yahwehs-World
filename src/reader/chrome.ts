@@ -107,7 +107,7 @@ const head = (s: Session, title: string): string =>
 const groupName = (s: Session, l: UiLang): string =>
   s.tr(l === 'en' ? 'groupEnglish' : l === 'zh-Hans' ? 'groupHans' : l === 'zh-Hant' ? 'groupHant' : 'groupRussian');
 
-const licenceWord = (s: Session, kind: string): string => s.tr(kind === 'cc0' ? 'licenceCC0' : 'licencePD');
+const licenceWord = (s: Session, kind: string): string => s.tr(kind === 'cc0' ? 'licenceCC0' : kind === 'permission' ? 'licencePermission' : 'licencePD');
 
 /** Single edition: grouped by language, the interface language's group first. */
 export function editionSheetHtml(s: Session): string {
