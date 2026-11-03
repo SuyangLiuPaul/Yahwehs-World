@@ -26,7 +26,7 @@
     "test:gallery": "node --test \"tests/gallery/*.test.ts\"",
     "verify:reader": "node scripts/verify-reader-robustness.mjs",
     "test:shell": "node --test \"tests/shell/*.test.ts\" \"tests/platform/*.test.ts\" \"tests/core/*.test.ts\"",
-    "verify:shell": "node scripts/verify-shell.mjs",
+    "verify:shell": "npm run test:shell && node scripts/verify-shell.mjs && node scripts/verify-shell-ui.mjs",
     "app:dist": "VITE_SURFACE=gallery VITE_TARGET=shell VITE_OUT_DIR=dist-shell npm run build && node scripts/shell-dist.mjs"
   },
   "dependencies": {

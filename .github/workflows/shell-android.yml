@@ -1,0 +1,92 @@
+# Android shell: a debug APK always, a release AAB for Play internal testing on request. The AAB is signed from the repository's SECRETS
+# (names below; none is in this file); without them it is left unsigned. The id is com.yahwehword.world (the stores). The GitHub APK under
+# the old id com.yahwehsworld.globe is built on the owner's Mac by tools/build_apk.sh with the old release key, never here. NOT RUN YET.
+name: Shell Android
+on:
+  workflow_dispatch:
+    inputs:
+      content_tag:
+        description: 'Release tag that holds dist-shell-<version>.zip (+ .sha256)'
+        required: true
+        type: string
+      aab:
+        description: 'Also build the release AAB (Play). Signed only if the secrets ANDROID_UPLOAD_KEYSTORE_BASE64, ANDROID_KEY_ALIAS, ANDROID_KEYSTORE_PASSWORD exist'
+        type: boolean
+        default: false
+      build_number:
+        description: 'Build number 1-9 (same visible version, higher versionCode)'
+        type: string
+        default: '1'
+permissions:
+  contents: read
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      VITE_SHELL_CHANNEL: store
+      ORG_GRADLE_PROJECT_ywBuildNumber: ${{ inputs.build_number }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+      - name: Android SDK and NDK
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0" "ndk;28.2.13676358"
+          echo "NDK_HOME=$ANDROID_HOME/ndk/28.2.13676358" >> "$GITHUB_ENV"
+      - uses: ./.github/actions/shell-content
+        with:
+          tag: ${{ inputs.content_tag }}
+          token: ${{ github.token }}
+      - run: npm ci
+      - name: Generate and patch the Android project
+        run: |
+          set -euo pipefail
+          npx --yes @tauri-apps/cli@~2.11 android init --ci
+          python3 tools/shell/android_patch.py src-tauri/gen/android
+      - name: Debug APK
+        run: npx --yes @tauri-apps/cli@~2.11 android build --debug --apk --config '{"build":{"beforeBuildCommand":""}}'
+      - name: Release AAB
+        if: ${{ inputs.aab }}
+        env:
+          ANDROID_UPLOAD_KEYSTORE_BASE64: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_BASE64 }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          YW_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: |
+          set -euo pipefail
+          if [ -n "${ANDROID_UPLOAD_KEYSTORE_BASE64:-}" ]; then
+            echo "$ANDROID_UPLOAD_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/upload.jks"
+            export ORG_GRADLE_PROJECT_ywKeystorePath="$RUNNER_TEMP/upload.jks"
+            export ORG_GRADLE_PROJECT_ywKeyAlias="$ANDROID_KEY_ALIAS"
+          else
+            echo "::warning::no upload keystore secret: the AAB will be unsigned"
+          fi
+          npx --yes @tauri-apps/cli@~2.11 android build --aab --config '{"build":{"beforeBuildCommand":""}}'
+      - name: Name the files
+        run: |
+          set -euo pipefail
+          v="$(python3 -c "import json;print(json.load(open('src-tauri/tauri.conf.json'))['version'])")"
+          mkdir -p dist-app
+          cp "$(find src-tauri/gen/android/app/build/outputs/apk -name '*debug*.apk' | head -1)" "dist-app/YahwehsWorld-$v-debug.apk"
+          if [ "${{ inputs.aab }}" = "true" ]; then cp "$(find src-tauri/gen/android/app/build/outputs/bundle -name '*.aab' | head -1)" "dist-app/YahwehsWorld-$v-play.aab"; fi
+          ls -l dist-app
+      - uses: actions/upload-artifact@v4
+        with:
+          name: yahwehs-world-android
+          path: |
+            dist-app/*.apk
+            dist-app/*.aab
+          if-no-files-found: error

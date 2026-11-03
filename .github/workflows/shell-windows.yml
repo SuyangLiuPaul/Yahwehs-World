@@ -1,0 +1,79 @@
+# Windows shell: NSIS installer + portable zip (+ an optional MSIX for the Microsoft Store). Manual only; nothing is released or uploaded.
+# Unsigned: SmartScreen will warn until a code-signing certificate exists (docs/gallery-shells.md). The content comes from a release
+# asset (tools/pack_shell_content.sh), because pictures and Bible data cannot be built on a runner. NOT RUN YET.
+name: Shell Windows
+on:
+  workflow_dispatch:
+    inputs:
+      content_tag:
+        description: 'Release tag that holds dist-shell-<version>.zip (+ .sha256)'
+        required: true
+        type: string
+      msix:
+        description: 'Also pack an unsigned MSIX for Partner Center (needs the Identity values in packaging/msix; UNTESTED)'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    env:
+      VITE_SHELL_CHANNEL: direct
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+      - uses: ./.github/actions/shell-content
+        with:
+          tag: ${{ inputs.content_tag }}
+          token: ${{ github.token }}
+      - run: npm ci
+      - name: Build (NSIS installer)
+        shell: bash
+        run: npx --yes @tauri-apps/cli@~2.11 build --bundles nsis --config '{"build":{"beforeBuildCommand":""}}'
+      - name: Name the files and make the portable zip
+        shell: pwsh
+        run: |
+          $v = (Get-Content src-tauri/tauri.conf.json | ConvertFrom-Json).version
+          New-Item -ItemType Directory -Force dist-app | Out-Null
+          $setup = Get-ChildItem src-tauri/target/release/bundle/nsis/*-setup.exe | Select-Object -First 1
+          Copy-Item $setup.FullName "dist-app/YahwehsWorld-$v-windows-x64-setup.exe"
+          $stage = "dist-app/portable"
+          New-Item -ItemType Directory -Force $stage | Out-Null
+          Copy-Item src-tauri/target/release/YahwehsWorld.exe $stage
+          Set-Content "$stage/README.txt" "Yahweh's World $v (portable). Run YahwehsWorld.exe. It needs the Microsoft Edge WebView2 runtime (included in Windows 11 and current Windows 10)."
+          Compress-Archive -Path "$stage/*" -DestinationPath "dist-app/YahwehsWorld-$v-windows-x64-portable.zip"
+          Get-ChildItem dist-app | Format-Table Name, Length
+      # --- optional: unsigned MSIX for the Microsoft Store (identity YahwehsPeople.YahwehsWorld) -------------------------------------
+      - name: Pack MSIX (placeholder identity from packaging/msix/identity.json)
+        if: ${{ inputs.msix }}
+        shell: pwsh
+        run: |
+          $v = (Get-Content src-tauri/tauri.conf.json | ConvertFrom-Json).version
+          $id = Get-Content packaging/msix/identity.json | ConvertFrom-Json
+          if ($id.Publisher -like '*PLACEHOLDER*') { throw 'packaging/msix/identity.json still has the placeholder Publisher: copy it from Partner Center > Product identity' }
+          $layout = "dist-app/msix-layout"
+          New-Item -ItemType Directory -Force "$layout/Assets" | Out-Null
+          Copy-Item src-tauri/target/release/YahwehsWorld.exe $layout
+          Copy-Item src-tauri/icons/StoreLogo.png, src-tauri/icons/Square44x44Logo.png, src-tauri/icons/Square150x150Logo.png "$layout/Assets"
+          $msixVersion = ($v -replace '^(\d+)\.(\d+)\.(\d+).*$', '$1.$2.$3') + '.0'
+          (Get-Content packaging/msix/AppxManifest.xml.template -Raw).
+            Replace('@IDENTITY_NAME@', $id.Name).Replace('@PUBLISHER@', $id.Publisher).Replace('@PUBLISHER_DISPLAY_NAME@', $id.PublisherDisplayName).
+            Replace('@VERSION@', $msixVersion) | Set-Content "$layout/AppxManifest.xml" -Encoding utf8
+          $makeappx = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\makeappx.exe" | Sort-Object FullName -Descending | Select-Object -First 1
+          & $makeappx.FullName pack /d $layout /p "dist-app/YahwehsWorld-$v-windows-x64.msix" /nv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: yahwehs-world-windows
+          path: |
+            dist-app/*.exe
+            dist-app/*.zip
+            dist-app/*.msix
+          if-no-files-found: error

@@ -1,0 +1,90 @@
+# macOS shell: a universal DMG. Unsigned by default; with `sign: true` it signs with a Developer ID certificate and notarises through an App
+# Store Connect API key, all from the repository's SECRETS (names only below; no value is in this file). The owner's own Mac route, with the
+# keychain profile instead of CI secrets, is tools/release_mac.sh. NOT RUN YET. The content comes from a release asset (see shell-windows.yml).
+name: Shell macOS
+on:
+  workflow_dispatch:
+    inputs:
+      content_tag:
+        description: 'Release tag that holds dist-shell-<version>.zip (+ .sha256)'
+        required: true
+        type: string
+      sign:
+        description: 'Sign with Developer ID and notarise (needs the secrets named in the "Import the certificate" step)'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  macos:
+    runs-on: macos-latest
+    timeout-minutes: 90
+    env:
+      VITE_SHELL_CHANNEL: direct
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+      - uses: ./.github/actions/shell-content
+        with:
+          tag: ${{ inputs.content_tag }}
+          token: ${{ github.token }}
+      - run: npm ci
+      # Secret NAMES used when sign is true: APPLE_CERTIFICATE (base64 .p12), APPLE_CERTIFICATE_PASSWORD, KEYCHAIN_PASSWORD,
+      # APPLE_SIGNING_IDENTITY, APPLE_API_ISSUER, APPLE_API_KEY_ID, APPLE_API_KEY_P8 (base64 .p8).
+      - name: Import the certificate
+        if: ${{ inputs.sign }}
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: |
+          set -euo pipefail
+          echo "$APPLE_CERTIFICATE" | base64 --decode > "$RUNNER_TEMP/cert.p12"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$RUNNER_TEMP/build.keychain"
+          security set-keychain-settings -lut 21600 "$RUNNER_TEMP/build.keychain"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$RUNNER_TEMP/build.keychain"
+          security import "$RUNNER_TEMP/cert.p12" -P "$APPLE_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$RUNNER_TEMP/build.keychain"
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$RUNNER_TEMP/build.keychain"
+          security list-keychains -d user -s "$RUNNER_TEMP/build.keychain" login.keychain
+      - name: Build (universal)
+        env:
+          APPLE_SIGNING_IDENTITY: ${{ inputs.sign && secrets.APPLE_SIGNING_IDENTITY || '' }}
+        run: |
+          set -euo pipefail
+          if [ -z "${APPLE_SIGNING_IDENTITY:-}" ]; then unset APPLE_SIGNING_IDENTITY; cfg='{"build":{"beforeBuildCommand":""},"bundle":{"macOS":{"signingIdentity":null}}}'; else cfg='{"build":{"beforeBuildCommand":""}}'; fi
+          npx --yes @tauri-apps/cli@~2.11 build --target universal-apple-darwin --config "$cfg"
+      - name: Name the DMG, notarise and staple (when signed)
+        env:
+          SIGN: ${{ inputs.sign }}
+          APPLE_SIGNING_IDENTITY: ${{ inputs.sign && secrets.APPLE_SIGNING_IDENTITY || '' }}
+          APPLE_API_ISSUER: ${{ inputs.sign && secrets.APPLE_API_ISSUER || '' }}
+          APPLE_API_KEY_ID: ${{ inputs.sign && secrets.APPLE_API_KEY_ID || '' }}
+          APPLE_API_KEY_P8: ${{ inputs.sign && secrets.APPLE_API_KEY_P8 || '' }}
+        run: |
+          set -euo pipefail
+          v="$(python3 -c "import json;print(json.load(open('src-tauri/tauri.conf.json'))['version'])")"
+          mkdir -p dist-app
+          dmg="$(find src-tauri/target/universal-apple-darwin/release/bundle/dmg -name '*.dmg' | head -1)"
+          out="dist-app/YahwehsWorld-$v-macOS-universal.dmg"
+          cp "$dmg" "$out"
+          if [ "$SIGN" = "true" ]; then
+            codesign --force --sign "$APPLE_SIGNING_IDENTITY" --timestamp "$out"
+            echo "$APPLE_API_KEY_P8" | base64 --decode > "$RUNNER_TEMP/AuthKey.p8"
+            xcrun notarytool submit "$out" --key "$RUNNER_TEMP/AuthKey.p8" --key-id "$APPLE_API_KEY_ID" --issuer "$APPLE_API_ISSUER" --wait
+            xcrun stapler staple "$out"
+            xcrun stapler validate "$out"
+          fi
+          shasum -a 256 "$out"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: yahwehs-world-macos
+          path: dist-app/*.dmg
+          if-no-files-found: error

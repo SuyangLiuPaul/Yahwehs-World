@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MSIX manifest template for the Microsoft Store. UNTESTED: written from the schema, never packed or installed. The Store re-signs the
+     package, so the Publisher must be exactly the value Partner Center shows under Product identity (packaging/msix/identity.json).
+     The Name is reserved in Partner Center when the product "Yahweh's World" is created. The app is a full-trust desktop app (Tauri). -->
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+         xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+         xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+         IgnorableNamespaces="uap rescap">
+  <Identity Name="@IDENTITY_NAME@" Publisher="@PUBLISHER@" Version="@VERSION@" ProcessorArchitecture="x64"/>
+  <Properties>
+    <DisplayName>Yahweh's World</DisplayName>
+    <PublisherDisplayName>@PUBLISHER_DISPLAY_NAME@</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.26100.0"/>
+  </Dependencies>
+  <Resources>
+    <Resource Language="en"/><Resource Language="zh-Hans"/><Resource Language="zh-Hant"/><Resource Language="ru"/>
+  </Resources>
+  <Applications>
+    <Application Id="YahwehsWorld" Executable="YahwehsWorld.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements DisplayName="Yahweh's World" Description="1,443 scenes of the Bible, each opening onto its verses"
+                          BackgroundColor="#060d16" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png"/>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust"/>
+  </Capabilities>
+</Package>
