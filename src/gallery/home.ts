@@ -46,7 +46,7 @@ const reader = () => import('./reader-bridge.ts');
 /** The edition chip: the reader's remembered choice, read without loading the reader. */
 function editionLabel(): { text: string; aria: string } {
   const c = choice();
-  const name = c.parallel ? t(`Parallel · ${c.parallel}`, `对照 · ${c.parallel}`, `Параллельно · ${c.parallel}`) : briefOf(c.id)?.label ?? c.id;
+  const name = c.parallel ? t(`${c.parallel} editions`, `${c.parallel} 个译本`, `${c.parallel} издания`) : briefOf(c.id)?.label ?? c.id;
   return { text: `${name} ▾`, aria: `${t('Edition', '译本', 'Издание')}: ${name}` };
 }
 function paintEdition() {

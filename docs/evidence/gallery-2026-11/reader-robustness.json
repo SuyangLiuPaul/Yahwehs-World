@@ -1,18 +1,18 @@
 {
- "when": "2026-11-03T07:03:05.027Z",
+ "when": "2026-11-03T08:55:31.009Z",
  "chrome": "156.0.8078.80",
  "passed": 169,
  "failed": 0,
  "numbers": {
   "slow": {
    "phone": {
-    "firstTextMs": 1419,
+    "firstTextMs": 1441,
     "kbTransferred": 103,
     "skeletonBeforeText": true,
     "cls": 0
    },
    "desktop": {
-    "firstTextMs": 1430,
+    "firstTextMs": 1420,
     "kbTransferred": 103,
     "skeletonBeforeText": true,
     "cls": 0
@@ -20,15 +20,15 @@
   },
   "long": {
    "phone": {
-    "frames": 181,
+    "frames": 182,
     "p50": 16.7,
-    "p95": 16.7,
+    "p95": 16.8,
     "over33pct": 0
    },
    "desktop": {
     "frames": 182,
     "p50": 16.7,
-    "p95": 16.8,
+    "p95": 16.7,
     "over33pct": 0
    }
   },
@@ -496,9 +496,9 @@
   },
   {
    "ok": true,
-   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) phone: first verse readable in 1419 ms (budget 6000), 103 KB over the wire",
+   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) phone: first verse readable in 1441 ms (budget 6000), 103 KB over the wire",
    "data": {
-    "firstTextMs": 1419,
+    "firstTextMs": 1441,
     "kbTransferred": 103,
     "skeletonBeforeText": true,
     "cls": 0
@@ -518,9 +518,9 @@
   },
   {
    "ok": true,
-   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) desktop: first verse readable in 1430 ms (budget 6000), 103 KB over the wire",
+   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) desktop: first verse readable in 1420 ms (budget 6000), 103 KB over the wire",
    "data": {
-    "firstTextMs": 1430,
+    "firstTextMs": 1420,
     "kbTransferred": 103,
     "skeletonBeforeText": true,
     "cls": 0
@@ -616,7 +616,7 @@
    "ok": true,
    "msg": "long phone: Psalm 119 in 3 editions, 176 rows / 528 lines",
    "data": {
-    "renderMs": 3.3000000715255737,
+    "renderMs": 3.0999999046325684,
     "verses": 176,
     "uid": "yr1",
     "nodes": 2964,
@@ -625,15 +625,15 @@
   },
   {
    "ok": true,
-   "msg": "long phone: Psalm 119 x3 renders in 3.3 ms after data (< 120)"
+   "msg": "long phone: Psalm 119 x3 renders in 3.1 ms after data (< 120)"
   },
   {
    "ok": true,
-   "msg": "long phone: scrolling Psalm 119 x3 for 3 s: median frame 16.7 ms, p95 16.7 ms, 0.0% over 33 ms",
+   "msg": "long phone: scrolling Psalm 119 x3 for 3 s: median frame 16.7 ms, p95 16.8 ms, 0.0% over 33 ms",
    "data": {
-    "frames": 181,
+    "frames": 182,
     "p50": 16.7,
-    "p95": 16.7,
+    "p95": 16.8,
     "over33pct": 0
    }
   },
@@ -645,7 +645,7 @@
    "ok": true,
    "msg": "long desktop: Psalm 119 in 3 editions, 176 rows / 528 lines",
    "data": {
-    "renderMs": 3,
+    "renderMs": 3.100000023841858,
     "verses": 176,
     "uid": "yr1",
     "nodes": 2964,
@@ -654,15 +654,15 @@
   },
   {
    "ok": true,
-   "msg": "long desktop: Psalm 119 x3 renders in 3.0 ms after data (< 120)"
+   "msg": "long desktop: Psalm 119 x3 renders in 3.1 ms after data (< 120)"
   },
   {
    "ok": true,
-   "msg": "long desktop: scrolling Psalm 119 x3 for 3 s: median frame 16.7 ms, p95 16.8 ms, 0.0% over 33 ms",
+   "msg": "long desktop: scrolling Psalm 119 x3 for 3 s: median frame 16.7 ms, p95 16.7 ms, 0.0% over 33 ms",
    "data": {
     "frames": 182,
     "p50": 16.7,
-    "p95": 16.8,
+    "p95": 16.7,
     "over33pct": 0
    }
   },
@@ -672,7 +672,7 @@
   },
   {
    "ok": true,
-   "msg": "long: Genesis 1 paragraph 1.0 ms, 1 Chronicles 1 (54 verses of names) 0.6 ms"
+   "msg": "long: Genesis 1 paragraph 0.9 ms, 1 Chronicles 1 (54 verses of names) 0.5 ms"
   },
   {
    "ok": true,
@@ -849,7 +849,7 @@
       15005,
       15006
      ],
-     "edition": "Parallel · 2",
+     "edition": "2 editions",
      "parallel": 2,
      "docTitle": "Genesis 15 · KJV",
      "inView": true
@@ -1257,7 +1257,7 @@
   },
   {
    "ok": true,
-   "msg": "parallel: first time on, an English reader gets BSB (Yahweh) + 和合本雅伟版; the pill reads Parallel · 2",
+   "msg": "parallel: first time on, an English reader gets BSB (Yahweh) + 和合本雅伟版; the edition pill reads 2 editions (the switch beside it reads Parallel)",
    "data": {
     "pair": [
      "bsb-yhwh",

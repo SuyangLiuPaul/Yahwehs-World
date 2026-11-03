@@ -369,6 +369,8 @@ async function a11y() {
   for (let i = 0; i < 14; i++) { await h.page.keyboard.press('Tab'); trapped.push(await h.page.evaluate(() => !!document.activeElement.closest('.yr-sheet') || document.activeElement === document.body)); }
   ok(trapped.every(Boolean), 'a11y: Tab never reaches the page behind an open sheet (focus stays in the sheet or leaves to the browser, 14 presses)');
   await h.page.keyboard.press('Escape');
+  // <dialog> fires `close` as a queued task, so focus returns a tick after the sheet is gone: wait for it (up to 1 s) instead of reading at once
+  await h.page.waitForFunction(() => document.activeElement?.dataset?.act === 'edition', null, { timeout: 1000 }).catch(() => {});
   ok(await h.page.locator('.yr-sheet[open]').count() === 0 && await h.page.evaluate(() => document.activeElement?.dataset?.act) === 'edition', 'a11y: Escape closes the sheet and focus returns to its opener');
   // sheets are modal: the page behind is inert
   await opener.click();
@@ -545,7 +547,7 @@ async function editions() {
   await go(h2, '/reader-demo.html?view=chapter&lang=en#ref=John 1');
   await h2.page.locator('[data-act="mode"][data-id="parallel"]').click(); await h2.page.waitForSelector('.yr-pv');
   const pair = await h2.page.evaluate(() => [...document.querySelector('.yr-pv').querySelectorAll('.yr-line')].map((l) => l.dataset.ed));
-  ok(JSON.stringify(pair) === JSON.stringify(['bsb-yhwh', 'cuvs-yhwh']) && (await h2.page.locator('.yr-pill span').first().textContent()) === '对照 · 2'.replace('对照', 'Parallel'), 'parallel: first time on, an English reader gets BSB (Yahweh) + 和合本雅伟版; the pill reads Parallel · 2', { pair });
+  ok(JSON.stringify(pair) === JSON.stringify(['bsb-yhwh', 'cuvs-yhwh']) && (await h2.page.locator('.yr-pill span').first().textContent()) === '2 editions', 'parallel: first time on, an English reader gets BSB (Yahweh) + 和合本雅伟版; the edition pill reads 2 editions (the switch beside it reads Parallel)', { pair });
   await h2.page.locator('.yr-pill[data-act="edition"]').click();
   await h2.page.locator('.yr-sheet [data-act="toggle"][data-id="kjv"]').click();
   const full = await h2.page.locator('.yr-sheet [data-act="toggle"][aria-disabled="true"]').count();

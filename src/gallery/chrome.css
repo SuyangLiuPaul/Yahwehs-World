@@ -11,7 +11,7 @@ html[data-surface="gallery"] {
   --r-1: 4px;
   --r-2: 10px;
   --r-3: 18px;
-  --hero-scrim: linear-gradient(180deg, transparent 0%, #0a1e3699 45%, #0a1e36b8 100%);
+  --hero-scrim: linear-gradient(180deg, transparent 0%, #0a1e36b3 34%, #0a1e36e6 100%);
   --tabbar-h: calc(49px + var(--safe-bottom));
   scroll-padding-top: 72px;
 }

@@ -26,7 +26,8 @@ export const STRINGS = {
   modeParagraph: r('Paragraphs', '段落', '段落', 'Абзацы'),
   modeParallel: r('Parallel', '对照', '對照', 'Параллельно'),
   layout: r('Reading layout', '阅读方式', '閱讀方式', 'Вид чтения'),
-  parallelN: r('Parallel · {n}', '对照 · {n}', '對照 · {n}', 'Параллельно \u00b7 {n}'),
+  // the edition pill while 对照 is on says how many editions are lined up; the pill beside it (modeParallel) is the switch, so the two never read alike
+  parallelN: r('{n} editions', '{n} 个译本', '{n} 個譯本', '{n} издания'),
   // editions
   edition: r('Edition', '译本', '譯本', 'Перевод'),
   chooseEdition: r('Choose an edition', '选择译本', '選擇譯本', 'Выбрать перевод'),

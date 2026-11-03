@@ -3,6 +3,7 @@
 //
 //   node scripts/gallery-shots.mjs [--dir dist] [--out docs/evidence/gallery-2026-11/shots]
 //        [--viewports 375x812,768x1024,1440x900] [--langs en,zh-Hans,zh-Hant,ru] [--themes dark,light,paper]
+//        [--base http://127.0.0.1:4173] [--all-themes]   (--base shoots an already running preview instead of serving dist/; --all-themes shoots every page in every theme, home and gallery included)
 //        [--pages home,gallery,picture,reader,parallel,reader-parallel,sheet,picture-sheet,licences,feedback,feedback-failed,feedback-thanks,held]
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
@@ -20,7 +21,7 @@ const THEMES = (args.themes || 'dark,light,paper').split(',');
 const PAGES = (args.pages || 'home,gallery,picture,reader,parallel,reader-parallel,sheet,picture-sheet,licences,feedback,feedback-failed,feedback-thanks,held').split(',');
 mkdirSync(OUT, { recursive: true });
 
-const { base, close } = await serveDist(DIR);
+const { base, close } = args.base ? { base: args.base, close() {} } : await serveDist(DIR);
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 // Which themes a page is shot in: the home page and the gallery stay dark by design (the plates were drawn to sit on
 // dark); the reading surfaces (picture, reader) are shot in all three; sheets and the parallel layout in dark and paper.
@@ -50,7 +51,7 @@ for (const [w, h] of VPS) for (const lang of LANGS) for (const theme of THEMES) 
   page.on('pageerror', (e) => errors.push(`${w}x${h} ${lang} ${e.message}`));
   for (const name of PAGES) {
     const s = SHOTS[name];
-    if (!s.themes.includes(theme)) continue;
+    if (!s.themes.includes(theme) && !process.argv.includes('--all-themes')) continue;
     await page.goto('about:blank'); // a hash-only change would keep an open sheet from the shot before
     await page.goto(base + s.url);
     try { await page.waitForSelector(s.wait, { timeout: 15000 }); } catch { errors.push(`${w}x${h} ${lang} ${name}: ${s.wait} never appeared`); }
