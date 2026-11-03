@@ -126,6 +126,7 @@ ${END}`;
 /** The full surface's head block, taught Russian: its first-paint language script accepts and detects "ru", and the
  *  loading screen's three-way line gets a fourth reading. (The full pages keep the original block.) */
 const GALLERY_HEAD = HEAD
+  .replace('var l=localStorage.getItem("ydh.locale");', 'var l=localStorage.getItem("ydh.locale");var hm=/(?:^|[#&])lang=(en|zh-Hans|zh-Hant|ru)(?:&|$)/.exec(location.hash);if(hm)l=hm[1];')
   .replace('if(l!=="en"&&l!=="zh-Hans"&&l!=="zh-Hant"){', 'if(l!=="en"&&l!=="zh-Hans"&&l!=="zh-Hant"&&l!=="ru"){')
   .replace('if(g==="en"||g.indexOf("en-")===0){l="en";break}', 'if(g==="en"||g.indexOf("en-")===0){l="en";break}if(g==="ru"||g.indexOf("ru-")===0){l="ru";break}')
   .replace('</style>', 'html[lang="ru"] .tri .l-ru{display:inline}</style>');

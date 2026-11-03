@@ -101,6 +101,9 @@ export function available(): Promise<Set<string>> {
 // ── the reader's choice, remembered per reading ─────────────────────────
 const key = () => `ydh.edition.${fullLocale()}`;
 export function chosenId(): string {
+  // #ed=<id> in a shared link wins for this visit and is not saved
+  const shared = /(?:^|[#&])ed=([a-z0-9-]+)(?:&|$)/.exec(location.hash)?.[1];
+  if (shared && byId(shared)) return shared;
   try { const v = localStorage.getItem(key()); if (v && byId(v)) return v; } catch { /* blocked storage: the default */ }
   return defaultFor();
 }

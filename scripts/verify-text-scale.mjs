@@ -1,6 +1,6 @@
 // Does the interface follow the reader's text-size setting, and does it survive it?
 //
-//   node scripts/verify-text-scale.mjs [dist]
+//   node scripts/verify-text-scale.mjs [dist] [/,/scenes.html,...]   (pages default to the full surface's five)
 //
 // Serves a built dist/ and, at a 375 px viewport, sets the root font size to 100, 125,
 // 150 and 200 percent (what a raised browser default does) on the five pages. Reports the
@@ -14,7 +14,7 @@ const srv = await new Promise(ok=>{const s=http.createServer((q,r)=>{let p=decod
 const base=`http://127.0.0.1:${srv.address().port}`;
 const b = await chromium.launch({ channel:'chrome', headless:true });
 for (const pct of [100,125,150,200]) { const out=[];
-  for (const path of ['/','/scenes.html','/plan.html','/figures.html','/bible.html']) {
+  for (const path of (process.argv[3] || '/,/scenes.html,/plan.html,/figures.html,/bible.html').split(',')) {
     const ctx = await b.newContext({viewport:{width:375,height:812},hasTouch:true,isMobile:true}); await ctx.route(/fonts\./, r=>r.abort());
     const p = await ctx.newPage(); await p.goto(base+path); await p.waitForTimeout(1200);
     await p.addStyleTag({content:`html{font-size:${pct}% !important}`}); await p.waitForTimeout(300);

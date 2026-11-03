@@ -1,5 +1,5 @@
 // First-view transfer budget. Run after `vite build`:
-//   node scripts/check-budget.mjs [--dir dist] [--json]
+//   node scripts/check-budget.mjs [--dir dist] [--json] [--profile full|gallery]   (default: from VITE_SURFACE)
 // Exits 1 if any page's first view is over its budget, so it can sit in CI.
 //
 // "First view" here is what a reader must download before the page's own
@@ -27,7 +27,7 @@ const DIR = resolve(ROOT, argv.includes('--dir') ? argv[argv.indexOf('--dir') + 
 const KB = 1024;
 
 // page -> { budget in KB (all first-view bytes), js budget in KB, extra start-up data }
-const PAGES = {
+const FULL_PAGES = {
   'index.html':    { budget: 800,  js: 330, extra: ['/data/places.json', '/data/journeys.json', /^\/assets\/world\.bin-.*\.gz$/] },
   'scenes.html':   { budget: 300,  js: 40,  extra: ['/data/events.json', /^\/assets\/scene-lqip-.*\.json$/] },
   'plan.html':     { budget: 330,  js: 60,  extra: ['/data/events.json', '/data/journeys.json'] },
@@ -44,6 +44,18 @@ const PAGES = {
   // ark.html carries a 465 KB reference JPEG in its own markup, which is most of this.
   'ark.html':        { budget: 950, js: 320, extra: [] },
 };
+
+// The gallery surface (VITE_SURFACE=gallery, scripts/lib/vite-gallery-surface.mjs): three pages. The numbers are what
+// node scripts/check-budget.mjs --profile gallery measured on 2026-11-03 plus about 20 %, same rule as above. The hero
+// picture (a 1344 px webp, 60-250 KB) is NOT in the home page's first view on purpose: it arrives after the page is standing,
+// over its colour placeholder, exactly as scene thumbnails do on the full surface.
+const GALLERY_PAGES = {
+  'index.html':  { budget: 135, js: 15, extra: ['/data/gallery/index.json'] },   // measured 110 KB, js 12 KB
+  'scenes.html': { budget: 135, js: 19, extra: ['/data/gallery/index.json'] },   // measured 112 KB, js 15 KB
+  'bible.html':  FULL_PAGES['bible.html'],
+};
+const PROFILE = argv.includes('--profile') ? argv[argv.indexOf('--profile') + 1] : (process.env.VITE_SURFACE === 'gallery' ? 'gallery' : 'full');
+const PAGES = PROFILE === 'gallery' ? GALLERY_PAGES : FULL_PAGES;
 
 const TEXT = new Set(['.html', '.js', '.css', '.json', '.svg', '.mjs']);
 const wire = (file) => {

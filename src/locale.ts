@@ -43,6 +43,11 @@ function fromSystem(): Locale {
 }
 
 function initial(): Locale {
+  // A shared link can carry its language (#lang=ru): it wins for this visit and is not saved.
+  try {
+    const m = /(?:^|[#&])lang=(en|zh-Hans|zh-Hant|ru)(?:&|$)/.exec(location.hash);
+    if (m) return m[1] as Locale;
+  } catch { /* no location (never in a browser) */ }
   try {
     const saved = localStorage.getItem(KEY);
     if (saved === 'en' || saved === 'zh-Hans' || saved === 'zh-Hant' || saved === 'ru') return saved;

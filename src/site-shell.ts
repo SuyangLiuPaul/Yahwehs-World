@@ -234,6 +234,9 @@ function centreCurrentTab() {
 
 /** Wires 全部, 走进 and 路线. Every page calls this. */
 export function installSiteMenu() {
+  // The gallery surface has none of these menus (scripts/lib/vite-gallery-surface.mjs writes a three-item bar), and the
+  // index above names pages that surface does not build: nothing to wire, and the build drops all of it.
+  if (import.meta.env.VITE_SURFACE === 'gallery') return;
   centreCurrentTab();
   // Webfonts and the language switch change the tabs' widths after first paint.
   window.addEventListener('load', centreCurrentTab, { once: true });

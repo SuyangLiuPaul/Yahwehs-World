@@ -91,6 +91,16 @@ html[data-surface="gallery"] .sitenav a.tab[aria-current="page"]::after {
   html[data-surface="gallery"] .sitenav .brand .pg { font-size: var(--fs-100); }
 }
 
+/* between a phone and a wide desktop the bar is crowded (four languages, three tabs): the field collapses to its icon and the
+   wordmark's second line goes, so no tab is ever clipped */
+@media (min-width: 768px) and (max-width: 1099px) {
+  .gx-search { width: 44px; height: 44px; min-height: 44px; padding: 0; justify-content: center; border-radius: 50%; border-color: transparent; background: none; }
+  .gx-search .gx-search-t, .gx-search kbd { display: none; }
+  .gx-search .gx-i { width: 22px; height: 22px; }
+  html[data-surface="gallery"] .sitenav .brand .en { display: none; }
+  html[data-surface="gallery"] .sitenav ol { overflow: visible; }
+}
+
 /* the reader keeps its own plates; its globe chip points at a page this release does not have */
 html[data-surface="gallery"] .bb-globe-chip { display: none !important; }
 
@@ -144,14 +154,14 @@ html[lang^="zh"] .gx-kicker { text-transform: none; letter-spacing: var(--tr-cjk
 .gx-plate.is-pending { background: radial-gradient(ellipse at 50% 42%, #26435f, #0e2b4b 70%); }
 .gx-plate .gx-pending {
   position: absolute; inset: 0; display: grid; place-content: center; padding: var(--sp-3); text-align: center;
-  color: var(--ink-3); font: var(--fs-200)/1.4 var(--ui); letter-spacing: var(--tr-cjk);
+  color: var(--ink-2); font: var(--fs-200)/1.4 var(--ui); letter-spacing: var(--tr-cjk);
 }
 .gx-plate.is-failed::after {
   content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 42%, #26435f, #0e2b4b 70%);
 }
 
 /* ── skeletons: the shape of what is coming, never a spinner ───────── */
-.gx-sk { position: relative; overflow: hidden; background: #c6d8ec17; border-radius: var(--r-1); }
+.gx-sk { display: block; position: relative; overflow: hidden; background: #c6d8ec17; border-radius: var(--r-1); }
 .gx-sk::after {
   content: ""; position: absolute; inset: 0; transform: translateX(-100%);
   background: linear-gradient(105deg, transparent 30%, #f8d66d29 50%, transparent 70%);

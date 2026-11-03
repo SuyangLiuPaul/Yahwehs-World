@@ -10,6 +10,7 @@
     "build:gallery": "VITE_SURFACE=gallery npm run build",
     "dev:gallery": "VITE_SURFACE=gallery vite",
     "pictures": "node scripts/build-pictures.mjs",
+    "verify:gallery": "node scripts/check-budget.mjs --profile gallery && node scripts/verify-gallery.mjs && node scripts/verify-redirects.mjs && node scripts/verify-gallery-ui.mjs && node scripts/verify-bible-reader.mjs",
     "gallery-data": "node scripts/build-gallery-data.mjs",
     "check": "tsc --noEmit",
     "preview": "vite preview",

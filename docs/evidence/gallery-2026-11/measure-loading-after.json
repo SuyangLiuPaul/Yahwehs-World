@@ -1,0 +1,218 @@
+[
+ {
+  "page": "/",
+  "profile": "mobile",
+  "readyMs": 555,
+  "fcpMs": 500,
+  "cls": 0,
+  "shifts": [],
+  "errors": [],
+  "requestsAtReady": 7,
+  "wireAtReadyKB": 27,
+  "rawAtReadyKB": 83,
+  "requestsTotal": 14,
+  "wireTotalKB": 230,
+  "rawTotalKB": 413,
+  "top": [
+   "117 KB wire / 116 KB raw  /pictures/full/esther-7-1.webp",
+   "66 KB wire / 193 KB raw  /data/gallery/index.json",
+   "10 KB wire / 10 KB raw  /favicon.png",
+   "6 KB wire / 19 KB raw  /",
+   "6 KB wire / 7 KB raw  /icon-sm.svg",
+   "5 KB wire / 23 KB raw  /assets/main-B0rkPa2Q.css",
+   "4 KB wire / 4 KB raw  /brand-logo.webp",
+   "4 KB wire / 9 KB raw  /assets/chrome-MyOEzdWI.js"
+  ]
+ },
+ {
+  "page": "/scenes.html",
+  "profile": "mobile",
+  "readyMs": 563,
+  "fcpMs": 512,
+  "cls": 0,
+  "shifts": [],
+  "errors": [],
+  "requestsAtReady": 7,
+  "wireAtReadyKB": 29,
+  "rawAtReadyKB": 87,
+  "requestsTotal": 11,
+  "wireTotalKB": 115,
+  "rawTotalKB": 301,
+  "top": [
+   "66 KB wire / 193 KB raw  /data/gallery/index.json",
+   "10 KB wire / 10 KB raw  /favicon.png",
+   "6 KB wire / 15 KB raw  /assets/scenes-BpwzLnwZ.js",
+   "6 KB wire / 7 KB raw  /icon-sm.svg",
+   "5 KB wire / 24 KB raw  /assets/scenes-Co5oc-js.css",
+   "5 KB wire / 14 KB raw  /scenes.html",
+   "4 KB wire / 4 KB raw  /brand-logo.webp",
+   "4 KB wire / 9 KB raw  /assets/chrome-MyOEzdWI.js"
+  ]
+ },
+ {
+  "page": "/scenes.html#p=genesis-15-1",
+  "profile": "mobile",
+  "readyMs": 549,
+  "fcpMs": 500,
+  "cls": 0,
+  "shifts": [],
+  "errors": [],
+  "requestsAtReady": 7,
+  "wireAtReadyKB": 29,
+  "rawAtReadyKB": 87,
+  "requestsTotal": 12,
+  "wireTotalKB": 115,
+  "rawTotalKB": 301,
+  "top": [
+   "66 KB wire / 193 KB raw  /data/gallery/index.json",
+   "10 KB wire / 10 KB raw  /favicon.png",
+   "6 KB wire / 15 KB raw  /assets/scenes-BpwzLnwZ.js",
+   "6 KB wire / 7 KB raw  /icon-sm.svg",
+   "5 KB wire / 24 KB raw  /assets/scenes-Co5oc-js.css",
+   "5 KB wire / 14 KB raw  /scenes.html",
+   "4 KB wire / 4 KB raw  /brand-logo.webp",
+   "4 KB wire / 9 KB raw  /assets/chrome-MyOEzdWI.js"
+  ]
+ },
+ {
+  "page": "/bible.html",
+  "profile": "mobile",
+  "readyMs": 1529,
+  "fcpMs": 496,
+  "cls": 0,
+  "shifts": [],
+  "errors": [],
+  "requestsAtReady": 12,
+  "wireAtReadyKB": 179,
+  "rawAtReadyKB": 553,
+  "requestsTotal": 12,
+  "wireTotalKB": 179,
+  "rawTotalKB": 553,
+  "top": [
+   "57 KB wire / 186 KB raw  /data/bible/split/text/bsb/1.json",
+   "53 KB wire / 157 KB raw  /data/bible/split/text/cuvs/1.json",
+   "22 KB wire / 98 KB raw  /data/bible/split/book/1.json",
+   "10 KB wire / 10 KB raw  /favicon.png",
+   "9 KB wire / 25 KB raw  /assets/bible-Dz0OTCtI.js",
+   "7 KB wire / 32 KB raw  /assets/bible-DYYQhbYg.css",
+   "6 KB wire / 7 KB raw  /icon-sm.svg",
+   "5 KB wire / 13 KB raw  /bible.html"
+  ]
+ },
+ {
+  "page": "/",
+  "profile": "desktop",
+  "readyMs": 163,
+  "fcpMs": 76,
+  "cls": 0.013,
+  "shifts": [
+   {
+    "t": 114,
+    "v": 0.013,
+    "n": [
+     "FOOTER.hm-footer"
+    ]
+   }
+  ],
+  "errors": [],
+  "requestsAtReady": 13,
+  "wireAtReadyKB": 224,
+  "rawAtReadyKB": 406,
+  "requestsTotal": 14,
+  "wireTotalKB": 230,
+  "rawTotalKB": 413,
+  "top": [
+   "117 KB wire / 116 KB raw  /pictures/full/esther-7-1.webp",
+   "66 KB wire / 193 KB raw  /data/gallery/index.json",
+   "10 KB wire / 10 KB raw  /favicon.png",
+   "6 KB wire / 19 KB raw  /",
+   "6 KB wire / 7 KB raw  /icon-sm.svg",
+   "5 KB wire / 23 KB raw  /assets/main-B0rkPa2Q.css",
+   "4 KB wire / 4 KB raw  /brand-logo.webp",
+   "4 KB wire / 9 KB raw  /assets/chrome-MyOEzdWI.js"
+  ]
+ },
+ {
+  "page": "/scenes.html",
+  "profile": "desktop",
+  "readyMs": 152,
+  "fcpMs": 108,
+  "cls": 0.002,
+  "shifts": [
+   {
+    "t": 109,
+    "v": 0.002,
+    "n": [
+     "DIV#sc-grid.sc-grid"
+    ]
+   }
+  ],
+  "errors": [],
+  "requestsAtReady": 10,
+  "wireAtReadyKB": 109,
+  "rawAtReadyKB": 294,
+  "requestsTotal": 49,
+  "wireTotalKB": 1613,
+  "rawTotalKB": 1791,
+  "top": [
+   "66 KB wire / 193 KB raw  /data/gallery/index.json",
+   "56 KB wire / 56 KB raw  /pictures/thumb/genesis-3-1.webp",
+   "55 KB wire / 55 KB raw  /pictures/thumb/genesis-2-4.webp",
+   "54 KB wire / 53 KB raw  /pictures/thumb/genesis-3-14.webp",
+   "52 KB wire / 52 KB raw  /pictures/thumb/genesis-2-18.webp",
+   "49 KB wire / 49 KB raw  /pictures/thumb/genesis-1-26.webp",
+   "45 KB wire / 45 KB raw  /pictures/thumb/genesis-1-14.webp",
+   "44 KB wire / 44 KB raw  /pictures/thumb/genesis-3-22.webp"
+  ]
+ },
+ {
+  "page": "/scenes.html#p=genesis-15-1",
+  "profile": "desktop",
+  "readyMs": 163,
+  "fcpMs": 80,
+  "cls": 0,
+  "shifts": [],
+  "errors": [],
+  "requestsAtReady": 11,
+  "wireAtReadyKB": 115,
+  "rawAtReadyKB": 301,
+  "requestsTotal": 18,
+  "wireTotalKB": 775,
+  "rawTotalKB": 1445,
+  "top": [
+   "165 KB wire / 165 KB raw  /pictures/full/genesis-16-1.webp",
+   "151 KB wire / 150 KB raw  /pictures/full/genesis-14-17.webp",
+   "140 KB wire / 420 KB raw  /data/gallery/summaries.json",
+   "125 KB wire / 125 KB raw  /pictures/full/genesis-15-1.webp",
+   "66 KB wire / 193 KB raw  /data/gallery/index.json",
+   "57 KB wire / 186 KB raw  /data/bible/split/text/bsb/1.json",
+   "22 KB wire / 98 KB raw  /data/bible/split/book/1.json",
+   "10 KB wire / 10 KB raw  /favicon.png"
+  ]
+ },
+ {
+  "page": "/bible.html",
+  "profile": "desktop",
+  "readyMs": 152,
+  "fcpMs": 76,
+  "cls": 0,
+  "shifts": [],
+  "errors": [],
+  "requestsAtReady": 12,
+  "wireAtReadyKB": 179,
+  "rawAtReadyKB": 553,
+  "requestsTotal": 14,
+  "wireTotalKB": 610,
+  "rawTotalKB": 983,
+  "top": [
+   "233 KB wire / 233 KB raw  /pictures/full/genesis-1-14.webp",
+   "199 KB wire / 198 KB raw  /pictures/full/genesis-1-1.webp",
+   "57 KB wire / 186 KB raw  /data/bible/split/text/bsb/1.json",
+   "53 KB wire / 157 KB raw  /data/bible/split/text/cuvs/1.json",
+   "22 KB wire / 98 KB raw  /data/bible/split/book/1.json",
+   "10 KB wire / 10 KB raw  /favicon.png",
+   "9 KB wire / 25 KB raw  /assets/bible-Dz0OTCtI.js",
+   "7 KB wire / 32 KB raw  /assets/bible-DYYQhbYg.css"
+  ]
+ }
+]

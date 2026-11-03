@@ -103,6 +103,11 @@ function showBrowse(r: Route, restore?: { y: number; n: number } | null) {
   $('sc-strip').querySelector('[aria-pressed="true"]:not(:first-child)')?.scrollIntoView({ inline: 'center', block: 'nearest' });
 }
 
+// a mouse wheel over the strip scrolls it sideways (it is one row on every screen)
+$('sc-strip').addEventListener('wheel', (e) => {
+  const el = e.currentTarget as HTMLElement;
+  if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && el.scrollWidth > el.clientWidth) { el.scrollLeft += e.deltaY; e.preventDefault(); }
+}, { passive: false });
 $('sc-strip').addEventListener('click', (e) => {
   const b = (e.target as HTMLElement).closest<HTMLElement>('[data-h]');
   if (b) go(b.dataset.h!);

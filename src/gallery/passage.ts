@@ -74,9 +74,11 @@ const defaultProvider: PassageProvider = {
     const first = picked[0]!, last = picked[picked.length - 1]!;
     const lang = p.edition.group === 'ru' ? 'ru' : p.edition.group === 'en' ? 'en' : 'zh';
     const cite = refText({ b: p.scene.b, s: first.key, e: last.key }, lang);
-    const name = word(p.edition.name);
+    // "BSB (Yahweh)" -> "BSB, Yahweh", so the citation's own parentheses are the only ones
+    const name = word(p.edition.name).replace(/\s*[(（]([^)）]*)[)）]/, ', $1');
     const body = picked.map((v) => `${v.n} ${v.text}`).join('\n');
-    return `${cite}（${name}）\n${body}\n\n— ${t("Yahweh's World", '雅伟之界', 'Мир Яхве')} · world.yahwehword.com/p/${p.scene.id}`;
+    const open = lang === 'zh' ? '（' : ' (', shut = lang === 'zh' ? '）' : ')';
+    return `${cite}${open}${name}${shut}\n${body}\n\n— ${t("Yahweh's World", '雅伟之界', 'Мир Яхве')} · world.yahwehword.com/p/${p.scene.id}`;
   },
 };
 

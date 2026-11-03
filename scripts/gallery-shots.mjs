@@ -37,14 +37,16 @@ for (const [w, h] of VPS) for (const lang of LANGS) for (const theme of THEMES) 
   const page = await ctx.newPage();
   page.on('pageerror', (e) => errors.push(`${w}x${h} ${lang} ${e.message}`));
   for (const name of PAGES) {
+    // paper is for the picture page's text column (the shipped reader does not take it yet; the reader worktree owns that); everything else stays dark
+    if (theme === 'paper' && name !== 'picture') continue;
     const s = SHOTS[name];
     await page.goto(base + s.url);
     try { await page.waitForSelector(s.wait, { timeout: 15000 }); } catch { errors.push(`${w}x${h} ${lang} ${name}: ${s.wait} never appeared`); }
     await page.waitForFunction(() => document.getElementById('loading')?.classList.contains('done') !== false, null, { timeout: 15000 }).catch(() => {});
     await page.waitForTimeout(700);
     if (s.act) await s.act(page);
-    const file = join(OUT, `${name}-${w}x${h}-${lang}-${theme}.png`);
-    await page.screenshot({ path: file, fullPage: name === 'home' && w >= 1000 });
+    const file = join(OUT, `${name}-${w}x${h}-${lang}-${theme}.jpg`);
+    await page.screenshot({ path: file, type: 'jpeg', quality: 72, fullPage: name === 'home' && w >= 1000 });
     console.log(file.replace(ROOT + '/', ''));
   }
   await ctx.close();

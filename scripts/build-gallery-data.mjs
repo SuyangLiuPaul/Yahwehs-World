@@ -38,6 +38,12 @@ const ru = {};
 if (existsSync(join(ROOT, 'data/gallery/ru'))) {
   for (const f of readdirSync(join(ROOT, 'data/gallery/ru')).filter((x) => /^part-\d+\.json$/.test(x)).sort()) Object.assign(ru, read(`data/gallery/ru/${f}`));
 }
+// Gallery-only caption corrections (church wording rules); see the file's own _why.
+const overrides = existsSync(join(ROOT, 'data/gallery/caption-overrides.json')) ? read('data/gallery/caption-overrides.json') : {};
+for (const e of events) {
+  const o = overrides[e.id];
+  if (o) { e.sum = o.sum ?? e.sum; e.sumEn = o.sumEn ?? e.sumEn; e.zh = o.zh ?? e.zh; e.en = o.en ?? e.en; }
+}
 const ev = events.map((e) => {
   const p = pics.p?.[e.id];
   return [e.id, e.b, e.s, e.e, e.zh, e.en, p?.q ?? '', p?.state === 'pass' ? 1 : 0, ru[e.id]?.t ?? ''];
@@ -57,8 +63,14 @@ for (const j of journeys) {
   if (hit) jr[j.id] = hit.id;
 }
 
+// Church rule (Words' tools/i18n/translate/terms/_church_rules.md, 4): in Chinese the church writes 他 for God and for Jesus and
+// never the reverential 祂. The source captions carry 27 of them; the gallery's copy is normalised here, the source is untouched
+// (scripts/verify-gallery.mjs fails the build if one remains in what the pages read).
+const NO_TA = (x) => (typeof x === 'string' ? x.replaceAll('祂', '他') : x);
+for (const row of ev) { row[4] = NO_TA(row[4]); }
+
 const index = { v: 1, n: ev.length, ok: ev.filter((x) => x[7]).length, books: perBook, jr, ev };
-const summaries = { v: 1, zh: events.map((e) => e.sum ?? ''), en: events.map((e) => e.sumEn ?? ''), ru: events.map((e) => ru[e.id]?.s ?? '') };
+const summaries = { v: 1, zh: events.map((e) => NO_TA(e.sum ?? '')), en: events.map((e) => e.sumEn ?? ''), ru: events.map((e) => ru[e.id]?.s ?? '') };
 
 const out = {
   'public/data/gallery/index.json': JSON.stringify(index),

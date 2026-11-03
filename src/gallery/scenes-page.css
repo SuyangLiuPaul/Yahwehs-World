@@ -9,20 +9,20 @@ body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
 [hidden] { display: none !important; }
 
 /* ── browse ──────────────────────────────────────────────────────────── */
-.sc-head { padding: var(--sp-4) var(--sp-4) 0; display: grid; gap: var(--sp-2); }
+.sc-head { padding: var(--sp-4) var(--sp-4) 0; display: grid; gap: var(--sp-2); align-content: start; min-height: 154px; /* the head is filled from data: reserve its box */ }
 .sc-count { color: var(--ink-3); font-size: var(--fs-200); }
-.sc-strip { display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; padding: var(--sp-2) 0 2px; margin-right: calc(var(--sp-4) * -1); padding-right: var(--sp-4); }
+.sc-strip { min-height: 50px; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; padding: var(--sp-2) 0 2px; margin-right: calc(var(--sp-4) * -1); padding-right: var(--sp-4); }
 .sc-strip::-webkit-scrollbar { display: none; }
 .sc-strip button, .sc-strip .sep { flex: none; }
 .sc-strip button {
-  min-height: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px; background: none; color: var(--ink-2);
+  min-height: 44px; min-width: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px; background: none; color: var(--ink-2);
   font: var(--fs-200)/1 var(--ui); cursor: pointer; white-space: nowrap; transition: border-color .16s, color .16s, background .16s;
 }
 .sc-strip button[aria-pressed="true"] { background: var(--gold-wash); border-color: var(--line-gold); color: var(--gold-bright); }
 @media (hover: hover) { .sc-strip button:hover { border-color: var(--line-gold); color: var(--ink); } }
 .sc-strip .sep { width: 1px; background: var(--line); margin: 6px 2px; }
 
-.sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; padding: 14px var(--sp-4) var(--sp-5); }
+.sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; padding: 14px var(--sp-4) var(--sp-5); align-content: start; min-height: 90vh; /* the skeleton and the cards fill the same box: nothing below moves when they swap */ }
 .sc-card { display: grid; gap: 7px; text-decoration: none; color: inherit; align-content: start; }
 .sc-card .gx-plate, .sc-grid > .gx-sk.plate { aspect-ratio: 3 / 2; }
 .sc-card .cap { font: 600 var(--fs-300)/1.3 var(--display); color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -35,7 +35,7 @@ body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
   .sc-head { padding: 24px 28px 0; }
   .sc-grid { grid-template-columns: repeat(4, 1fr); gap: 22px 18px; padding: 22px 28px 32px; }
   .sc-card .cap { font-size: var(--fs-400); }
-  .sc-strip { margin-right: 0; padding-right: 0; flex-wrap: wrap; overflow: visible; }
+  .sc-strip { margin-right: 0; padding-right: 0; }
 }
 @media (min-width: 1280px) { .sc-grid { grid-template-columns: repeat(5, 1fr); } }
 
@@ -48,7 +48,7 @@ body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
 .pc-plate .gx-plate.is-fading img { opacity: 0; }
 .pc-nav { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3); }
 .pc-caption { padding: var(--sp-3) var(--sp-4) var(--sp-2); display: grid; gap: 6px; }
-.pc-credit { color: var(--ink-4); font-size: var(--fs-100); line-height: 1.5; }
+.pc-credit { color: var(--ink-3); font-size: var(--fs-100); line-height: 1.5; }
 .pc-caption .alt { color: var(--ink-3); font: var(--fs-200)/1.4 var(--ui); }
 
 /* the passage: the reading surface (paper when the reader's setting says so) */
@@ -59,14 +59,14 @@ body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
 .heading { margin: 6px 0 0; font: 600 var(--fs-500)/1.3 var(--display); color: var(--ink); }
 .verses { display: grid; gap: 10px; font-size: var(--fs-500); line-height: 1.8; color: var(--ink); }
 .v { margin: 0; position: relative; }
-.v .vn { font: 500 .7em var(--mono); color: var(--gold-dim); margin-right: .4em; vertical-align: .5em; background: none; border: 0; padding: 0; cursor: pointer; position: relative; }
-.v .vn::after { content: ""; position: absolute; left: -10px; right: -10px; top: 50%; height: 44px; transform: translateY(-50%); }
+.v .vn { font: 500 var(--fs-100) var(--mono); color: var(--gold-dim); margin-right: .4em; vertical-align: .5em; background: none; border: 0; padding: 0; cursor: pointer; position: relative; }
+.v .vn::after { content: ""; position: absolute; left: 50%; top: 50%; width: 44px; height: 44px; transform: translate(-50%, -50%); }
 .v.sel { background: var(--gold-wash); border-radius: var(--r-1); box-shadow: 0 0 0 6px var(--gold-wash); }
 .v .ed { display: inline-block; margin-left: .5em; font: 500 var(--fs-100) var(--mono); letter-spacing: .06em; color: var(--ink-4); text-transform: uppercase; }
 .selbar { display: none; align-items: center; gap: var(--sp-2); padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r-3); background: var(--panel), var(--ground); box-shadow: var(--shadow); position: sticky; bottom: calc(var(--tabbar-h, 0px) + 12px); }
 .selbar.on { display: flex; }
 .selbar .gx-mono { flex: 1; }
-.ed-credit { color: var(--ink-4); font-size: var(--fs-100); line-height: 1.5; }
+.ed-credit { color: var(--ink-3); font-size: var(--fs-100); line-height: 1.5; }
 .pc-skel { display: grid; gap: 12px; padding: var(--sp-2) 0; }
 
 @media (min-width: 900px) {
@@ -75,7 +75,6 @@ body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
   .pc-plate .gx-plate, .pc-plate .gx-sk.plate { border-radius: var(--r-2); border: 1px solid var(--line); }
   .pc-right { border-left: 1px solid var(--line); min-height: calc(100vh - 64px); position: sticky; top: 64px; max-height: calc(100vh - 64px); overflow: auto; }
   .passage { padding: 24px 28px 32px; }
-  .verses { font-size: 1.125rem; }
   .pc-caption { padding-left: 0; padding-right: var(--sp-4); }
   .pc-top, .pc-nav { padding-left: 0; }
   .pc-top { padding-top: 0; }
@@ -90,3 +89,4 @@ dialog.gx-fs img { display: block; width: 100%; height: 100%; object-fit: contai
 dialog.gx-fs.zoomed img { width: 200%; max-width: none; height: auto; object-fit: initial; cursor: zoom-out; }
 dialog.gx-fs .gx-iconbtn { position: fixed; top: calc(var(--sp-3) + var(--safe-top)); right: var(--sp-3); background: #06111fb3; color: #f9f3e6; z-index: 2; }
 dialog.gx-fs .fs-hint { position: fixed; left: 0; right: 0; bottom: calc(var(--sp-4) + var(--safe-bottom)); text-align: center; color: #c6d8ec; font-size: var(--fs-200); pointer-events: none; text-shadow: 0 1px 6px #000a; }
+#sc-kicker { min-height: 1.4em; } #sc-title { min-height: 1.3em; } #sc-count { min-height: 1.4em; }

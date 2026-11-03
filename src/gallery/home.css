@@ -86,3 +86,14 @@ html[lang^="zh"] .hm-footer h3 { text-transform: none; letter-spacing: var(--tr-
 /* desktop top bar has the search field; the home page's own field is for the phone */
 .gx-lic { padding: var(--sp-3) 0; border-bottom: 1px solid var(--line); display: grid; gap: 2px; }
 .gx-lic .lic { margin-left: 6px; border: 1px solid var(--line); border-radius: var(--r-1); padding: 1px 5px; }
+
+/* reserved heights: the skeleton and the real content occupy the same box, so nothing moves when data arrives */
+#hm-kicker { min-height: 1.4em; }
+#hm-title { min-height: 1.2em; }
+#hm-ref { min-height: 1.4em; }
+.hm-books { min-height: 7.5rem; align-content: start; }
+#hm-licences { min-height: 4.2em; }
+#hm-all-licences { min-height: 28px; }
+#hm-version { min-height: 1.6em; }
+
+@media (pointer: coarse) { .hm-footer a, .hm-link { min-height: 44px; display: flex; align-items: center; } }

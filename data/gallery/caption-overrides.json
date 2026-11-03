@@ -1,0 +1,11 @@
+{
+  "_why": "Gallery-only corrections to captions in public/data/events.json that break the church's wording rules (docs/church-teaching-and-content-rules; Words' _church_rules.md, rule 2: no Trinity vocabulary, not even to deny it). The source events.json is another session's and is not edited; build-gallery-data.mjs applies these on the way into public/data/gallery/. Each entry keeps to what the passage says: heaven opened, the Spirit descended like a dove, a voice from heaven.",
+  "matthew-3-13": {
+    "sum": "耶稣受洗——天裂开，神的灵仿佛鸽子降下，有声音从天上来。",
+    "sumEn": "At Jesus' baptism the heavens open, the Spirit of God descends like a dove, and a voice speaks from heaven."
+  },
+  "mark-1-9": {
+    "sum": "耶稣受洗——天裂开，灵仿佛鸽子降下，有声音从天上来。",
+    "sumEn": "At Jesus' baptism the heavens open, the Spirit descends like a dove, and a voice speaks from heaven."
+  }
+}

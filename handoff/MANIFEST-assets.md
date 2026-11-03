@@ -72,3 +72,13 @@ Made from crops of the owner's concept picture as the style reference; 1 credit 
 |---|---|---|
 | `handoff/references/animals/hf-elephant.png` | `9eb231e5-009b-4c39-9c5f-cbc29b7cb335` | blocky voxel elephant, same style as reference, 3/4 front, plain grey background |
 | `handoff/references/animals/hf-giraffe.png` | `f82e1248-1cbd-40c3-bacc-d872ae5c6fcc` | blocky voxel giraffe, same style, patches, mane blocks, 3/4 front |
+
+## Gallery surface (2026-11-03, branch gallery/release-1)
+
+| File | Source | Note |
+|---|---|---|
+| `public/pictures/{thumb,full}/<id>.webp` (gitignored, built) | `scripts/build-pictures.mjs` from the T7 gate-passed text-free squares (`no-text-derivatives-v2/live/<id>.png`, `gate_check.py square --all`) | thumb 480 px, full 1344 px; a square that does not pass gets a plain generated placeholder plate; SHA-256 of source and served file in `data/gallery/pictures.json` |
+| `data/gallery/pictures.json` | `scripts/build-pictures.mjs` | per scene: gate state, gate SHA-256, served-file SHA-256, colour placeholder |
+| `data/gallery/ru/part-1..4.json` | machine translation (Claude Sonnet subagents) of `events.json` titles and summaries under Words' church rules (`tools/i18n/translate/terms/_church_rules.md`, `terms/ru.md`) | NOT read by a native Russian speaker; the site says so (footer). Psalm numbers in a few summaries follow the English numbering |
+| `data/gallery/caption-overrides.json` | hand-written | gallery-only replacement of two zh/en summaries that used Trinity vocabulary (church rule 2); source `events.json` untouched |
+| `public/data/gallery/{index,summaries}.json` | `scripts/build-gallery-data.mjs` | generated; 祂 normalised to 他 (church rule 4) on the way in |

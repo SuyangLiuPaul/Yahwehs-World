@@ -1,0 +1,819 @@
+{
+ "/ 375x812": {
+  "targets": {
+   "checked": 65,
+   "small": [
+    {
+     "below": false,
+     "sel": "button",
+     "w": 34,
+     "h": 44,
+     "text": "EN"
+    },
+    {
+     "below": false,
+     "sel": "#hm-all-licences",
+     "w": 167,
+     "h": 28,
+     "text": "All 3 editions and licen"
+    }
+   ],
+   "hard": 28
+  },
+  "type": {
+   "under12": [],
+   "sizes": {
+    "12": 48,
+    "13": 18,
+    "14": 42,
+    "15": 3,
+    "17": 2,
+    "30": 1,
+    "32": 1
+   }
+  },
+  "contrast": {
+   "checked": 115,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 33,
+   "stolen": [
+    "#hm-plate <- div.hm-row",
+    "a <- a.tb",
+    "a <- path",
+    "a <- a.tb"
+   ]
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    61
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 2
+  },
+  "sheets": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 18,
+   "active": 2,
+   "focusVisible": 12,
+   "navCurrentVisible": 0,
+   "navStripWidth": 0,
+   "backdrop": 2,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 18,
+   "active": 2,
+   "focusVisible": 12,
+   "navCurrentVisible": 0,
+   "navStripWidth": 0,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "errors": []
+ },
+ "/scenes.html 375x812": {
+  "targets": {
+   "checked": 104,
+   "small": [
+    {
+     "below": false,
+     "sel": "button",
+     "w": 34,
+     "h": 44,
+     "text": "EN"
+    }
+   ],
+   "hard": 28
+  },
+  "type": {
+   "under12": [],
+   "sizes": {
+    "12": 69,
+    "13": 73,
+    "14": 61,
+    "15": 1,
+    "22": 1,
+    "32": 1
+   }
+  },
+  "contrast": {
+   "checked": 206,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 20,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    61
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 2
+  },
+  "sheets": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 19,
+   "active": 2,
+   "focusVisible": 13,
+   "navCurrentVisible": 0,
+   "navStripWidth": 0,
+   "backdrop": 2,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 19,
+   "active": 2,
+   "focusVisible": 13,
+   "navCurrentVisible": 0,
+   "navStripWidth": 0,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "errors": []
+ },
+ "/scenes.html#p=genesis-15-1 375x812": {
+  "targets": {
+   "checked": 30,
+   "small": [
+    {
+     "below": false,
+     "sel": "button",
+     "w": 34,
+     "h": 44,
+     "text": "EN"
+    }
+   ],
+   "hard": 28
+  },
+  "type": {
+   "under12": [],
+   "sizes": {
+    "12": 22,
+    "13": 7,
+    "14": 1,
+    "15": 1,
+    "17": 13,
+    "22": 1,
+    "32": 1
+   }
+  },
+  "contrast": {
+   "checked": 46,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 19,
+   "stolen": [
+    "button.vn <- a.tb"
+   ]
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    61
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 2
+  },
+  "sheets": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 19,
+   "active": 2,
+   "focusVisible": 13,
+   "navCurrentVisible": 0,
+   "navStripWidth": 0,
+   "backdrop": 2,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 19,
+   "active": 2,
+   "focusVisible": 13,
+   "navCurrentVisible": 0,
+   "navStripWidth": 0,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "errors": []
+ },
+ "/bible.html 375x812": {
+  "targets": {
+   "checked": 14,
+   "small": [
+    {
+     "below": false,
+     "sel": "button",
+     "w": 34,
+     "h": 44,
+     "text": "EN"
+    },
+    {
+     "below": false,
+     "sel": "summary",
+     "w": 330,
+     "h": 41,
+     "text": "📘 《创世记》书卷导读：起源——创造、堕落与救"
+    }
+   ],
+   "hard": 28
+  },
+  "type": {
+   "under12": [
+    {
+     "sel": "span.bb-sec-ref",
+     "fs": 11,
+     "text": "创世记 1:1–1:13 · 画卷 #1"
+    },
+    {
+     "sel": "span.bb-plate-zoom-hint",
+     "fs": 11.5,
+     "text": "🔍 点击全屏放大画卷"
+    },
+    {
+     "sel": "span.bb-vnum",
+     "fs": 11.22,
+     "text": "1"
+    }
+   ],
+   "sizes": {
+    "11": 3,
+    "12": 18,
+    "14": 6,
+    "17": 1,
+    "13.2": 1,
+    "13.5": 1,
+    "16.5": 35,
+    "12.8": 3,
+    "11.5": 3,
+    "11.22": 31,
+    "12.54": 1,
+    "12.5": 3
+   }
+  },
+  "contrast": {
+   "checked": 106,
+   "fail": [
+    {
+     "sel": "#bb-prev-ch",
+     "cr": 2.37,
+     "need": 4.5,
+     "fs": 14,
+     "text": "‹"
+    },
+    {
+     "sel": "#bb-pager-prev",
+     "cr": 4.03,
+     "need": 4.5,
+     "fs": 14,
+     "text": "已是全书第一章"
+    }
+   ],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 14,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    61
+   ],
+   ".source-credit": [
+    3173,
+    89
+   ],
+   ".bb-reader-bar": [
+    61,
+    55
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 2
+  },
+  "sheets": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 24,
+   "active": 2,
+   "focusVisible": 12,
+   "navCurrentVisible": 0,
+   "navStripWidth": 0,
+   "backdrop": 3,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 24,
+   "active": 2,
+   "focusVisible": 12,
+   "navCurrentVisible": 0,
+   "navStripWidth": 0,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "errors": []
+ },
+ "/ 1440x900": {
+  "targets": {
+   "checked": 64,
+   "small": [],
+   "hard": 20
+  },
+  "type": {
+   "under12": [],
+   "sizes": {
+    "12": 46,
+    "13": 18,
+    "14": 42,
+    "15": 6,
+    "17": 2,
+    "30": 1,
+    "32": 1
+   }
+  },
+  "contrast": {
+   "checked": 116,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 47,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    63
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 3
+  },
+  "sheets": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 18,
+   "active": 2,
+   "focusVisible": 12,
+   "navCurrentVisible": 1,
+   "navStripWidth": 179,
+   "backdrop": 1,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 18,
+   "active": 2,
+   "focusVisible": 12,
+   "navCurrentVisible": 1,
+   "navStripWidth": 179,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "errors": []
+ },
+ "/scenes.html 1440x900": {
+  "targets": {
+   "checked": 128,
+   "small": [],
+   "hard": 20
+  },
+  "type": {
+   "under12": [],
+   "sizes": {
+    "12": 67,
+    "13": 73,
+    "14": 1,
+    "15": 64,
+    "17": 1,
+    "22": 1,
+    "32": 1
+   }
+  },
+  "contrast": {
+   "checked": 208,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 41,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    63
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 3
+  },
+  "sheets": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 19,
+   "active": 2,
+   "focusVisible": 13,
+   "navCurrentVisible": 1,
+   "navStripWidth": 180,
+   "backdrop": 1,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 19,
+   "active": 2,
+   "focusVisible": 13,
+   "navCurrentVisible": 1,
+   "navStripWidth": 180,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "errors": []
+ },
+ "/scenes.html#p=genesis-15-1 1440x900": {
+  "targets": {
+   "checked": 29,
+   "small": [],
+   "hard": 20
+  },
+  "type": {
+   "under12": [],
+   "sizes": {
+    "12": 20,
+    "13": 7,
+    "14": 1,
+    "15": 4,
+    "17": 14,
+    "22": 1,
+    "32": 1
+   }
+  },
+  "contrast": {
+   "checked": 48,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 26,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    63
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 3
+  },
+  "sheets": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 19,
+   "active": 2,
+   "focusVisible": 13,
+   "navCurrentVisible": 1,
+   "navStripWidth": 180,
+   "backdrop": 1,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 19,
+   "active": 2,
+   "focusVisible": 13,
+   "navCurrentVisible": 1,
+   "navStripWidth": 180,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "errors": []
+ },
+ "/bible.html 1440x900": {
+  "targets": {
+   "checked": 16,
+   "small": [
+    {
+     "below": false,
+     "sel": "summary",
+     "w": 751,
+     "h": 22,
+     "text": "📘 《创世记》书卷导读：起源——创造、堕落与救"
+    }
+   ],
+   "hard": 20
+  },
+  "type": {
+   "under12": [
+    {
+     "sel": "span.bb-plate-zoom-hint",
+     "fs": 11.5,
+     "text": "🔍 点击全屏放大画卷"
+    }
+   ],
+   "sizes": {
+    "12": 17,
+    "13": 1,
+    "14": 4,
+    "15": 3,
+    "17": 3,
+    "20": 3,
+    "21": 1,
+    "13.8": 1,
+    "13.5": 3,
+    "13.2": 3,
+    "11.5": 3,
+    "13.26": 31,
+    "19.5": 32,
+    "14.82": 1,
+    "12.5": 1
+   }
+  },
+  "contrast": {
+   "checked": 107,
+   "fail": [
+    {
+     "sel": "#bb-prev-ch",
+     "cr": 2.37,
+     "need": 4.5,
+     "fs": 17,
+     "text": "‹"
+    },
+    {
+     "sel": "#bb-pager-prev",
+     "cr": 4.03,
+     "need": 4.5,
+     "fs": 14,
+     "text": "已是全书第一章"
+    }
+   ],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 16,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    63
+   ],
+   ".source-credit": [
+    3372,
+    73
+   ],
+   ".bb-reader-bar": [
+    63,
+    61
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 3
+  },
+  "sheets": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 24,
+   "active": 2,
+   "focusVisible": 12,
+   "navCurrentVisible": 1,
+   "navStripWidth": 140,
+   "backdrop": 2,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 24,
+   "active": 2,
+   "focusVisible": 12,
+   "navCurrentVisible": 1,
+   "navStripWidth": 140,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "errors": []
+ }
+}
