@@ -189,3 +189,16 @@ test('the environment variables are the ones Words names: RESEND_API_KEY, FEEDBA
   assert.deepEqual(names, ['ERROR_IP_SALT', 'FEEDBACK_FROM', 'FEEDBACK_TO', 'RESEND_API_KEY']);
   assert.ok(!/re_[A-Za-z0-9]{20,}/.test(src), 'no key in the source');
 });
+
+test('the native shells may post from their own origins; a local web page may not', async () => {
+  for (const origin of ['tauri://localhost', 'http://tauri.localhost', 'https://tauri.localhost', 'capacitor://localhost']) {
+    const k = kit();
+    assert.equal((await handle(req(GOOD, { headers: { origin } }), k.deps)).status, 200, origin);
+    const o = await handle(req(null, { method: 'OPTIONS', headers: { origin } }), k.deps);
+    assert.equal(o.headers.get('access-control-allow-origin'), origin, `${origin} preflight`);
+  }
+  const local = await handle(req(GOOD, { headers: { origin: 'http://localhost:5175' } }), kit().deps);
+  assert.equal(local.status, 403);
+  const local2 = await handle(req(GOOD, { headers: { origin: 'http://localhost' } }), kit().deps);
+  assert.equal(local2.status, 403);
+});
