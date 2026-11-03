@@ -29,7 +29,7 @@ const SHOTS = {
   home: { url: '/', wait: '#hm-title:not(:has(.gx-sk))', themes: DARK },
   gallery: { url: '/scenes.html#b=1', wait: '.sc-card', themes: DARK },
   picture: { url: '/scenes.html#p=genesis-15-1', wait: '.yr-passage .yr-v', themes: ALL },
-  reader: { url: '/bible.html#ref=Genesis%2015%3A1-21', wait: '.yr-chapter .yr-v', themes: ALL },
+  reader: { url: '/bible.html#ref=Genesis%2015%3A5-6', wait: '.yr-chapter .yr-v', themes: ALL },
   parallel: { url: '/scenes.html#p=genesis-15-1', wait: '.yr-passage .yr-v', themes: TWO, act: async (p) => { await p.click('.yr-passage [data-act="parallelToggle"]'); await p.waitForSelector('.yr-passage .yr-pv'); await p.waitForTimeout(300); } },
   'reader-parallel': { url: '/bible.html#ref=Psalm%20119&m=parallel', wait: '.yr-chapter .yr-pv', themes: TWO },
   sheet: { url: '/', wait: '#hm-edition', themes: TWO, act: async (p) => { await p.click('#hm-edition'); await p.waitForSelector('dialog.yr-sheet[open] .yr-opt'); await p.waitForTimeout(400); } },
@@ -38,7 +38,7 @@ const SHOTS = {
   feedback: { url: '/scenes.html#p=genesis-15-1', wait: '.yr-passage .yr-v', themes: ALL, act: async (p) => { await p.click('#pc-feedback'); await p.waitForSelector('dialog.gx-fb[open] form.fb'); await p.click('dialog.gx-fb [data-r="picture"]'); await p.fill('dialog.gx-fb textarea', ''); await p.waitForTimeout(500); } },
   'feedback-failed': { url: '/scenes.html#p=genesis-15-1', wait: '.yr-passage .yr-v', themes: TWO, act: async (p) => { await p.route('**/api/feedback', (r) => r.fulfill({ status: 503, body: '{"error":"not_configured"}' })); await p.click('#pc-feedback'); await p.waitForSelector('dialog.gx-fb[open] form.fb'); await p.fill('dialog.gx-fb textarea', 'The stars look wrong.'); await p.click('dialog.gx-fb [data-send]'); await p.waitForSelector('dialog.gx-fb .fb-fallback:not([hidden])'); await p.waitForTimeout(400); } },
   'feedback-thanks': { url: '/scenes.html#p=genesis-15-1', wait: '.yr-passage .yr-v', themes: DARK, act: async (p) => { await p.route('**/api/feedback', (r) => r.fulfill({ status: 200, body: '{"ok":true}' })); await p.click('#pc-feedback'); await p.waitForSelector('dialog.gx-fb[open] form.fb'); await p.click('dialog.gx-fb [data-send]'); await p.waitForSelector('dialog.gx-fb .fb-done:not([hidden])'); await p.waitForTimeout(400); } },
-  held: { url: '/scenes.html#p=genesis-5-1', wait: '.yr-passage .yr-v', themes: DARK },
+  held: { url: '/scenes.html#p=exodus-13-17', wait: '.yr-passage .yr-v', themes: DARK },
 };
 const errors = [];
 for (const [w, h] of VPS) for (const lang of LANGS) for (const theme of THEMES) {

@@ -1,0 +1,730 @@
+{
+ "/ 375x812": {
+  "targets": {
+   "checked": 67,
+   "small": [
+    {
+     "below": false,
+     "sel": "button",
+     "w": 34,
+     "h": 44,
+     "text": "EN"
+    },
+    {
+     "below": false,
+     "sel": "#hm-all-licences",
+     "w": 167.2,
+     "h": 28,
+     "text": "All 8 editions and licen"
+    }
+   ],
+   "hard": 28
+  },
+  "type": {
+   "under12": [],
+   "sizes": {
+    "12": 48,
+    "13": 20,
+    "14": 42,
+    "15": 3,
+    "17": 2,
+    "30": 1,
+    "32": 1
+   }
+  },
+  "contrast": {
+   "checked": 117,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 33,
+   "stolen": [
+    "#hm-plate <- div.hm-row",
+    "a <- a.tb",
+    "a <- path",
+    "a <- a.tb"
+   ]
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    61
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 2
+  },
+  "sheets": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 18,
+   "active": 2,
+   "focusVisible": 12,
+   "navCurrentVisible": 0,
+   "navStripWidth": 0,
+   "backdrop": 2,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 18,
+   "active": 2,
+   "focusVisible": 12,
+   "navCurrentVisible": 0,
+   "navStripWidth": 0,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "errors": []
+ },
+ "/scenes.html 375x812": {
+  "targets": {
+   "checked": 104,
+   "small": [
+    {
+     "below": false,
+     "sel": "button",
+     "w": 34,
+     "h": 44,
+     "text": "EN"
+    }
+   ],
+   "hard": 28
+  },
+  "type": {
+   "under12": [],
+   "sizes": {
+    "12": 69,
+    "13": 70,
+    "14": 61,
+    "15": 1,
+    "22": 1,
+    "32": 1
+   }
+  },
+  "contrast": {
+   "checked": 203,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 20,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    61
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 2
+  },
+  "sheets": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 19,
+   "active": 2,
+   "focusVisible": 13,
+   "navCurrentVisible": 0,
+   "navStripWidth": 0,
+   "backdrop": 2,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 19,
+   "active": 2,
+   "focusVisible": 13,
+   "navCurrentVisible": 0,
+   "navStripWidth": 0,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "errors": []
+ },
+ "/scenes.html#p=genesis-15-1 375x812": {
+  "targets": {
+   "checked": 33,
+   "small": [
+    {
+     "below": false,
+     "sel": "button",
+     "w": 34,
+     "h": 44,
+     "text": "EN"
+    }
+   ],
+   "hard": 28
+  },
+  "type": {
+   "under12": [],
+   "sizes": {
+    "12": 10,
+    "13": 17,
+    "14": 6,
+    "15": 2,
+    "18": 13,
+    "22": 1,
+    "32": 1
+   }
+  },
+  "contrast": {
+   "checked": 50,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 21,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    61
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 2
+  },
+  "sheets": {
+   "hoverUnguarded": 2,
+   "hoverGuarded": 19,
+   "active": 2,
+   "focusVisible": 14,
+   "navCurrentVisible": 0,
+   "navStripWidth": 0,
+   "backdrop": 2,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 2,
+   "hoverGuarded": 19,
+   "active": 2,
+   "focusVisible": 14,
+   "navCurrentVisible": 0,
+   "navStripWidth": 0,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "errors": []
+ },
+ "/bible.html 375x812": {
+  "targets": {
+   "checked": 33,
+   "small": [
+    {
+     "below": false,
+     "sel": "button",
+     "w": 34,
+     "h": 44,
+     "text": "EN"
+    }
+   ],
+   "hard": 28
+  },
+  "type": {
+   "under12": [],
+   "sizes": {
+    "12": 10,
+    "13": 33,
+    "14": 5,
+    "15": 1,
+    "17": 1,
+    "18": 1,
+    "19": 31,
+    "24": 2,
+    "26": 1,
+    "32": 1
+   }
+  },
+  "contrast": {
+   "checked": 86,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 23,
+   "stolen": [
+    "button.yr-vn <- a.tb"
+   ]
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    61
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 2
+  },
+  "sheets": {
+   "hoverUnguarded": 2,
+   "hoverGuarded": 16,
+   "active": 2,
+   "focusVisible": 13,
+   "navCurrentVisible": 0,
+   "navStripWidth": 0,
+   "backdrop": 2,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 2,
+   "hoverGuarded": 16,
+   "active": 2,
+   "focusVisible": 13,
+   "navCurrentVisible": 0,
+   "navStripWidth": 0,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "errors": []
+ },
+ "/ 1440x900": {
+  "targets": {
+   "checked": 66,
+   "small": [],
+   "hard": 20
+  },
+  "type": {
+   "under12": [],
+   "sizes": {
+    "12": 46,
+    "13": 20,
+    "14": 42,
+    "15": 6,
+    "17": 2,
+    "30": 1,
+    "32": 1
+   }
+  },
+  "contrast": {
+   "checked": 118,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 47,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    63
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 3
+  },
+  "sheets": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 18,
+   "active": 2,
+   "focusVisible": 12,
+   "navCurrentVisible": 1,
+   "navStripWidth": 179,
+   "backdrop": 1,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 18,
+   "active": 2,
+   "focusVisible": 12,
+   "navCurrentVisible": 1,
+   "navStripWidth": 179,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "errors": []
+ },
+ "/scenes.html 1440x900": {
+  "targets": {
+   "checked": 128,
+   "small": [],
+   "hard": 20
+  },
+  "type": {
+   "under12": [],
+   "sizes": {
+    "12": 67,
+    "13": 70,
+    "14": 1,
+    "15": 64,
+    "17": 1,
+    "22": 1,
+    "32": 1
+   }
+  },
+  "contrast": {
+   "checked": 205,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 41,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    63
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 3
+  },
+  "sheets": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 19,
+   "active": 2,
+   "focusVisible": 13,
+   "navCurrentVisible": 1,
+   "navStripWidth": 180,
+   "backdrop": 1,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 0,
+   "hoverGuarded": 19,
+   "active": 2,
+   "focusVisible": 13,
+   "navCurrentVisible": 1,
+   "navStripWidth": 180,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "errors": []
+ },
+ "/scenes.html#p=genesis-15-1 1440x900": {
+  "targets": {
+   "checked": 32,
+   "small": [],
+   "hard": 20
+  },
+  "type": {
+   "under12": [],
+   "sizes": {
+    "12": 8,
+    "13": 17,
+    "14": 6,
+    "15": 5,
+    "17": 1,
+    "18": 13,
+    "22": 1,
+    "32": 1
+   }
+  },
+  "contrast": {
+   "checked": 52,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 26,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    63
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 3
+  },
+  "sheets": {
+   "hoverUnguarded": 2,
+   "hoverGuarded": 19,
+   "active": 2,
+   "focusVisible": 14,
+   "navCurrentVisible": 1,
+   "navStripWidth": 180,
+   "backdrop": 1,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 2,
+   "hoverGuarded": 19,
+   "active": 2,
+   "focusVisible": 14,
+   "navCurrentVisible": 1,
+   "navStripWidth": 180,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "errors": []
+ },
+ "/bible.html 1440x900": {
+  "targets": {
+   "checked": 46,
+   "small": [],
+   "hard": 20
+  },
+  "type": {
+   "under12": [],
+   "sizes": {
+    "12": 8,
+    "13": 33,
+    "14": 5,
+    "15": 4,
+    "17": 2,
+    "18": 1,
+    "19": 31,
+    "24": 2,
+    "26": 1,
+    "32": 1
+   }
+  },
+  "contrast": {
+   "checked": 88,
+   "fail": [],
+   "unknown": 0
+  },
+  "overflow": false,
+  "hit": {
+   "checked": 26,
+   "stolen": []
+  },
+  "layout": {
+   ".sitenav": [
+    0,
+    63
+   ]
+  },
+  "motionReduced": {
+   "running": [],
+   "infinite": 0
+  },
+  "motionNormal": {
+   "running": [
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    },
+    {
+     "type": "CSSAnimation",
+     "name": "ld-sh",
+     "dur": 2200,
+     "iter": null,
+     "target": "i.ld-sk ld-card"
+    }
+   ],
+   "infinite": 3
+  },
+  "sheets": {
+   "hoverUnguarded": 2,
+   "hoverGuarded": 16,
+   "active": 2,
+   "focusVisible": 13,
+   "navCurrentVisible": 1,
+   "navStripWidth": 179,
+   "backdrop": 1,
+   "rtMedia": false,
+   "contrastMedia": false
+  },
+  "sheetsRT": {
+   "hoverUnguarded": 2,
+   "hoverGuarded": 16,
+   "active": 2,
+   "focusVisible": 13,
+   "navCurrentVisible": 1,
+   "navStripWidth": 179,
+   "backdrop": 0,
+   "rtMedia": true,
+   "contrastMedia": true
+  },
+  "errors": []
+ }
+}
