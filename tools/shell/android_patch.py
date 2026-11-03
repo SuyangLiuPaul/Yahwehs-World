@@ -17,6 +17,10 @@ What it sets:
      The legacy key.properties file (tools/build_apk.sh, GitHub APK) is still honoured when present. With none of these set the
      release build is simply unsigned.
   4. the name under the icon in English, 简, 繁 (zh-TW, zh-HK, zh-MO and the script qualifier) and Russian, and the launch theme colour.
+  5. light status-bar and navigation-bar icons. The app draws edge to edge under bars that sit on the navy header and tab bar; the
+     template's enableEdgeToEdge() picks the icon colour from the PHONE's day/night mode, so on a phone in the light theme the clock
+     and battery came out dark on navy and nearly invisible. MainActivity.kt now asks for SystemBarStyle.dark (light icons) and
+     also sets isAppearanceLightStatusBars/NavigationBars = false.
 """
 import pathlib
 import re
@@ -132,3 +136,32 @@ for values in ("values", "values-night"):
         continue
     f.write_text(new)
     print(f"   {values}/themes.xml -> windowBackground {GROUND}")
+
+# --- MainActivity: light status/navigation icons whatever the phone's day/night mode ---------------------------------
+activity = next(iter((root / "app/src/main/java").rglob("MainActivity.kt")), None)
+if activity is None:
+    print("   !! no MainActivity.kt found: status-bar icons not patched", file=sys.stderr)
+else:
+    src = activity.read_text()
+    if "SystemBarStyle.dark" in src:
+        print("   MainActivity.kt already asks for light status-bar icons")
+    elif "enableEdgeToEdge()" not in src:
+        print("   !! MainActivity.kt has no enableEdgeToEdge() call to replace", file=sys.stderr)
+    else:
+        src = src.replace("enableEdgeToEdge()",
+                          "enableEdgeToEdge(\n"
+                          "      statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),\n"
+                          "      navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT)\n"
+                          "    )", 1)
+        src = src.replace("    super.onCreate(savedInstanceState)\n",
+                          "    super.onCreate(savedInstanceState)\n"
+                          "    WindowCompat.getInsetsController(window, window.decorView).apply {\n"
+                          "      isAppearanceLightStatusBars = false\n"
+                          "      isAppearanceLightNavigationBars = false\n"
+                          "    }\n", 1)
+        src = src.replace("import android.os.Bundle\n",
+                          "import android.graphics.Color\nimport android.os.Bundle\n", 1)
+        src = src.replace("import androidx.activity.enableEdgeToEdge\n",
+                          "import androidx.activity.SystemBarStyle\nimport androidx.activity.enableEdgeToEdge\nimport androidx.core.view.WindowCompat\n", 1)
+        activity.write_text(src)
+        print("   MainActivity.kt -> light status-bar and navigation-bar icons")
