@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- TestFlight / App Store Connect export for the iOS and iPadOS archive. tools/release_ios.sh copies this file, replaces
+     TEAMID_PLACEHOLDER with $APPLE_DEVELOPMENT_TEAM and runs `xcodebuild -exportArchive`; with destination=upload the build goes to
+     App Store Connect through the Apple account Xcode is signed in to (no password or key file is involved). Use destination=export
+     to get an .ipa on disk instead. -->
+<plist version="1.0">
+<dict>
+  <key>method</key><string>app-store-connect</string>
+  <key>destination</key><string>upload</string>
+  <key>teamID</key><string>TEAMID_PLACEHOLDER</string>
+  <key>signingStyle</key><string>automatic</string>
+  <key>uploadSymbols</key><true/>
+  <key>manageAppVersionAndBuildNumber</key><true/>
+  <key>testFlightInternalTestingOnly</key><false/>
+</dict>
+</plist>

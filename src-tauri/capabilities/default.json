@@ -1,12 +1,49 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "enables the default permissions",
-  "windows": [
-    "main"
-  ],
+  "description": "What a page of the app may ask the shell for. Nothing else is reachable: no shell, no arbitrary file access, no notifications (off in this iteration).",
+  "windows": ["main"],
+  "platforms": ["macOS", "windows", "linux", "android", "iOS"],
   "permissions": [
     "core:default",
-    "opener:default"
+    "opener:default",
+    "os:default",
+    "deep-link:default",
+    "store:default",
+    {
+      "identifier": "http:default",
+      "allow": [
+        { "url": "https://world.yahwehword.com/*" },
+        { "url": "https://api.github.com/repos/SuyangLiuPaul/Yahwehs-World/*" }
+      ]
+    },
+    {
+      "identifier": "fs:allow-write-file",
+      "allow": [{ "path": "$APPLOCALDATA/pictures/**" }]
+    },
+    {
+      "identifier": "fs:allow-mkdir",
+      "allow": [{ "path": "$APPLOCALDATA/pictures" }, { "path": "$APPLOCALDATA/pictures/**" }]
+    },
+    {
+      "identifier": "fs:allow-read-dir",
+      "allow": [{ "path": "$APPLOCALDATA/pictures" }, { "path": "$APPLOCALDATA/pictures/**" }]
+    },
+    {
+      "identifier": "fs:allow-exists",
+      "allow": [{ "path": "$APPLOCALDATA/pictures" }, { "path": "$APPLOCALDATA/pictures/**" }]
+    },
+    {
+      "identifier": "fs:allow-read-file",
+      "allow": [{ "path": "$APPLOCALDATA/pictures/**" }]
+    },
+    {
+      "identifier": "fs:allow-stat",
+      "allow": [{ "path": "$APPLOCALDATA/pictures/**" }]
+    },
+    {
+      "identifier": "fs:allow-remove",
+      "allow": [{ "path": "$APPLOCALDATA/pictures/**" }]
+    }
   ]
 }

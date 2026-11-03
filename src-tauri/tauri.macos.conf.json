@@ -1,0 +1,27 @@
+{
+  "bundle": {
+    "targets": [
+      "app",
+      "dmg"
+    ],
+    "category": "Education",
+    "macOS": {
+      "minimumSystemVersion": "12.0",
+      "hardenedRuntime": true,
+      "entitlements": "Entitlements.plist",
+      "signingIdentity": null,
+      "dmg": {
+        "windowSize": {
+          "width": 600,
+          "height": 400
+        }
+      },
+      "files": {
+        "Resources/en.lproj/InfoPlist.strings": "locales/en.lproj/InfoPlist.strings",
+        "Resources/zh-Hans.lproj/InfoPlist.strings": "locales/zh-Hans.lproj/InfoPlist.strings",
+        "Resources/zh-Hant.lproj/InfoPlist.strings": "locales/zh-Hant.lproj/InfoPlist.strings",
+        "Resources/ru.lproj/InfoPlist.strings": "locales/ru.lproj/InfoPlist.strings"
+      }
+    }
+  }
+}

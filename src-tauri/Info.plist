@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Merged by Tauri into the macOS app's Info.plist. The name under the icon is localised through locales/*.lproj/InfoPlist.strings
+     (tauri.macos.conf.json copies them into Contents/Resources). -->
+<plist version="1.0">
+<dict>
+  <key>CFBundleDisplayName</key><string>Yahweh's World</string>
+  <key>CFBundleDevelopmentRegion</key><string>en</string>
+  <key>CFBundleLocalizations</key>
+  <array><string>en</string><string>zh-Hans</string><string>zh-Hant</string><string>ru</string></array>
+  <key>LSApplicationCategoryType</key><string>public.app-category.education</string>
+  <key>ITSAppUsesNonExemptEncryption</key><false/>
+</dict>
+</plist>
