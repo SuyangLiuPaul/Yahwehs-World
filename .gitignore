@@ -17,3 +17,6 @@ dist-app/
 # Worktrees the agent tooling creates beside the checkout.
 .claude/worktrees/
 __pycache__/
+
+# Reader data copied from Words by scripts/reader-editions.mjs (npm run reader:data); never committed.
+public/data/reader/
