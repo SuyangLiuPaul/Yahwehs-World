@@ -148,7 +148,7 @@ Adding a capability later (the globe, walks...) never touches the shell: a featu
 
 ## 7. Known gaps and decisions needing the owner
 
-- **Fonts offline**: the pages load Google Fonts; offline (or before the stylesheet arrives) the system faces show. Self-hosting the faces (Inter, Spectral, Noto Sans/Serif SC/TC subsets) costs several MiB and is the right fix for an offline-first app; not done (a bundle-size and licence decision).
+- ~~**Fonts offline**~~ **DONE 2026-11-04.** The faces are self-hosted and subset in `public/fonts` (Inter, Spectral, IBM Plex Mono with Latin **and Cyrillic**, Noto Sans/Serif SC and TC subset to the characters the shipped texts and UI use, Noto Sans/Serif Hebrew, a 3-glyph symbol face). Built by `tools/subset-fonts.sh`; `npm run verify:fonts` (`tools/font-coverage.mjs --check`) fails on any codepoint a shipped page needs and no bundled file covers. All OFL-1.1, notices in `public/fonts/OFL.txt`. The Tauri CSP no longer allows `fonts.googleapis.com` / `fonts.gstatic.com` and `verify-shell` fails if either returns. Emoji are still left to the platform (a colour emoji font is 10+ MB).
 - **Offline pictures UI is a stub** (a download icon in the top bar and a sheet). Wording is machine-neutral and flagged `STUB` in code: it needs the Opus medium review and, under the premium bar, a mock-up before it is final. The update toast on direct builds is a stub too (the old ⚙ settings panel in `src/updates.ts` only exists on the full surface; it is not wired here).
 - Native share: no Tauri share plugin exists; the adapter uses Web Share where the web view has it and copies the link otherwise. A native share sheet needs a small plugin per platform.
 - Notifications: off (no plugin, no permission), as planned.
