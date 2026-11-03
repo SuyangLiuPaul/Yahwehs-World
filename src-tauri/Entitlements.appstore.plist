@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Mac App Store build: App Sandbox, outgoing network only (the pictures come from the site). Used by tauri.macos-appstore.conf.json. -->
+<plist version="1.0">
+<dict>
+  <key>com.apple.security.app-sandbox</key><true/>
+  <key>com.apple.security.network.client</key><true/>
+  <key>com.apple.application-identifier</key><string>YC5JZD3DY7.com.yahwehword.world</string>
+  <key>com.apple.developer.team-identifier</key><string>YC5JZD3DY7</string>
+</dict>
+</plist>

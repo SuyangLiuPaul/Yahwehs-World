@@ -1,0 +1,18 @@
+{
+  "bundle": {
+    "targets": ["app"],
+    "macOS": {
+      "minimumSystemVersion": "12.0",
+      "hardenedRuntime": true,
+      "entitlements": "Entitlements.appstore.plist",
+      "signingIdentity": null,
+      "files": {
+        "embedded.provisionprofile": "/Users/pliu0036/Documents/CodingProject-secrets-local/yahwehs-world/macos-appstore.provisionprofile",
+        "Resources/en.lproj/InfoPlist.strings": "locales/en.lproj/InfoPlist.strings",
+        "Resources/zh-Hans.lproj/InfoPlist.strings": "locales/zh-Hans.lproj/InfoPlist.strings",
+        "Resources/zh-Hant.lproj/InfoPlist.strings": "locales/zh-Hant.lproj/InfoPlist.strings",
+        "Resources/ru.lproj/InfoPlist.strings": "locales/ru.lproj/InfoPlist.strings"
+      }
+    }
+  }
+}
