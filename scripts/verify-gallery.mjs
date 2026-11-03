@@ -47,9 +47,10 @@ const bytes = files.reduce((a, f) => a + statSync(f).size, 0);
 const byTop = {};
 for (const f of files) { const top = rel(f).split('/')[1] ?? '.'; byTop[top] = (byTop[top] ?? 0) + statSync(f).size; }
 console.log(`     dist: ${files.length} files, ${(bytes / 1048576).toFixed(1)} MB (${Object.entries(byTop).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k, v]) => `${k} ${(v / 1048576).toFixed(1)} MB`).join(', ')})`);
-// The plan's cap was 300 MB with ~210 MB of pictures and no reader data. Measured 2026-11-03: 261.6 MB of pictures (1,420 served)
-// plus 37.6 MB of Bible text for the eight editions (Words' bytes cut per book) plus 3 MB of pages and share stubs.
-const LIMIT_MB = 320;
+// The plan's cap is 300 MB (MiB, as measured since the first report). 2026-11-03 with all 1,443 squares served: pictures 253.0 MB (WebP q76 for both sizes,
+// docs/evidence/gallery-2026-11/pictures-quality-sweep.md) + 37.6 MB of Bible text for the eight editions + 2.7 MB of pages and share stubs = 293.3 MB.
+// The check was 320 while the owner had not accepted going over; it is back to the plan's number.
+const LIMIT_MB = 300;
 check(bytes < LIMIT_MB * 1048576, `dist is under ${LIMIT_MB} MB (${(bytes / 1048576).toFixed(1)} MB)`, `dist is ${(bytes / 1048576).toFixed(1)} MB, limit ${LIMIT_MB} MB`);
 
 // ── 2 words ────────────────────────────────────────────────────────────

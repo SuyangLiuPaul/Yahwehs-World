@@ -22,7 +22,10 @@ from multiprocessing import Pool
 from PIL import Image, ImageDraw
 
 THUMB_W, FULL_W = 480, 1344
-THUMB_Q, FULL_Q = 76, 78
+# One rule for both sizes: WebP quality 76, encoder method 6. The full size was 78 until 2026-11-03; 76 keeps
+# dist under the plan's 300 MB cap (-6.9 % of the full files, mean SSIM 0.9523 vs 0.9561 on 40 random squares).
+# Measurement and the sweep script: docs/evidence/gallery-2026-11/pictures-quality-sweep.md, scripts/pictures-quality-sweep.py.
+THUMB_Q, FULL_Q = 76, 76
 
 
 def save(im, path, width, quality):
