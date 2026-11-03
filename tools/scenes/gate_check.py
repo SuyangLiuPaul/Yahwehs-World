@@ -25,6 +25,7 @@ from collections import Counter
 from PIL import Image
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import square_accepts  # noqa: E402  per-square owner acceptances (handoff/opus-74-decisions-2026-11-03)
 import square_exceptions  # noqa: E402  per-square exceptions (handoff/32)
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -176,6 +177,7 @@ class Context:
             self.exception_ids = set(square_exceptions.load(self.exceptions_path))
         except (OSError, ValueError):
             self.exception_ids = set()
+        self.accepts_path = square_accepts.ACCEPTS_PATH
 
     @property
     def registry(self):
@@ -282,7 +284,11 @@ def check_depicts(ctx, item, record):
         item.fail("sectionsource_invalid", source)
 
 
-def check_review(ctx, item, review_path, subject_kind, subject_sha, card_sha, registry_applies):
+def check_review(ctx, item, review_path, subject_kind, subject_sha, card_sha, registry_applies,
+                 accepted=()):
+    """`accepted` is the tuple of veto keys the owner has accepted on this one square
+    (square_accepts.json). An accepted key's "fail"/"unclear" answer is recorded and does not fail
+    the gate; nothing else about the review, the veto table or any other square is relaxed."""
     review, err = read_json(review_path)
     if err == "missing":
         item.fail("review_missing")
@@ -300,9 +306,6 @@ def check_review(ctx, item, review_path, subject_kind, subject_sha, card_sha, re
     reviewed_sha = subject.get("sha256") if isinstance(subject, dict) else None
     if subject_sha is None or reviewed_sha != subject_sha:
         item.fail("review_sha_mismatch")
-    if review.get("verdict") != "pass":
-        item.fail("review_verdict_not_pass", review.get("verdict"))
-
     veto = review.get("veto")
     veto = veto if isinstance(veto, dict) else {}
     missing = [key for key in VETO_KEYS if key not in veto]
@@ -311,16 +314,24 @@ def check_review(ctx, item, review_path, subject_kind, subject_sha, card_sha, re
         item.fail("veto_incomplete", ",".join(missing))
     if unknown:
         item.fail("veto_unknown_key", ",".join(unknown))
-    failed = []
+    failed, forgiven = [], []
     for key in VETO_KEYS:
         if key not in veto:
             continue
         answer = veto[key].get("answer") if isinstance(veto[key], dict) else None
         allowed = {"pass"} if (key != "registryFix" or registry_applies) else {"pass", "na"}
-        if answer not in allowed:
-            failed.append(f"{key}={answer}")
+        if answer in allowed:
+            continue
+        (forgiven if key in accepted else failed).append(f"{key}={answer}")
     if failed:
         item.fail("veto_failed", ",".join(failed))
+    if forgiven:
+        item.measured["acceptedVetoes"] = forgiven
+        item.warnings.append("owner_accepted:" + ",".join(forgiven))
+    # An owner-accepted square's review is a written "fail"; it stays that way on disk. The verdict
+    # only blocks the gate when something the owner did not accept is still failing.
+    if review.get("verdict") != "pass" and not (forgiven and not failed):
+        item.fail("review_verdict_not_pass", review.get("verdict"))
 
     reviewer, generator = review.get("reviewer"), review.get("generator")
     if not all(isinstance(who, dict) and nonempty_str(who.get("model")) and nonempty_str(who.get("session"))
@@ -498,18 +509,44 @@ def check_inscription(ctx, item, live_sha):
     item.measured["inscription"] = {"png": png, "problems": problems}
 
 
+def check_accept_binding(item, status, accepted, live_sha):
+    """An acceptance counts only while the status file says so against these exact bytes."""
+    block = status.get("owner_accept")
+    if not isinstance(block, dict):
+        item.fail("owner_accept_missing")
+        return
+    problems = []
+    if sorted(block.get("keys") or ()) != sorted(accepted):
+        problems.append("keys")
+    if live_sha is None or block.get("live_sha256") != live_sha:
+        problems.append("live_sha")
+    for field in ("ruling", "decidedBy", "decidedAt"):
+        if not nonempty_str(block.get(field)):
+            problems.append(field)
+    if problems:
+        item.fail("owner_accept_invalid", ",".join(problems))
+    item.measured["ownerAccept"] = {"keys": sorted(accepted), "problems": problems}
+
+
 def check_square(ctx, event_id):
     item = Item("square", event_id)
     status, err = read_json(os.path.join(ctx.square_root, "status", f"{event_id}.json"))
     if err or not isinstance(status, dict):
         item.fail("status_missing" if err == "missing" else "status_invalid", err)
         status = {}
+    try:
+        accepted = square_accepts.accepted_keys(event_id, VETO_KEYS, ctx.accepts_path)
+    except (OSError, ValueError) as exc:
+        item.fail("square_accept_unreadable", str(exc))
+        accepted = ()
     item.state = status.get("state")
     item.evidence_state = status.get("evidenceState")
     if item.state != "pass":
         item.fail("state_not_pass", item.state)
     else:
-        bad = legacy_contradictions(status)
+        # An accepted square keeps its original "fail" review and independent_review on disk; the
+        # acceptance, bound below to the live SHA, is what reconciles them with state=pass.
+        bad = [] if accepted else legacy_contradictions(status)
         if bad:
             item.fail("legacy_review_contradiction", ",".join(bad))
     live = os.path.join(ctx.square_root, "live", f"{event_id}.png")
@@ -529,7 +566,9 @@ def check_square(ctx, event_id):
     check_depicts(ctx, item, status)
     card_sha = check_fact_card(ctx, item)
     check_review(ctx, item, os.path.join(ctx.square_root, "review", f"{event_id}.json"),
-                 "image", sha, card_sha, registry_applies=registered)
+                 "image", sha, card_sha, registry_applies=registered, accepted=accepted)
+    if accepted:
+        check_accept_binding(item, status, accepted, sha)
     if event_id in ctx.exception_ids:
         check_inscription(ctx, item, sha)
     return item

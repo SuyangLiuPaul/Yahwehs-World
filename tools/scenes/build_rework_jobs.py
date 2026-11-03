@@ -70,6 +70,18 @@ def reason_for(id, st):
     parts = re.split(r';\s*(?=veto\.)', reason)
     kept = [p for p in parts if p.split('=', 1)[0].strip().lower() not in drop]
     return '; '.join(kept)
+REDRAW_NOTES_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'square_redraw_notes.json')
+def redraw_note(id, path=REDRAW_NOTES_PATH):
+    """A concrete, per-square correction written after looking at the picture (square_redraw_notes.json).
+    It is added to the job after the reviewer's own note, never instead of it: repeating the reviewer's
+    words is what produced the same fault three and four times over."""
+    try:
+        doc = json.load(open(path, encoding='utf-8'))
+    except (OSError, ValueError):
+        return ''
+    if doc.get('schema') != 'square-redraw-notes-v1': return ''
+    note = (doc.get('notes') or {}).get(id)
+    return note.strip() if isinstance(note, str) and note.strip() else ''
 def extra_for(id, st):
     out = ''
     if 'fakeText' in (st.get('failed_vetoes') or []) or 'veto.faketext' in (st.get('rework_reason') or '').lower():
@@ -95,7 +107,8 @@ def main():
                   f"Event: {fc['verses']['ref']}. What must be shown: {who}. Key action: {act}"
                   + (" No people in the scene." if fc.get('noPeople') else "") + extra_for(id, st) +
                   "\n" + icon_sentence(st) +
-                  f"\n这次要改正：{reason_for(id, st)}")
+                  f"\n这次要改正：{reason_for(id, st)}"
+                  + (f"\n具体怎么改（必须照做，其余保持不变）：{redraw_note(id)}" if redraw_note(id) else ""))
         job = {"schema": "codex-job-v1", "kind": "square", "id": id, "prompt": prompt, "refs": [live],
                "out": f"{R}/candidates-codex/{id}.png", "minWidth": 1536, "source": "build_rework_jobs.py"}
         if limit is not None and n >= limit: break
