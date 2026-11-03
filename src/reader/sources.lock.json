@@ -1,0 +1,57 @@
+{
+ "wordsCommit": "eba531d86aa27bbd2c7a71f5cd710651a5a74001",
+ "files": {
+  "assets/bsb-yhwh.json": {
+   "sha256": "a0c40adc98debfbcabe3a6214a6430caae28d9de0094cdac9b510eb64a4b20bb",
+   "bytes": 6128720
+  },
+  "assets/kjv.json": {
+   "sha256": "564449e50ba6127a51879f1991d861b7d666e9af04bf1950b3337e9bea5d7ec1",
+   "bytes": 7604380
+  },
+  "assets/web-yhwh.json": {
+   "sha256": "6ac6a945bb5569cf300a56f10684406362b03f0e85146d4013fe1b0c3afb2b83",
+   "bytes": 6280513
+  },
+  "assets/asv-yhwh.json": {
+   "sha256": "bd27abe49bf834b1f0c391728b5d59f022d21479303af3ac0a168a3884685fc9",
+   "bytes": 6393312
+  },
+  "assets/cuvs-yhwh.json": {
+   "sha256": "9abbc010090ea255346f071a50b11e65c8021cb8cddbd5cc3524b57d47a1eb7c",
+   "bytes": 6719273
+  },
+  "assets/cuvs-yhwh-tr.json": {
+   "sha256": "0f6a405632cda0d222b2cad6d6a31697609e3eeaa458dd8424c2efb66b716fa9",
+   "bytes": 6719276
+  },
+  "assets/rst-yhwh.json": {
+   "sha256": "5bd65c794bb0bcd26646675e1339ca0968be19dce17a543ee21a17e6f2a135fc",
+   "bytes": 8283566
+  },
+  "assets/rst.json": {
+   "sha256": "dd4ff6810ed7430105703b5603095bb4668513e4ee87465df9abbf2c96e38b33",
+   "bytes": 9445836
+  },
+  "assets/section_titles.json": {
+   "sha256": "f42aa3a669930eea551394bec8f19c91f043b5b7bd76052388eb0264647676ea",
+   "bytes": 3199925
+  },
+  "lib/constants/bible_versions.dart": {
+   "sha256": "3d68f78f37d6f11db8b20589c1d3435a9def0ef1143e656ca9c0587a8918cc7c",
+   "bytes": 53591
+  },
+  "lib/constants/book_name_mapping.dart": {
+   "sha256": "ae08823c2c1eca0e7e2b4643bb0fda730859db755ddb693db994f79a044c552f",
+   "bytes": 19920
+  },
+  "lib/utils/reference_parser.dart": {
+   "sha256": "fb00f239423f0e138583a5866ee43f4fde7f411973c0eee2b5f3f48d583af635",
+   "bytes": 33614
+  },
+  "lib/constants/section_title_map.dart": {
+   "sha256": "c5fbb3473647d6fd734123dfd073e9761aa9932ddc51f6aa5272bdf7d136be67",
+   "bytes": 3669
+  }
+ }
+}

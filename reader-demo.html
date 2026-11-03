@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reader demo</title>
+<meta name="description" content="Standalone demo of the Bible reader module (src/reader): chapter reader and the passage under a picture. Verification page, not part of the release surface.">
+<style>
+  :root { color-scheme: dark light; }
+  body { margin: 0; background: #07131f; color: #e8e2d4; font: 15px/1.5 system-ui, sans-serif; }
+  @media (prefers-color-scheme: light) { body { background: #e6dfd0; color: #1e2a3a; } }
+  .demo-bar { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; padding: .5rem .5rem; border-bottom: 1px solid #ffffff22; }
+  .demo-bar label { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .4rem; max-width: 100%; }
+  .demo-bar select { max-width: 100%; min-width: 0; }
+  .demo-bar select, .demo-bar button { font: inherit; min-height: 44px; padding: 0 .75rem; }
+  .demo-bar a { color: inherit; }
+  #app { min-height: 60vh; }
+  .demo-pic { max-width: 46rem; margin: 1rem auto; padding: 0 1rem; }
+  .demo-pic .plate { aspect-ratio: 3/2; border: 1px solid #ffffff33; border-radius: 10px; background: radial-gradient(ellipse at 30% 20%, #f7d58a, #c9772a 35%, #3a2412 75%, #120a04); }
+</style>
+</head>
+<body>
+<div class="demo-bar" role="toolbar" aria-label="Demo controls">
+  <label>Language
+    <select id="lang" aria-label="Language">
+      <option value="en">English</option><option value="zh-Hans">简体中文</option><option value="zh-Hant">繁體中文</option><option value="ru">Русский</option>
+    </select>
+  </label>
+  <a href="?view=chapter" id="v-chapter">Chapter reader</a>
+  <a href="?view=passage" id="v-passage">Passage under a picture</a>
+  <span id="info" role="status"></span>
+</div>
+<main id="app"></main>
+<script type="module" src="/src/reader/demo.ts"></script>
+</body>
+</html>

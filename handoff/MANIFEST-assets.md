@@ -82,3 +82,20 @@ Made from crops of the owner's concept picture as the style reference; 1 credit 
 | `data/gallery/ru/part-1..4.json` | machine translation (Claude Sonnet subagents) of `events.json` titles and summaries under Words' church rules (`tools/i18n/translate/terms/_church_rules.md`, `terms/ru.md`) | NOT read by a native Russian speaker; the site says so (footer). Psalm numbers in a few summaries follow the English numbering |
 | `data/gallery/caption-overrides.json` | hand-written | gallery-only replacement of two zh/en summaries that used Trinity vocabulary (church rule 2); source `events.json` untouched |
 | `public/data/gallery/{index,summaries}.json` | `scripts/build-gallery-data.mjs` | generated; 祂 normalised to 他 (church rule 4) on the way in |
+
+## Reader data (gallery release, branch `gallery/reader-1`, 2026-11-03)
+
+Copied from the Words checkout by `scripts/reader-editions.mjs` (pinned in `src/reader/sources.lock.json`, Words `eba531d8`); the files under `public/data/reader/` are generated and gitignored, the bundle carries `src/reader/catalogue.gen.ts`. The Synodal is the plain eBible.org text (public domain), never the licensed Strong's-tagged one. No year is printed for the Union Version.
+
+| Path | What | Source / generation | Licence | Commit | Status |
+|---|---|---|---|---|---|
+| `public/data/reader/text/bsb-yhwh/*.json` | bsb-yhwh: 31086 verses, per-book cut of Words `assets/bsb-yhwh.json` (6128720 bytes, SHA-256 a0c40adc98debfbc…) | `scripts/reader-editions.mjs`, Words eba531d8 | see `src/reader/catalogue.gen.ts` | — | generated (gitignored) |
+| `public/data/reader/text/kjv/*.json` | kjv: 31102 verses, per-book cut of Words `assets/kjv.json` (7604380 bytes, SHA-256 564449e50ba6127a…) | `scripts/reader-editions.mjs`, Words eba531d8 | see `src/reader/catalogue.gen.ts` | — | generated (gitignored) |
+| `public/data/reader/text/web-yhwh/*.json` | web-yhwh: 31098 verses, per-book cut of Words `assets/web-yhwh.json` (6280513 bytes, SHA-256 6ac6a945bb5569cf…) | `scripts/reader-editions.mjs`, Words eba531d8 | see `src/reader/catalogue.gen.ts` | — | generated (gitignored) |
+| `public/data/reader/text/asv-yhwh/*.json` | asv-yhwh: 31086 verses, per-book cut of Words `assets/asv-yhwh.json` (6393312 bytes, SHA-256 bd27abe49bf834b1…) | `scripts/reader-editions.mjs`, Words eba531d8 | see `src/reader/catalogue.gen.ts` | — | generated (gitignored) |
+| `public/data/reader/text/cuvs-yhwh/*.json` | cuvs-yhwh: 31102 verses, per-book cut of Words `assets/cuvs-yhwh.json` (6719273 bytes, SHA-256 9abbc010090ea255…) | `scripts/reader-editions.mjs`, Words eba531d8 | see `src/reader/catalogue.gen.ts` | — | generated (gitignored) |
+| `public/data/reader/text/cuvs-yhwh-tr/*.json` | cuvs-yhwh-tr: 31102 verses, per-book cut of Words `assets/cuvs-yhwh-tr.json` (6719276 bytes, SHA-256 0f6a405632cda0d2…) | `scripts/reader-editions.mjs`, Words eba531d8 | see `src/reader/catalogue.gen.ts` | — | generated (gitignored) |
+| `public/data/reader/text/rst-yhwh/*.json` | rst-yhwh: 31102 verses, per-book cut of Words `assets/rst-yhwh.json` (8283566 bytes, SHA-256 5bd65c794bb0bcd2…) | `scripts/reader-editions.mjs`, Words eba531d8 | see `src/reader/catalogue.gen.ts` | — | generated (gitignored) |
+| `public/data/reader/text/rst/*.json` | rst: 31102 verses, per-book cut of Words `assets/rst.json` (9445836 bytes, SHA-256 dd4ff6810ed74301…) | `scripts/reader-editions.mjs`, Words eba531d8 | see `src/reader/catalogue.gen.ts` | — | generated (gitignored) |
+| `public/data/reader/headings/{cuv,cuv-tr,english-classic,ru}/*.json` | 2,597 section headings per set, per-book cut of Words `assets/section_titles.json` | `scripts/reader-editions.mjs` | BSB headings (public domain) + church-written Chinese/Russian | — | generated (gitignored) |
+| `public/data/reader/para/*.json` | 13,616 paragraph starts | this repo's `public/data/bible/meta.json` `paraStarts` | as that file | — | generated (gitignored) |

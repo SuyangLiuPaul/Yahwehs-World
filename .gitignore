@@ -22,3 +22,7 @@ __pycache__/
 # scripts/build-pictures.mjs, so never committed (about 260 MB). The small
 # index of them, public/data/gallery/pictures.json, IS committed.
 public/pictures/
+
+# Reader data copied from Words by scripts/reader-editions.mjs (npm run reader:data); never committed.
+public/data/reader/
+dist-reader/
