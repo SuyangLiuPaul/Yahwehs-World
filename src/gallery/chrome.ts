@@ -65,7 +65,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
   document.dispatchEvent(new CustomEvent('gx:installable'));
 });
 window.addEventListener('appinstalled', () => { install.event = null; document.dispatchEvent(new CustomEvent('gx:installed')); });
-if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+if (import.meta.env.PROD && import.meta.env.VITE_TARGET !== 'shell' && 'serviceWorker' in navigator) {
   const go = () => void import('./pwa.ts').then((m) => m.start());
   const idle = () => ('requestIdleCallback' in window ? window.requestIdleCallback(go, { timeout: 4000 }) : setTimeout(go, 1500));
   if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle, { once: true });

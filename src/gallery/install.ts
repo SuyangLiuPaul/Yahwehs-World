@@ -17,7 +17,7 @@ const standalone = () => matchMedia('(display-mode: standalone)').matches || (na
 const name = () => t("Yahweh's World", '雅伟之界', 'Мир Яхве');
 
 export function installMode(): Mode {
-  if (standalone()) return 'none';
+  if (import.meta.env.VITE_TARGET === 'shell' || standalone()) return 'none';
   if (install.event) return 'prompt';
   const p = platformOf(navigator.userAgent, navigator.platform, navigator.maxTouchPoints);
   return p.family === 'ios' ? 'ios' : p.family === 'mac-safari' ? 'mac-safari' : 'none';
