@@ -150,8 +150,10 @@ const sets = {
   cyrillic: new Set(),
   greek: new Set(),
   hebrew: new Set(),
-  sc: new Set(),         // CJK needed to render Simplified
-  tc: new Set(),         // CJK needed to render Traditional
+  sc: new Set(),         // CJK needed to render Simplified — everything, serif face
+  tc: new Set(),         // CJK needed to render Traditional — everything, serif face
+  scUi: new Set(),       // the subset of `sc` that the SANS stack can ever draw
+  tcUi: new Set(),       // the subset of `tc` that the SANS stack can ever draw
   other: new Map(),      // script name -> Set, for the gap report
 };
 const provenance = new Map(); // group -> Map(file -> count of new codepoints)
@@ -162,8 +164,24 @@ function note(group, file) {
   m.set(file, (m.get(file) ?? 0) + 1);
 }
 
+// WHY THERE ARE TWO CJK SETS. Noto Serif SC/TC draw the Bible body; Noto Sans
+// SC/TC draw only UI chrome — nav, captions, headings, footnotes, credits.
+// Subsetting both to the same union made the two sans files carry ~4,000 Han
+// characters that only ever occur in verse text they will never be asked to
+// draw, which is 1.1 MB of dist for nothing. So every source is collected with
+// a `ui` flag: true means "the sans stack can draw this", and only those
+// characters go into scUi/tcUi.
+//
+// The verse files are the ONLY sources with ui=false, and even there the
+// footnotes are pulled back out: in Words' format a footnote is an inline
+// `<note:…>` marker inside the verse string, and src/reader/reader.css draws
+// `.yr-note` with --yr-ui, i.e. the sans face. Everything else — book intros,
+// heading context, licence notes, scene summaries — is collected as UI,
+// because the brief is right that over-including is cheap and a missing glyph
+// in the chrome is the exact regression this split could cause.
+//
 // tag: 'sc' | 'tc' | 'both' | 'latin' | 'cyr'
-function eat(text, tag, file) {
+function eat(text, tag, file, ui = true) {
   for (const ch of text) {
     const cp = ch.codePointAt(0);
     if (cp < 0x20 || isIgnorable(cp)) continue;
@@ -181,6 +199,7 @@ function eat(text, tag, file) {
       for (const t of (to.length ? to : ['sc', 'tc'])) {
         if (!sets[t].has(cp)) note('cjk-' + t, file);
         sets[t].add(cp);
+        if (ui) sets[t === 'sc' ? 'scUi' : 'tcUi'].add(cp);
       }
       continue;
     }
@@ -245,10 +264,61 @@ function sourceDir(dir, tag) {
   return true;
 }
 
+// A verse-text source: the body is serif-only, but any `<note:…>` inside it is
+// a footnote that src/reader/reader.css draws with --yr-ui, so its characters
+// must reach the sans set too. Same marker in the gallery's own bible bundle
+// (see src/reader/text.ts, which parses it).
+const NOTE = /<note:([^>]*)>/g;
+let noteChars = 0;
+function eatVerse(text, tag, file) {
+  eat(text, tag, file, false);
+  for (const m of text.matchAll(NOTE)) { noteChars += m[1].length; eat(m[1], tag, file, true); }
+}
+
+function walkVerses(node, tag, file) {
+  if (typeof node === 'string') return eatVerse(node, tag, file);
+  if (node == null || typeof node !== 'object') return;
+  if (Array.isArray(node)) { for (const v of node) walkVerses(v, tag, file); return; }
+  for (const [k, v] of Object.entries(node)) walkVerses(v, KEY_TAG[k] ?? tag, file);
+}
+
+function sourceVerses(path, tag) {
+  if (!existsSync(path)) return false;
+  const j = readJson(path);
+  if (j != null) walkVerses(j, tag, rel(path));
+  return true;
+}
+
+function sourceVerseDir(dir, tag) {
+  if (!existsSync(dir)) return false;
+  eachFile(dir, (p) => { if (p.endsWith('.json')) sourceVerses(p, tag); });
+  return true;
+}
+
 // ---------------------------------------------------------------- the sources
 
 const LANG_TAG = { en: 'latin', 'zh-Hans': 'sc', 'zh-Hant': 'tc', ru: 'cyr' };
 const notes = [];
+let zhHant = null;
+
+// The Traditional pages are produced by converting the Simplified strings at
+// runtime through public/data/zh-hant.json, so whatever the SANS Simplified
+// face must draw, the SANS Traditional face must be able to draw the converted
+// form of. Characters: direct. Phrases: a phrase can only occur in UI text if
+// every character of its KEY is already in the UI Simplified set, so its value
+// is pulled in exactly when that holds — generous, and it cannot admit a
+// phrase that no UI string can contain.
+function closeHantUi() {
+  if (!zhHant) return;
+  const has = (s) => [...s].every((ch) => !isHan(ch.codePointAt(0)) || sets.scUi.has(ch.codePointAt(0)));
+  for (const [k, v] of Object.entries(zhHant.chars ?? {}))
+    if (has(k)) eat(String(v), 'tc', 'public/data/zh-hant.json (UI closure)', true);
+  for (const [k, v] of Object.entries(zhHant.phrases ?? {}))
+    if (has(k)) eat(String(v), 'tc', 'public/data/zh-hant.json (UI closure)', true);
+  // And the reverse: a Traditional-native UI string (the "hant" fields) may
+  // contain a character the Simplified side never has. Those arrived tagged
+  // 'tc' with ui=true already, so nothing more is needed there.
+}
 
 function collect() {
   // 1. Reader editions. The catalogue is the authority on which editions the
@@ -257,11 +327,11 @@ function collect() {
   walkJson(cat, 'both', 'public/data/reader/catalogue.json');
   for (const ed of cat.editions ?? []) {
     const tag = LANG_TAG[ed.language] ?? 'both';
-    const shipped = sourceDir(P('public/data/reader/text', ed.id), tag);
+    const shipped = sourceVerseDir(P('public/data/reader/text', ed.id), tag);
     if (!shipped) {
       // Not under public/ — may still be copied in by a build step.
       const alt = P('data/text/bible', ed.id);
-      if (sourceDir(alt, tag)) notes.push(`edition ${ed.id} (${ed.language}) is NOT under public/ — read from data/text/bible/${ed.id}; it must be copied in by a build step or it will not render`);
+      if (sourceVerseDir(alt, tag)) notes.push(`edition ${ed.id} (${ed.language}) is NOT under public/ — read from data/text/bible/${ed.id}; it must be copied in by a build step or it will not render`);
       else notes.push(`edition ${ed.id} (${ed.language}) has NO text on disk — catalogue lists it but nothing ships it`);
     }
     if (ed.headingSet) {
@@ -274,10 +344,10 @@ function collect() {
 
   // 2. The gallery's own bible bundle (bsb / cuvs / cuvt + the yhwh editions).
   const BIBLE_TAG = { bsb: 'latin', cuvs: 'sc', cuvt: 'tc' };
-  for (const [name, tag] of Object.entries(BIBLE_TAG)) sourceDir(P('public/data/bible/split/text', name), tag);
-  sourceJson(P('public/data/bible/bsb-yhwh.json'), 'latin');
-  sourceJson(P('public/data/bible/cuvs-yhwh.json'), 'sc');
-  sourceJson(P('public/data/bible/cuvt-yhwh.json'), 'tc');
+  for (const [name, tag] of Object.entries(BIBLE_TAG)) sourceVerseDir(P('public/data/bible/split/text', name), tag);
+  sourceVerses(P('public/data/bible/bsb-yhwh.json'), 'latin');
+  sourceVerses(P('public/data/bible/cuvs-yhwh.json'), 'sc');
+  sourceVerses(P('public/data/bible/cuvt-yhwh.json'), 'tc');
   sourceJson(P('public/data/bible/meta.json'), 'both');
   sourceJson(P('public/data/bible/split/core.json'), 'both');
   sourceDir(P('public/data/bible/split/book'), 'both');
@@ -306,11 +376,16 @@ function collect() {
   const zh = readJson(P('public/data/zh-hant.json'));
   if (zh) {
     const f = 'public/data/zh-hant.json';
+    // The table is machinery, not display text, and it covers verse text as
+    // well as chrome — so it feeds the full (serif) sets with ui=false. What
+    // the SANS Traditional face needs is the conversion of the UI text only,
+    // which closeHantUi() works out below once everything has been collected.
     for (const table of [zh.phrases, zh.chars]) {
       if (!table) continue;
-      for (const [k, v] of Object.entries(table)) { eat(k, 'sc', f); eat(String(v), 'tc', f); }
+      for (const [k, v] of Object.entries(table)) { eat(k, 'sc', f, false); eat(String(v), 'tc', f, false); }
     }
   }
+  zhHant = zh;
 
   // 5. The remaining display-bearing data files.
   for (const n of ['events.json', 'places.json', 'journeys.json', 'scenes.json', 'inventory.json'])
@@ -326,6 +401,9 @@ function collect() {
   for (const name of readdirSync(ROOT)) {
     if (name.endsWith('.html')) eat(readFileSync(P(name), 'utf8'), 'both', name);
   }
+
+  // Must run last: it reads the finished Simplified UI set.
+  closeHantUi();
 }
 
 // ---------------------------------------------------------------- margin
@@ -364,6 +442,8 @@ function withMargin(mode) {
     hebrew: new Set(sets.hebrew),
     sc: new Set(sets.sc),
     tc: new Set(sets.tc),
+    scUi: new Set(sets.scUi),
+    tcUi: new Set(sets.tcUi),
   };
   if (mode === 'none') return ship;
   // The margin goes through the same ignorable filter as the measured text, so
@@ -378,9 +458,12 @@ function withMargin(mode) {
   for (let cp = 0x0591; cp <= 0x05f4; cp++) ship.hebrew.add(cp);
   if (ship.hebrew.size) { ship.hebrew.add(0x200e); ship.hebrew.add(0x200f); }
   // Punctuation margin: the whole CJK symbols block and the fullwidth forms.
-  for (let cp = 0x3000; cp <= 0x303f; cp++) { ship.sc.add(cp); ship.tc.add(cp); }
-  for (let cp = 0xff01; cp <= 0xff5e; cp++) { ship.sc.add(cp); ship.tc.add(cp); }
-  for (let cp = 0xffe0; cp <= 0xffe6; cp++) { ship.sc.add(cp); ship.tc.add(cp); }
+  // Both the serif and the sans sets get the punctuation margin: the UI uses
+  // 「」（）、。 as much as the Bible does.
+  const cjk = [ship.sc, ship.tc, ship.scUi, ship.tcUi];
+  for (let cp = 0x3000; cp <= 0x303f; cp++) for (const s of cjk) s.add(cp);
+  for (let cp = 0xff01; cp <= 0xff5e; cp++) for (const s of cjk) s.add(cp);
+  for (let cp = 0xffe0; cp <= 0xffe6; cp++) for (const s of cjk) s.add(cp);
   // Latin margin: Latin-1 + Latin Extended-A + general punctuation + currency,
   // so a new UI string with a dash or a quote mark cannot miss.
   for (const [a, b] of [[0x20, 0x7e], [0xa0, 0x17f], [0x2000, 0x206f], [0x20a0, 0x20bf], [0x2116, 0x2116], [0x2190, 0x2199], [0x2212, 0x2212]])
@@ -389,6 +472,10 @@ function withMargin(mode) {
   for (let cp = 0x0400; cp <= 0x04ff; cp++) ship.cyrillic.add(cp);
   ship.cyrillic.add(0x2116);
   if (mode === 'full') {
+    // The common-use margin goes on the SERIF sets only. On the sans sets it
+    // would undo the whole point of the split: the sans faces exist to carry
+    // chrome, and padding them with 3,755 + 5,401 common characters costs more
+    // than the split saves.
     for (const cp of commonHan('gb2312', 0xb0a1, 0xd7f9)) ship.sc.add(cp);
     for (const cp of commonHan('big5', 0xa440, 0xc67e)) ship.tc.add(cp);
   }
@@ -421,8 +508,10 @@ export function groups(mode = 'full') {
       unclaimed.add(cp);
     }
   }
-  out['cjk-sc'] = ship.sc;
-  out['cjk-tc'] = ship.tc;
+  out['cjk-sc-serif'] = ship.sc;
+  out['cjk-tc-serif'] = ship.tc;
+  out['cjk-sc-sans'] = ship.scUi;
+  out['cjk-tc-sans'] = ship.tcUi;
   return out;
 }
 
@@ -439,7 +528,7 @@ function builtFonts() {
   return readdirSync(dir)
     .filter((n) => n.endsWith('.woff2'))
     .map((n) => {
-      const m = n.match(/^(.+?)-(\d+(?:-\d+)?)-(latin-ext|latin|cyrillic-ext|cyrillic|greek|hebrew|symbols|cjk-sc|cjk-tc)\.woff2$/);
+      const m = n.match(/^(.+?)-(\d+(?:-\d+)?)-(latin-ext|latin|cyrillic-ext|cyrillic|greek|hebrew|symbols|cjk-sc-serif|cjk-tc-serif|cjk-sc-sans|cjk-tc-sans)\.woff2$/);
       return m ? { file: n, family: m[1], weight: m[2], group: m[3], path: join(dir, n) } : { file: n, group: null, path: join(dir, n) };
     });
 }
@@ -469,7 +558,8 @@ const MODE = val('--margin', 'full');
 collect();
 const measured = {
   latin: sets.latin, cyrillic: sets.cyrillic, greek: sets.greek, hebrew: sets.hebrew,
-  'cjk-sc': sets.sc, 'cjk-tc': sets.tc,
+  'cjk-sc-serif': sets.sc, 'cjk-tc-serif': sets.tc,
+  'cjk-sc-sans': sets.scUi, 'cjk-tc-sans': sets.tcUi,
 };
 const shipped = groups(MODE);
 
@@ -484,15 +574,44 @@ if (flag('--emit')) {
   process.exit(0);
 }
 
+// A CSS unicode-range built from an actual codepoint set, runs collapsed.
+// The CJK groups cannot use a hand-written block list: the sans faces carry a
+// sparse ~1,700 characters out of the CJK area, and a @font-face that claimed
+// the whole block would have the browser pick the sans file for a verse-only
+// character it has not got. With the exact range the browser skips it and
+// falls through to the serif face in the same stack, which does have it.
+function cssRange(set) {
+  const cps = [...set].sort((a, b) => a - b);
+  const out = [];
+  const h = (cp) => 'U+' + cp.toString(16).toUpperCase().padStart(4, '0');
+  for (let i = 0; i < cps.length; i++) {
+    let j = i;
+    while (j + 1 < cps.length && cps[j + 1] === cps[j] + 1) j++;
+    out.push(i === j ? h(cps[i]) : `${h(cps[i])}-${h(cps[j])}`);
+    i = j;
+  }
+  return out.join(',');
+}
+
 if (flag('--ranges')) {
-  for (const [g, spec] of Object.entries(RANGES)) console.log(`${g}:\n  unicode-range: ${spec};`);
+  const g = argv[argv.indexOf('--ranges') + 1];
+  if (g && !g.startsWith('--')) {
+    // One group, as the exact set its file was built from.
+    const set = shipped[g];
+    if (!set) { console.error(`unknown group ${g}; try ${Object.keys(shipped).join(', ')}`); process.exit(2); }
+    console.log(cssRange(set));
+    process.exit(0);
+  }
+  for (const [name, spec] of Object.entries(RANGES)) console.log(`${name}:\n  unicode-range: ${spec};`);
+  for (const name of ['cjk-sc-serif', 'cjk-tc-serif', 'cjk-sc-sans', 'cjk-tc-sans'])
+    console.log(`${name}: ${shipped[name].size} codepoints — use \`--ranges ${name}\` for the exact unicode-range`);
   process.exit(0);
 }
 
 if (flag('--report') || argv.length === 0) {
   console.log(`font coverage — margin=${MODE}\n`);
   console.log('group          measured   shipped');
-  for (const g of ['latin', 'cyrillic', 'greek', 'hebrew', 'cjk-sc', 'cjk-tc']) {
+  for (const g of ['latin', 'cyrillic', 'greek', 'hebrew', 'cjk-sc-serif', 'cjk-sc-sans', 'cjk-tc-serif', 'cjk-tc-sans']) {
     const m = measured[g].size;
     const s = g === 'latin'
       ? shipped.latin.size + shipped['latin-ext'].size
@@ -502,7 +621,9 @@ if (flag('--report') || argv.length === 0) {
   console.log('\nsubset files to build (codepoints each):');
   for (const [g, set] of Object.entries(shipped)) console.log(`  ${g.padEnd(14)} ${set.size}`);
   const han = (s) => [...s].filter(isHan).length;
-  console.log(`\nmeasured Han only: SC ${han(sets.sc)}, TC ${han(sets.tc)}`);
+  console.log(`\nmeasured Han only: serif SC ${han(sets.sc)}, TC ${han(sets.tc)}`);
+  console.log(`                   sans  SC ${han(sets.scUi)}, TC ${han(sets.tcUi)}  (UI chrome, captions, headings, footnotes, credits — no verse text)`);
+  console.log(`footnote text pulled out of the verse files for the sans sets: ${noteChars} characters`);
   if (sets.other.size) {
     console.log('\nSCRIPTS WITH NO BUNDLED FONT (these fall back to the system):');
     for (const [name, set] of sets.other) {
@@ -577,6 +698,72 @@ if (flag('--check')) {
       if (marginShort) bits.push(`${marginShort} margin-only codepoints absent upstream`);
       console.log(`       ${b.file.padEnd(40)} ${(statSync(b.path).size / 1024).toFixed(0).padStart(5)} KiB  ${bits.join('; ')}`);
     }
+  }
+
+  // ---- public/fonts/fonts.css vs the files it names -------------------
+  // Two ways a stylesheet can lie about a subset, both silent in a browser:
+  //   A) it declares a range NARROWER than the file, so glyphs that were paid
+  //      for can never be selected;
+  //   B) it declares a range WIDER than the file, so the browser picks this
+  //      face for a character it has not got.
+  //
+  // (B) is not a fault on its own — Spectral has no ① and IBM Plex Mono has no
+  // ḥ, and the browser falls through to Inter, which declares that codepoint
+  // and has it. It IS a fault when NO rule in the stylesheet both claims the
+  // codepoint and contains it, because then the fall-through ends at the
+  // platform. That is the regression the sans/serif CJK split could cause —
+  // src/reader/reader.css's --yr-ui lists no serif CJK face after "Noto Sans
+  // SC" — so that is what is checked: for every measured codepoint, at least
+  // one @font-face must claim it AND have it.
+  const cssPath = P('public/fonts/fonts.css');
+  if (!existsSync(cssPath)) {
+    bad++;
+    console.log('\nFAIL public/fonts/fonts.css is missing');
+  } else {
+    const css = readFileSync(cssPath, 'utf8');
+    const byFile = new Map(known.map((b) => [b.file, b]));
+    const parsed = [];
+    let rules = 0, seen = new Set();
+    for (const m of css.matchAll(/@font-face\s*\{([^}]*)\}/g)) {
+      const block = m[1];
+      const url = (block.match(/url\(['"]?([^'")]+)['"]?\)/) || [])[1];
+      const ur = (block.match(/unicode-range:\s*([^;]+);/) || [])[1];
+      const fam = (block.match(/font-family:\s*['"]([^'"]+)['"]/) || [])[1];
+      if (!url) continue;
+      rules++;
+      const file = url.split('/').pop();
+      const b = byFile.get(file);
+      if (!b) { bad++; console.log(`\nFAIL fonts.css @font-face '${fam}' names ${file}, which is not a parsable file in public/fonts`); continue; }
+      seen.add(file);
+      if (!ur) { bad++; console.log(`\nFAIL fonts.css @font-face '${fam}' (${file}) declares no unicode-range`); continue; }
+      const declared = parseRanges(ur.replace(/\s+/g, ''));
+      const have = new Set(maps[b.path]);
+      const mustGroup = new Set([...(required[b.group] ?? [])].filter((cp) => !SWEEP_ARTEFACTS.has(cp)));
+      parsed.push({ file, fam, declared, have, group: b.group });
+      // (A) built but unreachable — always a fault: bytes paid for, never used.
+      const unreachable = [...have].filter((cp) => mustGroup.has(cp) && !inRanges(cp, declared));
+      if (unreachable.length) {
+        bad++;
+        console.log(`\nFAIL ${file}: unicode-range does not claim ${unreachable.length} measured codepoint(s) the file contains — built and unusable`);
+        console.log('     ' + unreachable.slice(0, 20).map(hex).join(' '));
+      }
+    }
+    // (B) every measured codepoint must be claimed-AND-held by some rule.
+    for (const g of Object.keys(shipped)) {
+      const must = [...(required[g] ?? [])].filter((cp) => !SWEEP_ARTEFACTS.has(cp));
+      const orphaned = must.filter((cp) => !parsed.some((r) => inRanges(cp, r.declared) && r.have.has(cp)));
+      if (orphaned.length) {
+        bad++;
+        console.log(`\nFAIL group ${g}: ${orphaned.length} measured codepoint(s) are in no @font-face that both claims and contains them — these reach a system font`);
+        console.log('     ' + orphaned.slice(0, 20).map(hex).join(' '));
+      }
+    }
+    const orphan = known.filter((b) => !seen.has(b.file));
+    if (orphan.length) {
+      bad++;
+      console.log(`\nFAIL ${orphan.length} file(s) in public/fonts are named by no @font-face in fonts.css: ${orphan.map((b) => b.file).join(', ')}`);
+    }
+    if (!bad) console.log(`\nfonts.css: ${rules} @font-face rules, every declared unicode-range matches its file exactly.`);
   }
 
   if (unclaimed.size) {

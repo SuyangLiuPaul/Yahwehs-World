@@ -11,9 +11,19 @@
 #   Inter            UI sans      variable 400-600  latin latin-ext cyrillic cyrillic-ext greek
 #   Spectral         serif/display  500, 600        latin latin-ext cyrillic cyrillic-ext
 #   IBM Plex Mono    numbers/mono   400, 500        latin latin-ext cyrillic cyrillic-ext
-#   Noto Sans SC/TC  CJK UI         400             cjk-sc / cjk-tc
-#   Noto Serif SC/TC CJK body       500             cjk-sc / cjk-tc
+#   Noto Sans SC/TC  CJK UI         400             cjk-sc-sans / cjk-tc-sans
+#   Noto Serif SC/TC CJK body       500             cjk-sc-serif / cjk-tc-serif
 #   Noto Sans/Serif Hebrew  variable 400-600        hebrew
+#
+# WHY THE SANS AND SERIF CJK FACES ARE SUBSET DIFFERENTLY. Noto Serif SC/TC
+# draw the Bible body; Noto Sans SC/TC draw only chrome — nav, captions, scene
+# summaries, headings, footnotes, credits. Subsetting both to the same union
+# made each sans file carry about 4,000 Han characters it can never be asked to
+# draw. The sans set is now built from the UI sources only (including the
+# footnote text pulled back out of the verse strings, which reader.css draws
+# with --yr-ui) and the two sans files declare the EXACT unicode-range they
+# contain, so a verse-only character skips them and lands on the serif face in
+# the same stack rather than on a system font.
 #
 # WHY ONE WEIGHT PER CJK FACE. The pages ask for Noto Sans SC/TC at 400, 500
 # and 600 and Noto Serif SC/TC at 500 and 600 — ten CJK files. At the measured
@@ -199,10 +209,31 @@ sub "$CACHE/NotoSansSymbols2.ttf" symbols NotoSansSymbols-400
 
 echo
 echo "CJK — one weight per family and script (see the note at the top)"
-sub "$CJK_DIR/NotoSansCJKsc-Regular.otf" cjk-sc NotoSansSC-400
-sub "$CJK_DIR/NotoSansCJKtc-Regular.otf" cjk-tc NotoSansTC-400
-sub "$CJK_DIR/NotoSerifCJKsc-Medium.otf" cjk-sc NotoSerifSC-500
-sub "$CJK_DIR/NotoSerifCJKtc-Medium.otf" cjk-tc NotoSerifTC-500
+# The SANS faces draw only UI chrome, so they are subset to the UI character
+# set, not to the Bible's — see the sans/serif note at the top of
+# tools/font-coverage.mjs. The SERIF faces keep the full set.
+sub "$CJK_DIR/NotoSansCJKsc-Regular.otf" cjk-sc-sans  NotoSansSC-400
+sub "$CJK_DIR/NotoSansCJKtc-Regular.otf" cjk-tc-sans  NotoSansTC-400
+sub "$CJK_DIR/NotoSerifCJKsc-Medium.otf" cjk-sc-serif NotoSerifSC-500
+sub "$CJK_DIR/NotoSerifCJKtc-Medium.otf" cjk-tc-serif NotoSerifTC-500
+
+# The two sans faces carry a sparse set, so their @font-face cannot use a
+# whole-block unicode-range. Regenerate the exact ranges and splice them into
+# public/fonts/fonts.css, between the markers the file carries for the purpose.
+echo
+echo "writing the exact sans unicode-ranges into public/fonts/fonts.css"
+for g in cjk-sc-sans cjk-tc-sans; do
+  r="$(node "$ROOT/tools/font-coverage.mjs" --ranges "$g" --margin="$MARGIN")"
+  [ -n "$r" ] || { echo "FATAL: could not generate the unicode-range for $g" >&2; exit 1; }
+  CSS="$OUT/fonts.css" GROUP="$g" RANGE="$r" node -e '
+    const fs = require("fs"), p = process.env.CSS;
+    const a = `/* @@range:${process.env.GROUP}:start */`, b = `/* @@range:${process.env.GROUP}:end */`;
+    const s = fs.readFileSync(p, "utf8");
+    const i = s.indexOf(a), j = s.indexOf(b);
+    if (i < 0 || j < 0) { console.error(`FATAL: ${a} / ${b} markers not found in ${p}`); process.exit(1); }
+    fs.writeFileSync(p, s.slice(0, i + a.length) + "\n  unicode-range: " + process.env.RANGE + ";\n  " + s.slice(j));
+  ' || exit 1
+done
 
 # ---------------------------------------------------------------- report
 

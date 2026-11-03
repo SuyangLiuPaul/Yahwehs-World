@@ -49,7 +49,7 @@ test('Google Fonts hosts bypass the worker: nothing is fetched from them any mor
 });
 test('our own font stylesheet is font-css and our own faces are font-file', () => {
   assert.equal(kind('/fonts/fonts.css'), 'font-css');
-  assert.equal(kind('/fonts/NotoSerifSC-500-cjk-sc.woff2'), 'font-file');
+  assert.equal(kind('/fonts/NotoSerifSC-500-cjk-sc-serif.woff2'), 'font-file');
 });
 test('a font file in the precache is served from the shell cache, not the byte-budgeted one', () => {
   assert.equal(kind('/fonts/Inter-400-600-latin.woff2', get, new Set(['/fonts/Inter-400-600-latin.woff2'])), 'static');

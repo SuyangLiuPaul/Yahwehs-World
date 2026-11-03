@@ -69,7 +69,12 @@ Noto Serif CJK SC / TC  (shipped as "Noto Serif SC" and "Noto Serif TC")
                NotoSerifCJKtc-Medium.otf, version 2.003
                  sha256 da0a79ee44322329dd9ff87d2cc878dc897c5180195e3f9b6cd4c8569781e887
   Change       subset to the characters the shipped text actually uses
-               (tools/font-coverage.mjs) and desubroutinized. The @font-face
+               (tools/font-coverage.mjs) and desubroutinized. The SERIF faces
+               carry the full measured set, because they draw the Bible body;
+               the SANS faces carry only the UI set (chrome, captions, headings,
+               footnotes, credits), because that is all they are ever asked to
+               draw — hence the -cjk-*-serif and -cjk-*-sans file names and the
+               exact unicode-range on the sans @font-face rules. The @font-face
                family names drop "CJK" to match what the pages ask for; the
                fonts' own internal names are unchanged, as the licence requires.
   Licence      SIL OFL 1.1

@@ -16,7 +16,12 @@
      the "字体还是很差" the owner reported. Inter and Spectral carry Latin AND Cyrillic; the Noto subsets carry the
      Han; Noto Serif/Sans Hebrew carry the pointed Hebrew in the Psalm 119 headings and the divine name; YW Symbols
      carries the few arrows and enclosed numbers none of the others has. The system names stay as a last resort. */
-  --yr-ui: "Inter", "Noto Sans SC", "Noto Sans Hebrew", "YW Symbols", -apple-system, system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
+  /* "Noto Serif SC" sits at the end of the SANS stack on purpose. The sans CJK subset is cut to the characters the
+     interface and the captions use, not the Bible's; if a verse-only character ever reached a sans element the next
+     stop would otherwise be system-ui, i.e. the fallback this whole change exists to remove. The serif subset has
+     the full set, so it catches it in one of our own faces. verify:fonts proves the case never arises; this is the
+     belt to that pair of braces. */
+  --yr-ui: "Inter", "Noto Sans SC", "Noto Serif SC", "Noto Sans Hebrew", "YW Symbols", -apple-system, system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
   --yr-read: "Spectral", "Noto Serif SC", "Noto Serif Hebrew", "Inter", "YW Symbols", Georgia, "Songti SC", "PT Serif", serif;
   --yr-mono: "IBM Plex Mono", "Inter", "Noto Sans SC", "YW Symbols", ui-monospace, SFMono-Regular, Menlo, monospace;
   color-scheme: dark;
@@ -47,7 +52,7 @@
    the Mainland forms at once. Same mechanism as src/tokens.css: a custom property resolves where it is USED, so
    redefining the two stacks here moves every piece of text downstream at once. */
 html[lang="zh-Hant"] .yr, .yr:lang(zh-Hant) {
-  --yr-ui: "Inter", "Noto Sans TC", "Noto Sans SC", "Noto Sans Hebrew", "YW Symbols", -apple-system, system-ui, "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --yr-ui: "Inter", "Noto Sans TC", "Noto Sans SC", "Noto Serif TC", "Noto Serif SC", "Noto Sans Hebrew", "YW Symbols", -apple-system, system-ui, "PingFang TC", "Microsoft JhengHei", sans-serif;
   --yr-read: "Spectral", "Noto Serif TC", "Noto Serif SC", "Noto Serif Hebrew", "Inter", "YW Symbols", Georgia, "Songti TC", serif;
 }
 /* a host that owns the colours sets data-yr-theme="inherit" on the container and defines the --yr-* tokens itself */
