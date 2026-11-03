@@ -501,6 +501,76 @@ for (const vp of [[375, 812], [1440, 900]]) {
     await ctx.close();
   }
 }
+// ── the plates in the reader ────────────────────────────────────────────────────────────────────────────────────
+// The product is the picture AND the Scripture in one view. These are the checks that would have caught the
+// regression the owner reported: /bible.html showed bare text for the whole gallery release.
+{
+  const tag = 'plates';
+  const { ctx, page } = await open([375, 812], 'en');
+  await page.goto(`${base}/bible.html#ref=Genesis%201`);
+  await page.waitForSelector('figure.yr-plate img', { timeout: 15000 });
+  await page.waitForFunction(() => (window.__yrPerf?.plates ?? 0) > 0, null, { timeout: 15000 });
+
+  // Genesis 1 holds three scenes, beginning at 1:1, 1:14 and 1:26 (public/data/gallery/index.json).
+  const seen = await page.locator('figure.yr-plate').evaluateAll((els) => els.map((e) => ({
+    scene: e.dataset.scene, v: e.dataset.v, href: e.querySelector('a')?.getAttribute('href'),
+    alt: e.querySelector('img')?.getAttribute('alt'), cap: e.querySelector('figcaption')?.textContent,
+    lazy: e.querySelector('img')?.getAttribute('loading'), w: e.querySelector('img')?.getAttribute('width'),
+  })));
+  check(seen.length === 3, `${tag}: Genesis 1 draws 3 plates (${seen.length})`);
+  check(seen.map((p) => p.v).join(' ') === '1:1 1:14 1:26', `${tag}: at the verses their scenes begin (${seen.map((p) => p.v).join(' ')})`);
+  check(seen.every((p) => p.alt && p.cap && p.alt === p.cap), `${tag}: every plate has a caption and the same alt text`);
+  check(seen.every((p) => p.lazy === 'lazy' && p.w), `${tag}: every plate is lazy and reserves its box`);
+
+  // every link resolves to a real picture page, and the thumbnail itself actually loaded
+  for (const p of seen) {
+    const r = await page.request.get(`${base}${p.href.split('#')[0]}`);
+    check(r.ok(), `${tag}: ${p.scene} links to a page that exists (${r.status()})`);
+  }
+  const drawn = await page.evaluate(() => [...document.querySelectorAll('figure.yr-plate img')].filter((i) => i.complete && i.naturalWidth > 0).length);
+  check(drawn >= 1, `${tag}: the first plate's thumbnail is painted (${drawn}/3 in view)`);
+  check(await noOverflow(page), `${tag}: a plate never pushes the page sideways`);
+
+  // the plate must follow its heading and stand before its own verse, as the old reader drew it
+  const order = await page.evaluate(() => {
+    const b = document.querySelector('.yr-body');
+    const i = (sel) => [...b.querySelectorAll('*')].indexOf(b.querySelector(sel));
+    return { head: i('.yr-hd'), plate: i('figure.yr-plate'), verse: i('[data-k="1001"]') };
+  });
+  check(order.head >= 0 && order.head < order.plate && order.plate < order.verse,
+    `${tag}: heading, then the plate, then the verse (${order.head} < ${order.plate} < ${order.verse})`);
+
+  // all three layouts keep them, and none lands inside a paragraph or a verse row
+  for (const mode of ['paragraph', 'parallel']) {
+    await page.click(`.yr-seg button[data-id="${mode}"]`);
+    await page.waitForFunction((m) => window.__yrPerf && document.querySelector(`.yr-seg button[data-id="${m}"][aria-pressed="true"]`), mode);
+    await page.waitForSelector('figure.yr-plate');
+    const n = await page.locator('figure.yr-plate').count();
+    const bad2 = await page.evaluate(() => [...document.querySelectorAll('figure.yr-plate')].filter((f) => f.closest('p.yr-p, .yr-pv')).length);
+    check(n === 3 && bad2 === 0, `${tag}: ${mode} layout keeps 3 plates, none inside a paragraph or a verse row (${n}, ${bad2} misplaced)`);
+  }
+
+  // a chapter with no scene of its own draws none (and does not repeat the one that runs into it)
+  await page.click('.yr-seg button[data-id="verse"]');
+  await page.goto(`${base}/bible.html#ref=Genesis%202`);
+  await page.waitForFunction(() => window.__yrPerf?.verses > 0, null, { timeout: 15000 });
+  await page.waitForTimeout(600);
+  const g2 = await page.locator('figure.yr-plate').evaluateAll((els) => els.map((e) => e.dataset.v));
+  check(g2.every((v) => v.startsWith('2:')), `${tag}: Genesis 2 draws only scenes that begin in Genesis 2 (${g2.join(' ') || 'none'})`);
+
+  // the caption follows the interface language
+  for (const [l, want] of [['zh-Hans', '起初创造天地'], ['zh-Hant', '起初創造天地'], ['ru', 'Сотворение мира']]) {
+    await page.goto(`${base}/bible.html#ref=Genesis%201`);
+    await page.waitForSelector('figure.yr-plate figcaption');
+    await page.click(`.lang-switch [data-locale="${l}"]`);
+    await page.waitForFunction((x) => document.documentElement.lang === x, l);
+    await page.waitForTimeout(400);
+    const cap = (await page.locator('figure.yr-plate figcaption').first().innerText()).trim();
+    check(cap === want, `${tag}: the caption is ${l} (${cap})`);
+  }
+  await ctx.close();
+}
+
 await browser.close(); close();
 console.log(bad ? `\n${bad} problem(s), ${ok} ok` : `\nall ${ok} checks ok`);
 process.exit(bad ? 1 : 0);
