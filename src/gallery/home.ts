@@ -1,5 +1,6 @@
 import './home.css';
 import { applyStatic, bindSwitch, fullLocale, onLocale, t } from '../locale.ts';
+import { NAME_ZH } from '../config/site.ts';
 import { loadingStep, loadingSteps, pageReady } from '../site-shell.ts';
 import { bookTitle, isOldTestament, loadIndex, refText, sceneTitle, type GalleryIndex, type Scene } from './data.ts';
 import { plate } from './media.ts';
@@ -75,7 +76,7 @@ async function paintHero() {
   $('hm-next').setAttribute('aria-label', t('The day after', '后一天', 'Следующий день'));
   $<HTMLButtonElement>('hm-next').disabled = back === 0;
   $<HTMLButtonElement>('hm-prev').disabled = back >= passed.length - 1;
-  document.title = `${t("Yahweh's World", '雅伟之界', 'Мир Яхве')} · ${sceneTitle(sc)}`;
+  document.title = `${t("Yahweh's World", NAME_ZH.hans, 'Мир Яхве')} · ${sceneTitle(sc)}`;
 }
 
 // ── browse by book ──────────────────────────────────────────────────────
@@ -149,7 +150,7 @@ function failed() {
   const btn = books.querySelector('button')!;
   btn.textContent = t('Try again', '重试', 'Повторить');
   btn.addEventListener('click', () => { books.replaceChildren(); void start(); });
-  $('hm-title').textContent = t("Yahweh's World", '雅伟之界', 'Мир Яхве');
+  $('hm-title').textContent = t("Yahweh's World", NAME_ZH.hans, 'Мир Яхве');
   $('hm-kicker').textContent = '';
 }
 

@@ -1,3 +1,5 @@
+import { nameZh } from './config/site.ts';
+
 // One locale for the whole site, remembered between visits.
 //
 // Three readings: English, 简体, 繁體. The reader's system decides which one
@@ -126,6 +128,13 @@ export function hant(s: string): string {
   });
 }
 
+/** The Chinese product name for this reader: Simplified only while reading 简体, Traditional in English, Russian and 繁體
+ *  (owner rule, 2026-11-04; the two spellings live in config/site.ts). */
+export const brandZh = (): string => nameZh(htmlLang(current));
+
+/** Puts the product name inside a string into this reader's spelling (a bilingual <title> is authored once). */
+const withBrand = (s: string): string => s.replace(/雅[伟偉]之界/g, brandZh());
+
 /** Picks the reading, and puts Chinese into the reader's script. */
 export const t = <T>(en: T, zh: T, ru?: T): T => {
   if (current === 'en') return en;
@@ -207,7 +216,7 @@ const narrow = typeof matchMedia === 'function'
 
 /** Applies [data-en]/[data-zh] pairs anywhere in the document. */
 export function applyStatic(root: ParentNode = document) {
-  if (root === document && authoredTitle) document.title = hant(authoredTitle);
+  if (root === document && authoredTitle) document.title = withBrand(hant(authoredTitle));
   const small = narrow?.matches ?? false;
   root.querySelectorAll<HTMLElement>('[data-en]').forEach((el) => {
     const en = (small && el.dataset.enNarrow) || el.dataset.en || '';
@@ -221,10 +230,11 @@ export function applyStatic(root: ParentNode = document) {
   // the gallery applies a nav to itself.
   const named = [...(root instanceof Element && root.matches('[data-aria-en]') ? [root as HTMLElement] : []), ...Array.from(root.querySelectorAll<HTMLElement>('[data-aria-en]'))];
   named.forEach((el) => el.setAttribute('aria-label', t(el.dataset.ariaEn || '', el.dataset.ariaZh || el.dataset.ariaEn || '', el.dataset.ariaRu || el.dataset.ariaEn || '')));
-  // Chinese written straight into an element — the wordmark — rather than
-  // paired with an English original.
+  // The wordmark: the product name in the page language's spelling (Simplified only for 简体), set here so it is never a literal.
+  root.querySelectorAll<HTMLElement>('[data-brand]').forEach((el) => { el.textContent = brandZh(); });
+  // Chinese written straight into an element rather than paired with an English original.
   root.querySelectorAll<HTMLElement>('[data-zh-text]').forEach((el) => {
-    el.textContent = hant(el.dataset.zhText ?? '');
+    el.textContent = withBrand(hant(el.dataset.zhText ?? ''));
   });
 }
 

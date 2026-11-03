@@ -16,10 +16,19 @@ export const PRODUCT = {
   /** The label under the icon, by reading language. Russian follows the site's own wording (the manifests use the same). */
   en: "Yahweh's World",
   zhHant: '雅偉之界',
-  /** Simplified UI may show 雅伟之界 in running text, but a *name* stays Traditional (owner, 2026-11-03). */
+  /** Native labels (icon, store title, window title) have no page language, so they stay Traditional (owner, 2026-11-03).
+   *  Inside a page the rule is NAME_ZH below: Simplified only while the page language is zh-Hans. */
   zhHans: '雅偉之界',
   ru: 'Мир Яхве',
 } as const;
+
+/** The Chinese name as a page shows it. Owner rule (2026-11-04): 雅偉之界 (Traditional) in English, Russian and 繁體 pages,
+ *  雅伟之界 only while the page language is 简体 (zh-Hans). Every page, script and build template takes the two spellings from
+ *  here (scripts/lib/product-name.mjs reads this file for the build; `npm run verify:shell` fails on a stray literal). */
+export const NAME_ZH = { hans: '雅伟之界', hant: '雅偉之界' } as const;
+
+/** The Chinese name to show for a page language ('zh-Hans' is the only one that gets the Simplified spelling). */
+export const nameZh = (pageLang: string): string => (pageLang === 'zh-Hans' ? NAME_ZH.hans : NAME_ZH.hant);
 
 export type Channel = 'web' | 'store' | 'direct';
 export type Target = 'web' | 'shell';

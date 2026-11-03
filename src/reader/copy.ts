@@ -12,6 +12,7 @@
 //
 // Short passages only: a copy carries at most COPY_VERSE_CAP verses (the cap Words puts on licensed text,
 // kOnlineCopyVerseCap), and says so when it cut. Parallel copies follow Words' lib/utils/parallel_copy.dart.
+import { NAME_ZH } from '../config/site.ts';
 import type { EditionInfo, Ref, UiLang } from './types.ts';
 import { bookNameIn, formatVerseRange } from './books.ts';
 import { canonicalRef } from './route.ts';
@@ -19,7 +20,7 @@ import { sanitizeForCopy } from './text.ts';
 
 export const COPY_VERSE_CAP = 100;
 
-const SITE: Record<UiLang, string> = { en: 'Yahweh’s World', 'zh-Hans': '雅伟之界', 'zh-Hant': '雅偉之界', ru: 'Мир Яхве' };
+const SITE: Record<UiLang, string> = { en: 'Yahweh’s World', 'zh-Hans': NAME_ZH.hans, 'zh-Hant': NAME_ZH.hant, ru: 'Мир Яхве' };
 export const DEFAULT_ORIGIN = 'https://world.yahwehword.com';
 
 /** The notice appended when a copy was cut; in the language of the page the reader is on. */

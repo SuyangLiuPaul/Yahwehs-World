@@ -26,6 +26,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import { basename, join } from 'node:path';
 import { START, END, HEAD, HEAD_END, GUARD, FONTS } from '../build-shell.mjs';
 import { buildPwa } from './pwa-build.mjs';
+import { NAME_HANS, NAME_HANT } from './product-name.mjs';
 
 export const SURFACE = process.env.VITE_SURFACE === 'gallery' ? 'gallery' : 'full';
 export const ORIGIN = 'https://world.yahwehword.com';
@@ -76,7 +77,7 @@ const TABS = [
 
 /** The page a source file stands for, and what its loading screen says. */
 const PAGES = {
-  'home.html': { key: 'home', pg: ['The scenes', '画卷', 'Сцены'], load: ['Opening the scenes…', '正在展开画卷…', '正在展開畫卷…', 'Открываем сцены…'] },
+  'home.html': { key: 'home', pg: ['Home', '首页', 'Главная'], load: ['Opening the scenes…', '正在展开画卷…', '正在展開畫卷…', 'Открываем сцены…'] },
   'gallery-scenes.html': { key: 'scenes', pg: ['Scenes', '画卷', 'Сцены'], load: ['Opening the 1,443 scenes…', '正在展开 1,443 幅画卷…', '正在展開 1,443 幅畫卷…', 'Открываем 1 443 сцены…'] },
   'gallery-bible.html': { key: 'bible', pg: ['Bible', '圣经', 'Библия'], load: ['Opening the Bible…', '正在展开圣经…', '正在展開聖經…', 'Открываем Библию…'] },
 };
@@ -91,7 +92,7 @@ export function galleryShell(file) {
   <div id="loading" role="status" aria-live="polite" aria-busy="true">
     <i id="loading-bar" aria-hidden="true"></i>
     <div class="ld-cards" aria-hidden="true">${'<i class="ld-sk ld-card"></i>'.repeat(3)}</div>
-    <p id="loading-title" class="tri" aria-hidden="true"><i class="l-en">Yahweh's World</i><i class="l-hans">雅伟之界</i><i class="l-hant">雅偉之界</i></p>
+    <p id="loading-title" class="tri" aria-hidden="true"><i class="l-en">Yahweh's World</i><i class="l-hans">${NAME_HANS}</i><i class="l-hant">${NAME_HANT}</i></p>
     <p id="loading-text" class="tri"><i class="l-en">${page.load[0]}</i><i class="l-hans">${page.load[1]}</i><i class="l-hant">${page.load[2]}</i><i class="l-ru">${page.load[3]}</i></p>
     <div id="loading-error" role="alert">
       <p class="tri" style="margin:0"><i class="l-en">Loading did not finish. Check your connection and try again.</i><i class="l-hans">加载没有完成。请检查网络后重试。</i><i class="l-hant">載入沒有完成。請檢查網路後重試。</i><i class="l-ru">Загрузка не завершилась. Проверьте соединение и попробуйте снова.</i></p>
@@ -101,11 +102,11 @@ export function galleryShell(file) {
   <script>${GUARD}</script>
   <noscript><style>#loading{display:none}</style></noscript>
 
-  <nav class="sitenav" aria-label="Yahweh's World" data-aria-en="Yahweh's World" data-aria-zh="雅伟之界" data-aria-ru="Мир Яхве">
+  <nav class="sitenav" aria-label="Yahweh's World" data-aria-en="Yahweh's World" data-aria-zh="${NAME_HANS}" data-aria-ru="Мир Яхве">
     <a class="brand" href="/">
       <img class="brand-logo" src="/brand-logo.webp" alt="" width="34" height="34">
       <span class="brand-words">
-        <span class="zh" data-zh-text="雅伟之界">雅伟之界</span>
+        <span class="zh" data-brand>${NAME_HANT}</span>
         <span class="en">Yahweh's World</span>
         <span class="pg" data-en="${page.pg[0]}" data-zh="${page.pg[1]}" data-ru="${page.pg[2]}">${page.pg[0]}</span>
       </span>
@@ -141,7 +142,7 @@ const PWA_HEAD = '<link rel="manifest" id="pwa-manifest" href="/manifest.webmani
   + '<link rel="apple-touch-icon" sizes="167x167" href="/pwa/apple-touch-167.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">'
   + '<script>(function(){try{var d=document.documentElement,l=d.lang;'
   + 'if({"zh-Hans":1,"zh-Hant":1,ru:1}[l])document.getElementById("pwa-manifest").href="/manifest."+l+".webmanifest";'
-  + 'document.querySelector(\'meta[name="apple-mobile-web-app-title"]\').content={"zh-Hans":"雅偉之界","zh-Hant":"雅偉之界",ru:"Мир Яхве"}[l]||"Yahweh\'s World";'
+  + 'document.querySelector(\'meta[name="apple-mobile-web-app-title"]\').content=' + JSON.stringify({ 'zh-Hans': NAME_HANT, 'zh-Hant': NAME_HANT, ru: 'Мир Яхве' }) + '[l]||"Yahweh\'s World";'
   + 'if(matchMedia("(display-mode: standalone)").matches||navigator.standalone===true)d.dataset.display="standalone"}catch(e){}})()</script>';
 
 /** The full surface's head block, taught Russian: its first-paint language script accepts and detects "ru", and the
@@ -220,7 +221,7 @@ function writeExtras(root, dist) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(`${ref}. ${desc}`)}">
 <link rel="canonical" href="${ORIGIN}/p/${id}">
-<meta property="og:type" content="article"><meta property="og:site_name" content="Yahweh's World · 雅伟之界">
+<meta property="og:type" content="article"><meta property="og:site_name" content="Yahweh's World · ${NAME_HANT}">
 <meta property="og:title" content="${esc(`${en} · ${zh}`)}"><meta property="og:description" content="${esc(`${ref}. ${desc}`)}">
 <meta property="og:url" content="${ORIGIN}/p/${id}"><meta property="og:image" content="${image}">
 <meta name="twitter:card" content="summary_large_image">

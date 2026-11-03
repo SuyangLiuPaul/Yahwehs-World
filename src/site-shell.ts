@@ -1,3 +1,4 @@
+import { NAME_ZH } from './config/site.ts';
 import { applyStatic, fullLocale, hant, onLocale, setLocale, t, type Locale } from './locale.ts';
 import { UNITS } from './plan-units.ts';
 
@@ -90,9 +91,9 @@ function render(menu: HTMLElement) {
     </a></li>`;
   }).join('');
 
-  menu.innerHTML = `<div class="am-sheet" role="dialog" aria-modal="true" aria-label="${t('Everything in this app', '雅伟之界 · 全景导览')}">
+  menu.innerHTML = `<div class="am-sheet" role="dialog" aria-modal="true" aria-label="${t('Everything in this app', `${NAME_ZH.hans} · 全景导览`)}">
     <header>
-      <h2>${t("Yahweh's World · Full Guide", '雅伟之界 · 全景导览')}</h2>
+      <h2>${t("Yahweh's World · Full Guide", `${NAME_ZH.hans} · 全景导览`)}</h2>
       <button type="button" id="all-close" aria-label="${t('Close', '关闭')}">✕</button>
     </header>
     <div class="am-phone">

@@ -12,6 +12,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { NAME_HANS, NAME_HANT } from './lib/product-name.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -225,7 +226,7 @@ const shell = (page) => `${START}
   <div id="loading" role="status" aria-live="polite" aria-busy="true">
     <i id="loading-bar" aria-hidden="true"></i>
 ${skeleton(page.sk)}
-    <p id="loading-title" class="tri" aria-hidden="true"><i class="l-en">Yahweh's World</i><i class="l-hans">雅伟之界</i><i class="l-hant">雅偉之界</i></p>
+    <p id="loading-title" class="tri" aria-hidden="true"><i class="l-en">Yahweh's World</i><i class="l-hans">${NAME_HANS}</i><i class="l-hant">${NAME_HANT}</i></p>
     <p id="loading-text" class="tri"><i class="l-en">${page.loadEn}</i><i class="l-hans">${page.loadHans}</i><i class="l-hant">${page.loadHant}</i></p>
     <div id="loading-error" role="alert">
       <p class="tri" style="margin:0"><i class="l-en">Loading did not finish. Check your connection and try again.</i><i class="l-hans">加载没有完成。请检查网络后重试。</i><i class="l-hant">載入沒有完成。請檢查網路後重試。</i></p>
@@ -239,7 +240,7 @@ ${skeleton(page.sk)}
     <a class="brand" href="/">
       <img class="brand-logo" src="/brand-logo.webp" alt="" width="34" height="34">
       <span class="brand-words">
-        <span class="zh" data-zh-text="雅伟之界">雅伟之界</span>
+        <span class="zh" data-brand>${NAME_HANT}</span>
         <span class="en">Yahweh's World</span>
         <span class="pg" data-en="${page.en}" data-zh="${page.zh}">${page.en}</span>
       </span>

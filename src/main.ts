@@ -20,6 +20,7 @@ import { PlaceLabels } from './place-labels.ts';
 import { RouteThumbnail } from './route-thumbnail.ts';
 import { Scenes } from './scenes.ts';
 import { Cartography, measureMap } from './cartography.ts';
+import { NAME_ZH } from './config/site.ts';
 import { applyStatic, bindSwitch, fullLocale, hant, localized, locale as currentLocale, onLocale } from './locale.ts';
 import { installUpdateChecker } from './updates.ts';
 import { loadWorld } from './geo.ts';
@@ -1313,7 +1314,7 @@ step();                       // …and this is the frame that shows it
 $('loading').classList.add('done');
 terrain.loadWhenIdle();
 console.info(
-  `%c雅伟之界 · 圣经世界%c  ${bundle.meta.located} located / ${bundle.meta.unlocated} unlocated  ·  ${bundle.meta.source} (${bundle.meta.license})`,
+  `%c${NAME_ZH.hans} · 圣经世界%c  ${bundle.meta.located} located / ${bundle.meta.unlocated} unlocated  ·  ${bundle.meta.source} (${bundle.meta.license})`,
   'color:#e8c55a;font-weight:600', 'color:#7d8896',
 );
 

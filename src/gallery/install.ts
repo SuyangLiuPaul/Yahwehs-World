@@ -6,6 +6,7 @@
 //   anything else (Firefox on a computer, an old browser): nothing; there is no way to install from there
 // Loaded by home.ts after the page is up. docs/gallery-pwa.md.
 import { applyStatic, onLocale, t } from '../locale.ts';
+import { NAME_ZH } from '../config/site.ts';
 import { platformOf } from '../pwa/platform.ts';
 import { install } from './chrome.ts';
 import { ask, type Report } from './pwa-bridge.ts';
@@ -14,7 +15,7 @@ import { openSheet } from './sheet.ts';
 type Mode = 'none' | 'prompt' | 'ios' | 'mac-safari';
 
 const standalone = () => matchMedia('(display-mode: standalone)').matches || (navigator as unknown as { standalone?: boolean }).standalone === true;
-const name = () => t("Yahweh's World", '雅伟之界', 'Мир Яхве');
+const name = () => t("Yahweh's World", NAME_ZH.hans, 'Мир Яхве');
 
 export function installMode(): Mode {
   if (import.meta.env.VITE_TARGET === 'shell' || standalone()) return 'none';

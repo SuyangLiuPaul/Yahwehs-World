@@ -1,5 +1,6 @@
 import './scenes-page.css';
 import { applyStatic, bindSwitch, onLocale, t } from '../locale.ts';
+import { NAME_ZH } from '../config/site.ts';
 import { loadingStep, loadingSteps, pageReady } from '../site-shell.ts';
 import {
   bookTitle, isOldTestament, lang, loadIndex, loadSummaries, neighbour, refText, sceneSummary, sceneTitle,
@@ -54,7 +55,7 @@ function paintBrowseHead(r: Route, n: number) {
   strip.innerHTML = chip(t('All', '全部', 'Все'), '#', !r.b && r.scope === 'all') + chip(t('Old', '旧约', 'Ветхий'), '#t=ot', !r.b && r.scope === 'ot') + chip(t('New', '新约', 'Новый'), '#t=nt', !r.b && r.scope === 'nt')
     + '<span class="sep"></span>' + books.map((x) => chip(bookTitle(x.b), `#b=${x.b}`, r.b === x.b)).join('');
   strip.setAttribute('aria-label', t('Filter the scenes', '筛选画卷', 'Фильтр сцен'));
-  document.title = `${$('sc-title').textContent} · ${t("Yahweh's World", '雅伟之界', 'Мир Яхве')}`;
+  document.title = `${$('sc-title').textContent} · ${t("Yahweh's World", NAME_ZH.hans, 'Мир Яхве')}`;
 }
 
 let shown = 0;
@@ -155,7 +156,7 @@ function paintPicture(sc: Scene) {
   $('pc-plate').setAttribute('aria-label', t('View the picture full screen', '全屏看画', 'Открыть картину на весь экран'));
   const pl = plate(sc, { kind: 'full', eager: true, alt: sceneTitle(sc) });
   $('pc-plate').replaceChildren(pl);
-  document.title = `${sceneTitle(sc)} · ${t("Yahweh's World", '雅伟之界', 'Мир Яхве')}`;
+  document.title = `${sceneTitle(sc)} · ${t("Yahweh's World", NAME_ZH.hans, 'Мир Яхве')}`;
   // the next picture is wanted next
   for (const n of [next, prev]) if (n?.ok) { const i = new Image(); i.decoding = 'async'; i.src = fullUrl(n.id); }
 }

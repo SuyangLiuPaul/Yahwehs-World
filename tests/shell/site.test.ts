@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { SITE_HOST, apiBase, channelOf, fullPictureHost, publicUrl, targetOf, thumbPictureHost } from '../../src/config/site.ts';
+import { NAME_ZH, SITE_HOST, nameZh, apiBase, channelOf, fullPictureHost, publicUrl, targetOf, thumbPictureHost } from '../../src/config/site.ts';
 
 test('the website build keeps its own origin for pictures and the API', () => {
   assert.equal(targetOf({}), 'web');
@@ -29,4 +29,11 @@ test('channel: a shell build is direct unless it says store; the web is never a 
 
 test('publicUrl is always on the site host', () => {
   assert.equal(publicUrl('/scenes.html', '#p=genesis-1-1'), `${SITE_HOST}/scenes.html#p=genesis-1-1`);
+});
+
+test('the Chinese product name is Simplified only for a 简体 page', () => {
+  assert.equal(nameZh('zh-Hans'), NAME_ZH.hans);
+  for (const lang of ['en', 'ru', 'zh-Hant', '']) assert.equal(nameZh(lang), NAME_ZH.hant);
+  assert.equal(NAME_ZH.hant, '雅偉之界');
+  assert.equal(NAME_ZH.hans, '雅伟之界');
 });

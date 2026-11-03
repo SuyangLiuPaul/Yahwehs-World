@@ -1,6 +1,7 @@
 import './scenes-gallery.css';
 import { BOOKS } from './books.ts';
 import { UNITS } from './plan-units.ts';
+import { NAME_ZH } from './config/site.ts';
 import { applyStatic, bindSwitch, hant, locale as currentLocale, onLocale, t } from './locale.ts';
 import { installSiteMenu, loadingStep, loadingSteps, pageReady } from './site-shell.ts';
 import type { TrackEvent } from './events-track.ts';
@@ -97,7 +98,7 @@ function getFilteredEvents(): TrackEvent[] {
 function renderHeaderAndControls() {
   const zh = currentLocale() === 'zh';
   document.title = zh
-    ? `${hant('圣经画卷 · 雅伟之界')} | Biblical Scenes · Yahweh's World`
+    ? `${hant(`圣经画卷 · ${NAME_ZH.hans}`)} | Biblical Scenes · Yahweh's World`
     : `Biblical Scenes · Yahweh's World`;
 
   $('sg-kicker').textContent = zh
