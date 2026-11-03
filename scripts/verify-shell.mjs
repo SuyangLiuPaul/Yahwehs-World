@@ -124,6 +124,8 @@ check(!/(password|secret)\s*[:=]\s*['"][^'"]{4,}/i.test(SHELL_FILES.filter((p) =
 {
   const tmp = mkdtempSync(join(tmpdir(), 'ywpatch-'));
   mkdirSync(join(tmp, 'app/src/main/res/values'), { recursive: true });
+  mkdirSync(join(tmp, 'app/src/main/java/com/yahwehword/world'), { recursive: true });
+  writeFileSync(join(tmp, 'app/src/main/java/com/yahwehword/world/MainActivity.kt'), 'package com.yahwehword.world\n\nimport android.os.Bundle\nimport androidx.activity.enableEdgeToEdge\n\nclass MainActivity : TauriActivity() {\n  override fun onCreate(savedInstanceState: Bundle?) {\n    enableEdgeToEdge()\n    super.onCreate(savedInstanceState)\n  }\n}\n');
   writeFileSync(join(tmp, 'app/build.gradle.kts'), `import java.util.Properties
 
 val tauriProperties = Properties()
@@ -155,13 +157,59 @@ android {
   const names = ['values', 'values-zh', 'values-zh-rTW', 'values-zh-rHK', 'values-b+zh+Hant', 'values-ru'].map((d) => readFileSync(join(tmp, `app/src/main/res/${d}/strings.xml`), 'utf8'));
   check(names[0].includes("Yahweh's World") && names[1].includes('雅偉之界') && names[2].includes('雅偉之界') && names[4].includes('雅偉之界') && names[5].includes('Мир Яхве'), 'Android launcher names: en, 简, 繁 (TW, HK, script), ru');
   check(!/雅伟之界/.test(names.join('')), 'no Simplified 雅伟之界 as a name in the Android strings');
+  const act = readFileSync(join(tmp, 'app/src/main/java/com/yahwehword/world/MainActivity.kt'), 'utf8');
+  check(act.includes('SystemBarStyle.dark') && act.includes('isAppearanceLightStatusBars = false') && !act.includes('enableEdgeToEdge()'), 'patched MainActivity: light status-bar and navigation-bar icons whatever the phone\'s day/night mode (SystemBarStyle.dark), and the patch is idempotent');
 }
 
 // the old name: shell-owned files must not write the product name in Simplified; the website surface is reported, not failed
 const simplified = SHELL_FILES.filter((p) => /\.(json|plist|strings|xml|ya?ml|sh|py|rs|template)$/.test(p) && readFileSync(p, 'utf8').includes('雅伟之界')).map(rel);
 check(simplified.length === 0, 'no shell file writes the product name in Simplified (雅伟之界)', simplified.join(', '));
-const web = ['home.html', 'gallery-scenes.html', 'gallery-bible.html', 'scripts/lib/vite-gallery-surface.mjs', 'netlify/functions/feedback.mjs'].filter((p) => existsSync(join(ROOT, p)) && read(p).includes('雅伟之界'));
-console.log(`note  website surface still writes 雅伟之界 in: ${web.join(', ') || 'nothing'} (the PWA branch owns those strings; change them when merging, docs/gallery-shells.md)`);
+// The page-name rule (owner, 2026-11-04): 雅偉之界 (Traditional) in English, Russian and 繁體 pages; 雅伟之界 only while the page language is 简体.
+// One source (NAME_ZH in src/config/site.ts); a page, script or template may carry the Simplified spelling only where it is the 简体 reading:
+// a <i class="l-hans">, a data-zh= / data-aria-zh= attribute. Everything else takes it from NAME_ZH (runtime) or scripts/lib/product-name.mjs (build).
+{
+  const nameZh = /export const NAME_ZH = \{ hans: '([^']+)', hant: '([^']+)' \}/.exec(site);
+  check(!!nameZh && nameZh[1] === '雅伟之界' && nameZh[2] === '雅偉之界', 'NAME_ZH in site.ts: 雅伟之界 (简体 only) and 雅偉之界 (everything else)');
+  const files = [...readdirSync(ROOT).filter((n) => n.endsWith('.html')), 'scripts/build-shell.mjs', 'scripts/lib/vite-gallery-surface.mjs', 'scripts/lib/pwa-build.mjs', 'netlify/functions/feedback.mjs',
+    ...walk(join(ROOT, 'src')).map(rel)].filter((p) => existsSync(join(ROOT, p)) && p !== 'src/config/site.ts');
+  const stray = [];
+  for (const p of files) {
+    const lines = read(p).split('\n');
+    lines.forEach((line, n) => {
+      if (!line.includes('雅伟之界')) return;
+      const rest = line.replace(/<i class="l-hans">[^<]*<\/i>/g, '').replace(/data-(?:aria-)?zh="[^"]*"/g, '').replace(/^\s*(?:\/\/|\*|\/\*).*$/, '');
+      if (rest.includes('雅伟之界')) stray.push(`${p}:${n + 1}`);
+    });
+  }
+  check(stray.length === 0, 'the Simplified product name 雅伟之界 is written only as the 简体 reading (l-hans, data-zh, NAME_ZH): never as a header, <title> or og: literal', stray.join(', '));
+  const brands = readdirSync(ROOT).filter((n) => n.endsWith('.html') && read(n).includes('class="brand"') && !/data-brand/.test(read(n)));
+  check(brands.length === 0, 'every page with a wordmark sets it through data-brand (the page language chooses the spelling)', brands.join(', '));
+  const titles = readdirSync(ROOT).filter((n) => n.endsWith('.html')).filter((n) => /<title>[^<]*雅伟之界/.test(read(n)));
+  check(titles.length === 0, 'no static <title> or og: tag spells the name Simplified (it is shown to English and Russian readers before the script runs)', titles.join(', '));
+}
+
+// Side safe-area insets: the iPhone Duo reports 84 px on the right in portrait (its status pill sits over the screen), and notched phones
+// do the same in landscape. These rules draw rows of controls or columns of text at the page's edge, so each must pad by --safe-left/right.
+{
+  const must = [
+    ['src/gallery/scenes-page.css', ['.pc-top {', '.pc-nav {', '.pc-caption {', '.passage {', '.sc-head {', '.sc-grid {', 'dialog.gx-fs .gx-iconbtn {']],
+    ['src/gallery/home.css', ['.hm-copy {', '.hm-body {']],
+    ['src/gallery/chrome.css', ['dialog.gx-sheet {', 'html[data-surface="gallery"] .sitenav {']],
+    ['src/reader/reader.css', ['.yr-bar {', '.yr-tools {', '.yr-body {']],
+  ];
+  const missing = [];
+  for (const [file, sels] of must) {
+    const css = read(file);
+    for (const sel of sels) {
+      const at = css.split('\n').findIndex((l) => l.trimStart().startsWith(sel));
+      const block = at < 0 ? '' : css.slice(css.split('\n').slice(0, at).join('\n').length).split('}')[0];
+      if (!/safe-(left|right)|safe-area-inset-(left|right)/.test(block)) missing.push(`${file} ${sel}`);
+    }
+  }
+  check(missing.length === 0, 'rows of controls and columns of text at the page edge pad by the side safe-area insets (iPhone Duo: 84 px right in portrait)', missing.join(', '));
+  const noCover = ['home.html', 'gallery-scenes.html', 'gallery-bible.html'].filter((p) => !/viewport-fit=cover/.test(read(p)));
+  check(noCover.length === 0, 'the gallery pages ask for viewport-fit=cover (so env(safe-area-inset-*) is reported, and the shells draw edge to edge)', noCover.join(', '));
+}
 
 // ---------------------------------------------------------------------------------------------------------------- the built content
 const OUT = join(ROOT, 'dist-shell');

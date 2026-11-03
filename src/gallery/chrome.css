@@ -158,7 +158,7 @@ html[lang^="zh"] .gx-kicker { text-transform: none; letter-spacing: var(--tr-cjk
 
 /* ── sheets: a bottom sheet on a phone, a popover under the bar on wider screens ─── */
 dialog.gx-sheet {
-  box-sizing: border-box; padding: 10px 16px calc(24px + var(--safe-bottom)); border: 0;
+  box-sizing: border-box; padding: 10px calc(16px + var(--safe-right)) calc(24px + var(--safe-bottom)) calc(16px + var(--safe-left)); border: 0;
   color: var(--ink); background: var(--panel), var(--ground); box-shadow: var(--shadow);
   margin: auto 0 0 0; width: 100%; max-width: none; max-height: 78dvh; overflow: auto; overscroll-behavior: contain;
   border-radius: var(--r-3) var(--r-3) 0 0;
@@ -171,7 +171,7 @@ dialog.gx-sheet::backdrop { background: #06111fb0; transition: opacity .22s, ove
 dialog.gx-sheet:not([open])::backdrop { opacity: 0; }
 @starting-style { dialog.gx-sheet[open]::backdrop { opacity: 0; } }
 @media (min-width: 768px) {
-  dialog.gx-sheet { margin: 70px 28px auto auto; width: 380px; max-height: calc(100dvh - 100px); border-radius: var(--r-2); border: 1px solid var(--line); padding-bottom: 20px; }
+  dialog.gx-sheet { margin: 70px calc(28px + var(--safe-right)) auto auto; width: 380px; max-height: calc(100dvh - 100px); border-radius: var(--r-2); border: 1px solid var(--line); padding-inline: 16px; padding-bottom: 20px; }
   dialog.gx-sheet.center { margin: 12vh auto auto; width: min(640px, calc(100vw - 48px)); }
   dialog.gx-sheet:not([open]) { translate: 0 -8px; }
   @starting-style { dialog.gx-sheet[open] { translate: 0 -8px; } }

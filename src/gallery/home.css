@@ -17,7 +17,7 @@ body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
 .hm-stage { position: relative; }
 .hm-plate { display: block; text-decoration: none; }
 .hm-plate .gx-plate, .hm-plate .gx-sk.plate { aspect-ratio: 4 / 3; border-radius: 0; border: 0; border-bottom: 1px solid var(--line); }
-.hm-copy { position: absolute; left: 0; right: 0; bottom: 0; padding: 88px var(--sp-4) var(--sp-4); background: var(--hero-scrim); display: grid; gap: var(--sp-2); }
+.hm-copy { position: absolute; left: 0; right: 0; bottom: 0; padding: 88px calc(var(--sp-4) + var(--safe-right)) var(--sp-4) calc(var(--sp-4) + var(--safe-left)); background: var(--hero-scrim); display: grid; gap: var(--sp-2); }
 .hm-copy .gx-kicker { color: var(--gold-bright); text-shadow: 0 1px 6px #0009; }
 .hm-title { margin: 0; font: 600 var(--fs-700)/1.2 var(--display); color: #f9f3e6; text-shadow: 0 1px 8px #0008; }
 .hm-copy .gx-mono { color: #e8dcc0e0; }
@@ -30,7 +30,7 @@ body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
 .hm-days .gx-iconbtn { color: #f9f3e6; width: 44px; height: 44px; }
 .hm-days .gx-mono { min-width: 5.5em; text-align: center; }
 
-.hm-body { padding: var(--sp-5) var(--sp-4) calc(var(--sp-5) + var(--safe-bottom)); display: grid; gap: 26px; }
+.hm-body { padding: var(--sp-5) calc(var(--sp-4) + var(--safe-right)) calc(var(--sp-5) + var(--safe-bottom)) calc(var(--sp-4) + var(--safe-left)); display: grid; gap: 26px; }
 .hm-lede-phone { display: block; }
 
 .hm-browse { display: grid; gap: var(--sp-3); }
@@ -63,7 +63,7 @@ html[lang^="zh"] .hm-footer h3 { text-transform: none; letter-spacing: var(--tr-
 .hm-version { margin-top: var(--sp-2); }
 
 @media (min-width: 900px) {
-  .hm-stage { display: grid; grid-template-columns: 3fr 2fr; gap: 28px; align-items: center; padding: 28px 28px 0; }
+  .hm-stage { display: grid; grid-template-columns: 3fr 2fr; gap: 28px; align-items: center; padding: 28px calc(28px + var(--safe-right)) 0 calc(28px + var(--safe-left)); }
   .hm-plate .gx-plate, .hm-plate .gx-sk.plate { aspect-ratio: 3 / 2; border-radius: var(--r-2); border: 1px solid var(--line); }
   .hm-copy { position: static; padding: 0; background: none; gap: var(--sp-3); }
   .hm-title { font-size: var(--fs-700); color: var(--ink); text-shadow: none; }
@@ -74,7 +74,7 @@ html[lang^="zh"] .hm-footer h3 { text-transform: none; letter-spacing: var(--tr-
   .hm-copy .gx-btn.quiet, .hm-copy .gx-pill { border-color: var(--line); color: var(--ink); }
   .hm-days { color: var(--ink-3); }
   .hm-days .gx-iconbtn { color: var(--ink-2); }
-  .hm-body { padding: 34px 28px 48px; gap: 34px; }
+  .hm-body { padding: 34px calc(28px + var(--safe-right)) 48px calc(28px + var(--safe-left)); gap: 34px; }
   .hm-books { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .hm-books a { justify-content: space-between; border-radius: var(--r-1); min-height: 44px; }
   .hm-find { display: none; }

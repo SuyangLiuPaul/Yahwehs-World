@@ -9,9 +9,9 @@ body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
 [hidden] { display: none !important; }
 
 /* ── browse ──────────────────────────────────────────────────────────── */
-.sc-head { padding: var(--sp-4) var(--sp-4) 0; display: grid; gap: var(--sp-2); align-content: start; min-height: 154px; /* the head is filled from data: reserve its box */ }
+.sc-head { padding: var(--sp-4) calc(var(--sp-4) + var(--safe-right)) 0 calc(var(--sp-4) + var(--safe-left)); display: grid; gap: var(--sp-2); align-content: start; min-height: 154px; /* the head is filled from data: reserve its box */ }
 .sc-count { color: var(--ink-3); font-size: var(--fs-200); }
-.sc-strip { min-height: 50px; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; padding: var(--sp-2) 0 2px; margin-right: calc(var(--sp-4) * -1); padding-right: var(--sp-4); }
+.sc-strip { min-height: 50px; display: flex; gap: var(--sp-2); overflow-x: auto; scrollbar-width: none; padding: var(--sp-2) 0 2px; margin-right: calc((var(--sp-4) + var(--safe-right)) * -1); padding-right: calc(var(--sp-4) + var(--safe-right)); }
 .sc-strip::-webkit-scrollbar { display: none; }
 .sc-strip button, .sc-strip .sep { flex: none; }
 .sc-strip button {
@@ -22,7 +22,7 @@ body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
 @media (hover: hover) { .sc-strip button:hover { border-color: var(--line-gold); color: var(--ink); } }
 .sc-strip .sep { width: 1px; background: var(--line); margin: 6px 2px; }
 
-.sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; padding: 14px var(--sp-4) var(--sp-5); align-content: start; min-height: 90vh; /* the skeleton and the cards fill the same box: nothing below moves when they swap */ }
+.sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; padding: 14px calc(var(--sp-4) + var(--safe-right)) var(--sp-5) calc(var(--sp-4) + var(--safe-left)); align-content: start; min-height: 90vh; /* the skeleton and the cards fill the same box: nothing below moves when they swap */ }
 .sc-card { display: grid; gap: 7px; text-decoration: none; color: inherit; align-content: start; }
 .sc-card .gx-plate, .sc-grid > .gx-sk.plate { aspect-ratio: 3 / 2; }
 .sc-card .cap { font: 600 var(--fs-300)/1.3 var(--display); color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -32,8 +32,8 @@ body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
 .sc-more { display: grid; justify-items: center; padding: 0 var(--sp-4) calc(var(--sp-6) + var(--safe-bottom)); }
 @media (min-width: 640px) { .sc-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (min-width: 900px) {
-  .sc-head { padding: 24px 28px 0; }
-  .sc-grid { grid-template-columns: repeat(4, 1fr); gap: 22px 18px; padding: 22px 28px 32px; }
+  .sc-head { padding: 24px calc(28px + var(--safe-right)) 0 calc(28px + var(--safe-left)); }
+  .sc-grid { grid-template-columns: repeat(4, 1fr); gap: 22px 18px; padding: 22px calc(28px + var(--safe-right)) 32px calc(28px + var(--safe-left)); }
   .sc-card .cap { font-size: var(--fs-400); }
   .sc-strip { margin-right: 0; padding-right: 0; }
 }
@@ -41,32 +41,34 @@ body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
 
 /* ── picture + passage ───────────────────────────────────────────────── */
 .pc-wrap { display: block; }
-.pc-top { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3); }
+/* Side safe-area insets (iPhone Duo reports 84 px on the right in portrait: its status pill sits there and covers whatever is drawn
+   under it, which hid the feedback button). Every row of controls and every column of text pads by them. */
+.pc-top { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) calc(var(--sp-3) + var(--safe-right)) var(--sp-2) calc(var(--sp-3) + var(--safe-left)); }
 .pc-spacer { flex: 1; }
 .pc-plate { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
 .pc-plate .gx-plate, .pc-plate .gx-sk.plate { border-radius: 0; border-left: 0; border-right: 0; }
 .pc-plate .gx-plate.is-fading img { opacity: 0; }
-.pc-nav { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3); }
-.pc-caption { padding: var(--sp-3) var(--sp-4) var(--sp-2); display: grid; gap: 6px; }
+.pc-nav { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) calc(var(--sp-3) + var(--safe-right)) var(--sp-2) calc(var(--sp-3) + var(--safe-left)); }
+.pc-caption { padding: var(--sp-3) calc(var(--sp-4) + var(--safe-right)) var(--sp-2) calc(var(--sp-4) + var(--safe-left)); display: grid; gap: 6px; }
 .pc-credit { color: var(--ink-3); font-size: var(--fs-100); line-height: 1.5; }
 .pc-caption .alt { color: var(--ink-3); font: var(--fs-200)/1.4 var(--ui); }
 
 /* the passage: the reader module's view (src/reader), which paints its own ground, so the reading theme (dark, light,
    paper) is the reader's and the plate's column stays dark. The host supplies the horizontal measure. */
 .pc-right { display: grid; background: var(--ground); }
-.passage { padding: var(--sp-3) var(--sp-4) calc(var(--sp-6) + var(--safe-bottom)); align-content: start; min-height: 40vh; }
+.passage { padding: var(--sp-3) calc(var(--sp-4) + var(--safe-right)) calc(var(--sp-6) + var(--safe-bottom)) calc(var(--sp-4) + var(--safe-left)); align-content: start; min-height: 40vh; }
 .passage .yr-tools, .passage .yr-body, .passage .yr-status { padding-inline: 0; }
 .passage .yr-selbar { inset-block-end: calc(var(--tabbar-h, 0px) + .75rem); margin-inline: 0; }
 .pc-skel { display: grid; gap: 12px; padding: var(--sp-2) 0; }
 
 @media (min-width: 900px) {
   .pc-wrap { display: grid; grid-template-columns: minmax(0, 7fr) minmax(340px, 5fr); align-items: start; min-height: calc(100vh - 64px); }
-  .pc-left { padding: 24px 0 24px 28px; }
+  .pc-left { padding: 24px 0 24px calc(28px + var(--safe-left)); }
   .pc-plate .gx-plate, .pc-plate .gx-sk.plate { border-radius: var(--r-2); border: 1px solid var(--line); }
   .pc-right { border-left: 1px solid var(--line); min-height: calc(100vh - 64px); position: sticky; top: 64px; max-height: calc(100vh - 64px); overflow: auto; }
-  .passage { padding: 24px 28px 32px; }
+  .passage { padding: 24px calc(28px + var(--safe-right)) 32px 28px; }
   .pc-caption { padding-left: 0; padding-right: var(--sp-4); }
-  .pc-top, .pc-nav { padding-left: 0; }
+  .pc-top, .pc-nav { padding-left: 0; padding-right: var(--sp-3); }
   .pc-top { padding-top: 0; }
   #pc-back { display: none; }
   .passage .yr-selbar { inset-block-end: .75rem; }
@@ -77,6 +79,6 @@ dialog.gx-fs { width: 100vw; height: 100dvh; max-width: none; max-height: none; 
 dialog.gx-fs::backdrop { background: #06111f; }
 dialog.gx-fs img { display: block; width: 100%; height: 100%; object-fit: contain; cursor: zoom-in; }
 dialog.gx-fs.zoomed img { width: 200%; max-width: none; height: auto; object-fit: initial; cursor: zoom-out; }
-dialog.gx-fs .gx-iconbtn { position: fixed; top: calc(var(--sp-3) + var(--safe-top)); right: var(--sp-3); background: #06111fb3; color: #f9f3e6; z-index: 2; }
+dialog.gx-fs .gx-iconbtn { position: fixed; top: calc(var(--sp-3) + var(--safe-top)); right: calc(var(--sp-3) + var(--safe-right)); background: #06111fb3; color: #f9f3e6; z-index: 2; }
 dialog.gx-fs .fs-hint { position: fixed; left: 0; right: 0; bottom: calc(var(--sp-4) + var(--safe-bottom)); text-align: center; color: #c6d8ec; font-size: var(--fs-200); pointer-events: none; text-shadow: 0 1px 6px #000a; }
 #sc-kicker { min-height: 1.4em; } #sc-title { min-height: 1.3em; } #sc-count { min-height: 1.4em; }

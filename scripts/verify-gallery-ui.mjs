@@ -50,6 +50,15 @@ for (const vp of [[375, 812], [1440, 900]]) {
     check(title.length > 2, `${tag} ${lang}: hero title "${title}"`);
     const ruTitle = lang === 'ru' ? /[А-Яа-я]/.test(title) : true;
     check(ruTitle, `${tag} ${lang}: Russian reader sees a Russian title`);
+    // the page-name rule (owner, 2026-11-04): 雅偉之界 in English, Russian and 繁體; 雅伟之界 only on a 简体 page. The home label reads Home.
+    {
+      const brand = (await page.locator('.sitenav .brand .zh').innerText()).trim();
+      check(brand === (lang === 'zh-Hans' ? '雅伟之界' : '雅偉之界'), `${tag} ${lang}: the header name is ${lang === 'zh-Hans' ? '雅伟之界 (简体)' : '雅偉之界 (Traditional)'} ("${brand}")`);
+      const pageTitle = await page.title();
+      check(lang === 'zh-Hans' ? !pageTitle.includes('雅偉') : !pageTitle.includes('雅伟'), `${tag} ${lang}: the <title> spells the name for this language ("${pageTitle}")`);
+      const pg = (await page.locator('.sitenav .brand .pg').innerText()).trim();
+      check(pg === { en: 'Home', 'zh-Hans': '首页', 'zh-Hant': '首頁', ru: 'Главная' }[lang], `${tag} ${lang}: the header label on the home page is the tab's name ("${pg}")`);
+    }
     if (lang === 'zh-Hant') check(!/[头无从]/.test(await page.locator('#hm-books').innerText()), `${tag} zh-Hant: book names are Traditional`);
     check(errors.length === 0, `${tag} ${lang}: home has no console error`, `${tag} ${lang}: ${errors}`);
     await ctx.close();
@@ -153,6 +162,26 @@ for (const vp of [[375, 812], [1440, 900]]) {
     await ctx.close();
   }
   // ── picture + passage (the reader module's passage view) ───────────────
+  // ── side safe-area insets (iPhone Duo: 84 px on the right in portrait, where its status pill sits over the screen) ──
+  // Chromium has no env() insets to emulate, so the --safe-* tokens (tokens.css) are forced to the Duo's values: every control in the top
+  // bars of the picture page and the full-screen close button must then lie inside the safe rectangle, and the bar must not scroll sideways.
+  if (vp[0] < 500) {
+    const DUO = [466, 678]; // the Duo's CSS size: the combination the insets actually come with
+    const { ctx, page } = await open(DUO, 'en');
+    await page.goto(`${base}/scenes.html#p=genesis-15-1`);
+    await page.waitForSelector('.yr-passage .yr-v');
+    await page.addStyleTag({ content: 'html:root { --safe-right: 84px !important; --safe-left: 12px !important; }' });
+    await page.waitForTimeout(150);
+    const rects = await page.evaluate(() => ['#pc-back', '#pc-share', '#pc-feedback', '#pc-prev', '#pc-next', '.sitenav .lang-switch', '.sitenav .gx-search', '.sitenav .brand']
+      .map((sel) => { const r = document.querySelector(sel)?.getBoundingClientRect(); return r ? { sel, l: Math.round(r.left), r: Math.round(r.right), w: r.width } : { sel, missing: true }; }));
+    for (const r of rects) if (r.missing || r.w === 0) continue; else check(r.r <= DUO[0] - 84 && r.l >= 12, `Duo 466: ${r.sel} lies inside the side insets (left ${r.l}, right ${r.r} of ${DUO[0]}, insets 12 / 84)`);
+    check(rects.some((r) => r.sel === '#pc-feedback' && !r.missing), `Duo 466: the feedback button is measured`);
+    await page.click('#pc-plate');
+    await page.waitForSelector('dialog.gx-fs[open]');
+    const fs = await page.evaluate(() => document.querySelector('dialog.gx-fs .gx-iconbtn').getBoundingClientRect().right);
+    check(fs <= DUO[0] - 84 + 1, `Duo 466: the full-screen close button clears the right inset (right edge ${Math.round(fs)} of ${DUO[0]})`);
+    await ctx.close();
+  }
   {
     const { ctx, page, errors } = await open(vp, 'en');
     await page.goto(`${base}/scenes.html#p=genesis-15-1`);
