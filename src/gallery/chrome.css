@@ -116,7 +116,11 @@ html[lang^="zh"] .gx-kicker { text-transform: none; letter-spacing: var(--tr-cjk
 .gx-pill::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 44px; transform: translateY(-50%); }
 .gx-pill.gold, .gx-pill[aria-pressed="true"] { border-color: var(--line-gold); background: var(--gold-wash); color: var(--gold-bright); }
 @media (hover: hover) { .gx-pill:hover { border-color: var(--line-gold); color: var(--ink); } }
-.gx-iconbtn { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; border: 0; background: none; color: var(--ink-2); cursor: pointer; text-decoration: none; }
+/* flex: none because these are TAP TARGETS. In a flex row the default flex-shrink: 1 let them be squeezed below
+   44 px by whatever text sits beside them — the picture page's reference line measured 42 px wide buttons once the
+   bundled IBM Plex Mono (a little wider than the system mono it replaced) made that line longer. A target's size is
+   not a hint the layout may negotiate away. */
+.gx-iconbtn { width: 44px; height: 44px; flex: none; display: grid; place-items: center; border-radius: 50%; border: 0; background: none; color: var(--ink-2); cursor: pointer; text-decoration: none; }
 .gx-iconbtn svg { width: 20px; height: 20px; }
 @media (hover: hover) { .gx-iconbtn:hover { color: var(--ink); background: var(--gold-wash); } }
 .gx-iconbtn[disabled], .gx-iconbtn[aria-disabled="true"] { opacity: .35; pointer-events: none; }

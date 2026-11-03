@@ -45,6 +45,10 @@ body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
    under it, which hid the feedback button). Every row of controls and every column of text pads by them. */
 .pc-top { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) calc(var(--sp-3) + var(--safe-right)) var(--sp-2) calc(var(--sp-3) + var(--safe-left)); }
 .pc-spacer { flex: 1; }
+/* The reference line is the only thing in this row that may give way: the three icon buttons are 44 px targets
+   (flex: none in chrome.css). Without min-inline-size: 0 a long reference — "1 Chronicles 12:23–40 · 7 / 33" in
+   English, which is the widest case — would push the row past the screen edge instead of ellipsing. */
+.pc-top .gx-mono { min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pc-plate { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
 .pc-plate .gx-plate, .pc-plate .gx-sk.plate { border-radius: 0; border-left: 0; border-right: 0; }
 .pc-plate .gx-plate.is-fading img { opacity: 0; }
