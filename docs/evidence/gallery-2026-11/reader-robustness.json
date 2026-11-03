@@ -1,0 +1,1388 @@
+{
+ "when": "2026-11-03T06:04:18.146Z",
+ "chrome": "156.0.8078.80",
+ "passed": 169,
+ "failed": 0,
+ "numbers": {
+  "slow": {
+   "phone": {
+    "firstTextMs": 1353,
+    "kbTransferred": 103,
+    "skeletonBeforeText": true,
+    "cls": 0
+   },
+   "desktop": {
+    "firstTextMs": 1364,
+    "kbTransferred": 103,
+    "skeletonBeforeText": true,
+    "cls": 0
+   }
+  },
+  "long": {
+   "phone": {
+    "frames": 182,
+    "p50": 16.7,
+    "p95": 16.8,
+    "over33pct": 0
+   },
+   "desktop": {
+    "frames": 182,
+    "p50": 16.7,
+    "p95": 16.7,
+    "over33pct": 0
+   }
+  },
+  "a11y": {
+   "light/auto/en": 0,
+   "light/auto/zh-Hans": 0,
+   "light/auto/zh-Hant": 0,
+   "light/auto/ru": 0,
+   "light/dark/en": 0,
+   "light/light/en": 0,
+   "light/paper/en": 0,
+   "dark/auto/en": 0,
+   "dark/auto/zh-Hans": 0,
+   "dark/auto/zh-Hant": 0,
+   "dark/auto/ru": 0,
+   "dark/dark/en": 0,
+   "dark/light/en": 0,
+   "dark/paper/en": 0
+  },
+  "scale": [
+   {
+    "vn": "phone",
+    "zoom": 1.25,
+    "step": 1,
+    "mode": "verse",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "phone",
+    "zoom": 1.25,
+    "step": 1,
+    "mode": "parallel",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "phone",
+    "zoom": 1.25,
+    "step": 1.5,
+    "mode": "verse",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "phone",
+    "zoom": 1.25,
+    "step": 1.5,
+    "mode": "parallel",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "phone",
+    "zoom": 1.5,
+    "step": 1,
+    "mode": "verse",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "phone",
+    "zoom": 1.5,
+    "step": 1,
+    "mode": "parallel",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "phone",
+    "zoom": 1.5,
+    "step": 1.5,
+    "mode": "verse",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "phone",
+    "zoom": 1.5,
+    "step": 1.5,
+    "mode": "parallel",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "phone",
+    "zoom": 2,
+    "step": 1,
+    "mode": "verse",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "phone",
+    "zoom": 2,
+    "step": 1,
+    "mode": "parallel",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "phone",
+    "zoom": 2,
+    "step": 1.5,
+    "mode": "verse",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "phone",
+    "zoom": 2,
+    "step": 1.5,
+    "mode": "parallel",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "desktop",
+    "zoom": 1.25,
+    "step": 1,
+    "mode": "verse",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "desktop",
+    "zoom": 1.25,
+    "step": 1,
+    "mode": "parallel",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "desktop",
+    "zoom": 1.25,
+    "step": 1.5,
+    "mode": "verse",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "desktop",
+    "zoom": 1.25,
+    "step": 1.5,
+    "mode": "parallel",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "desktop",
+    "zoom": 1.5,
+    "step": 1,
+    "mode": "verse",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "desktop",
+    "zoom": 1.5,
+    "step": 1,
+    "mode": "parallel",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "desktop",
+    "zoom": 1.5,
+    "step": 1.5,
+    "mode": "verse",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "desktop",
+    "zoom": 1.5,
+    "step": 1.5,
+    "mode": "parallel",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "desktop",
+    "zoom": 2,
+    "step": 1,
+    "mode": "verse",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "desktop",
+    "zoom": 2,
+    "step": 1,
+    "mode": "parallel",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "desktop",
+    "zoom": 2,
+    "step": 1.5,
+    "mode": "verse",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   },
+   {
+    "vn": "desktop",
+    "zoom": 2,
+    "step": 1.5,
+    "mode": "parallel",
+    "overlap": 0,
+    "pairs": [],
+    "wide": [],
+    "clipped": 0,
+    "hs": 0,
+    "barVisible": true,
+    "pass": true
+   }
+  ]
+ },
+ "results": [
+  {
+   "ok": true,
+   "msg": "phone en: Genesis 1 renders 31 verses, lang=en, no errors, no horizontal scroll",
+   "data": {
+    "title": "Genesis 1",
+    "heading": "The Creation"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "phone en: layout shift 0.0000 (< 0.02)"
+  },
+  {
+   "ok": true,
+   "msg": "phone zh-Hans: Genesis 1 renders 31 verses, lang=zh-Hans, no errors, no horizontal scroll",
+   "data": {
+    "title": "创世记 1",
+    "heading": "创造"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "phone zh-Hans: layout shift 0.0000 (< 0.02)"
+  },
+  {
+   "ok": true,
+   "msg": "phone zh-Hant: Genesis 1 renders 31 verses, lang=zh-Hant, no errors, no horizontal scroll",
+   "data": {
+    "title": "創世記 1",
+    "heading": "創造"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "phone zh-Hant: layout shift 0.0000 (< 0.02)"
+  },
+  {
+   "ok": true,
+   "msg": "phone ru: Genesis 1 renders 31 verses, lang=ru, no errors, no horizontal scroll",
+   "data": {
+    "title": "Бытие 1",
+    "heading": "Сотворение мира"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "phone ru: layout shift 0.0000 (< 0.02)"
+  },
+  {
+   "ok": true,
+   "msg": "desktop en: Genesis 1 renders 31 verses, lang=en, no errors, no horizontal scroll",
+   "data": {
+    "title": "Genesis 1",
+    "heading": "The Creation"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "desktop en: layout shift 0.0000 (< 0.02)"
+  },
+  {
+   "ok": true,
+   "msg": "desktop zh-Hans: Genesis 1 renders 31 verses, lang=zh-Hans, no errors, no horizontal scroll",
+   "data": {
+    "title": "创世记 1",
+    "heading": "创造"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "desktop zh-Hans: layout shift 0.0000 (< 0.02)"
+  },
+  {
+   "ok": true,
+   "msg": "desktop zh-Hant: Genesis 1 renders 31 verses, lang=zh-Hant, no errors, no horizontal scroll",
+   "data": {
+    "title": "創世記 1",
+    "heading": "創造"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "desktop zh-Hant: layout shift 0.0000 (< 0.02)"
+  },
+  {
+   "ok": true,
+   "msg": "desktop ru: Genesis 1 renders 31 verses, lang=ru, no errors, no horizontal scroll",
+   "data": {
+    "title": "Бытие 1",
+    "heading": "Сотворение мира"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "desktop ru: layout shift 0.0000 (< 0.02)"
+  },
+  {
+   "ok": true,
+   "msg": "offline: a chapter of a book already read renders (in-memory)"
+  },
+  {
+   "ok": true,
+   "msg": "offline: an unseen book shows the named offline state with Retry (no blank, no endless skeleton)",
+   "data": {
+    "msg": "This chapter is not on this device yet, and you appear to be offline.  Try again"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "offline: no skeleton left behind"
+  },
+  {
+   "ok": true,
+   "msg": "offline: the chapter bar still works"
+  },
+  {
+   "ok": true,
+   "msg": "offline: Retry while still offline stays on the named state"
+  },
+  {
+   "ok": true,
+   "msg": "offline: back online, Retry loads the chapter"
+  },
+  {
+   "ok": true,
+   "msg": "offline: a reload while offline renders the chapter read before (data kept in Cache Storage)",
+   "data": {
+    "before": "1\nA Psalm of David. Yahweh is my shepher"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) phone: first verse readable in 1353 ms (budget 6000), 103 KB over the wire",
+   "data": {
+    "firstTextMs": 1353,
+    "kbTransferred": 103,
+    "skeletonBeforeText": true,
+    "cls": 0
+   }
+  },
+  {
+   "ok": true,
+   "msg": "slow phone: a skeleton, not a blank page or spinner, shows before the text"
+  },
+  {
+   "ok": true,
+   "msg": "slow phone: layout shift 0.0000"
+  },
+  {
+   "ok": true,
+   "msg": "slow phone: first-view transfer 103 KB <= 125 KB budget (measured 102 KB + 20%)"
+  },
+  {
+   "ok": true,
+   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) desktop: first verse readable in 1364 ms (budget 6000), 103 KB over the wire",
+   "data": {
+    "firstTextMs": 1364,
+    "kbTransferred": 103,
+    "skeletonBeforeText": true,
+    "cls": 0
+   }
+  },
+  {
+   "ok": true,
+   "msg": "slow desktop: a skeleton, not a blank page or spinner, shows before the text"
+  },
+  {
+   "ok": true,
+   "msg": "slow desktop: layout shift 0.0000"
+  },
+  {
+   "ok": true,
+   "msg": "slow desktop: first-view transfer 103 KB <= 125 KB budget (measured 102 KB + 20%)"
+  },
+  {
+   "ok": true,
+   "msg": "degraded: the edition list is bundled in the script; the page never asks for catalogue.json"
+  },
+  {
+   "ok": true,
+   "msg": "degraded: headings and paragraph data unreachable, the verses still read, no error"
+  },
+  {
+   "ok": true,
+   "msg": "degraded: paragraph mode without paragraph data reads as one run"
+  },
+  {
+   "ok": true,
+   "msg": "degraded: parallel with one edition unreachable shows the main edition and names the missing one",
+   "data": {
+    "status": "This chapter could not be loaded. (KJV)"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "degraded: a missing book file shows \"could not be loaded\" with Retry"
+  },
+  {
+   "ok": true,
+   "msg": "rtl: dir=rtl reaches the page and the reader root"
+  },
+  {
+   "ok": true,
+   "msg": "rtl: verse numbers sit on the right of their text",
+   "data": {
+    "numX": 319,
+    "textX": 12
+   }
+  },
+  {
+   "ok": true,
+   "msg": "rtl: the chapter bar mirrors (previous on the right)",
+   "data": {
+    "prevX": 323,
+    "nextX": 8,
+    "glyph": "›"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "rtl: no horizontal scroll, no clipped chrome",
+   "data": {
+    "dir": "rtl",
+    "rootDir": "rtl",
+    "prevX": 323,
+    "nextX": 8,
+    "numX": 319,
+    "textX": 12,
+    "textAlign": "start",
+    "pill": "آيات",
+    "scrollW": 375,
+    "clientW": 375,
+    "clipped": 0,
+    "glyphPrev": "›"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "rtl: Arabic strings from the fixture replace the chrome words"
+  },
+  {
+   "ok": true,
+   "msg": "rtl: the sheet opens mirrored"
+  },
+  {
+   "ok": true,
+   "msg": "rtl: ArrowLeft steps forward"
+  },
+  {
+   "ok": true,
+   "msg": "long phone: Psalm 119 in 3 editions, 176 rows / 528 lines",
+   "data": {
+    "renderMs": 3.299999952316284,
+    "verses": 176,
+    "uid": "yr1",
+    "nodes": 2964,
+    "lines": 528
+   }
+  },
+  {
+   "ok": true,
+   "msg": "long phone: Psalm 119 x3 renders in 3.3 ms after data (< 120)"
+  },
+  {
+   "ok": true,
+   "msg": "long phone: scrolling Psalm 119 x3 for 3 s: median frame 16.7 ms, p95 16.8 ms, 0.0% over 33 ms",
+   "data": {
+    "frames": 182,
+    "p50": 16.7,
+    "p95": 16.8,
+    "over33pct": 0
+   }
+  },
+  {
+   "ok": true,
+   "msg": "long phone: no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "long desktop: Psalm 119 in 3 editions, 176 rows / 528 lines",
+   "data": {
+    "renderMs": 3.1999999284744263,
+    "verses": 176,
+    "uid": "yr1",
+    "nodes": 2964,
+    "lines": 528
+   }
+  },
+  {
+   "ok": true,
+   "msg": "long desktop: Psalm 119 x3 renders in 3.2 ms after data (< 120)"
+  },
+  {
+   "ok": true,
+   "msg": "long desktop: scrolling Psalm 119 x3 for 3 s: median frame 16.7 ms, p95 16.7 ms, 0.0% over 33 ms",
+   "data": {
+    "frames": 182,
+    "p50": 16.7,
+    "p95": 16.7,
+    "over33pct": 0
+   }
+  },
+  {
+   "ok": true,
+   "msg": "long desktop: no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "long: Genesis 1 paragraph 1.0 ms, 1 Chronicles 1 (54 verses of names) 0.6 ms"
+  },
+  {
+   "ok": true,
+   "msg": "language: switched to en without a reload; chrome, book name and default edition follow",
+   "data": {
+    "marker": 1,
+    "html": "en",
+    "mode": "Verses",
+    "ed": "BSB (Yahweh)",
+    "t": "John 3",
+    "aria": "Next chapter"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "language: nothing from another language left in the en chrome"
+  },
+  {
+   "ok": true,
+   "msg": "language: switched to zh-Hans without a reload; chrome, book name and default edition follow",
+   "data": {
+    "marker": 1,
+    "html": "zh-Hans",
+    "mode": "逐节",
+    "ed": "和合本雅伟版",
+    "t": "约翰福音 3",
+    "aria": "下一章"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "language: nothing from another language left in the zh-Hans chrome"
+  },
+  {
+   "ok": true,
+   "msg": "language: switched to zh-Hant without a reload; chrome, book name and default edition follow",
+   "data": {
+    "marker": 1,
+    "html": "zh-Hant",
+    "mode": "逐節",
+    "ed": "和合本雅偉版",
+    "t": "約翰福音 3",
+    "aria": "下一章"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "language: nothing from another language left in the zh-Hant chrome"
+  },
+  {
+   "ok": true,
+   "msg": "language: switched to ru without a reload; chrome, book name and default edition follow",
+   "data": {
+    "marker": 1,
+    "html": "ru",
+    "mode": "По стихам",
+    "ed": "СП (Яхве)",
+    "t": "От Иоанна 3",
+    "aria": "Следующая глава"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "language: nothing from another language left in the ru chrome"
+  },
+  {
+   "ok": true,
+   "msg": "language: switched to en without a reload; chrome, book name and default edition follow",
+   "data": {
+    "marker": 1,
+    "html": "en",
+    "mode": "Verses",
+    "ed": "BSB (Yahweh)",
+    "t": "John 3",
+    "aria": "Next chapter"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "language: nothing from another language left in the en chrome"
+  },
+  {
+   "ok": true,
+   "msg": "language: the edition changes to the language default only when the reader has not chosen one (KJV kept for English)",
+   "data": {
+    "zhEd": "和合本雅伟版",
+    "enEd": "KJV"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "language: no errors across the switches",
+   "data": []
+  },
+  {
+   "ok": true,
+   "msg": "history: a chapter step is a history entry with its own #ref",
+   "data": {
+    "hash": "#ref=Genesis%203"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "history: Back restores the previous chapter and its scroll position (600 vs 600)"
+  },
+  {
+   "ok": true,
+   "msg": "history: Back, Back, Forward walks Genesis 3, 2, 1, 2"
+  },
+  {
+   "ok": true,
+   "msg": "history: switching edition replaces the entry instead of adding one"
+  },
+  {
+   "ok": true,
+   "msg": "deep link #ref=Exodus 25:10 -> Exodus 25 verses 10 in view",
+   "data": {
+    "got": {
+     "title": "Exodus 25",
+     "hl": [
+      25010
+     ],
+     "edition": "BSB (Yahweh)",
+     "parallel": 0,
+     "docTitle": "Exodus 25 · BSB (Yahweh)",
+     "inView": true
+    },
+    "errs": []
+   }
+  },
+  {
+   "ok": true,
+   "msg": "deep link #ref=Exodus%2025%3A10-12 -> Exodus 25 verses 10,11,12 in view",
+   "data": {
+    "got": {
+     "title": "Exodus 25",
+     "hl": [
+      25010,
+      25011,
+      25012
+     ],
+     "edition": "BSB (Yahweh)",
+     "parallel": 0,
+     "docTitle": "Exodus 25 · BSB (Yahweh)",
+     "inView": true
+    },
+    "errs": []
+   }
+  },
+  {
+   "ok": true,
+   "msg": "deep link #ref=约 3:16&ed=cuvs-yhwh&lang=zh-Hans -> 约翰福音 3 verses 16 in view",
+   "data": {
+    "got": {
+     "title": "约翰福音 3",
+     "hl": [
+      3016
+     ],
+     "edition": "和合本雅伟版",
+     "parallel": 0,
+     "docTitle": "约翰福音 3 · 和合本雅伟版",
+     "inView": true
+    },
+    "errs": []
+   }
+  },
+  {
+   "ok": true,
+   "msg": "deep link #ref=Genesis 15:5-6&par=kjv,cuvs-yhwh&m=parallel -> Genesis 15 verses 5,6 in view",
+   "data": {
+    "got": {
+     "title": "Genesis 15",
+     "hl": [
+      15005,
+      15006
+     ],
+     "edition": "Parallel · 2",
+     "parallel": 2,
+     "docTitle": "Genesis 15 · KJV",
+     "inView": true
+    },
+    "errs": []
+   }
+  },
+  {
+   "ok": true,
+   "msg": "deep link #lang=ru&ref=Рим 8 -> Римлянам 8",
+   "data": {
+    "got": {
+     "title": "Римлянам 8",
+     "hl": [],
+     "edition": "СП (Яхве)",
+     "parallel": 0,
+     "docTitle": "Римлянам 8 · СП (Яхве)",
+     "inView": null
+    },
+    "errs": []
+   }
+  },
+  {
+   "ok": true,
+   "msg": "deep link #ed=asv-yhwh&ref=Psalm 23 -> Psalms 23",
+   "data": {
+    "got": {
+     "title": "Psalms 23",
+     "hl": [],
+     "edition": "ASV (Yahweh)",
+     "parallel": 0,
+     "docTitle": "Psalms 23 · ASV (Yahweh)",
+     "inView": null
+    },
+    "errs": []
+   }
+  },
+  {
+   "ok": true,
+   "msg": "deep link #ref=nonsense -> Genesis 1",
+   "data": {
+    "got": {
+     "title": "Genesis 1",
+     "hl": [],
+     "edition": "BSB (Yahweh)",
+     "parallel": 0,
+     "docTitle": "Genesis 1 · BSB (Yahweh)",
+     "inView": null
+    },
+    "errs": []
+   }
+  },
+  {
+   "ok": true,
+   "msg": "deep link (none) -> Genesis 1",
+   "data": {
+    "got": {
+     "title": "Genesis 1",
+     "hl": [],
+     "edition": "BSB (Yahweh)",
+     "parallel": 0,
+     "docTitle": "Genesis 1 · BSB (Yahweh)",
+     "inView": null
+    },
+    "errs": []
+   }
+  },
+  {
+   "ok": true,
+   "msg": "a11y axe: 0 serious or critical (system light, theme auto, en)"
+  },
+  {
+   "ok": true,
+   "msg": "a11y axe: 0 serious or critical (system light, theme auto, zh-Hans)"
+  },
+  {
+   "ok": true,
+   "msg": "a11y axe: 0 serious or critical (system light, theme auto, zh-Hant)"
+  },
+  {
+   "ok": true,
+   "msg": "a11y axe: 0 serious or critical (system light, theme auto, ru)"
+  },
+  {
+   "ok": true,
+   "msg": "a11y axe: 0 serious or critical (system light, theme dark, en)"
+  },
+  {
+   "ok": true,
+   "msg": "a11y axe: 0 serious or critical (system light, theme light, en)"
+  },
+  {
+   "ok": true,
+   "msg": "a11y axe: 0 serious or critical (system light, theme paper, en)"
+  },
+  {
+   "ok": true,
+   "msg": "a11y axe: 0 serious or critical (system dark, theme auto, en)"
+  },
+  {
+   "ok": true,
+   "msg": "a11y axe: 0 serious or critical (system dark, theme auto, zh-Hans)"
+  },
+  {
+   "ok": true,
+   "msg": "a11y axe: 0 serious or critical (system dark, theme auto, zh-Hant)"
+  },
+  {
+   "ok": true,
+   "msg": "a11y axe: 0 serious or critical (system dark, theme auto, ru)"
+  },
+  {
+   "ok": true,
+   "msg": "a11y axe: 0 serious or critical (system dark, theme dark, en)"
+  },
+  {
+   "ok": true,
+   "msg": "a11y axe: 0 serious or critical (system dark, theme light, en)"
+  },
+  {
+   "ok": true,
+   "msg": "a11y axe: 0 serious or critical (system dark, theme paper, en)"
+  },
+  {
+   "ok": true,
+   "msg": "a11y axe: book picker open, 0 serious or critical"
+  },
+  {
+   "ok": true,
+   "msg": "a11y axe: edition sheet open, 0 serious or critical"
+  },
+  {
+   "ok": true,
+   "msg": "a11y axe: display sheet open, 0 serious or critical"
+  },
+  {
+   "ok": true,
+   "msg": "a11y: Tab never reaches the page behind an open sheet (focus stays in the sheet or leaves to the browser, 14 presses)"
+  },
+  {
+   "ok": true,
+   "msg": "a11y: Escape closes the sheet and focus returns to its opener"
+  },
+  {
+   "ok": true,
+   "msg": "a11y: an open sheet is modal"
+  },
+  {
+   "ok": true,
+   "msg": "a11y: every button (outside running text) is at least 44 x 44 px",
+   "data": []
+  },
+  {
+   "ok": true,
+   "msg": "a11y: a verse number is reachable and selectable from the keyboard; the selection bar appears"
+  },
+  {
+   "ok": true,
+   "msg": "a11y: Copy from the keyboard puts the verse, the edition and its credit line on the clipboard"
+  },
+  {
+   "ok": true,
+   "msg": "a11y: Escape clears the selection"
+  },
+  {
+   "ok": true,
+   "msg": "a11y: landmark, live region, verse labels, one h2 then h3 headings, lang on text",
+   "data": {
+    "region": "region",
+    "label": "Bible reader",
+    "live": "polite",
+    "vnLabel": "Select verse 1",
+    "h2": 1,
+    "h3": 1,
+    "lang": "en",
+    "pressedNum": 31,
+    "verses": 31
+   }
+  },
+  {
+   "ok": true,
+   "msg": "a11y: with reduced motion the sheet and toast do not move or fade over time",
+   "data": {
+    "anim": {
+     "name": "yr-fade",
+     "dur": "1e-05s"
+    },
+    "toastT": "1e-05s"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "scale phone zoom 125% x text step 1 (verse): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale phone zoom 125% x text step 1 (parallel): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale phone zoom 125% x text step 1.5 (verse): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale phone zoom 125% x text step 1.5 (parallel): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale phone zoom 150% x text step 1 (verse): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale phone zoom 150% x text step 1 (parallel): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale phone zoom 150% x text step 1.5 (verse): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale phone zoom 150% x text step 1.5 (parallel): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale phone zoom 200% x text step 1 (verse): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale phone zoom 200% x text step 1 (parallel): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale phone zoom 200% x text step 1.5 (verse): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale phone zoom 200% x text step 1.5 (parallel): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale desktop zoom 125% x text step 1 (verse): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale desktop zoom 125% x text step 1 (parallel): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale desktop zoom 125% x text step 1.5 (verse): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale desktop zoom 125% x text step 1.5 (parallel): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale desktop zoom 150% x text step 1 (verse): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale desktop zoom 150% x text step 1 (parallel): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale desktop zoom 150% x text step 1.5 (verse): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale desktop zoom 150% x text step 1.5 (parallel): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale desktop zoom 200% x text step 1 (verse): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale desktop zoom 200% x text step 1 (parallel): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale desktop zoom 200% x text step 1.5 (verse): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "scale desktop zoom 200% x text step 1.5 (parallel): no overlap, no clipped controls, no horizontal scroll"
+  },
+  {
+   "ok": true,
+   "msg": "copy en: heading \"Genesis 1:1–2 (BSB, Yahweh edition)\", numbered verses, credit line, link",
+   "data": {
+    "first": "Genesis 1:1–2 (BSB, Yahweh edition) | 1 In the beginning God created the heavens and the e"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "copy zh-Hans: heading \"创世记 1:1–2（和合本雅伟版）\", numbered verses, credit line, link",
+   "data": {
+    "first": "创世记 1:1–2（和合本雅伟版） | 1 起初，神创造天地。"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "copy zh-Hant: heading \"創世記 1:1–2（和合本雅偉版）\", numbered verses, credit line, link",
+   "data": {
+    "first": "創世記 1:1–2（和合本雅偉版） | 1 起初，神創造天地。"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "copy ru: heading \"Бытие 1:1–2 (Синодальный перевод, издание Яхве)\", numbered verses, credit line, link",
+   "data": {
+    "first": "Бытие 1:1–2 (Синодальный перевод, издание Яхве) | 1 В начале сотворил Бог небо и землю."
+   }
+  },
+  {
+   "ok": true,
+   "msg": "copy: when the async clipboard is refused the execCommand fallback carries the same text, and the toast still says Copied",
+   "data": {
+    "toast": "Copied"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "copy: with both paths refused the reader says so and throws nothing"
+  },
+  {
+   "ok": true,
+   "msg": "copy: all 176 verses of Psalm 119 selected -> 100 copied, the notice is in the text and in the toast",
+   "data": {
+    "sel": "176 selected · Psalms 119:1–176",
+    "toast": "Copied the first 100 verses (the limit)"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "copy: Ctrl/Cmd+C with a verse selected copies it as a citation"
+  },
+  {
+   "ok": true,
+   "msg": "copy: a native text selection copies as plain text (no verse numbers) with the heading and credit appended",
+   "data": {
+    "nat": "For God so loved the world that He gave His one and only Son, that everyone who "
+   }
+  },
+  {
+   "ok": true,
+   "msg": "copy: parallel copy lists every edition under the verse, labels lined up, each credit once",
+   "data": {
+    "head": "John 3:16\n\n3:16\nBSB-Y 　For God so loved the world that He gave His one"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "copy: the selection survives an edition switch",
+   "data": {
+    "keyBefore": "17022",
+    "keyAfter": "17022"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "editions: KJV -> pill, en text, title \"Genesis 1\", the same verse stays at the top (1019 -> 1019)"
+  },
+  {
+   "ok": true,
+   "msg": "editions: WEB -> pill, en text, title \"Genesis 1\", the same verse stays at the top (1019 -> 1019)"
+  },
+  {
+   "ok": true,
+   "msg": "editions: ASV (Yahweh) -> pill, en text, title \"Genesis 1\", the same verse stays at the top (1019 -> 1019)"
+  },
+  {
+   "ok": true,
+   "msg": "editions: СП (Яхве) -> pill, ru text, title \"Бытие 1\", the same verse stays at the top (1019 -> 1019)"
+  },
+  {
+   "ok": true,
+   "msg": "editions: 和合本雅伟版 -> pill, zh-Hans text, title \"创世记 1\", the same verse stays at the top (1019 -> 1020)"
+  },
+  {
+   "ok": true,
+   "msg": "editions: 和合本雅偉版 -> pill, zh-Hant text, title \"創世記 1\", the same verse stays at the top (1019 -> 1020)"
+  },
+  {
+   "ok": true,
+   "msg": "editions: BSB (Yahweh) -> pill, en text, title \"Genesis 1\", the same verse stays at the top (1019 -> 1020)"
+  },
+  {
+   "ok": true,
+   "msg": "editions: back to BSB (Yahweh) the text is exactly what it was"
+  },
+  {
+   "ok": true,
+   "msg": "editions: the choice is remembered after a reload"
+  },
+  {
+   "ok": true,
+   "msg": "editions: section headings follow the edition (cuv, cuv-tr, english-classic, ru)",
+   "data": {
+    "zhH": "神与亚伯兰立约",
+    "hantH": "神與亞伯蘭立約",
+    "enH": "God’s Covenant with Abram",
+    "ruH": "Завет Бога с Аврамом"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "parallel: first time on, an English reader gets BSB (Yahweh) + 和合本雅伟版; the pill reads Parallel · 2",
+   "data": {
+    "pair": [
+     "bsb-yhwh",
+     "cuvs-yhwh"
+    ]
+   }
+  },
+  {
+   "ok": true,
+   "msg": "parallel: at three editions the four other listed rows (the other Chinese script is folded away) are disabled with the reason, and a fourth is refused",
+   "data": {
+    "disabledRows": 4,
+    "set": 3
+   }
+  },
+  {
+   "ok": true,
+   "msg": "parallel: moving the main edition down reorders the lines and changes the main edition",
+   "data": {
+    "order": [
+     "cuvs-yhwh",
+     "bsb-yhwh",
+     "kjv"
+    ]
+   }
+  },
+  {
+   "ok": true,
+   "msg": "parallel: the book is named in the main edition’s language",
+   "data": {
+    "title": "约翰福音 1",
+    "gaps": 0
+   }
+  },
+  {
+   "ok": true,
+   "msg": "parallel: Matthew 17:21, absent from the BSB, is a dash line labelled \"not in this edition\", not a shifted row",
+   "data": {
+    "lines": 2,
+    "gap": 1,
+    "txt": "—",
+    "sr": "not in this edition"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "passage: Genesis 15 shows 12 verses and \"Show the other 9 verses\"",
+   "data": {
+    "n": 12,
+    "more": "Show the other 9 verses"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "passage: the heading the passage sits under is shown"
+  },
+  {
+   "ok": true,
+   "msg": "passage: expand shows all 21"
+  },
+  {
+   "ok": true,
+   "msg": "passage: the Parallel pill turns on interleaved lines (shared first-time pairing)"
+  },
+  {
+   "ok": true,
+   "msg": "passage: \"Read the whole chapter\" calls the host’s onOpenChapter with the chapter"
+  },
+  {
+   "ok": true,
+   "msg": "passage: a passage across two chapters shows both, labelled",
+   "data": {
+    "ch": [
+     "第 15 章",
+     "第 16 章"
+    ],
+    "keys": "15019,15020,15021,16001,16002,16003"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "passage: copying across the chapter break gives one heading and chapter-numbered lines",
+   "data": {
+    "first": "创世记 15:21–16:1（和合本雅伟版）"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "notes: Genesis 1 in the 和合本雅伟版 has its footnote marker"
+  },
+  {
+   "ok": true,
+   "msg": "notes: the note is hidden until asked for"
+  },
+  {
+   "ok": true,
+   "msg": "notes: Enter on the marker opens the note inline (keyboard reachable)"
+  },
+  {
+   "ok": true,
+   "msg": "notes: pressing again closes it"
+  },
+  {
+   "ok": true,
+   "msg": "headings: the (i) button opens the section’s background note"
+  },
+  {
+   "ok": true,
+   "msg": "wording en: John 1 as rendered (chrome, headings, notes, credit) carries no creedal vocabulary, no 祂, no year 1919"
+  },
+  {
+   "ok": true,
+   "msg": "wording zh-Hans: John 1 as rendered (chrome, headings, notes, credit) carries no creedal vocabulary, no 祂, no year 1919"
+  },
+  {
+   "ok": true,
+   "msg": "wording zh-Hant: John 1 as rendered (chrome, headings, notes, credit) carries no creedal vocabulary, no 祂, no year 1919"
+  },
+  {
+   "ok": true,
+   "msg": "wording ru: John 1 as rendered (chrome, headings, notes, credit) carries no creedal vocabulary, no 祂, no year 1919"
+  },
+  {
+   "ok": true,
+   "msg": "wording zh-Hant: Traditional pages write 雅偉, never 雅伟"
+  }
+ ]
+}

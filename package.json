@@ -14,7 +14,11 @@
     "shell": "node scripts/build-shell.mjs",
     "zh": "node scripts/build-zh-hant.mjs",
     "events": "node scripts/build-events-payload.mjs",
-    "bible": "node scripts/build-bible-split.mjs"
+    "bible": "node scripts/build-bible-split.mjs",
+    "reader:data": "node scripts/reader-editions.mjs",
+    "reader:demo": "node scripts/reader-editions.mjs && vite build --config vite.reader.config.ts",
+    "test:reader": "node --test \"tests/reader/*.test.ts\"",
+    "verify:reader": "node scripts/verify-reader-robustness.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.11.1",
@@ -23,6 +27,7 @@
   },
   "devDependencies": {
     "@types/three": "^0.185.4",
+    "axe-core": "^4.10.2",
     "opencc-js": "^1.4.2",
     "playwright": "^1.63.0",
     "typescript": "^5.9.3",

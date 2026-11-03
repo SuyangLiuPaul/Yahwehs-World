@@ -20,3 +20,4 @@ __pycache__/
 
 # Reader data copied from Words by scripts/reader-editions.mjs (npm run reader:data); never committed.
 public/data/reader/
+dist-reader/
