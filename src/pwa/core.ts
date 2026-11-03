@@ -14,7 +14,7 @@ export const BUDGETS = {
   pictures: 60 * MiB, // recently viewed full-size pictures
   thumbs: 30 * MiB,   // gallery thumbnails
   data: 40 * MiB,     // Bible book data (text, headings, paragraphs) and the Traditional table, cached on use
-  fonts: 20 * MiB,    // Google Fonts files the pages ask for (CJK faces come in many small slices)
+  fonts: 20 * MiB,    // our own faces (public/fonts): the two CJK subsets are the bulk of it
 } as const;
 export type RuntimeCache = keyof typeof BUDGETS;
 
@@ -47,8 +47,8 @@ export type Kind =
   | 'data'       // /data/*: network first, saved copy when offline
   | 'picture'    // /pictures/full/*
   | 'thumb'      // /pictures/thumb/*
-  | 'font-css'   // fonts.googleapis.com/css2
-  | 'font-file'; // fonts.gstatic.com
+  | 'font-css'   // /fonts/fonts.css
+  | 'font-file'; // /fonts/*.woff2 outside the precache (the CJK subsets)
 
 export interface RequestInfo {
   method: string;
@@ -63,12 +63,10 @@ const NEVER = /^\/(?:api|\.netlify)(?:\/|$)/;
 export function classify(url: URL, origin: string, req: RequestInfo, precache: ReadonlySet<string> = new Set()): Kind {
   if (req.method !== 'GET') return 'bypass';
   if (req.range) return 'bypass';
-  if (url.origin !== origin) {
-    if (url.protocol !== 'https:') return 'bypass';
-    if (url.hostname === 'fonts.googleapis.com') return url.pathname.startsWith('/css') ? 'font-css' : 'bypass';
-    if (url.hostname === 'fonts.gstatic.com') return 'font-file';
-    return 'bypass';
-  }
+  // Nothing comes from another host any more: the fonts are ours (public/fonts), so fonts.googleapis.com and
+  // fonts.gstatic.com are no longer special — they are simply not us, and a page that asked for one would be a bug
+  // (scripts/verify-shell.mjs fails on it).
+  if (url.origin !== origin) return 'bypass';
   const p = url.pathname;
   if (NEVER.test(p)) return 'bypass';
   if (req.mode === 'navigate') {
@@ -78,6 +76,10 @@ export function classify(url: URL, origin: string, req: RequestInfo, precache: R
   }
   if (p.startsWith('/pictures/full/')) return 'picture';
   if (p.startsWith('/pictures/thumb/')) return 'thumb';
+  // Our own faces. The stylesheet and the small Latin/Cyrillic subsets are in the precache, so a first paint is
+  // right offline; the two CJK files are 3 MB each and would swallow the 4 MiB shell budget, so they are fetched
+  // once and kept in the byte-budgeted font cache, which is what a Chinese reader needs from the second launch on.
+  if (p.startsWith('/fonts/')) return precache.has(p) ? 'static' : p.endsWith('.css') ? 'font-css' : 'font-file';
   if (p.startsWith('/data/')) return 'data';
   if (p.startsWith('/assets/') || p.startsWith('/pwa/') || precache.has(p)) return 'static';
   return 'bypass';

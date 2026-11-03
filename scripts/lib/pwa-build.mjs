@@ -83,6 +83,17 @@ export function collectPrecache(dist) {
     '/data/gallery/index.json', '/data/gallery/summaries.json', '/data/reader/catalogue.json'];
   const assets = join(dist, 'assets');
   if (existsSync(assets)) for (const f of readdirSync(assets)) if (/\.(js|css)$/.test(f)) paths.push(`/assets/${f}`);
+  // The fonts are ours now. The stylesheet and every Latin/Cyrillic/Hebrew/symbol subset go in the shell precache
+  // (about 230 KB all together), so an offline first paint uses our faces and not the device's. The two CJK files
+  // are ~1.3 and ~1.8 MB each and would not fit the 4 MiB shell budget beside the pages and the code: those are
+  // cached on first use by the worker's byte-budgeted font cache (src/pwa/core.ts).
+  const fonts = join(dist, 'fonts');
+  if (existsSync(fonts)) {
+    for (const f of readdirSync(fonts)) {
+      if (f === 'fonts.css') paths.push('/fonts/fonts.css');
+      else if (f.endsWith('.woff2') && !/^Noto(Sans|Serif)(SC|TC)-/.test(f)) paths.push(`/fonts/${f}`);
+    }
+  }
   const out = [];
   let bytes = 0;
   for (const p of [...new Set(paths)].sort()) {

@@ -11,9 +11,14 @@
   --yr-panel: #0f2a49; --yr-shadow: 0 12px 40px #00000073; --yr-scrim: #06111fb8;
   --yr-scale: 1;
   --yr-sticky-top: 0px;
-  --yr-ui: -apple-system, "SF Pro Text", "Inter", system-ui, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
-  --yr-read: "Spectral", Georgia, "Songti SC", "Noto Serif SC", "Noto Serif CJK SC", "PT Serif", serif;
-  --yr-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* The bundled faces come FIRST (public/fonts, built by tools/subset-fonts.sh). They used to come after
+     -apple-system / Songti SC, so the Chinese Bible text rendered in whatever serif the device happened to have —
+     the "字体还是很差" the owner reported. Inter and Spectral carry Latin AND Cyrillic; the Noto subsets carry the
+     Han; Noto Serif/Sans Hebrew carry the pointed Hebrew in the Psalm 119 headings and the divine name; YW Symbols
+     carries the few arrows and enclosed numbers none of the others has. The system names stay as a last resort. */
+  --yr-ui: "Inter", "Noto Sans SC", "Noto Sans Hebrew", "YW Symbols", -apple-system, system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --yr-read: "Spectral", "Noto Serif SC", "Noto Serif Hebrew", "Inter", "YW Symbols", Georgia, "Songti SC", "PT Serif", serif;
+  --yr-mono: "IBM Plex Mono", "Inter", "Noto Sans SC", "YW Symbols", ui-monospace, SFMono-Regular, Menlo, monospace;
   color-scheme: dark;
   box-sizing: border-box;
   position: relative;
@@ -37,6 +42,13 @@
   --yr-gold: #96650f; --yr-gold-bright: #7a5209; --yr-gold-text: #86590a; --yr-on-gold: #fffaf0;
   --yr-line: #d8cfba; --yr-edge: #a79b80; --yr-gold-wash: #96650f1a; --yr-gold-line: #96650f66;
   --yr-panel: #fbf8f1; --yr-shadow: 0 12px 40px #3a2e1a2a; --yr-scrim: #3a2e1a66; color-scheme: light;
+}
+/* Traditional readers get the TC faces: the SC and TC Notos draw 創 / 虛 / 淵 differently and a zh-Hant reader sees
+   the Mainland forms at once. Same mechanism as src/tokens.css: a custom property resolves where it is USED, so
+   redefining the two stacks here moves every piece of text downstream at once. */
+html[lang="zh-Hant"] .yr, .yr:lang(zh-Hant) {
+  --yr-ui: "Inter", "Noto Sans TC", "Noto Sans SC", "Noto Sans Hebrew", "YW Symbols", -apple-system, system-ui, "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --yr-read: "Spectral", "Noto Serif TC", "Noto Serif SC", "Noto Serif Hebrew", "Inter", "YW Symbols", Georgia, "Songti TC", serif;
 }
 /* a host that owns the colours sets data-yr-theme="inherit" on the container and defines the --yr-* tokens itself */
 

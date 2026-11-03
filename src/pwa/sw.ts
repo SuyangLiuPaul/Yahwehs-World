@@ -235,7 +235,7 @@ async function budgeted(c: RuntimeCache, req: Request, e: Ext, ttl: number | nul
   return res;
 }
 
-/** Google Fonts stylesheet: the saved copy at once, a fresh one fetched behind it. Asked with CORS so the copy is readable (and countable). */
+/** The font stylesheet: the saved copy at once, a fresh one fetched behind it. */
 async function fontCss(req: Request, e: Ext): Promise<Response> {
   const fresh = fetch(new Request(req.url, { mode: 'cors', credentials: 'omit' })).then((r) => { if (r.status === 200) void store('fonts', req.url, r.clone()); return r; });
   const hit = await use('fonts', req.url);

@@ -55,24 +55,23 @@ const EXTRA_WALKS = [
 export const START = '  <!-- shell:start — written by scripts/build-shell.mjs. Edit that, not this. -->';
 export const END = '  <!-- shell:end -->';
 
-export const FONT_URL = 'https://fonts.googleapis.com/css2?'
-  + 'family=Inter:wght@400;500;600'
-  + '&family=Spectral:wght@500;600'
-  + '&family=IBM+Plex+Mono:wght@400;500'
-  + '&family=Noto+Sans+SC:wght@400;500;600'
-  + '&family=Noto+Serif+SC:wght@500;600'
-  + '&family=Noto+Sans+TC:wght@400;500;600'
-  + '&family=Noto+Serif+TC:wght@500;600'
-  + '&display=swap';
+// The fonts are OURS: subset woff2 in public/fonts, built by tools/subset-fonts.sh and listed in
+// public/fonts/OFL.txt. Nothing is fetched from fonts.googleapis.com or fonts.gstatic.com any more.
+//
+// They used to come from Google at runtime, which meant that on a first launch, offline, or on a slow
+// network the apps fell back to system faces — the "字体还是很差" the owner reported. Bundled, the
+// Latin, Cyrillic and both CJK scripts are on the device before the first paint.
+//
+// fonts.css is 2.7 KB brotli, so it is a plain blocking stylesheet: the media="print" dance existed only
+// to dodge a third-party round trip and now just causes a flash of fallback text. The two preloads are the
+// critical Latin faces, which every page needs (the loading screen itself is trilingual). `crossorigin` is
+// required on a font preload even same-origin, or the file is fetched twice. The CJK files are far too big
+// to preload; font-display: swap carries them.
+export const FONT_CSS = '/fonts/fonts.css';
+export const FONT_PRELOAD = ['/fonts/Inter-400-600-latin.woff2', '/fonts/Spectral-500-latin.woff2'];
 
-// A stylesheet in <head> blocks the first paint until it arrives, and this one
-// lives on another origin (measured: it was the difference between a 0.9 s and
-// a multi-second first paint on a phone). media="print" lets the page paint
-// at once; onload flips it to "all" and the faces swap in (display=swap was
-// already set, so the fallback face has always been what shows first).
-// The <noscript> twin keeps the fonts for a reader without JavaScript.
-export const FONTS = `  <link href="${FONT_URL}" rel="stylesheet" media="print" onload="this.media='all'">\n`
-  + `  <noscript><link href="${FONT_URL}" rel="stylesheet"></noscript>`;
+export const FONTS = FONT_PRELOAD.map((f) => `  <link rel="preload" href="${f}" as="font" type="font/woff2" crossorigin>`).join('\n')
+  + `\n  <link rel="stylesheet" href="${FONT_CSS}">`;
 
 export const HEAD_END = '<!-- /shell:head -->';
 // The opening screen's CSS lives HERE, inline, and nowhere else. The page's
@@ -306,8 +305,15 @@ for (const page of isMain ? PAGES : []) {
     const at = body + '<body>'.length;
     html = html.slice(0, at) + '\n' + block + '\n' + html.slice(at);
   }
-  // …the font link, which is the same in all six…
-  html = html.replace(/[ \t]*<link href="https:\/\/fonts\.googleapis\.com\/css2[^>]*>(\s*<noscript>[\s\S]*?<\/noscript>)?/, FONTS);
+  // …the font links, which are the same on every page. The pages used to carry a preconnect pair and a
+  // Google stylesheet link; both go, and nothing replaces the preconnects because the files are ours.
+  // Written to be idempotent: it rewrites whichever form the page is carrying.
+  html = html.replace(/[ \t]*<link rel="preconnect" href="https:\/\/fonts\.(?:googleapis|gstatic)\.com"[^>]*>\n?/g, '');
+  html = html.replace(/[ \t]*<link rel="preload" href="\/fonts\/[^>]*>\n?/g, '');
+  html = html.replace(
+    /[ \t]*(?:<link href="https:\/\/fonts\.googleapis\.com\/css2[^>]*>(?:\s*<noscript>[\s\S]*?<\/noscript>)?|<link rel="stylesheet" href="\/fonts\/fonts\.css">)/,
+    FONTS,
+  );
 
   // …the tab icon (a 7 KB stand-in for the 297 KB icon.svg; scripts/build-small-brand.py)…
   html = html.replace('<link rel="icon" href="/icon.svg" type="image/svg+xml">', '<link rel="icon" href="/icon-sm.svg" type="image/svg+xml">');

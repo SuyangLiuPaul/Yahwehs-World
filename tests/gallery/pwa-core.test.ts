@@ -39,16 +39,21 @@ test('Range requests bypass even a normally cached picture', () => {
 test('another HTTPS host bypasses the worker', () => {
   assert.equal(kind('https://other.test/assets/x-abc.js'), 'bypass');
 });
-test('Google Fonts CSS is font-css', () => {
-  assert.equal(kind('https://fonts.googleapis.com/css2?family=Inter'), 'font-css');
-});
-test('Google Fonts files are font-file', () => {
-  assert.equal(kind('https://fonts.gstatic.com/s/inter/v1/a.woff2'), 'font-file');
-});
-test('HTTP other-host requests bypass, including font hosts', () => {
-  for (const url of ['http://other.test/assets/x.js', 'http://fonts.googleapis.com/css2?family=Inter', 'http://fonts.gstatic.com/s/inter/v1/a.woff2']) {
+// The fonts used to come from Google at runtime and the worker had a path for each host. They are ours now
+// (public/fonts), so those hosts are simply not us: a request to one would be a bug, and bypassing is right.
+test('Google Fonts hosts bypass the worker: nothing is fetched from them any more', () => {
+  for (const url of ['https://fonts.googleapis.com/css2?family=Inter', 'https://fonts.gstatic.com/s/inter/v1/a.woff2',
+    'http://fonts.googleapis.com/css2?family=Inter', 'http://fonts.gstatic.com/s/inter/v1/a.woff2', 'http://other.test/assets/x.js']) {
     assert.equal(kind(url), 'bypass', url);
   }
+});
+test('our own font stylesheet is font-css and our own faces are font-file', () => {
+  assert.equal(kind('/fonts/fonts.css'), 'font-css');
+  assert.equal(kind('/fonts/NotoSerifSC-500-cjk-sc.woff2'), 'font-file');
+});
+test('a font file in the precache is served from the shell cache, not the byte-budgeted one', () => {
+  assert.equal(kind('/fonts/Inter-400-600-latin.woff2', get, new Set(['/fonts/Inter-400-600-latin.woff2'])), 'static');
+  assert.equal(kind('/fonts/fonts.css', get, new Set(['/fonts/fonts.css'])), 'static');
 });
 test('the home page is a navigation', () => {
   assert.equal(kind('/', nav), 'navigate');
@@ -90,10 +95,9 @@ test('the brand image is static only when precached', () => {
 test('the version probe bypasses the worker', () => {
   assert.equal(kind('/version.json'), 'bypass');
 });
-test('font host exceptions still require GET without Range and a CSS endpoint', () => {
-  assert.equal(kind('https://fonts.googleapis.com/not-css'), 'bypass');
-  assert.equal(kind('https://fonts.googleapis.com/css2', { ...get, method: 'POST' }), 'bypass');
-  assert.equal(kind('https://fonts.gstatic.com/a.woff2', { ...get, range: true }), 'bypass');
+test('our fonts are still only served for a plain GET without a Range', () => {
+  assert.equal(kind('/fonts/fonts.css', { ...get, method: 'POST' }), 'bypass');
+  assert.equal(kind('/fonts/Inter-400-600-latin.woff2', { ...get, range: true }), 'bypass');
 });
 
 test('root and index.html use the home shell', () => {

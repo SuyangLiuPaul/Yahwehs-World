@@ -77,7 +77,10 @@ check(!/unsafe-eval/.test(JSON.stringify(csp)) && dir('script-src').join(' ') ==
 check(dir('img-src').includes(SITE_HOST) && dir('connect-src').includes(SITE_HOST), `CSP lets pictures and requests reach ${SITE_HOST} (the one host constant)`);
 check(dir('default-src').join(' ') === "'self'" && dir('object-src').includes("'none'"), 'CSP: default-src \'self\', object-src none');
 const hosts = Object.values(csp).join(' ').match(/https?:\/\/[^\s;]+/g) ?? [];
-check(hosts.every((h) => [SITE_HOST, 'https://fonts.googleapis.com', 'https://fonts.gstatic.com', 'https://api.github.com', 'http://ipc.localhost', 'http://asset.localhost'].includes(h)), 'CSP names no other host', hosts.join(' '));
+check(hosts.every((h) => [SITE_HOST, 'https://api.github.com', 'http://ipc.localhost', 'http://asset.localhost'].includes(h)), 'CSP names no other host', hosts.join(' '));
+// The fonts are ours (public/fonts). If a Google Fonts host ever reappears in the CSP or in a page head, the apps
+// are one bad network away from system fallback faces again, which is the regression the owner reported.
+check(!/fonts\.(googleapis|gstatic)\.com/.test(JSON.stringify(csp)), 'CSP does not allow Google Fonts (the fonts are self-hosted)');
 const cap = json('src-tauri/capabilities/default.json');
 const perms = cap.permissions.map((p) => (typeof p === 'string' ? p : p.identifier));
 check(!perms.some((p) => /^(shell|process|notification|dialog|clipboard-manager|updater)/.test(p)) && !perms.includes('fs:default') && !perms.some((p) => /^fs:(scope|deny)/.test(p)), 'capabilities: no shell, process, notification, dialog, updater, no blanket file access');
@@ -186,6 +189,29 @@ check(simplified.length === 0, 'no shell file writes the product name in Simplif
   check(brands.length === 0, 'every page with a wordmark sets it through data-brand (the page language chooses the spelling)', brands.join(', '));
   const titles = readdirSync(ROOT).filter((n) => n.endsWith('.html')).filter((n) => /<title>[^<]*雅伟之界/.test(read(n)));
   check(titles.length === 0, 'no static <title> or og: tag spells the name Simplified (it is shown to English and Russian readers before the script runs)', titles.join(', '));
+}
+
+// The fonts are ours. Every page must load /fonts/fonts.css and no page may name a Google Fonts host: a page that
+// does falls back to system faces on a first launch, offline or on a slow network, which is what the owner saw.
+{
+  const all = readdirSync(ROOT).filter((n) => n.endsWith('.html'));
+  const google = all.filter((n) => /fonts\.(googleapis|gstatic)\.com/.test(read(n)));
+  // every page, lab pages included: a lab page that reaches out to Google is still a third-party request
+  check(google.length === 0, 'no page fetches a font from Google (the fonts are self-hosted in public/fonts)', google.join(', '));
+  // the pages that ship: the eight shell pages carry the link itself, the three gallery pages take it from a marker
+  const shipped = ['index.html', 'bible.html', 'scenes.html', 'tabernacle.html', 'temple.html', 'ark.html', 'figures.html', 'plan.html',
+    'home.html', 'gallery-bible.html', 'gallery-scenes.html'];
+  const missing = shipped.filter((n) => !read(n).includes('/fonts/fonts.css') && !read(n).includes('<!-- gallery-fonts -->'));
+  check(missing.length === 0, 'every shipped page loads the bundled font stylesheet', missing.join(', '));
+  const css = read('public/fonts/fonts.css');
+  const files = [...css.matchAll(/url\('?(\/fonts\/[^')]+)'?\)/g)].map((m) => m[1]);
+  check(files.length > 0, 'public/fonts/fonts.css declares @font-face files', String(files.length));
+  const absent = [...new Set(files)].filter((f) => !existsSync(join(ROOT, 'public', f)));
+  check(absent.length === 0, 'every font file fonts.css names is present in public/fonts', absent.join(', '));
+  const preloads = [...read('scripts/build-shell.mjs').matchAll(/'(\/fonts\/[^']+\.woff2)'/g)].map((m) => m[1]);
+  const noPreload = preloads.filter((f) => !existsSync(join(ROOT, 'public', f)));
+  check(preloads.length > 0 && noPreload.length === 0, 'every preloaded font file exists', noPreload.join(', '));
+  check(existsSync(join(ROOT, 'public/fonts/OFL.txt')), 'the fonts ship their OFL notices (public/fonts/OFL.txt)');
 }
 
 // Side safe-area insets: the iPhone Duo reports 84 px on the right in portrait (its status pill sits over the screen), and notched phones
