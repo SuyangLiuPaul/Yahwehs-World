@@ -21,3 +21,16 @@ else:
     spec.write_text(text.replace(anchor, anchor + LINE, 1))
     print("   project.yml: added ../../locales")
     subprocess.run(["xcodegen", "generate", "--spec", str(spec), "--project", str(root)], check=True)
+
+# Externals/ holds libapp.a (linked through the dependency below); as a plain source it was also copied into the bundle as a
+# resource, and App Store Connect rejects the upload (90171, "libapp.a binary file is not permitted"). Keep it out of the resources.
+text = spec.read_text()
+EXT = "      - path: Externals\n"
+EXT_FIXED = EXT + "        buildPhase: none\n"
+if EXT_FIXED in text:
+    print("   project.yml already keeps Externals out of the resources")
+else:
+    assert EXT in text, "project.yml has no Externals source"
+    spec.write_text(text.replace(EXT, EXT_FIXED, 1))
+    print("   project.yml: Externals is not a resource")
+    subprocess.run(["xcodegen", "generate", "--spec", str(spec), "--project", str(root)], check=True)
