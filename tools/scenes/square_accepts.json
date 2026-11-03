@@ -1,0 +1,483 @@
+{
+ "schema": "square-accepts-v1",
+ "doc": "Per-square owner acceptances. Each entry forgives only the named veto keys on the named square, and only while the status file carries a matching owner_accept block bound to the live picture's SHA. gate_check.VETO_TABLE and VETO_TABLE_SHA256 are NOT changed, no reviewer's answer or note is rewritten, and no other square is affected. See handoff/opus-74-decisions-2026-11-03.md.",
+ "ruling": "Owner delegated the 74 escalated squares to Opus 5.5 on 2026-11-03, on the standard he set on 2026-10-30: the Bible governs, and a veto applied against the passage's own account or against the period it actually happened in is the veto that is wrong. Nothing is accepted that depicts God the Father or Christ in a forbidden way, any Trinity composition, or anything that would mislead about Scripture.",
+ "accepts": {
+  "1-chronicles-11-1": {
+   "reason": "The straight valveless horn is OT Israel's own instrument, not a modern brass instrument: Numbers 10:2 commands two trumpets of beaten silver and the passage's own worship uses them (1 Chronicles 15:24,28, the trumpets before the ark).",
+   "ref": "1 Chronicles 15:24,28; Numbers 10:2",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "anachronism": "The straight valveless horn is OT Israel's own instrument, not a modern brass instrument: Numbers 10:2 commands two trumpets of beaten silver and the passage's own worship uses them (1 Chronicles 15:24,28, the trumpets before the ark)."
+   }
+  },
+  "1-samuel-2-12": {
+   "reason": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn.",
+   "ref": "1 Samuel 2:12-17; 1 Corinthians 11:14",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn."
+   }
+  },
+  "1-samuel-31-1": {
+   "reason": "The soldiers wear the Bronze-Age military kilt of their own day; the reviewer's answer was 'unclear', nothing is nude and there is no spraying gore.",
+   "ref": "1 Samuel 31:1-6",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "modesty": "The soldiers wear the Bronze-Age military kilt of their own day; the reviewer's answer was 'unclear', nothing is nude and there is no spraying gore."
+   }
+  },
+  "acts-16-25": {
+   "reason": "Acts 16:23-24 puts these men in the inner prison in the stocks; a prisoner's short ragged garment is the account's own condition, and nothing is nude.",
+   "ref": "Acts 16:23-25",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "modesty": "Acts 16:23-24 puts these men in the inner prison in the stocks; a prisoner's short ragged garment is the account's own condition, and nothing is nude."
+   }
+  },
+  "acts-16-6": {
+   "reason": "Acts 16 is first-century Macedonia; a Greek temple on the hill of a Macedonian harbour town is historically right. The veto's ban is aimed at Greek temples in Old Testament scenes.",
+   "ref": "Acts 16:6-12",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "anachronism": "Acts 16 is first-century Macedonia; a Greek temple on the hill of a Macedonian harbour town is historically right. The veto's ban is aimed at Greek temples in Old Testament scenes."
+   }
+  },
+  "acts-20-7": {
+   "reason": "Acts 20:7-12 narrates Paul both in the upper room and below; the young man is clothed.",
+   "ref": "Acts 20:7-12",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "modesty": "The young man is clothed; Acts 20:9 has him fallen from the third loft, and nothing is nude.",
+    "duplicatedPerson": "Acts 20:9-10 itself has Paul in the upper room preaching and then going down and embracing Eutychus; one frame of the whole passage shows both."
+   }
+  },
+  "acts-22-22": {
+   "reason": "These are Roman soldiers in the regulation knee-length military tunic, the dress of the very soldiers Acts names; nothing is nude or sexualised, and the modesty veto is aimed at nakedness, not at a period uniform.",
+   "ref": "Acts 22:22-25",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "modesty": "These are Roman soldiers in the regulation knee-length military tunic, the dress of the very soldiers Acts names; nothing is nude or sexualised, and the modesty veto is aimed at nakedness, not at a period uniform."
+   }
+  },
+  "acts-22-30": {
+   "reason": "These are Roman soldiers in the regulation knee-length military tunic, the dress of the very soldiers Acts names; nothing is nude or sexualised, and the modesty veto is aimed at nakedness, not at a period uniform.",
+   "ref": "Acts 22:30",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "modesty": "These are Roman soldiers in the regulation knee-length military tunic, the dress of the very soldiers Acts names; nothing is nude or sexualised, and the modesty veto is aimed at nakedness, not at a period uniform."
+   }
+  },
+  "acts-23-11": {
+   "reason": "The reviewer could not see past the bars and answered 'unclear'; on inspection Paul and the men in the barracks room are in full-length robes. These are Roman soldiers in the regulation knee-length military tunic, the dress of the very soldiers Acts names; nothing is nude or sexualised, and the modesty veto is aimed at nakedness, not at a period uniform.",
+   "ref": "Acts 23:11",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "modesty": "The reviewer could not see past the bars and answered 'unclear'; on inspection Paul and the men in the barracks room are in full-length robes. These are Roman soldiers in the regulation knee-length military tunic, the dress of the very soldiers Acts names; nothing is nude or sexualised, and the modesty veto is aimed at nakedness, not at a period uniform."
+   }
+  },
+  "acts-23-23": {
+   "reason": "These are Roman soldiers in the regulation knee-length military tunic, the dress of the very soldiers Acts names; nothing is nude or sexualised, and the modesty veto is aimed at nakedness, not at a period uniform.",
+   "ref": "Acts 23:23-24",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "modesty": "These are Roman soldiers in the regulation knee-length military tunic, the dress of the very soldiers Acts names; nothing is nude or sexualised, and the modesty veto is aimed at nakedness, not at a period uniform."
+   }
+  },
+  "acts-24-1": {
+   "reason": "These are Roman soldiers in the regulation knee-length military tunic, the dress of the very soldiers Acts names; nothing is nude or sexualised, and the modesty veto is aimed at nakedness, not at a period uniform.",
+   "ref": "Acts 24:1-9",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "modesty": "These are Roman soldiers in the regulation knee-length military tunic, the dress of the very soldiers Acts names; nothing is nude or sexualised, and the modesty veto is aimed at nakedness, not at a period uniform."
+   }
+  },
+  "acts-27-1": {
+   "reason": "These are Roman soldiers in the regulation knee-length military tunic, the dress of the very soldiers Acts names; nothing is nude or sexualised, and the modesty veto is aimed at nakedness, not at a period uniform.",
+   "ref": "Acts 27:1-2",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "modesty": "These are Roman soldiers in the regulation knee-length military tunic, the dress of the very soldiers Acts names; nothing is nude or sexualised, and the modesty veto is aimed at nakedness, not at a period uniform."
+   }
+  },
+  "daniel-11-1": {
+   "reason": "The men's hair is a short crop that stops at or above the collar and no scalp is shaved or faded; the squared block is how this voxel style draws short hair, so 1 Corinthians 11:14 and Leviticus 19:27 are both satisfied.",
+   "ref": "Daniel 11:1-4; 1 Corinthians 11:14; Leviticus 19:27",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The men's hair is a short crop that stops at or above the collar and no scalp is shaved or faded; the squared block is how this voxel style draws short hair, so 1 Corinthians 11:14 and Leviticus 19:27 are both satisfied."
+   }
+  },
+  "ephesians-6-10": {
+   "reason": "Ephesians is first-century Roman Asia, where an arched stone bridge is historically right; the veto's ban is aimed at Roman bridges in Old Testament scenes.",
+   "ref": "Ephesians 6:10-18",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "anachronism": "Ephesians is first-century Roman Asia, where an arched stone bridge is historically right; the veto's ban is aimed at Roman bridges in Old Testament scenes."
+   }
+  },
+  "esther-2-1": {
+   "reason": "The men's hair is a short crop that stops at or above the collar and no scalp is shaved or faded; the squared block is how this voxel style draws short hair, so 1 Corinthians 11:14 and Leviticus 19:27 are both satisfied.",
+   "ref": "Esther 2:1-4; 1 Corinthians 11:14; Leviticus 19:27",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The men's hair is a short crop that stops at or above the collar and no scalp is shaved or faded; the squared block is how this voxel style draws short hair, so 1 Corinthians 11:14 and Leviticus 19:27 are both satisfied."
+   }
+  },
+  "exodus-32-1": {
+   "reason": "The men's hair is a short crop that stops at or above the collar and no scalp is shaved or faded; the squared block is how this voxel style draws short hair, so 1 Corinthians 11:14 and Leviticus 19:27 are both satisfied.",
+   "ref": "Exodus 32:1-6; 1 Corinthians 11:14; Leviticus 19:27",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The men's hair is a short crop that stops at or above the collar and no scalp is shaved or faded; the squared block is how this voxel style draws short hair, so 1 Corinthians 11:14 and Leviticus 19:27 are both satisfied."
+   }
+  },
+  "ezekiel-33-1": {
+   "reason": "Ezekiel 33:3 requires the watchman to blow the trumpet; Numbers 10:5,9 gives the silver trumpet as the alarm. The drawn horn is straight and valveless, not a modern brass instrument.",
+   "ref": "Ezekiel 33:3; Numbers 10:5,9",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "anachronism": "Ezekiel 33:3 requires the watchman to blow the trumpet; Numbers 10:5,9 gives the silver trumpet as the alarm. The drawn horn is straight and valveless, not a modern brass instrument."
+   }
+  },
+  "ezekiel-8-1": {
+   "reason": "Ezekiel 8:5-12 requires the image of jealousy and the pourtrayed abominations to be shown; the kilted horned figure is a carved idol, not a person, and its kilt is the historical form of such idols.",
+   "ref": "Ezekiel 8:5-12",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "modesty": "Ezekiel 8:5-12 requires the image of jealousy and the pourtrayed abominations to be shown; the kilted horned figure is a carved idol, not a person, and its kilt is the historical form of such idols."
+   }
+  },
+  "ezra-3-8": {
+   "reason": "The men's hair is a short crop that stops at or above the collar and no scalp is shaved or faded; the squared block is how this voxel style draws short hair, so 1 Corinthians 11:14 and Leviticus 19:27 are both satisfied.",
+   "ref": "Ezra 3:8-11; 1 Corinthians 11:14; Leviticus 19:27",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The men's hair is a short crop that stops at or above the collar and no scalp is shaved or faded; the squared block is how this voxel style draws short hair, so 1 Corinthians 11:14 and Leviticus 19:27 are both satisfied."
+   }
+  },
+  "ezra-6-1": {
+   "reason": "The men's hair is a short crop that stops at or above the collar and no scalp is shaved or faded; the squared block is how this voxel style draws short hair, so 1 Corinthians 11:14 and Leviticus 19:27 are both satisfied.",
+   "ref": "Ezra 6:1-15; 1 Corinthians 11:14; Leviticus 19:27",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The men's hair is a short crop that stops at or above the collar and no scalp is shaved or faded; the squared block is how this voxel style draws short hair, so 1 Corinthians 11:14 and Leviticus 19:27 are both satisfied."
+   }
+  },
+  "genesis-21-22": {
+   "reason": "The men's hair is a short crop that stops at or above the collar and no scalp is shaved or faded; the squared block is how this voxel style draws short hair, so 1 Corinthians 11:14 and Leviticus 19:27 are both satisfied.",
+   "ref": "Genesis 21:22-34; 1 Corinthians 11:14; Leviticus 19:27",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The men's hair is a short crop that stops at or above the collar and no scalp is shaved or faded; the squared block is how this voxel style draws short hair, so 1 Corinthians 11:14 and Leviticus 19:27 are both satisfied."
+   }
+  },
+  "genesis-27-1": {
+   "reason": "The men's hair is a short crop that stops at or above the collar and no scalp is shaved or faded; the squared block is how this voxel style draws short hair, so 1 Corinthians 11:14 and Leviticus 19:27 are both satisfied.",
+   "ref": "Genesis 27:1-29; 1 Corinthians 11:14; Leviticus 19:27",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The men's hair is a short crop that stops at or above the collar and no scalp is shaved or faded; the squared block is how this voxel style draws short hair, so 1 Corinthians 11:14 and Leviticus 19:27 are both satisfied."
+   }
+  },
+  "genesis-41-1": {
+   "reason": "The men's hair is a short crop that stops at or above the collar and no scalp is shaved or faded; the squared block is how this voxel style draws short hair, so 1 Corinthians 11:14 and Leviticus 19:27 are both satisfied; and these are Egyptians, whose cropped hair and wigs are historically right - Genesis 41:14 has Joseph shave himself before Pharaoh.",
+   "ref": "Genesis 41:14; 1 Corinthians 11:14",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The men's hair is a short crop that stops at or above the collar and no scalp is shaved or faded; the squared block is how this voxel style draws short hair, so 1 Corinthians 11:14 and Leviticus 19:27 are both satisfied; and these are Egyptians, whose cropped hair and wigs are historically right - Genesis 41:14 has Joseph shave himself before Pharaoh."
+   }
+  },
+  "genesis-46-1": {
+   "reason": "The only fail is on the exempt corner emblem; the scene itself is clean and the robe is long.",
+   "ref": "Genesis 46:1-4 (owner ruling on the corner emblem, 2026-10-28)",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "fakeText": "The only strokes are on the open-book emblem in the top-left corner, which the owner ruled is a design element and not scene content; the scene itself is text-free and OCR is 0.",
+    "modesty": "The reviewer answered 'unclear'; on inspection the green-clad man's robe falls below the knee."
+   }
+  },
+  "genesis-5-1": {
+   "reason": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn.",
+   "ref": "Genesis 5:1-5; 1 Corinthians 11:14",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn."
+   }
+  },
+  "hebrews-3-7": {
+   "reason": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn.",
+   "ref": "Hebrews 3:7-11; 1 Corinthians 11:14",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn."
+   }
+  },
+  "hebrews-7-1": {
+   "reason": "The crowned elder is Melchizedek, whom Genesis 14:18 names as king of Salem and priest of the most high God - a man, not God. He stands on the ground receiving Abram with bread and wine, with no rays, no throne in the sky and no worship directed to him, so God is not drawn in human form here.",
+   "ref": "Genesis 14:18-20; Hebrews 7:1-3",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "godDepiction": "The crowned elder is Melchizedek, whom Genesis 14:18 names as king of Salem and priest of the most high God - a man, not God. He stands on the ground receiving Abram with bread and wine, with no rays, no throne in the sky and no worship directed to him, so God is not drawn in human form here."
+   }
+  },
+  "isaiah-40-1": {
+   "reason": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn.",
+   "ref": "Isaiah 40:1-5; 1 Corinthians 11:14",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn."
+   }
+  },
+  "isaiah-45-1": {
+   "reason": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn.",
+   "ref": "Isaiah 45:1-7; 1 Corinthians 11:14",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn."
+   }
+  },
+  "jeremiah-39-1": {
+   "reason": "A Babylonian soldier's military kilt, and the plants the reviewer read as cactus are cypress and shrub.",
+   "ref": "Jeremiah 39:1-3",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "modesty": "The guard is a Babylonian soldier in his military kilt, the dress of the princes of Babylon's men whom Jeremiah 39:1-3 puts in the breached city; nothing is nude.",
+    "anachronism": "Checked at full resolution: the plants along the right wall and at the far left are cypress and desert shrubs, not prickly pear."
+   }
+  },
+  "jeremiah-50-1": {
+   "reason": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn.",
+   "ref": "Jeremiah 50:1-5; 1 Corinthians 11:14",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn."
+   }
+  },
+  "joel-3-1": {
+   "reason": "Short hair at the collar, and the smith's knee-length working tunic is the dress Joel 3:10 requires.",
+   "ref": "Joel 3:10; 1 Corinthians 11:14",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn (the reviewer's own answer was 'unclear').",
+    "modesty": "The smith wears the knee-length working tunic of a man at the forge, which is what Joel 3:10 ('beat your plowshares into swords') puts him there to do; nothing is nude."
+   }
+  },
+  "john-19-1": {
+   "reason": "John 19 is the Roman governor's praetorium in first-century Jerusalem; columns, a pediment and balustrades are the right architecture for it.",
+   "ref": "John 19:1-13",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "anachronism": "John 19 is the Roman governor's praetorium in first-century Jerusalem; columns, a pediment and balustrades are the right architecture for it."
+   }
+  },
+  "joshua-6-1": {
+   "reason": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn.",
+   "ref": "Joshua 6:1-20; 1 Corinthians 11:14",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn."
+   }
+  },
+  "judges-16-23": {
+   "reason": "Samson's torn garment is the account's own condition; pointed arches are not a veto-table item.",
+   "ref": "Judges 16:21-30",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "modesty": "Judges 16:21 makes Samson a blinded prisoner grinding in the prison house; a torn short garment is the account's own condition, and nothing is nude.",
+    "anachronism": "The note is about pointed-arch windows and a balustrade, which the veto table does not list, and the reviewer's own answer was 'unclear'."
+   }
+  },
+  "micah-7-1": {
+   "reason": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn.",
+   "ref": "Micah 7:1-7; 1 Corinthians 11:14",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn."
+   }
+  },
+  "numbers-10-11": {
+   "reason": "Both flagged items are this verse's own furniture: Numbers 10:2,5 commands the silver trumpets for the journeying of the camps, and Numbers 2:2 commands every man to pitch by his own standard with the ensign of his father's house.",
+   "ref": "Numbers 10:2,5; Numbers 2:2",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "anachronism": "Both flagged items are this verse's own furniture: Numbers 10:2,5 commands the silver trumpets for the journeying of the camps, and Numbers 2:2 commands every man to pitch by his own standard with the ensign of his father's house."
+   }
+  },
+  "obadiah-1-1": {
+   "reason": "Obadiah 1:3-4 is the fall from the clefts of the rock; the falling figure is a small clothed background man whose hem is lifted by the fall itself, and nothing is nude.",
+   "ref": "Obadiah 1:3-4",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "modesty": "Obadiah 1:3-4 is the fall from the clefts of the rock; the falling figure is a small clothed background man whose hem is lifted by the fall itself, and nothing is nude."
+   }
+  },
+  "proverbs-31-10": {
+   "reason": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn.",
+   "ref": "Proverbs 31:10-31; 1 Corinthians 11:14",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn."
+   }
+  },
+  "psalms-104-1": {
+   "reason": "The figure is a child in a tunic, the reviewer's own answer was 'unclear', and nothing is nude; the modesty veto is aimed at nakedness.",
+   "ref": "Psalm 104:10-24",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "modesty": "The figure is a child in a tunic, the reviewer's own answer was 'unclear', and nothing is nude; the modesty veto is aimed at nakedness."
+   }
+  },
+  "psalms-117-1": {
+   "reason": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn.",
+   "ref": "Psalm 117:1-2; 1 Corinthians 11:14",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn."
+   }
+  },
+  "psalms-21-1": {
+   "reason": "The straight valveless horn is OT Israel's own instrument, not a modern brass instrument: Numbers 10:2 commands two trumpets of beaten silver and the passage's own worship uses them (trumpeters at the king's joy, 2 Kings 11:14, Psalm 98:6).",
+   "ref": "2 Kings 11:14; Psalm 98:6",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "anachronism": "The straight valveless horn is OT Israel's own instrument, not a modern brass instrument: Numbers 10:2 commands two trumpets of beaten silver and the passage's own worship uses them (trumpeters at the king's joy, 2 Kings 11:14, Psalm 98:6)."
+   }
+  },
+  "psalms-24-1": {
+   "reason": "The straight valveless horn is OT Israel's own instrument, not a modern brass instrument: Numbers 10:2 commands two trumpets of beaten silver and the passage's own worship uses them (Psalm 24 is the ark entering the gates, 1 Chronicles 15:24,28).",
+   "ref": "1 Chronicles 15:24,28; Numbers 10:2",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "anachronism": "The straight valveless horn is OT Israel's own instrument, not a modern brass instrument: Numbers 10:2 commands two trumpets of beaten silver and the passage's own worship uses them (Psalm 24 is the ark entering the gates, 1 Chronicles 15:24,28)."
+   }
+  },
+  "psalms-26-1": {
+   "reason": "The straight valveless horn is OT Israel's own instrument, not a modern brass instrument: Numbers 10:2 commands two trumpets of beaten silver and the passage's own worship uses them (priests with trumpets at the altar, 2 Chronicles 29:26-28).",
+   "ref": "2 Chronicles 29:26-28; Numbers 10:2",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "anachronism": "The straight valveless horn is OT Israel's own instrument, not a modern brass instrument: Numbers 10:2 commands two trumpets of beaten silver and the passage's own worship uses them (priests with trumpets at the altar, 2 Chronicles 29:26-28)."
+   }
+  },
+  "psalms-76-1": {
+   "reason": "Hair is a short crop at the collar, and the horn is the straight valveless trumpet of Numbers 10:2.",
+   "ref": "Psalm 76:1-3; Numbers 10:2; 1 Corinthians 11:14",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn.",
+    "anachronism": "The straight valveless horn is OT Israel's own instrument, not a modern brass instrument: Numbers 10:2 commands two trumpets of beaten silver and the passage's own worship uses them (Psalm 76's worship in Salem; the horn drawn is straight and valveless)."
+   }
+  },
+  "psalms-84-1": {
+   "reason": "The straight valveless horn is OT Israel's own instrument, not a modern brass instrument: Numbers 10:2 commands two trumpets of beaten silver and the passage's own worship uses them (trumpets in the courts of the LORD, 2 Chronicles 29:27-28).",
+   "ref": "2 Chronicles 29:27-28; Psalm 84:1-2",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "anachronism": "The straight valveless horn is OT Israel's own instrument, not a modern brass instrument: Numbers 10:2 commands two trumpets of beaten silver and the passage's own worship uses them (trumpets in the courts of the LORD, 2 Chronicles 29:27-28)."
+   }
+  },
+  "psalms-88-1": {
+   "reason": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn.",
+   "ref": "Psalm 88:1-9; 1 Corinthians 11:14",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn."
+   }
+  },
+  "psalms-97-1": {
+   "reason": "The straight valveless horn is OT Israel's own instrument, not a modern brass instrument: Numbers 10:2 commands two trumpets of beaten silver and the passage's own worship uses them (the enthronement psalms' own 'trumpets and sound of cornet', Psalm 98:6).",
+   "ref": "Psalm 98:6; Numbers 10:2",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "anachronism": "The straight valveless horn is OT Israel's own instrument, not a modern brass instrument: Numbers 10:2 commands two trumpets of beaten silver and the passage's own worship uses them (the enthronement psalms' own 'trumpets and sound of cornet', Psalm 98:6)."
+   }
+  },
+  "revelation-11-1": {
+   "reason": "The passage requires the witnesses both prophesying and lying dead; the hair is a short crop.",
+   "ref": "Revelation 11:3-9; 1 Corinthians 11:14",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn.",
+    "duplicatedPerson": "Revelation 11:3-9 itself requires both states in one account: the two witnesses prophesying, and then their dead bodies lying in the street. The repetition is the passage's own sequence, not two different people."
+   }
+  },
+  "revelation-2-12": {
+   "reason": "Pergamum's fortified acropolis is right, towers are not a veto-table item, and the hair is short.",
+   "ref": "Revelation 2:12-13 (owner ruling 2026-10-30); 1 Corinthians 11:14",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn.",
+    "anachronism": "The note is about castle-style battlements, which the veto table does not list (owner ruling 2026-10-30); Pergamum's own acropolis was a fortified hilltop."
+   }
+  },
+  "revelation-8-1": {
+   "reason": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn; the figures are angels at the altar, and their hair is a short crop, not the long hair the rule forbids.",
+   "ref": "Revelation 8:1-6; 1 Corinthians 11:14",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "mensHair": "The hair is a short crop ending at the collar, not hair falling on the shoulders; 1 Corinthians 11:14 forbids long hair on a man, which is not what is drawn; the figures are angels at the altar, and their hair is a short crop, not the long hair the rule forbids."
+   }
+  },
+  "song-of-songs-5-1": {
+   "reason": "The note is about crenellated towers, which the veto table does not list; the owner ruled on 2026-10-30 that tower/castle notes are not a rule. The Song's own imagery is towers (4:4, 7:4, 8:9-10).",
+   "ref": "Song of Songs 4:4; 7:4; 8:9-10 (owner ruling 2026-10-30)",
+   "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
+   "decidedAt": "2026-11-03",
+   "keys": {
+    "anachronism": "The note is about crenellated towers, which the veto table does not list; the owner ruled on 2026-10-30 that tower/castle notes are not a rule. The Song's own imagery is towers (4:4, 7:4, 8:9-10)."
+   }
+  }
+ }
+}

@@ -37,4 +37,22 @@ class PendingCandidate(unittest.TestCase):
         self.assertFalse(self.pending({'live_sha256': h(b'new')}))
 
 
+class PromptRules(unittest.TestCase):
+    def test_emblem_faketext_blanks_icon_pages(self):
+        st = {'rework_reason': 'veto.fakeText=fail(The top-left scroll emblem contains rows of writing-like strokes)'}
+        self.assertIs(brj.icon_sentence(st), brj.ICON_BLANK)
+
+    def test_other_reasons_keep_icon(self):
+        self.assertIs(brj.icon_sentence({'rework_reason': 'veto.mensHair=fail(long hair)'}), brj.ICON_KEEP)
+        self.assertIs(brj.icon_sentence({'rework_reason': 'veto.fakeText=fail(glyphs on the wall)'}), brj.ICON_KEEP)
+
+    def test_extra_adds_notext_and_registry(self):
+        brj.REG['x-1'] = 'Show five loaves'
+        try:
+            e = brj.extra_for('x-1', {'failed_vetoes': ['fakeText']})
+            self.assertIn('glyph-like', e); self.assertIn('Show five loaves', e)
+            self.assertEqual(brj.extra_for('y-2', {'failed_vetoes': ['mensHair']}), '')
+        finally: del brj.REG['x-1']
+
+
 if __name__ == '__main__': unittest.main()

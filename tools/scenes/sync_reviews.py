@@ -26,6 +26,7 @@ if f"{REPO_ROOT}/tools/scenes" not in sys.path:
     sys.path.insert(0, f"{REPO_ROOT}/tools/scenes")
 import init_realistic_cinema as irc  # noqa: E402
 import gate_check as gc  # noqa: E402
+import square_accepts  # noqa: E402
 
 
 def atomic_write_json(path, obj):
@@ -34,6 +35,18 @@ def atomic_write_json(path, obj):
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(obj, f, ensure_ascii=False, indent=2)
     os.replace(tmp, path)
+
+
+def owner_accept_binds(st, rev_sha):
+    """True when this status carries an owner acceptance bound to the bytes this review judged."""
+    block = st.get("owner_accept")
+    if not isinstance(block, dict) or not rev_sha or block.get("live_sha256") != rev_sha:
+        return False
+    try:
+        return sorted(block.get("keys") or ()) == sorted(
+            square_accepts.accepted_keys(st.get("id"), gc.VETO_KEYS))
+    except (OSError, ValueError):
+        return False
 
 
 def has_valid_review_inputs(rev, subject_kind="image"):
@@ -120,6 +133,13 @@ def main():
         rev_sha = (rev.get("subject") or {}).get("sha256")
         cur_sha = st.get("candidate_sha256") or st.get("live_sha256")
         if not rev_sha or rev_sha != cur_sha:
+            continue
+
+        # Owner-accepted square (square_accepts.json, applied by apply_square_accepts.py): the review
+        # on disk still says "fail" and must stay that way, so leave the status alone instead of
+        # driving it back to rework every half hour. The skip holds only while the acceptance is
+        # bound to these exact bytes; redraw the picture and the normal rules take over again.
+        if owner_accept_binds(st, rev_sha):
             continue
 
         if not has_valid_review_inputs(rev, "image"):
