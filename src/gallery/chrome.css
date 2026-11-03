@@ -220,3 +220,31 @@ dialog.gx-sheet.gx-pal { padding-top: 12px; }
 .gx-pal-row .t { display: block; font: 600 var(--fs-300)/1.3 var(--display); color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .gx-pal-row .r { display: block; font: var(--fs-100)/1.4 var(--mono); color: var(--ink-3); }
 .gx-pal-hint { margin: var(--sp-3) 0 0; color: var(--ink-3); font-size: var(--fs-200); line-height: 1.6; }
+
+/* ── the installed app (docs/gallery-pwa.md) ─────────────────────────────────────────────────────────── */
+/* "an update is ready": quiet, at the bottom above the tab bar, stays until the reader answers */
+.gx-update {
+  position: fixed; left: 50%; bottom: calc(var(--tabbar-h) + 16px); z-index: 91; translate: -50% 0;
+  display: flex; align-items: center; gap: var(--sp-2); max-width: min(94vw, 460px); padding: 6px 6px 6px 16px;
+  border: 1px solid var(--line-gold); border-radius: 999px; background: var(--panel), var(--ground); color: var(--ink);
+  box-shadow: var(--shadow); font-size: var(--fs-200); line-height: 1.35;
+  animation: gx-update-in .22s ease-out;
+}
+.gx-update .u-t { flex: 1; min-width: 0; }
+.gx-update .gx-iconbtn { width: 36px; height: 36px; flex: none; }
+@keyframes gx-update-in { from { opacity: 0; translate: -50% 8px; } }
+@media (min-width: 768px) { .gx-update { bottom: 24px; } }
+@media (prefers-reduced-motion: reduce) { .gx-update { animation: none; } }
+/* the sheet that shows the iPhone / Safari steps */
+.in-steps { margin: var(--sp-2) 0 var(--sp-3); padding-left: 1.3em; color: var(--ink); line-height: 1.7; font-size: var(--fs-400); }
+.in-steps li { margin: 0 0 var(--sp-2); padding-left: 4px; }
+.in-share { vertical-align: -3px; color: var(--gold-bright); }
+.in-after { margin: 0; color: var(--ink-3); font-size: var(--fs-300); line-height: 1.6; }
+.in-warn { margin: 0 0 var(--sp-3); padding: var(--sp-2) var(--sp-3); border: 1px solid var(--line-gold); border-radius: var(--r-2); color: var(--ink-2); font-size: var(--fs-300); }
+
+/* standalone (display-mode: standalone, or iOS navigator.standalone; the flag is set before first paint, see PWA_HEAD in
+   scripts/lib/vite-gallery-surface.mjs): the browser's own pull-to-refresh and rubber band would reload or shift an app that has no
+   address bar to show for it, so they are off; updates arrive through the notice above. The bar and the tab bar already pad themselves
+   with the safe-area insets (tokens.css), which is what keeps them clear of the status bar and the home indicator. */
+html[data-display="standalone"] { overscroll-behavior-y: none; -webkit-tap-highlight-color: transparent; }
+html[data-display="standalone"] #hm-install { display: none; }

@@ -103,3 +103,12 @@ html[lang^="zh"] .hm-footer h3 { text-transform: none; letter-spacing: var(--tr-
 #hm-version { min-height: 1.6em; }
 
 @media (pointer: coarse) { .hm-footer a, .hm-link { min-height: 44px; display: flex; align-items: center; } }
+
+/* the install entry (src/gallery/install.ts): one heading, one sentence, one button; absent once the app is installed */
+.hm-install { margin-top: var(--sp-4); }
+.hm-install[hidden], .hm-offline[hidden] { display: none; }
+.hm-install h3 { margin-bottom: var(--sp-2); }
+.hm-install .gx-pill { margin-top: var(--sp-3); min-height: 36px; padding: 0 16px; }
+.hm-offline { font-size: var(--fs-200); color: var(--ink-3); }
+.hm-offline .hm-link { display: inline; min-height: 0; padding: 0 0 0 6px; }
+@media (pointer: coarse) { .hm-offline .hm-link { display: inline-flex; } }

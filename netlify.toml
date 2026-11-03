@@ -84,6 +84,29 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# The installable app (docs/gallery-pwa.md).
+#   /sw.js           never cached by the browser or a CDN: a new deploy must be seen by the next update check, and a stale worker is the one
+#                    failure that pins readers to an old site. (Browsers already bypass the HTTP cache for the worker script; this makes it explicit.)
+#   manifests        the type browsers expect, revalidated like the pages.
+#   /pwa/ icons      stable names, so revalidated like the other stable files.
+# The /* block at the end of this file (nosniff, referrer policy) still applies to all of these; it is listed last and adds, it does not replace.
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Content-Type = "text/javascript; charset=utf-8"
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/manifest*.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json; charset=utf-8"
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/pwa/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
 [[headers]]
   for = "/*"
   [headers.values]

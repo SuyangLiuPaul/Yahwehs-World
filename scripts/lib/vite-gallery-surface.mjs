@@ -16,6 +16,8 @@
 //   URLS        dist/_redirects: 302 (not 301: they come back) for every hidden page; /gallery and /pictures
 //               301 to /scenes.html. dist/p/<id>/index.html: one small page per picture, so a shared picture
 //               link unfurls with its own title and image and then opens /scenes.html#p=<id>.
+//   INSTALL     dist/sw.js, dist/offline.html, dist/manifest*.webmanifest and a build id in the three pages (scripts/lib/pwa-build.mjs,
+//               docs/gallery-pwa.md); the head block below carries the manifest link, the Apple web-app tags and the standalone flag.
 //   CRAWL       dist/sitemap.xml and dist/robots.txt list the three pages and the 1,443 /p/<id> pages.
 //
 // The hash links the globe used to take (/#ref=, /#event=, /#journey=) cannot be redirected by a server;
@@ -23,6 +25,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { START, END, HEAD, HEAD_END, GUARD, FONTS } from '../build-shell.mjs';
+import { buildPwa } from './pwa-build.mjs';
 
 export const SURFACE = process.env.VITE_SURFACE === 'gallery' ? 'gallery' : 'full';
 export const ORIGIN = 'https://world.yahwehword.com';
@@ -125,13 +128,30 @@ ${TABS.map(tb).join('\n')}
 ${END}`;
 }
 
+/** What makes the page installable, written into every gallery page's head: the manifest (the file for the page's language;
+ *  the first-paint script below has already set <html lang>), the Apple web-app tags (status bar content runs under the notch and the
+ *  bar pads itself with the safe-area inset), the touch icons (opaque: iOS paints a transparent pixel black), the home-screen label,
+ *  the build id the page and the worker compare, and html[data-display="standalone"] before first paint. */
+const PWA_HEAD = '<link rel="manifest" id="pwa-manifest" href="/manifest.webmanifest">'
+  + '<meta name="ydh-build" content="__YDH_BUILD__">'
+  + '<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">'
+  + '<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">'
+  + '<meta name="apple-mobile-web-app-title" content="Yahweh\'s World">'
+  + '<link rel="apple-touch-icon" sizes="120x120" href="/pwa/apple-touch-120.png"><link rel="apple-touch-icon" sizes="152x152" href="/pwa/apple-touch-152.png">'
+  + '<link rel="apple-touch-icon" sizes="167x167" href="/pwa/apple-touch-167.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">'
+  + '<script>(function(){try{var d=document.documentElement,l=d.lang;'
+  + 'if({"zh-Hans":1,"zh-Hant":1,ru:1}[l])document.getElementById("pwa-manifest").href="/manifest."+l+".webmanifest";'
+  + 'document.querySelector(\'meta[name="apple-mobile-web-app-title"]\').content={"zh-Hans":"雅偉之界","zh-Hant":"雅偉之界",ru:"Мир Яхве"}[l]||"Yahweh\'s World";'
+  + 'if(matchMedia("(display-mode: standalone)").matches||navigator.standalone===true)d.dataset.display="standalone"}catch(e){}})()</script>';
+
 /** The full surface's head block, taught Russian: its first-paint language script accepts and detects "ru", and the
  *  loading screen's three-way line gets a fourth reading. (The full pages keep the original block.) */
 const GALLERY_HEAD = HEAD
   .replace('var l=localStorage.getItem("ydh.locale");', 'var l=localStorage.getItem("ydh.locale");var hm=/(?:^|[#&])lang=(en|zh-Hans|zh-Hant|ru)(?:&|$)/.exec(location.hash);if(hm)l=hm[1];')
   .replace('if(l!=="en"&&l!=="zh-Hans"&&l!=="zh-Hant"){', 'if(l!=="en"&&l!=="zh-Hans"&&l!=="zh-Hant"&&l!=="ru"){')
   .replace('if(g==="en"||g.indexOf("en-")===0){l="en";break}', 'if(g==="en"||g.indexOf("en-")===0){l="en";break}if(g==="ru"||g.indexOf("ru-")===0){l="ru";break}')
-  .replace('</style>', 'html[lang="ru"] .tri .l-ru{display:inline}</style>');
+  .replace('</style>', 'html[lang="ru"] .tri .l-ru{display:inline}</style>')
+  .replace(HEAD_END, PWA_HEAD + HEAD_END);
 
 /** The head block, the shell block, the surface mark and the two assets every gallery page shares. */
 export function transformGalleryHtml(html, file) {
@@ -153,6 +173,7 @@ export function transformGalleryHtml(html, file) {
     const h0 = html.indexOf('<!-- shell:head -->'), h1 = html.indexOf(HEAD_END, h0);
     if (h1 > h0) html = html.slice(0, html.lastIndexOf('\n', h0) + 1) + GALLERY_HEAD + html.slice(h1 + HEAD_END.length);
   }
+  html = html.replace(/\s*<link rel="apple-touch-icon" href="\/apple-touch-icon.png">/, ''); // the sized set in PWA_HEAD replaces it
   html = html.replace(/<html([^>]*)>/, (m, attrs) => (attrs.includes('data-surface') ? m : `<html${attrs} data-surface="gallery">`));
   html = html.replace('</head>', '  <link rel="stylesheet" href="/src/gallery/chrome.css">\n</head>');
   html = html.replace('</body>', '  <script type="module" src="/src/gallery/chrome.ts"></script>\n</body>');
@@ -252,7 +273,7 @@ export function gallerySurface({ root }) {
     // After stage-public has copied public/ into dist/.
     closeBundle: {
       order: 'post',
-      handler() {
+      async handler() {
         if (!existsSync(join(outDir, 'index.html'))) return;
         const reader = existsSync(join(root, 'public/data/reader/catalogue.json'));
         if (!reader) {
@@ -268,6 +289,7 @@ export function gallerySurface({ root }) {
         }
         const n = writeExtras(root, outDir);
         console.log(`[gallery-surface] wrote _redirects, robots.txt, sitemap.xml (${n} urls), ${n - 3} /p/<id> pages`);
+        await buildPwa({ root, dist: outDir, log: (m) => console.log(`[gallery-surface] ${m}`) });
       },
     },
   }];

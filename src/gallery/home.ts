@@ -166,3 +166,5 @@ paintTheme();
 paintLicences();
 paintEdition();
 void start();
+// the install entry and the offline-storage line: not part of the first view, so they come after it
+void import('./install.ts').then((m) => { m.mountInstall($('hm-install')); void m.mountOffline($('hm-offline')); });

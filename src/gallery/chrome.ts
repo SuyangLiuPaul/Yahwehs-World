@@ -53,3 +53,20 @@ const nav = document.querySelector('.sitenav');
 if (nav) { applyStatic(nav); onLocale(() => applyStatic(nav)); }
 const bar = document.querySelector('.tabbar');
 if (bar) { applyStatic(bar); onLocale(() => applyStatic(bar)); }
+
+// ── the installable app (docs/gallery-pwa.md) ─────────────────────────────────────────────────────────────
+// Chromium offers its install prompt once, early; it is kept here (and its own banner held back) so the home page's "Install" entry
+// (install.ts) can use it whenever the reader asks. The worker and the update notice load after the page has finished.
+export interface InstallEvent extends Event { prompt(): Promise<void>; userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }> }
+export const install: { event: InstallEvent | null } = { event: null };
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  install.event = e as InstallEvent;
+  document.dispatchEvent(new CustomEvent('gx:installable'));
+});
+window.addEventListener('appinstalled', () => { install.event = null; document.dispatchEvent(new CustomEvent('gx:installed')); });
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  const go = () => void import('./pwa.ts').then((m) => m.start());
+  const idle = () => ('requestIdleCallback' in window ? window.requestIdleCallback(go, { timeout: 4000 }) : setTimeout(go, 1500));
+  if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle, { once: true });
+}

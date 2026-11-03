@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e2b4b">
+<meta name="robots" content="noindex">
+<title>Offline · 雅偉之界 / Yahweh's World</title>
+<!-- The page a navigation gets when the network is down and no saved copy of what was asked for exists
+     (src/pwa/sw.ts). Self-contained on purpose: no script bundle, no font, no image from the network. docs/gallery-pwa.md. -->
+<style>
+:root{color-scheme:dark}
+html,body{margin:0;background:#0a1e36;color:#f9f3e6}
+body{min-height:100vh;min-height:100dvh;display:grid;place-content:center;justify-items:center;gap:18px;padding:max(24px,env(safe-area-inset-top)) max(24px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left));text-align:center;font:400 17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Noto Sans SC",sans-serif}
+h1{margin:0;font:600 clamp(22px,5vw,30px)/1.25 Georgia,"Songti SC","Noto Serif SC",serif;color:#f8d66d;letter-spacing:.04em}
+p{margin:0;max-width:30em;color:#c6d8ec}
+nav{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+a,button{font:inherit;font-weight:600;min-height:44px;padding:0 20px;border-radius:999px;display:inline-flex;align-items:center;text-decoration:none;cursor:pointer;border:1px solid #f8d66d66;background:none;color:#f9f3e6}
+button{background:#f8d66d;color:#1a1405;border-color:transparent}
+a:focus-visible,button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.t{display:none}
+html[lang="en"] .en,html[lang="zh-Hans"] .hans,html[lang="zh-Hant"] .hant,html[lang="ru"] .ru{display:block}
+nav .t{display:none}
+html[lang="en"] nav .en,html[lang="zh-Hans"] nav .hans,html[lang="zh-Hant"] nav .hant,html[lang="ru"] nav .ru{display:inline}
+</style>
+<script>
+(function(){try{var l=localStorage.getItem("ydh.locale");
+if(l!=="en"&&l!=="zh-Hans"&&l!=="zh-Hant"&&l!=="ru"){l="en";
+var t=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||""];
+for(var i=0;i<t.length;i++){var g=(t[i]||"").toLowerCase();
+if(g==="zh"||g.indexOf("zh-")===0){l=/hant|tw|hk|mo/.test(g)?"zh-Hant":"zh-Hans";break}
+if(g==="en"||g.indexOf("en-")===0){l="en";break}
+if(g==="ru"||g.indexOf("ru-")===0){l="ru";break}}}
+document.documentElement.lang=l}catch(e){}})()
+</script>
+</head>
+<body>
+<main>
+  <h1><span class="t en">You are offline</span><span class="t hans">现在没有网络</span><span class="t hant">現在沒有網路</span><span class="t ru">Нет соединения</span></h1>
+  <p class="t en">This page has not been opened on this device yet, so it is not saved. Home, the scenes and the Bible you have already opened still work.</p>
+  <p class="t hans">这一页还没有在这台设备上打开过，所以没有保存。已经打开过的首页、画卷和圣经仍可使用。</p>
+  <p class="t hant">這一頁還沒有在這台裝置上打開過，所以沒有儲存。已經打開過的首頁、畫卷和聖經仍可使用。</p>
+  <p class="t ru">Эта страница ещё не открывалась на этом устройстве, поэтому она не сохранена. Главная, сцены и Библия, которые вы уже открывали, работают.</p>
+  <nav>
+    <a href="/"><span class="t en">Home</span><span class="t hans">首页</span><span class="t hant">首頁</span><span class="t ru">Главная</span></a>
+    <a href="/scenes.html"><span class="t en">Scenes</span><span class="t hans">画卷</span><span class="t hant">畫卷</span><span class="t ru">Сцены</span></a>
+    <a href="/bible.html"><span class="t en">Bible</span><span class="t hans">圣经</span><span class="t hant">聖經</span><span class="t ru">Библия</span></a>
+    <button type="button" onclick="location.reload()"><span class="t en">Try again</span><span class="t hans">重试</span><span class="t hant">重試</span><span class="t ru">Повторить</span></button>
+  </nav>
+</main>
+</body>
+</html>
