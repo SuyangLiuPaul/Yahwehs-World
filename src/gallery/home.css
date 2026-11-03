@@ -108,6 +108,7 @@ html[lang^="zh"] .hm-footer h3 { text-transform: none; letter-spacing: var(--tr-
 .hm-install { margin-top: var(--sp-4); }
 .hm-install[hidden], .hm-offline[hidden] { display: none; }
 .hm-install h3 { margin-bottom: var(--sp-2); }
+.hm-install-note, .hm-offline { margin: var(--sp-2) 0 0; }
 .hm-install .gx-pill { margin-top: var(--sp-3); min-height: 36px; padding: 0 16px; }
 .hm-offline { font-size: var(--fs-200); color: var(--ink-3); }
 .hm-offline .hm-link { display: inline; min-height: 0; padding: 0 0 0 6px; }

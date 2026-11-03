@@ -19,9 +19,11 @@ const check = (c, good, badMsg) => (c ? pass(good) : fail(badMsg ?? good));
 const { base, close } = await serveDist(DIR);
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 
+// serviceWorkers: 'block' in every context of this file: with the installable app's worker in control, page.route() no longer sees a
+// page's requests (the worker makes them), and these checks inject failures with page.route(). The worker has its own suite: verify-pwa.mjs.
 async function open(vp, lang, { block = [], reduced = false } = {}) {
   const [w, h] = vp;
-  const ctx = await browser.newContext({ viewport: { width: w, height: h }, hasTouch: w < 500, isMobile: w < 500, deviceScaleFactor: 1, reducedMotion: reduced ? 'reduce' : 'no-preference' });
+  const ctx = await browser.newContext({ serviceWorkers: 'block', viewport: { width: w, height: h }, hasTouch: w < 500, isMobile: w < 500, deviceScaleFactor: 1, reducedMotion: reduced ? 'reduce' : 'no-preference' });
   await ctx.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: base });
   await ctx.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
   for (const b of block) await ctx.route(b, (r) => r.abort());
@@ -349,7 +351,7 @@ for (const vp of [[375, 812], [1440, 900]]) {
   }
   // the sheet in all four languages and all three reading themes: words, labels, contrast
   for (const lang of ['en', 'zh-Hans', 'zh-Hant', 'ru']) for (const theme of ['dark', 'light', 'paper']) {
-    const ctx = await browser.newContext({ viewport: { width: vp[0], height: vp[1] }, hasTouch: vp[0] < 500, isMobile: vp[0] < 500, colorScheme: theme === 'dark' ? 'dark' : 'light' });
+    const ctx = await browser.newContext({ serviceWorkers: 'block', viewport: { width: vp[0], height: vp[1] }, hasTouch: vp[0] < 500, isMobile: vp[0] < 500, colorScheme: theme === 'dark' ? 'dark' : 'light' });
     await ctx.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
     await ctx.addInitScript(([l, th]) => { try { localStorage.setItem('ydh.locale', l); localStorage.setItem('yr.prefs.v1', JSON.stringify({ theme: th })); } catch { /* */ } }, [lang, theme]);
     const page = await ctx.newPage();
@@ -401,7 +403,7 @@ for (const vp of [[375, 812], [1440, 900]]) {
   }
   // paper: contrast of the reading surface, measured the way the audits do (WCAG ratio against the surface's own ground)
   {
-    const ctx0 = await browser.newContext({ viewport: { width: vp[0], height: vp[1] }, colorScheme: 'light' });
+    const ctx0 = await browser.newContext({ serviceWorkers: 'block', viewport: { width: vp[0], height: vp[1] }, colorScheme: 'light' });
     await ctx0.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
     await ctx0.addInitScript(() => { try { localStorage.setItem('ydh.locale', 'en'); localStorage.setItem('yr.prefs.v1', JSON.stringify({ theme: 'paper' })); } catch { /* */ } });
     const page = await ctx0.newPage();

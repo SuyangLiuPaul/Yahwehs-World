@@ -55,9 +55,9 @@ function openHowTo(mode: 'ios' | 'mac-safari', from: HTMLElement) {
 function words(host: HTMLElement, mode: Mode) {
   host.hidden = mode === 'none';
   if (mode === 'none') { host.replaceChildren(); return; }
-  host.innerHTML = '<h3></h3><p class="hm-note"></p><button type="button" class="gx-pill gold" id="hm-install-btn"></button>';
+  host.innerHTML = '<h3></h3><p class="hm-install-note"></p><button type="button" class="gx-pill gold" id="hm-install-btn"></button>';
   host.querySelector('h3')!.textContent = t('Install the app', '安装为应用', 'Установить приложение');
-  host.querySelector('.hm-note')!.textContent = t(`${name()} opens full screen, and what you have already opened works without a network.`, `${name()}全屏打开；已经看过的内容没有网络也能用。`, `${name()} открывается на весь экран; то, что вы уже открывали, работает без сети.`);
+  host.querySelector('.hm-install-note')!.textContent = t(`${name()} opens full screen, and what you have already opened works without a network.`, `${name()}全屏打开；已经看过的内容没有网络也能用。`, `${name()} открывается на весь экран; то, что вы уже открывали, работает без сети.`);
   host.querySelector('#hm-install-btn')!.textContent = mode === 'prompt' ? t('Install', '安装', 'Установить') : t('How to add it', '怎么添加', 'Как добавить');
 }
 

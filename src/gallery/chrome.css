@@ -224,7 +224,7 @@ dialog.gx-sheet.gx-pal { padding-top: 12px; }
 /* ── the installed app (docs/gallery-pwa.md) ─────────────────────────────────────────────────────────── */
 /* "an update is ready": quiet, at the bottom above the tab bar, stays until the reader answers */
 .gx-update {
-  position: fixed; left: 50%; bottom: calc(var(--tabbar-h) + 16px); z-index: 91; translate: -50% 0;
+  position: fixed; left: 0; right: 0; margin-inline: auto; width: max-content; bottom: calc(var(--tabbar-h) + 16px); z-index: 91;
   display: flex; align-items: center; gap: var(--sp-2); max-width: min(94vw, 460px); padding: 6px 6px 6px 16px;
   border: 1px solid var(--line-gold); border-radius: 999px; background: var(--panel), var(--ground); color: var(--ink);
   box-shadow: var(--shadow); font-size: var(--fs-200); line-height: 1.35;
@@ -232,7 +232,7 @@ dialog.gx-sheet.gx-pal { padding-top: 12px; }
 }
 .gx-update .u-t { flex: 1; min-width: 0; }
 .gx-update .gx-iconbtn { width: 36px; height: 36px; flex: none; }
-@keyframes gx-update-in { from { opacity: 0; translate: -50% 8px; } }
+@keyframes gx-update-in { from { opacity: 0; translate: 0 8px; } }
 @media (min-width: 768px) { .gx-update { bottom: 24px; } }
 @media (prefers-reduced-motion: reduce) { .gx-update { animation: none; } }
 /* the sheet that shows the iPhone / Safari steps */

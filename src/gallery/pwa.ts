@@ -19,6 +19,7 @@ export async function start(): Promise<void> {
   const wasControlled = !!sw.controller;
   let reg: ServiceWorkerRegistration;
   try { reg = await sw.register('/sw.js', { scope: '/', updateViaCache: 'none' }); } catch { return; }
+  if (!reg) return; // a browser that blocks workers (a test, a privacy setting) can answer with nothing
 
   sw.addEventListener('controllerchange', () => {
     if (reloading) { location.reload(); return; }
@@ -58,7 +59,13 @@ async function adopt() {
 // ── update ready ──────────────────────────────────────────────────────────────────────────────────────────────────
 async function offer(w: ServiceWorker) {
   const r = await ask<{ build: string }>(w, { type: 'get-build' });
-  if (!shouldOfferUpdate(pageBuild, r?.build ?? null)) return; // this page already is the new build, or the worker did not answer
+  if (r?.build && r.build === pageBuild) {
+    // this page already is the new build (it came from the network after the deploy): the worker can take over now, unless another tab
+    // is still running the old build, which needs its own scripts from the old worker
+    w.postMessage({ type: 'activate-if-alone' });
+    return;
+  }
+  if (!shouldOfferUpdate(pageBuild, r?.build ?? null)) return;
   if (document.querySelector('.gx-update')) return;
   const bar = document.createElement('div');
   bar.className = 'gx-update';

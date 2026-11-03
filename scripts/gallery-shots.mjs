@@ -43,7 +43,7 @@ const SHOTS = {
 };
 const errors = [];
 for (const [w, h] of VPS) for (const lang of LANGS) for (const theme of THEMES) {
-  const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: w < 500 ? 2 : 1, hasTouch: w < 500, isMobile: w < 500, colorScheme: theme === 'dark' ? 'dark' : 'light' });
+  const ctx = await browser.newContext({ serviceWorkers: 'block', viewport: { width: w, height: h }, deviceScaleFactor: w < 500 ? 2 : 1, hasTouch: w < 500, isMobile: w < 500, colorScheme: theme === 'dark' ? 'dark' : 'light' });
   await ctx.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
   // the theme is the reader module's own preference ('yr.prefs.v1'), the one the pages and the home page's switch share
   await ctx.addInitScript(([l, t]) => { try { localStorage.setItem('ydh.locale', l); localStorage.setItem('yr.prefs.v1', JSON.stringify({ theme: t })); } catch { /* about:blank has no storage */ } }, [lang, theme]);

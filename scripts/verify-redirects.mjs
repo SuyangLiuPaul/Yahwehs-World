@@ -43,7 +43,7 @@ for (const p of ['/', '/scenes.html', '/bible.html', '/pictures/thumb/genesis-1-
 // ── in a browser ───────────────────────────────────────────────────────
 const { base, close } = await serveDist(DIR);
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
-const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+const ctx = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 1280, height: 800 } });
 await ctx.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
 await ctx.addInitScript(() => { try { localStorage.setItem('ydh.locale', 'en'); } catch { /* */ } });
 const page = await ctx.newPage();

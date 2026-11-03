@@ -186,7 +186,7 @@ const report = {};
 for (const [w, h] of VIEWPORTS) {
   const touch = w < 768;
   for (const path of PAGES) {
-    const ctx = await browser.newContext({ viewport: { width: w, height: h }, hasTouch: touch, isMobile: touch, reducedMotion: 'no-preference' });
+    const ctx = await browser.newContext({ serviceWorkers: 'block', viewport: { width: w, height: h }, hasTouch: touch, isMobile: touch, reducedMotion: 'no-preference' });
     await ctx.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort());
     const page = await ctx.newPage();
     const errs = []; page.on('pageerror', e => errs.push(e.message.slice(0, 120)));

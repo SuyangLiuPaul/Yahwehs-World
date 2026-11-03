@@ -114,7 +114,7 @@ const base = srv.base;
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const seen = {};
 async function visit(label, vp, url, wait, act, theme = 'dark') {
-  const ctx = await browser.newContext({ viewport: { width: vp[0], height: vp[1] }, hasTouch: vp[0] < 500, isMobile: vp[0] < 500 });
+  const ctx = await browser.newContext({ serviceWorkers: 'block', viewport: { width: vp[0], height: vp[1] }, hasTouch: vp[0] < 500, isMobile: vp[0] < 500 });
   await ctx.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
   await ctx.addInitScript(([l, t]) => { try { localStorage.setItem('ydh.locale', l); localStorage.setItem('yr.prefs.v1', JSON.stringify({ theme: t })); } catch { /* */ } }, ['ru', theme]);
   const page = await ctx.newPage();
@@ -149,7 +149,7 @@ for (const vp of [[375, 812], [1440, 900]]) {
 }
 // "not read by a native speaker" (owner: Russian is complete but labelled): on the home page and in the reader's display sheet
 {
-  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const ctx = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 1440, height: 900 } });
   await ctx.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
   await ctx.addInitScript(() => { try { localStorage.setItem('ydh.locale', 'ru'); } catch { /* */ } });
   const page = await ctx.newPage();

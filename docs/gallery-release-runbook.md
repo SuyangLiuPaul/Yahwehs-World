@@ -87,6 +87,9 @@ curl -sI $H/structures.html | head -4                       # 301 -> /tabernacle
 curl -fsS $H/sitemap.xml | grep -c '<loc>'                  # 1446
 curl -fsS $H/robots.txt                                     # Allow: /, Sitemap: https://world.yahwehword.com/sitemap.xml
 curl -sI -X POST $H/api/feedback -H 'Origin: https://evil.example' | head -3   # 403 (origin allow-list), no mail
+curl -sI $H/sw.js | grep -i 'cache-control\|content-type'     # no-cache, no-store, must-revalidate; text/javascript  (docs/gallery-pwa.md)
+curl -sI $H/manifest.zh-Hant.webmanifest | grep -i content-type   # application/manifest+json
+curl -fsS $H/index.html | grep -o 'ydh-build" content="[0-9a-f]*'  # the same id as in $H/sw.js (its first comment line)
 ```
 Redirect semantics beyond `curl` (hash links cannot be redirected by a server): open `$H/#ref=John%203:16` (lands on the Bible page at the verse), `$H/#event=genesis-15-1` (lands on the picture),
 `$H/bible.html?book=43&ch=3` (becomes `#ref=John 3`). `scripts/verify-redirects.mjs` covers the same table against the build; this step repeats it against the live site.

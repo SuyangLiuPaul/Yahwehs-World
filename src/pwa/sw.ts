@@ -30,7 +30,8 @@ interface SW {
   addEventListener(t: 'fetch', f: (e: FetchEv) => void): void;
   addEventListener(t: 'message', f: (e: MsgEv) => void): void;
   skipWaiting(): Promise<void>;
-  clients: { claim(): Promise<void> };
+  clients: { claim(): Promise<void>; matchAll(o?: { type?: string; includeUncontrolled?: boolean }): Promise<{ postMessage(m: unknown): void }[]> };
+  registration: { update(): Promise<void> };
   location: Location;
 }
 const sw = self as unknown as SW;
@@ -153,7 +154,7 @@ async function precacheAll(): Promise<void> {
   }
 }
 
-async function navigate(req: Request): Promise<Response> {
+async function navigate(req: Request, e: Ext): Promise<Response> {
   const path = new URL(req.url).pathname;
   const shell = shellPage(path);
   const stub = pictureStubId(path);
@@ -166,8 +167,20 @@ async function navigate(req: Request): Promise<Response> {
   try {
     const res = await timeout(fetch(req), shell ? NAV_TIMEOUT_MS : 8000);
     if (res.status >= 500) return (await fallback());
+    if (shell && res.status === 200) e.waitUntil(healShell(shell, res.clone()));
     return res;
   } catch { return fallback(); }
+}
+/** The browser may drop a cache when storage is short. The network works (this page just came from it) and the saved copy of this page is gone.
+ *  If the server is still on this build, the files it serves are exactly the ones this worker was made for: save them again.
+ *  If a newer build is deployed, refilling this build's cache from it would mix the two; instead look for the newer worker, which brings a whole
+ *  cache of its own (the page, already on the newer build, then asks it to take over: src/gallery/pwa.ts). */
+async function healShell(shell: string, res: Response): Promise<void> {
+  try {
+    if (await (await caches.open(NAMES.shell)).match(shell)) return;
+    const built = /name="ydh-build" content="([^"]*)"/.exec(await res.text())?.[1];
+    if (built === BUILD) await precacheAll(); else await sw.registration.update();
+  } catch { /* the next page load tries again */ }
 }
 const redirectPage = (to: string) => new Response(
   `<!doctype html><meta charset="utf-8"><title>Yahweh's World</title><script>location.replace(${JSON.stringify(to)})</script><p><a href="${to}">Open</a></p>`,
@@ -247,7 +260,7 @@ sw.addEventListener('fetch', (e) => {
   if (kind === 'bypass') return;
   const run = (): Promise<Response> => {
     switch (kind) {
-      case 'navigate': return navigate(req);
+      case 'navigate': return navigate(req, e);
       case 'static': return staticFile(req);
       case 'data': return dataFile(req);
       case 'picture': return budgeted('pictures', req, e, PICTURE_TTL_MS);
@@ -262,6 +275,7 @@ sw.addEventListener('fetch', (e) => {
 // ── messages from the page ─────────────────────────────────────────────────────────────────────────────────────────
 type Msg =
   | { type: 'skip-waiting' }
+  | { type: 'activate-if-alone' }
   | { type: 'get-build' }
   | { type: 'adopt'; urls: string[] }
   | { type: 'report' }
@@ -273,6 +287,9 @@ sw.addEventListener('message', (e) => {
   const reply = (v: unknown) => { (e.ports[0] ?? e.source)?.postMessage(v); };
   switch (m.type) {
     case 'skip-waiting': e.waitUntil(sw.skipWaiting()); break;
+    // the page that asks already runs this build (it came from the network after the deploy): take over unless another tab still runs the old one
+    // (includeUncontrolled: a waiting worker controls nothing yet, so its own clients() would always be empty)
+    case 'activate-if-alone': e.waitUntil(sw.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((l) => (l.length <= 1 ? sw.skipWaiting() : undefined))); break;
     case 'get-build': reply({ type: 'build', build: BUILD }); break;
     case 'report': e.waitUntil((async () => {
       const out: Record<string, { bytes: number; files: number; budget: number }> = {};
