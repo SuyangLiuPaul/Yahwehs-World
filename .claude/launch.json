@@ -8,6 +8,12 @@
       "port": 5175
     },
     {
+      "name": "gallery",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev:gallery", "--", "--port", "5176", "--strictPort", "--force"],
+      "port": 5176
+    },
+    {
       "name": "crowd",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["vite", "--port", "5199", "--strictPort"],

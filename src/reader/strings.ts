@@ -85,6 +85,9 @@ export const STRINGS = {
   showMore: r('Show the other {n} verses', '展开其余 {n} 节', '展開其餘 {n} 節', 'Показать остальные стихи: {n}'),
   showLess: r('Show fewer', '收起', '收起', 'Свернуть'),
   passage: r('Passage', '经文', '經文', 'Отрывок'),
+  // plates (the painted scenes standing in the text at the verse their event begins)
+  openPicture: r('Open the picture', '看这幅画', '看這幅畫', 'Открыть картину'),
+  pictureOf: r('{title} — open the picture', '{title} — 看这幅画', '{title} — 看這幅畫', '{title} — открыть картину'),
   // credit
   creditLabel: r('Edition credit', '译本说明', '譯本說明', 'О переводе'),
   // landmarks

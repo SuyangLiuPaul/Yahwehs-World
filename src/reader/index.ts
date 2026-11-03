@@ -21,6 +21,8 @@ export { BOOKS, EDITIONS, parseReference, referenceLabel, resolveBook, matchUiTa
 export { COPY_VERSE_CAP, buildCopy, copyText } from './copy.ts';
 export { parseHash, formatHash } from './route.ts';
 export { UI_LANGS, UI_LANG_INFO } from './types.ts';
+export { placePlates, plateVerses } from './plates.ts';
+export type { ScenePlate, PlateAnchors } from './plates.ts';
 export type { Ref, UiLang, Mode, EditionInfo } from './types.ts';
 
 /** A chapter reader (Bible page). Resolves when the first chapter is on screen or its error state is. */

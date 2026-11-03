@@ -101,6 +101,34 @@
 .yr-hi[aria-expanded="true"] span { background: var(--yr-gold-wash); color: var(--yr-gold-text); border-color: var(--yr-gold-line); }
 .yr-ctx { flex-basis: 100%; margin: .25rem 0 .5rem; padding: .5rem .75rem; border-inline-start: 2px solid var(--yr-gold-line); background: var(--yr-surface); color: var(--yr-ink-2); font: 400 calc(.9375rem * var(--yr-scale)) / 1.6 var(--yr-ui); }
 
+/* ── plates ───────────────────────────────────────────────────────────────────
+   The painted scene, standing in the text at the verse its event begins (src/reader/plates.ts). The whole point of
+   the product is that this is NOT a gallery beside a reader: picture and Scripture are one column, one measure.
+   The box is reserved from the image's own width/height + aspect-ratio, so nothing below it moves when the file
+   lands. One level of elevation (surface + a 1px hairline), no gold frame — gold is for the current thing. */
+.yr-plate { margin: 1rem 0 1.25rem; }
+.yr-plate-a {
+  display: block; overflow: hidden; border-radius: 10px; border: 1px solid var(--yr-line); background: var(--yr-surface);
+  /* the colour placeholder is set inline on this element and covered as the picture fades in */
+  background-size: cover;
+}
+.yr-plate-img { display: block; inline-size: 100%; block-size: auto; opacity: 0; transition: opacity .3s ease; }
+/* no :loaded class to keep render.ts pure DOM-free: the decoded image simply fades itself in */
+.yr-plate-img[src] { opacity: 1; }
+.yr-plate-a:hover { border-color: var(--yr-edge); }
+.yr-plate-cap {
+  margin-block-start: .4rem; font: 400 calc(.8125rem * var(--yr-scale)) / 1.45 var(--yr-ui); color: var(--yr-ink-3);
+}
+/* The plates were painted to sit on the navy ground. On the light and paper surfaces they get a neutral matte so the
+   picture is not a bright rectangle floating on parchment. */
+.yr[data-theme="light"] .yr-plate-a, .yr[data-theme="paper"] .yr-plate-a {
+  padding: 6px; background: var(--yr-surface-hi); border-color: var(--yr-edge);
+}
+.yr[data-theme="light"] .yr-plate-img, .yr[data-theme="paper"] .yr-plate-img { border-radius: 5px; }
+/* 对照: the plate spans both columns, once, above the verses it belongs to */
+.yr-plate + .yr-pv { border-block-start: 0; }
+@media print { .yr-plate-a { break-inside: avoid; } }
+
 /* verse by verse: a 44px number column, the text beside it */
 .yr-v { position: relative; display: grid; grid-template-columns: 2.75rem minmax(0, 1fr); align-items: start; margin: 0; padding-block: .125rem; border-radius: 6px; }
 .yr-vn {

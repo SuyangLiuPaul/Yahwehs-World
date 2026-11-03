@@ -9,6 +9,7 @@
 // as it is in the printed book.
 import type { BookHeadings, BookPara, BookText, EditionInfo, HeadingEntry, Mode, UiLang } from './types.ts';
 import { buildRows } from './parallel.ts';
+import { placePlates, type PlateAnchors, type ScenePlate } from './plates.ts';
 import { headingAt, headingsIn } from './headings.ts';
 import { keyChapter, keyVerse, vkey, creditLine } from './copy.ts';
 import { escapeHtml, tokenize, tokensToHtml } from './text.ts';
@@ -36,10 +37,12 @@ export interface BodyModel {
   expanded?: boolean;
   /** headings whose background note is open, as "chapter:verse" */
   openContext?: ReadonlySet<string>;
+  /** The painted scenes of this book, supplied by the host. Each is drawn at the verse its event begins. */
+  plates?: readonly ScenePlate[];
   strings?: StringOverrides;
 }
 
-export interface BodyOut { html: string; total: number; shown: number; keys: number[] }
+export interface BodyOut { html: string; total: number; shown: number; keys: number[]; /** how many plates were drawn */ plates: number }
 
 const langAttr = (e: EditionInfo): string => e.language;
 
@@ -51,6 +54,29 @@ function headingHtml(m: BodyModel, chapter: number, h: HeadingEntry, carried: bo
       `<p class="yr-ctx" id="${id}-c"${open ? '' : ' hidden'}>${escapeHtml(h.c)}</p>`
     : '';
   return `<div class="yr-hd${carried ? ' is-carried' : ''}" data-hv="${chapter}:${h.v}"><h3 class="yr-h" id="${id}" lang="${langAttr(m.editions[0]!)}">${escapeHtml(h.t)}</h3>${info}</div>`;
+}
+
+/**
+ * One plate: a figure with the picture and its caption, the whole thing a link to the scene's own page.
+ *
+ * `figure`/`figcaption` so a screen reader announces the caption with the image rather than as a stray line;
+ * `width`/`height` AND `aspect-ratio` so the box is the right shape before the file arrives (no layout shift);
+ * `loading="lazy"` because a chapter can carry a dozen of them. The tint is the gallery's colour placeholder and
+ * is painted on the LINK, not the image, so it is covered as the thumbnail fades in.
+ */
+function plateHtml(m: BodyModel, p: ScenePlate): string {
+  const label = t('pictureOf', m.ui, { title: p.title }, m.strings);
+  const tint = p.tint ? ` style="background:${escapeHtml(p.tint)}"` : '';
+  return `<figure class="yr-plate" data-scene="${escapeHtml(p.id)}" data-v="${p.chapter}:${p.verse}">` +
+    `<a class="yr-plate-a" href="${escapeHtml(p.href)}" aria-label="${escapeHtml(label)}"${tint}>` +
+    `<img class="yr-plate-img" src="${escapeHtml(p.src)}" alt="${escapeHtml(p.title)}" width="${p.w}" height="${p.h}"` +
+    ` style="aspect-ratio:${p.w}/${p.h}" loading="lazy" decoding="async"></a>` +
+    `<figcaption class="yr-plate-cap">${escapeHtml(p.title)}</figcaption></figure>`;
+}
+
+function platesAt(a: PlateAnchors, v: number, m: BodyModel): string {
+  const list = a.get(v);
+  return list ? list.map((p) => plateHtml(m, p)).join('') : '';
 }
 
 function numberButton(m: BodyModel, k: number): string {
@@ -72,6 +98,7 @@ export function renderBody(m: BodyModel): BodyOut {
   const keys: number[] = [];
   let shown = 0;
   let total = 0;
+  let plateCount = 0;
 
   // First count the rows so "show the other N" is right even when the limit cuts early.
   const segRows = m.segments.map((s) => {
@@ -99,6 +126,18 @@ export function renderBody(m: BodyModel): BodyOut {
     for (const h of hs) headFor.set(h.v, { h, carried: false });
     const paraStarts = new Set(m.para?.[String(seg.chapter)] ?? []);
 
+    // Where this chapter's plates go. The verses on screen, the paragraph data and the headings decide it;
+    // placePlates() holds the rule and is tested on its own.
+    const anchors = placePlates({
+      plates: m.plates ?? [],
+      chapter: seg.chapter,
+      verses: rows.map((r) => r.v),
+      paraStarts,
+      headingVerses: new Set(headFor.keys()),
+      mode: m.mode,
+    });
+    for (const list of anchors.values()) plateCount += list.length;
+
     if (m.mode === 'paragraph' && !parallel) {
       let open = false;
       for (const r of rows) {
@@ -106,6 +145,9 @@ export function renderBody(m: BodyModel): BodyOut {
         keys.push(k);
         const hd = headFor.get(r.v);
         if (hd) { if (open) { out.push('</p>'); open = false; } out.push(headingHtml(m, seg.chapter, hd.h, hd.carried)); }
+        // the plate stands between the heading and the paragraph it belongs to, as the old reader drew it
+        const pl = platesAt(anchors, r.v, m);
+        if (pl) { if (open) { out.push('</p>'); open = false; } out.push(pl); }
         if (!open || paraStarts.has(r.v)) { if (open) out.push('</p>'); out.push(`<p class="yr-p" lang="${langAttr(main)}">`); open = true; }
         out.push(`<span class="yr-v${cls(m, k)}" data-k="${k}" id="${m.uid}-k${k}">${numberButton(m, k)}<span class="yr-t">${verseText(m, k, r.cells[0]!, main)}</span> </span>`);
       }
@@ -118,6 +160,8 @@ export function renderBody(m: BodyModel): BodyOut {
       keys.push(k);
       const hd = headFor.get(r.v);
       if (hd) out.push(headingHtml(m, seg.chapter, hd.h, hd.carried));
+      // in 对照 the plate spans the whole width, once, above the editions' columns
+      out.push(platesAt(anchors, r.v, m));
       if (parallel) {
         const lines = m.editions.map((e, i) => {
           const raw = r.cells[i];
@@ -133,7 +177,7 @@ export function renderBody(m: BodyModel): BodyOut {
     }
   });
 
-  return { html: out.join(''), total, shown, keys };
+  return { html: out.join(''), total, shown, keys, plates: plateCount };
 }
 
 /** The quiet credit block under a passage: one line per edition on screen. */

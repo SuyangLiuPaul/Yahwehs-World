@@ -7,6 +7,7 @@ import { loadingStep, loadingSteps, pageReady } from '../site-shell.ts';
 import { BOOKS, mountReader } from '../reader/index.ts';
 import { formatHash } from '../reader/route.ts';
 import { readerSession } from './reader-bridge.ts';
+import { platesFor, readyPlates } from './plates.ts';
 
 loadingSteps(1);
 bindSwitch(document.querySelector('.lang-switch') as HTMLElement);
@@ -28,4 +29,12 @@ const stick = () => host.style.setProperty('--yr-sticky-top', `${nav?.offsetHeig
 stick();
 if (nav && 'ResizeObserver' in window) new ResizeObserver(stick).observe(nav);
 
-void mountReader(host, { session: readerSession(), route: 'hash' }).finally(() => { loadingStep(); pageReady(); });
+// The chapter and its pictures are one view. The gallery index is a separate (small) file, so the chapter is not
+// held up by it: the reader mounts at once with whatever platesFor can answer, and re-renders once the index is in.
+// The chapter and its pictures are one view, but they are two files. The page is ready as soon as the TEXT is on
+// screen; the gallery index is fetched alongside and the plates appear in place when it lands (refresh keeps the
+// reader's scroll anchor, so the words the reader is looking at do not move).
+const plates = readyPlates(); // starts now, in parallel with the chapter's own text
+void mountReader(host, { session: readerSession(), route: 'hash', platesFor })
+  .finally(() => { loadingStep(); pageReady(); })
+  .then(async (r) => { if (await plates) await r.refresh(); });

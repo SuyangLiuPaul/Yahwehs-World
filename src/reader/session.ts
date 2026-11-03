@@ -6,6 +6,7 @@ import { loadPrefs, savePrefs, SIZE_STEPS } from './prefs.ts';
 import { DataStore } from './store.ts';
 import type { StringKey, StringOverrides } from './strings.ts';
 import { t } from './strings.ts';
+import type { ScenePlate } from './plates.ts';
 import type { EditionInfo, Mode, Prefs, Ref, ThemePref, UiLang } from './types.ts';
 import { UI_LANG_INFO } from './types.ts';
 import type { RouteState } from './route.ts';
@@ -32,6 +33,12 @@ export interface ReaderOptions {
   session?: Session;
   /** The element that scrolls (default: the document). */
   scroller?: HTMLElement | null;
+  /**
+   * The painted scenes of a book, for the plates that stand in the text at the verse each event begins.
+   * Synchronous on purpose: the host has the gallery index in memory and the reader must not wait on it. Return
+   * an empty list while it is still loading and call `refresh()` once it is in.
+   */
+  platesFor?: (book: number) => readonly ScenePlate[];
   /** Called after the chapter changes. */
   onNavigate?: (ref: Ref) => void;
   /** Called when the reader wants to open a chapter itself (passage: "read the whole chapter"). */

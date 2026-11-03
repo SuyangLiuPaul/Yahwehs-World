@@ -306,6 +306,8 @@ export class ReaderView implements ReaderHandle {
     return {
       uid: this.uid, ui: s.ui, mode: s.mode() as Mode, book: this.ref.book, segments: this.segments(),
       editions: d.editions, texts: d.texts, headings: d.headings, para: d.para, selected: this.selected, highlight: this.highlight,
+      // the picture page already shows its own plate above the verses, so a passage never repeats it
+      plates: this.kind === 'chapter' ? this.opts.platesFor?.(this.ref.book) ?? [] : [],
       limit: this.kind === 'passage' ? this.spec?.limit ?? 12 : undefined, expanded: this.expanded, openContext: this.openContext, strings: s.opts.strings,
     };
   }
@@ -331,7 +333,7 @@ export class ReaderView implements ReaderHandle {
     this.renderTools();
     this.syncSelection();
     // measured by the robustness script
-    (window as unknown as Record<string, unknown>).__yrPerf = { renderMs: performance.now() - t0, verses: out.shown, uid: this.uid };
+    (window as unknown as Record<string, unknown>).__yrPerf = { renderMs: performance.now() - t0, verses: out.shown, plates: out.plates, uid: this.uid };
   }
 
   /** Re-render a container's innerHTML without losing the keyboard's place. */
