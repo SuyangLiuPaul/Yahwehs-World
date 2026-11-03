@@ -217,6 +217,10 @@ export function applyStatic(root: ParentNode = document) {
     if (el instanceof HTMLCanvasElement) el.setAttribute('aria-label', t(en, zh, ru));
     else el.textContent = t(en, zh, ru);
   });
+  // The accessible name of a landmark or group, in the reader's language (data-aria-en / -zh / -ru). The root counts too:
+  // the gallery applies a nav to itself.
+  const named = [...(root instanceof Element && root.matches('[data-aria-en]') ? [root as HTMLElement] : []), ...Array.from(root.querySelectorAll<HTMLElement>('[data-aria-en]'))];
+  named.forEach((el) => el.setAttribute('aria-label', t(el.dataset.ariaEn || '', el.dataset.ariaZh || el.dataset.ariaEn || '', el.dataset.ariaRu || el.dataset.ariaEn || '')));
   // Chinese written straight into an element — the wordmark — rather than
   // paired with an English original.
   root.querySelectorAll<HTMLElement>('[data-zh-text]').forEach((el) => {

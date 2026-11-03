@@ -1,0 +1,302 @@
+{
+ "ok": 74,
+ "bad": 0,
+ "results": [
+  {
+   "ok": true,
+   "msg": "all 1443 scenes have a Cyrillic Russian title"
+  },
+  {
+   "ok": true,
+   "msg": "all 1443 captions have a Cyrillic Russian text"
+  },
+  {
+   "ok": true,
+   "msg": "no Russian caption is the English one copied"
+  },
+  {
+   "ok": true,
+   "msg": "no Russian caption is mostly Latin letters"
+  },
+  {
+   "ok": true,
+   "msg": "the Russian heading set has all 2597 headings the English set has"
+  },
+  {
+   "ok": true,
+   "msg": "every Russian heading is Cyrillic"
+  },
+  {
+   "ok": true,
+   "msg": "rst: 66 books, same chapter and verse shape as the KJV"
+  },
+  {
+   "ok": true,
+   "msg": "rst: every verse is Cyrillic"
+  },
+  {
+   "ok": true,
+   "msg": "rst: only the 8 Synodal merged verses are empty (3:14:56 19:13:6 19:87:2 19:90:6 23:3:26 44:19:41 47:11:33 47:13:13)"
+  },
+  {
+   "ok": true,
+   "msg": "rst-yhwh: 66 books, same chapter and verse shape as the KJV"
+  },
+  {
+   "ok": true,
+   "msg": "rst-yhwh: every verse is Cyrillic"
+  },
+  {
+   "ok": true,
+   "msg": "rst-yhwh: only the 8 Synodal merged verses are empty (3:14:56 19:13:6 19:87:2 19:90:6 23:3:26 44:19:41 47:11:33 47:13:13)"
+  },
+  {
+   "ok": true,
+   "msg": "home (375): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "home: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "home, edition sheet (375): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "home, edition sheet: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "home, licences sheet (375): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "home, licences sheet: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "gallery (375): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "gallery: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "gallery, one picture (375): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "gallery, one picture: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "picture, light (375): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "picture, light: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "picture, paper (375): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "picture, paper: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "picture, 对照 (375): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "picture, 对照: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "picture, edition sheet (375): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "picture, edition sheet: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "picture, feedback sheet (375): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "picture, feedback sheet: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "picture, feedback failed (375): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "picture, feedback failed: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "picture, feedback thanks (375): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "picture, feedback thanks: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "Bible page (375): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "Bible page: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "Bible page, 对照 (375): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "Bible page, 对照: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "Bible page, reader settings (375): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "Bible page, reader settings: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "home (1440): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "home: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "home, edition sheet (1440): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "home, edition sheet: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "home, licences sheet (1440): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "home, licences sheet: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "gallery (1440): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "gallery: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "gallery, one picture (1440): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "gallery, one picture: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "picture, light (1440): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "picture, light: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "picture, paper (1440): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "picture, paper: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "picture, 对照 (1440): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "picture, 对照: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "picture, edition sheet (1440): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "picture, edition sheet: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "picture, feedback sheet (1440): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "picture, feedback sheet: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "picture, feedback failed (1440): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "picture, feedback failed: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "picture, feedback thanks (1440): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "picture, feedback thanks: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "Bible page (1440): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "Bible page: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "Bible page, 对照 (1440): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "Bible page, 对照: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "Bible page, reader settings (1440): Russian, no foreign visible text"
+  },
+  {
+   "ok": true,
+   "msg": "Bible page, reader settings: no page error"
+  },
+  {
+   "ok": true,
+   "msg": "home: the Russian note says the text has not been read by a native speaker"
+  },
+  {
+   "ok": true,
+   "msg": "reader display sheet: the Russian note says the interface has not been read by a native speaker"
+  }
+ ]
+}

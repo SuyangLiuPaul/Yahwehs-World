@@ -7,6 +7,9 @@ import { openSheet } from './sheet.ts';
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
 
+/** The holder is a name (Berean Bible, eBible.org, Yahweh De Hua Ministry); two English phrases around the names follow the reader's language. */
+const holderText = (h: string) => (h === 'Public domain' ? readerSession().tr('licencePD') : h.replace('name restored by Yahweh’s Words', t('name restored by Yahweh’s Words', '神名由「雅伟之言」还原', 'имя восстановлено в Yahweh’s Words')).replace('(editorial restoration)', t('(editorial restoration)', '（编辑还原）', '(редакторское восстановление)')));
+
 export function openLicences(returnFocus?: HTMLElement | null) {
   const s = readerSession();
   openSheet({
@@ -18,7 +21,7 @@ export function openLicences(returnFocus?: HTMLElement | null) {
         const chip = e.licence.kind === 'cc0' ? 'CC0' : e.licence.kind === 'permission' ? '©' : s.tr('licencePD');
         const src = e.licence.url ? ` · <a href="${esc(e.licence.url)}" rel="noopener">${esc(e.licence.url.replace(/^https?:\/\//, '').replace(/\/$/, ''))}</a>` : '';
         return `<div class="gx-lic" lang="${e.language}"><div class="gx-h3">${esc(e.menu)} <span class="lic gx-mono">${esc(chip)}</span></div>` +
-          `<p class="gx-lede" lang="${s.ui}">${esc(e.licence.note[s.ui])}</p><div class="gx-mono">${esc(e.licence.holder)}${src}</div></div>`;
+          `<p class="gx-lede" lang="${s.ui}">${esc(e.licence.note[s.ui])}</p><div class="gx-mono">${esc(holderText(e.licence.holder))}${src}</div></div>`;
       }).join('');
     },
   });

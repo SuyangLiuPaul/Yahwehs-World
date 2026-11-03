@@ -98,7 +98,7 @@ export function galleryShell(file) {
   <script>${GUARD}</script>
   <noscript><style>#loading{display:none}</style></noscript>
 
-  <nav class="sitenav" aria-label="Yahweh's World">
+  <nav class="sitenav" aria-label="Yahweh's World" data-aria-en="Yahweh's World" data-aria-zh="雅伟之界" data-aria-ru="Мир Яхве">
     <a class="brand" href="/">
       <img class="brand-logo" src="/brand-logo.webp" alt="" width="34" height="34">
       <span class="brand-words">
@@ -112,14 +112,14 @@ ${TABS.map(tab).join('\n')}
     </ol>
     <span class="spacer"></span>
     <button type="button" class="gx-search" data-gx-search aria-haspopup="dialog">${svg('search', 'gx-i', 18)}<span class="gx-search-t" data-en="Book, reference, caption" data-zh="搜书卷、出处、画名" data-ru="Книга, место, название">Book, reference, caption</span><kbd aria-hidden="true">⌘K</kbd></button>
-    <div class="lang-switch" role="group" aria-label="Language / 语言">
+    <div class="lang-switch" role="group" aria-label="Language / 语言" data-aria-en="Language" data-aria-zh="语言" data-aria-ru="Язык">
       <button type="button" data-locale="en" lang="en">EN</button>
       <button type="button" data-locale="zh-Hans" lang="zh-Hans">简</button>
       <button type="button" data-locale="zh-Hant" lang="zh-Hant">繁</button>
       <button type="button" data-locale="ru" lang="ru">РУ</button>
     </div>
   </nav>
-  <nav class="tabbar" aria-label="Sections">
+  <nav class="tabbar" aria-label="Sections" data-aria-en="Sections" data-aria-zh="栏目" data-aria-ru="Разделы">
 ${TABS.map(tb).join('\n')}
   </nav>
 ${END}`;
