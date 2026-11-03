@@ -15,7 +15,7 @@
 // `chars` is the fallback for strings no static scan can see: the UI composes
 // a few at runtime (`${n} 处地名`). Phrase entries are tried first, so the
 // character table only ever runs on what the phrase table missed.
-import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as OpenCC from 'opencc-js';
@@ -55,6 +55,7 @@ for (const file of ['places.json', 'journeys.json', 'scenes.json', 'inventory.js
   const data = JSON.parse(readFileSync(join(ROOT, 'public/data', file), 'utf8'));
   walkJson(data, (s) => simplified.add(s));
 }
+
 
 // UI strings: `zh: '…'` / `zh: "…"` literals and the static chunks of the
 // template literals in the `zh:` arrow functions.
@@ -117,6 +118,21 @@ for (const s of [...simplified]) {
   for (const run of s.match(CJK_RUN) ?? []) simplified.add(run);
 }
 
+// 2b — the event text (events.json, the gallery's index and summaries). These were never scanned, so a scene description such as
+// 「地发生青草」 reached a 繁體 reader half converted: its characters were not in the character map (they come only from scanned
+// strings) and 发 is on the ambiguous list, which the map must not guess. Their characters now feed the map, and a whole string gets a
+// phrase entry ONLY when the character map alone would convert it wrongly (the counted rule: it keeps the table small instead of
+// repeating 1,443 long descriptions verbatim). A string or run that another source also contributed keeps the full-entry rule.
+const eventStrings = new Set();
+for (const file of ['events.json', 'gallery/index.json', 'gallery/summaries.json']) {
+  const p = join(ROOT, 'public/data', file);
+  if (!existsSync(p)) continue;
+  walkJson(JSON.parse(readFileSync(p, 'utf8')), (s) => {
+    for (const x of [s, ...(s.match(CJK_RUN) ?? [])]) if (!simplified.has(x)) eventStrings.add(x);
+  });
+}
+for (const s of eventStrings) simplified.add(s);
+
 // One simplified character, several traditional ones, and only the
 // surrounding word decides which: 里面 is 裡面 but 公里 stays 公里; 后 is 後
 // in 后裔 and 后 in 皇后. A character map cannot know, so it is not allowed
@@ -141,15 +157,21 @@ const charFallback = (s) => [...s].map((ch) => chars[ch] ?? ch).join('');
 
 const phrases = {};
 let fromGazetteer = 0;
+let gazetteerRepaired = 0;
+const isTraditional = (v) => convert(v) === v || convert(v).replaceAll('裡', '裏') === v;
 let fromOpenCC = 0;
 let loadBearing = 0;
 for (const s of simplified) {
-  const hant = authoritative.has(s) ? authoritative.get(s) : convert(s);
+  let hant = authoritative.has(s) ? authoritative.get(s) : convert(s);
+  // Counted rule: a gazetteer reading wins only while it is really Traditional. Some places.json zhHant values are the Simplified
+  // name copied across (基比亚, 北门, 红海的路, 雅伟以勒): OpenCC's phrase conversion of the same string is then the better reading.
+  // 裏 and 裡 are both Traditional (the CUV prints 底格裏斯), so that pair never counts as a difference.
+  if (authoritative.has(s) && !isTraditional(hant)) { hant = convert(s); gazetteerRepaired++; }
   // An entry earns its place if it changes the string, OR if leaving it out
   // would let the character map reach a different answer. The second case is
   // the one that matters for 公里: converting it is a no-op, but without the
   // entry the fallback would have had a go at 里.
-  const needed = hant !== s || charFallback(s) !== hant;
+  const needed = eventStrings.has(s) ? charFallback(s) !== hant : (hant !== s || charFallback(s) !== hant);
   if (!needed) continue;
   if (hant === s) loadBearing++;
   phrases[s] = hant;
@@ -162,4 +184,4 @@ writeFileSync(out, JSON.stringify({ phrases, chars }, null, 0) + '\n');
 const bytes = readFileSync(out).length;
 console.log(`zh-hant.json: ${Object.keys(phrases).length} phrases ` +
   `(${fromGazetteer} from the gazetteer, ${fromOpenCC} from OpenCC), ` +
-  `${Object.keys(chars).length} character fallbacks, ${(bytes / 1024).toFixed(1)} kB`);
+  `${gazetteerRepaired} gazetteer readings repaired, ${Object.keys(chars).length} character fallbacks, ${(bytes / 1024).toFixed(1)} kB`);
