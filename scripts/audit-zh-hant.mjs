@@ -4,15 +4,21 @@
 // app can put on screen, and flags every output character that has a distinct Traditional form (OpenCC cn -> tw changes it) and is not one
 // of the ambiguous characters the generator refuses to guess (those are judged by phrase instead: the output must equal OpenCC's phrase
 // conversion of the source). Exit 1 when anything is left, so it can stand in a gate. The table is built by scripts/build-zh-hant.mjs.
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+//
+// The scan itself lives in scripts/lib/zh-strings.mjs and the BUILDER imports the same function, so this check can no longer be
+// green over a smaller set of strings than the table was built from. It was: both scripts matched quoted literals with a regex that
+// desynchronised on the apostrophe in "Artist's impression", so the credit line under every picture — '画家的想象 · AI 辅助绘制,
+// 逐节审核' — was in neither, and 辅 never reached the character table. The sources now covered are src/ and scripts/lib/ code
+// (strings AND template chunks), the build templates, every .html page (data-zh, data-zh-narrow, data-zh-text, data-aria-zh, title,
+// content and element text), the runtime JSON payloads, and the store listing.
+import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as OpenCC from 'opencc-js';
+import { HAS_CJK, CJK_RUN, collectStrings } from './lib/zh-strings.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const convert = OpenCC.Converter({ from: 'cn', to: 'tw' });
-const HAS_CJK = /[一-鿿]/;
-const CJK_RUN = /[　-〿一-鿿！-･]+/g;
 const AMBIGUOUS = new Set('后里干发台只系制钟面复历板谷丑松咸范曲尽借划卷折苏注致御志表胡斗出着价别');
 const table = JSON.parse(readFileSync(process.env.ZH_TABLE ?? join(ROOT, 'public/data/zh-hant.json'), 'utf8'));
 
@@ -25,31 +31,7 @@ const hant = (s) => {
   });
 };
 
-const strings = new Map(); // string -> where
-const add = (s, where) => { if (HAS_CJK.test(s) && !strings.has(s)) strings.set(s, where); };
-const walkJson = (node, where) => {
-  if (typeof node === 'string') add(node, where);
-  else if (Array.isArray(node)) node.forEach((v) => walkJson(v, where));
-  else if (node && typeof node === 'object') Object.values(node).forEach((v) => walkJson(v, where));
-};
-// data the pages convert at run time (places carry their own zhHant pair and are read from it, so only the zh side is audited)
-for (const f of ['places.json', 'journeys.json', 'scenes.json', 'inventory.json', 'events.json', 'gallery/index.json', 'gallery/summaries.json']) {
-  const p = join(ROOT, 'public/data', f);
-  if (existsSync(p)) walkJson(JSON.parse(readFileSync(p, 'utf8')), `data/${f}`);
-}
-function* tsFiles(dir) {
-  for (const e of readdirSync(dir, { withFileTypes: true })) {
-    const p = join(dir, e.name);
-    if (e.isDirectory()) yield* tsFiles(p); else if (e.name.endsWith('.ts')) yield p;
-  }
-}
-for (const f of tsFiles(join(ROOT, 'src'))) {
-  const text = readFileSync(f, 'utf8');
-  for (const re of [/'((?:[^'\\\n]|\\.)*)'/g, /"((?:[^"\\\n]|\\.)*)"/g]) for (const m of text.matchAll(re)) add(m[1], f.slice(ROOT.length + 1));
-}
-for (const f of readdirSync(ROOT).filter((n) => n.endsWith('.html'))) {
-  for (const m of readFileSync(join(ROOT, f), 'utf8').matchAll(/data-zh="([^"]*)"/g)) add(m[1], f);
-}
+const strings = collectStrings(ROOT);
 
 // valid Traditional characters that OpenCC would still map (征戰, 僕倒, 岳母, 占卜, 游, 裏)
 const VALID_TRAD = new Set('征仆岳占游裏凶');
@@ -67,7 +49,6 @@ for (const [s, where] of strings) {
     e.count++; leftovers.set(ch, e);
   }
   if (bad) badStrings++;
-  else if (out !== convert(s) && out !== s) { /* the gazetteer or a phrase entry differs from OpenCC on purpose */ }
   // an ambiguous character (后 里 发 ...) is judged by phrase: if OpenCC converts the source and the reader gets it back unchanged, it is a miss
   if ([...s].some((c) => AMBIGUOUS.has(c)) && out === s && convert(s) !== s) { phraseMismatch++; if (mismatchSamples.length < 12) mismatchSamples.push(`${where}: ${s.slice(0, 30)} -> ${out.slice(0, 30)}`); }
 }
