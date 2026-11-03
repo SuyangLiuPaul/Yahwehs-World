@@ -9,6 +9,7 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { SURFACE, galleryInput, gallerySurface, isExcluded } from './scripts/lib/vite-gallery-surface.mjs';
+import { OUT_DIR, isShellExcluded, shellTarget } from './scripts/lib/vite-shell-target.mjs';
 
 function recorder(): Plugin {
   return {
@@ -64,6 +65,8 @@ function stagePublicPlugin(): Plugin {
       if (skipRel.has(rel)) continue;
       // The gallery surface publishes none of the globe, walk, figure or lab assets (scripts/lib/vite-gallery-surface.mjs).
       if (SURFACE === 'gallery' && isExcluded(rel)) continue;
+      // ...and the native shells (VITE_TARGET=shell) leave the full-size pictures to the site and the offline pack (scripts/lib/vite-shell-target.mjs)
+      if (isShellExcluded(rel)) continue;
       // ...and the full surface does not publish the gallery's pictures (252 MB; it still reads the old picture host)
       if (SURFACE !== 'gallery' && (rel === 'pictures' || rel === 'data/gallery')) continue;
       const srcPath = join(srcDir, entry);
@@ -82,7 +85,7 @@ function stagePublicPlugin(): Plugin {
     name: 'stage-public',
     apply: 'build',
     closeBundle() {
-      const distDir = resolve(__dirname, 'dist');
+      const distDir = resolve(__dirname, OUT_DIR);
       copyTree(resolve(__dirname, 'public'), distDir);
       if (SURFACE !== 'gallery') copyTree(resolve(__dirname, 't7-web-stage'), distDir);
     },
@@ -127,8 +130,9 @@ const fullInput = (): Record<string, string> => existing({
 });
 
 export default defineConfig({
-  plugins: [recorder(), ...gallerySurface({ root: __dirname }), stagePublicPlugin(), geoPreload()],
+  plugins: [recorder(), ...gallerySurface({ root: __dirname }), ...shellTarget(), stagePublicPlugin(), geoPreload()],
   build: {
+    outDir: OUT_DIR,
     copyPublicDir: false,
     rollupOptions: {
       input: SURFACE === 'gallery' ? galleryInput(__dirname) : fullInput(),

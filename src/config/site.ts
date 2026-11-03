@@ -11,11 +11,14 @@ export const SITE_HOST = 'https://world.yahwehword.com';
 
 /** The names a reader sees. The product name is Traditional wherever it is a name (store title, icon, About). */
 export const PRODUCT = {
+  /** The official name, as a store lists it and as the About page writes it. */
+  full: "雅偉之界 / Yahweh's World",
+  /** The label under the icon, by reading language. Russian follows the site's own wording (the manifests use the same). */
   en: "Yahweh's World",
   zhHant: '雅偉之界',
   /** Simplified UI may show 雅伟之界 in running text, but a *name* stays Traditional (owner, 2026-11-03). */
   zhHans: '雅偉之界',
-  ru: "Yahweh's World",
+  ru: 'Мир Яхве',
 } as const;
 
 export type Channel = 'web' | 'store' | 'direct';
