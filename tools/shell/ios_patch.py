@@ -34,3 +34,6 @@ else:
     spec.write_text(text.replace(EXT, EXT_FIXED, 1))
     print("   project.yml: Externals is not a resource")
     subprocess.run(["xcodegen", "generate", "--spec", str(spec), "--project", str(root)], check=True)
+
+# The app icon: the Lion & Lamb mark from src-tauri/icons/ios (init writes the Tauri default; TestFlight showed it for build 1).
+subprocess.run([sys.executable, str(pathlib.Path(__file__).with_name("icons_patch.py")), "ios", str(root)], check=True)

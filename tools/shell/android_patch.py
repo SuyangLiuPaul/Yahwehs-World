@@ -165,3 +165,7 @@ else:
                           "import androidx.activity.SystemBarStyle\nimport androidx.activity.enableEdgeToEdge\nimport androidx.core.view.WindowCompat\n", 1)
         activity.write_text(src)
         print("   MainActivity.kt -> light status-bar and navigation-bar icons")
+
+# The launcher icon: the Lion & Lamb mark from src-tauri/icons/android (init writes the Tauri default).
+import subprocess
+subprocess.run([sys.executable, str(pathlib.Path(__file__).with_name("icons_patch.py")), "android", str(root)], check=True)

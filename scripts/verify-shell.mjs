@@ -245,5 +245,12 @@ if (!existsSync(join(OUT, 'shell-sizes.json'))) {
   }
 }
 
+// ---------------------------------------------------------------------------------------------------------------- app icons
+{
+  const r = spawnSync('python3', [join(ROOT, 'scripts/verify-icons.py')], { encoding: 'utf8' });
+  process.stdout.write(r.stdout.split('\n').filter(Boolean).map((l) => l.startsWith('ok') ? (passed++, l) : l.startsWith('FAIL') ? (failed++, l) : l).join('\n') + '\n');
+  if (r.status !== 0 && !/FAIL/.test(r.stdout)) { failed++; console.log(`FAIL  verify-icons.py crashed\n        ${r.stderr}`); }
+}
+
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);
