@@ -2,8 +2,5 @@
  "schema": "square-redraw-notes-v1",
  "doc": "One concrete correction per square, written after looking at the picture, for squares whose redraws kept reproducing the same fault: build_rework_jobs.py puts it in the job under 「具体怎么改」, after (not instead of) the reviewer's own note. Delete an entry once the square passes. See handoff/opus-74-decisions-2026-11-03.md.",
  "decidedBy": "Opus 5.5 (delegated by the owner, 2026-11-03)",
- "notes": {
-  "joshua-5-13": "Keep the commander as a man with his sword drawn - Joshua 5:13 says a man stood over against him - but dress him for the Late Bronze Age: a long belted tunic and a plain bronze scale corselet, no Roman muscle cuirass, no red cape, no Roman soldiers' tunics behind him. Also remove the agave/cactus-like plants at the lower right and use thorn scrub and terebinth.",
-  "obadiah-1-17": "Remove the Greek columned temple with the triangular pediment at the upper right and the multi-arched stone bridge over the river; draw Iron-Age Judean flat-roofed stone buildings and a shallow ford instead. The celebrating people on the right steps must wear tunics that fall below the knee."
- }
+ "notes": {}
 }
