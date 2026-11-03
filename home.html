@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Old globe links arrive here with a hash (/#ref=…, /#event=…, /#journey=…). A server cannot see a hash, so this
+       runs before first paint and sends each form where it now lives. Tested by scripts/verify-redirects.mjs. -->
+  <script>(function(){try{var h=location.hash.slice(1);if(!h)return;var m;
+  if(m=/(?:^|&)ref=([^&]+)/.exec(h)){var raw=decodeURIComponent(m[1].replace(/\+/g,' '));var r=/^(.+?)\s+(\d+)(?::(\d+))?/.exec(raw);
+    location.replace('/bible.html'+(r?'?book='+encodeURIComponent(r[1])+'&ch='+r[2]:'')+'#ref='+encodeURIComponent(raw));return}
+  if(m=/(?:^|&)event=([^&]+)/.exec(h)){location.replace('/scenes.html#p='+m[1]);return}
+  }catch(e){}})()</script>
+  <link rel="icon" href="/icon-sm.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <title>Yahweh's World · 雅伟之界 | 1,443 scenes of the Bible</title>
+  <meta name="description" content="1,443 moments of the Bible, each one drawn, each one opening onto the verses it comes from. 圣经里的 1,443 个时刻，每一幕都画了出来，每一幅都打开它所出自的经文。">
+  <meta property="og:title" content="Yahweh's World · 雅伟之界">
+  <meta property="og:description" content="1,443 moments of the Bible, each one drawn, each one opening onto the verses it comes from.">
+  <meta property="og:image" content="https://world.yahwehword.com/logo.png">
+  <link rel="canonical" href="https://world.yahwehword.com/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- gallery-fonts -->
+<!-- gallery-head -->
+</head>
+<body class="gx-home">
+<!-- gallery-shell -->
+
+  <main id="home">
+    <h1 class="gx-sr" data-en="Yahweh's World: 1,443 scenes of the Bible" data-zh="雅伟之界：圣经里的 1,443 幕画卷" data-ru="Мир Яхве: 1 443 сцены Библии">Yahweh's World: 1,443 scenes of the Bible</h1>
+
+    <div class="hm-notice" id="hm-notice" role="status" hidden></div>
+
+    <section class="hm-hero" aria-labelledby="hm-title">
+      <div class="hm-stage">
+        <a class="hm-plate" id="hm-plate" href="/scenes.html" tabindex="-1" aria-hidden="true"><span class="gx-sk plate"></span></a>
+        <div class="hm-copy">
+          <div class="gx-kicker" id="hm-kicker"><span class="gx-sk line w55"></span></div>
+          <h2 class="hm-title" id="hm-title"><span class="gx-sk line w80"></span></h2>
+          <div class="gx-mono" id="hm-ref">&nbsp;</div>
+          <p class="gx-lede hm-lede hm-lede-desk" data-en="1,443 moments of the Bible, each one drawn, each one opening onto the verses it comes from." data-zh="圣经里的 1,443 个时刻，每一幕都画了出来，每一幅都打开它所出自的经文。" data-ru="1 443 момента Библии: каждый нарисован, и каждый открывает стихи, из которых он взят.">1,443 moments of the Bible, each one drawn, each one opening onto the verses it comes from.</p>
+          <div class="hm-row">
+            <a class="gx-btn primary" id="hm-read" href="/scenes.html" data-en="Read the passage" data-zh="读这段" data-ru="Читать отрывок">Read the passage</a>
+            <a class="gx-btn quiet" href="/scenes.html" data-en="Browse the scenes" data-zh="看画卷" data-ru="Все сцены">Browse the scenes</a>
+          </div>
+          <div class="hm-row hm-sub">
+            <button type="button" class="gx-pill" id="hm-edition" aria-haspopup="dialog"></button>
+            <span class="hm-days" role="group">
+              <button type="button" class="gx-iconbtn" id="hm-prev" aria-label=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg></button>
+              <span class="gx-mono" id="hm-day"></span>
+              <button type="button" class="gx-iconbtn" id="hm-next" aria-label=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/></svg></button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="hm-body">
+      <p class="gx-lede hm-lede hm-lede-phone" data-en="1,443 moments of the Bible, each one drawn, each one opening onto the verses it comes from." data-zh="圣经里的 1,443 个时刻，每一幕都画了出来，每一幅都打开它所出自的经文。" data-ru="1 443 момента Библии: каждый нарисован, и каждый открывает стихи, из которых он взят.">1,443 moments of the Bible, each one drawn, each one opening onto the verses it comes from.</p>
+
+      <section class="hm-browse" aria-labelledby="hm-browse-h">
+        <div class="hm-browse-head">
+          <h2 class="gx-h3" id="hm-browse-h" data-en="By book" data-zh="按书卷看" data-ru="По книгам">By book</h2>
+          <div class="hm-seg" role="group" aria-label="Testament">
+            <button type="button" data-t="ot" aria-pressed="true"></button>
+            <button type="button" data-t="nt" aria-pressed="false"></button>
+          </div>
+        </div>
+        <div class="hm-books" id="hm-books" aria-live="polite">
+          <span class="gx-sk line w92"></span><span class="gx-sk line w80"></span><span class="gx-sk line w55"></span>
+        </div>
+      </section>
+
+      <section class="hm-find" aria-labelledby="hm-find-h">
+        <h2 class="gx-h3" id="hm-find-h" data-en="Find a scene" data-zh="找一幕" data-ru="Найти сцену">Find a scene</h2>
+        <button type="button" class="gx-search hm-find-field" data-gx-search>
+          <svg class="gx-i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <span class="gx-search-t" data-en="Book, reference or caption, e.g. “Gen 12”, “Damascus”" data-zh="书卷、出处、画名，如「创 12」「大马色」" data-ru="Книга, место или название, например «Быт 12», «Дамаск»">Book, reference or caption</span>
+        </button>
+      </section>
+
+      <footer class="hm-footer">
+        <div>
+          <h3 data-en="About the pictures" data-zh="关于这些画" data-ru="О картинах">About the pictures</h3>
+          <p data-en="Artist's impressions drawn with AI tools and reviewed verse by verse; not reconstructions. The pictures carry no text; every word is on the page." data-zh="画家的想象，用 AI 工具绘制，逐节对照经文审核；不是考古复原。画里没有文字，说明都在页面上。" data-ru="Художественные образы, созданные с помощью ИИ-инструментов и проверенные стих за стихом; это не реконструкции. На картинах нет текста: все слова — на странице.">Artist's impressions drawn with AI tools and reviewed verse by verse; not reconstructions.</p>
+        </div>
+        <div>
+          <h3 data-en="Editions and licences" data-zh="译本与授权" data-ru="Издания и лицензии">Editions and licences</h3>
+          <div id="hm-licences"></div>
+          <button type="button" class="hm-link" id="hm-all-licences"></button>
+        </div>
+        <div>
+          <h3 data-en="Three doors to one Bible" data-zh="同一本圣经的三个入口" data-ru="Три входа в одну Библию">Three doors to one Bible</h3>
+          <a href="https://yahwehword.com/" rel="noopener">雅伟之言 · Yahweh's Words</a>
+          <a href="https://sword.yahwehword.com/" rel="noopener">雅伟之剑 · Yahweh's Sword</a>
+          <p class="hm-note" data-en="Languages: English, 中文 (简体 and 繁體), Русский. The Russian text has not yet been read by a native speaker." data-zh="界面语言：中文（简体、繁體）、English、Русский。俄文尚未经母语读者审阅。" data-ru="Языки: English, 中文 (упрощённый и традиционный), Русский. Русский текст ещё не прочитан носителем языка.">Languages: English, 中文, Русский.</p>
+          <div class="hm-theme" role="group" aria-label="Reading theme"><span class="gx-mono" data-en="Reading surface" data-zh="阅读面" data-ru="Чтение">Reading surface</span>
+            <button type="button" class="gx-pill" data-read="auto" data-en="System" data-zh="跟随系统" data-ru="Как в системе">System</button>
+            <button type="button" class="gx-pill" data-read="dark" data-en="Dark" data-zh="深色" data-ru="Тёмная">Dark</button>
+            <button type="button" class="gx-pill" data-read="paper" data-en="Paper" data-zh="纸" data-ru="Бумага">Paper</button>
+          </div>
+          <div class="gx-mono hm-version" id="hm-version"></div>
+        </div>
+      </footer>
+    </div>
+  </main>
+  <script type="module" src="/src/gallery/home.ts"></script>
+</body>
+</html>

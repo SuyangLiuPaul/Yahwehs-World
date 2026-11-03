@@ -1,0 +1,88 @@
+@import '../tokens.css';
+@import '../nav.css';
+
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--ui); }
+body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
+.gx-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+[hidden] { display: none !important; }
+#home { max-width: 1280px; margin: 0 auto; }
+
+.hm-notice { margin: var(--sp-3) var(--sp-4) 0; padding: var(--sp-3) var(--sp-4); border: 1px solid var(--line-gold); border-radius: var(--r-2); background: var(--gold-wash); color: var(--ink); font-size: var(--fs-300); line-height: 1.55; display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-4); align-items: center; }
+.hm-notice a { color: var(--gold-bright); }
+
+/* ── hero: the day's plate. Phone: full bleed, the words in a scrim band over its lower edge (the only place
+   words sit over a picture). Wide: plate left, the words beside it, nothing over the picture. ─────────────── */
+.hm-stage { position: relative; }
+.hm-plate { display: block; text-decoration: none; }
+.hm-plate .gx-plate, .hm-plate .gx-sk.plate { aspect-ratio: 4 / 3; border-radius: 0; border: 0; border-bottom: 1px solid var(--line); }
+.hm-copy { position: absolute; left: 0; right: 0; bottom: 0; padding: 56px var(--sp-4) var(--sp-4); background: var(--hero-scrim); display: grid; gap: var(--sp-2); }
+.hm-copy .gx-kicker { color: var(--gold-bright); text-shadow: 0 1px 6px #0009; }
+.hm-title { margin: 0; font: 600 var(--fs-700)/1.2 var(--display); color: #f9f3e6; text-shadow: 0 1px 8px #0008; }
+.hm-copy .gx-mono { color: #e8dcc0e0; }
+.hm-lede-desk { display: none; }
+.hm-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); margin-top: var(--sp-2); }
+.hm-copy .gx-btn.quiet { border-color: #ffffff4d; color: #f9f3e6; }
+.hm-copy .gx-pill { border-color: #ffffff4d; color: #f9f3e6; }
+.hm-sub { margin-top: 0; }
+.hm-days { display: inline-flex; align-items: center; gap: 2px; margin-left: auto; color: #e8dcc0e0; }
+.hm-days .gx-iconbtn { color: #f9f3e6; width: 44px; height: 44px; }
+.hm-days .gx-mono { min-width: 5.5em; text-align: center; }
+
+.hm-body { padding: var(--sp-5) var(--sp-4) calc(var(--sp-5) + var(--safe-bottom)); display: grid; gap: 26px; }
+.hm-lede-phone { display: block; }
+
+.hm-browse { display: grid; gap: var(--sp-3); }
+.hm-browse-head { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; }
+.hm-seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.hm-seg button { min-height: 44px; padding: 0 var(--sp-4); background: none; border: 0; color: var(--ink-3); font: var(--fs-300)/1 var(--ui); cursor: pointer; }
+.hm-seg button[aria-pressed="true"] { background: var(--surface-hi); color: var(--ink); font-weight: 600; }
+.hm-books { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.hm-books a {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px;
+  color: var(--ink-2); text-decoration: none; font-size: var(--fs-300); transition: border-color .16s, color .16s;
+}
+.hm-books a b { font: 500 var(--fs-100) var(--mono); color: var(--ink-3); }
+@media (hover: hover) { .hm-books a:hover { border-color: var(--line-gold); color: var(--ink); } }
+.hm-books .gx-sk.line { flex: 1 1 100%; height: 36px; border-radius: 999px; }
+
+.hm-find { display: grid; gap: var(--sp-3); }
+.hm-find-field { width: 100%; min-height: 48px; border-radius: var(--r-2); border-color: var(--line); }
+.hm-find-field .gx-search-t { white-space: normal; }
+
+.hm-footer { display: grid; gap: var(--sp-5); padding-top: var(--sp-5); border-top: 1px solid var(--line); color: var(--ink-3); font-size: var(--fs-200); line-height: 1.6; }
+.hm-footer h3 { margin: 0 0 6px; font: 600 var(--fs-200) var(--ui); color: var(--ink-2); letter-spacing: .06em; text-transform: uppercase; }
+html[lang^="zh"] .hm-footer h3 { text-transform: none; letter-spacing: var(--tr-cjk); }
+.hm-footer p { margin: 0 0 var(--sp-2); }
+.hm-footer a, .hm-link { display: block; color: var(--ink-3); padding: 3px 0; min-height: 28px; text-decoration: none; background: none; border: 0; font: inherit; text-align: left; cursor: pointer; }
+@media (hover: hover) { .hm-footer a:hover, .hm-link:hover { color: var(--gold-bright); } }
+.hm-link { color: var(--gold-bright); }
+.hm-note { margin-top: var(--sp-2) !important; }
+.hm-theme { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin-top: var(--sp-3); }
+.hm-version { margin-top: var(--sp-2); }
+
+@media (min-width: 900px) {
+  .hm-stage { display: grid; grid-template-columns: 3fr 2fr; gap: 28px; align-items: center; padding: 28px 28px 0; }
+  .hm-plate .gx-plate, .hm-plate .gx-sk.plate { aspect-ratio: 3 / 2; border-radius: var(--r-2); border: 1px solid var(--line); }
+  .hm-copy { position: static; padding: 0; background: none; gap: var(--sp-3); }
+  .hm-title { font-size: var(--fs-700); color: var(--ink); text-shadow: none; }
+  .hm-copy .gx-kicker { text-shadow: none; color: var(--gold-dim); }
+  .hm-copy .gx-mono { color: var(--ink-3); }
+  .hm-lede-desk { display: block; }
+  .hm-lede-phone { display: none; }
+  .hm-copy .gx-btn.quiet, .hm-copy .gx-pill { border-color: var(--line); color: var(--ink); }
+  .hm-days { color: var(--ink-3); }
+  .hm-days .gx-iconbtn { color: var(--ink-2); }
+  .hm-body { padding: 34px 28px 48px; gap: 34px; }
+  .hm-books { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .hm-books a { justify-content: space-between; border-radius: var(--r-1); min-height: 44px; }
+  .hm-find { display: none; }
+  .hm-footer { grid-template-columns: repeat(3, 1fr); gap: 28px; }
+}
+@media (max-width: 899px) {
+  .hm-notice { margin-left: var(--sp-4); }
+}
+/* desktop top bar has the search field; the home page's own field is for the phone */
+.gx-lic { padding: var(--sp-3) 0; border-bottom: 1px solid var(--line); display: grid; gap: 2px; }
+.gx-lic .lic { margin-left: 6px; border: 1px solid var(--line); border-radius: var(--r-1); padding: 1px 5px; }
