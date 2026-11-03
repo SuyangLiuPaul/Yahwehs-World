@@ -25,11 +25,19 @@
     "reader:demo": "node scripts/reader-editions.mjs && vite build --config vite.reader.config.ts",
     "test:reader": "node --test \"tests/reader/*.test.ts\"",
     "test:gallery": "node --test \"tests/gallery/*.test.ts\"",
-    "verify:reader": "node scripts/verify-reader-robustness.mjs"
+    "verify:reader": "node scripts/verify-reader-robustness.mjs",
+    "test:shell": "node --test \"tests/shell/*.test.ts\" \"tests/platform/*.test.ts\" \"tests/core/*.test.ts\"",
+    "verify:shell": "npm run test:shell && node scripts/verify-shell.mjs && node scripts/verify-shell-ui.mjs",
+    "app:dist": "VITE_SURFACE=gallery VITE_TARGET=shell VITE_OUT_DIR=dist-shell npm run build && node scripts/shell-dist.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.11.1",
-    "@tauri-apps/plugin-opener": "^2.5.5",
+    "@tauri-apps/plugin-deep-link": "^2.6.3",
+    "@tauri-apps/plugin-fs": "^2.7.1",
+    "@tauri-apps/plugin-http": "^2.8.3",
+    "@tauri-apps/plugin-opener": "^2.7.2",
+    "@tauri-apps/plugin-os": "^2.4.0",
+    "@tauri-apps/plugin-store": "^2.5.0",
     "three": "^0.185.1"
   },
   "devDependencies": {

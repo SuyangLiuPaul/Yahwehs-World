@@ -3,10 +3,17 @@
 // pixels: the title, the reference and the summary are HTML beside it.
 import type { Scene } from './data.ts';
 import { t } from '../locale.ts';
+import { fullPictureHost, thumbPictureHost } from '../config/site.ts';
 
-const HOST = (import.meta.env.VITE_SCENES_HOST as string | undefined) ?? '';
-export const thumbUrl = (id: string) => `${HOST}/pictures/thumb/${id}.webp`;
-export const fullUrl = (id: string) => `${HOST}/pictures/full/${id}.webp`;
+// Web: this site's own /pictures/. Native shell (VITE_TARGET=shell): the thumbnails are in the app, every full picture comes from
+// SITE_HOST (src/config/site.ts), unless the offline pack has stored it (localFull below).
+const THUMB_HOST = thumbPictureHost(import.meta.env);
+const FULL_HOST = fullPictureHost(import.meta.env);
+export const thumbUrl = (id: string) => `${THUMB_HOST}/pictures/thumb/${id}.webp`;
+export const fullUrl = (id: string) => `${FULL_HOST}/pictures/full/${id}.webp`;
+
+/** Set by the native shell (src/shell/boot.ts) once the offline pack manager knows which full pictures are stored on the device. */
+export const localFull: { url: ((id: string) => string | null) | null } = { url: null };
 
 /** "<8 chars>" = base64url of the top half's RGB then the bottom half's -> a vertical gradient. */
 export function lqipGradient(code: string): string | null {
@@ -45,7 +52,7 @@ export function plate(sc: Scene, o: PlateOptions): HTMLElement {
   if (o.eager) { img.loading = 'eager'; img.fetchPriority = 'high'; } else img.loading = 'lazy';
   img.addEventListener('load', () => el.classList.add('is-loaded'), { once: true });
   img.addEventListener('error', () => el.classList.add('is-failed'), { once: true });
-  img.src = o.kind === 'thumb' ? thumbUrl(sc.id) : fullUrl(sc.id);
+  img.src = o.kind === 'thumb' ? thumbUrl(sc.id) : (localFull.url?.(sc.id) ?? fullUrl(sc.id));
   if (img.complete && img.naturalWidth) el.classList.add('is-loaded');
   el.append(img);
   return el;

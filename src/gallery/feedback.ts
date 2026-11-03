@@ -14,9 +14,12 @@ import { refText, sceneTitle, type Scene } from './data.ts';
 import { choice } from './editions.ts';
 import { readTheme } from './chrome.ts';
 import { openSheet } from './sheet.ts';
+import { apiBase, publicUrl, targetOf } from '../config/site.ts';
 
 export const SUPPORT = 'support@yahwehword.com';
-export const ENDPOINT = '/api/feedback';
+// Web: same origin. Native shell: the page is tauri://localhost, which has no functions, so the report goes to the site
+// (its origin is on the function's allow-list: netlify/functions/feedback.mjs).
+export const ENDPOINT = `${apiBase(import.meta.env)}/api/feedback`;
 const EMAIL = /^[^\s@<>]+@[^\s@<>]+\.[a-zA-Z]{2,}$/;
 
 type Reason = 'picture' | 'caption' | 'bible' | 'other';
@@ -42,7 +45,7 @@ export function contextOf(sc: Scene) {
   const z = (n: number) => String(Math.floor(Math.abs(n))).padStart(2, '0');
   return {
     ref: refText(sc, 'en'),
-    url: location.href,
+    url: targetOf(import.meta.env) === 'shell' ? publicUrl(location.pathname, location.hash) : location.href,
     lang: fullLocale(),
     edition: choice().id,
     theme: themeNow(),

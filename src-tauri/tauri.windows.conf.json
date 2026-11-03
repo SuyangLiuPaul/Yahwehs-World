@@ -1,0 +1,25 @@
+{
+  "bundle": {
+    "targets": [
+      "nsis"
+    ],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper",
+        "silent": true
+      },
+      "nsis": {
+        "installMode": "both",
+        "displayLanguageSelector": true,
+        "languages": [
+          "English",
+          "SimpChinese",
+          "TradChinese",
+          "Russian"
+        ],
+        "compression": "lzma",
+        "startMenuFolder": "Yahweh's World"
+      }
+    }
+  }
+}

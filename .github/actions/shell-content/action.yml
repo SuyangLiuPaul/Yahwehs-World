@@ -1,0 +1,34 @@
+name: Shell content
+description: >
+  Downloads dist-shell-<version>.zip from a GitHub release (made locally by tools/pack_shell_content.sh), checks its SHA-256 and
+  unpacks it to dist-shell/, where src-tauri/tauri.conf.json expects it. The content (pictures, Bible data) cannot be built on a runner.
+inputs:
+  tag:
+    description: Release tag that holds dist-shell-<version>.zip and its .sha256 file
+    required: true
+  token:
+    description: Token for gh (the workflow's own github.token is enough for this repository)
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Download and verify the content
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        TAG: ${{ inputs.tag }}
+      run: |
+        set -euo pipefail
+        mkdir -p content-download
+        gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern 'dist-shell-*.zip' --pattern 'dist-shell-*.zip.sha256' --dir content-download
+        cd content-download
+        ls -l
+        zip="$(ls dist-shell-*.zip | head -1)"
+        expected="$(cut -d' ' -f1 "$zip.sha256")"
+        actual="$( (sha256sum "$zip" 2>/dev/null || shasum -a 256 "$zip") | cut -d' ' -f1)"
+        test "$expected" = "$actual" || { echo "SHA-256 mismatch for $zip"; exit 1; }
+        cd ..
+        mkdir -p dist-shell
+        unzip -q "content-download/$zip" -d dist-shell
+        test -f dist-shell/index.html && test -f dist-shell/data/packs.json
+        echo "content: $(find dist-shell -type f | wc -l) files"

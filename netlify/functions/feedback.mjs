@@ -42,7 +42,11 @@ const ID = /^[a-z0-9][a-z0-9-]{0,79}$/;
 const FROM_DEFAULT = 'Yahweh’s World Feedback <onboarding@resend.dev>';
 
 /** Browsers may POST from these sites only; a request with no Origin (a script) passes, as it does in Words. */
-const ORIGINS = new Set(['https://world.yahwehword.com', 'https://yahwehsworld.netlify.app', 'https://yahwehsworld-dev.netlify.app']);
+// The native shells post from their own origins: Tauri on macOS and iOS is tauri://localhost, on Windows and Android http://tauri.localhost
+// (https:// when useHttpsScheme is on); Capacitor on iOS (the documented fallback shell) is capacitor://localhost. http://localhost is
+// deliberately NOT listed: it is every developer's page, and no shell uses it.
+const ORIGINS = new Set(['https://world.yahwehword.com', 'https://yahwehsworld.netlify.app', 'https://yahwehsworld-dev.netlify.app',
+  'tauri://localhost', 'http://tauri.localhost', 'https://tauri.localhost', 'capacitor://localhost']);
 const originOk = (req) => { const o = req.headers.get('origin') || ''; return o === '' || ORIGINS.has(o); };
 
 function cors(req) {

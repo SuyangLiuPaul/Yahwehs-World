@@ -1,3 +1,6 @@
+# SUPERSEDED (2026-11-03) by shell-windows.yml, shell-macos.yml and shell-android.yml. This one still runs `beforeBuildCommand`
+# (`npm run app:dist`), which needs the pictures and Bible data that only exist on the owner's machine, so on a runner it fails by
+# design. Kept only so the old run history stays readable; do not trigger it.
 # Builds the desktop shell (Windows/macOS/Linux) via Tauri and attaches the
 # installers to the run as downloadable artifacts. Manual trigger only —
 # there is no code-signing cert configured yet, so these are unsigned builds

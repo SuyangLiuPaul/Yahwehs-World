@@ -9,6 +9,10 @@ interface ImportMetaEnv {
   readonly VITE_SURFACE?: 'gallery' | 'full';
   /** Where the pictures are served from; empty = this site's own /pictures/. */
   readonly VITE_SCENES_HOST?: string;
+  /** 'shell' builds the content of the native apps (scripts/shell-dist.mjs): thumbnails bundled, full pictures and /api from the site. */
+  readonly VITE_TARGET?: 'web' | 'shell';
+  /** How a shell build reaches the reader: 'store' (the store updates it) or 'direct' (GitHub release / DMG / installer). */
+  readonly VITE_SHELL_CHANNEL?: 'store' | 'direct';
 }
 
 interface ImportMeta {
