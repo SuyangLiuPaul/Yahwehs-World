@@ -64,6 +64,8 @@ function stagePublicPlugin(): Plugin {
       if (skipRel.has(rel)) continue;
       // The gallery surface publishes none of the globe, walk, figure or lab assets (scripts/lib/vite-gallery-surface.mjs).
       if (SURFACE === 'gallery' && isExcluded(rel)) continue;
+      // ...and the full surface does not publish the gallery's pictures (252 MB; it still reads the old picture host)
+      if (SURFACE !== 'gallery' && (rel === 'pictures' || rel === 'data/gallery')) continue;
       const srcPath = join(srcDir, entry);
       const destPath = join(destDir, entry);
       const st = lstatSync(srcPath);
