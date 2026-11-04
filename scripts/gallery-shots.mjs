@@ -4,7 +4,7 @@
 //   node scripts/gallery-shots.mjs [--dir dist] [--out docs/evidence/gallery-2026-11/shots]
 //        [--viewports 375x812,768x1024,1440x900] [--langs en,zh-Hans,zh-Hant,ru] [--themes dark,light,paper]
 //        [--base http://127.0.0.1:4173] [--all-themes]   (--base shoots an already running preview instead of serving dist/; --all-themes shoots every page in every theme, home and gallery included)
-//        [--pages home,gallery,picture,reader,parallel,reader-parallel,sheet,picture-sheet,licences,feedback,feedback-failed,feedback-thanks,held]
+//        [--pages home,gallery,picture,reader,parallel,reader-parallel,sheet,picture-sheet,licences,feedback,feedback-failed,feedback-thanks,held,privacy,404]
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
 import { resolve, join, dirname } from 'node:path';
@@ -18,7 +18,7 @@ const OUT = resolve(ROOT, args.out || 'docs/evidence/gallery-2026-11/shots');
 const VPS = (args.viewports || '375x812,1440x900').split(',').map((s) => s.split('x').map(Number));
 const LANGS = (args.langs || 'en,zh-Hans').split(',');
 const THEMES = (args.themes || 'dark,light,paper').split(',');
-const PAGES = (args.pages || 'home,gallery,picture,reader,parallel,reader-parallel,sheet,picture-sheet,licences,feedback,feedback-failed,feedback-thanks,held').split(',');
+const PAGES = (args.pages || 'home,gallery,picture,reader,parallel,reader-parallel,sheet,picture-sheet,licences,feedback,feedback-failed,feedback-thanks,held,privacy,404').split(',');
 mkdirSync(OUT, { recursive: true });
 
 const { base, close } = args.base ? { base: args.base, close() {} } : await serveDist(DIR);
@@ -36,10 +36,13 @@ const SHOTS = {
   sheet: { url: '/', wait: '#hm-edition', themes: TWO, act: async (p) => { await p.click('#hm-edition'); await p.waitForSelector('dialog.yr-sheet[open] .yr-opt'); await p.waitForTimeout(400); } },
   'picture-sheet': { url: '/scenes.html#p=genesis-15-1', wait: '.yr-passage .yr-v', themes: TWO, act: async (p) => { await p.click('.yr-passage [data-act="edition"]'); await p.waitForSelector('dialog.yr-sheet[open] .yr-opt'); await p.waitForTimeout(400); } },
   licences: { url: '/', wait: '#hm-all-licences', themes: DARK, act: async (p) => { await p.click('#hm-all-licences'); await p.waitForSelector('dialog.gx-sheet[open] .gx-lic'); await p.waitForTimeout(400); } },
-  feedback: { url: '/scenes.html#p=genesis-15-1', wait: '.yr-passage .yr-v', themes: ALL, act: async (p) => { await p.click('#pc-feedback'); await p.waitForSelector('dialog.gx-fb[open] form.fb'); await p.click('dialog.gx-fb [data-r="picture"]'); await p.fill('dialog.gx-fb textarea', ''); await p.waitForTimeout(500); } },
+  feedback: { url: '/scenes.html#p=genesis-15-1', wait: '.yr-passage .yr-v', themes: ALL, act: async (p) => { await p.click('#pc-feedback'); await p.waitForSelector('dialog.gx-fb[open] form.fb'); await p.waitForTimeout(500); } },  // UNTOUCHED: nothing ticked, Send disabled, the line saying what is needed (P1-11)
   'feedback-failed': { url: '/scenes.html#p=genesis-15-1', wait: '.yr-passage .yr-v', themes: TWO, act: async (p) => { await p.route('**/api/feedback', (r) => r.fulfill({ status: 503, body: '{"error":"not_configured"}' })); await p.click('#pc-feedback'); await p.waitForSelector('dialog.gx-fb[open] form.fb'); await p.fill('dialog.gx-fb textarea', 'The stars look wrong.'); await p.click('dialog.gx-fb [data-send]'); await p.waitForSelector('dialog.gx-fb .fb-fallback:not([hidden])'); await p.waitForTimeout(400); } },
   'feedback-thanks': { url: '/scenes.html#p=genesis-15-1', wait: '.yr-passage .yr-v', themes: DARK, act: async (p) => { await p.route('**/api/feedback', (r) => r.fulfill({ status: 200, body: '{"ok":true}' })); await p.click('#pc-feedback'); await p.waitForSelector('dialog.gx-fb[open] form.fb'); await p.click('dialog.gx-fb [data-send]'); await p.waitForSelector('dialog.gx-fb .fb-done:not([hidden])'); await p.waitForTimeout(400); } },
   held: { url: '/scenes.html#p=exodus-13-17', wait: '.yr-passage .yr-v', themes: DARK },
+  // the two pages that carry no bundle: they pick the reading, the theme and the product name with one inline script
+  privacy: { url: '/privacy.html', wait: 'h1', themes: TWO },
+  '404': { url: '/404.html', wait: 'h1', themes: TWO },
 };
 const errors = [];
 for (const [w, h] of VPS) for (const lang of LANGS) for (const theme of THEMES) {

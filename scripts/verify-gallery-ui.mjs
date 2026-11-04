@@ -36,6 +36,29 @@ async function open(vp, lang, { block = [], reduced = false } = {}) {
 }
 const noOverflow = (page) => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1);
 
+// ── THE NAME FOLLOWS THE LANGUAGE (owner, 2026-11-04, on TestFlight build 3) ──────────────────────────────────────
+// The bar used to read 雅偉之界 on every page: an English reader met the Chinese name above the word "Home" and a
+// Russian one above "Главная". The rule is Words's rule, and it is checked on every page a reader can reach, in all
+// four readings — including the FAIL that matters most, CJK characters in the wordmark of a page that is not Chinese.
+const WORDMARK = { en: "Yahweh's World", 'zh-Hans': '雅伟之界', 'zh-Hant': '雅偉之界', ru: "Yahweh's World" };
+const CJK = /[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/;
+/** The wordmark as it is actually painted (the lockup carries four readings; only one of them is displayed). */
+const wordmarkOn = (page) => page.evaluate(() => {
+  const el = document.querySelector('.sitenav .brand .wm');
+  if (!el) return null;
+  const shown = [...el.children].filter((i) => getComputedStyle(i).display !== 'none');
+  return { text: (shown.length ? shown : [el]).map((i) => i.textContent.trim()).join(''), shown: shown.length };
+});
+async function checkWordmark(where, lang, page) {
+  const wm = await wordmarkOn(page);
+  check(!!wm && wm.shown === 1, `${where} ${lang}: exactly one reading of the wordmark is on screen (${wm?.shown})`);
+  check(wm?.text === WORDMARK[lang], `${where} ${lang}: the wordmark reads "${WORDMARK[lang]}" ("${wm?.text}")`);
+  if (lang === 'en' || lang === 'ru') check(!CJK.test(wm?.text ?? ''), `${where} ${lang}: no Chinese characters in the name of a non-Chinese page ("${wm?.text}")`);
+  const title = await page.title();
+  check(lang === 'en' || lang === 'ru' ? !CJK.test(title) : CJK.test(title), `${where} ${lang}: the <title> is in this reader's script ("${title}")`);
+  check(lang === 'zh-Hans' ? !title.includes('雅偉') : !title.includes('雅伟'), `${where} ${lang}: the <title> spells the name for this language ("${title}")`);
+}
+
 /** Choose a reading. The four EN | 简 | 繁 | РУ buttons are gone: one globe button opens a menu (P1-1), so every
  *  check that used to click `.lang-switch [data-locale=x]` goes through the control a reader actually has. */
 async function pickLang(page, l) {
@@ -59,12 +82,8 @@ for (const vp of [[375, 812], [1440, 900]]) {
     check(title.length > 2, `${tag} ${lang}: hero title "${title}"`);
     const ruTitle = lang === 'ru' ? /[А-Яа-я]/.test(title) : true;
     check(ruTitle, `${tag} ${lang}: Russian reader sees a Russian title`);
-    // the page-name rule (owner, 2026-11-04): 雅偉之界 in English, Russian and 繁體; 雅伟之界 only on a 简体 page. The home label reads Home.
     {
-      const brand = (await page.locator('.sitenav .brand .zh').innerText()).trim();
-      check(brand === (lang === 'zh-Hans' ? '雅伟之界' : '雅偉之界'), `${tag} ${lang}: the header name is ${lang === 'zh-Hans' ? '雅伟之界 (简体)' : '雅偉之界 (Traditional)'} ("${brand}")`);
-      const pageTitle = await page.title();
-      check(lang === 'zh-Hans' ? !pageTitle.includes('雅偉') : !pageTitle.includes('雅伟'), `${tag} ${lang}: the <title> spells the name for this language ("${pageTitle}")`);
+      await checkWordmark(`${tag} home`, lang, page);
       const pg = (await page.locator('.sitenav .brand .pg').innerText()).trim();
       check(pg === { en: 'Home', 'zh-Hans': '首页', 'zh-Hant': '首頁', ru: 'Главная' }[lang], `${tag} ${lang}: the header label on the home page is the tab's name ("${pg}")`);
     }
@@ -750,6 +769,84 @@ for (const vp of [[375, 812], [1440, 900]]) {
   await ctx.close();
 }
 
+// ── the feedback gate, in all four readings (P1-11) ───────────────────────────────────────────────────────────────
+// Round 3 reported "a category is pre-selected, so in practice something is always sent". It is not, and this is the
+// check that says so in every language rather than only in English: on open, no reason is ticked, Send is disabled, and
+// the line that says what is needed is showing. The two labels the owner asked to stay true are read back here as well.
+{
+  const WANT = {
+    en: { why: 'What is wrong? (optional)', need: 'Tick a reason or write a few words, then Send.', send: 'Send' },
+    'zh-Hans': { why: '哪里不对？（可不选）', need: '请先勾一个原因或写几个字，再发送。', send: '发送' },
+    'zh-Hant': { why: '哪裡不對？（可不選）', need: '請先勾一個原因或寫幾個字，再發送。', send: '發送' },
+    ru: { why: 'Что не так? (необязательно)', need: 'Отметьте причину или напишите пару слов, затем отправьте.', send: 'Отправить' },
+  };
+  for (const lang of ['en', 'zh-Hans', 'zh-Hant', 'ru']) {
+    const { ctx, page } = await open([375, 812], lang);
+    const posts = [];
+    await page.route('**/api/feedback', (route) => { posts.push(1); return route.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' }); });
+    await page.goto(`${base}/scenes.html#p=genesis-15-1`);
+    await page.waitForSelector('.yr-passage .yr-v');
+    await page.click('#pc-feedback');
+    await page.waitForSelector('dialog.gx-fb[open] form.fb');
+    const pressed = await page.evaluate(() => [...document.querySelectorAll('dialog.gx-fb [data-r]')].map((b) => b.getAttribute('aria-pressed')));
+    check(pressed.length === 4 && pressed.every((p) => p === 'false'), `fb ${lang}: no reason is pre-selected when the sheet opens (${pressed})`);
+    check(await page.locator('dialog.gx-fb [data-send]').isDisabled(), `fb ${lang}: Send is disabled on an untouched form`);
+    check(await page.locator('dialog.gx-fb #fb-need:not([hidden])').count() === 1, `fb ${lang}: the line saying what is needed is showing`);
+    const need = (await page.locator('dialog.gx-fb #fb-need').innerText()).trim();
+    check(need === WANT[lang].need, `fb ${lang}: ...in this language ("${need}")`);
+    const why = (await page.locator('dialog.gx-fb fieldset .fb-l').innerText()).trim();
+    check(why === WANT[lang].why, `fb ${lang}: the reasons are still labelled optional ("${why}")`);
+    check((await page.locator('dialog.gx-fb [data-send]').innerText()).trim() === WANT[lang].send, `fb ${lang}: Send is named in this language`);
+    // pressing a disabled Send does nothing at all, and the submit path refuses an empty report even if it is reached
+    await page.evaluate(() => document.querySelector('dialog.gx-fb form.fb').requestSubmit());
+    await page.waitForTimeout(150);
+    check(posts.length === 0, `fb ${lang}: an empty report cannot be sent, even by submitting the form directly (${posts.length} posts)`);
+    check(await page.locator('dialog.gx-fb .fb-done').isHidden(), `fb ${lang}: ...and no "thank you" is shown`);
+    // the privacy sentence still says what happens to the note, in this language
+    const pv = (await page.locator('dialog.gx-fb .fb-privacy').innerText()).trim();
+    check(/Send|发送|發送|Отправить/.test(pv) && pv.length > 50, `fb ${lang}: the privacy line is present and in this language (${pv.length} chars)`);
+    // one ticked reason, and it becomes sendable
+    await page.click('dialog.gx-fb [data-r="caption"]');
+    await page.waitForFunction(() => !document.querySelector('dialog.gx-fb [data-send]').disabled);
+    check(await page.locator('dialog.gx-fb #fb-need').isHidden(), `fb ${lang}: one reason chosen BY THE READER is enough, and the line goes`);
+    await ctx.close();
+  }
+}
+
+// ── the name, on every page a reader can reach, in all four readings (owner, 2026-11-04) ──────────────────────────
+// Home is checked in the loop above; this is the rest of the surface. It is its own pass because the fault it exists
+// for was uniform — ONE string in the bar generator — and a check that only looked at the home page would have passed
+// the whole of build 3.
+for (const vp of [[375, 812], [1440, 900]]) {
+  for (const [where, url, ready] of [
+    ['scenes', '/scenes.html', '.sc-card .cap'],
+    ['picture', '/scenes.html#p=genesis-15-1', '.yr-passage .yr-v'],
+    ['bible', '/bible.html#ref=Genesis%201', '.yr-chapter .yr-v'],
+  ]) {
+    for (const lang of ['en', 'zh-Hans', 'zh-Hant', 'ru']) {
+      const { ctx, page } = await open(vp, lang);
+      await page.goto(`${base}${url}`);
+      await page.waitForSelector(ready, { timeout: 20000 });
+      await checkWordmark(`${vp[0]} ${where}`, lang, page);
+      await ctx.close();
+    }
+  }
+  // ...and it does not JUMP when the reader changes language: the bar is repainted by the language handler, with no
+  // reload, so the name must be the new language's before the next frame is done.
+  {
+    const { ctx, page } = await open(vp, 'en');
+    await page.goto(`${base}/`);
+    await page.waitForSelector('#hm-books a');
+    for (const lang of ['zh-Hans', 'zh-Hant', 'ru', 'en']) {
+      await pickLang(page, lang);
+      await page.waitForFunction((l) => document.documentElement.lang === l, lang);
+      const wm = await wordmarkOn(page);
+      check(wm.text === WORDMARK[lang] && wm.shown === 1, `${vp[0]}: the wordmark follows the language control at once ("${wm.text}" for ${lang})`);
+    }
+    await ctx.close();
+  }
+}
+
 // ── our own 404 and the privacy page (P0-4, P1-10) ────────────────────────────────────────────────────────────
 {
   const tag = 'static';
@@ -768,6 +865,16 @@ for (const vp of [[375, 812], [1440, 900]]) {
         .map((e) => [...e.classList].find((c) => ['en', 'hans', 'hant', 'ru'].includes(c))));
       check(new Set(others).size === 1, `${tag} ${path} ${lang}: only one reading is on the page (${[...new Set(others)]})`);
       check(await noOverflow(page), `${tag} ${path} ${lang}: no horizontal scroll`);
+      // the name, on a page with no bundle at all: the <title> is picked by the first-paint script, the 404's mark by CSS
+      const t404 = await page.title();
+      check(lang === 'en' || lang === 'ru' ? !CJK.test(t404) : CJK.test(t404), `${tag} ${path} ${lang}: the <title> is in this reader's script ("${t404}")`);
+      check(t404.includes(WORDMARK[lang]), `${tag} ${path} ${lang}: ...and it names the app "${WORDMARK[lang]}"`);
+      if (path === '/404.html') {
+        // innerText comes back through text-transform: uppercase (the mark is set in small caps), so the comparison is
+        // on the letters, not their case — what matters is that it is this language's name and nothing else's.
+        const mark = (await page.locator('.mark').innerText()).trim();
+        check(mark.toLowerCase() === WORDMARK[lang].toLowerCase(), `${tag} 404 ${lang}: the mark above the heading reads "${WORDMARK[lang]}" ("${mark}")`);
+      }
       check(errors.length === 0, `${tag} ${path} ${lang}: no console error`, `${tag}: ${errors}`);
       if (path === '/privacy.html') {
         const txt = await page.locator('main').innerText();

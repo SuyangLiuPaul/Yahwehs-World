@@ -1,18 +1,18 @@
 {
- "when": "2026-11-04T01:41:13.621Z",
+ "when": "2026-11-04T02:18:08.778Z",
  "chrome": "156.0.8078.80",
  "passed": 173,
  "failed": 0,
  "numbers": {
   "slow": {
    "phone": {
-    "firstTextMs": 1420,
+    "firstTextMs": 1446,
     "kbTransferred": 106,
     "skeletonBeforeText": true,
     "cls": 0
    },
    "desktop": {
-    "firstTextMs": 1427,
+    "firstTextMs": 1429,
     "kbTransferred": 106,
     "skeletonBeforeText": true,
     "cls": 0
@@ -26,9 +26,9 @@
     "over33pct": 0
    },
    "desktop": {
-    "frames": 181,
+    "frames": 182,
     "p50": 16.7,
-    "p95": 16.8,
+    "p95": 16.7,
     "over33pct": 0
    }
   },
@@ -496,9 +496,9 @@
   },
   {
    "ok": true,
-   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) phone: first verse readable in 1420 ms (budget 6000), 106 KB over the wire",
+   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) phone: first verse readable in 1446 ms (budget 6000), 106 KB over the wire",
    "data": {
-    "firstTextMs": 1420,
+    "firstTextMs": 1446,
     "kbTransferred": 106,
     "skeletonBeforeText": true,
     "cls": 0
@@ -518,9 +518,9 @@
   },
   {
    "ok": true,
-   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) desktop: first verse readable in 1427 ms (budget 6000), 106 KB over the wire",
+   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) desktop: first verse readable in 1429 ms (budget 6000), 106 KB over the wire",
    "data": {
-    "firstTextMs": 1427,
+    "firstTextMs": 1429,
     "kbTransferred": 106,
     "skeletonBeforeText": true,
     "cls": 0
@@ -616,7 +616,7 @@
    "ok": true,
    "msg": "long phone: Psalm 119 in 3 editions, 176 rows / 528 lines",
    "data": {
-    "renderMs": 3.200000047683716,
+    "renderMs": 3.3000000715255737,
     "verses": 176,
     "plates": 0,
     "uid": "yr1",
@@ -626,7 +626,7 @@
   },
   {
    "ok": true,
-   "msg": "long phone: Psalm 119 x3 renders in 3.2 ms after data (< 120)"
+   "msg": "long phone: Psalm 119 x3 renders in 3.3 ms after data (< 120)"
   },
   {
    "ok": true,
@@ -646,7 +646,7 @@
    "ok": true,
    "msg": "long desktop: Psalm 119 in 3 editions, 176 rows / 528 lines",
    "data": {
-    "renderMs": 3.100000023841858,
+    "renderMs": 3.399999976158142,
     "verses": 176,
     "plates": 0,
     "uid": "yr1",
@@ -656,15 +656,15 @@
   },
   {
    "ok": true,
-   "msg": "long desktop: Psalm 119 x3 renders in 3.1 ms after data (< 120)"
+   "msg": "long desktop: Psalm 119 x3 renders in 3.4 ms after data (< 120)"
   },
   {
    "ok": true,
-   "msg": "long desktop: scrolling Psalm 119 x3 for 3 s: median frame 16.7 ms, p95 16.8 ms, 0.0% over 33 ms",
+   "msg": "long desktop: scrolling Psalm 119 x3 for 3 s: median frame 16.7 ms, p95 16.7 ms, 0.0% over 33 ms",
    "data": {
-    "frames": 181,
+    "frames": 182,
     "p50": 16.7,
-    "p95": 16.8,
+    "p95": 16.7,
     "over33pct": 0
    }
   },
@@ -674,7 +674,7 @@
   },
   {
    "ok": true,
-   "msg": "long: Genesis 1 paragraph 1.0 ms, 1 Chronicles 1 (54 verses of names) 0.5 ms"
+   "msg": "long: Genesis 1 paragraph 0.9 ms, 1 Chronicles 1 (54 verses of names) 0.6 ms"
   },
   {
    "ok": true,
