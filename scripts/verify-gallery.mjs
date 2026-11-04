@@ -145,7 +145,11 @@ const stubBad = ids.filter((id) => {
 });
 check(!stubBad.length, `/p/<id> exists for all ${ids.length} scenes and points at the picture page`, `${stubBad.length} /p/<id> pages missing or wrong (e.g. ${stubBad[0]})`);
 const sm = readFileSync(join(DIR, 'sitemap.xml'), 'utf8');
-check((sm.match(/<loc>/g) ?? []).length === ids.length + 3, `sitemap lists the three pages and ${ids.length} pictures`, `sitemap has ${(sm.match(/<loc>/g) ?? []).length} urls`);
+// Four pages now: home, scenes, bible and the privacy page (P1-10). 404.html is deliberately NOT in the sitemap.
+const SITE_PAGES = ['/', '/scenes.html', '/bible.html', '/privacy.html'];
+check((sm.match(/<loc>/g) ?? []).length === ids.length + SITE_PAGES.length, `sitemap lists the ${SITE_PAGES.length} pages and ${ids.length} pictures`, `sitemap has ${(sm.match(/<loc>/g) ?? []).length} urls`);
+check(SITE_PAGES.every((u) => sm.includes(`<loc>https://world.yahwehword.com${u}</loc>`)), 'sitemap names each page', `missing: ${SITE_PAGES.filter((u) => !sm.includes(`<loc>https://world.yahwehword.com${u}</loc>`))}`);
+check(!sm.includes('404.html'), 'the 404 page is not in the sitemap');
 
 // ── 5 links ────────────────────────────────────────────────────────────
 const HIDE = /["'`(](?:\/(?:tabernacle|temple|ark|figures|figures-springs|plan|video|scene-assembly)\.html|\/previews\/)/;

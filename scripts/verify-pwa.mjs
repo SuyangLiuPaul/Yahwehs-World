@@ -298,13 +298,17 @@ if (want('update') || want('never')) {
   const toast = async () => (await A.locator('.gx-update .u-t').innerText()) + ' | ' + (await A.locator('.gx-update .u-go').innerText());
   const words = { en: 'A new version is ready. | Reload', 'zh-Hans': '新版本已准备好。 | 刷新', 'zh-Hant': '新版本已準備好。 | 重新整理', ru: 'Доступна новая версия. | Обновить' };
   for (const l of ['en', 'zh-Hans', 'ru', 'zh-Hant']) {
-    await A.click(`.lang-switch [data-locale="${l}"]`);
+    await A.click('.sitenav .lang-btn');
+    await A.waitForSelector(`.lang-pop:not([hidden]) [data-locale="${l}"]`);
+    await A.click(`.lang-pop [data-locale="${l}"]`);
     await sleep(700);
     const got = await toast();
     // 繁體 text comes from the conversion table: accept any Traditional rendering of the same words
     check(l === 'zh-Hant' ? /^新版本已準備好。 \| .+$/.test(got) : got === words[l], `the notice in ${l}: ${got}`);
   }
-  await A.click('.lang-switch [data-locale="en"]');
+  await A.click('.sitenav .lang-btn');
+  await A.waitForSelector('.lang-pop:not([hidden]) [data-locale="en"]');
+  await A.click('.lang-pop [data-locale="en"]');
   check(await A.evaluate(() => navigator.serviceWorker.getRegistration().then((r) => !!r.waiting && !r.installing)), 'the new worker is installed and WAITING (it did not take over a page that is still running)');
   check((await askSW(A, { type: 'get-build' }))?.build === id1, 'tab A is still under build 1');
 

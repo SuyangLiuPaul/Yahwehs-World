@@ -36,6 +36,15 @@ async function open(vp, lang, { block = [], reduced = false } = {}) {
 }
 const noOverflow = (page) => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1);
 
+/** Choose a reading. The four EN | 简 | 繁 | РУ buttons are gone: one globe button opens a menu (P1-1), so every
+ *  check that used to click `.lang-switch [data-locale=x]` goes through the control a reader actually has. */
+async function pickLang(page, l) {
+  await page.click('.sitenav .lang-btn');
+  await page.waitForSelector(`.lang-pop:not([hidden]) [data-locale="${l}"]`);
+  await page.click(`.lang-pop [data-locale="${l}"]`);
+  await page.waitForFunction(() => document.querySelector('.sitenav .lang-btn')?.getAttribute('aria-expanded') === 'false');
+}
+
 for (const vp of [[375, 812], [1440, 900]]) {
   const tag = `${vp[0]}`;
   // ── home ────────────────────────────────────────────────────────────
@@ -68,14 +77,61 @@ for (const vp of [[375, 812], [1440, 900]]) {
     await page.goto(`${base}/`);
     await page.waitForSelector('#hm-books a');
     // language switch without a reload
-    await page.click('.lang-switch [data-locale="zh-Hans"]');
+    await pickLang(page, 'zh-Hans');
     await page.waitForFunction(() => document.documentElement.lang === 'zh-Hans');
     check((await page.locator('#hm-browse-h').innerText()) === '按书卷看', `${tag}: switching to 简 changes the page without a reload`);
     check(await page.evaluate(() => localStorage.getItem('ydh.locale')) === 'zh-Hans', `${tag}: the choice is remembered`);
-    await page.click('.lang-switch [data-locale="ru"]');
+    await pickLang(page, 'ru');
     await page.waitForFunction(() => document.documentElement.lang === 'ru');
     check((await page.locator('#hm-browse-h').innerText()) === 'По книгам', `${tag}: switching to РУ`);
-    await page.click('.lang-switch [data-locale="en"]');
+    await pickLang(page, 'en');
+    // ── the globe language menu (P1-1) ──────────────────────────────────────────────────────────────────
+    {
+      const btn = page.locator('.sitenav .lang-btn');
+      const box = await btn.boundingBox();
+      check(box.width >= 44 && box.height >= 44, `${tag}: the language button is a 44 px target (${Math.round(box.width)}x${Math.round(box.height)})`);
+      check(await page.locator('.sitenav .lang-switch').count() === 0, `${tag}: the four EN | 简 | 繁 | РУ buttons are gone`);
+      check((await btn.getAttribute('aria-haspopup')) === 'menu' && (await btn.getAttribute('aria-expanded')) === 'false', `${tag}: it says it opens a menu and that the menu is shut`);
+      check(/^Language: English$/.test(await btn.getAttribute('aria-label')), `${tag}: its name is in the language being read ("${await btn.getAttribute('aria-label')}")`);
+      // Enter opens it and focus lands on the current reading
+      await btn.focus();
+      await page.keyboard.press('Enter');
+      await page.waitForSelector('.lang-pop:not([hidden])');
+      check((await btn.getAttribute('aria-expanded')) === 'true', `${tag}: Enter opens it and aria-expanded follows`);
+      const roles = await page.evaluate(() => ({
+        menu: document.querySelector('.lang-pop').getAttribute('role'),
+        items: [...document.querySelectorAll('.lang-pop [role="menuitemradio"]')].map((b) => [b.dataset.locale, b.textContent.trim(), b.getAttribute('aria-checked'), b.lang]),
+      }));
+      check(roles.menu === 'menu' && roles.items.length === 4, `${tag}: it is a menu of four readings`);
+      check(JSON.stringify(roles.items.map((i) => i[0])) === JSON.stringify(['en', 'zh-Hans', 'zh-Hant', 'ru']), `${tag}: en, zh-Hans, zh-Hant, ru`);
+      check(JSON.stringify(roles.items.map((i) => i[1])) === JSON.stringify(['English', '简体中文', '繁體中文', 'Русский']), `${tag}: each reading is named in its own language (${roles.items.map((i) => i[1]).join(' / ')})`);
+      check(roles.items.every((i) => i[3] === i[0]), `${tag}: every row carries its own lang attribute, so it is pronounced right`);
+      check(roles.items.filter((i) => i[2] === 'true').length === 1 && roles.items.find((i) => i[2] === 'true')[0] === 'en', `${tag}: exactly one row is checked, and it is the current reading`);
+      check(await page.evaluate(() => document.activeElement?.dataset?.locale === 'en'), `${tag}: focus opens on the current reading`);
+      const small = await page.evaluate(() => [...document.querySelectorAll('.lang-pop [role="menuitemradio"]')].filter((b) => b.getBoundingClientRect().height < 43.5).length);
+      check(small === 0, `${tag}: every row is at least 44 px tall`, `${tag}: ${small} short rows`);
+      // arrows move, Home/End jump, Escape closes and gives focus back
+      await page.keyboard.press('ArrowDown');
+      check(await page.evaluate(() => document.activeElement?.dataset?.locale === 'zh-Hans'), `${tag}: ArrowDown moves inside the menu`);
+      await page.keyboard.press('End');
+      check(await page.evaluate(() => document.activeElement?.dataset?.locale === 'ru'), `${tag}: End goes to the last reading`);
+      await page.keyboard.press('ArrowDown');
+      check(await page.evaluate(() => document.activeElement?.dataset?.locale === 'en'), `${tag}: the arrows wrap round`);
+      await page.keyboard.press('Escape');
+      await page.waitForFunction(() => document.querySelector('.lang-pop').hidden);
+      check(await page.evaluate(() => document.activeElement?.classList.contains('lang-btn')), `${tag}: Escape closes it and focus returns to the globe`);
+      // choosing a reading applies at once, with no reload, and the title and <html lang> follow
+      const was = await page.evaluate(() => performance.getEntriesByType('navigation').length);
+      await pickLang(page, 'zh-Hant');
+      await page.waitForFunction(() => document.documentElement.lang === 'zh-Hant');
+      await page.waitForTimeout(250);
+      check((await page.evaluate(() => performance.getEntriesByType('navigation').length)) === was, `${tag}: it applies with no reload`);
+      check(/雅偉之界/.test(await page.title()) && !/雅伟之界/.test(await page.title()), `${tag}: the document title follows ("${await page.title()}")`);
+      check(/^語言[:：] 繁體中文$/.test(await btn.getAttribute('aria-label')), `${tag}: the button's name is now in 繁體 ("${await btn.getAttribute('aria-label')}")`);
+      check(await page.evaluate(() => localStorage.getItem('ydh.locale')) === 'zh-Hant', `${tag}: the choice is remembered`);
+      await pickLang(page, 'en');
+      await page.waitForFunction(() => document.documentElement.lang === 'en');
+    }
     // edition sheet (the reader module's own): opens, is a modal, Escape closes and hands focus back
     await page.click('#hm-edition');
     await page.waitForSelector('dialog.yr-sheet[open] .yr-opt');
@@ -172,7 +228,7 @@ for (const vp of [[375, 812], [1440, 900]]) {
     await page.waitForSelector('.yr-passage .yr-v');
     await page.addStyleTag({ content: 'html:root { --safe-right: 84px !important; --safe-left: 12px !important; }' });
     await page.waitForTimeout(150);
-    const rects = await page.evaluate(() => ['#pc-back', '#pc-share', '#pc-feedback', '#pc-prev', '#pc-next', '.sitenav .lang-switch', '.sitenav .gx-search', '.sitenav .brand']
+    const rects = await page.evaluate(() => ['#pc-back', '#pc-share', '#pc-feedback', '#pc-prev', '#pc-next', '.sitenav .lang-menu', '.sitenav .gx-search', '.sitenav .brand']
       .map((sel) => { const r = document.querySelector(sel)?.getBoundingClientRect(); return r ? { sel, l: Math.round(r.left), r: Math.round(r.right), w: r.width } : { sel, missing: true }; }));
     for (const r of rects) if (r.missing || r.w === 0) continue; else check(r.r <= DUO[0] - 84 && r.l >= 12, `Duo 466: ${r.sel} lies inside the side insets (left ${r.l}, right ${r.r} of ${DUO[0]}, insets 12 / 84)`);
     check(rects.some((r) => r.sel === '#pc-feedback' && !r.missing), `Duo 466: the feedback button is measured`);
@@ -261,7 +317,7 @@ for (const vp of [[375, 812], [1440, 900]]) {
     check(head.test(hd), `${tag} ${lang}: the heading is in the edition's own language (${hd})`);
     check(!/(?<![A-Za-z])1919(?![A-Za-z])/.test(await page.locator('.yr-passage').innerText()), `${tag} ${lang}: no year 1919 on the picture page`);
     // the site's language switch changes the passage with no reload
-    await page.click('.lang-switch [data-locale="en"]');
+    await pickLang(page, 'en');
     await page.waitForFunction(() => document.querySelector('.yr-passage [data-act="copyAll"]')?.textContent === 'Copy');
     pass(`${tag} ${lang}: switching to EN re-renders the passage in English without a reload`);
     await ctx.close();
@@ -311,12 +367,20 @@ for (const vp of [[375, 812], [1440, 900]]) {
     await page.click('dialog.gx-fb [data-cancel]');
     await page.waitForFunction(() => !document.querySelector('dialog.gx-fb'));
     check(posts.length === 0, `${tag}: Cancel sends nothing, even with text typed`);
-    // an empty report is allowed
+    // an empty report is REFUSED (P1-11): Send is disabled, a line says why, and one ticked reason is enough
     await btn.click(); await page.waitForSelector('dialog.gx-fb[open]');
     check((await page.locator('dialog.gx-fb textarea').inputValue()) === '', `${tag}: the sheet opens empty again (nothing was kept)`);
+    check(await page.locator('dialog.gx-fb [data-send]').isDisabled(), `${tag}: Send is disabled on an untouched form`);
+    check(await page.locator('dialog.gx-fb #fb-need:not([hidden])').count() === 1 && (await page.locator('dialog.gx-fb [data-send]').getAttribute('aria-describedby')) === 'fb-need', `${tag}: a line says what is needed, and Send points at it`);
+    await page.fill('dialog.gx-fb textarea', ' ');
+    check(await page.locator('dialog.gx-fb [data-send]').isDisabled(), `${tag}: whitespace is not a report`);
+    await page.fill('dialog.gx-fb textarea', '');
+    await page.click('dialog.gx-fb [data-r="picture"]');
+    await page.waitForFunction(() => !document.querySelector('dialog.gx-fb [data-send]').disabled);
+    check(await page.locator('dialog.gx-fb #fb-need').isHidden(), `${tag}: one ticked reason is enough, and the line goes`);
     await page.click('dialog.gx-fb [data-send]');
     await page.waitForSelector('dialog.gx-fb .fb-done:not([hidden])');
-    check(posts.length === 1 && posts[0].pictureId === 'genesis-15-1' && posts[0].message === '' && posts[0].reasons.length === 0, `${tag}: Send with everything empty is accepted (the picture is the report)`, `${tag}: ${JSON.stringify(posts[0])}`);
+    check(posts.length === 1 && posts[0].pictureId === 'genesis-15-1' && posts[0].message === '' && JSON.stringify(posts[0].reasons) === '["picture"]', `${tag}: a reason with no words is sent`, `${tag}: ${JSON.stringify(posts[0])}`);
     const c = posts[0].context;
     check(c.lang === 'en' && c.edition === 'bsb-yhwh' && /^Genesis 15:1.21$/.test(c.ref) && /#p=genesis-15-1$/.test(c.url) && /^(auto \((dark|paper)\)|dark|light|paper)$/.test(c.theme) && c.userAgent.length > 10 && /^\d{4}-\d\d-\d\dT/.test(c.time) && /^\d+x\d+$/.test(c.viewport), `${tag}: the context carries reference, page, language, edition, theme, browser, time`, `${tag}: ${JSON.stringify(c)}`);
     check(/Thank you/.test(await page.locator('dialog.gx-fb .fb-done').innerText()), `${tag}: success says thank you`);
@@ -359,6 +423,7 @@ for (const vp of [[375, 812], [1440, 900]]) {
     for (const m of ['abort', 'rate']) {
       mode = m;
       await btn.click(); await page.waitForSelector('dialog.gx-fb[open]');
+      await page.click('dialog.gx-fb [data-r="other"]');   // Send needs a reason or words (P1-11)
       await page.click('dialog.gx-fb [data-send]');
       await page.waitForSelector('dialog.gx-fb .fb-fallback:not([hidden])');
       const msg = await page.locator('dialog.gx-fb .fb-live').innerText();
@@ -368,6 +433,7 @@ for (const vp of [[375, 812], [1440, 900]]) {
     // the honeypot: a filled hidden field is never posted by the page
     const before = posts.length;
     await btn.click(); await page.waitForSelector('dialog.gx-fb[open]');
+    await page.click('dialog.gx-fb [data-r="other"]');
     await page.evaluate(() => { document.querySelector('dialog.gx-fb input[name="website"]').value = 'x'; });
     await page.click('dialog.gx-fb [data-send]'); await page.waitForTimeout(200);
     check(posts.length === before, `${tag}: the hidden honeypot field stops a bot before any request`);
@@ -562,13 +628,159 @@ for (const vp of [[375, 812], [1440, 900]]) {
   for (const [l, want] of [['zh-Hans', '起初创造天地'], ['zh-Hant', '起初創造天地'], ['ru', 'Сотворение мира']]) {
     await page.goto(`${base}/bible.html#ref=Genesis%201`);
     await page.waitForSelector('figure.yr-plate figcaption');
-    await page.click(`.lang-switch [data-locale="${l}"]`);
+    await pickLang(page, l);
     await page.waitForFunction((x) => document.documentElement.lang === x, l);
     await page.waitForTimeout(400);
     const cap = (await page.locator('figure.yr-plate figcaption').first().innerText()).trim();
     check(cap === want, `${tag}: the caption is ${l} (${cap})`);
   }
   await ctx.close();
+}
+
+
+// ── THE READING SURFACE, on every page, in all four states, in all four languages ──────────────────────────────
+// The home footer's switch was a visible no-op: it set html[data-read] and the reader honoured it, but the page the
+// control lives on did not move (P0-6). It paints every surface now, so this is the check that it does, and that
+// nothing a reader reads drops under WCAG AA on any of them. The ratio is computed the way a browser composites:
+// the element's own colour over the first ancestor background that is not transparent.
+{
+  const tag = 'surface';
+  const PAGES = [['/', '#hm-title'], ['/scenes.html', '.sc-card .cap'], ['/scenes.html#p=genesis-15-1', '.yr-passage .yr-v'], ['/bible.html#ref=Genesis%201', '.yr-chapter .yr-v'], ['/privacy.html', 'h1'], ['/404.html', 'h1']];
+  // What `auto` must resolve to, which is what the reader module's own resolveTheme says: paper on a light system.
+  const AUTO = { dark: 'dark', light: 'paper' };
+  for (const [theme, scheme] of [['auto', 'dark'], ['auto', 'light'], ['dark', 'dark'], ['light', 'light'], ['paper', 'light']]) {
+    const want = theme === 'auto' ? AUTO[scheme] : theme;
+    for (const [path, ready] of PAGES) {
+      const ctx = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 1440, height: 900 }, colorScheme: scheme });
+      await ctx.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
+      await ctx.addInitScript((th) => { try { localStorage.setItem('ydh.locale', 'en'); localStorage.setItem('yr.prefs.v1', JSON.stringify({ theme: th })); } catch { /* */ } }, theme);
+      const page = await ctx.newPage();
+      await page.goto(`${base}${path}`);
+      if (!/404|privacy/.test(path)) await page.waitForSelector(ready, { timeout: 20000 });
+      await page.waitForTimeout(250);
+      const surf = await page.evaluate(() => document.documentElement.dataset.surf);
+      check(surf === want, `${tag} ${theme}/${scheme} ${path}: html[data-surf] is ${want} (${surf})`);
+      // the ground really changed, and the <meta name="theme-color"> with it
+      const seen = await page.evaluate(() => ({
+        bg: getComputedStyle(document.body).backgroundColor,
+        meta: document.querySelector('meta[name="theme-color"]')?.content,
+      }));
+      const light = /rgb\((2[0-9]{2}), (2[0-9]{2}), (2[0-9]{2})\)/.test(seen.bg);
+      check(want === 'dark' ? !light : light, `${tag} ${theme}/${scheme} ${path}: the page's own ground is ${want === 'dark' ? 'dark' : 'light'} (${seen.bg})`);
+      check(seen.meta === { dark: '#0e2b4b', light: '#f8f9fb', paper: '#f4efe4' }[want], `${tag} ${theme}/${scheme} ${path}: theme-color follows (${seen.meta})`);
+      // contrast of every piece of text on the page, against the ground it is actually composited over
+      const low = await page.evaluate(() => {
+        const parse = (c) => { const m = c.match(/[\d.]+/g); return m ? { r: +m[0], g: +m[1], b: +m[2], a: m[3] === undefined ? 1 : +m[3] } : null; };
+        const over = (f, b) => ({ r: f.r * f.a + b.r * (1 - f.a), g: f.g * f.a + b.g * (1 - f.a), b: f.b * f.a + b.b * (1 - f.a), a: 1 });
+        const lum = ({ r, g, b }) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
+        const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
+        /** The composited background behind an element: walk up through transparent ancestors. A gradient's stops are
+         *  averaged; the scrim over the hero PICTURE is skipped (its text is over a photograph, not over the page). */
+        const ground = (el) => {
+          let acc = null;
+          for (let n = el; n; n = n.parentElement) {
+            const st = getComputedStyle(n);
+            const img = st.backgroundImage;
+            if (img && img !== 'none') {
+              const stops = (img.match(/rgba?\([^)]*\)/g) ?? []).map(parse).filter(Boolean).filter((c) => c.a > 0.5);
+              if (stops.length) {
+                const avg = { r: 0, g: 0, b: 0, a: 1 };
+                for (const c of stops) { avg.r += c.r / stops.length; avg.g += c.g / stops.length; avg.b += c.b / stops.length; }
+                acc = acc ? over(acc, avg) : avg;
+                if (acc.a >= 0.99) return acc;
+              }
+            }
+            const c = parse(st.backgroundColor);
+            if (c && c.a > 0) { acc = acc ? over(acc, c) : c; if (acc.a >= 0.99) return acc; }
+          }
+          return acc ?? { r: 10, g: 30, b: 54, a: 1 };
+        };
+        const out = [];
+        for (const el of document.querySelectorAll('h1, h2, h3, p, a, button, li, span, td, label, legend, summary, figcaption')) {
+          if (!el.checkVisibility?.({ checkOpacity: true, checkVisibilityCSS: true })) continue;
+          const own = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim());
+          if (!own) continue;
+          const r = el.getBoundingClientRect();
+          if (r.width < 4 || r.height < 4) continue;
+          if (el.closest('.hm-copy, .gx-plate, .hm-plate')) continue;      // text over a picture: not the page's ground
+          const st = getComputedStyle(el);
+          if (st.textShadow && st.textShadow !== 'none') continue;          // the same, where the page says so in shadow
+          const fg = parse(st.color);
+          if (!fg || fg.a < 0.1) continue;
+          const px = parseFloat(st.fontSize), bold = parseInt(st.fontWeight, 10) >= 700;
+          const need = px >= 24 || (bold && px >= 18.66) ? 3 : 4.5;
+          const cr = ratio(over(fg, ground(el)), ground(el));
+          if (cr < need) out.push(`${el.tagName}.${(el.className || '').toString().split(' ')[0]} ${cr.toFixed(2)}<${need}`);
+        }
+        return [...new Set(out)];
+      });
+      check(low.length === 0, `${tag} ${theme}/${scheme} ${path}: every piece of text meets WCAG AA (${await page.locator('body').count()} body)`, `${tag} ${theme}/${scheme} ${path}: ${low.slice(0, 8).join(', ')}`);
+      await ctx.close();
+    }
+  }
+  // System follows the system LIVE: no reload, the attribute and the ground both move
+  const ctx = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 1440, height: 900 }, colorScheme: 'dark' });
+  await ctx.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
+  await ctx.addInitScript(() => { try { localStorage.setItem('ydh.locale', 'en'); localStorage.setItem('yr.prefs.v1', JSON.stringify({ theme: 'auto' })); } catch { /* */ } });
+  const page = await ctx.newPage();
+  await page.goto(`${base}/`);
+  await page.waitForSelector('#hm-books a');
+  check(await page.evaluate(() => document.documentElement.dataset.surf) === 'dark', `${tag}: System on a dark system is dark`);
+  await page.emulateMedia({ colorScheme: 'light' });
+  await page.waitForFunction(() => document.documentElement.dataset.surf === 'paper', null, { timeout: 4000 });
+  pass(`${tag}: System follows the system live, with no reload`);
+  // the footer switch is no longer a no-op on the page it lives on
+  const before = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+  await page.click('.hm-theme-pills [data-read="dark"]');
+  await page.waitForFunction(() => document.documentElement.dataset.surf === 'dark');
+  const after = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+  check(before !== after, `${tag}: pressing a surface changes the HOME page itself (${before} -> ${after})`);
+  check(await page.evaluate(() => document.querySelector('.hm-theme-pills [data-read="dark"]').getAttribute('aria-pressed')) === 'true', `${tag}: ...and the pill it pressed is the pressed one`);
+  // the four pills are one row, not three and one (P0-6)
+  const rows = await page.evaluate(() => new Set([...document.querySelectorAll('.hm-theme-pills [data-read]')].map((b) => Math.round(b.getBoundingClientRect().top))).size);
+  check(rows === 1, `${tag}: the four pills sit on one row (${rows})`);
+  await ctx.close();
+}
+
+// ── our own 404 and the privacy page (P0-4, P1-10) ────────────────────────────────────────────────────────────
+{
+  const tag = 'static';
+  for (const [path, want] of [['/404.html', { en: 'That page is not here', 'zh-Hans': '没有这一页', 'zh-Hant': '沒有這一頁', ru: 'Такой страницы нет' }],
+    ['/privacy.html', { en: 'Privacy', 'zh-Hans': '隐私', 'zh-Hant': '隱私', ru: 'Конфиденциальность' }]]) {
+    for (const lang of ['en', 'zh-Hans', 'zh-Hant', 'ru']) {
+      const { ctx, page, errors } = await open([375, 812], lang);
+      const res = await page.goto(`${base}${path}`);
+      check(res.ok(), `${tag} ${path} ${lang}: the page is served (${res.status()})`);
+      check(await page.evaluate((l) => document.documentElement.lang === l, lang), `${tag} ${path} ${lang}: it picks the reading with no bundle`);
+      const h1 = (await page.locator('h1').innerText()).trim();
+      check(h1 === want[lang], `${tag} ${path} ${lang}: the heading is "${want[lang]}" (${h1})`);
+      // exactly one language shows at a time
+      const others = await page.evaluate(() => [...document.querySelectorAll('.t')]
+        .filter((e) => getComputedStyle(e).display !== 'none')
+        .map((e) => [...e.classList].find((c) => ['en', 'hans', 'hant', 'ru'].includes(c))));
+      check(new Set(others).size === 1, `${tag} ${path} ${lang}: only one reading is on the page (${[...new Set(others)]})`);
+      check(await noOverflow(page), `${tag} ${path} ${lang}: no horizontal scroll`);
+      check(errors.length === 0, `${tag} ${path} ${lang}: no console error`, `${tag}: ${errors}`);
+      if (path === '/privacy.html') {
+        const txt = await page.locator('main').innerText();
+        check(/support@yahwehword\.com/.test(txt), `${tag} privacy ${lang}: it says where to write`);
+        check(/Netlify/.test(txt), `${tag} privacy ${lang}: it names the host`);
+      }
+      // no request leaves the page: self-contained, no font, no script bundle, no third party
+      const reqs = [];
+      page.on('request', (r) => reqs.push(r.url()));
+      await page.reload();
+      await page.waitForTimeout(300);
+      const foreign = reqs.filter((u) => !u.startsWith(base) && !u.startsWith('data:'));
+      check(foreign.length === 0, `${tag} ${path} ${lang}: no third-party request`, `${tag}: ${foreign[0]}`);
+      await ctx.close();
+    }
+  }
+  // Netlify is told to serve it with the right status for anything unknown
+  const red = readFileSync(join(DIR, '_redirects'), 'utf8');
+  check(/^\/\*\s+\/404\.html\s+404$/m.test(red), 'static: _redirects ends with /* -> /404.html 404');
+  check(/\/privacy\s+\/privacy\.html/.test(red), 'static: /privacy is a short link to the page');
+  check(readFileSync(join(DIR, 'sitemap.xml'), 'utf8').includes('/privacy.html'), 'static: the privacy page is in the sitemap');
 }
 
 await browser.close(); close();
