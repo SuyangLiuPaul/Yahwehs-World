@@ -7,7 +7,7 @@ import { BRIEFS, briefOf, choice, defaultFor } from './editions.ts';
 import { readTheme, setReadTheme, type ReadTheme } from './chrome.ts';
 
 loadingSteps(1);
-bindSwitch(document.querySelector('.lang-switch') as HTMLElement);
+bindSwitch(null); // the globe menu is wired by src/gallery/chrome.ts; this is here for <html lang>
 applyStatic();
 // The page is standing as soon as its skeleton is: the plate and the lists arrive into shapes that are already there.
 loadingStep();
