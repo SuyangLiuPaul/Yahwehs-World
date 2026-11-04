@@ -97,3 +97,9 @@ dialog.gx-fs .fs-hint { position: fixed; left: 0; right: 0; bottom: calc(var(--s
 /* The link asked for a picture this build does not have (P2-10). */
 .sc-missing { margin: 0 calc(var(--sp-4) + var(--safe-left)) var(--sp-3) calc(var(--sp-4) + var(--safe-right)); padding: var(--sp-3) var(--sp-4); border: 1px solid var(--line-gold); border-radius: var(--r-2); background: var(--gold-wash); color: var(--ink); font-size: var(--fs-300); line-height: 1.55; }
 .sc-missing[hidden] { display: none; }
+
+/* P2-9: each word next to its own arrow, the pair pushed to the two edges by the spacer between them.
+   A disabled arrow greys its label with it, so the words never promise a move that cannot happen. */
+.pc-nav-t { color: var(--ink-3); }
+.pc-arrow[aria-disabled="true"] { opacity: .35; pointer-events: none; }
+#pc-prev[aria-disabled="true"] + .pc-nav-t, .pc-nav-t:has(+ #pc-next[aria-disabled="true"]) { opacity: .35; }

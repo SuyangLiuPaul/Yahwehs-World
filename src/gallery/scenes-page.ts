@@ -159,7 +159,10 @@ function paintPicture(sc: Scene) {
   $('pc-ref').textContent = refText(sc);
   $('pc-sum').textContent = sums ? sceneSummary(sums, sc) : '';
   $('pc-credit').textContent = t("Artist's impression · drawn with AI tools, reviewed verse by verse", '画家的想象 · AI 辅助绘制，逐节审核', 'Художественный образ · создан с помощью ИИ-инструментов, проверен стих за стихом');
-  $('pc-nav-t').textContent = t('Previous · Next', '上一幕 · 下一幕', 'Назад · Вперёд');
+  // P2-9: the words sit beside the arrow they name. There used to be one "Previous · Next" label centred between
+  // them while the arrows were pinned ~250 px away at either edge, so neither word was attached to a control.
+  $('pc-prev-t').textContent = t('Previous', '上一幕', 'Назад');
+  $('pc-next-t').textContent = t('Next', '下一幕', 'Вперёд');
   const setNav = (id: string, to: Scene | null, label: string) => {
     const a = $<HTMLAnchorElement>(id);
     a.setAttribute('aria-label', label);

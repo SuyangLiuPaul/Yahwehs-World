@@ -62,7 +62,11 @@ html[lang^="zh"] .hm-footer h3 { text-transform: none; letter-spacing: var(--tr-
 .hm-theme { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin-top: var(--sp-3); }
 .hm-version { margin-top: var(--sp-2); }
 
-@media (min-width: 900px) {
+/* The wide hero starts where the SITE CHROME already changes (768 px: the phone tab bar becomes the desktop top
+   bar, src/gallery/chrome.css). It used to start at 900, so every iPad in portrait (820–834 pt) and every phone in
+   landscape fell into the phone branch: a 4:3 plate stretched to `min-height: 75vw` with the words in a scrim at
+   the bottom, which is where the audit's "700–780 px of empty navy" came from (P0-2, P1-12, P2-16). */
+@media (min-width: 768px) {
   .hm-stage { display: grid; grid-template-columns: 3fr 2fr; gap: 28px; align-items: center; padding: 28px calc(28px + var(--safe-right)) 0 calc(28px + var(--safe-left)); }
   .hm-plate .gx-plate, .hm-plate .gx-sk.plate { aspect-ratio: 3 / 2; border-radius: var(--r-2); border: 1px solid var(--line); }
   .hm-copy { position: static; padding: 0; background: none; gap: var(--sp-3); }
@@ -75,18 +79,21 @@ html[lang^="zh"] .hm-footer h3 { text-transform: none; letter-spacing: var(--tr-
   .hm-days { color: var(--ink-3); }
   .hm-days .gx-iconbtn { color: var(--ink-2); }
   .hm-body { padding: 34px calc(28px + var(--safe-right)) 48px calc(28px + var(--safe-left)); gap: 34px; }
-  .hm-books { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  /* auto-fill, not a fixed six: at 768–900 (iPad portrait, phone landscape) six columns cut the book names in half. */
+  .hm-books { display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); }
   .hm-books a { justify-content: space-between; border-radius: var(--r-1); min-height: 44px; }
   .hm-find { display: none; }
   .hm-footer { grid-template-columns: repeat(3, 1fr); gap: 28px; }
 }
-@media (max-width: 899px) {
+@media (max-width: 767px) {
   .hm-notice { margin-left: var(--sp-4); }
   /* The words sit over the plate's lower edge. When they need more than the plate's 4:3 (English wraps its two buttons onto two rows),
      the stage grows with them instead of the words climbing over the top of the picture: plate and words share one grid cell, the plate fills it. */
   .hm-stage { display: grid; }
   .hm-plate, .hm-copy { grid-area: 1 / 1; }
-  .hm-plate .gx-plate, .hm-plate .gx-sk.plate { aspect-ratio: auto; height: 100%; min-height: 75vw; }
+  /* 75vw is the right height for a phone held upright; capped against the viewport so a short window never gets a
+     plate taller than the screen with the words pushed off the bottom. */
+  .hm-plate .gx-plate, .hm-plate .gx-sk.plate { aspect-ratio: auto; height: 100%; min-height: min(75vw, 62vh); }
   .hm-copy { position: relative; align-self: end; }
 }
 /* desktop top bar has the search field; the home page's own field is for the phone */
@@ -103,6 +110,14 @@ html[lang^="zh"] .hm-footer h3 { text-transform: none; letter-spacing: var(--tr-
 #hm-version { min-height: 1.6em; }
 
 @media (pointer: coarse) { .hm-footer a, .hm-link { min-height: 44px; display: flex; align-items: center; } }
+
+/* Tablet and landscape-phone band. The 3fr/2fr split is right at 1280; at 768–1023 it leaves the words about
+   290 px and the hero's two buttons fall into a column. Even halves give each of them a line of their own. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hm-stage { grid-template-columns: 1fr 1fr; gap: 24px; padding-inline: calc(24px + var(--safe-left)) calc(24px + var(--safe-right)); }
+  .hm-body { padding-inline: calc(24px + var(--safe-left)) calc(24px + var(--safe-right)); }
+  .hm-footer { grid-template-columns: repeat(2, 1fr); }
+}
 
 /* the install entry (src/gallery/install.ts): one heading, one sentence, one button; absent once the app is installed */
 .hm-install { margin-top: var(--sp-4); }
