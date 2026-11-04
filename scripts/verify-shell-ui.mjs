@@ -65,17 +65,14 @@ try {
     check(srcs.every((s) => !s.startsWith(`${base}/pictures/full/`)), 'no full picture is requested from the bundle');
   check(fullHits.length > 0 && fullHits.every((u) => u.startsWith(`${SITE_HOST}/pictures/full/`)), `full pictures are requested from ${SITE_HOST} (${fullHits.length})`);
 
-  // the offline sheet
+  // The offline-pictures sheet was a stub and the entry has been removed until it is real (P1-5): what is checked is
+  // that it is GONE, so it cannot creep back in unreviewed, and that the pack manager behind it still works.
   await page.goto(`${base}/`, { waitUntil: 'load' });
-  await page.waitForSelector('[data-shell-packs]', { timeout: 8000 });
-  await page.click('[data-shell-packs]');
-  await page.waitForSelector('dialog.gx-sheet[open] .gx-packs-row', { timeout: 8000 });
-  const sheet = await page.evaluate(() => [...document.querySelectorAll('dialog.gx-sheet[open] .gx-packs-row')].map((r) => r.textContent));
-  check(sheet.length === 3, `the Offline pictures sheet lists three packs`);
-  for (const p of packs.packs) check(sheet.some((t) => t.includes(mib(p.bytes))), `the sheet shows ${p.id} as ${mib(p.bytes)}`);
-  await page.keyboard.press('Escape');
-  await page.waitForFunction(() => !document.querySelector('dialog.gx-sheet[open]'));
-  check(true, 'Escape closes the sheet');
+  await page.waitForSelector('.sitenav', { timeout: 8000 });
+  await page.waitForTimeout(600);
+  check(await page.locator('[data-shell-packs]').count() === 0, 'no "Offline pictures" entry in the bar (the stub sheet is out)');
+  check(await page.locator('.gx-packs-row').count() === 0, 'nothing of the stub sheet is in the page');
+  check(packs.packs.length === 3 && packs.packs.every((p) => p.bytes > 0), `the pack manifest still lists three packs with byte counts (${packs.packs.map((p) => mib(p.bytes)).join(', ')})`);
 
   const other = foreign.filter((u) => !u.startsWith(SITE_HOST) && !/^https:\/\/fonts\.(googleapis|gstatic)\.com\//.test(u));
   check(other.length === 0, `no request leaves the app except to ${SITE_HOST} and the font host (both in the CSP)${other.length ? ` (${other[0]})` : ''}`);

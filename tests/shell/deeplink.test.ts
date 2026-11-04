@@ -15,8 +15,10 @@ test('the website pages open as themselves', () => {
 
 test('the custom scheme opens a picture or the offline sheet', () => {
   assert.deepEqual(routeForDeepLink('yahwehsworld://p/psalms-23-1'), { kind: 'page', href: '/scenes.html#p=psalms-23-1' });
-  assert.deepEqual(routeForDeepLink('yahwehsworld://packs'), { kind: 'packs' });
-  assert.deepEqual(routeForDeepLink('yahwehsworld://packs/'), { kind: 'packs' });
+  // The offline-pictures sheet was a stub and is gone (src/shell/boot.ts), so its link is an unknown link now and
+  // must be IGNORED rather than navigating the window somewhere.
+  assert.equal(routeForDeepLink('yahwehsworld://packs'), null);
+  assert.equal(routeForDeepLink('yahwehsworld://packs/'), null);
 });
 
 test('anything else is ignored: other hosts, other schemes, odd ids, traversal', () => {

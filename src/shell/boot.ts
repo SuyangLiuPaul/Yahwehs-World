@@ -6,48 +6,33 @@
 //   2. switches the web-font stylesheet on (the site's inline onload handler is not allowed by the app's content-security policy)
 //   3. opens links the OS hands to the app (src/shell/deeplink.ts)
 //   4. starts the offline-pack manager, so a full picture that is stored on the device is shown from the device (media.ts localFull)
-//   5. adds the "Offline pictures" entry (a feature module: src/features/packs; STUB UI, see docs/gallery-shells.md)
-//   6. on a direct-download build only (never a store build: a store app must not offer a download elsewhere) checks for a newer release
+//   5. on a direct-download build only (never a store build: a store app must not offer a download elsewhere) checks for a newer release
 import { getPlatform } from '../platform/index.ts';
 import { createPackManager, parseManifest, type PackManager } from '../core/packs.ts';
 import { localFull } from '../gallery/media.ts';
 import { channelOf } from '../config/site.ts';
 import { routeForDeepLink } from './deeplink.ts';
 import { toast } from '../gallery/sheet.ts';
-import { onLocale, t } from '../locale.ts';
+import { t } from '../locale.ts';
 import type { Platform } from '../platform/types.ts';
 
 let manager: PackManager | null = null;
 
-async function openPacks(platform: Platform) {
-  const { packsFeature } = await import('../features/packs/index.ts');
-  const mod = await packsFeature.load();
-  mod.mount(null, { platform, locale: () => document.documentElement.lang || 'en' });
-}
-
+// THE "OFFLINE PICTURES" SHEET IS NOT HERE ANY MORE, on purpose.
+//
+// It was a button in the top bar opening an unstyled stub: label and value on separate lines at body size, the
+// "download all" line as a bare indented text run with no button, a 150 px gold close ring out of scale with every
+// other control, and "0.0 MiB / capacity unknown" where storage.estimate() had failed. No progress, no cancel, no
+// "may be cleared by the system" line (P1-5). The owner's standard for this version is that nothing ships as a stub,
+// and the feature needs a mock-up reviewed before it is built (the premium bar), so the ENTRY is gone until it is real.
+//
+// What stays is src/core/packs.ts, the pack manager, because it is not a stub: it reads the manifest, finds the
+// pictures already stored on the device and makes media.ts serve those from the device instead of the network.
 function follow(raw: string, platform: Platform) {
+  void platform;
   const target = routeForDeepLink(raw);
   if (!target) return;
-  if (target.kind === 'packs') { void openPacks(platform); return; }
   location.assign(target.href);
-}
-
-function addPacksEntry(platform: Platform) {
-  const nav = document.querySelector('.sitenav');
-  const host = nav?.querySelector('.lang-switch');
-  if (!nav || !host || nav.querySelector('[data-shell-packs]')) return;
-  const b = document.createElement('button');
-  b.type = 'button';
-  b.className = 'gx-iconbtn';
-  b.dataset.shellPacks = '';
-  b.setAttribute('aria-haspopup', 'dialog');
-  b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7.5 11 4.5 4.5 4.5-4.5"/><path d="M5 19.5h14"/></svg>';
-  const label = () => t('Offline pictures', '离线图片', 'Офлайн-картины');
-  b.setAttribute('aria-label', label());
-  b.title = label();
-  b.addEventListener('click', () => void openPacks(platform));
-  host.before(b);
-  onLocale(() => { b.setAttribute('aria-label', label()); b.title = label(); });
 }
 
 async function startPacks(platform: Platform) {
@@ -73,7 +58,6 @@ async function boot() {
   platform.deepLinks.onOpen((url) => follow(url, platform));
   void platform.deepLinks.current().then((url) => { if (url) follow(url, platform); }).catch(() => {});
 
-  addPacksEntry(platform);
   void startPacks(platform);
 
   if (platform.capabilities.updates && channelOf(import.meta.env) === 'direct') {
