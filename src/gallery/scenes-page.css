@@ -72,8 +72,12 @@ body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
 .passage .yr-selbar { inset-block-end: calc(var(--tabbar-h, 0px) + .75rem); margin-inline: 0; }
 .pc-skel { display: grid; gap: 12px; padding: var(--sp-2) 0; }
 
-@media (min-width: 900px) {
-  .pc-wrap { display: grid; grid-template-columns: minmax(0, 7fr) minmax(340px, 5fr); align-items: start; min-height: calc(100vh - 64px); }
+/* Two columns from 768, the same width the chrome and the home hero change at: on an iPad in portrait the picture
+   page ran the plate full bleed with the passage under it at the plate's own width, which is both a wasted half
+   screen and a measure far past the 60-70 the reading spec asks for. The 340 px floor on the text column keeps the
+   plate from being squeezed; below 768 the stacked layout is still the right one. */
+@media (min-width: 768px) {
+  .pc-wrap { display: grid; grid-template-columns: minmax(0, 7fr) minmax(320px, 5fr); align-items: start; min-height: calc(100vh - 64px); }
   .pc-left { padding: 24px 0 24px calc(28px + var(--safe-left)); }
   .pc-plate .gx-plate, .pc-plate .gx-sk.plate { border-radius: var(--r-2); border: 1px solid var(--line); }
   .pc-right { border-left: 1px solid var(--line); min-height: calc(100vh - 64px); position: sticky; top: 64px; max-height: calc(100vh - 64px); overflow: auto; }
