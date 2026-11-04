@@ -1,19 +1,19 @@
 {
- "when": "2026-11-03T08:55:31.009Z",
+ "when": "2026-11-04T00:26:54.307Z",
  "chrome": "156.0.8078.80",
  "passed": 169,
  "failed": 0,
  "numbers": {
   "slow": {
    "phone": {
-    "firstTextMs": 1441,
-    "kbTransferred": 103,
+    "firstTextMs": 1455,
+    "kbTransferred": 104,
     "skeletonBeforeText": true,
     "cls": 0
    },
    "desktop": {
-    "firstTextMs": 1420,
-    "kbTransferred": 103,
+    "firstTextMs": 1457,
+    "kbTransferred": 104,
     "skeletonBeforeText": true,
     "cls": 0
    }
@@ -496,10 +496,10 @@
   },
   {
    "ok": true,
-   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) phone: first verse readable in 1441 ms (budget 6000), 103 KB over the wire",
+   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) phone: first verse readable in 1455 ms (budget 6000), 104 KB over the wire",
    "data": {
-    "firstTextMs": 1441,
-    "kbTransferred": 103,
+    "firstTextMs": 1455,
+    "kbTransferred": 104,
     "skeletonBeforeText": true,
     "cls": 0
    }
@@ -514,14 +514,14 @@
   },
   {
    "ok": true,
-   "msg": "slow phone: first-view transfer 103 KB <= 125 KB budget (measured 102 KB + 20%)"
+   "msg": "slow phone: first-view transfer 104 KB <= 125 KB budget (measured 102 KB + 20%)"
   },
   {
    "ok": true,
-   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) desktop: first verse readable in 1420 ms (budget 6000), 103 KB over the wire",
+   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) desktop: first verse readable in 1457 ms (budget 6000), 104 KB over the wire",
    "data": {
-    "firstTextMs": 1420,
-    "kbTransferred": 103,
+    "firstTextMs": 1457,
+    "kbTransferred": 104,
     "skeletonBeforeText": true,
     "cls": 0
    }
@@ -536,7 +536,7 @@
   },
   {
    "ok": true,
-   "msg": "slow desktop: first-view transfer 103 KB <= 125 KB budget (measured 102 KB + 20%)"
+   "msg": "slow desktop: first-view transfer 104 KB <= 125 KB budget (measured 102 KB + 20%)"
   },
   {
    "ok": true,
@@ -616,8 +616,9 @@
    "ok": true,
    "msg": "long phone: Psalm 119 in 3 editions, 176 rows / 528 lines",
    "data": {
-    "renderMs": 3.0999999046325684,
+    "renderMs": 3.899999976158142,
     "verses": 176,
+    "plates": 0,
     "uid": "yr1",
     "nodes": 2964,
     "lines": 528
@@ -625,7 +626,7 @@
   },
   {
    "ok": true,
-   "msg": "long phone: Psalm 119 x3 renders in 3.1 ms after data (< 120)"
+   "msg": "long phone: Psalm 119 x3 renders in 3.9 ms after data (< 120)"
   },
   {
    "ok": true,
@@ -645,8 +646,9 @@
    "ok": true,
    "msg": "long desktop: Psalm 119 in 3 editions, 176 rows / 528 lines",
    "data": {
-    "renderMs": 3.100000023841858,
+    "renderMs": 3.600000023841858,
     "verses": 176,
+    "plates": 0,
     "uid": "yr1",
     "nodes": 2964,
     "lines": 528
@@ -654,7 +656,7 @@
   },
   {
    "ok": true,
-   "msg": "long desktop: Psalm 119 x3 renders in 3.1 ms after data (< 120)"
+   "msg": "long desktop: Psalm 119 x3 renders in 3.6 ms after data (< 120)"
   },
   {
    "ok": true,
@@ -672,7 +674,7 @@
   },
   {
    "ok": true,
-   "msg": "long: Genesis 1 paragraph 0.9 ms, 1 Chronicles 1 (54 verses of names) 0.5 ms"
+   "msg": "long: Genesis 1 paragraph 1.2 ms, 1 Chronicles 1 (54 verses of names) 0.7 ms"
   },
   {
    "ok": true,
