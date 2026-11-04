@@ -171,7 +171,7 @@ test('Russian: heading in Synodal names with ASCII brackets, the Russian credit,
   const lines = r.text.split('\n');
   assert.equal(lines[0], 'От Иоанна 3:16 (Синодальный перевод, издание Яхве)');
   assert.equal(lines[3], 'СП (Яхве) · Синодальный перевод (1876), общественное достояние; имя Божие восстановлено как Яхве по еврейскому тексту (Yahweh’s Words).');
-  assert.match(lines[4]!, /^— Мир Яхве · https:\/\/world\.yahwehword\.com\/bible\.html#ref=John/);
+  assert.match(lines[4]!, /^— Yahweh’s World · https:\/\/world\.yahwehword\.com\/bible\.html#ref=John/);
   const long = buildCopy({ book: 19, chapter: 119, verses: Array.from({ length: 176 }, (_v, i) => i + 1), text: textOf('rst', 19, 119), edition: ed('rst'), ui: 'ru' })!;
   assert.ok(long.text.includes('(Копирование ограничено 100 стихами; остальное не скопировано.)'));
 });

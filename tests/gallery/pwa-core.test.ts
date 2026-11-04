@@ -12,7 +12,7 @@ import {
 import type { Entry, Index, Kind, RequestInfo } from '../../src/pwa/core.ts';
 import { platformOf } from '../../src/pwa/platform.ts';
 // @ts-expect-error plain ES module without types
-import { collectPrecache, ICONS, LANGS, manifestFor, NAME_FULL } from '../../scripts/lib/pwa-build.mjs';
+import { collectPrecache, ICONS, LANGS, manifestFor } from '../../scripts/lib/pwa-build.mjs';
 // @ts-expect-error plain ES module without types
 import { headersFor, parseNetlifyHeaders } from '../../scripts/lib/dist-server.mjs';
 
@@ -257,7 +257,9 @@ for (const [name, ua, platform, touches, family, ios, inApp] of platforms) {
   });
 }
 
-const shortNames = { en: "Yahweh's World", 'zh-Hans': '雅偉之界', 'zh-Hant': '雅偉之界', ru: 'Мир Яхве' };
+// The SHORT label under the icon, per language (owner, 2026-11-04: named like Words), and the store title as `name`.
+const shortNames = { en: 'World', 'zh-Hans': '雅伟之界', 'zh-Hant': '雅偉之界', ru: 'Мир' };
+const storeNames = { en: "Yahweh's World", 'zh-Hans': '雅伟之界', 'zh-Hant': '雅偉之界', ru: "Yahweh's World" };
 test('the four manifest filenames are distinct and start with manifest', () => {
   assert.deepEqual(Object.keys(LANGS).sort(), Object.keys(shortNames).sort());
   const files = Object.values(LANGS).map((lang: { file: string }) => lang.file);
@@ -267,8 +269,7 @@ test('the four manifest filenames are distinct and start with manifest', () => {
 for (const key of Object.keys(LANGS) as (keyof typeof shortNames)[]) {
   test(`manifestFor(${key}) carries the exact identity, install settings and real icons`, () => {
     const manifest = manifestFor(key);
-    assert.equal(NAME_FULL, "雅偉之界 / Yahweh's World");
-    assert.equal(manifest.name, "雅偉之界 / Yahweh's World");
+    assert.equal(manifest.name, storeNames[key]);
     assert.equal(manifest.lang, key);
     assert.equal(manifest.short_name, shortNames[key]);
     for (const field of ['id', 'start_url', 'scope']) assert.equal(manifest[field], '/');
@@ -300,7 +301,7 @@ for (const key of Object.keys(LANGS) as (keyof typeof shortNames)[]) {
 function precacheFixture(run: (dist: string) => void) {
   const dist = mkdtempSync(join(root, '.pwa-core-test-'));
   try {
-    for (const path of ['index.html', 'scenes.html', 'bible.html', 'offline.html', 'brand-logo.webp', 'favicon.png', 'icon-sm.svg', 'apple-touch-icon.png', 'data/gallery/index.json', 'data/gallery/summaries.json']) {
+    for (const path of ['index.html', 'scenes.html', 'bible.html', 'offline.html', '404.html', 'privacy.html', 'brand-logo.webp', 'favicon.png', 'icon-sm.svg', 'apple-touch-icon.png', 'data/gallery/index.json', 'data/gallery/summaries.json']) {
       const file = join(dist, path);
       mkdirSync(dirname(file), { recursive: true });
       writeFileSync(file, path);
@@ -317,9 +318,9 @@ test('collectPrecache sorts paths, hashes bytes and includes only JS and CSS ass
     const { list, bytes } = collectPrecache(dist);
     const paths = list.map(([path]: [string, string]) => path);
     assert.deepEqual(paths, [
-      '/apple-touch-icon.png', '/assets/a.css', '/assets/z.js', '/bible.html', '/brand-logo.webp',
+      '/404.html', '/apple-touch-icon.png', '/assets/a.css', '/assets/z.js', '/bible.html', '/brand-logo.webp',
       '/data/gallery/index.json', '/data/gallery/summaries.json', '/data/reader/catalogue.json',
-      '/favicon.png', '/icon-sm.svg', '/index.html', '/offline.html', '/scenes.html',
+      '/favicon.png', '/icon-sm.svg', '/index.html', '/offline.html', '/privacy.html', '/scenes.html',
     ]);
     let expectedBytes = 0;
     for (const [path, revision] of list) {
@@ -335,7 +336,7 @@ test('collectPrecache sorts paths, hashes bytes and includes only JS and CSS ass
 });
 test('collectPrecache permits an absent optional reader catalogue', () => {
   precacheFixture((dist) => {
-    assert.equal(collectPrecache(dist).list.length, 10);
+    assert.equal(collectPrecache(dist).list.length, 12);
     assert.ok(!collectPrecache(dist).list.some(([path]: [string, string]) => path === '/data/reader/catalogue.json'));
   });
 });

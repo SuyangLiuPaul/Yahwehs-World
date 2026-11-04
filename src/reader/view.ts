@@ -263,6 +263,7 @@ export class ReaderView implements ReaderHandle {
       this.bodyEl.removeAttribute('aria-busy');
       this.renderAll();
       this.updateHistory(o.history, o.scroll);
+      this.setDocTitle();
       if (anchor) this.restoreAnchor(anchor);
       else if (this.kind === 'chapter') this.scrollToTarget(o.scroll);
       s.remember(this.ref.book, this.ref.chapter);
@@ -279,6 +280,7 @@ export class ReaderView implements ReaderHandle {
       this.footEl.innerHTML = '';
       this.renderTools();
       this.updateHistory(o.history, o.scroll);
+      this.setDocTitle();
     }
   }
 
@@ -643,6 +645,16 @@ export class ReaderView implements ReaderHandle {
       history.replaceState({ ...(history.state ?? {}), yrScroll: window.scrollY }, '', location.href);
       history.pushState({ yr: 1 }, '', h);
     } else history.replaceState({ ...(history.state ?? {}), yr: 1 }, '', h);
+  }
+
+  /** The tab's name follows the chapter on screen, whatever moved it there.
+   *
+   *  This used to live at the end of updateHistory(), which fromHash() calls with history: 'none' — so Back onto
+   *  Isaiah 40 rendered Isaiah 40 under the title "以赛亚书 41", and a pasted #ref= link on an open page rendered the
+   *  right chapter under the wrong name. History entries, bookmarks and anything that unfurls a title all read it.
+   *  It is set from the one place that knows what is actually rendered. */
+  private setDocTitle(): void {
+    if (this.kind !== 'chapter' || this.opts.route !== 'hash') return;
     const main = this.session.main();
     try { document.title = `${referenceLabel({ book: this.ref.book, chapter: this.ref.chapter }, this.session.ui, main.id)} · ${main.label}`; } catch { /* no document */ }
   }

@@ -11,6 +11,7 @@ import { existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, readdirSyn
 import { tmpdir } from 'node:os';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { PRODUCT_NAMES } from './lib/product-name.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(join(ROOT, p), 'utf8');
@@ -27,13 +28,21 @@ const rel = (p) => relative(ROOT, p);
 const site = read('src/config/site.ts');
 const SITE_HOST = /export const SITE_HOST = '([^']+)'/.exec(site)?.[1] ?? '';
 check(/^https:\/\/[a-z0-9.-]+$/.test(SITE_HOST), `SITE_HOST is one https origin (${SITE_HOST})`);
-const product = Object.fromEntries([...site.matchAll(/^\s+(en|zhHant|zhHans|ru): (["'])(.*?)\2/gm)].map((m) => [m[1], m[3]]));
-check(product.en === "Yahweh's World" && product.zhHant === '雅偉之界' && product.zhHans === '雅偉之界' && !!product.ru, 'PRODUCT names: Yahweh\'s World, 雅偉之界 (Traditional in 简 and 繁 alike), a Russian label');
+// The naming table, read the way the build reads it (scripts/lib/product-name.mjs), so this check and the
+// manifests/installers cannot disagree. Owner, 2026-11-04 (named like Words): the launcher label is SHORT and per
+// language; the store title is the full name per store locale; the Latin wordmark is never shortened. The combined
+// "雅偉之界 / Yahweh's World" must appear in nothing a reader sees.
+const product = PRODUCT_NAMES.short;
+check(product.en === 'World' && product['zh-Hans'] === '雅伟之界' && product['zh-Hant'] === '雅偉之界' && product.ru === 'Мир',
+  `icon labels: World / 雅伟之界 (简) / 雅偉之界 (繁) / Мир (${Object.values(product).join(' · ')})`);
+check(PRODUCT_NAMES.wordmark === "Yahweh's World" && PRODUCT_NAMES.store['en-US'] === "Yahweh's World" && PRODUCT_NAMES.store.ru === "Yahweh's World"
+  && PRODUCT_NAMES.store['zh-Hans'] === '雅伟之界' && PRODUCT_NAMES.store['zh-Hant'] === '雅偉之界',
+  'store titles: Yahweh\'s World (en-US and ru), 雅伟之界 (简), 雅偉之界 (繁); the wordmark is never shortened');
 
 const conf = json('src-tauri/tauri.conf.json');
 check(conf.identifier === 'com.yahwehword.world', 'Tauri identifier is com.yahwehword.world (stores, TestFlight, Play)');
 check(conf.productName === "Yahweh's World", 'Tauri productName is Yahweh\'s World');
-check(conf.app.windows[0].title === `雅偉之界 · Yahweh's World`, 'window title is 雅偉之界 · Yahweh\'s World (Traditional)');
+check(conf.app.windows[0].title === PRODUCT_NAMES.wordmark, `window title is the Latin wordmark (${conf.app.windows[0].title})`);
 check(conf.build.frontendDist === '../dist-shell' && /app:dist/.test(conf.build.beforeBuildCommand), 'frontendDist is dist-shell, built by npm run app:dist');
 check(json('package.json').version === conf.version && /^version = "([^"]+)"/m.exec(read('src-tauri/Cargo.toml'))?.[1] === conf.version, `versions agree: package.json, tauri.conf.json, Cargo.toml (${conf.version})`);
 
@@ -54,11 +63,11 @@ check(/project\.findProperty\("ywAppId"\) as String\?\) \?: "[^"]+"/.test(patch)
 check(!/storePassword\s*=\s*"|keyPassword\s*=\s*"/.test(patch), 'no password literal in the Android patch');
 
 // names under the icon: the four locale files, the Android strings, the Info.plist all agree with PRODUCT
-for (const [lproj, want] of [['en', product.en], ['zh-Hans', product.zhHans], ['zh-Hant', product.zhHant], ['ru', product.ru]]) {
+for (const [lproj, want] of Object.entries(product)) {
   const f = `src-tauri/locales/${lproj}.lproj/InfoPlist.strings`;
   check(existsSync(join(ROOT, f)) && read(f).includes(`"CFBundleDisplayName" = "${want}";`), `${f} carries ${want}`);
 }
-for (const want of [product.en, product.zhHans, product.zhHant, product.ru]) check(patch.includes(`"${want}"`) || patch.includes(want.replace("'", "\\'")), `android_patch.py names the app ${want}`);
+for (const want of Object.values(product)) check(patch.includes(`"${want}"`), `android_patch.py names the app ${want}`);
 const mac = json('src-tauri/tauri.macos.conf.json');
 check(Object.keys(mac.bundle.macOS.files).length === 4 && mac.bundle.macOS.hardenedRuntime === true && mac.bundle.targets.includes('dmg'), 'macOS: DMG, hardened runtime, four localised name files, no signing identity stored');
 check(mac.bundle.macOS.signingIdentity === null, 'macOS signing identity is null in the repository (it comes from APPLE_SIGNING_IDENTITY)');
@@ -158,15 +167,26 @@ android {
   check(first.includes('patched') && second.includes('already patched') && g1 === g2, 'the Android patch is idempotent (second run changes nothing)');
   check(g1.includes('ywAppId') && g1.includes('ywKeystorePath') && g1.includes('YW_KEYSTORE_PASSWORD') && g1.includes('* 10 + build') && g1.includes('namespace = "com.yahwehword.world"'), 'patched Gradle: id and versionCode properties, signing from a path property and an environment variable, namespace unchanged');
   const names = ['values', 'values-zh', 'values-zh-rTW', 'values-zh-rHK', 'values-b+zh+Hant', 'values-ru'].map((d) => readFileSync(join(tmp, `app/src/main/res/${d}/strings.xml`), 'utf8'));
-  check(names[0].includes("Yahweh's World") && names[1].includes('雅偉之界') && names[2].includes('雅偉之界') && names[4].includes('雅偉之界') && names[5].includes('Мир Яхве'), 'Android launcher names: en, 简, 繁 (TW, HK, script), ru');
-  check(!/雅伟之界/.test(names.join('')), 'no Simplified 雅伟之界 as a name in the Android strings');
+  check(names[0].includes(product.en) && names[1].includes(product['zh-Hans']) && names[2].includes(product['zh-Hant'])
+    && names[3].includes(product['zh-Hant']) && names[4].includes(product['zh-Hant']) && names[5].includes(product.ru),
+    `Android launcher names: ${product.en} (en), ${product['zh-Hans']} (values-zh = 简体), ${product['zh-Hant']} (TW/HK/script), ${product.ru} (ru)`);
+  // values-zh is Simplified Chinese; it gets the Simplified spelling (owner, 2026-11-04). The rule that still holds is
+  // that 简体 and 繁體 must not be mixed up, so each directory is checked against its OWN spelling above.
+  check(!/雅偉之界/.test(names[1]) && !/雅伟之界/.test(names[2] + names[3] + names[4]),
+    'no 繁體 name in values-zh and no 简体 name in the Traditional directories');
   const act = readFileSync(join(tmp, 'app/src/main/java/com/yahwehword/world/MainActivity.kt'), 'utf8');
   check(act.includes('SystemBarStyle.dark') && act.includes('isAppearanceLightStatusBars = false') && !act.includes('enableEdgeToEdge()'), 'patched MainActivity: light status-bar and navigation-bar icons whatever the phone\'s day/night mode (SystemBarStyle.dark), and the patch is idempotent');
 }
 
-// the old name: shell-owned files must not write the product name in Simplified; the website surface is reported, not failed
-const simplified = SHELL_FILES.filter((p) => /\.(json|plist|strings|xml|ya?ml|sh|py|rs|template)$/.test(p) && readFileSync(p, 'utf8').includes('雅伟之界')).map(rel);
-check(simplified.length === 0, 'no shell file writes the product name in Simplified (雅伟之界)', simplified.join(', '));
+// The combined name is what must appear nowhere a reader sees: "雅偉之界 / Yahweh's World" is 20 characters of two
+// scripts for a reader who reads one, and it is what pushed every title and installer name over its field's length
+// (owner, 2026-11-04). The Simplified spelling is now CORRECT in the 简体 launcher label and in zh-Hans listings, so
+// the old blanket ban on 雅伟之界 in shell files is gone; what is checked is that the two spellings are not mixed.
+const COMBINED = /雅偉之界\s*[/·]\s*Yahweh|Yahweh[’']s World\s*[/·]\s*雅[偉伟]之界/;
+const combined = SHELL_FILES.filter((p) => /\.(json|plist|strings|xml|ya?ml|sh|py|rs|template)$/.test(p) && COMBINED.test(readFileSync(p, 'utf8'))).map(rel);
+check(combined.length === 0, 'no shell file carries the combined "雅偉之界 / Yahweh\'s World"', combined.join(', '));
+const mixedScript = SHELL_FILES.filter((p) => /\.(strings|xml)$/.test(p) && /雅伟之界/.test(readFileSync(p, 'utf8')) && /zh-Hant|rTW|rHK/.test(p)).map(rel);
+check(mixedScript.length === 0, 'no Traditional name file carries the Simplified spelling', mixedScript.join(', '));
 // The page-name rule (owner, 2026-11-04): 雅偉之界 (Traditional) in English, Russian and 繁體 pages; 雅伟之界 only while the page language is 简体.
 // One source (NAME_ZH in src/config/site.ts); a page, script or template may carry the Simplified spelling only where it is the 简体 reading:
 // a <i class="l-hans">, a data-zh= / data-aria-zh= attribute. Everything else takes it from NAME_ZH (runtime) or scripts/lib/product-name.mjs (build).

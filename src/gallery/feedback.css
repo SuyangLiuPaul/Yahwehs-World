@@ -50,3 +50,9 @@ dialog.gx-fb[data-theme="light"] .fb-err, dialog.gx-fb[data-theme="paper"] .fb-e
 .fb-done .gx-btn { min-width: 140px; margin-top: var(--sp-2); }
 dialog.gx-fb .gx-btn.primary { color: var(--on-gold, #1a1405); }
 @media (prefers-reduced-motion: reduce) { dialog.gx-fb, dialog.gx-fb::backdrop { transition-duration: .01ms; } }
+
+/* "say something first" (P1-11): the condition on Send, written down rather than discovered by pressing. The sheet
+   carries its own theme tokens above, so this follows the reading surface with everything else in it. */
+.fb-need { margin: 0; color: var(--ink-2); font-size: var(--fs-200); line-height: 1.5; }
+.fb-need[hidden] { display: none; }
+.fb-pp { display: inline-flex; min-height: 44px; align-items: center; margin: 0; padding: 0; border: 0; border-radius: 0; background: none; color: var(--gold-bright); font: 600 var(--fs-200)/1.5 var(--ui); text-decoration: underline; }

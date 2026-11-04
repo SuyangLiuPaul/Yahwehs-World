@@ -9,18 +9,44 @@
 //               may point at the release page).
 export const SITE_HOST = 'https://world.yahwehword.com';
 
-/** The names a reader sees. The product name is Traditional wherever it is a name (store title, icon, About). */
+/** The names a reader sees.
+ *
+ *  Named like Words (owner, 2026-11-04). Three kinds of name, and they are not the same string:
+ *
+ *    wordmark   The Latin name, never shortened: "Yahweh's World". The bar's second line, running English prose.
+ *    short      The LABEL under the icon, per language. A launcher gives a label about eleven characters before it
+ *               truncates, and "Yahweh's World" came back as "Yahweh's W…" on a home screen; Words solved this years
+ *               ago by shipping a short label per language, so this does the same. Russian is 'Мир' for the same
+ *               reason. These also go in each manifest's short_name and in apple-mobile-web-app-title.
+ *    store      The TITLE in a store, per store locale. Russian keeps the Latin name, as Words's Russian listing does.
+ *
+ *  The combined "雅偉之界 / Yahweh's World" is gone from everything a reader sees. It was written for a bilingual
+ *  audience that no page actually has — every page knows its language — and at 20 characters it was the string that
+ *  pushed every title, every og:site_name and every installer name over the length its field allows.
+ *
+ *  Inside a page the Chinese spelling follows NAME_ZH below: 雅伟之界 only while the page language is 简体. The
+ *  launcher labels follow the same rule, so a phone set to 简体 gets 雅伟之界 under the icon — which is the one place
+ *  the 2026-11-03 "Traditional wherever it is a name" ruling was overridden by the 2026-11-04 naming decision. */
 export const PRODUCT = {
-  /** The official name, as a store lists it and as the About page writes it. */
-  full: "雅偉之界 / Yahweh's World",
-  /** The label under the icon, by reading language. Russian follows the site's own wording (the manifests use the same). */
-  en: "Yahweh's World",
+  /** The Latin wordmark. Never shortened, never translated. */
+  wordmark: "Yahweh's World",
+  /** The label under the icon / in a launcher, by language. */
+  en: 'World',
+  zhHans: '雅伟之界',
   zhHant: '雅偉之界',
-  /** Native labels (icon, store title, window title) have no page language, so they stay Traditional (owner, 2026-11-03).
-   *  Inside a page the rule is NAME_ZH below: Simplified only while the page language is zh-Hans. */
-  zhHans: '雅偉之界',
-  ru: 'Мир Яхве',
+  ru: 'Мир',
+  /** The title a store lists, by store locale. */
+  store: {
+    'en-US': "Yahweh's World",
+    'zh-Hans': '雅伟之界',
+    'zh-Hant': '雅偉之界',
+    ru: "Yahweh's World",
+  },
 } as const;
+
+/** The name to print inside a page of this language: the Chinese spelling for a Chinese page, the wordmark otherwise. */
+export const productName = (pageLang: string): string =>
+  (pageLang === 'zh-Hans' ? NAME_ZH.hans : pageLang === 'zh-Hant' ? NAME_ZH.hant : PRODUCT.wordmark);
 
 /** The Chinese name as a page shows it. Owner rule (2026-11-04): 雅偉之界 (Traditional) in English, Russian and 繁體 pages,
  *  雅伟之界 only while the page language is 简体 (zh-Hans). Every page, script and build template takes the two spellings from

@@ -1,3 +1,4 @@
-/* The name under the icon. Product name: 雅偉之界 / Yahweh's World (owner, 2026-11-03). */
-"CFBundleDisplayName" = "Yahweh's World";
-"CFBundleName" = "Yahweh's World";
+/* The name under the icon: the SHORT label, per language (owner, 2026-11-04: named like Words).
+   One source: PRODUCT in src/config/site.ts; npm run verify:shell fails if these disagree with it. */
+"CFBundleDisplayName" = "World";
+"CFBundleName" = "World";

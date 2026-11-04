@@ -1,7 +1,7 @@
 [package]
 name = "app"
 version = "1.0.0"
-description = "雅偉之界 / Yahweh's World: 1,443 scenes of the Bible, each opening onto its verses"
+description = "Yahweh's World: 1,443 scenes of the Bible, each opening onto its verses"
 authors = ["Yahweh's People"]
 license = ""
 repository = ""

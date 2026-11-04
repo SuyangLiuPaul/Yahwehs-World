@@ -1,4 +1,4 @@
-import { nameZh } from './config/site.ts';
+import { nameZh, productName } from './config/site.ts';
 
 // One locale for the whole site, remembered between visits.
 //
@@ -44,11 +44,38 @@ function fromSystem(): Locale {
   return 'en';
 }
 
+/** A BCP-47 tag as this site reads it. Deliberately as lenient as the reader module's own matchUiTag(): the two
+ *  used to disagree, and a link carrying `#lang=zh-TW` (or `zh_Hant`, or `ru-RU`) then switched the Bible text to
+ *  繁體 / Russian while the chrome, the title and the captions around it stayed in English (P1-3). One acceptance
+ *  rule, one answer. */
+export function localeFromTag(tag: string | null | undefined): Locale | null {
+  if (!tag) return null;
+  const parts = tag.replace(/_/g, '-').split('-');
+  const l = parts[0]!.toLowerCase();
+  if (l === 'en') return 'en';
+  if (l === 'ru') return 'ru';
+  if (l !== 'zh') return null;
+  let script: string | undefined, region: string | undefined;
+  for (const p of parts.slice(1)) {
+    if (p.length === 4) script = p.toLowerCase();
+    else if (p.length === 2 || p.length === 3) region = p.toUpperCase();
+  }
+  if (script === 'hant') return 'zh-Hant';
+  if (script === 'hans') return 'zh-Hans';
+  if (region === 'TW' || region === 'HK' || region === 'MO') return 'zh-Hant';
+  return 'zh-Hans';
+}
+
+/** The language a link carries: `#lang=` anywhere in the hash, in any spelling the reader module accepts. */
+export const langFromHash = (hash: string): Locale | null => {
+  try { return localeFromTag(new URLSearchParams(hash.replace(/^#/, '')).get('lang')); } catch { return null; }
+};
+
 function initial(): Locale {
   // A shared link can carry its language (#lang=ru): it wins for this visit and is not saved.
   try {
-    const m = /(?:^|[#&])lang=(en|zh-Hans|zh-Hant|ru)(?:&|$)/.exec(location.hash);
-    if (m) return m[1] as Locale;
+    const l = langFromHash(location.hash);
+    if (l) return l;
   } catch { /* no location (never in a browser) */ }
   try {
     const saved = localStorage.getItem(KEY);
@@ -132,6 +159,12 @@ export function hant(s: string): string {
  *  (owner rule, 2026-11-04; the two spellings live in config/site.ts). */
 export const brandZh = (): string => nameZh(htmlLang(current));
 
+/** The product name to PRINT in this reader's language: the Chinese spelling on a Chinese page, the Latin wordmark on
+ *  an English or Russian one. One function, so a page's <title> and its header can no longer disagree (P1-2) — the
+ *  Russian title said "Мир Яхве" while the bar above it read 雅偉之界, and three files each wrote their own
+ *  t("Yahweh's World", NAME_ZH.hans, 'Мир Яхве'). */
+export const brand = (): string => productName(htmlLang(current));
+
 /** Puts the product name inside a string into this reader's spelling (a bilingual <title> is authored once). */
 const withBrand = (s: string): string => s.replace(/雅[伟偉]之界/g, brandZh());
 
@@ -142,10 +175,12 @@ export const t = <T>(en: T, zh: T, ru?: T): T => {
   return (typeof zh === 'string' ? hant(zh) as unknown as T : zh);
 };
 
-export async function setLocale(l: Locale) {
+/** `save` false for a language that came from a link rather than from the reader pressing something: it holds for
+ *  this visit and does not overwrite what they chose last time. */
+export async function setLocale(l: Locale, save = true) {
   if (l === current) return;
   current = l;
-  try { localStorage.setItem(KEY, l); } catch { /* nothing to do */ }
+  if (save) { try { localStorage.setItem(KEY, l); } catch { /* nothing to do */ } }
   document.documentElement.lang = htmlLang(l);
   // The table has to be in hand before anything re-renders, or the first
   // paint after the switch is the wrong script.
@@ -160,8 +195,10 @@ export const onLocale = (fn: (l: Lang) => void) => { listeners.add(fn); };
  *  readings it hides two of them behind a state the reader has to discover
  *  by pressing — and 繁體 is exactly the one a 简体 reader would never think
  *  to look for. */
-export function bindSwitch(root: HTMLElement) {
+export function bindSwitch(root: HTMLElement | null) {
   document.documentElement.lang = htmlLang(current);
+  // The gallery surface has a globe menu instead (src/gallery/lang.ts); its pages still call this for the <html lang>.
+  if (!root) return;
   const mark = () => {
     root.querySelectorAll<HTMLButtonElement>('[data-locale]').forEach((btn) => {
       btn.setAttribute('aria-pressed', String(btn.dataset.locale === current));
@@ -216,7 +253,11 @@ const narrow = typeof matchMedia === 'function'
 
 /** Applies [data-en]/[data-zh] pairs anywhere in the document. */
 export function applyStatic(root: ParentNode = document) {
-  if (root === document && authoredTitle) document.title = withBrand(hant(authoredTitle));
+  // A page may write its <title> four ways, like any other string: <title data-en data-zh data-ru>. The generic
+  // [data-en] pass below then sets it, so the tab, history and anything that unfurls the title all carry ONE
+  // language instead of the bilingual "Bible · Yahweh's World | 圣经 · 雅偉之界" — which also put 圣经 (简体) next
+  // to 雅偉之界 (繁體) in one string (P1-2). A page with a plain <title> keeps the old behaviour.
+  if (root === document && authoredTitle && !document.querySelector('title[data-en]')) document.title = withBrand(hant(authoredTitle));
   const small = narrow?.matches ?? false;
   root.querySelectorAll<HTMLElement>('[data-en]').forEach((el) => {
     const en = (small && el.dataset.enNarrow) || el.dataset.en || '';
@@ -236,6 +277,19 @@ export function applyStatic(root: ParentNode = document) {
   root.querySelectorAll<HTMLElement>('[data-zh-text]').forEach((el) => {
     el.textContent = withBrand(hant(el.dataset.zhText ?? ''));
   });
+}
+
+// A `#lang=` that arrives AFTER the page is up — a shared link pasted into the address bar of an open tab, a
+// reader link from another page, Back onto an entry whose hash carried one — used to reach only whatever module
+// parsed the hash for itself. On the Bible page that was the reader: the verses changed language and the bar, the
+// title, the captions and the footer did not. The language of a page is one thing, so it is read in one place.
+if (typeof window !== 'undefined') {
+  const follow = () => {
+    const l = langFromHash(location.hash);
+    if (l && l !== current) void setLocale(l, false);
+  };
+  window.addEventListener('hashchange', follow);
+  window.addEventListener('popstate', follow);
 }
 
 // Crossing the threshold — rotating a tablet does it — has to re-render, or

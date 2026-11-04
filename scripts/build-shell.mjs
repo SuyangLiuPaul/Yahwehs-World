@@ -111,6 +111,17 @@ export const CRITICAL = [
   '#loading-retry{font:inherit;min-height:44px;padding:10px 28px;border:0;border-radius:999px;background:#f8d66d;color:#0a1e36;cursor:pointer}',
   '#loading-retry:focus-visible{outline:2px solid #fff;outline-offset:3px}',
   '@media(prefers-reduced-motion:reduce){.ld-sk::after{animation:none}#loading,#loading-bar,.ld-sphere,#loading-globe{transition-duration:.01s}}',
+  // The opening screen follows the reader's chosen surface too. Without this a reader in Light or Paper got a
+  // full-screen flash of navy on every navigation — a door of the wrong colour onto a page of the right one.
+  // html[data-surf] is written by the first-paint script of the gallery surface; the full surface never sets it.
+  'html[data-surf="light"] #loading{background:radial-gradient(circle at 50% 42%,#ffffff 0,#f8f9fb 72%)}',
+  'html[data-surf="paper"] #loading{background:radial-gradient(circle at 50% 42%,#fbf8f1 0,#f4efe4 72%)}',
+  'html[data-surf="light"] #loading-title,html[data-surf="paper"] #loading-title{color:#7c5409}',
+  'html[data-surf="light"] #loading-text,html[data-surf="light"] #loading-error{color:#34455a}',
+  'html[data-surf="paper"] #loading-text,html[data-surf="paper"] #loading-error{color:#3a4a5e}',
+  'html[data-surf="light"] .ld-sk,html[data-surf="paper"] .ld-sk{background:rgba(21,33,47,.07)}',
+  'html[data-surf="light"] .ld-sk::after,html[data-surf="paper"] .ld-sk::after{background:linear-gradient(105deg,transparent 30%,rgba(21,33,47,.08) 50%,transparent 70%)}',
+  'html[data-surf="light"] #loading-retry,html[data-surf="paper"] #loading-retry{background:#8a5d0c;color:#fffaf0}',
 ].join('');
 
 export const HEAD = `  <!-- shell:head --><meta name="theme-color" content="#0e2b4b"><link rel="icon" type="image/png" href="/favicon.png"><style>:root{color-scheme:dark}html,body{background:#0a1e36;margin:0}${CRITICAL}</style>` +

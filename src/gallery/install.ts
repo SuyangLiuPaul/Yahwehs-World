@@ -5,8 +5,7 @@
 //   already installed (display-mode: standalone, or navigator.standalone on iOS): nothing at all
 //   anything else (Firefox on a computer, an old browser): nothing; there is no way to install from there
 // Loaded by home.ts after the page is up. docs/gallery-pwa.md.
-import { applyStatic, onLocale, t } from '../locale.ts';
-import { NAME_ZH } from '../config/site.ts';
+import { applyStatic, brand, onLocale, t } from '../locale.ts';
 import { platformOf } from '../pwa/platform.ts';
 import { install } from './chrome.ts';
 import { ask, type Report } from './pwa-bridge.ts';
@@ -15,7 +14,6 @@ import { openSheet } from './sheet.ts';
 type Mode = 'none' | 'prompt' | 'ios' | 'mac-safari';
 
 const standalone = () => matchMedia('(display-mode: standalone)').matches || (navigator as unknown as { standalone?: boolean }).standalone === true;
-const name = () => t("Yahweh's World", NAME_ZH.hans, 'Мир Яхве');
 
 export function installMode(): Mode {
   if (import.meta.env.VITE_TARGET === 'shell' || standalone()) return 'none';
@@ -43,9 +41,9 @@ function openHowTo(mode: 'ios' | 'mac-safari', from: HTMLElement) {
           t('Click Add.', '点按“添加”。', 'Нажмите «Добавить».'),
         ];
       const after = t(
-        `${name()} then opens full screen like an app, and the scenes and chapters you have opened stay available without a network.`,
-        `${name()}会像应用一样全屏打开，看过的画卷和章节在没有网络时也能打开。`,
-        `${name()} откроется на весь экран, как приложение, а открытые вами сцены и главы останутся доступны без сети.`,
+        `${brand()} then opens full screen like an app, and the scenes and chapters you have opened stay available without a network.`,
+        `${brand()}会像应用一样全屏打开，看过的画卷和章节在没有网络时也能打开。`,
+        `${brand()} откроется на весь экран, как приложение, а открытые вами сцены и главы останутся доступны без сети.`,
       );
       const warn = inApp ? `<p class="in-warn">${t('This browser inside another app cannot add it. Open this page in Safari first.', '另一个应用里的内置浏览器无法添加。请先在 Safari 里打开这个页面。', 'Встроенный браузер другого приложения не умеет это делать. Сначала откройте страницу в Safari.')}</p>` : '';
       body.innerHTML = `${warn}<ol class="in-steps">${steps.map((s) => `<li>${s}</li>`).join('')}</ol><p class="in-after">${after}</p>`;
@@ -58,7 +56,7 @@ function words(host: HTMLElement, mode: Mode) {
   if (mode === 'none') { host.replaceChildren(); return; }
   host.innerHTML = '<h3></h3><p class="hm-install-note"></p><button type="button" class="gx-pill gold" id="hm-install-btn"></button>';
   host.querySelector('h3')!.textContent = t('Install the app', '安装为应用', 'Установить приложение');
-  host.querySelector('.hm-install-note')!.textContent = t(`${name()} opens full screen, and what you have already opened works without a network.`, `${name()}全屏打开；已经看过的内容没有网络也能用。`, `${name()} открывается на весь экран; то, что вы уже открывали, работает без сети.`);
+  host.querySelector('.hm-install-note')!.textContent = t(`${brand()} opens full screen, and what you have already opened works without a network.`, `${brand()}全屏打开；已经看过的内容没有网络也能用。`, `${brand()} открывается на весь экран; то, что вы уже открывали, работает без сети.`);
   host.querySelector('#hm-install-btn')!.textContent = mode === 'prompt' ? t('Install', '安装', 'Установить') : t('How to add it', '怎么添加', 'Как добавить');
 }
 

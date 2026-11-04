@@ -86,13 +86,15 @@ else:
 res = root / "app/src/main/res"
 # A string resource carries a literal apostrophe inside double quotes (&apos; is valid XML and AAPT still refuses it).
 NAMES = [
-    ("values", '"Yahweh\'s World"'),
-    ("values-zh", '"雅偉之界"'),
+    # The SHORT label per language (owner, 2026-11-04: named like Words). A launcher truncates at about eleven
+    # characters and "Yahweh's World" came back as "Yahweh's W…"; values-zh is 简体 and gets the 简体 spelling.
+    ("values", '"World"'),
+    ("values-zh", '"雅伟之界"'),
     ("values-zh-rTW", '"雅偉之界"'),
     ("values-zh-rHK", '"雅偉之界"'),
     ("values-zh-rMO", '"雅偉之界"'),
     ("values-b+zh+Hant", '"雅偉之界"'),
-    ("values-ru", '"Мир Яхве"'),
+    ("values-ru", '"Мир"'),
 ]
 for values, label in NAMES:
     d = res / values

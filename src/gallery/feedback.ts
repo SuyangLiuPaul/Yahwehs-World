@@ -4,7 +4,11 @@
 //
 // Rules this file keeps (owner, 2026-11-03):
 //   - nothing is sent until Send is pressed, and nothing is stored here: no cookies, no localStorage, no tracker, no third-party script;
-//   - an empty report is allowed (the picture and the reasons are the report);
+//   - a report must say SOMETHING: Send stays disabled until a reason is ticked or a word is written, and a line under
+//     the form says so. This reverses "an empty report is allowed" (owner, 2026-11-03): with Send live on an untouched
+//     form, one accidental tap filed a report that named only the page it was sent from, which is junk in the admin
+//     portal and no help to the person reporting (P1-11). A ticked reason alone is still enough.
+//   - the sheet also opens from the home footer with no picture at all, for feedback about the site itself;
 //   - when the function is not set up, or the network fails, the sheet says so plainly and offers a prefilled mailto: link to
 //     support@yahwehword.com carrying the same context. Feedback is never silently lost.
 // Loaded on demand (the first tap), with its own stylesheet.
@@ -21,6 +25,8 @@ export const SUPPORT = 'support@yahwehword.com';
 // (its origin is on the function's allow-list: netlify/functions/feedback.mjs).
 export const ENDPOINT = `${apiBase(import.meta.env)}/api/feedback`;
 const EMAIL = /^[^\s@<>]+@[^\s@<>]+\.[a-zA-Z]{2,}$/;
+// The shell's pages are tauri://localhost and have no /privacy.html of their own: the site's copy is the one page.
+export const PRIVACY_URL = targetOf(import.meta.env) === 'shell' ? `${apiBase(import.meta.env)}/privacy.html` : '/privacy.html';
 
 type Reason = 'picture' | 'caption' | 'bible' | 'other';
 const REASONS: { key: Reason; label: () => string }[] = [
@@ -39,12 +45,12 @@ function themeNow(): string {
   return `auto (${dark ? 'dark' : 'paper'})`;
 }
 /** What the mail carries besides the reader's words. Built when Send is pressed, never earlier. */
-export function contextOf(sc: Scene) {
+export function contextOf(sc: Scene | null) {
   const d = new Date();
   const off = -d.getTimezoneOffset();
   const z = (n: number) => String(Math.floor(Math.abs(n))).padStart(2, '0');
   return {
-    ref: refText(sc, 'en'),
+    ref: sc ? refText(sc, 'en') : '',
     url: targetOf(import.meta.env) === 'shell' ? publicUrl(location.pathname, location.hash) : location.href,
     lang: fullLocale(),
     edition: choice().id,
@@ -56,16 +62,17 @@ export function contextOf(sc: Scene) {
 }
 
 /** The prefilled mail the sheet falls back to. Kept short enough for every mail client's link limit. */
-export function mailtoFor(sc: Scene, message: string, reasons: Reason[], email: string): string {
+export function mailtoFor(sc: Scene | null, message: string, reasons: Reason[], email: string): string {
   const c = contextOf(sc);
   const why = REASONS.filter((r) => reasons.includes(r.key)).map((r) => r.label()).join('; ');
   const lines: (string | null)[] = [
     message.slice(0, 1400), '', '---',
-    `Picture: ${sc.id}`, `Reference: ${c.ref}`, `Page: ${c.url}`, why ? `Reasons: ${why}` : null, email ? `Reply to: ${email}` : null,
+    sc ? `Picture: ${sc.id}` : 'Picture: (none: feedback about the site)', c.ref ? `Reference: ${c.ref}` : null,
+    `Page: ${c.url}`, why ? `Reasons: ${why}` : null, email ? `Reply to: ${email}` : null,
     `Language: ${c.lang}`, `Edition: ${c.edition}`, `Theme: ${c.theme}`, `Time: ${c.time}`, `Browser: ${c.userAgent.slice(0, 200)}`,
   ];
   const body = lines.filter((l): l is string => l !== null).join('\n');
-  return `mailto:${SUPPORT}?subject=${encodeURIComponent(`Yahweh's World feedback [${sc.id}]`)}&body=${encodeURIComponent(body)}`;
+  return `mailto:${SUPPORT}?subject=${encodeURIComponent(`Yahweh's World feedback [${sc ? sc.id : 'site'}]`)}&body=${encodeURIComponent(body)}`;
 }
 
 type Outcome = { kind: 'ok' } | { kind: 'rate' } | { kind: 'down' };
@@ -77,10 +84,12 @@ async function post(payload: unknown, fetcher: typeof fetch = fetch): Promise<Ou
   } catch { return { kind: 'down' }; }
 }
 
-export function openFeedback(sc: Scene, returnFocus?: HTMLElement | null): HTMLDialogElement {
+export function openFeedback(sc: Scene | null, returnFocus?: HTMLElement | null): HTMLDialogElement {
   const reasons = new Set<Reason>();
   const dlg = openSheet({
-    title: t('Tell us about this picture', '告诉我们这幅画的问题', 'Сообщить об этой картине'),
+    title: sc
+      ? t('Tell us about this picture', '告诉我们这幅画的问题', 'Сообщить об этой картине')
+      : t('Tell us about this site', '告诉我们这个网站的问题', 'Сообщить о сайте'),
     returnFocus,
     className: 'gx-fb',
     render(body, close) {
@@ -92,6 +101,7 @@ export function openFeedback(sc: Scene, returnFocus?: HTMLElement | null): HTMLD
           <div class="fb-f"><label class="fb-l" for="fb-mail"></label><input id="fb-mail" name="email" type="email" inputmode="email" autocomplete="email" maxlength="320" aria-describedby="fb-mail-err">
             <p class="fb-err" id="fb-mail-err" hidden></p></div>
           <div class="fb-hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+          <p class="fb-need" id="fb-need"></p>
           <p class="fb-privacy"></p>
           <div class="fb-live" role="status" aria-live="polite"></div>
           <div class="fb-fallback" hidden><a class="gx-btn quiet" id="fb-mailto"></a></div>
@@ -101,7 +111,7 @@ export function openFeedback(sc: Scene, returnFocus?: HTMLElement | null): HTMLD
           <h3 class="fb-thanks"></h3><p class="fb-sub"></p><button type="button" class="gx-btn primary" data-done></button></div>`;
       const $ = <T extends HTMLElement>(s: string) => body.querySelector<T>(s)!;
       const form = $<HTMLFormElement>('form');
-      $('.fb-ctx').textContent = `${sceneTitle(sc)} · ${refText(sc)}`;
+      $('.fb-ctx').textContent = sc ? `${sceneTitle(sc)} · ${refText(sc)}` : t('About the site as a whole', '关于整个网站', 'О сайте в целом');
       form.querySelector('fieldset .fb-l')!.textContent = t('What is wrong? (optional)', '哪里不对？（可不选）', 'Что не так? (необязательно)');
       const chips = $('.fb-chips');
       chips.setAttribute('aria-label', t('Reasons', '原因', 'Причины'));
@@ -125,6 +135,14 @@ export function openFeedback(sc: Scene, returnFocus?: HTMLElement | null): HTMLD
         'Nothing is sent until you press Send. Your note goes by e-mail to the team with the picture, your language, edition and browser type. The note is kept only in that e-mail; this site sets no cookies and does not track you.',
         '点“发送”之前不会发出任何内容。你的留言连同这幅画、语言、译本和浏览器类型，会以电子邮件发给团队。留言只保存在那封邮件里；本站不设 cookie，也不追踪你。',
         'Ничего не отправляется, пока вы не нажмёте «Отправить». Сообщение уходит команде по e-mail вместе с картиной, языком, изданием и типом браузера. Сообщение хранится только в этом письме; сайт не использует cookie и не отслеживает вас.');
+      // ...and the whole of it, in four languages, on one page (P1-10)
+      const pp = document.createElement('a');
+      pp.className = 'fb-pp';
+      pp.href = PRIVACY_URL;
+      pp.target = '_blank';
+      pp.rel = 'noopener';
+      pp.textContent = t('Read the privacy page', '查看隐私说明', 'Страница о конфиденциальности');
+      $('.fb-privacy').after(pp);
       const live = $('.fb-live');
       const send = $<HTMLButtonElement>('[data-send]');
       const cancel = $<HTMLButtonElement>('[data-cancel]');
@@ -141,6 +159,20 @@ export function openFeedback(sc: Scene, returnFocus?: HTMLElement | null): HTMLD
       $('#fb-mailto').addEventListener('pointerdown', refreshMailto);
       mail.addEventListener('input', () => { mail.removeAttribute('aria-invalid'); mailErr.hidden = true; });
 
+      // A report has to say something (P1-11). Send is disabled, says why it is disabled through aria-describedby,
+      // and the line under the form is written once rather than appearing only after a failed press.
+      const need = $('#fb-need');
+      need.textContent = t('Tick a reason or write a few words, then Send.', '请先勾一个原因或写几个字，再发送。', 'Отметьте причину или напишите пару слов, затем отправьте.');
+      send.setAttribute('aria-describedby', 'fb-need');
+      const gate = () => {
+        const empty = reasons.size === 0 && text.value.trim() === '';
+        send.disabled = empty;
+        need.hidden = !empty;
+      };
+      chips.addEventListener('click', gate);
+      text.addEventListener('input', gate);
+      gate();
+
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         if ((form.elements.namedItem('website') as HTMLInputElement).value) return; // a bot: nothing to say to it
@@ -152,12 +184,13 @@ export function openFeedback(sc: Scene, returnFocus?: HTMLElement | null): HTMLD
           mail.focus();
           return;
         }
+        if (reasons.size === 0 && text.value.trim() === '') { need.hidden = false; text.focus(); return; }
         send.disabled = true; cancel.disabled = true;
         send.textContent = t('Sending…', '发送中…', 'Отправляем…');
         live.textContent = '';
         fb.hidden = true;
         const out = await post({
-          pictureId: sc.id, reasons: [...reasons], message: text.value.trim(), email: address, context: contextOf(sc),
+          pictureId: sc ? sc.id : '', reasons: [...reasons], message: text.value.trim(), email: address, context: contextOf(sc),
           website: (form.elements.namedItem('website') as HTMLInputElement).value,
         });
         if (out.kind === 'ok') {

@@ -14,7 +14,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "雅偉之界 · Yahweh's World",
+        "title": "Yahweh's World",
         "width": 1280,
         "height": 800,
         "minWidth": 480,
@@ -73,7 +73,7 @@
     "copyright": "Yahweh's People",
     "category": "Education",
     "shortDescription": "1,443 scenes of the Bible, each opening onto its verses",
-    "longDescription": "雅偉之界 / Yahweh's World: 1,443 drawn scenes of the Bible, each one opening onto the verses it comes from, with a Bible reader that works offline.",
+    "longDescription": "Yahweh's World: 1,443 drawn scenes of the Bible, each one opening onto the verses it comes from, with a Bible reader that works offline.",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

@@ -11,14 +11,73 @@ html[data-surface="gallery"] {
   --r-1: 4px;
   --r-2: 10px;
   --r-3: 18px;
+  /* The band the phone hero's words sit in. It stays dark in every surface: those words are over a PICTURE, and the
+     picture does not change colour because the page did. */
   --hero-scrim: linear-gradient(180deg, transparent 0%, #0a1e36b3 34%, #0a1e36e6 100%);
   --tabbar-h: calc(49px + var(--safe-bottom));
   scroll-padding-top: 72px;
+  /* what used to be written as literals in the rules below, so a surface can move them */
+  --on-gold: #1a1405;        /* text on a gold fill */
+  --plate-mat: #0e2b4b;      /* the matte a picture sits on before and behind it */
+  --plate-mat-hi: #26435f;   /* the centre of the "nothing here yet" plate */
+  --sk-wash: #c6d8ec17;      /* skeleton fill */
+  --sk-shine: #f8d66d29;     /* the pass of light over a skeleton */
+  --field: #0000001a;        /* the search field's inset */
 }
 
-/* ── paper: the reader module paints the reading surfaces itself (data-theme on its root: dark, light, paper, or the
-   system's); html[data-read] only mirrors the choice for the pages' own chrome. The home page and the gallery stay dark
-   because the plates were drawn to sit on dark. */
+/* ── THE READING SURFACE, on every page ──────────────────────────────────
+   html[data-surf] is the RESOLVED surface (src/gallery/chrome.ts writes it, and the first-paint script in
+   scripts/lib/vite-gallery-surface.mjs writes it before anything is drawn, so a reader in Paper never sees a frame of
+   navy). The reader module paints its own column from .yr[data-theme]; these are the same two palettes, so the page
+   and the chapter inside it are one surface and not a light frame around a dark hole.
+
+   A picture is never recoloured. On the light grounds the plate's matte becomes a neutral tint of the ground and its
+   hairline comes up a step, which is what a print frame does: it separates the picture from the paper. */
+html[data-surface="gallery"][data-surf="light"] {
+  --sea: #e4e9f0; --navy: #eceff4; --ground: #f8f9fb; --surface: #ffffff; --surface-hi: #eceff4;
+  --ink: #15212f; --ink-2: #34455a; --ink-3: #55657a; --ink-4: #8795a6;
+  --gold: #8a5d0c; --gold-bright: #6f4a07; --gold-dim: #7c5409;
+  --line: #d3d9e2; --line-gold: #8a5d0c59;
+  --panel: linear-gradient(180deg, #ffffff, #f6f8fb);
+  --gold-wash: #8a5d0c14; --tab-hover: #eaeff5;
+  --shadow: 0 12px 40px #1a2a4024;
+  --scrim: linear-gradient(180deg, #f8f9fbf2 0%, #f8f9fbb8 62%, transparent 100%);
+  --scrim-bottom: linear-gradient(180deg, transparent, #f8f9fbed 34%);
+  --on-gold: #fffaf0;
+  --plate-mat: #e7ebf1; --plate-mat-hi: #d7dde6;
+  --sk-wash: #15212f12; --sk-shine: #15212f14;
+  --field: #15212f0a;
+  color-scheme: light;
+}
+html[data-surface="gallery"][data-surf="paper"] {
+  --sea: #ece4d2; --navy: #ece4d2; --ground: #f4efe4; --surface: #fbf8f1; --surface-hi: #ece4d2;
+  --ink: #1e2a3a; --ink-2: #3a4a5e; --ink-3: #55657a; --ink-4: #8a7f68;
+  --gold: #86590a; --gold-bright: #6b4607; --gold-dim: #7a5209;
+  --line: #d8cfba; --line-gold: #86590a59;
+  --panel: linear-gradient(180deg, #fbf8f1, #f4efe4);
+  --gold-wash: #86590a14; --tab-hover: #ebe3d2;
+  --shadow: 0 12px 40px #3a2e1a2a;
+  --scrim: linear-gradient(180deg, #f4efe4f2 0%, #f4efe4b8 62%, transparent 100%);
+  --scrim-bottom: linear-gradient(180deg, transparent, #f4efe4ed 34%);
+  --on-gold: #fffaf0;
+  --plate-mat: #e8e0d0; --plate-mat-hi: #dcd2bd;
+  --sk-wash: #1e2a3a12; --sk-shine: #1e2a3a14;
+  --field: #1e2a3a0a;
+  color-scheme: light;
+}
+/* Increased contrast on the light grounds: the same step up the dark ground already gets (tokens.css). */
+@media (prefers-contrast: more) {
+  html[data-surface="gallery"][data-surf="light"], html[data-surface="gallery"][data-surf="paper"] {
+    --ink-3: #3c4c60; --ink-4: #55657a; --line: #93a0b0;
+  }
+}
+/* A page of this surface, whatever the page's own stylesheet wrote for the dark one. */
+html[data-surface="gallery"][data-surf="light"] body,
+html[data-surface="gallery"][data-surf="paper"] body { background: var(--ground); color: var(--ink); }
+/* The one place a gold fill carries text: it needs ink that works on both golds. */
+html[data-surface="gallery"] .gx-btn.primary { color: var(--on-gold); }
+/* The reading column's own root keeps the reader module's palette; it must not inherit the page's. */
+html[data-surface="gallery"] .yr { background: var(--yr-ground); }
 
 /* ── the bar ─────────────────────────────────────────────────────────── */
 html[data-surface="gallery"] .sitenav {
@@ -48,7 +107,7 @@ html[data-surface="gallery"] .sitenav a.tab[aria-current="page"]::after {
 .gx-search {
   pointer-events: auto; flex: none; display: inline-flex; align-items: center; gap: var(--sp-2);
   width: clamp(220px, 24vw, 300px); min-height: 38px; padding: 0 var(--sp-3);
-  border: 1px solid var(--line); border-radius: var(--r-2); background: #0000001a;
+  border: 1px solid var(--line); border-radius: var(--r-2); background: var(--field);
   color: var(--ink-3); font: var(--fs-300)/1 var(--ui); text-align: left; cursor: pointer;
   transition: border-color .16s, color .16s;
 }
@@ -79,6 +138,44 @@ html[data-surface="gallery"] .sitenav a.tab[aria-current="page"]::after {
   .gx-search .gx-i { width: 22px; height: 22px; }
   html[data-surface="gallery"] .sitenav .brand .en { display: none; }
   html[data-surface="gallery"] .sitenav ol { overflow: visible; }
+}
+
+/* ── the language control: one globe, four readings ──────────────────────
+   Four 24x26 px buttons (EN | 简 | 繁 | РУ) used to live here: the smallest targets on a four-language site, with no
+   spacing between them (P1-1). One 44 px button and a menu whose rows name each reading in its own language. */
+.lang-menu { position: relative; flex: none; pointer-events: auto; }
+.lang-btn { color: var(--ink-2); }
+.lang-btn[aria-expanded="true"] { color: var(--gold-bright); background: var(--gold-wash); }
+.lang-pop {
+  position: absolute; top: calc(100% + 6px); right: 0; z-index: 42;
+  min-width: 190px; display: grid; gap: 2px; padding: 6px;
+  background: var(--panel), var(--ground); border: 1px solid var(--line-gold);
+  border-radius: var(--r-2); box-shadow: var(--shadow);
+  transform-origin: top right;
+  opacity: 1; scale: 1;
+  transition: opacity .16s ease-out, scale .16s ease-out, display .16s allow-discrete;
+}
+.lang-pop[hidden] {
+  display: grid; opacity: 0; scale: .96; pointer-events: none;
+  transition: opacity .16s ease-in, scale .16s ease-in, display .16s allow-discrete;
+}
+@starting-style { .lang-pop:not([hidden]) { opacity: 0; scale: .96; } }
+.lang-pop [role="menuitemradio"] {
+  display: flex; align-items: center; gap: var(--sp-3); min-height: 44px; width: 100%; padding: 0 10px;
+  background: none; border: 0; border-radius: var(--r-1); color: var(--ink-2);
+  font: var(--fs-400)/1.2 var(--ui); text-align: left; cursor: pointer;
+}
+.lang-pop .lp-n { flex: 1; min-width: 0; }
+.lang-pop .lp-c { flex: none; opacity: 0; color: var(--gold-bright); }
+.lang-pop [aria-checked="true"] { color: var(--ink); font-weight: 600; background: var(--gold-wash); }
+.lang-pop [aria-checked="true"] .lp-c { opacity: 1; }
+@media (hover: hover) { .lang-pop [role="menuitemradio"]:hover { background: var(--tab-hover); color: var(--ink); } }
+/* On a phone the bar is narrow and the menu is the width of the screen's gutter, anchored to the same corner. */
+@media (max-width: 480px) {
+  .lang-pop { position: fixed; top: calc(44px + var(--safe-top)); right: calc(var(--sp-2) + var(--safe-right)); left: auto; min-width: 200px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lang-pop, .lang-pop[hidden] { scale: none !important; transition-property: opacity, display !important; transition-duration: .12s !important; }
 }
 
 /* the reader keeps its own plates; its globe chip points at a page this release does not have */
@@ -130,25 +227,25 @@ html[lang^="zh"] .gx-kicker { text-transform: none; letter-spacing: var(--tr-cjk
 .gx-plate {
   position: relative; display: block; width: 100%; padding: 0; margin: 0; overflow: hidden;
   border: 1px solid var(--line); border-radius: var(--r-2); aspect-ratio: 16 / 9;
-  background: #0e2b4b; color: inherit; font: inherit; text-align: left;
+  background: var(--plate-mat); color: inherit; font: inherit; text-align: left;
 }
 .gx-plate img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .22s ease-out; }
 .gx-plate.is-loaded img { opacity: 1; }
 /* a picture that is not served (held by the gate, or excluded): the plain plate and a line of words as HTML */
-.gx-plate.is-pending { background: radial-gradient(ellipse at 50% 42%, #26435f, #0e2b4b 70%); }
+.gx-plate.is-pending { background: radial-gradient(ellipse at 50% 42%, var(--plate-mat-hi), var(--plate-mat) 70%); }
 .gx-plate .gx-pending {
   position: absolute; inset: 0; display: grid; place-content: center; padding: var(--sp-3); text-align: center;
   color: var(--ink-2); font: var(--fs-200)/1.4 var(--ui); letter-spacing: var(--tr-cjk);
 }
 .gx-plate.is-failed::after {
-  content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 42%, #26435f, #0e2b4b 70%);
+  content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 42%, var(--plate-mat-hi), var(--plate-mat) 70%);
 }
 
 /* ── skeletons: the shape of what is coming, never a spinner ───────── */
-.gx-sk { display: block; position: relative; overflow: hidden; background: #c6d8ec17; border-radius: var(--r-1); }
+.gx-sk { display: block; position: relative; overflow: hidden; background: var(--sk-wash); border-radius: var(--r-1); }
 .gx-sk::after {
   content: ""; position: absolute; inset: 0; transform: translateX(-100%);
-  background: linear-gradient(105deg, transparent 30%, #f8d66d29 50%, transparent 70%);
+  background: linear-gradient(105deg, transparent 30%, var(--sk-shine) 50%, transparent 70%);
   animation: gx-shimmer 2.2s ease-in-out infinite;
 }
 @keyframes gx-shimmer { to { transform: translateX(100%); } }
@@ -211,7 +308,7 @@ html[lang^="zh"] .gx-group { text-transform: none; letter-spacing: var(--tr-cjk)
 
 /* ── the search palette ──────────────────────────────────────────────── */
 dialog.gx-sheet.gx-pal { padding-top: 12px; }
-.gx-pal-field { display: flex; align-items: center; gap: var(--sp-2); min-height: 48px; padding: 0 var(--sp-3); border: 1px solid var(--line-gold); border-radius: var(--r-2); background: #0000001f; }
+.gx-pal-field { display: flex; align-items: center; gap: var(--sp-2); min-height: 48px; padding: 0 var(--sp-3); border: 1px solid var(--line-gold); border-radius: var(--r-2); background: var(--field); }
 .gx-pal-field svg { width: 18px; height: 18px; flex: none; color: var(--ink-3); }
 .gx-pal-field input { flex: 1; min-width: 0; height: 46px; border: 0; outline: 0; background: none; color: var(--ink); font: var(--fs-500)/1 var(--ui); }
 .gx-pal-field input::placeholder { color: var(--ink-4); }

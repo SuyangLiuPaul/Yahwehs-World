@@ -113,3 +113,20 @@ html[lang^="zh"] .hm-footer h3 { text-transform: none; letter-spacing: var(--tr-
 .hm-offline { font-size: var(--fs-200); color: var(--ink-3); }
 .hm-offline .hm-link { display: inline; min-height: 0; padding: 0 0 0 6px; }
 @media (pointer: coarse) { .hm-offline .hm-link { display: inline-flex; } }
+
+/* The reading-surface switch: label above, the four pills in one row that does not break. At 1440 the four used to
+   wrap with "Paper" alone on a second line under "System" (P0-6), which read as a layout accident rather than a set
+   of four. On a narrow phone the row scrolls rather than wrapping, for the same reason the tab strip does. */
+.hm-theme { display: grid; gap: var(--sp-2); justify-items: start; }
+.hm-theme-l { display: block; }
+.hm-theme-pills { display: flex; gap: var(--sp-2); flex-wrap: nowrap; max-width: 100%; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.hm-theme-pills::-webkit-scrollbar { display: none; }
+.hm-theme-pills .gx-pill { flex: none; }
+
+/* P1-15: at phone width every .gx-search collapsed to a bare 44 px magnifier — including the home page's own
+   "Find a scene" field, which is full width and then held nothing but a centred glyph. It looked like a text input
+   that had lost its placeholder. The bar's field still collapses; this one keeps its words. */
+@media (max-width: 767px) {
+  .gx-search.hm-find-field { width: 100%; height: auto; min-height: 48px; padding: 10px var(--sp-3); justify-content: flex-start; border-radius: var(--r-2); border-color: var(--line); background: var(--field); }
+  .gx-search.hm-find-field .gx-search-t { display: block; }
+}

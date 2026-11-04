@@ -20,7 +20,9 @@ import { sanitizeForCopy } from './text.ts';
 
 export const COPY_VERSE_CAP = 100;
 
-const SITE: Record<UiLang, string> = { en: 'Yahweh’s World', 'zh-Hans': NAME_ZH.hans, 'zh-Hant': NAME_ZH.hant, ru: 'Мир Яхве' };
+// The source line of a copied passage. Russian takes the Latin wordmark, as the store listing and the Russian pages
+// do (owner, 2026-11-04: Words keeps the Latin name in ru). The curly apostrophe is deliberate: this is prose.
+const SITE: Record<UiLang, string> = { en: 'Yahweh’s World', 'zh-Hans': NAME_ZH.hans, 'zh-Hant': NAME_ZH.hant, ru: 'Yahweh’s World' };
 export const DEFAULT_ORIGIN = 'https://world.yahwehword.com';
 
 /** The notice appended when a copy was cut; in the language of the page the reader is on. */

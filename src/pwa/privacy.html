@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e2b4b">
+<title>Privacy · Yahweh's World</title>
+<meta name="description" content="What this site does and does not collect: no cookies, no analytics, no third-party requests. Feedback goes by e-mail; reading preferences and cached pictures stay on your device.">
+<link rel="canonical" href="https://world.yahwehword.com/privacy.html">
+<!-- The site operates a feedback endpoint that takes free text, an optional e-mail address and (per the sheet's own
+     notice) counts requests against the IP address. A page saying so is both a store-submission prerequisite and the
+     honest minimum (P1-10). Linked from the home footer and from the feedback sheet.
+     Every sentence here is checkable against netlify/functions/feedback.mjs, src/pwa/sw.ts and src/reader/prefs.ts.
+     Self-contained, like offline.html and 404.html: it must read when the bundle does not. -->
+<style>/* static-page.css */</style>
+<script>/* first-paint: language and reading surface */</script>
+</head>
+<body>
+<main>
+  <h1><span class="t en">Privacy</span><span class="t hans">隐私</span><span class="t hant">隱私</span><span class="t ru">Конфиденциальность</span></h1>
+
+  <section class="t en">
+    <p class="lede">This site sets no cookies, runs no analytics, and makes no request to any third party. The fonts are served from this site.</p>
+    <h2>When you send feedback</h2>
+    <p>Nothing is sent until you press Send. Your note then goes by e-mail to <a href="mailto:support@yahwehword.com">support@yahwehword.com</a> through Resend, the mail service the church's apps use. The mail carries what you wrote, the reasons you ticked, the e-mail address you chose to give (if any), the picture and its reference, the page address, your reading language and edition, your reading surface, your browser's user-agent string, the time and the window size. It is kept in that mailbox and nowhere else.</p>
+    <p>To stop one connection filing thousands of notes, the function counts requests for the current day against a salted SHA-256 hash of your IP address, stored in Netlify Blobs. The address itself is not stored, and the counter holds no other information. The counters are per day.</p>
+    <h2>Hosting</h2>
+    <p>Netlify hosts this site and keeps its own server logs, as any web host does. We do not add anything to them and do not read them for any purpose but keeping the site up.</p>
+    <h2>On your device</h2>
+    <p>The app keeps your reading preferences — language, edition, layout, text size and reading surface — and the pictures and chapters you have opened, on your device only. None of it reaches us. You can empty the saved pictures and pages with the <strong>Clear</strong> link in the home footer, or by clearing this site's data in your browser; clearing site data also forgets the preferences.</p>
+    <h2>Children</h2>
+    <p>The site asks for nothing and is safe to read at any age. Please do not write your name or address in a feedback note.</p>
+    <h2>Deletion, and questions</h2>
+    <p>Write to <a href="mailto:support@yahwehword.com">support@yahwehword.com</a> and we will delete the mail your note arrived in. Because nothing else is stored, there is nothing else to delete.</p>
+    <p class="meta">Yahweh De Hua Ministry · last changed 2026-11-04</p>
+  </section>
+
+  <section class="t hans">
+    <p class="lede">本站不设 cookie，不做统计分析，也不向任何第三方发出请求。字体由本站自己提供。</p>
+    <h2>当你发送反馈时</h2>
+    <p>点“发送”之前不会发出任何内容。发送后，你的留言会经 Resend（教会各应用所用的邮件服务）以电子邮件发到 <a href="mailto:support@yahwehword.com">support@yahwehword.com</a>。邮件内容包括：你写的文字、你勾选的原因、你自愿填写的邮箱（如有）、这幅画及其出处、页面地址、你的阅读语言与译本、阅读面、浏览器的 user-agent 字符串、时间和窗口尺寸。这些只保存在那个邮箱里，别处没有。</p>
+    <p>为了防止同一个连接发出成千上万条留言，函数会按当天统计请求次数，计数所用的键是你的 IP 地址加盐后的 SHA-256 哈希值，存放在 Netlify Blobs。IP 地址本身不保存，计数里也没有其他信息。计数按天清零。</p>
+    <h2>托管</h2>
+    <p>本站托管在 Netlify，它像任何网站主机一样保存自己的服务器日志。我们不往里添加任何东西，也只在维持网站运行时才查看。</p>
+    <h2>保存在你的设备上</h2>
+    <p>应用会把你的阅读偏好（语言、译本、排版、字号、阅读面）以及你打开过的画卷和章节，只保存在你的设备上。这些都不会传给我们。你可以用首页页脚的<strong>清除</strong>链接清空已保存的画卷和页面，也可以在浏览器里清除本站数据；清除本站数据会同时忘记偏好设置。</p>
+    <h2>儿童</h2>
+    <p>本站不索取任何信息，任何年龄都可以阅读。请不要在反馈留言里写上自己的姓名或住址。</p>
+    <h2>删除与咨询</h2>
+    <p>写信到 <a href="mailto:support@yahwehword.com">support@yahwehword.com</a>，我们会删除你留言所在的那封邮件。由于别处没有保存，也就没有别的东西需要删除。</p>
+    <p class="meta">雅伟的话事工 · 最后修改 2026-11-04</p>
+  </section>
+
+  <section class="t hant">
+    <p class="lede">本站不設 cookie，不做統計分析，也不向任何第三方發出請求。字型由本站自己提供。</p>
+    <h2>當你發送意見時</h2>
+    <p>按「發送」之前不會發出任何內容。發送後，你的留言會經 Resend（教會各應用所用的郵件服務）以電子郵件寄到 <a href="mailto:support@yahwehword.com">support@yahwehword.com</a>。郵件內容包括：你寫的文字、你勾選的原因、你自願填寫的郵箱（如有）、這幅畫及其出處、頁面網址、你的閱讀語言與譯本、閱讀面、瀏覽器的 user-agent 字串、時間和視窗尺寸。這些只保存在那個郵箱裡，別處沒有。</p>
+    <p>為了防止同一個連線發出成千上萬條留言，函式會按當天統計請求次數，計數所用的鍵是你的 IP 位址加鹽後的 SHA-256 雜湊值，存放在 Netlify Blobs。IP 位址本身不保存，計數裡也沒有其他資訊。計數按天歸零。</p>
+    <h2>主機</h2>
+    <p>本站由 Netlify 代管，它像任何網站主機一樣保存自己的伺服器日誌。我們不往裡添加任何東西，也只在維持網站運行時才查看。</p>
+    <h2>保存在你的裝置上</h2>
+    <p>應用會把你的閱讀偏好（語言、譯本、排版、字號、閱讀面）以及你打開過的畫卷和章節，只保存在你的裝置上。這些都不會傳給我們。你可以用首頁頁腳的<strong>清除</strong>連結清空已保存的畫卷和頁面，也可以在瀏覽器裡清除本站資料；清除本站資料會同時忘記偏好設定。</p>
+    <h2>兒童</h2>
+    <p>本站不索取任何資訊，任何年齡都可以閱讀。請不要在意見留言裡寫上自己的姓名或住址。</p>
+    <h2>刪除與詢問</h2>
+    <p>寫信到 <a href="mailto:support@yahwehword.com">support@yahwehword.com</a>，我們會刪除你留言所在的那封郵件。由於別處沒有保存，也就沒有別的東西需要刪除。</p>
+    <p class="meta">雅偉的話事工 · 最後修改 2026-11-04</p>
+  </section>
+
+  <section class="t ru">
+    <p class="lede">Этот сайт не использует cookie, не ведёт аналитику и не обращается к сторонним сервисам. Шрифты отдаёт сам сайт.</p>
+    <h2>Когда вы отправляете отзыв</h2>
+    <p>Ничего не отправляется, пока вы не нажмёте «Отправить». После этого ваше сообщение уходит по e-mail на <a href="mailto:support@yahwehword.com">support@yahwehword.com</a> через Resend — почтовый сервис, которым пользуются приложения церкви. В письме: ваш текст, отмеченные причины, указанный вами адрес e-mail (если вы его дали), картина и её ссылка, адрес страницы, язык и издание чтения, тема оформления, строка user-agent вашего браузера, время и размер окна. Оно хранится только в этом почтовом ящике.</p>
+    <p>Чтобы одно подключение не отправило тысячи сообщений, функция считает запросы за текущий день по солёному SHA-256-хешу вашего IP-адреса; счётчики лежат в Netlify Blobs. Сам адрес не сохраняется, и в счётчике нет никаких других данных. Счётчики — суточные.</p>
+    <h2>Хостинг</h2>
+    <p>Сайт размещён на Netlify, который ведёт собственные журналы сервера, как любой веб-хостинг. Мы ничего в них не добавляем и смотрим их только для того, чтобы сайт работал.</p>
+    <h2>На вашем устройстве</h2>
+    <p>Приложение хранит ваши настройки чтения — язык, издание, вид, размер текста и тему — и открытые вами картины и главы только на вашем устройстве. К нам они не попадают. Сохранённые картины и страницы можно удалить ссылкой <strong>Очистить</strong> в нижней части главной страницы или очистив данные сайта в браузере; очистка данных сайта также забывает настройки.</p>
+    <h2>Дети</h2>
+    <p>Сайт ничего не спрашивает, и его можно читать в любом возрасте. Пожалуйста, не указывайте в отзыве своё имя или адрес.</p>
+    <h2>Удаление и вопросы</h2>
+    <p>Напишите на <a href="mailto:support@yahwehword.com">support@yahwehword.com</a>, и мы удалим письмо, в котором пришёл ваш отзыв. Так как больше ничего не хранится, удалять больше нечего.</p>
+    <p class="meta">Yahweh De Hua Ministry · последнее изменение 2026-11-04</p>
+  </section>
+
+  <nav>
+    <a href="/"><span class="t en">Home</span><span class="t hans">首页</span><span class="t hant">首頁</span><span class="t ru">Главная</span></a>
+    <a href="/scenes.html"><span class="t en">Scenes</span><span class="t hans">画卷</span><span class="t hant">畫卷</span><span class="t ru">Сцены</span></a>
+    <a href="/bible.html"><span class="t en">Bible</span><span class="t hans">圣经</span><span class="t hant">聖經</span><span class="t ru">Библия</span></a>
+  </nav>
+</main>
+</body>
+</html>

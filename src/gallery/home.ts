@@ -1,6 +1,5 @@
 import './home.css';
-import { applyStatic, bindSwitch, fullLocale, onLocale, t } from '../locale.ts';
-import { NAME_ZH } from '../config/site.ts';
+import { applyStatic, brand, bindSwitch, onLocale, t } from '../locale.ts';
 import { loadingStep, loadingSteps, pageReady } from '../site-shell.ts';
 import { bookTitle, isOldTestament, loadIndex, refText, sceneTitle, type GalleryIndex, type Scene } from './data.ts';
 import { plate } from './media.ts';
@@ -65,9 +64,12 @@ async function paintHero() {
     ? `${t("Today's scene", '今日一幕', 'Сцена дня')} · ${dateOf(0)}`
     : `${t('An earlier scene', '往日一幕', 'Сцена прошлых дней')} · ${dateOf(back)}`;
   $('hm-title').textContent = sceneTitle(sc);
-  $('hm-ref').textContent = fullLocale() === 'zh-Hans' || fullLocale() === 'zh-Hant' ? `${refText(sc)} · ${refText(sc, 'en')}` : refText(sc);
+  // One reference, in the reader's language (P1-8). The English one used to be printed beside it on every
+  // non-English page — twice per picture page — including for a Russian reader reading a Russian edition.
+  $('hm-ref').textContent = refText(sc);
   const link = $<HTMLAnchorElement>('hm-plate');
   link.href = `/scenes.html#p=${sc.id}`;
+  link.setAttribute('aria-label', `${sceneTitle(sc)} · ${refText(sc)}`);
   link.replaceChildren(plate(sc, { kind: 'full', eager: true }));
   $<HTMLAnchorElement>('hm-read').href = `/scenes.html#p=${sc.id}`;
   paintEdition();
@@ -76,7 +78,7 @@ async function paintHero() {
   $('hm-next').setAttribute('aria-label', t('The day after', '后一天', 'Следующий день'));
   $<HTMLButtonElement>('hm-next').disabled = back === 0;
   $<HTMLButtonElement>('hm-prev').disabled = back >= passed.length - 1;
-  document.title = `${t("Yahweh's World", NAME_ZH.hans, 'Мир Яхве')} · ${sceneTitle(sc)}`;
+  document.title = `${brand()} · ${sceneTitle(sc)}`;
 }
 
 // ── browse by book ──────────────────────────────────────────────────────
@@ -111,7 +113,7 @@ function paintLicences() {
 
 function paintTheme() {
   const cur = readTheme();
-  document.querySelectorAll<HTMLButtonElement>('[data-read]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.read === cur)));
+  document.querySelectorAll<HTMLButtonElement>('.hm-theme-pills [data-read]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.read === cur)));
 }
 
 function paintNotice() {
@@ -138,7 +140,13 @@ $('hm-edition').addEventListener('click', (e) => {
 $('hm-all-licences').addEventListener('click', (e) => openLic(e.currentTarget as HTMLElement));
 $('hm-licences').addEventListener('click', (e) => { const a = (e.target as HTMLElement).closest('[data-lic]'); if (a) { e.preventDefault(); openLic(a as HTMLElement); } });
 document.querySelectorAll<HTMLButtonElement>('.hm-seg button').forEach((b) => b.addEventListener('click', () => { testament = b.dataset.t as 'ot' | 'nt'; paintBrowse(); }));
-document.querySelectorAll<HTMLButtonElement>('[data-read]').forEach((b) => b.addEventListener('click', () => { setReadTheme(b.dataset.read as ReadTheme); paintTheme(); }));
+document.querySelectorAll<HTMLButtonElement>('.hm-theme-pills [data-read]').forEach((b) => b.addEventListener('click', () => { setReadTheme(b.dataset.read as ReadTheme); paintTheme(); }));
+document.addEventListener('gx:read', paintTheme);
+// feedback about the site itself (P1-10): the same sheet the picture page opens, with no picture
+$('hm-feedback').addEventListener('click', (e) => {
+  const from = e.currentTarget as HTMLElement;
+  void import('./feedback.ts').then((m) => m.openFeedback(null, from));
+});
 document.addEventListener('gx:edition', paintEdition);
 onLocale(() => { applyStatic(); paintAll(); });
 window.addEventListener('hashchange', () => location.reload());
@@ -150,7 +158,7 @@ function failed() {
   const btn = books.querySelector('button')!;
   btn.textContent = t('Try again', '重试', 'Повторить');
   btn.addEventListener('click', () => { books.replaceChildren(); void start(); });
-  $('hm-title').textContent = t("Yahweh's World", NAME_ZH.hans, 'Мир Яхве');
+  $('hm-title').textContent = brand();
   $('hm-kicker').textContent = '';
 }
 

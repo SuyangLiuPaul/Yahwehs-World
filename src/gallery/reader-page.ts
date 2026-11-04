@@ -10,7 +10,7 @@ import { readerSession } from './reader-bridge.ts';
 import { platesFor, readyPlates } from './plates.ts';
 
 loadingSteps(1);
-bindSwitch(document.querySelector('.lang-switch') as HTMLElement);
+bindSwitch(null); // the globe menu is wired by src/gallery/chrome.ts; this is here for <html lang>
 applyStatic();
 
 // An address from before the reader module: ?book=<1..66>&ch=<n> becomes #ref=
@@ -35,6 +35,12 @@ if (nav && 'ResizeObserver' in window) new ResizeObserver(stick).observe(nav);
 // screen; the gallery index is fetched alongside and the plates appear in place when it lands (refresh keeps the
 // reader's scroll anchor, so the words the reader is looking at do not move).
 const plates = readyPlates(); // starts now, in parallel with the chapter's own text
-void mountReader(host, { session: readerSession(), route: 'hash', platesFor })
-  .finally(() => { loadingStep(); pageReady(); })
+// The opening screen lifts on the FIRST PAINT of the chapter (onNavigate fires inside the reader's show(), straight
+// after it has written the verses), not when mountReader's promise settles. The scrim was still fully opaque over a
+// completely rendered, legible chapter four seconds in (P1-4): it made the fastest page on the site feel like the
+// slowest and dimmed text the reader could already read. .finally() stays, because a chapter that FAILS to load
+// never reaches onNavigate and its error state must not sit behind the scrim either. pageReady() is idempotent.
+const standing = () => { loadingStep(); pageReady(); };
+void mountReader(host, { session: readerSession(), route: 'hash', platesFor, onNavigate: standing })
+  .finally(standing)
   .then(async (r) => { if (await plates) await r.refresh(); });

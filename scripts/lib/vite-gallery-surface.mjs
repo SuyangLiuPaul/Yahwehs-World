@@ -27,6 +27,10 @@ import { basename, join } from 'node:path';
 import { START, END, HEAD, HEAD_END, GUARD, FONTS } from '../build-shell.mjs';
 import { buildPwa } from './pwa-build.mjs';
 import { NAME_HANS, NAME_HANT } from './product-name.mjs';
+import { LANGS } from './languages.mjs';
+import { PRODUCT_NAMES } from './product-name.mjs';
+
+const WORDMARK = PRODUCT_NAMES.wordmark;
 
 export const SURFACE = process.env.VITE_SURFACE === 'gallery' ? 'gallery' : 'full';
 export const ORIGIN = 'https://world.yahwehword.com';
@@ -65,6 +69,7 @@ const ICON = {
   scenes: '<rect x="3.5" y="5" width="17" height="14" rx="1.5"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17l5-4.5 3.5 3 3-2.5 4.5 4"/>',
   bible: '<path d="M4 5.5c2.7-1.2 5.3-1.2 8 .5 2.7-1.7 5.3-1.7 8-.5V19c-2.7-1.2-5.3-1.2-8 .5-2.7-1.7-5.3-1.7-8-.5z"/><path d="M12 6v13.5"/>',
   search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  globe: '<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.6 2.6 2.6 14 0 17M12 3.5c-2.6 2.6-2.6 14 0 17"/>',
 };
 const svg = (name, cls = 'tb-i', size = 24) =>
   `<svg class="${cls}" viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[name]}</svg>`;
@@ -92,7 +97,7 @@ export function galleryShell(file) {
   <div id="loading" role="status" aria-live="polite" aria-busy="true">
     <i id="loading-bar" aria-hidden="true"></i>
     <div class="ld-cards" aria-hidden="true">${'<i class="ld-sk ld-card"></i>'.repeat(3)}</div>
-    <p id="loading-title" class="tri" aria-hidden="true"><i class="l-en">Yahweh's World</i><i class="l-hans">${NAME_HANS}</i><i class="l-hant">${NAME_HANT}</i></p>
+    <p id="loading-title" class="tri" aria-hidden="true"><i class="l-en">${WORDMARK}</i><i class="l-hans">${NAME_HANS}</i><i class="l-hant">${NAME_HANT}</i><i class="l-ru">${WORDMARK}</i></p>
     <p id="loading-text" class="tri"><i class="l-en">${page.load[0]}</i><i class="l-hans">${page.load[1]}</i><i class="l-hant">${page.load[2]}</i><i class="l-ru">${page.load[3]}</i></p>
     <div id="loading-error" role="alert">
       <p class="tri" style="margin:0"><i class="l-en">Loading did not finish. Check your connection and try again.</i><i class="l-hans">加载没有完成。请检查网络后重试。</i><i class="l-hant">載入沒有完成。請檢查網路後重試。</i><i class="l-ru">Загрузка не завершилась. Проверьте соединение и попробуйте снова.</i></p>
@@ -102,7 +107,7 @@ export function galleryShell(file) {
   <script>${GUARD}</script>
   <noscript><style>#loading{display:none}</style></noscript>
 
-  <nav class="sitenav" aria-label="Yahweh's World" data-aria-en="Yahweh's World" data-aria-zh="${NAME_HANS}" data-aria-ru="Мир Яхве">
+  <nav class="sitenav" aria-label="${WORDMARK}" data-aria-en="${WORDMARK}" data-aria-zh="${NAME_HANS}" data-aria-ru="${WORDMARK}">
     <a class="brand" href="/">
       <img class="brand-logo" src="/brand-logo.webp" alt="" width="34" height="34">
       <span class="brand-words">
@@ -116,11 +121,11 @@ ${TABS.map(tab).join('\n')}
     </ol>
     <span class="spacer"></span>
     <button type="button" class="gx-search" data-gx-search aria-haspopup="dialog">${svg('search', 'gx-i', 18)}<span class="gx-search-t" data-en="Book, reference, caption" data-zh="搜书卷、出处、画名" data-ru="Книга, место, название">Book, reference, caption</span><kbd aria-hidden="true">⌘K</kbd></button>
-    <div class="lang-switch" role="group" aria-label="Language / 语言" data-aria-en="Language" data-aria-zh="语言" data-aria-ru="Язык">
-      <button type="button" data-locale="en" lang="en">EN</button>
-      <button type="button" data-locale="zh-Hans" lang="zh-Hans">简</button>
-      <button type="button" data-locale="zh-Hant" lang="zh-Hant">繁</button>
-      <button type="button" data-locale="ru" lang="ru">РУ</button>
+    <div class="lang-menu">
+      <button type="button" class="gx-iconbtn lang-btn" aria-haspopup="menu" aria-expanded="false" aria-label="Language">${svg('globe', 'gx-i', 22)}</button>
+      <div class="lang-pop" role="menu" aria-label="Language" data-aria-en="Language" data-aria-zh="语言" data-aria-ru="Язык" hidden>
+${LANGS.map((l) => `        <button type="button" role="menuitemradio" aria-checked="false" data-locale="${l.id}" lang="${l.tag}"><span class="lp-n">${l.name}</span><svg class="lp-c" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></button>`).join('\n')}
+      </div>
     </div>
   </nav>
   <nav class="tabbar" aria-label="Sections" data-aria-en="Sections" data-aria-zh="栏目" data-aria-ru="Разделы">
@@ -137,12 +142,20 @@ const PWA_HEAD = '<link rel="manifest" id="pwa-manifest" href="/manifest.webmani
   + '<meta name="ydh-build" content="__YDH_BUILD__">'
   + '<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">'
   + '<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">'
-  + '<meta name="apple-mobile-web-app-title" content="Yahweh\'s World">'
+  + `<meta name="apple-mobile-web-app-title" content="${PRODUCT_NAMES.short.en}">`
   + '<link rel="apple-touch-icon" sizes="120x120" href="/pwa/apple-touch-120.png"><link rel="apple-touch-icon" sizes="152x152" href="/pwa/apple-touch-152.png">'
   + '<link rel="apple-touch-icon" sizes="167x167" href="/pwa/apple-touch-167.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">'
+  // The RESOLVED reading surface, before anything is drawn. src/gallery/chrome.ts owns the setting; it is a module, so
+  // it runs after first paint, and a reader in Paper used to get one frame of navy on every navigation. Same record
+  // ('yr.prefs.v1'), same rule as the reader module's resolveTheme: auto -> paper on a light system, dark otherwise.
+  + '<script>(function(){try{var d=document.documentElement,p=JSON.parse(localStorage.getItem("yr.prefs.v1")||"{}").theme;'
+  + 'if(["dark","light","paper"].indexOf(p)<0)p=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"paper";'
+  + 'd.dataset.surf=p;var m=document.querySelector(\'meta[name="theme-color"]\');'
+  + 'if(m)m.content={dark:"#0e2b4b",light:"#f8f9fb",paper:"#f4efe4"}[p];'
+  + 'if(p!=="dark")d.style.background={light:"#f8f9fb",paper:"#f4efe4"}[p]}catch(e){}})()</script>'
   + '<script>(function(){try{var d=document.documentElement,l=d.lang;'
   + 'if({"zh-Hans":1,"zh-Hant":1,ru:1}[l])document.getElementById("pwa-manifest").href="/manifest."+l+".webmanifest";'
-  + 'document.querySelector(\'meta[name="apple-mobile-web-app-title"]\').content=' + JSON.stringify({ 'zh-Hans': NAME_HANT, 'zh-Hant': NAME_HANT, ru: 'Мир Яхве' }) + '[l]||"Yahweh\'s World";'
+  + 'document.querySelector(\'meta[name="apple-mobile-web-app-title"]\').content=' + JSON.stringify(PRODUCT_NAMES.short) + `[l]||${JSON.stringify(PRODUCT_NAMES.short.en)};`
   + 'if(matchMedia("(display-mode: standalone)").matches||navigator.standalone===true)d.dataset.display="standalone"}catch(e){}})()</script>';
 
 /** The full surface's head block, taught Russian: its first-paint language script accepts and detects "ru", and the
@@ -202,17 +215,23 @@ function writeExtras(root, dist) {
     '# Short links for sharing.',
     '/gallery                   /scenes.html   301!',
     '/pictures                  /scenes.html   301!',
+    '/privacy                   /privacy.html  301!',
+    '# Anything else is OUR not-found page, with the status it deserves. Without this line Netlify served its own',
+    '# stock page: white on white, English only, and an advertisement for its support guide (P0-4). Last, because',
+    '# Netlify takes the first rule that matches.',
+    '/*                         /404.html      404',
     '',
   ].join('\n'));
 
-  const urls = ['/', '/scenes.html', '/bible.html'];
+  const SITE_PAGES = ['/', '/scenes.html', '/bible.html', '/privacy.html'];
+  const urls = [...SITE_PAGES];
   idx.ev.forEach((row, i) => {
     const [id, b, s, e, zh, en, , served] = row;
     urls.push(`/p/${id}`);
     const ref = refEn(books, b, s, e);
     const desc = sums.en[i] || sums.zh[i] || ref;
     const image = served ? `${ORIGIN}/pictures/full/${id}.webp` : `${ORIGIN}/logo.png`;
-    const title = `${en} · ${zh} | Yahweh's World`;
+    const title = `${en} · ${zh} | ${WORDMARK}`;
     const to = `/scenes.html#p=${id}`;
     const dir = join(dist, 'p', id);
     mkdirSync(dir, { recursive: true });
@@ -221,7 +240,7 @@ function writeExtras(root, dist) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(`${ref}. ${desc}`)}">
 <link rel="canonical" href="${ORIGIN}/p/${id}">
-<meta property="og:type" content="article"><meta property="og:site_name" content="Yahweh's World · ${NAME_HANT}">
+<meta property="og:type" content="article"><meta property="og:site_name" content="${WORDMARK}">
 <meta property="og:title" content="${esc(`${en} · ${zh}`)}"><meta property="og:description" content="${esc(`${ref}. ${desc}`)}">
 <meta property="og:url" content="${ORIGIN}/p/${id}"><meta property="og:image" content="${image}">
 <meta name="twitter:card" content="summary_large_image">
@@ -233,7 +252,7 @@ function writeExtras(root, dist) {
   writeFileSync(join(dist, 'sitemap.xml'),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `<url><loc>${ORIGIN}${u}</loc></url>`).join('\n')}\n</urlset>\n`);
   writeFileSync(join(dist, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${ORIGIN}/sitemap.xml\n`);
-  return urls.length;
+  return { urls: urls.length, pictures: urls.length - SITE_PAGES.length };
 }
 
 /** vite plugins for the gallery surface. Returns [] on the full surface so nothing else changes. */
@@ -289,7 +308,7 @@ export function gallerySurface({ root }) {
           console.warn(`\n[gallery-surface] WARNING ${msg}\n`);
         }
         const n = writeExtras(root, outDir);
-        console.log(`[gallery-surface] wrote _redirects, robots.txt, sitemap.xml (${n} urls), ${n - 3} /p/<id> pages`);
+        console.log(`[gallery-surface] wrote _redirects, robots.txt, sitemap.xml (${n.urls} urls), ${n.pictures} /p/<id> pages`);
         await buildPwa({ root, dist: outDir, log: (m) => console.log(`[gallery-surface] ${m}`) });
       },
     },
