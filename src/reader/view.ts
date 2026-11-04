@@ -6,7 +6,8 @@
 import { editionById, labelLanguage, referenceLabel, stepChapter } from './books.ts';
 import { applyChrome, bookSheetHtml, displaySheetHtml, editionSheetHtml, mountToast, parallelSheetHtml, reducedMotion, Sheet } from './chrome.ts';
 import type { BookSheetState } from './chrome.ts';
-import { buildCopy, buildParallelCopy, copyText, creditLine, heading, passageLabel, vkey } from './copy.ts';
+import { buildCopy, buildParallelCopy, copyText, creditLine, heading, keyChapter, keyVerse, passageLabel, selectionText, shareOrCopy, vkey } from './copy.ts';
+import { wordsChapterUrl } from './words-link.ts';
 import { headingSetFor } from './headings.ts';
 import { moveEdition, toggleEdition } from './parallel.ts';
 import { renderBody, renderCredit } from './render.ts';
@@ -329,7 +330,7 @@ export class ReaderView implements ReaderHandle {
       ? `<button type="button" class="yr-btn yr-btn-quiet yr-more" data-act="expand">${escapeHtml(s.tr('showMore', { n: out.total - out.shown }))}</button>`
       : this.kind === 'passage' && this.expanded && out.total > (this.spec?.limit ?? 12)
         ? `<button type="button" class="yr-btn yr-btn-quiet yr-more" data-act="collapse">${escapeHtml(s.tr('showLess'))}</button>` : '';
-    this.footEl.innerHTML = more + renderCredit(d.editions, s.ui, s.opts.strings);
+    this.footEl.innerHTML = more + renderCredit(d.editions, s.ui, s.opts.strings) + this.wordsLinkHtml();
     this.statusEl.textContent = this.notice ?? '';
     this.statusEl.classList.toggle('is-on', !!this.notice);
     this.renderTools();
@@ -381,6 +382,23 @@ export class ReaderView implements ReaderHandle {
     }
   }
 
+  /**
+   * "Continue in Yahweh's Words", once per chapter, under the credit.
+   *
+   * Only in the chapter reader: a passage under a picture already carries "read the whole chapter", and two exits
+   * stacked under eight verses is noise. `rel="noopener"` and `target="_blank"` on the web; inside a shell the
+   * click is intercepted (see `wire`) and handed to the system browser, because a Bible app opening inside the
+   * app's own window with no way back is worse than no link.
+   */
+  private wordsLinkHtml(): string {
+    if (this.kind !== 'chapter' || !this.data) return '';
+    const s = this.session;
+    const href = wordsChapterUrl({ book: this.ref.book, chapter: this.ref.chapter, edition: this.data.editions[0]!.id });
+    if (!href) return '';
+    return `<p class="yr-words"><a class="yr-words-a" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer" data-yr-external>` +
+      `${escapeHtml(s.tr('continueInWords'))} <span aria-hidden="true">${s.dir === 'rtl' ? '‹' : '›'}</span></a></p>`;
+  }
+
   // ── selection ───────────────────────────────────────────────────────
 
   private syncSelection(): void {
@@ -391,22 +409,44 @@ export class ReaderView implements ReaderHandle {
       el.classList.toggle('is-sel', on);
       el.querySelector('.yr-vn')?.setAttribute('aria-pressed', String(on));
     });
+    this.el.classList.toggle('has-sel', this.selected.size > 0);
     if (!this.selected.size || !this.data) { this.selbar.hidden = true; this.selbar.innerHTML = ''; return; }
     const keys = [...this.selected].sort((a, b) => a - b);
     const main = this.data.editions[0]!;
     const label = passageLabel(this.ref.book, keys, labelLanguage(s.ui, main.id));
+    // "Open picture" only when the FIRST selected verse is the one a scene starts at: the plate is rendered at that
+    // verse, so the link is the one already on the page and there is nothing to guess.
+    const plate = this.plateAt(keys[0]!);
     this.selbar.setAttribute('aria-label', s.tr('selectionBar'));
     this.selbar.hidden = false;
     this.selbar.innerHTML = `<span class="yr-sel-n">${escapeHtml(s.tr('selectedN', { n: keys.length, ref: label }))}</span>` +
       `<button type="button" class="yr-btn yr-btn-primary" data-act="copySel">${escapeHtml(s.tr('copy'))}</button>` +
+      `<button type="button" class="yr-btn" data-act="shareSel">${escapeHtml(s.tr('share'))}</button>` +
       `<button type="button" class="yr-btn" data-act="linkSel">${escapeHtml(s.tr('copyLink'))}</button>` +
+      (plate ? `<button type="button" class="yr-btn" data-act="openPic">${escapeHtml(s.tr('openPicture'))}</button>` : '') +
       `<button type="button" class="yr-btn yr-btn-quiet" data-act="clearSel">${escapeHtml(s.tr('clear'))}</button>`;
   }
 
+  /** The scene plate drawn at a verse key, if this chapter has one there. */
+  private plateAt(k: number): { href: string; id: string } | null {
+    const el = this.bodyEl.querySelector<HTMLElement>(`.yr-plate[data-v="${keyChapter(k)}:${keyVerse(k)}"] .yr-plate-a`);
+    const id = el?.closest<HTMLElement>('.yr-plate')?.dataset.scene;
+    return el && id ? { href: (el as HTMLAnchorElement).getAttribute('href') ?? '', id } : null;
+  }
+
+  /**
+   * A tap on a verse.
+   *
+   * First tap selects it. A tap on another verse while something is selected EXTENDS the run from the anchor to
+   * it — the same gesture Words uses, and the one a reader expects when they are picking out a passage rather than
+   * a scatter of verses. Shift-click does the same on a keyboard. A tap on a verse that is already selected takes
+   * it out again, so nothing is a trap.
+   */
   private toggleKey(k: number, range: boolean): void {
-    if (range && this.anchorKey != null) {
-      const keys = this.lastShown.keys;
-      const a = keys.indexOf(this.anchorKey), b = keys.indexOf(k);
+    const keys = this.lastShown.keys;
+    const extend = (range || (this.selected.size > 0 && !this.selected.has(k))) && this.anchorKey != null;
+    if (extend) {
+      const a = keys.indexOf(this.anchorKey!), b = keys.indexOf(k);
       if (a >= 0 && b >= 0) { for (const x of keys.slice(Math.min(a, b), Math.max(a, b) + 1)) this.selected.add(x); this.syncSelection(); return; }
     }
     if (this.selected.has(k)) this.selected.delete(k); else this.selected.add(k);
@@ -448,11 +488,38 @@ export class ReaderView implements ReaderHandle {
     s.toast(outcome === 'failed' ? s.tr('copyFailed') : s.tr('linkCopied'), outcome === 'failed' ? 'warn' : 'ok');
   }
 
-  /** Ctrl/Cmd+C: selected verse numbers win; otherwise the browser's text selection gets the credit line appended. */
+  private async shareKeys(keys: number[]): Promise<void> {
+    const s = this.session;
+    if (!this.data || !keys.length) return;
+    const r = this.copyInput(keys);
+    if (!r) { s.toast(s.tr('nothingToCopy'), 'warn'); return; }
+    const link = r.text.split('\n').pop()!.replace(/^.*?· /, '');
+    const main = this.data.editions[0]!;
+    const title = passageLabel(this.ref.book, [...this.selected].sort((a, b) => a - b), labelLanguage(s.ui, main.id));
+    // The text already ends with "— <site> · <link>", so the url is not repeated into it.
+    const out = this.opts.share
+      ? await this.opts.share({ title, text: r.text, url: link }).catch(() => 'failed' as const)
+      : await shareOrCopy({ title, text: r.text, url: link });
+    if (out === 'shared') s.toast(s.tr('shared'));
+    else if (out === 'copied') s.toast(s.tr('copied'));
+    else if (out === 'failed') s.toast(s.tr('copyFailed'), 'warn');
+    // 'cancelled': the reader closed the sheet; say nothing.
+  }
+
+  /**
+   * The system copy (Cmd/Ctrl+C, the iOS callout menu's Copy, Android's floating Copy).
+   *
+   * Whatever the reader selected, what lands on the clipboard is passage shape: the reference in the edition's
+   * language, the verses, the edition's credit line and a link back — [buildCopy], with the same 100-verse cap the
+   * Copy button applies. A drag that covers two or more whole verses is served that way; a drag inside one verse
+   * keeps the exact words the reader picked (they may have wanted half a sentence) and still carries the reference
+   * and the credit. Either way the verse-number gutter, the parallel edition tags, the footnote markers and the
+   * screen-reader-only spans are left out ([selectionText]).
+   */
   private onNativeCopy(e: ClipboardEvent): void {
     if (!this.data || !e.clipboardData) return;
     const sel = getSelection();
-    const native = sel && !sel.isCollapsed && this.bodyEl.contains(sel.anchorNode);
+    const native = sel && sel.rangeCount > 0 && !sel.isCollapsed && this.bodyEl.contains(sel.anchorNode);
     if (this.selected.size && !native) {
       const r = this.copyInput([...this.selected].sort((a, b) => a - b));
       if (r) { e.clipboardData.setData('text/plain', r.text); e.preventDefault(); this.session.toast(r.cut ? this.session.tr('copiedLimited', { n: r.count }) : this.session.tr('copied'), r.cut ? 'warn' : 'ok'); }
@@ -462,8 +529,14 @@ export class ReaderView implements ReaderHandle {
     const keys: number[] = [];
     this.bodyEl.querySelectorAll<HTMLElement>('[data-k].yr-v, [data-k].yr-pv').forEach((el) => { if (sel.containsNode(el, true)) keys.push(Number(el.dataset.k)); });
     if (!keys.length) return;
+    if (keys.length > 1) {
+      const r = this.copyInput(keys);
+      if (r) { e.clipboardData.setData('text/plain', r.text); e.preventDefault(); }
+      return;
+    }
     const main = this.data.editions[0]!;
-    const text = sel.toString().replace(/\n{3,}/g, '\n\n').trim();
+    const text = selectionText(sel.getRangeAt(0), this.el.ownerDocument);
+    if (!text) return;
     e.clipboardData.setData('text/plain', `${text}\n\n${heading(this.ref.book, undefined, keys, main)}\n${creditLine(main)}`);
     e.preventDefault();
   }
@@ -480,18 +553,20 @@ export class ReaderView implements ReaderHandle {
   }
 
   private sheetKind: 'edition' | 'parallel' | 'book' | 'display' | null = null;
+  private sheetFrom: HTMLElement | null = null;
   private refreshSheet(): void {
     if (this.sheetKind) this.openSheet(this.sheetKind, false);
   }
 
-  private openSheet(kind: 'edition' | 'parallel' | 'book' | 'display', focus = true): void {
+  private openSheet(kind: 'edition' | 'parallel' | 'book' | 'display', focus = true, from?: HTMLElement | null): void {
     const s = this.session;
     this.sheetKind = kind;
+    if (from) this.sheetFrom = from;
     const act = (el: HTMLElement) => this.onSheetAction(kind, el);
     const label = { edition: s.tr('chooseEdition'), parallel: s.tr('compareEditions'), book: s.tr('pickChapter'), display: s.tr('display') }[kind];
     const render = () => kind === 'edition' ? editionSheetHtml(s) : kind === 'parallel' ? parallelSheetHtml(s) : kind === 'book' ? bookSheetHtml(s, this.bookState) : displaySheetHtml(s);
     if (!focus && this.sheet.isOpen) { this.sheet.dialog.lang = s.ui; this.sheet.dialog.dir = s.dir; this.sheet['render'] = render; this.sheet['onClick'] = act; this.sheet.refresh(); return; }
-    this.sheet.open(label, render, act);
+    this.sheet.open(label, render, act, this.sheetFrom);
   }
 
   private onSheetAction(kind: string, el: HTMLElement): void {
@@ -529,7 +604,7 @@ export class ReaderView implements ReaderHandle {
   private onClick(e: MouseEvent): void {
     const s = this.session;
     const t = (e.target as HTMLElement).closest<HTMLElement>('button');
-    if (!t || !this.el.contains(t) || this.sheet.dialog.contains(t)) return;
+    if (!t || !this.el.contains(t) || this.sheet.dialog.contains(t)) { this.onBodyClick(e); return; }
     if (t.classList.contains('yr-vn')) { this.toggleKey(Number(t.dataset.k), e.shiftKey); return; }
     if (t.classList.contains('yr-fn')) {
       const open = t.getAttribute('aria-expanded') !== 'true';
@@ -549,20 +624,46 @@ export class ReaderView implements ReaderHandle {
     }
     switch (t.dataset.act) {
       case 'prev': case 'next': this.step(t.dataset.act === 'next' ? 1 : -1); break;
-      case 'pick': this.bookState = { step: 'books', testament: this.ref.book >= 40 ? 'nt' : 'ot', book: this.ref.book }; this.openSheet('book'); break;
+      case 'pick': this.bookState = { step: 'books', testament: this.ref.book >= 40 ? 'nt' : 'ot', book: this.ref.book }; this.openSheet('book', true, t); break;
       case 'mode': s.setMode(t.dataset.id as Mode); break;
-      case 'edition': this.openSheet(s.mode() === 'parallel' ? 'parallel' : 'edition'); break;
-      case 'display': this.openSheet('display'); break;
+      case 'edition': this.openSheet(s.mode() === 'parallel' ? 'parallel' : 'edition', true, t); break;
+      case 'display': this.openSheet('display', true, t); break;
       case 'retry': s.store.forget(); void this.show(this.ref, { history: 'none' }); break;
       case 'expand': this.expanded = true; void this.rerenderKeepingAnchor(); break;
       case 'collapse': this.expanded = false; void this.rerenderKeepingAnchor(); break;
       case 'parallelToggle': s.setMode(s.mode() === 'parallel' ? 'verse' : 'parallel'); break;
       case 'copyAll': void this.copyKeys(this.selected.size ? [...this.selected] : this.lastShown.keys); break;
       case 'copySel': void this.copyKeys([...this.selected]); break;
+      case 'shareSel': void this.shareKeys([...this.selected].sort((a, b) => a - b)); break;
       case 'linkSel': void this.copyLink([...this.selected]); break;
+      case 'openPic': {
+        const p = this.plateAt([...this.selected].sort((a, b) => a - b)[0]!);
+        if (p?.href) location.assign(p.href);
+        break;
+      }
       case 'clearSel': this.selected.clear(); this.syncSelection(); break;
       case 'whole': this.opts.onOpenChapter?.({ book: this.ref.book, chapter: this.spec?.from.chapter ?? this.ref.chapter }); break;
     }
+  }
+
+  /**
+   * A click in the reading text that was not on a control: the verse under it is selected.
+   *
+   * Text selection comes first and always wins. A drag that leaves words highlighted, or a click inside a
+   * selection the reader has just made with the system handles, does nothing here — otherwise choosing a phrase to
+   * copy would also light up the whole verse and change what Cmd+C sends. A click on the plate (a link) or on any
+   * control is left to that element.
+   */
+  private onBodyClick(e: MouseEvent): void {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.altKey) return;
+    const target = e.target as HTMLElement | null;
+    if (!target || !this.bodyEl.contains(target)) return;
+    if (target.closest('a, button, input, textarea, select, [contenteditable]')) return;
+    const sel = getSelection();
+    if (sel && !sel.isCollapsed) return;
+    const v = target.closest<HTMLElement>('[data-k].yr-v, [data-k].yr-pv');
+    if (!v?.dataset.k) return;
+    this.toggleKey(Number(v.dataset.k), e.shiftKey);
   }
 
   private async rerenderKeepingAnchor(): Promise<void> {

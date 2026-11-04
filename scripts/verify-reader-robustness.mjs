@@ -513,6 +513,50 @@ async function copy() {
   const keyAfter = await h.page.evaluate(() => document.querySelector('.is-sel')?.dataset.k);
   ok(keyBefore === keyAfter && keyAfter != null, 'copy: the selection survives an edition switch', { keyBefore, keyAfter });
   await h.ctx.close();
+  // 8. the reading text is SELECTABLE. The owner's report was "World cannot copy-paste"; a `user-select: none`
+  //    inherited onto a reading container is the one change that would silently take the system's own
+  //    long-press / double-click Copy menu away on every platform at once, so it is a build failure here.
+  h = await open();
+  await go(h, '/reader-demo.html?view=chapter&lang=en#ref=John 3');
+  const selectable = await h.page.evaluate(() => {
+    const read = ['.yr-body', '.yr-body .yr-t', '.yr-h', '.yr-credit'];
+    const bad = [];
+    for (const sel of read) {
+      const el = document.querySelector(sel);
+      if (!el) { bad.push(`${sel}: missing`); continue; }
+      const cs = getComputedStyle(el);
+      const v = cs.webkitUserSelect || cs.userSelect;
+      if (v === 'none') bad.push(`${sel}: ${v}`);
+      if (cs.webkitTouchCallout === 'none') bad.push(`${sel}: -webkit-touch-callout none`);
+    }
+    // and a real range selection inside a verse must produce text
+    const t = document.querySelector('[data-k="3016"] .yr-t');
+    const r = document.createRange(); r.selectNodeContents(t);
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    const got = s.toString().trim();
+    s.removeAllRanges();
+    return { bad, got: got.slice(0, 40) };
+  });
+  ok(selectable.bad.length === 0 && selectable.got.length > 10, 'copy: every reading container is selectable (no user-select:none, no -webkit-touch-callout:none)', { bad: selectable.bad.join('; '), got: selectable.got });
+  // 9. a tap on the verse ITSELF selects it (not only on the number), and the action bar offers Copy / Share
+  await h.page.locator('[data-k="3016"] .yr-t').click();
+  const bar = await h.page.evaluate(() => ({
+    selected: document.querySelectorAll('.is-sel').length,
+    acts: [...document.querySelectorAll('.yr-selbar [data-act]')].map((b) => b.dataset.act),
+    padded: getComputedStyle(document.querySelector('.yr-foot')).paddingBottom,
+  }));
+  ok(bar.selected === 1 && bar.acts.includes('copySel') && bar.acts.includes('shareSel') && parseFloat(bar.padded) > 40,
+    'copy: a tap on the verse text selects it; the bar carries Copy and Share and makes room for itself', { acts: bar.acts.join(','), padded: bar.padded });
+  // 10. a second tap on a later verse EXTENDS the run; Escape clears it
+  await h.page.locator('[data-k="3018"] .yr-t').click();
+  const extended = await h.page.evaluate(() => document.querySelectorAll('.is-sel').length);
+  await h.page.keyboard.press('Escape');
+  const cleared = await h.page.evaluate(() => ({ n: document.querySelectorAll('.is-sel').length, barHidden: document.querySelector('.yr-selbar').hidden }));
+  ok(extended === 3 && cleared.n === 0 && cleared.barHidden, 'copy: a second tap extends the run, Escape clears it', { extended, after: cleared.n });
+  // 11. "Continue in Yahweh's Words" points at this chapter in the app, with a route Words answers to
+  const words = await h.page.evaluate(() => document.querySelector('.yr-words-a')?.getAttribute('href'));
+  ok(words === 'https://yahwehword.com/#/john/3?v=bsb-yhwh', 'copy: the chapter links on to Yahweh’s Words at the same chapter', { words });
+  await h.ctx.close();
 }
 
 async function editions() {

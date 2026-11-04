@@ -58,6 +58,22 @@ async function boot() {
   platform.deepLinks.onOpen((url) => follow(url, platform));
   void platform.deepLinks.current().then((url) => { if (url) follow(url, platform); }).catch(() => {});
 
+  // A link that leaves the app goes to the system browser, never into this window. Inside a shell there is no
+  // address bar and no Back, so a page loaded over the app would be a dead end; `target="_blank"` does nothing in
+  // a WKWebView/WebView either way. The opener plugin is limited to http/https/mailto in capabilities/default.json.
+  document.addEventListener('click', (e) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+    const a = (e.target as HTMLElement | null)?.closest?.<HTMLAnchorElement>('a[href]');
+    if (!a) return;
+    const href = a.getAttribute('href') ?? '';
+    if (!/^(https?:|mailto:)/i.test(href)) return;
+    let external = true;
+    try { external = new URL(href, location.href).origin !== location.origin; } catch { /* mailto: has no origin */ }
+    if (!external && !a.hasAttribute('data-yr-external')) return;
+    e.preventDefault();
+    void platform.openExternal(href).catch(() => { location.assign(href); });
+  });
+
   void startPacks(platform);
 
   if (platform.capabilities.updates && channelOf(import.meta.env) === 'direct') {

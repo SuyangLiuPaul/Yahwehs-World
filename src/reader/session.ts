@@ -44,6 +44,11 @@ export interface ReaderOptions {
   /** Called when the reader wants to open a chapter itself (passage: "read the whole chapter"). */
   onOpenChapter?: (ref: Ref) => void;
   onCopy?: (info: { text: string; count: number; cut: boolean; outcome: 'ok' | 'fallback' | 'failed' }) => void;
+  /**
+   * The platform's own share sheet, when the host has one (a native shell passes `platform.share`). Omitted on the
+   * web, where the reader uses `navigator.share` and falls back to the clipboard — see `shareOrCopy` in copy.ts.
+   */
+  share?: (p: { title: string; text: string; url?: string }) => Promise<'shared' | 'copied' | 'cancelled' | 'failed'>;
 }
 
 export type ChangeKind = 'locale' | 'edition' | 'mode' | 'parallel' | 'size' | 'theme';

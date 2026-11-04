@@ -43,11 +43,15 @@ function byText(ix: GalleryIndex, q: string, sums: Summaries | null): Scene[] {
 
 let current: HTMLDialogElement | null = null;
 
-export function openSearch(initial = '') {
+export function openSearch(initial = '', from?: HTMLElement | null) {
   if (current?.open) { current.querySelector<HTMLInputElement>('input')?.focus(); return; }
   current = openSheet({
     title: t('Find a scene', '找一幕', 'Найти сцену'),
     className: 'gx-pal center',
+    // P2-3: hand the focus back to the control that opened the palette. openSheet falls back to whatever had focus,
+    // and on macOS a click on a <button> does not give it focus, so that fallback was BODY and closing the palette
+    // dropped the reader at the top of the page. The caller names its trigger instead.
+    returnFocus: from ?? undefined,
     render(body, close) {
       body.innerHTML = `<div class="gx-pal-field"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
         <input type="search" role="combobox" aria-expanded="true" aria-controls="gx-pal-list" aria-autocomplete="list" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go"></div>

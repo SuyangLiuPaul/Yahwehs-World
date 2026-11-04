@@ -67,19 +67,20 @@ SYSTEM_DARK?.addEventListener?.('change', () => { if (readTheme() === 'auto') pa
 
 // ── search ────────────────────────────────────────────────────────────────
 let palette: Promise<typeof import('./search.ts')> | null = null;
-export function openSearch(initial = '') {
+export function openSearch(initial = '', from?: HTMLElement | null) {
   palette ??= import('./search.ts');
-  void palette.then((m) => m.openSearch(initial));
+  void palette.then((m) => m.openSearch(initial, from));
 }
 document.addEventListener('click', (e) => {
-  const el = (e.target as HTMLElement).closest('[data-gx-search]');
-  if (el) { e.preventDefault(); openSearch(); }
+  const el = (e.target as HTMLElement).closest<HTMLElement>('[data-gx-search]');
+  if (el) { e.preventDefault(); openSearch('', el); }
 });
 document.addEventListener('gx:search', () => openSearch());
 document.addEventListener('keydown', (e) => {
   const typing = (e.target as HTMLElement | null)?.closest('input, textarea, select, [contenteditable]');
-  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openSearch(); }
-  else if (e.key === '/' && !typing && !e.metaKey && !e.ctrlKey && !e.altKey) { e.preventDefault(); openSearch(); }
+  const here = (e.target as HTMLElement | null)?.closest<HTMLElement>('[data-gx-search]') ?? null;
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openSearch('', here); }
+  else if (e.key === '/' && !typing && !e.metaKey && !e.ctrlKey && !e.altKey) { e.preventDefault(); openSearch('', here); }
 });
 
 // the bar's own words follow the language (data-en / data-zh); the pages re-apply theirs

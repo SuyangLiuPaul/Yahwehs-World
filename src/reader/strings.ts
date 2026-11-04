@@ -33,7 +33,9 @@ export const STRINGS = {
   chooseEdition: r('Choose an edition', '选择译本', '選擇譯本', 'Выбрать перевод'),
   compareEditions: r('Compare editions', '对照译本', '對照譯本', 'Сравнить переводы'),
   groupEnglish: r('English', 'English', 'English', 'English'),
-  groupHans: r('简体中文', '简体中文', '簡體中文', '简体中文'),
+  // A language group is headed by its own endonym in its own script, as English and Русский are: the Simplified
+  // group is 简体中文 on a 繁體 page too (P2-6 — it read 簡體中文, the name of Simplified written in Traditional).
+  groupHans: r('简体中文', '简体中文', '简体中文', '简体中文'),
   groupRussian: r('Русский', 'Русский', 'Русский', 'Русский'),
   groupHant: r('繁體中文', '繁體中文', '繁體中文', '繁體中文'),
   maxThree: r('3 is the most', '最多三个', '最多三個', 'Не более трёх'),
@@ -54,6 +56,10 @@ export const STRINGS = {
   selectedN: r('{n} selected · {ref}', '已选 {n} 节 · {ref}', '已選 {n} 節 · {ref}', 'Выбрано: {n} \u00b7 {ref}'),
   copy: r('Copy', '复制', '複製', 'Копировать'),
   copyLink: r('Link', '链接', '連結', 'Ссылка'),
+  share: r('Share', '分享', '分享', 'Поделиться'),
+  shared: r('Shared', '已分享', '已分享', 'Отправлено'),
+  shareFailed: r('Sharing is not available here. The passage was copied instead.', '此处无法分享，已改为复制经文。', '此處無法分享，已改為複製經文。', 'Поделиться здесь нельзя. Отрывок скопирован.'),
+  selectVerseHint: r('Tap a verse to select it; tap again to clear.', '点一节经文即可选取，再点一次取消。', '點一節經文即可選取，再點一次取消。', 'Коснитесь стиха, чтобы выбрать; ещё раз — снять.'),
   clear: r('Clear', '取消选择', '取消選擇', 'Снять выбор'),
   copied: r('Copied', '已复制', '已複製', 'Скопировано'),
   copiedLimited: r('Copied the first {n} verses (the limit)', '已复制前 {n} 节（以此为限）', '已複製前 {n} 節（以此為限）', 'Скопированы первые {n} стихов (это предел)'),
@@ -88,6 +94,9 @@ export const STRINGS = {
   // plates (the painted scenes standing in the text at the verse their event begins)
   openPicture: r('Open the picture', '看这幅画', '看這幅畫', 'Открыть картину'),
   pictureOf: r('{title} — open the picture', '{title} — 看这幅画', '{title} — 看這幅畫', '{title} — открыть картину'),
+  // the join between the three doors: this chapter, opened in the church's Bible app (verified route, see
+  // src/reader/words-link.ts). The app's own name is Latin in Russian, as its store listing has it.
+  continueInWords: r('Continue in Yahweh’s Words', '在《雅伟的话》继续读', '在《雅偉的話》繼續讀', 'Продолжить в Yahweh’s Words'),
   // credit
   creditLabel: r('Edition credit', '译本说明', '譯本說明', 'О переводе'),
   // landmarks

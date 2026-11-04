@@ -103,14 +103,33 @@ html[lang="zh-Hant"] .yr, .yr:lang(zh-Hant) {
 .yr-status.is-on { padding-block: .25rem .5rem; }
 
 /* ── body ─────────────────────────────────────────────────────────────────── */
-.yr-body { padding: .5rem max(1rem, env(safe-area-inset-right, 0px)) 1.5rem max(1rem, env(safe-area-inset-left, 0px)); max-inline-size: 46rem; margin-inline: auto; font-family: var(--yr-read); font-size: calc(1.1875rem * var(--yr-scale)); line-height: 1.8; overflow-wrap: anywhere; }
+/* The reading text is SELECTABLE, said out loud. Nothing in this project sets `user-select: none` on a reading
+   container, and these three declarations are here so nothing ever can by inheritance from a host page: a long
+   press, a drag or a double-click gives the system's own Copy / Look Up / Share menu on every target
+   (scripts/verify-reader-robustness.mjs fails the build if a reading container loses it). */
+.yr-body, .yr-body .yr-t, .yr-plate-cap, .yr-credit, .yr-h, .yr-ctx {
+  user-select: text; -webkit-user-select: text; -webkit-touch-callout: default;
+}
+/* P2-8: measure. 46rem ran ~74 Latin characters a line at 1024 and 78–80 on the iPad shell, over the 60–70 the
+   spec asks for; 40rem lands at ~66. Chinese and Russian are unaffected in practice (a CJK line of this width is
+   well inside its own comfortable count). */
+.yr-body { padding: .5rem max(1rem, env(safe-area-inset-right, 0px)) 1.5rem max(1rem, env(safe-area-inset-left, 0px)); max-inline-size: 40rem; margin-inline: auto; font-family: var(--yr-read); font-size: calc(1.1875rem * var(--yr-scale)); line-height: 1.8; overflow-wrap: anywhere; }
+/* P2-4: the selection bar is sticky at the foot of the reader. Without this it sat ON the last line of the
+   chapter. The body (and the credit under it) make room for it while it is up, so nothing is ever covered. */
+.yr.has-sel .yr-foot { padding-block-end: 4.5rem; }
+.yr.has-sel { scroll-padding-block-end: 5.5rem; }
 .yr-passage .yr-body { padding-block: .25rem 1rem; margin-inline: 0; max-inline-size: none; font-size: calc(1.125rem * var(--yr-scale)); }
 .yr-body :lang(zh) { line-height: 1.95; }
 .yr-title { margin: .75rem 0 .5rem; font: 600 calc(1.625rem * var(--yr-scale)) / 1.25 var(--yr-read); }
 .yr-title:focus { outline: none; }
 .yr-ch { margin: 1.25rem 0 .25rem; font: 600 calc(.8125rem * var(--yr-scale)) / 1.3 var(--yr-ui); letter-spacing: .08em; text-transform: uppercase; color: var(--yr-ink-3); }
 
-.yr-hd { display: flex; align-items: flex-start; flex-wrap: wrap; gap: .25rem; margin-block: 1.25rem .25rem; }
+/* P2-15: the heading and its info button. `flex-wrap: wrap` dropped the button onto its own line at the LEFT on a phone,
+   where it read as a stray glyph with nothing to do with the heading above it. It stays on the heading's line, at
+   the end of it, at every width; the heading shrinks instead. */
+.yr-hd { display: flex; align-items: flex-start; flex-wrap: nowrap; gap: .25rem; margin-block: 1.25rem .25rem; }
+.yr-hd .yr-h { flex: 1 1 auto; min-inline-size: 0; }
+.yr-hd .yr-hi { flex: none; margin-inline-start: auto; }
 .yr-h { margin: 0; flex: 1 1 auto; min-inline-size: 0; font: 600 calc(1.125rem * var(--yr-scale)) / 1.35 var(--yr-read); color: var(--yr-ink); }
 .yr-hd.is-carried .yr-h { color: var(--yr-ink-2); }
 .yr-hi { inline-size: 2.75rem; block-size: 2.75rem; display: inline-grid; place-items: center; margin-block-start: -.35rem; color: var(--yr-ink-3); }
@@ -187,7 +206,7 @@ html[lang="zh-Hant"] .yr, .yr:lang(zh-Hant) {
 .yr-note { display: block; margin: .25rem 0; padding: .35rem .6rem; border-inline-start: 2px solid var(--yr-gold-line); font: 400 calc(.875rem * var(--yr-scale)) / 1.55 var(--yr-ui); color: var(--yr-ink-2); }
 
 /* ── foot, credit, selection bar ─────────────────────────────────────────── */
-.yr-foot { padding: 0 1rem 1.25rem; max-inline-size: 46rem; margin-inline: auto; }
+.yr-foot { padding: 0 1rem 1.25rem; max-inline-size: 40rem; margin-inline: auto; }
 .yr-passage .yr-foot { padding-inline: 0; margin-inline: 0; max-inline-size: none; }
 .yr-more { margin-block-end: .75rem; }
 .yr-credit { list-style: none; margin: .5rem 0 0; padding: 0; color: var(--yr-ink-3); font: 400 calc(.8125rem * var(--yr-scale)) / 1.55 var(--yr-ui); }
@@ -197,6 +216,14 @@ html[lang="zh-Hant"] .yr, .yr:lang(zh-Hant) {
   margin: .5rem; padding: .625rem .75rem; border: 1px solid var(--yr-line); border-radius: 18px; background: var(--yr-panel); box-shadow: var(--yr-shadow);
 }
 .yr-sel-n { flex: 1 1 10rem; font: 500 calc(.8125rem * var(--yr-scale)) / 1.4 var(--yr-ui); color: var(--yr-ink-2); }
+
+/* "Continue in Yahweh's Words": quiet, once, under the credit. */
+.yr-words { margin: .9rem 0 0; }
+.yr-words-a {
+  display: inline-flex; align-items: center; gap: .35rem; min-block-size: 2.75rem; padding-block: .25rem;
+  font: 500 calc(.875rem * var(--yr-scale)) / 1.5 var(--yr-ui); color: var(--yr-gold-text); text-decoration: none;
+}
+.yr-words-a:hover { text-decoration: underline; }
 
 .yr-state { padding: 2rem 1rem; text-align: center; font-family: var(--yr-ui); color: var(--yr-ink-2); display: grid; gap: 1rem; justify-items: center; }
 .yr-skel { display: grid; gap: .9rem; padding: .5rem 0; }
@@ -223,8 +250,16 @@ html[lang="zh-Hant"] .yr, .yr:lang(zh-Hant) {
 .yr-sheet::backdrop { background: var(--yr-scrim); }
 @keyframes yr-sheet-in { from { transform: translateY(24px); opacity: 0; } }
 @media (min-width: 720px) {
+  /* P2-1: the sheet opens under the control that opened it. Sheet.anchor() in chrome.ts measures that control and
+     writes the two custom properties, clamped inside the window; with none written (a sheet opened from the
+     keyboard, say) it falls back to the old top-right corner. */
   .yr-sheet { margin: 4rem 2rem auto auto; border-block-end: 1px solid var(--yr-line); border-radius: 10px; inline-size: 24rem; max-block-size: 76vh; }
   .yr-sheet[open] { animation: yr-pop-in .16s ease-out; }
+  .yr-sheet[style*="--yr-anchor-x"] {
+    position: fixed; margin: 0;
+    inset-block-start: var(--yr-anchor-y); inset-inline-start: var(--yr-anchor-x);
+    max-block-size: min(76vh, calc(100dvh - var(--yr-anchor-y) - 1rem));
+  }
 }
 @keyframes yr-pop-in { from { transform: translateY(-8px); opacity: 0; } }
 .yr-sheet-h { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .5rem .75rem .5rem 1rem; border-block-end: 1px solid var(--yr-line); flex: none; }

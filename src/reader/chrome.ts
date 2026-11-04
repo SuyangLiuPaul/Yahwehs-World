@@ -68,18 +68,46 @@ export class Sheet {
     this.dialog.addEventListener('close', () => { this.opener?.focus?.({ preventScroll: true }); this.opener = null; });
   }
 
-  open(label: string, render: () => string, onClick: (el: HTMLElement, ev: MouseEvent) => void): void {
+  /**
+   * `from` is the control that asked for the sheet.
+   *
+   * Two things depend on knowing it (P2-1, P2-3). The sheet opens NEAR it rather than pinned to the window's
+   * top-right — the Aa button sits at x≈655 and the sheet used to appear at x=1024–1408, half a screen away
+   * from the thing that was pressed. And focus goes back to it on close: `document.activeElement` is not a
+   * reliable stand-in, because on macOS a click on a <button> does not give it focus and the fallback was BODY.
+   */
+  open(label: string, render: () => string, onClick: (el: HTMLElement, ev: MouseEvent) => void, from?: HTMLElement | null): void {
     this.dialog.setAttribute('aria-label', label);
     this.render = render;
     this.onClick = onClick;
-    this.opener = document.activeElement as HTMLElement | null;
+    this.opener = from ?? (document.activeElement as HTMLElement | null);
     this.refresh();
     if (!this.dialog.open) this.dialog.showModal();
+    this.anchor(from ?? this.opener);
     // dialog and its content follow the reader's language and direction
     this.dialog.lang = this.s.ui;
     this.dialog.dir = this.s.dir;
     const first = this.dialog.querySelector<HTMLElement>('[autofocus],[aria-checked="true"],[aria-pressed="true"],button');
     first?.focus({ preventScroll: true });
+  }
+
+  /**
+   * Put the sheet under the control that opened it, clamped inside the window. Only on the wide layout: on a
+   * phone the sheet is a bottom sheet across the full width and has nowhere else to be.
+   */
+  private anchor(from: HTMLElement | null | undefined): void {
+    const st = this.dialog.style;
+    st.removeProperty('--yr-anchor-x');
+    st.removeProperty('--yr-anchor-y');
+    if (!from || typeof matchMedia !== 'function' || !matchMedia('(min-width: 720px)').matches) return;
+    const r = from.getBoundingClientRect();
+    if (!r.width && !r.height) return;
+    const w = this.dialog.offsetWidth || 384;
+    const margin = 12;
+    const x = Math.min(Math.max(margin, r.left + r.width / 2 - w / 2), Math.max(margin, innerWidth - w - margin));
+    const y = Math.min(r.bottom + 8, Math.max(margin, innerHeight - 120));
+    st.setProperty('--yr-anchor-x', `${Math.round(x)}px`);
+    st.setProperty('--yr-anchor-y', `${Math.round(y)}px`);
   }
 
   /** Re-render the body keeping the scroll position and the focused control. */

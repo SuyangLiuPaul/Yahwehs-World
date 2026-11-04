@@ -2,7 +2,7 @@
 // parallel_copy_test.dart) and the clipboard fallback.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildCopy, buildParallelCopy, COPY_VERSE_CAP, copyText, CUT_NOTICE, defaultLink, formatParallelCopy, heading, legacyCopy } from '../../src/reader/copy.ts';
+import { buildCopy, buildParallelCopy, COPY_VERSE_CAP, copyText, CUT_NOTICE, defaultLink, formatParallelCopy, heading, legacyCopy, prefersLegacyClipboard, shareOrCopy } from '../../src/reader/copy.ts';
 import { editionById } from '../../src/reader/books.ts';
 import { text as bookText } from './_data.ts';
 
@@ -185,4 +185,78 @@ test('a passage that crosses a chapter: one heading from the first verse to the 
   assert.equal(r.count, 4);
   assert.deepEqual(r.ref, { book: 1, chapter: 15, v1: 20, v2: undefined });
   assert.ok(r.text.endsWith('https://x.test/bible.html#ref=Genesis%2015%3A20&ed=kjv'));
+});
+
+// ── which clipboard path runs first (the owner's "World cannot copy-paste") ──────────────────────────────
+
+const UA = {
+  iosSafari: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1',
+  iosWebView: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148',
+  macSafari: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.15',
+  macWebView: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)',
+  androidWebView: 'Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.0.0 Mobile Safari/537.36',
+  chrome: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
+};
+
+test('clipboard order: an embedded WKWebView (a shell, or a home-screen app) takes the synchronous path first', () => {
+  assert.equal(prefersLegacyClipboard({ userAgent: UA.iosWebView }), true);
+  assert.equal(prefersLegacyClipboard({ userAgent: UA.macWebView }), true);
+  assert.equal(prefersLegacyClipboard({ userAgent: UA.iosSafari }, true), true, 'installed to the home screen');
+  // and everything that is a real browser keeps the async API first
+  assert.equal(prefersLegacyClipboard({ userAgent: UA.iosSafari }), false);
+  assert.equal(prefersLegacyClipboard({ userAgent: UA.macSafari }), false);
+  assert.equal(prefersLegacyClipboard({ userAgent: UA.androidWebView }), false);
+  assert.equal(prefersLegacyClipboard({ userAgent: UA.chrome }), false);
+  assert.equal(prefersLegacyClipboard(null), false);
+});
+
+test('clipboard: in a WKWebView the text reaches the clipboard through execCommand, not through a promise that resolves having written nothing', async () => {
+  const { doc, log } = fakeDoc(true);
+  let async_ = 0;
+  const out = await copyText('verse', {
+    doc,
+    nav: { userAgent: UA.iosWebView, clipboard: { writeText: async () => { async_++; } } as unknown as Clipboard },
+  });
+  assert.equal(out, 'fallback');
+  assert.equal(async_, 0, 'the async API was not relied on');
+  assert.deepEqual(log, ['append', 'focus', 'select', 'copy', 'remove', 'restore']);
+});
+
+test('clipboard: if execCommand fails in a WKWebView the async API is still tried', async () => {
+  const { doc } = fakeDoc(false);
+  let got = '';
+  const out = await copyText('verse', { doc, nav: { userAgent: UA.iosWebView, clipboard: { writeText: async (s: string) => { got = s; } } as unknown as Clipboard } });
+  assert.equal(out, 'ok');
+  assert.equal(got, 'verse');
+});
+
+// ── share ───────────────────────────────────────────────────────────────────────────────────────────────
+
+test('share: the platform sheet when there is one', async () => {
+  let seen: ShareData | null = null;
+  const out = await shareOrCopy({ title: 'John 3:16', text: 'For God so loved…', url: 'https://x.test/a' }, {
+    nav: { share: async (d: ShareData) => { seen = d; } } as never,
+  });
+  assert.equal(out, 'shared');
+  assert.deepEqual(seen, { title: 'John 3:16', text: 'For God so loved…', url: 'https://x.test/a' });
+});
+
+test('share: a reader who closes the sheet has not failed, and nothing is copied behind their back', async () => {
+  let copied = 0;
+  const out = await shareOrCopy({ text: 'x' }, {
+    nav: { share: async () => { const e = new Error('cancel'); e.name = 'AbortError'; throw e; }, clipboard: { writeText: async () => { copied++; } } } as never,
+  });
+  assert.equal(out, 'cancelled');
+  assert.equal(copied, 0);
+});
+
+test('share: with no share API the passage is copied instead, url appended once', async () => {
+  let got = '';
+  const out = await shareOrCopy({ text: 'For God so loved…', url: 'https://x.test/a' }, { nav: { clipboard: { writeText: async (s: string) => { got = s; } } } as never });
+  assert.equal(out, 'copied');
+  assert.equal(got, 'For God so loved…\nhttps://x.test/a');
+  // a text that already ends with the link is not given it twice
+  const out2 = await shareOrCopy({ text: '— World · https://x.test/a', url: 'https://x.test/a' }, { nav: { clipboard: { writeText: async (s: string) => { got = s; } } } as never });
+  assert.equal(out2, 'copied');
+  assert.equal(got, '— World · https://x.test/a');
 });

@@ -215,14 +215,106 @@ export function buildParallelCopy(i: ParallelCopyInput): CopyResult | null {
 
 export type CopyOutcome = 'ok' | 'fallback' | 'failed';
 
-/** Copy text to the clipboard and never throw. The async API first; when Safari rejects it (outside a
- *  user-activation window, or without permission), the synchronous legacy path, which works exactly there. */
-export async function copyText(text: string, deps: { doc?: Document; nav?: Pick<Navigator, 'clipboard'> } = {}): Promise<CopyOutcome> {
-  const nav = deps.nav ?? (typeof navigator !== 'undefined' ? navigator : undefined);
+/**
+ * True for a WebKit view that is NOT Safari: an iOS/iPadOS home-screen app, and the WKWebView a Tauri shell runs in.
+ *
+ * Why this exists. `navigator.clipboard.writeText` is present in WKWebView and its promise RESOLVES, but outside
+ * Safari's own user-activation window it writes nothing: the reader taps Copy, the toast says "Copied", and the
+ * clipboard still holds whatever was in it before. Because the promise resolved, the legacy fallback below never
+ * ran. That is the shape of the owner's "World cannot copy-paste". `document.execCommand('copy')` is the path that
+ * does work there, so on these views it goes FIRST and the async API is the fallback, not the other way round.
+ */
+export function prefersLegacyClipboard(nav?: { userAgent?: string; vendor?: string } | null, standalone?: boolean): boolean {
+  const ua = nav?.userAgent ?? '';
+  if (!ua) return false;
+  const webkit = /AppleWebKit/.test(ua) && !/Chrome|Chromium|Edg\//.test(ua);
+  if (!webkit) return false;
+  const apple = /iPhone|iPad|iPod|Macintosh/.test(ua);
+  if (!apple) return false;
+  // Safari (and SFSafariViewController) identify themselves; a WKWebView embedded in an app does not.
+  // Safari's own string carries both "Version/<n>" and "Safari/<n>"; on the phone "Mobile/<build>" sits between
+  // them, so the two are tested apart. A WKWebView embedded in an app carries neither.
+  const safari = /Version\/\d/.test(ua) && /Safari\//.test(ua);
+  return !safari || standalone === true;
+}
+
+/** Copy text to the clipboard and never throw. See [prefersLegacyClipboard] for the order the two paths run in. */
+export async function copyText(
+  text: string,
+  deps: { doc?: Document; nav?: (Pick<Navigator, 'clipboard'> & { userAgent?: string; vendor?: string }) | null; standalone?: boolean } = {},
+): Promise<CopyOutcome> {
+  const nav = deps.nav === undefined ? (typeof navigator !== 'undefined' ? navigator : undefined) : deps.nav ?? undefined;
+  const standalone = deps.standalone ?? (typeof matchMedia === 'function' ? matchMedia('(display-mode: standalone)').matches : undefined);
+  if (prefersLegacyClipboard(nav, standalone) && legacyCopy(text, deps.doc)) return 'fallback';
   try {
     if (nav?.clipboard?.writeText) { await nav.clipboard.writeText(text); return 'ok'; }
   } catch { /* fall through to the legacy path */ }
   return legacyCopy(text, deps.doc) ? 'fallback' : 'failed';
+}
+
+// ── share ─────────────────────────────────────────────────────────────────
+
+export type ShareOutcome = 'shared' | 'cancelled' | 'copied' | 'failed';
+
+/**
+ * The platform share sheet when there is one, the clipboard when there is not.
+ *
+ * `navigator.share` is the one API every target here agrees on: iOS and iPadOS WKWebView, Android WebView, Safari,
+ * Chrome on Android and the installed PWA all implement it; macOS Safari implements it; a desktop Tauri window and
+ * Windows WebView2 may not, and there the text is copied instead, which is what a reader can actually use.
+ * A reader who opens the sheet and dismisses it has not failed at anything, so a cancel is silent.
+ */
+export async function shareOrCopy(
+  data: { title?: string; text: string; url?: string },
+  deps: { doc?: Document; nav?: (Pick<Navigator, 'clipboard'> & { share?: (d: ShareData) => Promise<void>; canShare?: (d: ShareData) => boolean; userAgent?: string }) | null } = {},
+): Promise<ShareOutcome> {
+  const nav = deps.nav === undefined ? (typeof navigator !== 'undefined' ? navigator : undefined) : deps.nav ?? undefined;
+  if (typeof nav?.share === 'function') {
+    const payload: ShareData = data.url ? { title: data.title, text: data.text, url: data.url } : { title: data.title, text: data.text };
+    try {
+      if (typeof nav.canShare === 'function' && !nav.canShare(payload)) throw new Error('cannot share');
+      await nav.share(payload);
+      return 'shared';
+    } catch (e) {
+      // AbortError is the reader closing the sheet: say nothing, do not fall back to the clipboard behind their back.
+      if (e && typeof e === 'object' && (e as { name?: string }).name === 'AbortError') return 'cancelled';
+    }
+  }
+  const whole = data.url && !data.text.includes(data.url) ? `${data.text}\n${data.url}` : data.text;
+  return (await copyText(whole, deps)) === 'failed' ? 'failed' : 'copied';
+}
+
+// ── reading a browser selection cleanly ───────────────────────────────────
+
+/**
+ * The visible words of a DOM selection, with the furniture left out.
+ *
+ * `Selection.toString()` takes everything the range covers, and in this reader that includes the verse-number
+ * gutter (`.yr-vn`), the edition tag at the end of a parallel line (`.yr-lab`), the footnote markers (`.yr-fn`)
+ * and the screen-reader-only spans (`.yr-sr`) that are clipped to one pixel but still part of the text flow. A
+ * reader who drags across three verses and copies gets "3 And God said… 4 And God saw…" with the numbers run into
+ * the words. This walks the range's own text nodes instead and skips anything inside those four classes.
+ */
+export const COPY_SKIP_SELECTOR = '.yr-sr, .yr-vn, .yr-lab, .yr-fn, .yr-plate-cap';
+
+export function selectionText(range: Range, doc: Document, skip = COPY_SKIP_SELECTOR): string {
+  const root = range.commonAncestorContainer;
+  const host = (root.nodeType === 1 ? (root as Element) : root.parentElement) ?? doc.body;
+  if (!host) return '';
+  const walker = doc.createTreeWalker(host, NodeFilter.SHOW_TEXT);
+  const parts: string[] = [];
+  let node = walker.nextNode();
+  while (node) {
+    if (range.intersectsNode(node) && !(node.parentElement?.closest(skip))) {
+      const whole = node.nodeValue ?? '';
+      const from = node === range.startContainer ? range.startOffset : 0;
+      const to = node === range.endContainer ? range.endOffset : whole.length;
+      const piece = whole.slice(from, to);
+      if (piece) parts.push(piece);
+    }
+    node = walker.nextNode();
+  }
+  return parts.join('').replace(/[ \t]*\n[ \t]*/g, '\n').replace(/\n{3,}/g, '\n\n').replace(/[ \t]{2,}/g, ' ').trim();
 }
 
 export function legacyCopy(text: string, doc: Document | undefined = typeof document !== 'undefined' ? document : undefined): boolean {
