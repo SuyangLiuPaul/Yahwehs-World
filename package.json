@@ -10,7 +10,7 @@
     "build:gallery": "npm run reader:data && VITE_SURFACE=gallery npm run build",
     "dev:gallery": "VITE_SURFACE=gallery vite",
     "pictures": "node scripts/build-pictures.mjs",
-    "verify:gallery": "npm run test:gallery && node scripts/audit-zh-hant.mjs && npm run verify:fonts && node scripts/check-budget.mjs --profile gallery && node scripts/verify-gallery.mjs && node scripts/verify-redirects.mjs && node scripts/verify-gallery-ui.mjs && node scripts/verify-ru.mjs && node scripts/verify-pwa.mjs",
+    "verify:gallery": "npm run test:gallery && node scripts/audit-zh-hant.mjs && npm run verify:fonts && node scripts/check-budget.mjs --profile gallery && node scripts/verify-gallery.mjs && node scripts/verify-bible-notes-vocabulary.mjs && node scripts/verify-redirects.mjs && node scripts/verify-gallery-ui.mjs && node scripts/verify-ru.mjs && node scripts/verify-pwa.mjs",
     "verify:pwa": "node scripts/verify-pwa.mjs",
     "gallery-data": "node scripts/build-gallery-data.mjs",
     "check": "tsc --noEmit",

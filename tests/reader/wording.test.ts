@@ -9,16 +9,13 @@ import { STRINGS } from '../../src/reader/strings.ts';
 import { UI_LANG_INFO } from '../../src/reader/types.ts';
 import { CUT_NOTICE } from '../../src/reader/copy.ts';
 import { headings } from './_data.ts';
+import { ZH, EN, RU } from '../../scripts/lib/church-vocabulary.mjs';
 
-// The same list Words' tests carry (headings + intros), unioned.
-export const BANNED = [
-  '位格', '本体', '本體', '三位一体', '三位一體', '三一', '子神', '圣子', '聖子', '圣父', '聖父', '神性', '完全是神', '完全是人',
-  '先存', '神成为人', '神成為人', '道成肉身', '祂',
-  'trinit', 'triune', 'godhead', 'god the son', 'second person', 'divinity', 'deity', 'divine nature', 'fully god', 'fully man',
-  'pre-exist', 'preexist', 'pre-incarnate', 'incarnat', 'god became man', 'jesus is god', 'god became',
-  // the Russian list of Words' tests
-  'троиц', 'триедин', 'бог-сын', 'ипостас', 'воплощ', 'божествен', 'предсуществ',
-];
+// The same list Words' tests carry (headings + intros), unioned — and now kept
+// in scripts/lib/church-vocabulary.mjs, because scripts/verify-gallery.mjs used
+// to carry a SHORTER copy of its own and three served captions said 神性 under
+// a green gate. One list, two readers.
+export const BANNED = [...ZH, ...EN, ...RU];
 
 function walk(o: unknown, path: string, visit: (s: string, path: string) => void): void {
   if (typeof o === 'string') visit(o, path);

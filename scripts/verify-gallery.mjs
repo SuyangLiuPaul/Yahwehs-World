@@ -14,6 +14,8 @@ import { createHash } from 'node:crypto';
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, resolve, dirname, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { hitCaption as bannedHit, ZH, EN, RU, NAMES } from './lib/church-vocabulary.mjs';
+const CHURCH_TERMS = { zh: [...ZH, ...NAMES.zh], en: [...EN, ...NAMES.en], ru: [...RU, ...NAMES.ru] };
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const argv = process.argv.slice(2);
@@ -64,15 +66,17 @@ check(!withYear.length && !bibleYear.length, 'the year 1919 appears nowhere in d
 
 const idx = read(join(DIR, 'data/gallery/index.json'));
 const sums = read(join(DIR, 'data/gallery/summaries.json'));
-const BANNED = {
-  zh: /祂|耶和华|耶和華|位格|三一|三位一体|三位一體/,
-  en: /\bJehovah\b|\bTrinity\b|\bTrinitarian\b|\bGodhead\b|three persons|second person of/i,
-  ru: /Иегов|Троиц|ипостас|Богочеловек/i,
-};
+// The list this gate used to carry was SHORTER than the one
+// tests/reader/wording.test.ts carries: no 神性, no 道成肉身, no 本体, no
+// 圣子/圣父, no 完全是神/完全是人, no 先存. Three served Chinese captions
+// (micah-7-1, matthew-17-1, mark-9-1) said 神性 and this check stayed green.
+// Both now read scripts/lib/church-vocabulary.mjs, so there is one list.
 const titles = { zh: idx.ev.map((r) => r[4]), en: idx.ev.map((r) => r[5]), ru: idx.ev.map((r) => r[8] ?? '') };
 for (const l of ['zh', 'en', 'ru']) {
-  const hits = [...titles[l].map((t, i) => [i, t]), ...sums[l].map((t, i) => [i, t])].filter(([, t]) => BANNED[l].test(t));
-  check(!hits.length, `${l} captions carry no banned church vocabulary (1,443 titles + summaries)`, `${l} captions: ${hits.length} banned (e.g. ${hits[0] && idx.ev[hits[0][0]][0]}: ${hits[0] && hits[0][1].slice(0, 40)})`);
+  const hits = [...titles[l].map((t, i) => [i, t]), ...sums[l].map((t, i) => [i, t])]
+    .map(([i, t]) => [i, t, bannedHit[l](t)]).filter(([, , b]) => b);
+  check(!hits.length, `${l} captions carry no banned church vocabulary (1,443 titles + summaries, ${CHURCH_TERMS[l].length} terms)`,
+    `${l} captions: ${hits.length} banned (e.g. ${hits[0] && idx.ev[hits[0][0]][0]} «${hits[0] && hits[0][2]}»: ${hits[0] && hits[0][1].slice(0, 40)})`);
 }
 check(idx.ev.every((r) => r[8]), 'every scene has a Russian title', `${idx.ev.filter((r) => !r[8]).length} scenes without a Russian title`);
 check(sums.ru.every((s) => s), 'every scene has a Russian summary', `${sums.ru.filter((s) => !s).length} scenes without a Russian summary`);

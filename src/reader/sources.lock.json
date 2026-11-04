@@ -1,5 +1,5 @@
 {
- "wordsCommit": "eba531d86aa27bbd2c7a71f5cd710651a5a74001",
+ "wordsCommit": "b3c01be30ccdcf31a1399e33196d89a52765dcb6",
  "files": {
   "assets/bsb-yhwh.json": {
    "sha256": "a0c40adc98debfbcabe3a6214a6430caae28d9de0094cdac9b510eb64a4b20bb",
@@ -38,8 +38,8 @@
    "bytes": 3199925
   },
   "lib/constants/bible_versions.dart": {
-   "sha256": "3d68f78f37d6f11db8b20589c1d3435a9def0ef1143e656ca9c0587a8918cc7c",
-   "bytes": 53591
+   "sha256": "2bb28f9e1b882ff151f676296f3e315014d062d5302438814e32d9aac12b89e1",
+   "bytes": 54937
   },
   "lib/constants/book_name_mapping.dart": {
    "sha256": "ae08823c2c1eca0e7e2b4643bb0fda730859db755ddb693db994f79a044c552f",
