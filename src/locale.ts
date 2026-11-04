@@ -155,17 +155,18 @@ export function hant(s: string): string {
   });
 }
 
-/** The Chinese product name for this reader: Simplified only while reading 简体, Traditional in English, Russian and 繁體
- *  (owner rule, 2026-11-04; the two spellings live in config/site.ts). */
+/** The CHINESE spelling of the name for this reader — Simplified only while reading 简体 — for a string that is Chinese
+ *  anyway. It is not the name an English or Russian page shows; `brand()` below is. (Two spellings: config/site.ts.) */
 export const brandZh = (): string => nameZh(htmlLang(current));
 
-/** The product name to PRINT in this reader's language: the Chinese spelling on a Chinese page, the Latin wordmark on
- *  an English or Russian one. One function, so a page's <title> and its header can no longer disagree (P1-2) — the
- *  Russian title said "Мир Яхве" while the bar above it read 雅偉之界, and three files each wrote their own
- *  t("Yahweh's World", NAME_ZH.hans, 'Мир Яхве'). */
+/** THE PRODUCT NAME IN THIS READER'S LANGUAGE: the Chinese spelling on a Chinese page, the Latin "Yahweh's World" on an
+ *  English or a Russian one. Everything a reader sees the name in goes through this one function — the bar, a <title>,
+ *  the hero, the install note, a sheet — so a page's title and the bar above it cannot disagree (P1-2) and no reader
+ *  meets the name in a script they do not read (owner, 2026-11-04). The bar's own copy of it is in the markup, in all
+ *  four readings, so that it is also right before this module exists (scripts/lib/product-name.mjs). */
 export const brand = (): string => productName(htmlLang(current));
 
-/** Puts the product name inside a string into this reader's spelling (a bilingual <title> is authored once). */
+/** Puts the Chinese name inside an authored Chinese string into this reader's spelling (a <title> is authored once). */
 const withBrand = (s: string): string => s.replace(/雅[伟偉]之界/g, brandZh());
 
 /** Picks the reading, and puts Chinese into the reader's script. */
@@ -271,8 +272,14 @@ export function applyStatic(root: ParentNode = document) {
   // the gallery applies a nav to itself.
   const named = [...(root instanceof Element && root.matches('[data-aria-en]') ? [root as HTMLElement] : []), ...Array.from(root.querySelectorAll<HTMLElement>('[data-aria-en]'))];
   named.forEach((el) => el.setAttribute('aria-label', t(el.dataset.ariaEn || '', el.dataset.ariaZh || el.dataset.ariaEn || '', el.dataset.ariaRu || el.dataset.ariaEn || '')));
-  // The wordmark: the product name in the page language's spelling (Simplified only for 简体), set here so it is never a literal.
-  root.querySelectorAll<HTMLElement>('[data-brand]').forEach((el) => { el.textContent = brandZh(); });
+  // THE WORDMARK. The lockup in the markup carries all four readings and html[lang] shows one of them in CSS
+  // (scripts/lib/product-name.mjs, the .tri rules inline in every head), so the name is right in the FIRST paint and
+  // nothing here may touch it — writing it from a module is what gave an English reader a frame of the Chinese name.
+  // A page written before the lockup existed carries a bare [data-brand] with no readings; that one still gets the
+  // name for this language written in, which is `brand()` — the Latin wordmark on an English or Russian page.
+  root.querySelectorAll<HTMLElement>('[data-brand]').forEach((el) => {
+    if (!el.firstElementChild) el.textContent = brand();
+  });
   // Chinese written straight into an element rather than paired with an English original.
   root.querySelectorAll<HTMLElement>('[data-zh-text]').forEach((el) => {
     el.textContent = withBrand(hant(el.dataset.zhText ?? ''));

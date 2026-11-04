@@ -533,10 +533,16 @@ if (want('ui')) {
     const steps = await page.locator('dialog.gx-sheet[open] .in-steps li').count();
     const needle = en ? 'Add to Home Screen' : ru ? 'На экран' : lang === 'zh-Hans' ? '添加到主屏幕' : '添加';
     check(steps === 3 && sheet.includes(needle) && (await page.locator('dialog.gx-sheet[open] svg.in-share').count()) === 1, `iPhone Safari, ${lang}: the sheet has the three steps and the Share icon`, `${lang}: steps ${steps}, ${sheet.slice(0, 120)}`);
-    check(/雅伟之界|雅偉之界|Yahweh's World|Мир Яхве/.test(sheet), `iPhone Safari, ${lang}: the sheet names the app (${sheet.match(/雅伟之界|雅偉之界|Yahweh's World|Мир Яхве/)?.[0]})`);
+    // the sheet names the app in THIS reader's language (owner, 2026-11-04): Latin for en and ru, Chinese for a Chinese page
+    const named = { en: "Yahweh's World", 'zh-Hans': '雅伟之界', 'zh-Hant': '雅偉之界', ru: "Yahweh's World" }[lang];
+    check(sheet.includes(named), `iPhone Safari, ${lang}: the sheet names the app "${named}"`, `${lang}: ${sheet.slice(0, 160)}`);
+    if (en || ru) check(!/[\u4e00-\u9fff]/.test(sheet.replace(/[\u4e00-\u9fff]+(?=[\s·]*(?:Yahweh's (?:Words|Sword)))/g, '')), `iPhone Safari, ${lang}: no Chinese character in the install sheet of a non-Chinese page`);
     await page.keyboard.press('Escape');
     const label = await page.evaluate(() => document.querySelector('meta[name="apple-mobile-web-app-title"]').content);
-    check(label === { en: "Yahweh's World", 'zh-Hans': '雅偉之界', 'zh-Hant': '雅偉之界', ru: 'Мир Яхве' }[lang], `${lang}: the home-screen label is "${label}"`);
+    // The LABEL under the icon is the short one, per language, and it must be the SAME string the manifest for that
+    // language carries: it used to be written a fourth time in src/gallery/pwa.ts, where Russian came out "Мир Яхве"
+    // while every manifest said "Мир", and 简体 came out 雅偉之界 (繁體) while the manifest said 雅伟之界.
+    check(label === LANGS[lang].short, `${lang}: the home-screen label is the manifest's short_name "${LANGS[lang].short}" ("${label}")`);
     const mlink = await page.evaluate(() => document.getElementById('pwa-manifest').getAttribute('href'));
     check(mlink === `/${LANGS[lang].file}`, `${lang}: manifest link is ${mlink}`);
     check(errs.length === 0, `${lang}: no error`, errs.join(' | '));

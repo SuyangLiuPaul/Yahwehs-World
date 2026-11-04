@@ -1,8 +1,7 @@
 import './scenes-gallery.css';
 import { BOOKS } from './books.ts';
 import { UNITS } from './plan-units.ts';
-import { NAME_ZH } from './config/site.ts';
-import { applyStatic, bindSwitch, hant, locale as currentLocale, onLocale, t } from './locale.ts';
+import { applyStatic, bindSwitch, brand, hant, locale as currentLocale, onLocale, t } from './locale.ts';
 import { installSiteMenu, loadingStep, loadingSteps, pageReady } from './site-shell.ts';
 import type { TrackEvent } from './events-track.ts';
 import { eventRawThumbUrl, eventThumbUrl, openEventLightbox } from './event-media.ts';
@@ -97,9 +96,9 @@ function getFilteredEvents(): TrackEvent[] {
 
 function renderHeaderAndControls() {
   const zh = currentLocale() === 'zh';
-  document.title = zh
-    ? `${hant(`圣经画卷 · ${NAME_ZH.hans}`)} | Biblical Scenes · Yahweh's World`
-    : `Biblical Scenes · Yahweh's World`;
+  // One language in the title, and the product name in that language (owner, 2026-11-04). It used to be both at once:
+  // "圣经画卷 · 雅偉之界 | Biblical Scenes · Yahweh's World", which also mixed 简体 and 繁體 in one string.
+  document.title = `${zh ? hant('圣经画卷') : 'Biblical Scenes'} · ${brand()}`;
 
   $('sg-kicker').textContent = zh
     ? hant('1,443 幅正典事件画卷 · 按创世记至启示录经文顺序排列')

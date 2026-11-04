@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { NAME_ZH, SITE_HOST, nameZh, apiBase, channelOf, fullPictureHost, publicUrl, targetOf, thumbPictureHost } from '../../src/config/site.ts';
+import { NAME_ZH, PRODUCT, SITE_HOST, nameZh, apiBase, channelOf, fullPictureHost, productName, publicUrl, shortLabel, targetOf, thumbPictureHost } from '../../src/config/site.ts';
 
 test('the website build keeps its own origin for pictures and the API', () => {
   assert.equal(targetOf({}), 'web');
@@ -36,4 +36,27 @@ test('the Chinese product name is Simplified only for a 简体 page', () => {
   for (const lang of ['en', 'ru', 'zh-Hant', '']) assert.equal(nameZh(lang), NAME_ZH.hant);
   assert.equal(NAME_ZH.hant, '雅偉之界');
   assert.equal(NAME_ZH.hans, '雅伟之界');
+});
+
+// THE NAME FOLLOWS THE LANGUAGE (owner, 2026-11-04, on TestFlight build 3): an English or Russian reader must never be
+// shown the Chinese name. Same rule as Words, whose Russian build also keeps the Latin "Yahweh's Words".
+test('the product name a page prints is the name of that page\'s language', () => {
+  assert.equal(productName('en'), "Yahweh's World");
+  assert.equal(productName('ru'), "Yahweh's World");
+  assert.equal(productName('zh-Hans'), '雅伟之界');
+  assert.equal(productName('zh-Hant'), '雅偉之界');
+  assert.equal(productName(''), "Yahweh's World");          // no language yet: the Latin name, not Chinese
+  const CJK = /[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/;
+  for (const lang of ['en', 'ru', 'en-GB', 'ru-RU', '']) assert.ok(!CJK.test(productName(lang)), `${lang} got CJK: ${productName(lang)}`);
+  for (const lang of ['zh-Hans', 'zh-Hant']) assert.ok(CJK.test(productName(lang)));
+});
+
+test("the label under the icon is the short one, and Russian's is Мир", () => {
+  assert.equal(shortLabel('en'), 'World');
+  assert.equal(shortLabel('ru'), 'Мир');
+  assert.equal(shortLabel('zh-Hans'), '雅伟之界');
+  assert.equal(shortLabel('zh-Hant'), '雅偉之界');
+  assert.equal(shortLabel(''), PRODUCT.en);
+  // ...and it is NOT the wordmark: a launcher truncates at about eleven characters.
+  assert.notEqual(shortLabel('en'), PRODUCT.wordmark);
 });

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0e2b4b">
 <meta name="robots" content="noindex">
-<title>Offline · Yahweh's World</title>
+<title data-en="Offline · Yahweh's World" data-hans="没有网络 · 雅伟之界" data-hant="沒有網路 · 雅偉之界" data-ru="Нет соединения · Yahweh's World">Offline · Yahweh's World</title>
 <!-- The page a navigation gets when the network is down and no saved copy of what was asked for exists
      (src/pwa/sw.ts). Self-contained on purpose: no script bundle, no font, no image from the network. docs/gallery-pwa.md. -->
 <style>
@@ -31,7 +31,9 @@ for(var i=0;i<t.length;i++){var g=(t[i]||"").toLowerCase();
 if(g==="zh"||g.indexOf("zh-")===0){l=/hant|tw|hk|mo/.test(g)?"zh-Hant":"zh-Hans";break}
 if(g==="en"||g.indexOf("en-")===0){l="en";break}
 if(g==="ru"||g.indexOf("ru-")===0){l="ru";break}}}
-document.documentElement.lang=l}catch(e){}})()
+document.documentElement.lang=l}catch(e){}
+try{var T=document.querySelector("title"),k={en:"en","zh-Hans":"hans","zh-Hant":"hant",ru:"ru"}[document.documentElement.lang];
+if(T&&k&&T.dataset[k])T.textContent=T.dataset[k]}catch(e){}})()
 </script>
 </head>
 <body>

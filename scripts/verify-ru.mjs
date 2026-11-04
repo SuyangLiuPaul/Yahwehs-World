@@ -68,9 +68,11 @@ const json = (f) => JSON.parse(readFileSync(join(DIR, f), 'utf8'));
 // What may stay non-Russian on a Russian page, and why. Each rule is a decision, not a convenience.
 const ALLOW = [
   /^(EN|简|繁|РУ)$/,                                                      // the language switch names each language in its own script
-  /^(Yahweh's World|雅伟之界|雅偉之界)$/,                                 // the brand lockup carries the name in Chinese and English on every page
+  /^Yahweh's World$/,                                                     // the product name, which on a Russian page is the LATIN wordmark and never Chinese (owner, 2026-11-04)
   /^Языки: English, 中文/,                                                // the home note names the three languages in their own script
-  /和合本|简体中文|繁體中文|繁体中文|雅伟之|雅偉之/,                        // the Chinese editions and the sister apps are listed by their own names
+  /和合本|简体中文|繁體中文|繁体中文|雅[伟偉]之[言劍剑]/,                   // the Chinese editions, and the two SISTER apps, which are listed by their own Chinese names
+  //   ...note what is NOT in that list: 雅[伟偉]之界, this app's own name. A Russian page shows it as "Yahweh's World"
+  //   (the rule above), so any CJK spelling of it reaching a Russian page is the build-3 fault and must fail here.
   /^[\u0400-\u04FF][\u0400-\u04FF\s\d]*\d+:\d+.*·\s[A-Z0-9][A-Za-z0-9 ]+\d+:\d+/, // "Бытие 15:1–21 · Genesis 15:1–21": the English reference stays beside the Russian one on purpose
   /^(BSB|KJV|WEB|ASV|CUVS?|СП)[\w-]* ?(\(.*?\))? · /,                      // an edition's credit line is written in the edition's own language, as in Words (it travels with the copied text)
   /^[\s\d:.,;\-–—·©()+/#›‹•«»…]*$/,                                      // numbers, references, punctuation

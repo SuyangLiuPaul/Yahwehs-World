@@ -31,14 +31,26 @@
 .sitenav .brand-words {
   display: grid; gap: 1px;
 }
-.sitenav .brand .zh {
+/* THE WORDMARK. .wm is the lockup written by scripts/lib/product-name.mjs: all four readings in the markup, one of
+   them shown by html[lang] through the .tri rules that are inline in every head. The name therefore follows the
+   reader's language from the first paint — an English or Russian reader never meets the Chinese name (owner,
+   2026-11-04, on TestFlight build 3, where the bar read 雅偉之界 above "Home" and "Главная"). */
+.sitenav .brand .wm {
   font-family: var(--display); font-size: var(--fs-500); font-weight: 600;
   letter-spacing: .14em; line-height: 1.15; color: var(--ink);
+}
+/* The Latin readings are prose, not four square characters: .14em of tracking on "Yahweh's World" is a word that no
+   longer looks like a word, and at fs-500 it would not fit a 375 px bar beside the tabs and the language button. */
+html[lang="en"] .sitenav .brand .wm, html[lang="ru"] .sitenav .brand .wm {
+  font-size: var(--fs-400); letter-spacing: .01em;
 }
 .sitenav .brand .en {
   font-family: var(--latin); font-size: 10px; font-weight: 500;
   letter-spacing: var(--tr-mark); text-transform: uppercase; color: var(--gold-bright);
 }
+/* ...and the second line is the LATIN name under the Chinese one. On an English or Russian page the line above it is
+   already that name, so it would print the wordmark twice. */
+html[lang="en"] .sitenav .brand .en, html[lang="ru"] .sitenav .brand .en { display: none; }
 .sitenav ol {
   list-style: none; display: flex; gap: 1px; margin: 0; padding: 0;
   pointer-events: auto; flex-wrap: wrap;
@@ -128,7 +140,8 @@
   #settings-open { width: 26px; height: 26px; font-size: var(--fs-300); }
   .sitenav .brand { gap: 6px; }
   .sitenav .brand-logo { width: 26px; height: 26px; border-radius: 6px; }
-  .sitenav .brand .zh { font-size: var(--fs-300); letter-spacing: .08em; }
+  .sitenav .brand .wm { font-size: var(--fs-300); letter-spacing: .08em; }
+  html[lang="en"] .sitenav .brand .wm, html[lang="ru"] .sitenav .brand .wm { font-size: var(--fs-300); letter-spacing: .01em; }
   .sitenav .brand .en { display: none; }
   /* One row that scrolls rather than a row that wraps: a wrapped tab strip
      pushes the second line under the brand and reads as a mistake. */

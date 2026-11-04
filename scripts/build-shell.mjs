@@ -12,7 +12,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { NAME_HANS, NAME_HANT } from './lib/product-name.mjs';
+import { NAME_HANS, NAME_HANT, PRODUCT_NAMES, wordmarkLockup } from './lib/product-name.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -83,8 +83,12 @@ export const CRITICAL = [
   '#loading{position:fixed;inset:0;z-index:50;display:grid;place-content:center;justify-items:center;gap:clamp(12px,2.2vmin,28px);padding:0 20px;box-sizing:border-box;background:radial-gradient(circle at 50% 42%,#18426e 0,#0a1e36 72%);text-align:center;transition:opacity .6s ease,visibility 0s linear .6s}',
   '#loading.done{opacity:0;visibility:hidden;pointer-events:none}',
   '#loading-bar{position:fixed;left:0;top:0;height:2px;width:0;background:linear-gradient(90deg,#3ba3f8,#f8d66d);transition:width .35s ease;z-index:51}',
+  // THE FOUR READINGS, CHOSEN BEFORE FIRST PAINT. A .tri element carries one <i> per reading and html[lang] — which
+  // the first-paint script above has already set from the stored language — shows exactly one. The loading line was
+  // the first thing written this way; the WORDMARK is written this way too (scripts/lib/product-name.mjs), because a
+  // name set by a module arrives after the paint and an English reader saw one frame of 雅偉之界.
   '.tri i{font-style:normal;display:none}',
-  'html[lang="en"] .tri .l-en,html[lang="zh-Hans"] .tri .l-hans,html[lang="zh-Hant"] .tri .l-hant{display:inline}',
+  'html[lang="en"] .tri .l-en,html[lang="zh-Hans"] .tri .l-hans,html[lang="zh-Hant"] .tri .l-hant,html[lang="ru"] .tri .l-ru{display:inline}',
   // The shapes. .ld-sk is any block that stands where content will be.
   '.ld-sk{position:relative;overflow:hidden;background:rgba(198,216,236,.09)}',
   '.ld-sk::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(248,214,109,.16) 50%,transparent 70%);transform:translateX(-100%);animation:ld-sh 2.2s ease-in-out infinite}',
@@ -236,7 +240,7 @@ const shell = (page) => `${START}
   <div id="loading" role="status" aria-live="polite" aria-busy="true">
     <i id="loading-bar" aria-hidden="true"></i>
 ${skeleton(page.sk)}
-    <p id="loading-title" class="tri" aria-hidden="true"><i class="l-en">Yahweh's World</i><i class="l-hans">${NAME_HANS}</i><i class="l-hant">${NAME_HANT}</i></p>
+    <p id="loading-title" class="tri" aria-hidden="true"><i class="l-en">${PRODUCT_NAMES.wordmark}</i><i class="l-hans">${NAME_HANS}</i><i class="l-hant">${NAME_HANT}</i><i class="l-ru">${PRODUCT_NAMES.wordmark}</i></p>
     <p id="loading-text" class="tri"><i class="l-en">${page.loadEn}</i><i class="l-hans">${page.loadHans}</i><i class="l-hant">${page.loadHant}</i></p>
     <div id="loading-error" role="alert">
       <p class="tri" style="margin:0"><i class="l-en">Loading did not finish. Check your connection and try again.</i><i class="l-hans">加载没有完成。请检查网络后重试。</i><i class="l-hant">載入沒有完成。請檢查網路後重試。</i></p>
@@ -250,8 +254,8 @@ ${skeleton(page.sk)}
     <a class="brand" href="/">
       <img class="brand-logo" src="/brand-logo.webp" alt="" width="34" height="34">
       <span class="brand-words">
-        <span class="zh" data-brand>${NAME_HANT}</span>
-        <span class="en">Yahweh's World</span>
+        ${wordmarkLockup()}
+        <span class="en">${PRODUCT_NAMES.wordmark}</span>
         <span class="pg" data-en="${page.en}" data-zh="${page.zh}">${page.en}</span>
       </span>
     </a>

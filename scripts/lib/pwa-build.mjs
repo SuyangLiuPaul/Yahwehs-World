@@ -95,6 +95,11 @@ const FIRST_PAINT = '(function(){var d=document.documentElement;try{var l=localS
   + 'if(g==="zh"||g.indexOf("zh-")===0){l=/hant|tw|hk|mo/.test(g)?"zh-Hant":"zh-Hans";break}'
   + 'if(g==="en"||g.indexOf("en-")===0){l="en";break}'
   + 'if(g==="ru"||g.indexOf("ru-")===0){l="ru";break}}}d.lang=l}catch(e){d.lang="en"}'
+  // The TITLE in the reader's language, from the <title>'s own four readings. These pages have no module, so the tab,
+  // the history entry and anything that unfurls the page used to read "Privacy · Yahweh's World" to a 简体 reader; the
+  // product name inside it follows the language like every other place it appears (owner, 2026-11-04).
+  + 'try{var T=document.querySelector("title"),k={en:"en","zh-Hans":"hans","zh-Hant":"hant",ru:"ru"}[d.lang];'
+  + 'if(T&&k&&T.dataset[k])T.textContent=T.dataset[k]}catch(e){}'
   + 'try{var p=JSON.parse(localStorage.getItem("yr.prefs.v1")||"{}").theme;'
   + 'if(["dark","light","paper"].indexOf(p)<0)p=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"paper";'
   + 'd.dataset.surf=p;var m=document.querySelector(\'meta[name="theme-color"]\');'

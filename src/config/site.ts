@@ -24,9 +24,19 @@ export const SITE_HOST = 'https://world.yahwehword.com';
  *  audience that no page actually has — every page knows its language — and at 20 characters it was the string that
  *  pushed every title, every og:site_name and every installer name over the length its field allows.
  *
- *  Inside a page the Chinese spelling follows NAME_ZH below: 雅伟之界 only while the page language is 简体. The
- *  launcher labels follow the same rule, so a phone set to 简体 gets 雅伟之界 under the icon — which is the one place
- *  the 2026-11-03 "Traditional wherever it is a name" ruling was overridden by the 2026-11-04 naming decision. */
+ *  THE NAME FOLLOWS THE LANGUAGE (owner, 2026-11-04, on the TestFlight build 3). The wordmark in the bar used to be
+ *  the Chinese name on every page: an English reader and a Russian reader both met 雅偉之界 above the word "Home" /
+ *  "Главная" and had no way to read the name of the thing they were using. The rule is Words's rule, and it is
+ *  `productName` below:
+ *
+ *      en       Yahweh's World        zh-Hans  雅伟之界
+ *      ru       Yahweh's World        zh-Hant  雅偉之界
+ *
+ *  Russian keeps the Latin name, exactly as Words's Russian build keeps "Yahweh's Words"; the SHORT icon label is the
+ *  one Russian string, 'Мир', because a launcher has eleven characters and no room for prose.
+ *
+ *  The two Chinese spellings live in NAME_ZH below and the 简体 spelling is used only while the page language is
+ *  zh-Hans — the 2026-11-03 "Traditional wherever it is a name" ruling, narrowed by the 2026-11-04 naming decision. */
 export const PRODUCT = {
   /** The Latin wordmark. Never shortened, never translated. */
   wordmark: "Yahweh's World",
@@ -44,16 +54,26 @@ export const PRODUCT = {
   },
 } as const;
 
-/** The name to print inside a page of this language: the Chinese spelling for a Chinese page, the wordmark otherwise. */
+/** THE NAME A PAGE OF THIS LANGUAGE SHOWS. The wordmark everywhere a reader sees it — the bar, a <title>, a hero, a
+ *  sheet, an install note — comes from here, so no page can show a name in a language its reader does not read.
+ *  A page's markup carries all four readings and `html[lang]` picks one in CSS (the .tri lockup in
+ *  scripts/build-shell.mjs), so the right name is on screen in the FIRST paint; this is what the modules use after. */
 export const productName = (pageLang: string): string =>
   (pageLang === 'zh-Hans' ? NAME_ZH.hans : pageLang === 'zh-Hant' ? NAME_ZH.hant : PRODUCT.wordmark);
 
-/** The Chinese name as a page shows it. Owner rule (2026-11-04): 雅偉之界 (Traditional) in English, Russian and 繁體 pages,
- *  雅伟之界 only while the page language is 简体 (zh-Hans). Every page, script and build template takes the two spellings from
- *  here (scripts/lib/product-name.mjs reads this file for the build; `npm run verify:shell` fails on a stray literal). */
+/** The label under the icon for a page language: the one place Russian is 'Мир' and English is 'World' (PRODUCT.short). */
+export const shortLabel = (pageLang: string): string =>
+  (pageLang === 'zh-Hans' ? PRODUCT.zhHans : pageLang === 'zh-Hant' ? PRODUCT.zhHant : pageLang === 'ru' ? PRODUCT.ru : PRODUCT.en);
+
+/** The two Chinese spellings of the name. Owner rule: 雅伟之界 only while the page language is 简体 (zh-Hans), 雅偉之界 on a
+ *  繁體 page — and on an English or Russian page NEITHER is shown, because `productName` gives those the Latin wordmark.
+ *  These two are still what a Chinese string composed at run time needs (locale.ts `withBrand`), and every page, script and
+ *  build template takes them from here (scripts/lib/product-name.mjs reads this file for the build; `npm run verify:shell`
+ *  fails on a stray literal). */
 export const NAME_ZH = { hans: '雅伟之界', hant: '雅偉之界' } as const;
 
-/** The Chinese name to show for a page language ('zh-Hans' is the only one that gets the Simplified spelling). */
+/** The Chinese spelling to use for a page language. Only for a string that is Chinese anyway: an English or Russian page
+ *  gets its name from `productName`, not from here. */
 export const nameZh = (pageLang: string): string => (pageLang === 'zh-Hans' ? NAME_ZH.hans : NAME_ZH.hant);
 
 export type Channel = 'web' | 'store' | 'direct';

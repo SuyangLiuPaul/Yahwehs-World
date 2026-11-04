@@ -187,9 +187,10 @@ const combined = SHELL_FILES.filter((p) => /\.(json|plist|strings|xml|ya?ml|sh|p
 check(combined.length === 0, 'no shell file carries the combined "雅偉之界 / Yahweh\'s World"', combined.join(', '));
 const mixedScript = SHELL_FILES.filter((p) => /\.(strings|xml)$/.test(p) && /雅伟之界/.test(readFileSync(p, 'utf8')) && /zh-Hant|rTW|rHK/.test(p)).map(rel);
 check(mixedScript.length === 0, 'no Traditional name file carries the Simplified spelling', mixedScript.join(', '));
-// The page-name rule (owner, 2026-11-04): 雅偉之界 (Traditional) in English, Russian and 繁體 pages; 雅伟之界 only while the page language is 简体.
-// One source (NAME_ZH in src/config/site.ts); a page, script or template may carry the Simplified spelling only where it is the 简体 reading:
-// a <i class="l-hans">, a data-zh= / data-aria-zh= attribute. Everything else takes it from NAME_ZH (runtime) or scripts/lib/product-name.mjs (build).
+// THE NAME FOLLOWS THE LANGUAGE (owner, 2026-11-04, on TestFlight build 3): en and ru read "Yahweh's World", zh-Hans 雅伟之界,
+// zh-Hant 雅偉之界. One source (PRODUCT / NAME_ZH in src/config/site.ts). A page, script or template may carry a Chinese spelling
+// only where it IS that language's reading: <i class="l-hans">, <span class="t hans">, data-zh= / data-aria-zh= / data-hans=.
+// Everything else takes the name from productName (runtime) or scripts/lib/product-name.mjs (build).
 {
   const nameZh = /export const NAME_ZH = \{ hans: '([^']+)', hant: '([^']+)' \}/.exec(site);
   check(!!nameZh && nameZh[1] === '雅伟之界' && nameZh[2] === '雅偉之界', 'NAME_ZH in site.ts: 雅伟之界 (简体 only) and 雅偉之界 (everything else)');
@@ -200,7 +201,12 @@ check(mixedScript.length === 0, 'no Traditional name file carries the Simplified
     const lines = read(p).split('\n');
     lines.forEach((line, n) => {
       if (!line.includes('雅伟之界')) return;
-      const rest = line.replace(/<i class="l-hans">[^<]*<\/i>/g, '').replace(/data-(?:aria-)?zh="[^"]*"/g, '').replace(/^\s*(?:\/\/|\*|\/\*).*$/, '');
+      const rest = line
+        .replace(/<i class="l-hans">[^<]*<\/i>/g, '')          // the 简体 reading of a .tri lockup (the wordmark, the loading line)
+        .replace(/<span class="t hans">[^<]*<\/span>/g, '')    // the 简体 reading on a page with no bundle (src/pwa/*.html)
+        .replace(/data-(?:aria-)?zh="[^"]*"/g, '')             // the 简体 reading of a [data-en] pair
+        .replace(/data-hans="[^"]*"/g, '')                     // the 简体 reading of a four-way <title>
+        .replace(/^\s*(?:\/\/|\*|\/\*).*$/, '');
       if (rest.includes('雅伟之界')) stray.push(`${p}:${n + 1}`);
     });
   }
@@ -209,6 +215,25 @@ check(mixedScript.length === 0, 'no Traditional name file carries the Simplified
   check(brands.length === 0, 'every page with a wordmark sets it through data-brand (the page language chooses the spelling)', brands.join(', '));
   const titles = readdirSync(ROOT).filter((n) => n.endsWith('.html')).filter((n) => /<title>[^<]*雅伟之界/.test(read(n)));
   check(titles.length === 0, 'no static <title> or og: tag spells the name Simplified (it is shown to English and Russian readers before the script runs)', titles.join(', '));
+  // THE WORDMARK CARRIES ALL FOUR READINGS, IN THE MARKUP. This is what makes the name right in the first paint: a page
+  // whose lockup is missing a reading shows nothing at all in that language, and one whose en/ru reading is Chinese is
+  // the build-3 fault itself (the bar read 雅偉之界 above "Home" and "Главная"). Both generators and every built page.
+  const LOCKUP = [
+    ['the Latin wordmark for English', /<i class="l-en">Yahweh(?:'|&#39;|’)s World<\/i>/],
+    ['the Simplified name for 简体', /<i class="l-hans">雅伟之界<\/i>/],
+    ['the Traditional name for 繁體', /<i class="l-hant">雅偉之界<\/i>/],
+    ['the Latin wordmark for Russian', /<i class="l-ru">Yahweh(?:'|&#39;|’)s World<\/i>/],
+  ];
+  const lockupIn = (text) => LOCKUP.filter(([, re]) => !re.test(text)).map(([what]) => what);
+  for (const gen of ['scripts/lib/product-name.mjs', 'scripts/build-shell.mjs', 'scripts/lib/vite-gallery-surface.mjs']) {
+    const src = read(gen);
+    const miss = gen.endsWith('product-name.mjs') ? lockupIn(src.replace(/\$\{PRODUCT_NAMES\.wordmark\}/g, "Yahweh's World").replace(/\$\{NAME_HANS\}/g, '雅伟之界').replace(/\$\{NAME_HANT\}/g, '雅偉之界')) : [];
+    check(gen.endsWith('product-name.mjs') ? miss.length === 0 : /wordmarkLockup\(/.test(src),
+      gen.endsWith('product-name.mjs') ? 'the wordmark lockup writes all four readings' : `${gen} takes the wordmark from the lockup, not a literal`, miss.join(', '));
+  }
+  const noLockup = readdirSync(ROOT).filter((n) => n.endsWith('.html') && read(n).includes('data-brand')).filter((n) => lockupIn(read(n)).length);
+  check(noLockup.length === 0, 'every built page carries the wordmark in all four readings (en and ru Latin, 简体 and 繁體 Chinese)',
+    noLockup.map((n) => `${n}: missing ${lockupIn(read(n)).join(' + ')}`).join('; '));
 }
 
 // The fonts are ours. Every page must load /fonts/fonts.css and no page may name a Google Fonts host: a page that

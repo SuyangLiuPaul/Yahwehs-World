@@ -2,16 +2,27 @@
 
 Status: built and tested in Chrome on this Mac against `dist/` (`npm run verify:pwa`, part of `npm run verify:gallery`). **Not yet opened on a real iPhone, iPad, Android phone, Windows PC or Safari on a Mac**; section 9 lists what a person must try. Nothing is deployed.
 
-The product name is **雅偉之界 / Yahweh's World** (Traditional characters, the owner's decision of 2026-11-03). Every manifest carries that as `name`. The short name (the label under the icon) follows the language:
+## The name follows the language (owner, 2026-11-04)
 
-| Reading | `short_name` | `apple-mobile-web-app-title` | Manifest file |
-|---|---|---|---|
-| English | Yahweh's World | Yahweh's World | `/manifest.webmanifest` |
-| 简体 | 雅偉之界 | 雅偉之界 | `/manifest.zh-Hans.webmanifest` |
-| 繁體 | 雅偉之界 | 雅偉之界 | `/manifest.zh-Hant.webmanifest` |
-| Русский | Мир Яхве | Мир Яхве | `/manifest.ru.webmanifest` |
+The product name is **the name of the reader's language**, never two names at once and never a script the reader does not
+read. This is Words's rule; it was decided after TestFlight build 3, where the bar read 雅偉之界 above the words "Home"
+and "Главная". Three different strings, and they are not interchangeable:
 
-Inside the pages the 简体 reading still shows 雅伟之界 (the site's own simplified wordmark); only the manifest, the stores and the home-screen label keep 雅偉之界. The Russian short name `Мир Яхве` is the site's existing Russian wordmark; it is a one-line change in `scripts/lib/pwa-build.mjs` (`LANGS.ru.short`) if the owner wants 雅偉之界 there too.
+| Reading | Wordmark (in the page, `productName`) | `short_name` / `apple-mobile-web-app-title` | Store title | Manifest file |
+|---|---|---|---|---|
+| English | Yahweh's World | World | Yahweh's World | `/manifest.webmanifest` |
+| 简体 | 雅伟之界 | 雅伟之界 | 雅伟之界 | `/manifest.zh-Hans.webmanifest` |
+| 繁體 | 雅偉之界 | 雅偉之界 | 雅偉之界 | `/manifest.zh-Hant.webmanifest` |
+| Русский | Yahweh's World | Мир | Yahweh's World | `/manifest.ru.webmanifest` |
+
+The short name is short because a launcher truncates at about eleven characters: "Yahweh's W…" is what a home screen
+gave back. Russian keeps the Latin wordmark in the page and in a store, as Words's Russian listing does, and `Мир` only
+under the icon.
+
+All of it comes from `PRODUCT` in `src/config/site.ts` — the manifests through `scripts/lib/product-name.mjs`, the page
+through `productName()`, the bar through the four-reading lockup that `html[lang]` picks in CSS before the first paint.
+`npm run verify:shell`, `verify:gallery` and `verify:pwa` fail if any of them disagrees, or if a CJK character reaches
+the name of a page that is not Chinese.
 
 ## 1. What was added
 

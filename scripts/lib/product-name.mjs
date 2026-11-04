@@ -30,3 +30,15 @@ export const PRODUCT_NAMES = {
     ru: pick(/\n    ru: "([^"]+)"/, 'PRODUCT.store.ru'),
   },
 };
+
+/** THE WORDMARK, AS MARKUP. All four readings are written into the page and `html[lang]` shows one of them in CSS
+ *  (the .tri rules in scripts/build-shell.mjs CRITICAL, inline in every head). Pure CSS on purpose: the first-paint
+ *  script has already set <html lang> from the stored language, so the name is RIGHT IN THE FIRST PAINT — a module
+ *  that wrote it afterwards gave every English and Russian reader a frame of the Chinese name. src/locale.ts leaves
+ *  an element that carries readings alone for the same reason.
+ *
+ *  en and ru both read the Latin wordmark (owner, 2026-11-04: Russian keeps the Latin name, as Words does); the
+ *  Simplified spelling appears only in the l-hans reading, which is the one place `npm run verify:shell` allows it. */
+export const wordmarkLockup = (cls = 'wm tri') => `<span class="${cls}" data-brand`
+  + `><i class="l-en">${PRODUCT_NAMES.wordmark}</i><i class="l-hans">${NAME_HANS}</i>`
+  + `<i class="l-hant">${NAME_HANT}</i><i class="l-ru">${PRODUCT_NAMES.wordmark}</i></span>`;

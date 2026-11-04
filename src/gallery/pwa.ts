@@ -2,6 +2,7 @@
 // loaded before the worker could see it, ask for durable storage politely, and keep the home-screen label in the reader's language.
 // Loaded once, after the page has finished loading (src/gallery/chrome.ts), and only in a production build. docs/gallery-pwa.md.
 import { onLocale, t } from '../locale.ts';
+import { shortLabel } from '../config/site.ts';
 import { shouldOfferUpdate } from '../pwa/core.ts';
 import { ask } from './pwa-bridge.ts';
 
@@ -105,7 +106,10 @@ function persistPolitely() {
 // ── the label under the icon follows the language (iOS reads it when the page is added) ───────────────────────
 function labels() {
   const m = meta('apple-mobile-web-app-title');
-  if (m) m.content = t("Yahweh's World", '雅偉之界', 'Мир Яхве');
+  // The LABEL under the icon, not the wordmark: 'World', 雅伟之界 / 雅偉之界, 'Мир' (PRODUCT.short in config/site.ts, the
+  // same table the first-paint script and the four manifests read). It used to be written here a fourth time, which is
+  // how a Russian reader's home screen got "Мир Яхве" while every manifest said "Мир".
+  if (m) m.content = shortLabel(document.documentElement.lang);
   const l = document.documentElement.lang;
   const link = document.getElementById('pwa-manifest') as HTMLLinkElement | null;
   if (link) link.href = l === 'zh-Hans' || l === 'zh-Hant' || l === 'ru' ? `/manifest.${l}.webmanifest` : '/manifest.webmanifest';

@@ -5,6 +5,9 @@
 //   - thumbnails are requested from this origin (bundled), full pictures from SITE_HOST (never from this origin)
 //   - the "Offline pictures" entry opens the sheet and lists the three packs with the byte counts of packs.json
 //   - the font stylesheet is switched on by boot.ts (no inline handler), and nothing else leaves the app for another host
+//   - THE NAME FOLLOWS THE LANGUAGE: the bar's wordmark reads "Yahweh's World" to an English and a Russian reader,
+//     雅伟之界 to a 简体 one and 雅偉之界 to a 繁體 one, with no CJK character anywhere in the name of a page that is
+//     not Chinese (owner, 2026-11-04, on TestFlight build 3, where every language's bar read 雅偉之界)
 import { chromium } from 'playwright';
 import { readFileSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
@@ -73,6 +76,35 @@ try {
   check(await page.locator('[data-shell-packs]').count() === 0, 'no "Offline pictures" entry in the bar (the stub sheet is out)');
   check(await page.locator('.gx-packs-row').count() === 0, 'nothing of the stub sheet is in the page');
   check(packs.packs.length === 3 && packs.packs.every((p) => p.bytes > 0), `the pack manifest still lists three packs with byte counts (${packs.packs.map((p) => mib(p.bytes)).join(', ')})`);
+
+  // ── the name, in each of the four readings ──────────────────────────────────────────────────────────────────────
+  // Checked in the SHELL's own dist because this is the build the owner tests: the gallery's dist and this one take the
+  // bar from the same generator, and that is exactly the kind of agreement that holds until it does not.
+  {
+    const WANT = { en: "Yahweh's World", 'zh-Hans': '雅伟之界', 'zh-Hant': '雅偉之界', ru: "Yahweh's World" };
+    const CJK = /[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/;
+    for (const lang of ['en', 'zh-Hans', 'zh-Hant', 'ru']) {
+      const c = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+      await c.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
+      await c.addInitScript((l) => { try { localStorage.setItem('ydh.locale', l); } catch { /* */ } }, lang);
+      const pg = await c.newPage();
+      await pg.goto(`${base}/`, { waitUntil: 'load' });
+      await pg.waitForSelector('.sitenav .brand', { timeout: 8000 });
+      const wm = await pg.evaluate(() => {
+        const el = document.querySelector('.sitenav .brand .wm');
+        if (!el) return null;
+        const shown = [...el.children].filter((i) => getComputedStyle(i).display !== 'none');
+        return { text: (shown.length ? shown : [el]).map((i) => i.textContent.trim()).join(''), shown: shown.length, lockup: el.children.length };
+      });
+      // A dist built before the wordmark lockup existed has `<span class="zh" data-brand>` with one Chinese name in it
+      // and nothing else: that IS the build-3 fault, so it fails here rather than being waved through. Run
+      // `npm run app:dist` and this file again.
+      check(!!wm && wm.lockup === 4, `${lang}: the bar carries the wordmark in all four readings (${wm ? `${wm.lockup} readings` : 'NO .wm ELEMENT: this dist-shell was built before the per-language wordmark — run npm run app:dist'})`);
+      check(wm?.text === WANT[lang], `${lang}: the wordmark reads "${WANT[lang]}" (${wm ? `"${wm.text}"` : 'stale dist-shell'})`);
+      if (lang === 'en' || lang === 'ru') check(!CJK.test(wm?.text ?? ''), `${lang}: no Chinese character in the name of a non-Chinese page (${wm ? `"${wm.text}"` : 'stale dist-shell'})`);
+      await c.close();
+    }
+  }
 
   const other = foreign.filter((u) => !u.startsWith(SITE_HOST) && !/^https:\/\/fonts\.(googleapis|gstatic)\.com\//.test(u));
   check(other.length === 0, `no request leaves the app except to ${SITE_HOST} and the font host (both in the CSP)${other.length ? ` (${other[0]})` : ''}`);

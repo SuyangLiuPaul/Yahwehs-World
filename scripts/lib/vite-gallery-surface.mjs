@@ -26,9 +26,8 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import { basename, join } from 'node:path';
 import { START, END, HEAD, HEAD_END, GUARD, FONTS } from '../build-shell.mjs';
 import { buildPwa } from './pwa-build.mjs';
-import { NAME_HANS, NAME_HANT } from './product-name.mjs';
+import { NAME_HANS, NAME_HANT, PRODUCT_NAMES, wordmarkLockup } from './product-name.mjs';
 import { LANGS } from './languages.mjs';
-import { PRODUCT_NAMES } from './product-name.mjs';
 
 const WORDMARK = PRODUCT_NAMES.wordmark;
 
@@ -111,8 +110,8 @@ export function galleryShell(file) {
     <a class="brand" href="/">
       <img class="brand-logo" src="/brand-logo.webp" alt="" width="34" height="34">
       <span class="brand-words">
-        <span class="zh" data-brand>${NAME_HANT}</span>
-        <span class="en">Yahweh's World</span>
+        ${wordmarkLockup()}
+        <span class="en">${WORDMARK}</span>
         <span class="pg" data-en="${page.pg[0]}" data-zh="${page.pg[1]}" data-ru="${page.pg[2]}">${page.pg[0]}</span>
       </span>
     </a>
@@ -164,7 +163,6 @@ const GALLERY_HEAD = HEAD
   .replace('var l=localStorage.getItem("ydh.locale");', 'var l=localStorage.getItem("ydh.locale");var hm=/(?:^|[#&])lang=(en|zh-Hans|zh-Hant|ru)(?:&|$)/.exec(location.hash);if(hm)l=hm[1];')
   .replace('if(l!=="en"&&l!=="zh-Hans"&&l!=="zh-Hant"){', 'if(l!=="en"&&l!=="zh-Hans"&&l!=="zh-Hant"&&l!=="ru"){')
   .replace('if(g==="en"||g.indexOf("en-")===0){l="en";break}', 'if(g==="en"||g.indexOf("en-")===0){l="en";break}if(g==="ru"||g.indexOf("ru-")===0){l="ru";break}')
-  .replace('</style>', 'html[lang="ru"] .tri .l-ru{display:inline}</style>')
   .replace(HEAD_END, PWA_HEAD + HEAD_END);
 
 /** The head block, the shell block, the surface mark and the two assets every gallery page shares. */
