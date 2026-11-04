@@ -224,14 +224,20 @@ const KEY_TAG = {
   ru: 'cyr', russian: 'cyr',
 };
 
-function walkJson(node, tag, file) {
+/** Fields whose text the SANS stack can never draw, so they feed the serif sets only (ui=false).
+ *  `c` is a section heading's context paragraph, drawn by .yr-ctx in --yr-read (src/reader/reader.css). It is the
+ *  largest body of Chinese prose in the product outside the Bible itself; while it was set in the UI sans it pushed
+ *  its whole vocabulary into the two sans CJK subsets, which the serif subsets already carry in full. */
+const SERIF_ONLY_KEYS = new Set(['c']);
+
+function walkJson(node, tag, file, ui = true) {
   if (node == null) return;
-  if (typeof node === 'string') return eat(node, tag, file);
+  if (typeof node === 'string') return eat(node, tag, file, ui);
   if (typeof node === 'number' || typeof node === 'boolean') return;
-  if (Array.isArray(node)) { for (const v of node) walkJson(v, tag, file); return; }
+  if (Array.isArray(node)) { for (const v of node) walkJson(v, tag, file, ui); return; }
   for (const [k, v] of Object.entries(node)) {
-    eat(k, tag, file);                    // keys can be display text (zh-hant.json)
-    walkJson(v, KEY_TAG[k] ?? tag, file);
+    eat(k, tag, file, ui);                // keys can be display text (zh-hant.json)
+    walkJson(v, KEY_TAG[k] ?? tag, file, ui && !SERIF_ONLY_KEYS.has(k));
   }
 }
 
@@ -251,16 +257,16 @@ function eachFile(dir, fn) {
 
 const rel = (p) => p.slice(ROOT.length + 1);
 
-function sourceJson(path, tag) {
+function sourceJson(path, tag, ui = true) {
   if (!existsSync(path)) return false;
   const j = readJson(path);
-  if (j != null) walkJson(j, tag, rel(path));
+  if (j != null) walkJson(j, tag, rel(path), ui);
   return true;
 }
 
-function sourceDir(dir, tag) {
+function sourceDir(dir, tag, ui = true) {
   if (!existsSync(dir)) return false;
-  eachFile(dir, (p) => { if (p.endsWith('.json')) sourceJson(p, tag); });
+  eachFile(dir, (p) => { if (p.endsWith('.json')) sourceJson(p, tag, ui); });
   return true;
 }
 
@@ -468,8 +474,15 @@ function withMargin(mode) {
   // so a new UI string with a dash or a quote mark cannot miss.
   for (const [a, b] of [[0x20, 0x7e], [0xa0, 0x17f], [0x2000, 0x206f], [0x20a0, 0x20bf], [0x2116, 0x2116], [0x2190, 0x2199], [0x2212, 0x2212]])
     for (let cp = a; cp <= b; cp++) ship.latin.add(cp);
-  // Cyrillic margin: the whole modern Cyrillic block.
-  for (let cp = 0x0400; cp <= 0x04ff; cp++) ship.cyrillic.add(cp);
+  // Cyrillic margin: modern Russian, and ONLY what the `cyrillic` group's own range claims.
+  //
+  // It used to be the whole 0400-04FF block. Google's split puts 0460-052F in CYRILLIC-EXT, so 156 of those margin
+  // codepoints landed in a group the product does not use one character of: five files (Inter, Spectral 500 and 600,
+  // Plex Mono 400 and 500), 30 KiB of dist, carrying historic and non-Slavic Cyrillic that no Russian page, no
+  // Synodal verse and no UI string contains. Margin is insurance against a NEW character; insurance on a block the
+  // product will never enter is just weight. Anything measured there is still shipped, because the loop below only
+  // trims the MARGIN and `latinish` in groups() still places every measured codepoint.
+  for (let cp = 0x0400; cp <= 0x04ff; cp++) if (inRanges(cp, RANGE_SETS.cyrillic)) ship.cyrillic.add(cp);
   ship.cyrillic.add(0x2116);
   if (mode === 'full') {
     // The common-use margin goes on the SERIF sets only. On the sans sets it

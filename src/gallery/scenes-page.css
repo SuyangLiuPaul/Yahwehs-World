@@ -25,7 +25,14 @@ body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
 .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; padding: 14px calc(var(--sp-4) + var(--safe-right)) var(--sp-5) calc(var(--sp-4) + var(--safe-left)); align-content: start; min-height: 90vh; /* the skeleton and the cards fill the same box: nothing below moves when they swap */ }
 .sc-card { display: grid; gap: 7px; text-decoration: none; color: inherit; align-content: start; }
 .sc-card .gx-plate, .sc-grid > .gx-sk.plate { aspect-ratio: 3 / 2; }
-.sc-card .cap { font: 600 var(--fs-300)/1.3 var(--display); color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* TWO lines, not one (P1-7). Clamped to a single line, four of the six cards on a phone read "The Fourth Day: Su…",
+   "The Creation of Ma…", "The Seventh Day, G…" — which gives back the whole point of moving the words out of the
+   pixels. The box is reserved at two lines so a one-line title does not shift the card below it. */
+.sc-card .cap {
+  font: 600 var(--fs-300)/1.3 var(--display); color: var(--ink);
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2;
+  overflow: hidden; min-height: calc(2 * 1.3em);
+}
 .sc-card .gx-mono { font-size: var(--fs-100); }
 @media (hover: hover) { .sc-card:hover .cap { color: var(--gold-bright); } .sc-card:hover .gx-plate { border-color: var(--line-gold); } }
 .sc-card:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: var(--r-2); }
@@ -86,3 +93,7 @@ dialog.gx-fs.zoomed img { width: 200%; max-width: none; height: auto; object-fit
 dialog.gx-fs .gx-iconbtn { position: fixed; top: calc(var(--sp-3) + var(--safe-top)); right: calc(var(--sp-3) + var(--safe-right)); background: #06111fb3; color: #f9f3e6; z-index: 2; }
 dialog.gx-fs .fs-hint { position: fixed; left: 0; right: 0; bottom: calc(var(--sp-4) + var(--safe-bottom)); text-align: center; color: #c6d8ec; font-size: var(--fs-200); pointer-events: none; text-shadow: 0 1px 6px #000a; }
 #sc-kicker { min-height: 1.4em; } #sc-title { min-height: 1.3em; } #sc-count { min-height: 1.4em; }
+
+/* The link asked for a picture this build does not have (P2-10). */
+.sc-missing { margin: 0 calc(var(--sp-4) + var(--safe-left)) var(--sp-3) calc(var(--sp-4) + var(--safe-right)); padding: var(--sp-3) var(--sp-4); border: 1px solid var(--line-gold); border-radius: var(--r-2); background: var(--gold-wash); color: var(--ink); font-size: var(--fs-300); line-height: 1.55; }
+.sc-missing[hidden] { display: none; }

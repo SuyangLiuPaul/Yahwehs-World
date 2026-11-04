@@ -116,7 +116,13 @@ html[lang="zh-Hant"] .yr, .yr:lang(zh-Hant) {
 .yr-hi { inline-size: 2.75rem; block-size: 2.75rem; display: inline-grid; place-items: center; margin-block-start: -.35rem; color: var(--yr-ink-3); }
 .yr-hi span { display: grid; place-items: center; inline-size: 1.75rem; block-size: 1.75rem; border: 1px solid var(--yr-edge); border-radius: 999px; font: italic 600 calc(.8125rem * var(--yr-scale)) / 1 var(--yr-read); }
 .yr-hi[aria-expanded="true"] span { background: var(--yr-gold-wash); color: var(--yr-gold-text); border-color: var(--yr-gold-line); }
-.yr-ctx { flex-basis: 100%; margin: .25rem 0 .5rem; padding: .5rem .75rem; border-inline-start: 2px solid var(--yr-gold-line); background: var(--yr-surface); color: var(--yr-ink-2); font: 400 calc(.9375rem * var(--yr-scale)) / 1.6 var(--yr-ui); }
+/* The section's own context, under its heading. SERIF (--yr-read), not the UI sans, for two reasons that point the
+   same way: it is a paragraph of prose about the passage, set under a serif heading and above serif verses, so the
+   sans face was the odd one out on the page; and it is the largest body of Chinese prose the SANS stack could ever
+   be asked to draw, which forced ~1,500 Han into the two sans CJK subsets that the serif subsets already carry in
+   full. Moving it costs nothing in the serif files and takes a sizeable bite out of the sans ones
+   (tools/font-coverage.mjs collects the heading `c` field with ui=false to match). */
+.yr-ctx { flex-basis: 100%; margin: .25rem 0 .5rem; padding: .5rem .75rem; border-inline-start: 2px solid var(--yr-gold-line); background: var(--yr-surface); color: var(--yr-ink-2); font: 400 calc(.9375rem * var(--yr-scale)) / 1.65 var(--yr-read); }
 
 /* ── plates ───────────────────────────────────────────────────────────────────
    The painted scene, standing in the text at the verse its event begins (src/reader/plates.ts). The whole point of
