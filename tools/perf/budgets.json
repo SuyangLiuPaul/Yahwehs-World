@@ -1,0 +1,68 @@
+{
+  "_comment": [
+    "Performance budgets for the gallery surface. tools/perf/budget.mjs fails when a number is over its budget.",
+    "",
+    "Values were set from the 2026-11-04 measurement (docs/review/perf-audit-2026-11-04.md, raw numbers in",
+    "docs/evidence/perf-2026-11-04/) as the WORSE of two independent runs plus roughly 35% headroom, so the check",
+    "passes on build 3b9cd31b3a7b and catches a regression rather than re-stating a wish.",
+    "",
+    "FOUR ROWS FAIL ON PURPOSE, and they are the whole point of the file:",
+    "  assets.maxFontFileKB and assets.maxCjkFontsPerPageKB are the TARGET of finding P1, not today's 1,802 KiB",
+    "    and 2,613/2,809 KiB. They go green when an en/ru page stops demanding a CJK glyph and the four CJK faces",
+    "    are sliced by unicode-range.",
+    "  scroll.gallery-1443's three frame rows are the TARGET of finding P3 (see _scroll_note).",
+    "Everything else passes on build 3b9cd31b3a7b: `node tools/perf/budget.mjs` gives 58/65 within budget, and the",
+    "seven breaches are exactly these four subjects. That is the gate that proves P1 and P3 landed.",
+    "",
+    "The device class is phone4x: 390x844 @3, CPU throttled 4x, network 'fast 4G' — Lighthouse's mobile preset.",
+    "Numbers are ms unless the key says KB (kibibytes transferred) or pct (percent of frames).",
+    "Raise a budget only with a measurement beside it. LOWER it when a fix lands, so a win cannot be given back:",
+    "the `after` column below is what each row should become once the ranked fixes are in."
+  ],
+  "profile": "phone4x",
+  "routes": {
+    "home":     { "lcpCold": 2500, "lcpWarm": 1100, "tbt": 150, "cls": 0.03, "bytesKB": 3100, "requests": 30 },
+    "scenes":   { "lcpCold": 2400, "lcpWarm": 1000, "tbt": 150, "cls": 0.03, "bytesKB": 3000, "requests": 50 },
+    "scene":    { "lcpCold": 2700, "lcpWarm": 1100, "tbt": 200, "cls": 0.06, "bytesKB": 3700, "requests": 40 },
+    "gen1":     { "lcpCold": 3000, "lcpWarm": 900,  "tbt": 250, "cls": 0.03, "bytesKB": 3200, "requests": 35 },
+    "ps119":    { "lcpCold": 2800, "lcpWarm": 900,  "tbt": 350, "cls": 0.03, "bytesKB": 3200, "requests": 35 },
+    "parallel": { "lcpCold": 2200, "lcpWarm": 1300, "tbt": 650, "cls": 0.03, "bytesKB": 3300, "requests": 35 }
+  },
+  "_routes_after_P1_P2": [
+    "After P1 (the CJK fonts) every bytesKB row should fall by about 2,680 and belongs at 600-1,000;",
+    "after P2 (cache headers) every lcpWarm row belongs under 500. After P5, parallel.tbt belongs under 150."
+  ],
+  "scroll": {
+    "gallery-1443": { "pctDropped": 4, "pctOver20": 8, "p99": 36, "worst": 60, "nodesAfter": 12000 },
+    "ps119":        { "pctDropped": 1, "pctOver20": 3, "p99": 22, "worst": 40, "nodesAfter": 2000 }
+  },
+  "_scroll_note": [
+    "gallery-1443 IS A TARGET ROW, like the two font rows: it fails on build 3 on purpose, until P3 lands.",
+    "It is set where a smooth full grid belongs, not where today's is. Today's is unstable rather than merely slow:",
+    "three phone4x runs of the same fling gave 1.8%, 58.7% and 1.8% dropped frames, and phone6x gave 89.3% with a",
+    "p50 of 50 ms. That spread is itself the finding — the full grid sits at the edge of the frame budget on a mid",
+    "phone, so a little extra load tips it over. After P3 it should look like gallery-progressive does today:",
+    "pctDropped under 1 and p99 around 17, stably, and the phone6x run should agree with the phone4x one.",
+    "ps119 is NOT a target row: it passes today (0% dropped) and exists to keep the reader from regressing."
+  ],
+  "interactions": {
+    "lang-menu-open":    { "visibleMs": 320,  "worstTask": 150 },
+    "lang-switch-hant":  { "visibleMs": 1100, "worstTask": 260 },
+    "search-open":       { "visibleMs": 150,  "worstTask": 100 },
+    "search-type":       { "visibleMs": 1250, "worstTask": 150 },
+    "verse-select":      { "visibleMs": 200,  "worstTask": 120 },
+    "chapter-next":      { "visibleMs": 200,  "worstTask": 120 },
+    "scene-next":        { "visibleMs": 120,  "worstTask": 100 }
+  },
+  "_interactions_after_P7": [
+    "search-type belongs at 300 after P7 (precomputed haystack, memoised hant(), rAF debounce);",
+    "lang-menu-open belongs at 120 after P7b (cached item list) and P1b."
+  ],
+  "assets": {
+    "_comment": "No browser needed: this group is a ten-second CI gate. The first two rows are targets (see the file header).",
+    "maxFontFileKB": 300,
+    "maxCjkFontsPerPageKB": 400,
+    "galleryIndexKB": 80,
+    "longestChapterJsonKB": 80
+  }
+}
