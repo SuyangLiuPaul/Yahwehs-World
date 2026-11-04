@@ -14,6 +14,7 @@ import { channelOf } from '../config/site.ts';
 import { routeForDeepLink } from './deeplink.ts';
 import { toast } from '../gallery/sheet.ts';
 import { t } from '../locale.ts';
+import { followDocumentTitle } from './title.ts';
 import type { Platform } from '../platform/types.ts';
 
 let manager: PackManager | null = null;
@@ -54,6 +55,15 @@ async function boot() {
   const root = document.documentElement;
   root.dataset.shell = platform.info.os;
   root.dataset.channel = channelOf(import.meta.env);
+
+  // The page owns the localised title (including changes made after data arrives or the language switches).
+  // Shell boot also runs with the web fallback in previews, where the native window API is unavailable.
+  if (platform.kind === 'tauri') {
+    const { getCurrentWindow } = await import('@tauri-apps/api/window');
+    const appWindow = getCurrentWindow();
+    followDocumentTitle(document, (title) => appWindow.setTitle(title));
+  }
+
 
   platform.deepLinks.onOpen((url) => follow(url, platform));
   void platform.deepLinks.current().then((url) => { if (url) follow(url, platform); }).catch(() => {});

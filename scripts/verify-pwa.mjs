@@ -123,7 +123,7 @@ if (want('build')) {
     check(man.name === WANT[k] && man.short_name === SHORT[k] && man.lang === k && man.display === 'standalone' && man.start_url === '/' && man.scope === '/' && man.id === '/', `${k}: name "${man.name}", short_name "${man.short_name}", lang, display, start_url, scope`);
     const purposes = man.icons.map((i) => `${i.purpose}:${i.sizes}`);
     check(['any:192x192', 'any:512x512', 'maskable:192x192', 'maskable:512x512', 'monochrome:512x512'].every((x) => purposes.includes(x)), `${k}: icons any 192/512, maskable 192/512, monochrome 512`);
-    check(man.shortcuts.length === 3 && man.shortcuts.map((s) => s.url).join() === '/,/scenes.html,/bible.html', `${k}: shortcuts Home, Scenes, Bible`);
+    check(man.shortcuts.length === 3 && man.shortcuts.map((s) => s.url).join() === '/,/bible.html,/scenes.html', `${k}: shortcuts Home, Bible, Scenes`);
   }
   for (const i of manifestFor('en').icons) {
     const f = join(DIR, i.src);
@@ -237,7 +237,7 @@ if (want('offline')) {
   await page.goto(`${srv.base}/p/${picId}`);
   await page.waitForURL(/\/scenes\.html#p=/, { timeout: 8000 }).then(() => pass('offline: a shared /p/<id> link still lands on the picture'), () => fail(`offline: /p/${picId} ended at ${page.url()}`));
   await page.goto(`${srv.base}/tabernacle.html`);
-  check(/Offline|没有网络|沒有網路|Нет соединения/.test(await page.title()) && (await page.locator('h1').innerText()).length > 3, 'offline: a page that was never saved gets the offline page (with links back to Home, Scenes, Bible)');
+  check(/Offline|没有网络|沒有網路|Нет соединения/.test(await page.title()) && (await page.locator('h1').innerText()).length > 3, 'offline: a page that was never saved gets the offline page (with links back to Home, Bible, Scenes)');
   check(await page.locator('nav a').count() === 3, 'offline page: three links and a retry button');
   srv.state.down = false;
   check(errs.length === 0, 'no uncaught error on any of those pages', errs.join(' | '));

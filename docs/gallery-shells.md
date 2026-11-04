@@ -208,3 +208,13 @@ Three things that make the result usable rather than merely possible:
 - a tap anywhere on a verse selects it, a tap on a second verse extends the run, Escape clears it, and the action
   bar offers Copy, Share, Link and "Open the picture" when the verse is the one a scene starts at. A live text
   selection always wins over verse selection, so choosing a phrase never lights the whole verse.
+
+
+The window keeps `Yahweh's World` as its static startup default. Once the page loads,
+`src/shell/boot.ts` mirrors `document.title` through Tauri's window `setTitle` API,
+including later scene changes and language switches. The name in that title is
+`Yahweh's World` for en/ru, `雅伟之界` for zh-Hans, and `雅偉之界` for zh-Hant;
+any page or scene suffix follows the page title too. The default capability grants
+`core:window:allow-set-title`. Web previews skip this native call.
+The gallery's desktop and phone bars, fallback pages and install shortcuts all use
+Home · Bible · Scenes (首页 · 圣经 · 画卷).

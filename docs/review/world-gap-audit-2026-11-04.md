@@ -1,5 +1,10 @@
 # 雅偉之界 / Yahweh's World — gap audit of the live 1.0.0 (2026-11-04)
 
+Navigation order references below follow the owner's later Home · Bible · Scenes
+instruction. The scan's original size measurements are retained; browser measurements
+were not repeated for the order change.
+
+
 Independent, read-only review. Nothing in `/Volumes/androidbuild/globe-shell` was edited; no build was run.
 
 **What was audited.** `https://world.yahwehword.com` (version.json reports `v1.0.0`) in the built-in browser at
@@ -29,12 +34,12 @@ unless the finding *is* about the animation, and those are marked.
 | # | Promise | Verdict | Evidence |
 |---|---|---|---|
 | 1 | Three surfaces only: home `/`, gallery `/scenes`, picture `#p=<id>`, reader `/bible` | **PASS** | All four reachable; no globe/walks/figures in the nav |
-| 2 | Phone bottom tab bar, three tabs 首页·画卷·圣经 | **PASS** | 375×812; tab `.tb` measures 125×48 px |
-| 3 | Desktop top bar: brand · 画卷 · 圣经 · search · language | **PASS** | 1440×900 |
+| 2 | Phone bottom tab bar, three tabs 首页·圣经·画卷 | **PASS** | 375×812; tab `.tb` measures 125×48 px |
+| 3 | Desktop top bar: brand · 首页 · 圣经 · 画卷 · search · language | **PASS** | 1440×900 |
 | 4 | `/p/<id>` prerendered share stub redirects to the hash route | **PASS** | `/p/genesis-1-14` → `/scenes.html#p=genesis-1-14`, OG title set |
 | 5 | `/gallery`, `/pictures` short links | not tested | — |
 | 6 | 404 / unknown path handled by the product | **FAIL (P0-4)** | Netlify's stock white "Page not found" page, English only, advertising Netlify's support guide |
-| 7 | `offline.html` named offline state with Retry | **PASS** | Four locales in the markup, the other three `display:none`; Home/Scenes/Bible/Try again, 46 px targets |
+| 7 | `offline.html` named offline state with Retry | **PASS** | Four locales in the markup, the other three `display:none`; Home/Bible/Scenes/Try again, 46 px targets |
 | 8 | Unknown `#p=<id>` shows something sensible | **PARTIAL (P2-10)** | `#p=2chronicles-3-1` silently drops the hash and lands on the whole gallery, no message |
 
 ### Editions and licences (`gallery-release` §2 + `gallery-plan-corrections`)
@@ -94,7 +99,7 @@ unless the finding *is* about the animation, and those are marked.
 | # | Promise | Verdict | Evidence |
 |---|---|---|---|
 | 41 | `manifest.webmanifest`, icons 192/512 + maskable, standalone, SW registered | **PASS** | Manifest valid, 5 icons, `display: standalone`, SW active (data served from cache) |
-| 42 | Manifest name/short_name in four languages; localised shortcuts | **FAIL (P2-13)** | One static manifest, `lang: "en"`, shortcuts "Home / Scenes / Bible" only |
+| 42 | Manifest name/short_name in four languages; localised shortcuts | **FAIL (P2-13)** | Original scan: one static English-only manifest. Current shortcut order: Home / Bible / Scenes |
 | 43 | Offline-download sheet with real byte counts, `storage.estimate()`, progress, cancel, "may be cleared" line | **FAIL (P1-5)** | Web: only a passive footer line ("Saved on this device for offline: 6 MB of at most 150 MB · Clear"), no download entry. Shell: `duo-packs.png` is an unstyled stub — see P1-5 |
 | 44 | Self-hosted fonts (offline-first) | **FAIL (P0-5)** | 20 files fetched from `fonts.gstatic.com` on first paint, including every Noto Sans SC subset on an English page |
 | 45 | Shells show the product well on iPhone / iPad / Duo / Android / macOS | **FAIL (P0-2)** | iPad and Duo home and picture screens show **no picture at all**; no iPhone or macOS screenshot exists in the evidence folder |

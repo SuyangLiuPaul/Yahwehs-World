@@ -13,7 +13,8 @@ html[data-surface="gallery"] {
   --r-3: 18px;
   /* The band the phone hero's words sit in. It stays dark in every surface: those words are over a PICTURE, and the
      picture does not change colour because the page did. */
-  --hero-scrim: linear-gradient(180deg, transparent 0%, #0a1e36b3 34%, #0a1e36e6 100%);
+  /* The copy starts after 88px of padding: at that point even white picture pixels must be dark enough for small text. */
+  --hero-scrim: linear-gradient(180deg, transparent 0px, #0a1e36e6 88px, #0a1e36f2 100%);
   --tabbar-h: calc(49px + var(--safe-bottom));
   scroll-padding-top: 72px;
   /* what used to be written as literals in the rules below, so a surface can move them */

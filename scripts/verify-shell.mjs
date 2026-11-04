@@ -42,7 +42,17 @@ check(PRODUCT_NAMES.wordmark === "Yahweh's World" && PRODUCT_NAMES.store['en-US'
 const conf = json('src-tauri/tauri.conf.json');
 check(conf.identifier === 'com.yahwehword.world', 'Tauri identifier is com.yahwehword.world (stores, TestFlight, Play)');
 check(conf.productName === "Yahweh's World", 'Tauri productName is Yahweh\'s World');
-check(conf.app.windows[0].title === PRODUCT_NAMES.wordmark, `window title is the Latin wordmark (${conf.app.windows[0].title})`);
+check(conf.app.windows[0].title === PRODUCT_NAMES.wordmark, `static startup window title is the Latin wordmark (${conf.app.windows[0].title})`);
+const titleBoot = read('src/shell/boot.ts');
+const titleSync = read('src/shell/title.ts');
+check(titleBoot.includes("platform.kind === 'tauri'") && titleBoot.includes("import('@tauri-apps/api/window')")
+  && titleBoot.includes('followDocumentTitle(document, (title) => appWindow.setTitle(title))'),
+  'native window follows the page title at runtime; web previews skip the native API');
+check(titleSync.includes('setTitle(doc.title)') && titleSync.includes('observer.observe(doc.head')
+  && titleSync.includes('characterData: true') && titleSync.includes('sync();'),
+  'window title sync covers initial title, replaced title nodes, and later language/data changes');
+check(json('src-tauri/capabilities/default.json').permissions.includes('core:window:allow-set-title'),
+  'the main window grants setTitle permission');
 check(conf.build.frontendDist === '../dist-shell' && /app:dist/.test(conf.build.beforeBuildCommand), 'frontendDist is dist-shell, built by npm run app:dist');
 check(json('package.json').version === conf.version && /^version = "([^"]+)"/m.exec(read('src-tauri/Cargo.toml'))?.[1] === conf.version, `versions agree: package.json, tauri.conf.json, Cargo.toml (${conf.version})`);
 

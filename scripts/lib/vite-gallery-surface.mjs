@@ -10,7 +10,7 @@
 //   INPUT       index.html (the globe) is replaced by home.html, written out as /index.html; scenes.html is
 //               replaced by gallery-scenes.html, written out as /scenes.html; gallery-bible.html (the reader module's chapter view, src/reader)
 //               is written out as /bible.html.
-//   NAV         the shell block of every page becomes the three-item gallery shell (首页 · 画卷 · 圣经);
+//   NAV         the shell block of every page becomes the three-item gallery shell (首页 · 圣经 · 画卷);
 //               the head block, loading-screen guard and font link are the ones scripts/build-shell.mjs owns.
 //   PUBLISH     models, figures, materials, film, the geo files and the like are not copied into dist/.
 //   URLS        dist/_redirects: 302 (not 301: they come back) for every hidden page; /gallery and /pictures
@@ -75,8 +75,8 @@ const svg = (name, cls = 'tb-i', size = 24) =>
 
 const TABS = [
   { key: 'home', href: '/', icon: 'home', en: 'Home', zh: '首页', ru: 'Главная' },
-  { key: 'scenes', href: '/scenes.html', icon: 'scenes', en: 'Scenes', zh: '画卷', ru: 'Сцены' },
   { key: 'bible', href: '/bible.html', icon: 'bible', en: 'Bible', zh: '圣经', ru: 'Библия' },
+  { key: 'scenes', href: '/scenes.html', icon: 'scenes', en: 'Scenes', zh: '画卷', ru: 'Сцены' },
 ];
 
 /** The page a source file stands for, and what its loading screen says. */

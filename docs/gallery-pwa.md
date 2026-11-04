@@ -42,7 +42,7 @@ Only the **gallery surface** is affected. The full surface (`VITE_SURFACE=full`,
 
 ## 2. The manifest
 
-`id` and `start_url` and `scope` are `/`; `display: standalone` (with `display_override` standalone, minimal-ui); `lang` per file; `categories` books, education, lifestyle; `theme_color #0e2b4b`, `background_color #0a1e36`; icons 192 and 512 `any`, 192 and 512 `maskable`, 512 `monochrome`; three shortcuts (Home `/`, Scenes `/scenes.html`, Bible `/bible.html`, named in the file's language, with the 96 px icon).
+`id` and `start_url` and `scope` are `/`; `display: standalone` (with `display_override` standalone, minimal-ui); `lang` per file; `categories` books, education, lifestyle; `theme_color #0e2b4b`, `background_color #0a1e36`; icons 192 and 512 `any`, 192 and 512 `maskable`, 512 `monochrome`; three shortcuts (Home `/`, Bible `/bible.html`, Scenes `/scenes.html`, named in the file's language, with the 96 px icon).
 
 **Theme colours.** The dark, light and paper reading themes only repaint the reader's text surface; the bar at the top and the tab bar at the bottom stay navy in all three (checked on the Bible page in paper). So one `theme_color` (the bar's colour, `#0e2b4b`) is correct for all three, and the status bar and address bar tint match the bar in every theme. If the bar is ever themed, switch `<meta name="theme-color">` from `onLocale`/`gx:read` in `src/gallery/pwa.ts`.
 

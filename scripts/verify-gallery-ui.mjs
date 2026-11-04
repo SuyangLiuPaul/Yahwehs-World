@@ -3,7 +3,7 @@
 //
 //   node scripts/verify-gallery-ui.mjs [--dir dist]
 import { chromium } from 'playwright';
-import { readFileSync } from 'node:fs';
+import { readFileSync, mkdirSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { serveDist } from './lib/dist-server.mjs';
@@ -16,7 +16,9 @@ const pass = (m) => { ok++; console.log(`ok   ${m}`); };
 const fail = (m) => { bad++; console.error(`FAIL ${m}`); };
 const check = (c, good, badMsg) => (c ? pass(good) : fail(badMsg ?? good));
 
-const { base, close } = await serveDist(DIR);
+const { base, close } = argv.includes('--url')
+  ? { base: argv[argv.indexOf('--url') + 1], close: () => {} }
+  : await serveDist(DIR);
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 
 // serviceWorkers: 'block' in every context of this file: with the installable app's worker in control, page.route() no longer sees a
@@ -36,6 +38,67 @@ async function open(vp, lang, { block = [], reduced = false } = {}) {
 }
 const noOverflow = (page) => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1);
 
+// The phone hero sits over a picture even on Light/Paper. Test the actual computed colours and
+// scrim at each text box's top edge over WHITE picture pixels (the brightest possible background).
+// --hero-only --url http://localhost:5175 runs this focused scan against Vite without building shells.
+// Optional --css-override FILE replays the same scan with a baseline stylesheet; --screenshots DIR keeps evidence.
+for (const vp of [[375, 812], [768, 1024], [1440, 900]]) {
+  for (const lang of ['en', 'zh-Hans']) {
+    for (const [theme, scheme] of [['auto', 'dark'], ['auto', 'light'], ['dark', 'dark'], ['light', 'light'], ['paper', 'light']]) {
+      const { ctx, page } = await open(vp, lang);
+      await page.emulateMedia({ colorScheme: scheme });
+      await ctx.addInitScript((theme) => localStorage.setItem('yr.prefs.v1', JSON.stringify({ theme })), theme);
+      await page.goto(`${base}/`);
+      await page.waitForSelector('#hm-title:not(:has(.gx-sk))');
+      if (argv.includes('--css-override')) await page.addStyleTag({ content: readFileSync(argv[argv.indexOf('--css-override') + 1], 'utf8') });
+      // White stress plate keeps this check independent of whichever daily picture happens to be selected.
+      await page.addStyleTag({ content: '.hm-plate .gx-plate, .hm-plate .gx-sk.plate { background: white !important; } .hm-plate img { visibility: hidden !important; }' });
+      const nav = await page.evaluate(() => ['.sitenav ol .tab', '.tabbar .tb'].map((sel) => [...document.querySelectorAll(sel)].map((a) => a.getAttribute('href')).join(',')));
+      check(nav.every((n) => n === '/,/bible.html,/scenes.html'), `hero ${vp[0]} ${lang} ${theme}/${scheme}: both bars Home, Bible, Scenes`);
+      const results = await page.evaluate(() => {
+        const rgb = (c) => c.match(/[\d.]+/g).map(Number);
+        const over = (f, b) => f.slice(0, 3).map((v, i) => v * (f[3] ?? 1) + b[i] * (1 - (f[3] ?? 1)));
+        const lum = (c) => c.map((v) => { v /= 255; return v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; }).reduce((s, v, i) => s + v * [.2126, .7152, .0722][i], 0);
+        const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
+        const copy = document.querySelector('.hm-copy');
+        const rect = copy.getBoundingClientRect();
+        const gradient = getComputedStyle(copy).backgroundImage;
+        const onPicture = gradient !== 'none';
+        const stops = [...gradient.matchAll(/(rgba?\([^)]*\))\s+([\d.]+)(px|%)/g)].map((m) => ({ c: rgb(m[1]), y: +m[2] * (m[3] === '%' ? rect.height / 100 : 1) }));
+        const selectors = ['#hm-kicker', '#hm-title', '#hm-ref'];
+        if (onPicture) selectors.push('.hm-copy .gx-btn.quiet', '#hm-edition', '#hm-prev', '#hm-next', '#hm-day');
+        return selectors.map((selector) => {
+          const el = document.querySelector(selector), st = getComputedStyle(el);
+          let bg = rgb(getComputedStyle(document.body).backgroundColor);
+          if (onPicture) {
+            // A non-matching gradient is a failure, never a silent exemption.
+            if (stops.length < 2) return { selector, ratio: 0, need: 4.5 };
+            const y = el.getBoundingClientRect().top - rect.top;
+            let right = stops.findIndex((s) => s.y >= y);
+            if (right < 0) right = stops.length - 1;
+            const a = stops[Math.max(0, right - 1)], b = stops[right];
+            const t = a === b ? 0 : Math.max(0, Math.min(1, (y - a.y) / (b.y - a.y)));
+            // CSS gradients interpolate premultiplied colour, including the transparent first stop.
+            const alpha = a.c[3] + (b.c[3] - a.c[3]) * t;
+            const scrim = [...a.c.slice(0, 3).map((v, i) => alpha ? (v * a.c[3] * (1 - t) + b.c[i] * b.c[3] * t) / alpha : 0), alpha];
+            bg = over(scrim, [255, 255, 255]);
+          }
+          const need = parseFloat(st.fontSize) >= 24 ? 3 : 4.5;
+          return { selector, ratio: ratio(over(rgb(st.color), bg), bg), need };
+        });
+      });
+      for (const r of results) check(r.ratio >= r.need, `hero ${vp[0]} ${lang} ${theme}/${scheme} ${r.selector}: ${r.ratio.toFixed(2)}:1 >= ${r.need}:1`);
+      if (argv.includes('--screenshots')) {
+        const dir = argv[argv.indexOf('--screenshots') + 1];
+        mkdirSync(dir, { recursive: true });
+        await page.screenshot({ path: join(dir, `${vp[0]}-${lang}-${theme}-${scheme}.png`) });
+      }
+      await ctx.close();
+    }
+  }
+}
+
+if (!argv.includes('--hero-only')) {
 // ── THE NAME FOLLOWS THE LANGUAGE (owner, 2026-11-04, on TestFlight build 3) ──────────────────────────────────────
 // The bar used to read 雅偉之界 on every page: an English reader met the Chinese name above the word "Home" and a
 // Russian one above "Главная". The rule is Words's rule, and it is checked on every page a reader can reach, in all
@@ -896,6 +959,8 @@ for (const vp of [[375, 812], [1440, 900]]) {
   check(/^\/\*\s+\/404\.html\s+404$/m.test(red), 'static: _redirects ends with /* -> /404.html 404');
   check(/\/privacy\s+\/privacy\.html/.test(red), 'static: /privacy is a short link to the page');
   check(readFileSync(join(DIR, 'sitemap.xml'), 'utf8').includes('/privacy.html'), 'static: the privacy page is in the sitemap');
+}
+
 }
 
 await browser.close(); close();

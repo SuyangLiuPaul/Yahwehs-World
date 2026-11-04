@@ -18,7 +18,7 @@ body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
 .hm-plate { display: block; text-decoration: none; }
 .hm-plate .gx-plate, .hm-plate .gx-sk.plate { aspect-ratio: 4 / 3; border-radius: 0; border: 0; border-bottom: 1px solid var(--line); }
 .hm-copy { position: absolute; left: 0; right: 0; bottom: 0; padding: 88px calc(var(--sp-4) + var(--safe-right)) var(--sp-4) calc(var(--sp-4) + var(--safe-left)); background: var(--hero-scrim); display: grid; gap: var(--sp-2); }
-.hm-copy .gx-kicker { color: var(--gold-bright); text-shadow: 0 1px 6px #0009; }
+.hm-copy .gx-kicker { color: #f8d66d; text-shadow: 0 1px 6px #0009; }
 .hm-title { margin: 0; font: 600 var(--fs-700)/1.2 var(--display); color: #f9f3e6; text-shadow: 0 1px 8px #0008; }
 .hm-copy .gx-mono { color: #e8dcc0e0; }
 .hm-lede-desk { display: none; }

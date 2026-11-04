@@ -32,22 +32,22 @@ export const LANGS = {
   en: {
     file: 'manifest.webmanifest', lang: 'en', short: NAME_SHORT.en, name: NAME_STORE['en-US'],
     description: '1,443 scenes of the Bible, each one drawn and opening onto the verses it comes from. Pages you have opened work offline.',
-    shortcuts: [['Home', '/'], ['Scenes', '/scenes.html'], ['Bible', '/bible.html']],
+    shortcuts: [['Home', '/'], ['Bible', '/bible.html'], ['Scenes', '/scenes.html']],
   },
   'zh-Hans': {
     file: 'manifest.zh-Hans.webmanifest', lang: 'zh-Hans', short: NAME_SHORT['zh-Hans'], name: NAME_STORE['zh-Hans'],
     description: '圣经里的 1,443 个时刻，每一幕都画了出来，并打开它所出自的经文。看过的页面可离线阅读。',
-    shortcuts: [['首页', '/'], ['画卷', '/scenes.html'], ['圣经', '/bible.html']],
+    shortcuts: [['首页', '/'], ['圣经', '/bible.html'], ['画卷', '/scenes.html']],
   },
   'zh-Hant': {
     file: 'manifest.zh-Hant.webmanifest', lang: 'zh-Hant', short: NAME_SHORT['zh-Hant'], name: NAME_STORE['zh-Hant'],
     description: '聖經裡的 1,443 個時刻，每一幕都畫了出來，並打開它所出自的經文。看過的頁面可離線閱讀。',
-    shortcuts: [['首頁', '/'], ['畫卷', '/scenes.html'], ['聖經', '/bible.html']],
+    shortcuts: [['首頁', '/'], ['聖經', '/bible.html'], ['畫卷', '/scenes.html']],
   },
   ru: {
     file: 'manifest.ru.webmanifest', lang: 'ru', short: NAME_SHORT.ru, name: NAME_STORE.ru,
     description: '1 443 сцены Библии: каждая нарисована и открывает стихи, из которых она взята. Открытые страницы работают без сети.',
-    shortcuts: [['Главная', '/'], ['Сцены', '/scenes.html'], ['Библия', '/bible.html']],
+    shortcuts: [['Главная', '/'], ['Библия', '/bible.html'], ['Сцены', '/scenes.html']],
   },
 };
 

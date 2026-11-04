@@ -287,7 +287,7 @@ for (const key of Object.keys(LANGS) as (keyof typeof shortNames)[]) {
     };
     for (const icon of manifest.icons) existsInPublic(icon.src);
     assert.equal(manifest.shortcuts.length, 3);
-    assert.deepEqual(manifest.shortcuts.map((shortcut: { url: string }) => shortcut.url), ['/', '/scenes.html', '/bible.html']);
+    assert.deepEqual(manifest.shortcuts.map((shortcut: { url: string }) => shortcut.url), ['/', '/bible.html', '/scenes.html']);
     for (const shortcut of manifest.shortcuts) {
       assert.ok(shortcut.icons.some((icon: { sizes: string }) => icon.sizes === '96x96'));
       for (const icon of shortcut.icons) existsInPublic(icon.src);
