@@ -108,6 +108,7 @@ for (const vp of [[375, 812], [1440, 900]]) {
       check(roles.items.every((i) => i[3] === i[0]), `${tag}: every row carries its own lang attribute, so it is pronounced right`);
       check(roles.items.filter((i) => i[2] === 'true').length === 1 && roles.items.find((i) => i[2] === 'true')[0] === 'en', `${tag}: exactly one row is checked, and it is the current reading`);
       check(await page.evaluate(() => document.activeElement?.dataset?.locale === 'en'), `${tag}: focus opens on the current reading`);
+      await page.waitForTimeout(220);   // the menu scales from .96; mid-transition every 44 px row measures 42.2
       const small = await page.evaluate(() => [...document.querySelectorAll('.lang-pop [role="menuitemradio"]')].filter((b) => b.getBoundingClientRect().height < 43.5).length);
       check(small === 0, `${tag}: every row is at least 44 px tall`, `${tag}: ${small} short rows`);
       // arrows move, Home/End jump, Escape closes and gives focus back
@@ -670,7 +671,14 @@ for (const vp of [[375, 812], [1440, 900]]) {
       check(seen.meta === { dark: '#0e2b4b', light: '#f8f9fb', paper: '#f4efe4' }[want], `${tag} ${theme}/${scheme} ${path}: theme-color follows (${seen.meta})`);
       // contrast of every piece of text on the page, against the ground it is actually composited over
       const low = await page.evaluate(() => {
-        const parse = (c) => { const m = c.match(/[\d.]+/g); return m ? { r: +m[0], g: +m[1], b: +m[2], a: m[3] === undefined ? 1 : +m[3] } : null; };
+        const parse = (c) => {
+          if (!c || c === 'transparent' || c === 'none') return null;
+          // color(srgb 0.97 0.98 0.98 / 0.94) — what color-mix() computes to. Components are 0-1, not 0-255.
+          const srgb = /^color\(srgb\s+([\d.eE+-]+)\s+([\d.eE+-]+)\s+([\d.eE+-]+)(?:\s*\/\s*([\d.eE+-]+))?\)$/.exec(c.trim());
+          if (srgb) return { r: +srgb[1] * 255, g: +srgb[2] * 255, b: +srgb[3] * 255, a: srgb[4] === undefined ? 1 : +srgb[4] };
+          const m = c.match(/[\d.]+/g);
+          return m && m.length >= 3 ? { r: +m[0], g: +m[1], b: +m[2], a: m[3] === undefined ? 1 : +m[3] } : null;
+        };
         const over = (f, b) => ({ r: f.r * f.a + b.r * (1 - f.a), g: f.g * f.a + b.g * (1 - f.a), b: f.b * f.a + b.b * (1 - f.a), a: 1 });
         const lum = ({ r, g, b }) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
         const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };

@@ -21,7 +21,11 @@ const fail = (m) => { bad++; console.error(`FAIL ${m}`); };
 const toml = readFileSync(join(ROOT, 'netlify.toml'), 'utf8');
 const tomlRules = [...toml.matchAll(/\[\[redirects\]\]\s*from = "([^"]+)"\s*to = "([^"]+)"\s*status = (\d+)/g)].map((m) => ({ from: m[1], to: m[2], status: Number(m[3]) }));
 const rules = [...parseRedirects(DIR), ...tomlRules];
-const follow = (path) => { const hops = []; for (let i = 0; i < 5; i++) { const r = matchRedirect(rules, path); if (!r) break; hops.push(r); path = r.to.split('#')[0]; } return { hops, end: path }; };
+// dist/_redirects ends with `/*  /404.html  404` (P0-4), which is a REWRITE with a status, not a redirect: it is
+// unforced, so the host applies it only when nothing is served at the path, and it never sends a Location header.
+// Following it as a hop made every chain "end at /404.html" and made every real page look redirected.
+const redirects = rules.filter((r) => !r.rewrite);
+const follow = (path) => { const hops = []; for (let i = 0; i < 5; i++) { const r = matchRedirect(redirects, path); if (!r) break; hops.push(r); path = r.to.split('#')[0]; } return { hops, end: path }; };
 
 const HIDDEN = ['/tabernacle.html', '/temple.html', '/ark.html', '/figures.html', '/figures-springs.html', '/plan.html', '/video.html', '/previews/moses-tabernacle-v04/index.html', '/previews/solomon-temple-v02/index.html', '/previews/noahs-ark-v01/index.html', '/scene-assembly.html'];
 for (const p of HIDDEN) {
@@ -33,11 +37,22 @@ for (const p of HIDDEN) {
   hops.length === 2 && hops[0].status === 301 && hops[1].status === 302 && end === '/' ? pass('/structures.html -> 301 /tabernacle.html -> 302 /') : fail(`/structures.html: ${JSON.stringify(hops)} ends at ${end}`);
 }
 for (const p of ['/gallery', '/pictures']) {
-  const r = matchRedirect(rules, p);
+  const r = matchRedirect(redirects, p);
   r?.status === 301 && r.to === '/scenes.html' ? pass(`${p} -> 301 /scenes.html`) : fail(`${p}: ${JSON.stringify(r)}`);
 }
-for (const p of ['/', '/scenes.html', '/bible.html', '/pictures/thumb/genesis-1-1.webp', '/p/genesis-1-1']) {
-  matchRedirect(rules, p) ? fail(`${p} must not be redirected`) : pass(`${p} is served, not redirected`);
+{
+  const r = matchRedirect(redirects, '/privacy');
+  r?.status === 301 && r.to === '/privacy.html' ? pass('/privacy -> 301 /privacy.html') : fail(`/privacy: ${JSON.stringify(r)}`);
+}
+for (const p of ['/', '/scenes.html', '/bible.html', '/privacy.html', '/pictures/thumb/genesis-1-1.webp', '/p/genesis-1-1']) {
+  matchRedirect(redirects, p) ? fail(`${p} must not be redirected`) : pass(`${p} is served, not redirected`);
+}
+// our own not-found page, with the status it deserves, as the LAST rule so it shadows nothing
+{
+  const last = rules.filter((r) => r.rewrite).pop();
+  last && last.from === '/*' && last.to === '/404.html' && last.status === 404 && !last.force
+    ? pass('an unknown path gets /404.html with a 404 (unforced, last rule)')
+    : fail(`the 404 rule is ${JSON.stringify(last)}`);
 }
 
 // ── in a browser ───────────────────────────────────────────────────────

@@ -116,7 +116,11 @@ if (want('build')) {
     const man = JSON.parse(readFileSync(file, 'utf8'));
     const want_ = manifestFor(k);
     check(JSON.stringify(man) === JSON.stringify(want_), `${LANGS[k].file} is what pwa-build.mjs makes`);
-    check(man.name === "雅偉之界 / Yahweh's World" && man.lang === k && man.display === 'standalone' && man.start_url === '/' && man.scope === '/' && man.id === '/', `${k}: name, lang, display, start_url, scope`);
+    // `name` is the STORE title of that locale and `short_name` the icon label (owner, 2026-11-04: named like
+    // Words). It used to be the combined "雅偉之界 / Yahweh's World" in all four manifests.
+    const WANT = { en: "Yahweh's World", 'zh-Hans': '雅伟之界', 'zh-Hant': '雅偉之界', ru: "Yahweh's World" };
+    const SHORT = { en: 'World', 'zh-Hans': '雅伟之界', 'zh-Hant': '雅偉之界', ru: 'Мир' };
+    check(man.name === WANT[k] && man.short_name === SHORT[k] && man.lang === k && man.display === 'standalone' && man.start_url === '/' && man.scope === '/' && man.id === '/', `${k}: name "${man.name}", short_name "${man.short_name}", lang, display, start_url, scope`);
     const purposes = man.icons.map((i) => `${i.purpose}:${i.sizes}`);
     check(['any:192x192', 'any:512x512', 'maskable:192x192', 'maskable:512x512', 'monochrome:512x512'].every((x) => purposes.includes(x)), `${k}: icons any 192/512, maskable 192/512, monochrome 512`);
     check(man.shortcuts.length === 3 && man.shortcuts.map((s) => s.url).join() === '/,/scenes.html,/bible.html', `${k}: shortcuts Home, Scenes, Bible`);

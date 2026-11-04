@@ -13,14 +13,17 @@ export function parseRedirects(dir) {
   if (!existsSync(f)) return [];
   return readFileSync(f, 'utf8').split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#')).map((l) => {
     const [from, to, status = '301'] = l.split(/\s+/);
-    return { from, to, status: parseInt(status, 10), force: status.endsWith('!') };
+    const code = parseInt(status, 10);
+    // Netlify: `!` forces the rule even when a file exists at the path; a 200 or 404 status means SERVE the target's
+    // body with that status (a rewrite), not send a Location header.
+    return { from, to, status: code, force: status.endsWith('!'), rewrite: code === 200 || code === 404 };
   });
 }
 
-/** What the rules say about this path: { to, status } or null. */
+/** What the rules say about this path: { to, status, force, rewrite } or null. First match wins, as on the host. */
 export function matchRedirect(rules, path) {
   for (const r of rules) {
-    if (r.from.endsWith('/*') ? path.startsWith(r.from.slice(0, -1)) : r.from === path) return { to: r.to, status: r.status };
+    if (r.from.endsWith('/*') ? path.startsWith(r.from.slice(0, -1)) : r.from === path) return r;
   }
   return null;
 }
@@ -62,13 +65,28 @@ export function serveDist(dir, { compress = false, headers = {}, headerRules = n
     if (handler?.(req, res, u)) return;
     let p = decodeURIComponent(u.pathname);
     const hit = matchRedirect(rules, p);
-    if (hit) { res.writeHead(hit.status, { location: hit.to }); res.end(); return; }
+    // A FORCED rule wins before the file system, as it does on the host (that is what `!` is for). An unforced one
+    // only applies when nothing is served at the path, which is how `/* /404.html 404` can sit at the end of the
+    // file without shadowing the whole site.
+    if (hit && hit.force && !hit.rewrite) { res.writeHead(hit.status, { location: hit.to }); res.end(); return; }
+    const resolveFile = (path) => {
+      let f = join(root, path.endsWith('/') ? `${path}index.html` : path);
+      if (!f.startsWith(root)) return null;
+      if (existsSync(f) && statSync(f).isDirectory()) f = join(f, 'index.html');
+      else if (!existsSync(f) && existsSync(`${f}.html`)) f = `${f}.html`;
+      return existsSync(f) && statSync(f).isFile() ? f : null;
+    };
+    let file = resolveFile(p);
+    let status = 200;
+    if (!file && hit) {
+      if (hit.rewrite) { file = resolveFile(hit.to); status = hit.status; }
+      else { res.writeHead(hit.status, { location: hit.to }); res.end(); return; }
+    } else if (file && hit && hit.force) {
+      if (hit.rewrite) { const f2 = resolveFile(hit.to); if (f2) { file = f2; status = hit.status; } }
+      else { res.writeHead(hit.status, { location: hit.to }); res.end(); return; }
+    }
+    if (!file) { res.writeHead(404, { 'content-type': 'text/plain' }); res.end('not found'); return; }
     if (p.endsWith('/')) p += 'index.html';
-    let file = join(root, p);
-    if (!file.startsWith(root)) { res.writeHead(403); res.end(); return; }
-    if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');
-    else if (!existsSync(file) && existsSync(`${file}.html`)) file = `${file}.html`;
-    if (!existsSync(file) || !statSync(file).isFile()) { res.writeHead(404, { 'content-type': 'text/plain' }); res.end('not found'); return; }
     let body = readFileSync(file);
     const h = { 'content-type': TYPES[extname(file)] || 'application/octet-stream', ...(headerRules ? headersFor(headerRules, p) : { 'cache-control': 'no-store' }), ...headers };
     if (headerRules && !h['content-type']) h['content-type'] = 'application/octet-stream';
@@ -77,7 +95,7 @@ export function serveDist(dir, { compress = false, headers = {}, headerRules = n
       h['content-encoding'] = 'br';
     }
     h['content-length'] = body.length;
-    res.writeHead(200, h);
+    res.writeHead(status, h);
     res.end(body);
   });
   return new Promise((ok) => server.listen(0, '127.0.0.1', () => ok({ server, base: `http://127.0.0.1:${server.address().port}`, close: () => server.close(), setDir: (d) => { root = resolve(d); rules = parseRedirects(root); } })));
