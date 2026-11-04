@@ -175,3 +175,36 @@ Tests: `npm run test:shell` 40 pass (platform 21, packs 11, deep links 4, site h
 - A first iOS simulator build was interrupted by SIGTERM from outside (probably another session on this machine) and succeeded on the rerun.
 - Computer-use screenshots: the macOS window screenshot triggered a system "screen recording" permission prompt on the owner's Mac; it was left unanswered.
 - The shared `dist-shell/` carries the channel of whichever build ran last; the browser pass accepts either.
+
+## 9. Copy, paste and text selection (2026-11-04)
+
+The owner's report on the TestFlight build was "World cannot copy-paste". What was measured, and on what:
+
+| Target | Long-press / drag selection | System Copy menu | What reached the clipboard | Paste into the app's own fields |
+|---|---|---|---|---|
+| iOS Safari (Simulator, iPhone Duo) | works | Copy / Look Up / Translate | — | — |
+| Android shell (Tauri WebView, emulator, `com.yahwehword.world`) | works | Define / Copy / Select all / Share | the word, then the reference, the edition and its credit line | pasted into the search field intact |
+| macOS shell (Tauri) | works | the Edit menu has Undo/Redo/Cut/Copy/Paste/Select All | the page text | — |
+| iOS shell (Tauri) | **not tested** | — | — | — |
+
+The iOS shell could not be tested: a simulator build needs about 6 GB of build output on `/Volumes/androidbuild`
+and there is not that much free. Everything else in the table reproduced nothing. So the fix addresses the one
+failure that is specific to that target and is silent when it happens:
+
+**In a WKWebView that is not Safari, `navigator.clipboard.writeText` resolves and writes nothing** outside
+Safari's own user-activation window. Because the promise resolved, `copyText`'s `document.execCommand` fallback
+never ran and the toast said "Copied" over an unchanged clipboard. `prefersLegacyClipboard` (src/reader/copy.ts)
+now puts the synchronous path first on exactly those views — an app's webview, or a page installed to the home
+screen — and keeps the async API as the fallback. The two paths are swapped, not replaced, so nothing changes in
+Safari, Chrome or the Android WebView.
+
+Three things that make the result usable rather than merely possible:
+
+- the reading containers declare `user-select: text` and `-webkit-touch-callout: default`, and
+  `scripts/verify-reader-robustness.mjs` fails the build if any of them loses it (case 8);
+- a system copy is built with `buildCopy`, so it carries the reference, the credit line and the 100-verse cap,
+  and `selectionText` leaves out the verse-number gutter, the parallel edition tags, the footnote markers and the
+  screen-reader-only spans — those are what made a multi-verse copy read "3 And God said 4 And God saw";
+- a tap anywhere on a verse selects it, a tap on a second verse extends the run, Escape clears it, and the action
+  bar offers Copy, Share, Link and "Open the picture" when the verse is the one a scene starts at. A live text
+  selection always wins over verse selection, so choosing a phrase never lights the whole verse.
