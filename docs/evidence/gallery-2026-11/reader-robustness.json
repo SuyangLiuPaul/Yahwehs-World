@@ -1,19 +1,19 @@
 {
- "when": "2026-11-04T00:26:54.307Z",
+ "when": "2026-11-04T01:41:13.621Z",
  "chrome": "156.0.8078.80",
- "passed": 169,
+ "passed": 173,
  "failed": 0,
  "numbers": {
   "slow": {
    "phone": {
-    "firstTextMs": 1455,
-    "kbTransferred": 104,
+    "firstTextMs": 1420,
+    "kbTransferred": 106,
     "skeletonBeforeText": true,
     "cls": 0
    },
    "desktop": {
-    "firstTextMs": 1457,
-    "kbTransferred": 104,
+    "firstTextMs": 1427,
+    "kbTransferred": 106,
     "skeletonBeforeText": true,
     "cls": 0
    }
@@ -26,9 +26,9 @@
     "over33pct": 0
    },
    "desktop": {
-    "frames": 182,
+    "frames": 181,
     "p50": 16.7,
-    "p95": 16.7,
+    "p95": 16.8,
     "over33pct": 0
    }
   },
@@ -496,10 +496,10 @@
   },
   {
    "ok": true,
-   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) phone: first verse readable in 1455 ms (budget 6000), 104 KB over the wire",
+   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) phone: first verse readable in 1420 ms (budget 6000), 106 KB over the wire",
    "data": {
-    "firstTextMs": 1455,
-    "kbTransferred": 104,
+    "firstTextMs": 1420,
+    "kbTransferred": 106,
     "skeletonBeforeText": true,
     "cls": 0
    }
@@ -514,14 +514,14 @@
   },
   {
    "ok": true,
-   "msg": "slow phone: first-view transfer 104 KB <= 125 KB budget (measured 102 KB + 20%)"
+   "msg": "slow phone: first-view transfer 106 KB <= 125 KB budget (measured 102 KB + 20%)"
   },
   {
    "ok": true,
-   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) desktop: first verse readable in 1457 ms (budget 6000), 104 KB over the wire",
+   "msg": "slow (1.6 Mbit/s, 150 ms RTT, 4x CPU) desktop: first verse readable in 1427 ms (budget 6000), 106 KB over the wire",
    "data": {
-    "firstTextMs": 1457,
-    "kbTransferred": 104,
+    "firstTextMs": 1427,
+    "kbTransferred": 106,
     "skeletonBeforeText": true,
     "cls": 0
    }
@@ -536,7 +536,7 @@
   },
   {
    "ok": true,
-   "msg": "slow desktop: first-view transfer 104 KB <= 125 KB budget (measured 102 KB + 20%)"
+   "msg": "slow desktop: first-view transfer 106 KB <= 125 KB budget (measured 102 KB + 20%)"
   },
   {
    "ok": true,
@@ -616,17 +616,17 @@
    "ok": true,
    "msg": "long phone: Psalm 119 in 3 editions, 176 rows / 528 lines",
    "data": {
-    "renderMs": 3.899999976158142,
+    "renderMs": 3.200000047683716,
     "verses": 176,
     "plates": 0,
     "uid": "yr1",
-    "nodes": 2964,
+    "nodes": 2967,
     "lines": 528
    }
   },
   {
    "ok": true,
-   "msg": "long phone: Psalm 119 x3 renders in 3.9 ms after data (< 120)"
+   "msg": "long phone: Psalm 119 x3 renders in 3.2 ms after data (< 120)"
   },
   {
    "ok": true,
@@ -646,25 +646,25 @@
    "ok": true,
    "msg": "long desktop: Psalm 119 in 3 editions, 176 rows / 528 lines",
    "data": {
-    "renderMs": 3.600000023841858,
+    "renderMs": 3.100000023841858,
     "verses": 176,
     "plates": 0,
     "uid": "yr1",
-    "nodes": 2964,
+    "nodes": 2967,
     "lines": 528
    }
   },
   {
    "ok": true,
-   "msg": "long desktop: Psalm 119 x3 renders in 3.6 ms after data (< 120)"
+   "msg": "long desktop: Psalm 119 x3 renders in 3.1 ms after data (< 120)"
   },
   {
    "ok": true,
-   "msg": "long desktop: scrolling Psalm 119 x3 for 3 s: median frame 16.7 ms, p95 16.7 ms, 0.0% over 33 ms",
+   "msg": "long desktop: scrolling Psalm 119 x3 for 3 s: median frame 16.7 ms, p95 16.8 ms, 0.0% over 33 ms",
    "data": {
-    "frames": 182,
+    "frames": 181,
     "p50": 16.7,
-    "p95": 16.7,
+    "p95": 16.8,
     "over33pct": 0
    }
   },
@@ -674,7 +674,7 @@
   },
   {
    "ok": true,
-   "msg": "long: Genesis 1 paragraph 1.2 ms, 1 Chronicles 1 (54 verses of names) 0.7 ms"
+   "msg": "long: Genesis 1 paragraph 1.0 ms, 1 Chronicles 1 (54 verses of names) 0.5 ms"
   },
   {
    "ok": true,
@@ -1209,6 +1209,37 @@
    "data": {
     "keyBefore": "17022",
     "keyAfter": "17022"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "copy: every reading container is selectable (no user-select:none, no -webkit-touch-callout:none)",
+   "data": {
+    "bad": "",
+    "got": "For God so loved the world that He gave "
+   }
+  },
+  {
+   "ok": true,
+   "msg": "copy: a tap on the verse text selects it; the bar carries Copy and Share and makes room for itself",
+   "data": {
+    "acts": "copySel,shareSel,linkSel,clearSel",
+    "padded": "72px"
+   }
+  },
+  {
+   "ok": true,
+   "msg": "copy: a second tap extends the run, Escape clears it",
+   "data": {
+    "extended": 3,
+    "after": 0
+   }
+  },
+  {
+   "ok": true,
+   "msg": "copy: the chapter links on to Yahweh’s Words at the same chapter",
+   "data": {
+    "words": "https://yahwehword.com/#/john/3?v=bsb-yhwh"
    }
   },
   {

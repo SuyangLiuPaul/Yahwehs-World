@@ -2,7 +2,7 @@
   "bundle": {
     "iOS": {
       "minimumSystemVersion": "15.0",
-      "bundleVersion": "2"
+      "bundleVersion": "3"
     }
   }
 }

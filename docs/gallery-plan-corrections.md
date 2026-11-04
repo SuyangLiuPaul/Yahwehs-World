@@ -46,7 +46,13 @@ Both editions (`cuvs-yhwh`, `cuvs-yhwh-tr`) are licence kind `permission` (chip 
 - "1,361 pass / 82 fail" (and §5.3's 74 waiting): the gate is now **1,443 / 1,443 pass** (the 23 redraws passed; 24 owner-accepted squares were replaced by clean Higgsfield redraws).
 - §5.5 "about 210 MB of pictures": measured **253.0 MiB** for 1,443 served (WebP q76, `docs/evidence/gallery-2026-11/pictures-quality-sweep.md`); `dist/` is **293.3 MiB**, inside the 300 MB cap.
 - §3's feature table: the picture page, the Bible page, vertical 对照 (at most three), headings, copy with credit and the edition sheet are built (`src/reader`, wired in `src/gallery`);
-  "Continue in Words", footnote popovers and sticky text size beyond the five steps follow the reader module's own list.
+  footnote popovers and sticky text size beyond the five steps follow the reader module's own list.
+- "Continue in Yahweh's Words": **built** (2026-11-04, `src/reader/words-link.ts`). The route was verified against the
+  Words checkout and the live site, not assumed: `yahwehword.com/#/<bookSlug>/<chapter>[:<verse>][?v=<edition>]`
+  (`lib/services/url_sync_service_web.dart`, `lib/constants/book_slugs.dart`). `https://yahwehword.com/#/john/3` was
+  rewritten by the app itself to `#/john/3:1?v=bsb-yhwh` and opened John 3. There is NO `/bible` path segment — the
+  2026-11-04 gap audit's `#/bible/<book>/<ch>` would have gone nowhere. All eight of this release's edition ids exist
+  in Words (`lib/constants/bible_versions.dart`); one that did not would simply be left off the link.
 - Russian: complete (captions, headings from Words' Russian set, interface, `rst-yhwh` and `rst`), labelled as not read by a native speaker (`scripts/verify-ru.mjs`).
 
 ## C. Where the twelve church packs stand
