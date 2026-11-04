@@ -1,8 +1,31 @@
-# 雅偉之界 / Yahweh's World 1.0.0: store listing drafts
+# Yahweh's World 1.0.0: store listing drafts
 
 Drafts for the owner's review; nothing here has been entered in any store. Machine-readable copy: `world-1.0.0.json`. Character counts are `len()` (Unicode code points) from a script; every field is within its limit (see the check at the end of the file).
 
-Names: 雅偉之界 (Traditional) with Yahweh's World in the English, Russian and Traditional listings; 雅伟之界 in the Simplified listing. Russian short name Мир Яхве. Support and marketing URL: https://world.yahwehword.com
+Names (owner, 2026-11-04 — named like Words). The store title is the product's name in that locale's language, on
+its own; the combined "雅偉之界 Yahweh's World" is gone from every field.
+
+| store field | en-US | zh-Hans | zh-Hant | ru |
+|---|---|---|---|---|
+| Apple **Name** | Yahweh's World | 雅伟之界 | 雅偉之界 | Yahweh's World |
+| Play **App name** | Yahweh's World | 雅伟之界 (zh-CN) | 雅偉之界 (zh-TW) | Yahweh's World (ru-RU) |
+| Microsoft **Product name** | Yahweh's World | 雅伟之界 | 雅偉之界 | Yahweh's World |
+
+The label under the icon is shorter and is NOT a store field: it comes from the build (`PRODUCT` in
+`src/config/site.ts`) — `World` (en), `雅伟之界` (zh-Hans), `雅偉之界` (zh-Hant), `Мир` (ru).
+
+### Exactly which console fields change from the 1.0.0 drafts
+
+* **App Store Connect** → your app → the version → *App Information*: **Name** in each of the four localisations
+  (en-US, zh-Hans, zh-Hant, ru). Nothing else changes: subtitle, promotional text, keywords, description and
+  What's New are unchanged.
+* **Google Play Console** → *Grow* → *Store presence* → *Main store listing*: **App name** in en-US, zh-CN, zh-TW
+  and ru-RU. Short and full description unchanged.
+* **Microsoft Partner Center** → *Store listings*: **Product name** in en-us, zh-hans, zh-hant and ru-ru. (The MSIX
+  package identity `YahwehsPeople.YahwehsWorld` and the reserved name are untouched.)
+* Nothing in any console carries the launcher label, so no field changes for that.
+
+Support and marketing URL: https://world.yahwehword.com
 
 ## Apple App Store
 
@@ -10,7 +33,7 @@ Locales in App Store Connect: English (U.S.) = `en-US`; Chinese, Simplified = `z
 
 ### English (en-US)
 
-**Name** (19/30 chars): 雅偉之界 Yahweh's World
+**Name** (14/30 chars): Yahweh's World
 
 **Subtitle** (26/30 chars): 1,443 Bible scenes to read
 
@@ -48,7 +71,7 @@ Questions or feedback: https://world.yahwehword.com
 
 ### 简体中文 (zh-Hans)
 
-**Name** (19/30 chars): 雅伟之界 Yahweh's World
+**Name** (4/30 chars): 雅伟之界
 
 **Subtitle** (15/30 chars): 1443 幅圣经画卷，图文对读
 
@@ -86,7 +109,7 @@ Questions or feedback: https://world.yahwehword.com
 
 ### 繁體中文 (zh-Hant)
 
-**Name** (19/30 chars): 雅偉之界 Yahweh's World
+**Name** (4/30 chars): 雅偉之界
 
 **Subtitle** (15/30 chars): 1443 幅聖經畫卷，圖文對讀
 
@@ -124,7 +147,7 @@ Questions or feedback: https://world.yahwehword.com
 
 ### Русский (ru)
 
-**Name** (19/30 chars): 雅偉之界 Yahweh's World
+**Name** (14/30 chars): Yahweh's World
 
 **Subtitle** (27/30 chars): Мир Яхве: 1443 сцены Библии
 
@@ -166,7 +189,7 @@ Play locale codes used: `en-US`, `zh-CN` (Simplified), `zh-TW` (Traditional), `r
 
 ### English (en-US) (en-US)
 
-**Title** (19/30 chars): 雅偉之界 Yahweh's World
+**Title** (14/30 chars): Yahweh's World
 
 **Short description** (77/80 chars): 1,443 illustrated Bible scenes with the Bible text beside each. Free, no ads.
 
@@ -195,7 +218,7 @@ Questions or feedback: https://world.yahwehword.com
 
 ### 简体中文 (zh-Hans) (zh-CN)
 
-**Title** (19/30 chars): 雅伟之界 Yahweh's World
+**Title** (4/30 chars): 雅伟之界
 
 **Short description** (34/80 chars): 1443 幅圣经插画，画旁就是经文，从创世记到启示录。免费，无广告。
 
@@ -224,7 +247,7 @@ Questions or feedback: https://world.yahwehword.com
 
 ### 繁體中文 (zh-Hant) (zh-TW)
 
-**Title** (19/30 chars): 雅偉之界 Yahweh's World
+**Title** (4/30 chars): 雅偉之界
 
 **Short description** (34/80 chars): 1443 幅聖經插畫，畫旁就是經文，從創世記到啟示錄。免費，無廣告。
 
@@ -253,7 +276,7 @@ Questions or feedback: https://world.yahwehword.com
 
 ### Русский (ru) (ru-RU)
 
-**Title** (19/30 chars): 雅偉之界 Yahweh's World
+**Title** (14/30 chars): Yahweh's World
 
 **Short description** (74/80 chars): 1443 иллюстрации к Библии, рядом с каждой — текст. Бесплатно, без рекламы.
 
@@ -286,7 +309,7 @@ Partner Center locale codes: `en-us`, `zh-hans`, `zh-hant`, `ru-ru`. Product nam
 
 ### English (en-US) (en-us)
 
-**Product name** (19/100 chars): 雅偉之界 Yahweh's World
+**Product name** (14/100 chars): Yahweh's World
 
 **Short description** (84 chars): A gallery of 1,443 illustrated Bible scenes with the Bible text beside each picture.
 
@@ -323,7 +346,7 @@ Questions or feedback: https://world.yahwehword.com
 
 ### 简体中文 (zh-Hans) (zh-hans)
 
-**Product name** (19/100 chars): 雅伟之界 Yahweh's World
+**Product name** (4/100 chars): 雅伟之界
 
 **Short description** (27 chars): 1443 幅圣经插画，每幅画旁都有经文，免费，无广告。
 
@@ -360,7 +383,7 @@ Questions or feedback: https://world.yahwehword.com
 
 ### 繁體中文 (zh-Hant) (zh-hant)
 
-**Product name** (19/100 chars): 雅偉之界 Yahweh's World
+**Product name** (4/100 chars): 雅偉之界
 
 **Short description** (27 chars): 1443 幅聖經插畫，每幅畫旁都有經文，免費，無廣告。
 
@@ -397,7 +420,7 @@ Questions or feedback: https://world.yahwehword.com
 
 ### Русский (ru) (ru-ru)
 
-**Product name** (19/100 chars): 雅偉之界 Yahweh's World
+**Product name** (14/100 chars): Yahweh's World
 
 **Short description** (82 chars): 1443 иллюстрации к Библии, рядом с каждой — текст Писания. Бесплатно, без рекламы.
 

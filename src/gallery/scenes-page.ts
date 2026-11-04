@@ -2,7 +2,7 @@ import './scenes-page.css';
 import { applyStatic, brand, bindSwitch, onLocale, t } from '../locale.ts';
 import { loadingStep, loadingSteps, pageReady } from '../site-shell.ts';
 import {
-  bookTitle, isOldTestament, lang, loadIndex, loadSummaries, neighbour, refText, sceneSummary, sceneTitle,
+  bookTitle, isOldTestament, loadIndex, loadSummaries, neighbour, refText, sceneSummary, sceneTitle,
   type GalleryIndex, type Scene, type Summaries,
 } from './data.ts';
 import { plate, fullUrl } from './media.ts';
@@ -10,12 +10,13 @@ import { mountScenePassage } from './passage.ts';
 import { toast } from './sheet.ts';
 
 loadingSteps(1);
-bindSwitch(document.querySelector('.lang-switch') as HTMLElement);
+bindSwitch(null); // the globe menu is wired by src/gallery/chrome.ts; this is here for <html lang>
 applyStatic();
 loadingStep();
 pageReady(); // the page is standing as soon as its skeleton is
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
+const htmlLang = () => document.documentElement.lang || 'en';
 const BATCH = 60;
 
 type Scope = 'all' | 'ot' | 'nt';
@@ -42,11 +43,17 @@ function inScope(r: Route) {
 
 function paintBrowseHead(r: Route, n: number) {
   const total = ix!.scenes.length;
-  $('sc-kicker').textContent = t(`${total.toLocaleString('en-US')} scenes · 66 books`, `${total.toLocaleString('en-US')} 幕 · 66 卷`, `${total.toLocaleString('ru-RU')} сцен · 66 книг`);
+  $('sc-kicker').textContent = t(`${total.toLocaleString('en-US')} scenes · 66 books`, `${total.toLocaleString('zh-CN')} 幕 · 66 卷`, `${total.toLocaleString('ru-RU')} сцен · 66 книг`);
   $('sc-title').textContent = r.b ? bookTitle(r.b) : r.scope === 'ot' ? t('Old Testament', '旧约', 'Ветхий Завет') : r.scope === 'nt' ? t('New Testament', '新约', 'Новый Завет') : t('All scenes', '全部画卷', 'Все сцены');
+  // What is being SHOWN, not the total again. The kicker above already says "1,443 scenes · 66 books"; this line
+  // used to repeat the same number unformatted ("1443 scenes") two lines below it (P1-14). Every count here is
+  // formatted for the reading, so 1,443 and 1 443 are never a style accident.
+  const num = (x: number) => x.toLocaleString(htmlLang());
   $('sc-count').textContent = r.b
-    ? t(`${n} scenes · ${isOldTestament(r.b) ? 'Old' : 'New'} Testament, book ${r.b}`, `${n} 幕 · ${isOldTestament(r.b) ? '旧约' : '新约'}第 ${r.b} 卷`, `${n} сцен · ${isOldTestament(r.b) ? 'Ветхий' : 'Новый'} Завет, книга ${r.b}`)
-    : t(`${n} scenes`, `${n} 幕`, `${n} сцен`);
+    ? t(`${num(n)} in this book · ${isOldTestament(r.b) ? 'Old' : 'New'} Testament`, `本卷 ${num(n)} 幕 · ${isOldTestament(r.b) ? '旧约' : '新约'}`, `${num(n)} в этой книге · ${isOldTestament(r.b) ? 'Ветхий' : 'Новый'} Завет`)
+    : r.scope === 'all'
+      ? t('Every book, in canonical order', '按正典顺序，全部书卷', 'Все книги, в каноническом порядке')
+      : t(`${num(n)} scenes in ${r.scope === 'ot' ? '39' : '27'} books`, `${num(n)} 幕 · ${r.scope === 'ot' ? '39' : '27'} 卷`, `${num(n)} сцен в ${r.scope === 'ot' ? '39' : '27'} книгах`);
   const strip = $('sc-strip');
   const chip = (label: string, hash: string, on: boolean) => `<button type="button" data-h="${hash}" aria-pressed="${on}">${label}</button>`;
   const scope = r.b ? (isOldTestament(r.b) ? 'ot' : 'nt') : r.scope;
@@ -87,9 +94,20 @@ function paintGrid(reset: boolean) {
   more.textContent = t(`Show more (${listNow.length - shown} left)`, `再显示一些（还有 ${listNow.length - shown} 幕）`, `Показать ещё (осталось ${listNow.length - shown})`);
 }
 
+/** Says that the link asked for a picture this build does not have, above the grid, politely. */
+function notFound(id: string) {
+  const box = $('sc-missing');
+  box.hidden = false;
+  box.textContent = t(
+    `That link asks for a picture this version does not have ("${id}"). Here are all of them.`,
+    `这个链接要的画不在这一版里（“${id}”）。下面是全部画卷。`,
+    `Эта ссылка ведёт на картину, которой в этой версии нет («${id}»). Ниже — все сцены.`);
+}
+
 function showBrowse(r: Route, restore?: { y: number; n: number } | null) {
   $('sc-picture').hidden = true;
   $('sc-browse').hidden = false;
+  $('sc-missing').hidden = true;
   if (!ix) return;
   listNow = inScope(r);
   limit = Math.max(BATCH, restore?.n ?? 0);
@@ -133,10 +151,12 @@ function paintPicture(sc: Scene) {
   const inBook = ix.scenes.filter((s) => s.b === sc.b);
   const pos = inBook.findIndex((s) => s.id === sc.id) + 1;
   const prev = neighbour(ix, sc, -1), next = neighbour(ix, sc, 1);
-  const l = lang();
+
   $('pc-pos').textContent = `${refText(sc)} · ${pos} / ${inBook.length}`;
   $('pc-title').textContent = sceneTitle(sc);
-  $('pc-ref').textContent = l === 'en' ? refText(sc) : `${refText(sc)} · ${refText(sc, 'en')}`;
+  // One reference, in the reader's language (P1-8). The English one used to be printed beside it on every
+  // non-English page: "創世記 1:14–25 · Genesis 1:14–25", and for a Russian reader reading a Russian edition too.
+  $('pc-ref').textContent = refText(sc);
   $('pc-sum').textContent = sums ? sceneSummary(sums, sc) : '';
   $('pc-credit').textContent = t("Artist's impression · drawn with AI tools, reviewed verse by verse", '画家的想象 · AI 辅助绘制，逐节审核', 'Художественный образ · создан с помощью ИИ-инструментов, проверен стих за стихом');
   $('pc-nav-t').textContent = t('Previous · Next', '上一幕 · 下一幕', 'Назад · Вперёд');
@@ -227,7 +247,14 @@ async function route(restore = false) {
     $('sc-picture').hidden = false;
     if (!ix) { $('pc-plate').innerHTML = '<span class="gx-sk plate"></span>'; $('pc-passage').innerHTML = passageSkeleton(); return; }
     const sc = ix.byId.get(r.p);
-    if (!sc) { history.replaceState(null, '', '#'); showBrowse({ p: null, b: 0, scope: 'all' }); return; }
+    if (!sc) {
+      // A link to a picture that is not in this build used to drop the hash and land on the whole gallery with
+      // nothing said (P2-10), so a dead link looked like a working one to the wrong page.
+      history.replaceState(null, '', '#');
+      showBrowse({ p: null, b: 0, scope: 'all' });
+      notFound(r.p);
+      return;
+    }
     scene = sc;
     window.scrollTo(0, 0);
     paintPicture(sc);

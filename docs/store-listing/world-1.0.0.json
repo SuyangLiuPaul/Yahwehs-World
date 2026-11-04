@@ -1,8 +1,8 @@
 {
-  "_note": "Drafts for 雅偉之界 / Yahweh's World 1.0.0. Counts are Python len() (Unicode code points) computed by docs/store-listing generator at write time; 'chars' maps field->count, 'limit' field->store limit. Support/marketing URL: https://world.yahwehword.com",
+  "_note": "Drafts for Yahweh's World 1.0.0 (store titles per locale: en-US and ru \"Yahweh's World\", zh-Hans 雅伟之界, zh-Hant 雅偉之界 — owner, 2026-11-04). Counts are Python len() (Unicode code points) computed by docs/store-listing generator at write time; 'chars' maps field->count, 'limit' field->store limit. Support/marketing URL: https://world.yahwehword.com",
   "apple": {
     "en-US": {
-      "name": "雅偉之界 Yahweh's World",
+      "name": "Yahweh's World",
       "subtitle": "1,443 Bible scenes to read",
       "promotionalText": "Look at the scene, read the passage. 1,443 illustrated Bible scenes from Genesis to Revelation, each with the Bible text beside it. Free, no ads, no account.",
       "description": "Yahweh's World is a gallery of 1,443 illustrated Bible scenes, from Genesis to Revelation. Every picture is tied to its chapter, and the Bible text sits right beside it, so you can look at a scene and then read the passage it shows.\n\nTHE PICTURES\n• 1,443 scenes across the whole Bible. Browse by book, or start with the scene of the day on the home page.\n• Artist's impressions drawn with AI tools and reviewed verse by verse; not reconstructions. The pictures carry no text; every word is on the page.\n• They are illustrations to help you see the scenes. The Bible text is what to read.\n\nREAD BESIDE THE PICTURE\n• A Bible reader built in beside every picture, in eight editions: the Berean Standard Bible, the World English Bible and the American Standard Version with the name Yahweh restored; the King James Version; the Chinese Union Version-based 和合本 in Simplified and Traditional characters, with the name Yahweh; and the Russian Synodal Bible, with and without the name Yahweh restored.\n• Choose the edition you like. The app remembers it.\n• Four languages: English, 简体中文, 繁體中文 and Русский.\n• A feedback button on every picture, if something looks wrong or you have a thought.\n\nSIMPLE\n• Pictures you have opened keep working without a connection.\n• Free. No ads, no account, no tracking.\n\nQuestions or feedback: https://world.yahwehword.com",
@@ -11,7 +11,7 @@
       "supportUrl": "https://world.yahwehword.com",
       "marketingUrl": "https://world.yahwehword.com",
       "chars": {
-        "name": 19,
+        "name": 14,
         "subtitle": 26,
         "promotionalText": 157,
         "description": 1347,
@@ -28,7 +28,7 @@
       }
     },
     "zh-Hans": {
-      "name": "雅伟之界 Yahweh's World",
+      "name": "雅伟之界",
       "subtitle": "1443 幅圣经画卷，图文对读",
       "promotionalText": "看一幕画，读一章经。1443 幅圣经插画，从创世记到启示录，每幅画旁边就是经文。免费，没有广告，不用注册。",
       "description": "雅伟之界是一卷圣经画卷：1443 幅插画，从创世记到启示录。每幅画都对应所在的那一章，经文就在画的旁边，看完这一幕，就可以接着读它所描绘的经文。\n\n画卷\n• 1443 幅画，涵盖整本圣经。可以按书卷浏览，也可以从首页的“今日一幕”开始。\n• 这些画是画家的想象，用 AI 工具绘制，并逐节对照经文审核；不是考古复原。画里没有文字，说明都在页面上。\n• 它们只是帮助你看见经文场景的插画，要读的是经文本身。\n\n画旁读经\n• 每幅画旁都有内置的圣经阅读器，共八个译本：带“雅伟”之名的 BSB、WEB 和 ASV，KJV，简体与繁体的和合本雅伟版，以及俄文圣经（有“雅伟”之名与无此名两种）。\n• 译本可以自选，应用会记住你的选择。\n• 四种语言：English、简体中文、繁體中文、Русский，随时切换。\n• 每幅画都有反馈按钮，发现问题或有想法，随手告诉我们。\n\n简单\n• 打开过的画，没有网络也能继续看。\n• 免费，没有广告，不用注册账号，也不追踪你。\n\n问题与反馈：https://world.yahwehword.com",
@@ -37,7 +37,7 @@
       "supportUrl": "https://world.yahwehword.com",
       "marketingUrl": "https://world.yahwehword.com",
       "chars": {
-        "name": 19,
+        "name": 4,
         "subtitle": 15,
         "promotionalText": 53,
         "description": 465,
@@ -54,7 +54,7 @@
       }
     },
     "zh-Hant": {
-      "name": "雅偉之界 Yahweh's World",
+      "name": "雅偉之界",
       "subtitle": "1443 幅聖經畫卷，圖文對讀",
       "promotionalText": "看一幕畫，讀一章經。1443 幅聖經插畫，從創世記到啟示錄，每幅畫旁邊就是經文。免費，沒有廣告，不必註冊。",
       "description": "雅偉之界是一卷聖經畫卷：1443 幅插畫，從創世記到啟示錄。每幅畫都對應所在的那一章，經文就在畫的旁邊，看完這一幕，就可以接著讀它所描繪的經文。\n\n畫卷\n• 1443 幅畫，涵蓋整本聖經。可以依書卷瀏覽，也可以從首頁的「今日一幕」開始。\n• 這些畫是畫家的想像，用 AI 工具繪製，並逐節對照經文審核；不是考古復原。畫裡沒有文字，說明都在頁面上。\n• 它們只是幫助你看見經文場景的插畫，要讀的是經文本身。\n\n畫旁讀經\n• 每幅畫旁都有內建的聖經閱讀器，共八個譯本：帶「雅偉」之名的 BSB、WEB 和 ASV，KJV，簡體與繁體的和合本雅偉版，以及俄文聖經（有「雅偉」之名與無此名兩種）。\n• 譯本可以自選，應用程式會記住你的選擇。\n• 四種語言：English、簡體中文、繁體中文、Русский，隨時切換。\n• 每幅畫都有意見回饋按鈕，發現問題或有想法，隨手告訴我們。\n\n簡單\n• 開啟過的畫，沒有網路也能繼續看。\n• 免費，沒有廣告，不必註冊帳號，也不追蹤你。\n\n問題與意見回饋：https://world.yahwehword.com",
@@ -63,7 +63,7 @@
       "supportUrl": "https://world.yahwehword.com",
       "marketingUrl": "https://world.yahwehword.com",
       "chars": {
-        "name": 19,
+        "name": 4,
         "subtitle": 15,
         "promotionalText": 53,
         "description": 471,
@@ -80,7 +80,7 @@
       }
     },
     "ru": {
-      "name": "雅偉之界 Yahweh's World",
+      "name": "Yahweh's World",
       "subtitle": "Мир Яхве: 1443 сцены Библии",
       "promotionalText": "Посмотрите сцену и прочтите отрывок. 1443 иллюстрации к Библии от Бытия до Откровения, рядом с каждой — текст. Бесплатно, без рекламы и регистрации.",
       "description": "«Мир Яхве» — галерея из 1443 иллюстраций к Библии, от Бытия до Откровения. Каждая картина привязана к своей главе, а текст Библии лежит рядом: посмотрите на сцену и сразу прочтите отрывок, который она показывает.\n\nКАРТИНЫ\n• 1443 сцены из всей Библии. Листайте по книгам или начните со сцены дня на главной странице.\n• Художественные образы, созданные с помощью ИИ-инструментов и проверенные стих за стихом; это не реконструкции. На картинах нет текста: все слова — на странице.\n• Это иллюстрации, которые помогают увидеть описанные сцены. Читать нужно сам библейский текст.\n\nЧИТАЙТЕ РЯДОМ С КАРТИНОЙ\n• Рядом с каждой картиной — встроенное чтение Библии в восьми изданиях: Berean Standard Bible, World English Bible и American Standard Version с восстановленным именем Яхве; King James Version; китайская Библия на основе «Хэхэбэнь» в упрощённом и традиционном написании, с именем Яхве; Синодальный перевод — с восстановленным именем Яхве и без него.\n• Издание выбираете вы, приложение его запоминает.\n• Четыре языка интерфейса: English, 简体中文, 繁體中文 и Русский.\n• На каждой картине есть кнопка обратной связи: если что-то не так или хочется поделиться мыслью.\n\nПРОСТО\n• Открытые картины продолжают работать без интернета.\n• Бесплатно. Без рекламы, без регистрации, без слежки.\n\nВопросы и отзывы: https://world.yahwehword.com",
@@ -89,7 +89,7 @@
       "supportUrl": "https://world.yahwehword.com",
       "marketingUrl": "https://world.yahwehword.com",
       "chars": {
-        "name": 19,
+        "name": 14,
         "subtitle": 27,
         "promotionalText": 148,
         "description": 1321,
@@ -108,11 +108,11 @@
   },
   "play": {
     "en-US": {
-      "title": "雅偉之界 Yahweh's World",
+      "title": "Yahweh's World",
       "shortDescription": "1,443 illustrated Bible scenes with the Bible text beside each. Free, no ads.",
       "fullDescription": "Yahweh's World is a gallery of 1,443 illustrated Bible scenes, from Genesis to Revelation. Every picture is tied to its chapter, and the Bible text sits right beside it, so you can look at a scene and then read the passage it shows.\n\nTHE PICTURES\n• 1,443 scenes across the whole Bible. Browse by book, or start with the scene of the day on the home page.\n• Artist's impressions drawn with AI tools and reviewed verse by verse; not reconstructions. The pictures carry no text; every word is on the page.\n• They are illustrations to help you see the scenes. The Bible text is what to read.\n\nREAD BESIDE THE PICTURE\n• A Bible reader built in beside every picture, in eight editions: the Berean Standard Bible, the World English Bible and the American Standard Version with the name Yahweh restored; the King James Version; the Chinese Union Version-based 和合本 in Simplified and Traditional characters, with the name Yahweh; and the Russian Synodal Bible, with and without the name Yahweh restored.\n• Choose the edition you like. The app remembers it.\n• Four languages: English, 简体中文, 繁體中文 and Русский.\n• A feedback button on every picture, if something looks wrong or you have a thought.\n\nSIMPLE\n• Pictures you have opened keep working without a connection.\n• Free. No ads, no account, no tracking.\n\nQuestions or feedback: https://world.yahwehword.com",
       "chars": {
-        "title": 19,
+        "title": 14,
         "shortDescription": 77,
         "fullDescription": 1347
       },
@@ -123,11 +123,11 @@
       }
     },
     "zh-CN": {
-      "title": "雅伟之界 Yahweh's World",
+      "title": "雅伟之界",
       "shortDescription": "1443 幅圣经插画，画旁就是经文，从创世记到启示录。免费，无广告。",
       "fullDescription": "雅伟之界是一卷圣经画卷：1443 幅插画，从创世记到启示录。每幅画都对应所在的那一章，经文就在画的旁边，看完这一幕，就可以接着读它所描绘的经文。\n\n画卷\n• 1443 幅画，涵盖整本圣经。可以按书卷浏览，也可以从首页的“今日一幕”开始。\n• 这些画是画家的想象，用 AI 工具绘制，并逐节对照经文审核；不是考古复原。画里没有文字，说明都在页面上。\n• 它们只是帮助你看见经文场景的插画，要读的是经文本身。\n\n画旁读经\n• 每幅画旁都有内置的圣经阅读器，共八个译本：带“雅伟”之名的 BSB、WEB 和 ASV，KJV，简体与繁体的和合本雅伟版，以及俄文圣经（有“雅伟”之名与无此名两种）。\n• 译本可以自选，应用会记住你的选择。\n• 四种语言：English、简体中文、繁體中文、Русский，随时切换。\n• 每幅画都有反馈按钮，发现问题或有想法，随手告诉我们。\n\n简单\n• 打开过的画，没有网络也能继续看。\n• 免费，没有广告，不用注册账号，也不追踪你。\n\n问题与反馈：https://world.yahwehword.com",
       "chars": {
-        "title": 19,
+        "title": 4,
         "shortDescription": 34,
         "fullDescription": 465
       },
@@ -138,11 +138,11 @@
       }
     },
     "zh-TW": {
-      "title": "雅偉之界 Yahweh's World",
+      "title": "雅偉之界",
       "shortDescription": "1443 幅聖經插畫，畫旁就是經文，從創世記到啟示錄。免費，無廣告。",
       "fullDescription": "雅偉之界是一卷聖經畫卷：1443 幅插畫，從創世記到啟示錄。每幅畫都對應所在的那一章，經文就在畫的旁邊，看完這一幕，就可以接著讀它所描繪的經文。\n\n畫卷\n• 1443 幅畫，涵蓋整本聖經。可以依書卷瀏覽，也可以從首頁的「今日一幕」開始。\n• 這些畫是畫家的想像，用 AI 工具繪製，並逐節對照經文審核；不是考古復原。畫裡沒有文字，說明都在頁面上。\n• 它們只是幫助你看見經文場景的插畫，要讀的是經文本身。\n\n畫旁讀經\n• 每幅畫旁都有內建的聖經閱讀器，共八個譯本：帶「雅偉」之名的 BSB、WEB 和 ASV，KJV，簡體與繁體的和合本雅偉版，以及俄文聖經（有「雅偉」之名與無此名兩種）。\n• 譯本可以自選，應用程式會記住你的選擇。\n• 四種語言：English、簡體中文、繁體中文、Русский，隨時切換。\n• 每幅畫都有意見回饋按鈕，發現問題或有想法，隨手告訴我們。\n\n簡單\n• 開啟過的畫，沒有網路也能繼續看。\n• 免費，沒有廣告，不必註冊帳號，也不追蹤你。\n\n問題與意見回饋：https://world.yahwehword.com",
       "chars": {
-        "title": 19,
+        "title": 4,
         "shortDescription": 34,
         "fullDescription": 471
       },
@@ -153,11 +153,11 @@
       }
     },
     "ru-RU": {
-      "title": "雅偉之界 Yahweh's World",
+      "title": "Yahweh's World",
       "shortDescription": "1443 иллюстрации к Библии, рядом с каждой — текст. Бесплатно, без рекламы.",
       "fullDescription": "«Мир Яхве» — галерея из 1443 иллюстраций к Библии, от Бытия до Откровения. Каждая картина привязана к своей главе, а текст Библии лежит рядом: посмотрите на сцену и сразу прочтите отрывок, который она показывает.\n\nКАРТИНЫ\n• 1443 сцены из всей Библии. Листайте по книгам или начните со сцены дня на главной странице.\n• Художественные образы, созданные с помощью ИИ-инструментов и проверенные стих за стихом; это не реконструкции. На картинах нет текста: все слова — на странице.\n• Это иллюстрации, которые помогают увидеть описанные сцены. Читать нужно сам библейский текст.\n\nЧИТАЙТЕ РЯДОМ С КАРТИНОЙ\n• Рядом с каждой картиной — встроенное чтение Библии в восьми изданиях: Berean Standard Bible, World English Bible и American Standard Version с восстановленным именем Яхве; King James Version; китайская Библия на основе «Хэхэбэнь» в упрощённом и традиционном написании, с именем Яхве; Синодальный перевод — с восстановленным именем Яхве и без него.\n• Издание выбираете вы, приложение его запоминает.\n• Четыре языка интерфейса: English, 简体中文, 繁體中文 и Русский.\n• На каждой картине есть кнопка обратной связи: если что-то не так или хочется поделиться мыслью.\n\nПРОСТО\n• Открытые картины продолжают работать без интернета.\n• Бесплатно. Без рекламы, без регистрации, без слежки.\n\nВопросы и отзывы: https://world.yahwehword.com",
       "chars": {
-        "title": 19,
+        "title": 14,
         "shortDescription": 74,
         "fullDescription": 1321
       },
@@ -170,7 +170,7 @@
   },
   "microsoft": {
     "en-us": {
-      "name": "雅偉之界 Yahweh's World",
+      "name": "Yahweh's World",
       "shortDescription": "A gallery of 1,443 illustrated Bible scenes with the Bible text beside each picture.",
       "description": "Yahweh's World is a gallery of 1,443 illustrated Bible scenes, from Genesis to Revelation. Every picture is tied to its chapter, and the Bible text sits right beside it, so you can look at a scene and then read the passage it shows.\n\nTHE PICTURES\n• 1,443 scenes across the whole Bible. Browse by book, or start with the scene of the day on the home page.\n• Artist's impressions drawn with AI tools and reviewed verse by verse; not reconstructions. The pictures carry no text; every word is on the page.\n• They are illustrations to help you see the scenes. The Bible text is what to read.\n\nREAD BESIDE THE PICTURE\n• A Bible reader built in beside every picture, in eight editions: the Berean Standard Bible, the World English Bible and the American Standard Version with the name Yahweh restored; the King James Version; the Chinese Union Version-based 和合本 in Simplified and Traditional characters, with the name Yahweh; and the Russian Synodal Bible, with and without the name Yahweh restored.\n• Choose the edition you like. The app remembers it.\n• Four languages: English, 简体中文, 繁體中文 and Русский.\n• A feedback button on every picture, if something looks wrong or you have a thought.\n\nSIMPLE\n• Pictures you have opened keep working without a connection.\n• Free. No ads, no account, no tracking.\n\nQuestions or feedback: https://world.yahwehword.com",
       "whatsNew": "First release. 1,443 illustrated Bible scenes from Genesis to Revelation, a Bible reader beside every picture in eight editions, four languages, and a feedback button on every picture.",
@@ -180,7 +180,7 @@
         "English, 简体, 繁體, Русский; free, no ads, no account"
       ],
       "chars": {
-        "name": 19,
+        "name": 14,
         "shortDescription": 84,
         "description": 1347,
         "whatsNew": 184,
@@ -198,7 +198,7 @@
       }
     },
     "zh-hans": {
-      "name": "雅伟之界 Yahweh's World",
+      "name": "雅伟之界",
       "shortDescription": "1443 幅圣经插画，每幅画旁都有经文，免费，无广告。",
       "description": "雅伟之界是一卷圣经画卷：1443 幅插画，从创世记到启示录。每幅画都对应所在的那一章，经文就在画的旁边，看完这一幕，就可以接着读它所描绘的经文。\n\n画卷\n• 1443 幅画，涵盖整本圣经。可以按书卷浏览，也可以从首页的“今日一幕”开始。\n• 这些画是画家的想象，用 AI 工具绘制，并逐节对照经文审核；不是考古复原。画里没有文字，说明都在页面上。\n• 它们只是帮助你看见经文场景的插画，要读的是经文本身。\n\n画旁读经\n• 每幅画旁都有内置的圣经阅读器，共八个译本：带“雅伟”之名的 BSB、WEB 和 ASV，KJV，简体与繁体的和合本雅伟版，以及俄文圣经（有“雅伟”之名与无此名两种）。\n• 译本可以自选，应用会记住你的选择。\n• 四种语言：English、简体中文、繁體中文、Русский，随时切换。\n• 每幅画都有反馈按钮，发现问题或有想法，随手告诉我们。\n\n简单\n• 打开过的画，没有网络也能继续看。\n• 免费，没有广告，不用注册账号，也不追踪你。\n\n问题与反馈：https://world.yahwehword.com",
       "whatsNew": "首个版本。1443 幅圣经插画，从创世记到启示录；每幅画旁有圣经阅读器，共八个译本；支持四种语言，每幅画都有反馈按钮。",
@@ -208,7 +208,7 @@
         "四种语言；免费，无广告，不用注册"
       ],
       "chars": {
-        "name": 19,
+        "name": 4,
         "shortDescription": 27,
         "description": 465,
         "whatsNew": 59,
@@ -226,7 +226,7 @@
       }
     },
     "zh-hant": {
-      "name": "雅偉之界 Yahweh's World",
+      "name": "雅偉之界",
       "shortDescription": "1443 幅聖經插畫，每幅畫旁都有經文，免費，無廣告。",
       "description": "雅偉之界是一卷聖經畫卷：1443 幅插畫，從創世記到啟示錄。每幅畫都對應所在的那一章，經文就在畫的旁邊，看完這一幕，就可以接著讀它所描繪的經文。\n\n畫卷\n• 1443 幅畫，涵蓋整本聖經。可以依書卷瀏覽，也可以從首頁的「今日一幕」開始。\n• 這些畫是畫家的想像，用 AI 工具繪製，並逐節對照經文審核；不是考古復原。畫裡沒有文字，說明都在頁面上。\n• 它們只是幫助你看見經文場景的插畫，要讀的是經文本身。\n\n畫旁讀經\n• 每幅畫旁都有內建的聖經閱讀器，共八個譯本：帶「雅偉」之名的 BSB、WEB 和 ASV，KJV，簡體與繁體的和合本雅偉版，以及俄文聖經（有「雅偉」之名與無此名兩種）。\n• 譯本可以自選，應用程式會記住你的選擇。\n• 四種語言：English、簡體中文、繁體中文、Русский，隨時切換。\n• 每幅畫都有意見回饋按鈕，發現問題或有想法，隨手告訴我們。\n\n簡單\n• 開啟過的畫，沒有網路也能繼續看。\n• 免費，沒有廣告，不必註冊帳號，也不追蹤你。\n\n問題與意見回饋：https://world.yahwehword.com",
       "whatsNew": "首個版本。1443 幅聖經插畫，從創世記到啟示錄；每幅畫旁有聖經閱讀器，共八個譯本；支援四種語言，每幅畫都有意見回饋按鈕。",
@@ -236,7 +236,7 @@
         "四種語言；免費，無廣告，不必註冊"
       ],
       "chars": {
-        "name": 19,
+        "name": 4,
         "shortDescription": 27,
         "description": 471,
         "whatsNew": 61,
@@ -254,7 +254,7 @@
       }
     },
     "ru-ru": {
-      "name": "雅偉之界 Yahweh's World",
+      "name": "Yahweh's World",
       "shortDescription": "1443 иллюстрации к Библии, рядом с каждой — текст Писания. Бесплатно, без рекламы.",
       "description": "«Мир Яхве» — галерея из 1443 иллюстраций к Библии, от Бытия до Откровения. Каждая картина привязана к своей главе, а текст Библии лежит рядом: посмотрите на сцену и сразу прочтите отрывок, который она показывает.\n\nКАРТИНЫ\n• 1443 сцены из всей Библии. Листайте по книгам или начните со сцены дня на главной странице.\n• Художественные образы, созданные с помощью ИИ-инструментов и проверенные стих за стихом; это не реконструкции. На картинах нет текста: все слова — на странице.\n• Это иллюстрации, которые помогают увидеть описанные сцены. Читать нужно сам библейский текст.\n\nЧИТАЙТЕ РЯДОМ С КАРТИНОЙ\n• Рядом с каждой картиной — встроенное чтение Библии в восьми изданиях: Berean Standard Bible, World English Bible и American Standard Version с восстановленным именем Яхве; King James Version; китайская Библия на основе «Хэхэбэнь» в упрощённом и традиционном написании, с именем Яхве; Синодальный перевод — с восстановленным именем Яхве и без него.\n• Издание выбираете вы, приложение его запоминает.\n• Четыре языка интерфейса: English, 简体中文, 繁體中文 и Русский.\n• На каждой картине есть кнопка обратной связи: если что-то не так или хочется поделиться мыслью.\n\nПРОСТО\n• Открытые картины продолжают работать без интернета.\n• Бесплатно. Без рекламы, без регистрации, без слежки.\n\nВопросы и отзывы: https://world.yahwehword.com",
       "whatsNew": "Первая версия. 1443 иллюстрации к Библии от Бытия до Откровения, чтение Библии рядом с каждой картиной в восьми изданиях, четыре языка и кнопка обратной связи на каждой картине.",
@@ -264,7 +264,7 @@
         "Четыре языка; бесплатно, без рекламы и регистрации"
       ],
       "chars": {
-        "name": 19,
+        "name": 14,
         "shortDescription": 82,
         "description": 1321,
         "whatsNew": 177,
