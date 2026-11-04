@@ -75,7 +75,9 @@ const ALLOW = [
   /^(BSB|KJV|WEB|ASV|CUVS?|СП)[\w-]* ?(\(.*?\))? · /,                      // an edition's credit line is written in the edition's own language, as in Words (it travels with the copied text)
   /^[\s\d:.,;\-–—·©()+/#›‹•«»…]*$/,                                      // numbers, references, punctuation
 ];
-const ALLOW_WORDS = new Set(['BSB', 'KJV', 'WEB', 'ASV', 'CUVS', 'CUV', 'RST', 'CC0', 'PD', 'Words', 'Sword', 'Yahweh', "Yahweh's", 'Yahweh’s', 'YHWH', 'Resend', 'e-mail', 'iPhone', 'Android', 'GitHub', 'Netlify', 'cookie', 'English', 'King', 'James', 'Version', 'Berean', 'Standard', 'Bible', 'World', 'American', 'Revised', 'LORD', 'bereanbible.com', 'ebible.org', 'Public', 'Domain', 'BSB-Y', 'CUVS-Y', 'KJV-Y', 'Yahweh', 'De', 'Hua', 'Ministry', 'eBible.org', 'gutenberg.org', 'www.gutenberg.org', 'russyn', 'Gutenberg', 'Project']);
+const ALLOW_WORDS = new Set(['BSB', 'KJV', 'WEB', 'ASV', 'CUVS', 'CUV', 'RST', 'CC0', 'PD', 'Words', 'Sword', 'Yahweh', "Yahweh's", 'Yahweh’s', 'YHWH', 'Resend', 'e-mail', 'iPhone', 'Android', 'GitHub', 'Netlify', 'cookie', 'English', 'King', 'James', 'Version', 'Berean', 'Standard', 'Bible', 'World', 'American', 'Revised', 'LORD', 'bereanbible.com', 'ebible.org', 'Public', 'Domain', 'BSB-Y', 'CUVS-Y', 'KJV-Y', 'Yahweh', 'De', 'Hua', 'Ministry', 'eBible.org', 'gutenberg.org', 'www.gutenberg.org', 'russyn', 'Gutenberg', 'Project',
+  // the church's own legal names, which are proper nouns and are not translated in any listing
+  'Christian', 'Disciples', 'Church']);
 const stripLegit = (t) => t.replace(/\S+@\S+/g, '').replace(/\b[\w.-]+\.(?:com|org|net|bible)(?:\/\S*)?/g, '').replace(/\bv\d+(?:\.\d+)+\b/g, '').replace(/\b[\w.-]+\.net\/\S+/g, '').replace(/e-mail/gi, '');
 
 async function scan(page) {

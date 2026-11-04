@@ -130,3 +130,4 @@ html[lang^="zh"] .hm-footer h3 { text-transform: none; letter-spacing: var(--tr-
   .gx-search.hm-find-field { width: 100%; height: auto; min-height: 48px; padding: 10px var(--sp-3); justify-content: flex-start; border-radius: var(--r-2); border-color: var(--line); background: var(--field); }
   .gx-search.hm-find-field .gx-search-t { display: block; }
 }
+.hm-church { margin-top: var(--sp-3) !important; color: var(--ink-3); }

@@ -89,8 +89,12 @@
         </div>
         <div>
           <h3 data-en="Three doors to one Bible" data-zh="同一本圣经的三个入口" data-ru="Три входа в одну Библию">Three doors to one Bible</h3>
-          <a href="https://yahwehword.com/" rel="noopener">雅伟之言 · Yahweh's Words</a>
-          <a href="https://sword.yahwehword.com/" rel="noopener">雅伟之剑 · Yahweh's Sword</a>
+          <!-- The sister apps' names follow the reading, like every other Chinese string on the page. Written as plain
+               text they stayed 雅伟 (Simplified) on the English and 繁體 pages, where the owner's rule wants 雅偉. -->
+          <a href="https://yahwehword.com/" rel="noopener" data-en="雅偉之言 · Yahweh's Words" data-zh="雅伟之言 · Yahweh's Words" data-ru="雅偉之言 · Yahweh's Words">雅偉之言 · Yahweh's Words</a>
+          <a href="https://sword.yahwehword.com/" rel="noopener" data-en="雅偉之劍 · Yahweh's Sword" data-zh="雅伟之剑 · Yahweh's Sword" data-ru="雅偉之劍 · Yahweh's Sword">雅偉之劍 · Yahweh's Sword</a>
+          <!-- P1-10: whose site this is. The footer named the editions and the apps and never the church. -->
+          <p class="hm-church" data-en="Published by Yahweh De Hua Ministry (Christian Disciples Church)." data-zh="由雅伟的话事工（基督徒教会）出品。" data-ru="Издано служением Yahweh De Hua Ministry (Christian Disciples Church).">Published by Yahweh De Hua Ministry (Christian Disciples Church).</p>
           <p class="hm-note" data-en="Languages: English, 中文 (Simplified and Traditional), Русский. The Russian text has not yet been read by a native speaker." data-zh="界面语言：中文（简体、繁体）、English、Русский。俄文尚未经母语读者审阅。" data-ru="Языки: English, 中文 (упрощённый и традиционный), Русский. Русский текст ещё не прочитан носителем языка.">Languages: English, 中文, Русский.</p>
           <div class="hm-theme" role="group" aria-label="Reading surface" data-aria-en="Reading surface" data-aria-zh="阅读面" data-aria-ru="Чтение">
             <span class="gx-mono hm-theme-l" data-en="Reading surface" data-zh="阅读面" data-ru="Чтение">Reading surface</span>
@@ -101,7 +105,7 @@
               <button type="button" class="gx-pill" data-read="paper" data-en="Paper" data-zh="纸" data-ru="Бумага">Paper</button>
             </div>
           </div>
-          <a href="/privacy.html" id="hm-privacy" data-en="Privacy" data-zh="隐私" data-ru="Конфиденциальность">Privacy</a>
+          <a href="/privacy.html" class="hm-link" id="hm-privacy" data-en="Privacy" data-zh="隐私" data-ru="Конфиденциальность">Privacy</a>
           <button type="button" class="hm-link" id="hm-feedback" data-en="Send feedback" data-zh="反馈意见" data-ru="Оставить отзыв">Send feedback</button>
           <div class="hm-install" id="hm-install" hidden></div>
           <p class="hm-offline" id="hm-offline" hidden></p>
