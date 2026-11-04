@@ -40,13 +40,14 @@
 #            /assets/world.bin-<hash>.gz: a new build is a new URL, so the old
 #            one can be kept for a year.
 #   stable   everything else keeps its name when its content changes (pages, the
-#            /data/*.json files, version.json, models, images), so it must be
+#            /data/*.json files, version.json, models), so it must be
 #            revalidated: "no-cache" stores it but asks the server (a 304 is a
 #            few hundred bytes) before every use.
 # Netlify applies the matching rules in order and a later Cache-Control replaces
 # an earlier one. /assets/ also holds a few unhashed folders copied from public/
 # (character-cutouts, ark-cutouts, scene-assembly-references); the patterns below
-# name file types, not the folder, so those stay revalidated.
+# name file types, not the folder, so those stay revalidated. Fonts and
+# pictures have their separate stable-URL cache policies below.
 [[headers]]
   for = "/*.html"
   [headers.values]
@@ -112,3 +113,21 @@
   [headers.values]
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Stable font names: cache for a year, without promising immutable content.
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+# Picture names are stable. Serve fresh for a day, then revalidate (ETag) in
+# the background for up to a year. SW and native pack URL keys stay unchanged.
+[[headers]]
+  for = "/pictures/thumb/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=31536000"
+
+[[headers]]
+  for = "/pictures/full/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=31536000"

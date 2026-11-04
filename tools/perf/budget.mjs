@@ -2,7 +2,7 @@
 //
 //   node tools/perf/budget.mjs                                    # against the dev site
 //   node tools/perf/budget.mjs --base http://localhost:4173        # against a local `vite preview`
-//   node tools/perf/budget.mjs --only assets                       # the no-browser half, for a fast CI gate
+//   node tools/perf/budget.mjs --only assets                       # asset sizes and cold English font requests
 //   node tools/perf/budget.mjs --json out.json                     # the numbers, for a trend line
 //
 // It measures the same way tools/perf/measure.mjs does (the same probe, the same device class, the same throttle)
@@ -15,15 +15,18 @@
 import { chromium } from 'playwright';
 import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
+import { gzipSync } from 'node:zlib';
+import { serveDist } from '../../scripts/lib/dist-server.mjs';
 import { INIT_SCRIPT, frameStats, tbt } from './lib/probe.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf(`--${k}`); return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
 
-const BASE = arg('base', 'https://yahwehsworld-dev.netlify.app').replace(/\/$/, '');
-const ONLY = (arg('only', 'assets,routes,scroll,interactions')).split(',');
+const DIST = arg('dir', '');
+let BASE = arg('base', 'https://yahwehsworld-dev.netlify.app').replace(/\/$/, '');
+const ONLY = (arg('only', 'assets,enfonts,routes,scroll,interactions')).split(',');
 const JSON_OUT = arg('json', '');
 const B = JSON.parse(await readFile(arg('budgets', join(HERE, 'budgets.json')), 'utf8'));
 
@@ -50,28 +53,32 @@ function check(group, subject, metric, got, limit, unit = '') {
   return ok;
 }
 
-// ── assets: no browser, so this half is a cheap gate on its own ──────────────────────────────────────────────────
+// ── assets: file budgets plus cold English browser requests ──────────────────────────────────────────────────
 async function suiteAssets() {
   // BYTES ON THE WIRE, not bytes after decoding. Node's fetch transparently gunzips, so `arrayBuffer().byteLength`
   // of /data/gallery/index.json is 193 KiB where the browser transfers 67 KiB — a budget set on the wrong one of
   // those two would be wrong by 3x. `content-length` survives the decode and is the compressed length.
   const head = async (path) => {
+    if (DIST) {
+      try { const b = await readFile(join(resolve(DIST), path)); return /\.(json|css|js)$/.test(path) ? gzipSync(b).length : b.length; } catch { return null; }
+    }
     const r = await fetch(BASE + path, { headers: { 'accept-encoding': 'br, gzip' } });
     if (!r.ok) return null;
     const len = Number(r.headers.get('content-length'));
     const buf = await r.arrayBuffer();
     return Number.isFinite(len) && len > 0 ? len : buf.byteLength;
   };
-  const fontsCss = await fetch(`${BASE}/fonts/fonts.css`).then((r) => (r.ok ? r.text() : '')).catch(() => '');
+  const fontsCss = DIST ? await readFile(join(resolve(DIST), 'fonts/fonts.css'), 'utf8').catch(() => '') : await fetch(`${BASE}/fonts/fonts.css`).then((r) => (r.ok ? r.text() : '')).catch(() => '');
   const urls = [...fontsCss.matchAll(/url\('([^']+\.woff2)'\)/g)].map((m) => m[1]);
   let worst = 0, worstName = '';
   const cjk = [];
   for (const u of urls) {
     const n = await head(u);
-    if (n == null) continue;
+    if (n == null) { check('assets', u, 'font bytes present', NaN, 0); continue; }
     if (n > worst) { worst = n; worstName = u; }
     if (/cjk/i.test(u)) cjk.push([u, n]);
   }
+  check('assets', 'fonts.css', 'font URLs present', urls.length ? 0 : NaN, 0);
   check('assets', worstName || 'fonts', 'largest font file KB', +KB(worst).toFixed(0), B.assets.maxFontFileKB, 'KB');
   // what ONE Chinese page actually needs: the sans and the serif of its own script
   const forScript = (tag) => cjk.filter(([u]) => u.includes(tag)).reduce((s, [, n]) => s + n, 0);
@@ -81,6 +88,32 @@ async function suiteAssets() {
   check('assets', '/data/gallery/index.json', 'compressed KB', +KB(await head('/data/gallery/index.json') ?? NaN).toFixed(0), B.assets.galleryIndexKB, 'KB');
   // Psalms is the longest book file the reader ever fetches in one go
   check('assets', '/data/reader/text/bsb-yhwh/19.json', 'compressed KB', +KB(await head('/data/reader/text/bsb-yhwh/19.json') ?? NaN).toFixed(0), B.assets.longestChapterJsonKB, 'KB');
+}
+
+// ── cold English routes must not fetch CJK faces (the home page shows real Chinese product names: one sans file) ──
+async function suiteEnFonts() {
+  // A size scan cannot tell which faces CSS lays out. Cold English routes must
+  // request zero CJK faces; opening the language picker is deliberately excluded.
+  let server, browser;
+  try {
+    browser = await chromium.launch();
+    if (DIST) { server = await serveDist(resolve(DIST)); BASE = server.base; }
+    for (const path of ['/', '/scenes.html', '/bible.html']) {
+      const ctx = await browser.newContext({ locale: 'en-US', serviceWorkers: 'block' });
+      const requested = new Set();
+      ctx.on('request', (r) => { if (/Noto(?:Serif|Sans)(?:SC|TC).*\.woff2/i.test(r.url())) requested.add(r.url()); });
+      const page = await ctx.newPage();
+      await page.goto(BASE + path);
+      await page.waitForSelector(path === '/' ? '#hm-title:not(:has(.gx-sk))' : path === '/scenes.html' ? '.sc-card' : '.yr-v, .yr-p');
+      await page.waitForLoadState('networkidle');
+      await page.evaluate(() => document.fonts.ready);
+      check('assets', path, 'English CJK font requests', requested.size, path === '/' ? 1 : 0);
+      await ctx.close();
+    }
+  } catch (e) {
+    console.error(`English font request check unavailable: ${e.message.split('\n')[0]}`);
+    check('assets', 'English routes', 'CJK requests measured', NaN, 0);
+  } finally { await browser?.close(); await server?.close(); }
 }
 
 // ── the browser half ────────────────────────────────────────────────────────────────────────────────────────────
@@ -195,7 +228,7 @@ async function suiteInteractions(browser) {
 }
 
 // ── report ──────────────────────────────────────────────────────────────────────────────────────────────────────
-const SUITES = { assets: suiteAssets, routes: suiteRoutes, scroll: suiteScroll, interactions: suiteInteractions };
+const SUITES = { assets: suiteAssets, enfonts: suiteEnFonts, routes: suiteRoutes, scroll: suiteScroll, interactions: suiteInteractions };
 
 let browser = null;
 for (const name of ONLY) {

@@ -23,8 +23,8 @@ body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
 .sc-strip .sep { width: 1px; background: var(--line); margin: 6px 2px; }
 
 .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; padding: 14px calc(var(--sp-4) + var(--safe-right)) var(--sp-5) calc(var(--sp-4) + var(--safe-left)); align-content: start; min-height: 90vh; /* the skeleton and the cards fill the same box: nothing below moves when they swap */ }
-.sc-card { display: grid; gap: 7px; text-decoration: none; color: inherit; align-content: start; }
-.sc-card .gx-plate, .sc-grid > .gx-sk.plate { aspect-ratio: 3 / 2; }
+.sc-card { content-visibility: auto; contain: layout paint; contain-intrinsic-size: auto 220px; display: grid; gap: 7px; text-decoration: none; color: inherit; align-content: start; }
+.sc-card .gx-plate, .sc-grid > .gx-sk.plate { aspect-ratio: 16 / 9; }
 /* TWO lines, not one (P1-7). Clamped to a single line, four of the six cards on a phone read "The Fourth Day: Su…",
    "The Creation of Ma…", "The Seventh Day, G…" — which gives back the whole point of moving the words out of the
    pixels. The box is reserved at two lines so a one-line title does not shift the card below it. */

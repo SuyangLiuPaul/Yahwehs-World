@@ -3,6 +3,7 @@
 // Both render with render.ts, load with store.ts, and share the Session (edition, layout, language, size, theme).
 // What differs: the chapter reader has the chapter bar, the book picker and the location hash; the passage has
 // the "read the whole chapter" link and shows the first few verses until expanded.
+import { afterLayout } from './layout.ts';
 import { editionById, labelLanguage, referenceLabel, stepChapter } from './books.ts';
 import { applyChrome, bookSheetHtml, displaySheetHtml, editionSheetHtml, mountToast, parallelSheetHtml, reducedMotion, Sheet } from './chrome.ts';
 import type { BookSheetState } from './chrome.ts';
@@ -265,6 +266,8 @@ export class ReaderView implements ReaderHandle {
       this.renderAll();
       this.updateHistory(o.history, o.scroll);
       this.setDocTitle();
+      await afterLayout();
+      if (my !== this.seq) return;
       if (anchor) this.restoreAnchor(anchor);
       else if (this.kind === 'chapter') this.scrollToTarget(o.scroll);
       s.remember(this.ref.book, this.ref.chapter);
@@ -344,7 +347,14 @@ export class ReaderView implements ReaderHandle {
     const f = document.activeElement as HTMLElement | null;
     const key = f && container.contains(f) ? { act: f.dataset.act, id: f.dataset.id } : null;
     fill();
-    if (key?.act) container.querySelector<HTMLElement>(`[data-act="${key.act}"]${key.id != null ? `[data-id="${key.id}"]` : ''}`)?.focus({ preventScroll: true });
+    if (key?.act) {
+      const my = this.seq;
+      void afterLayout().then(() => {
+        if (my !== this.seq || !container.isConnected) return;
+        if (document.activeElement !== f && document.activeElement !== document.body) return;
+        container.querySelector<HTMLElement>(`[data-act="${key.act}"]${key.id != null ? `[data-id="${key.id}"]` : ''}`)?.focus({ preventScroll: true });
+      });
+    }
   }
 
   private renderTools(): void {
@@ -669,7 +679,10 @@ export class ReaderView implements ReaderHandle {
   private async rerenderKeepingAnchor(): Promise<void> {
     if (!this.data) return;
     const a = this.captureAnchor();
+    const my = this.seq;
     this.renderAll();
+    await afterLayout();
+    if (my !== this.seq) return;
     if (a) this.restoreAnchor(a);
   }
 
@@ -721,7 +734,7 @@ export class ReaderView implements ReaderHandle {
     if (restore != null) { window.scrollTo?.({ top: restore, behavior: 'instant' as ScrollBehavior }); return; }
     const first = this.highlight.size ? Math.min(...this.highlight) : null;
     const el = first != null ? this.bodyEl.querySelector<HTMLElement>(`[data-k="${first}"]`) : null;
-    if (el) { el.scrollIntoView({ block: 'center', behavior: reducedMotion() ? 'auto' : 'smooth' }); return; }
+    if (el) { el.scrollIntoView({ block: 'nearest', behavior: reducedMotion() ? 'auto' : 'smooth' }); return; }
     if (this.opts.route === 'hash') window.scrollTo?.({ top: 0, behavior: 'instant' as ScrollBehavior });
   }
 

@@ -6,6 +6,20 @@ import { bookTitle, loadIndex, loadSummaries, refText, sceneTitle, type GalleryI
 import { parseRef } from './refs.ts';
 import { plate } from './media.ts';
 import { openSheet } from './sheet.ts';
+import { buildSearchIndex, searchIndex } from './search-index.ts';
+
+// The palette module itself is lazy-loaded. Cache across openings, invalidate when
+// the script table arrives or locale changes (hant is locale dependent).
+let cached: ReturnType<typeof buildSearchIndex> | null = null;
+let cachedIx: GalleryIndex | null = null;
+let cachedSums: Summaries | null = null;
+onLocale(() => { cached = null; });
+function indexFor(ix: GalleryIndex, sums: Summaries | null) {
+  if (!cached || cachedIx !== ix || cachedSums !== sums) {
+    cached = buildSearchIndex(ix, sums, bookTitle, hant); cachedIx = ix; cachedSums = sums;
+  }
+  return cached;
+}
 
 const MAX = 12;
 const keyOf = (b: number, ch: number, v: number) => b * 1_000_000 + ch * 1000 + v;
@@ -18,27 +32,6 @@ function byReference(ix: GalleryIndex, b: number, ch: number, v: number | null):
   if (hit.length) return hit;
   const after = inBook.find((sc) => sc.s > hi);
   return after ? [after] : inBook.slice(-1);
-}
-
-function byText(ix: GalleryIndex, q: string, sums: Summaries | null): Scene[] {
-  const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
-  if (!terms.length) return [];
-  const scored: [number, Scene][] = [];
-  for (const sc of ix.scenes) {
-    const title = `${sc.zh} ${hant(sc.zh)} ${sc.en} ${sc.ru}`.toLowerCase();
-    const book = `${bookTitle(sc.b, 'zh')} ${bookTitle(sc.b, 'en')} ${bookTitle(sc.b, 'ru')}`.toLowerCase();
-    const body = sums ? `${sums.zh[sc.i] ?? ''} ${hant(sums.zh[sc.i] ?? '')} ${sums.en[sc.i] ?? ''} ${sums.ru?.[sc.i] ?? ''}`.toLowerCase() : '';
-    let score = 0;
-    for (const term of terms) {
-      if (title.includes(term)) score += 10;
-      else if (book.includes(term)) score += 4;
-      else if (body.includes(term)) score += 2;
-      else { score = 0; break; }
-    }
-    if (score) scored.push([score, sc]);
-  }
-  scored.sort((a, b) => b[0] - a[0] || a[1].i - b[1].i);
-  return scored.slice(0, MAX).map((x) => x[1]);
 }
 
 let current: HTMLDialogElement | null = null;
@@ -60,7 +53,7 @@ export function openSearch(initial = '', from?: HTMLElement | null) {
       const list = body.querySelector<HTMLElement>('#gx-pal-list')!;
       const hint = body.querySelector<HTMLElement>('.gx-pal-hint')!;
       let ix: GalleryIndex | null = null;
-      let sums: Summaries | null = null;
+      let sums: Summaries | null = cachedSums;
       let rows: Scene[] = [];
       let at = 0;
 
@@ -98,20 +91,38 @@ export function openSearch(initial = '', from?: HTMLElement | null) {
         if (!q) { rows = []; paint(); setHint(t('Try 创 12, Gen 12:1, John 3, or a word from a title.', '试试「创 12」、Gen 12:1、John 3，或画名里的一个词。', 'Попробуйте «Быт 12», Gen 12:1, Ин 3 или слово из названия.')); return; }
         const ref = parseRef(q);
         rows = ref ? byReference(ix, ref.b, ref.ch, ref.v).slice(0, MAX) : [];
-        if (!rows.length) rows = byText(ix, q, sums);
+        if (!rows.length) rows = searchIndex(indexFor(ix, sums), q, MAX);
         paint();
         setHint(rows.length ? '' : t('No scene matches. Try a book name and chapter.', '没有找到这一幕。试试书卷名加章数。', 'Ничего не найдено. Попробуйте название книги и номер главы.'));
       };
 
       labels();
       setHint(t('Loading…', '正在载入…', 'Загрузка…'));
-      void loadIndex().then((x) => { ix = x; input.value ||= initial; run(); }).catch(() => setHint(t('The scene list did not load. Close this and try again.', '画卷目录没有载入。关闭后重试。', 'Список сцен не загрузился. Закройте и попробуйте снова.')));
-      // summaries are only needed for words inside a one-line summary: fetched on the first keystroke
+      void loadIndex().then((x) => {
+        ix = x;
+        input.value ||= initial;
+        const ready = () => { warm(); run(); };
+        if ('requestIdleCallback' in window) window.requestIdleCallback(ready); else setTimeout(ready, 0);
+      }).catch(() => setHint(t('The scene list did not load. Close this and try again.', '画卷目录没有载入。关闭后重试。', 'Список сцен не загрузился. Закройте и попробуйте снова.')));
+      // Warm the normalised index in idle time on first open. Fetch once; failed
+      // summaries leave title/book matching available and can retry on input.
+      let summaryPending: Promise<void> | null = null;
+      const warm = () => {
+        if (ix) indexFor(ix, sums);
+        if (!sums && !summaryPending) summaryPending = loadSummaries().then((s) => {
+          sums = s;
+          const ready = () => { if (ix) indexFor(ix, sums); if (body.isConnected) run(); };
+          if ('requestIdleCallback' in window) window.requestIdleCallback(ready); else setTimeout(ready, 0);
+        }).catch(() => {}).finally(() => { summaryPending = null; });
+      };
+      if ('requestIdleCallback' in window) window.requestIdleCallback(warm); else setTimeout(warm, 0);
+      let timer: ReturnType<typeof setTimeout> | undefined;
       input.addEventListener('input', () => {
-        run();
-        if (!sums) void loadSummaries().then((s) => { sums = s; run(); }).catch(() => {});
+        clearTimeout(timer);
+        timer = setTimeout(() => { timer = undefined; if (body.isConnected) { warm(); run(); } }, 70);
       });
       input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && timer !== undefined) { clearTimeout(timer); timer = undefined; run(); }
         if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
           if (!rows.length) return;
           e.preventDefault();

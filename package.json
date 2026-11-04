@@ -10,7 +10,7 @@
     "build:gallery": "npm run reader:data && VITE_SURFACE=gallery npm run build",
     "dev:gallery": "VITE_SURFACE=gallery vite",
     "pictures": "node scripts/build-pictures.mjs",
-    "verify:gallery": "npm run test:gallery && node scripts/audit-zh-hant.mjs && npm run verify:fonts && node scripts/check-budget.mjs --profile gallery && node scripts/verify-gallery.mjs && node scripts/verify-bible-notes-vocabulary.mjs && node scripts/verify-redirects.mjs && node scripts/verify-gallery-ui.mjs && node scripts/verify-ru.mjs && node scripts/verify-pwa.mjs",
+    "verify:gallery": "npm run test:gallery && node tools/perf/budget.mjs --only enfonts --dir dist && node scripts/audit-zh-hant.mjs && npm run verify:fonts && node scripts/check-budget.mjs --profile gallery && node scripts/verify-gallery.mjs && node scripts/verify-bible-notes-vocabulary.mjs && node scripts/verify-redirects.mjs && node scripts/verify-gallery-ui.mjs && node scripts/verify-ru.mjs && node scripts/verify-pwa.mjs",
     "verify:pwa": "node scripts/verify-pwa.mjs",
     "gallery-data": "node scripts/build-gallery-data.mjs",
     "check": "tsc --noEmit",
@@ -28,7 +28,7 @@
     "test:gallery": "node --test \"tests/gallery/*.test.ts\"",
     "verify:reader": "node scripts/verify-reader-robustness.mjs",
     "test:shell": "node --test \"tests/shell/*.test.ts\" \"tests/platform/*.test.ts\" \"tests/core/*.test.ts\"",
-    "verify:shell": "npm run test:shell && node scripts/verify-shell.mjs && node scripts/verify-shell-ui.mjs",
+    "verify:shell": "npm run test:shell && node tools/perf/budget.mjs --only enfonts --dir dist && node scripts/verify-shell.mjs && node scripts/verify-shell-ui.mjs",
     "app:dist": "VITE_SURFACE=gallery VITE_TARGET=shell VITE_OUT_DIR=dist-shell npm run build && node scripts/shell-dist.mjs",
     "verify:fonts": "node tools/font-coverage.mjs --check"
   },

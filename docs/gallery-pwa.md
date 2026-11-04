@@ -184,3 +184,66 @@ Other browser scripts (`verify-gallery-ui`, `verify-ru`, `verify-redirects`, `ga
 - Changing the format of anything kept in a runtime cache: rename its cache (`-v2`); the old one is deleted on activation.
 - A page that must not be touched by the worker: add its path to `NEVER` in `core.ts` (or give it a file extension other than `.html`, which makes navigations to it bypass).
 - Language strings: the notice in `src/gallery/pwa.ts`, the install entry and sheets in `src/gallery/install.ts`, the offline page in `src/pwa/offline.html` (static, written in all four readings by hand), the manifests in `LANGS` of `pwa-build.mjs`.
+
+## 11. Performance caching (2026-11-04)
+
+Font and picture URLs keep their existing names. `/fonts/*` now uses
+`public, max-age=31536000` without `immutable`: these names are stable, rather
+than content hashes. `/pictures/thumb/*` and `/pictures/full/*` use
+`public, max-age=86400, stale-while-revalidate=31536000`. After a day the host
+can serve the cached picture while checking its ETag in the background. A
+corrected picture can therefore remain visible during that revalidation.
+These headers are in `netlify.toml`; service-worker runtime cache keys, pack
+hashes and precache paths are unchanged. `/sw.js` remains `no-store` and pages
+and manifests still revalidate. Native full-picture requests benefit from the
+HTTP cache even though shells have no service worker.
+
+`verify:gallery` and `verify:shell` now include
+`node tools/perf/budget.mjs --only assets --dir dist`. The size checks read
+local files (JSON sizes are gzip estimates); the English-font check requires
+Chromium and a local server. It opens cold English home, scenes and Bible
+pages and fails if any Noto Sans/Serif SC/TC file is requested. Missing data
+or unavailable browser checks fail explicitly. Existing font byte targets
+remain unchanged; hiding inactive text does not by itself satisfy the
+300 KiB file / 400 KiB Chinese-page targets for the current unsliced fonts.
+
+The grid uses 16:9 plates, matching the served 1672×941 pictures within
+rounding, with content visibility and layout/paint containment per card.
+No additional thumbnail variants are generated: the first card is eager/high
+priority and remaining cards stay lazy/async. Shell scene pages make no
+speculative neighbour downloads; web neighbour preloading is unchanged.
+The unused offline-pictures manager only loads on `yr:offline-pictures`, an
+event reserved for a future feature. No current control dispatches it.
+
+Validation in the isolated worktree: the picture files and reader-edition
+payload are absent, and the sandbox prevents browser startup and listening
+on a local port. A successful build here is therefore a code build, not a
+complete release artifact. The full 300.0 MB dist cap, browser timing,
+375×812 / 768×1024 / 1440×900 screenshots and PWA browser behaviour must be
+checked against a populated build before accepting the performance fixes.
+
+Offline measurements from the same local scan before/after (Node 24.15.0):
+`node tools/perf/search-offline.mjs` compared the original scoring loop with
+the index, using 100 queries per locale across all 1,443 scenes. All 400
+result lists were identical, including order. English: 137.30 ms → 12.96 ms
+(1.34 ms index build); Hans: 132.44 → 10.33 ms (1.25 ms build); Hant:
+385.01 → 12.04 ms (3.47 ms build); Russian: 135.45 → 10.56 ms (1.08 ms build).
+Each locale went from 432,900 conversion calls to 2,952 at index construction
+and zero during the 100 searches. This is a CPU-only comparison, not browser
+interaction latency. Card DOM counts are unchanged; containment skips work
+rather than removing nodes.
+
+The incomplete gallery build grew from 10,828,001 to 10,829,316 bytes
+(+1,315 bytes); no picture variants or font binaries were added. Both builds
+used `set -o pipefail; VITE_SURFACE=gallery npm run build` in the same checkout.
+The PWA precache count stayed at 53. `npm run test:gallery`: 110 passed;
+`npm run test:shell`: 45 passed; `node --test tests/reader/layout.test.ts`:
+1 passed; `node --test 'tests/perf/*.test.ts'`: 9 passed. TypeScript and font
+coverage passed; the zh-Hant audit found zero leftovers in 11,048 strings.
+`npm run test:reader` had 27 passes and 8 failed test files because the external
+Words data did not match the source lock. The asset gate had 2/7 passes: the
+existing font-size targets still fail (1,802 KiB largest file; 2,613/2,809 KiB
+per SC/TC pair), reader data is missing, and English font-request measurement
+is blocked by browser startup. `node scripts/check-budget.mjs --profile gallery`
+also fails on missing reader data. `npm run verify:pwa -- --only build` cannot
+start Chrome in this sandbox. None of these are reported as passes.

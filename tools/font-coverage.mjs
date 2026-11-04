@@ -600,7 +600,7 @@ function cssRange(set) {
   for (let i = 0; i < cps.length; i++) {
     let j = i;
     while (j + 1 < cps.length && cps[j + 1] === cps[j] + 1) j++;
-    out.push(i === j ? h(cps[i]) : `${h(cps[i])}-${h(cps[j])}`);
+    out.push(i === j ? h(cps[i]) : `${h(cps[i])}-${h(cps[j]).slice(2)}`  /* CSS grammar: U+4E00-4E01; 'U+4E00-U+4E01' is invalid and Chrome drops the whole descriptor */);
     i = j;
   }
   return out.join(',');

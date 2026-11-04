@@ -5,10 +5,10 @@
 //   1. tells the CSS what it is running in:  <html data-shell="ios|android|macos|windows|linux" data-channel="store|direct">
 //   2. switches the web-font stylesheet on (the site's inline onload handler is not allowed by the app's content-security policy)
 //   3. opens links the OS hands to the app (src/shell/deeplink.ts)
-//   4. starts the offline-pack manager, so a full picture that is stored on the device is shown from the device (media.ts localFull)
+//   4. registers lazy offline-pack activation, so a full picture that is stored on the device is shown from the device (media.ts localFull)
 //   5. on a direct-download build only (never a store build: a store app must not offer a download elsewhere) checks for a newer release
 import { getPlatform } from '../platform/index.ts';
-import { createPackManager, parseManifest, type PackManager } from '../core/packs.ts';
+import type { PackManager } from '../core/packs.ts';
 import { localFull } from '../gallery/media.ts';
 import { channelOf } from '../config/site.ts';
 import { routeForDeepLink } from './deeplink.ts';
@@ -27,7 +27,7 @@ let manager: PackManager | null = null;
 // "may be cleared by the system" line (P1-5). The owner's standard for this version is that nothing ships as a stub,
 // and the feature needs a mock-up reviewed before it is built (the premium bar), so the ENTRY is gone until it is real.
 //
-// What stays is src/core/packs.ts, the pack manager, because it is not a stub: it reads the manifest, finds the
+// What stays is src/core/packs.ts, activated only by a future offline-pictures feature: it reads the manifest, finds the
 // pictures already stored on the device and makes media.ts serve those from the device instead of the network.
 function follow(raw: string, platform: Platform) {
   void platform;
@@ -38,6 +38,7 @@ function follow(raw: string, platform: Platform) {
 
 async function startPacks(platform: Platform) {
   try {
+    const { createPackManager, parseManifest } = await import('../core/packs.ts');
     const res = await fetch('/data/packs.json');
     if (!res.ok) throw new Error(`packs.json ${res.status}`);
     manager = createPackManager({ platform, manifest: parseManifest(await res.json()) });
@@ -84,7 +85,8 @@ async function boot() {
     void platform.openExternal(href).catch(() => { location.assign(href); });
   });
 
-  void startPacks(platform);
+  // No offline-pictures entry ships. Only initialise when a real feature requests it.
+  document.addEventListener('yr:offline-pictures', () => { void startPacks(platform); }, { once: true });
 
   if (platform.capabilities.updates && channelOf(import.meta.env) === 'direct') {
     void platform.updates.check().then((u) => {

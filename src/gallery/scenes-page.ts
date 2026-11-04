@@ -71,7 +71,7 @@ function card(sc: Scene): HTMLElement {
   a.className = 'sc-card';
   a.href = `#p=${sc.id}`;
   a.dataset.id = sc.id;
-  a.append(plate(sc, { kind: 'thumb', alt: '' }));
+  a.append(plate(sc, { kind: 'thumb', eager: sc === listNow[0], alt: '' }));
   const cap = document.createElement('span');
   cap.className = 'cap';
   cap.textContent = sceneTitle(sc);
@@ -180,7 +180,7 @@ function paintPicture(sc: Scene) {
   $('pc-plate').replaceChildren(pl);
   document.title = `${sceneTitle(sc)} · ${brand()}`;
   // the next picture is wanted next
-  for (const n of [next, prev]) if (n?.ok) { const i = new Image(); i.decoding = 'async'; i.src = fullUrl(n.id); }
+  for (const n of (import.meta.env.VITE_TARGET === 'shell' ? [] : [next, prev])) if (n?.ok) { const i = new Image(); i.decoding = 'async'; i.src = fullUrl(n.id); }
 }
 
 function passageSkeleton() {

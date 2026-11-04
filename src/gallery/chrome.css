@@ -157,7 +157,7 @@ html[data-surface="gallery"] .sitenav a.tab[aria-current="page"]::after {
   transition: opacity .16s ease-out, scale .16s ease-out, display .16s allow-discrete;
 }
 .lang-pop[hidden] {
-  display: grid; opacity: 0; scale: .96; pointer-events: none;
+  display: none; opacity: 0; scale: .96; pointer-events: none;
   transition: opacity .16s ease-in, scale .16s ease-in, display .16s allow-discrete;
 }
 @starting-style { .lang-pop:not([hidden]) { opacity: 0; scale: .96; } }
@@ -350,3 +350,11 @@ dialog.gx-sheet.gx-pal { padding-top: 12px; }
    with the safe-area insets (tokens.css), which is what keeps them clear of the status bar and the home indicator. */
 html[data-display="standalone"] { overscroll-behavior-y: none; -webkit-tap-highlight-color: transparent; }
 html[data-display="standalone"] #hm-install { display: none; }
+
+/* Touch scrolling keeps the bars opaque; blur is reserved for desktop pointers. */
+@media (max-width: 767px), (hover: none), (pointer: coarse) {
+  html[data-surface="gallery"] .sitenav, html[data-surface="gallery"] .tabbar {
+    background: var(--ground);
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+  }
+}

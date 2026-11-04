@@ -259,7 +259,8 @@ async function suiteInteract(browser, profile, rows) {
       act: async (p) => p.click('dialog[open] [data-act="size"]:last-of-type'), then: '.yr-body', optional: true },
     { id: 'scene-next', path: `/scenes.html#p=${SCENE}`, wait: '#pc-plate img',
       act: async (p) => p.click('#pc-next'), then: '#pc-plate img' },
-    { id: 'back-nav', path: `/scenes.html#p=${SCENE}`, wait: '#pc-plate img',
+    { id: 'back-nav', path: '/scenes.html', wait: '.sc-card',
+      pre: async (p) => { await p.click(`.sc-card[href="#p=${SCENE}"]`); await p.waitForSelector('#pc-plate img'); },
       act: async (p) => p.goBack(), then: '.sc-card', optional: true },
   ];
   for (const c of cases) {
