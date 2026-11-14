@@ -39,8 +39,11 @@ const PAGES = [
   '/ark.html#measures',
   '/tabernacle.html#measures',
   '/temple.html#measures',
+  '/palace.html#measures',
   '/ezekiel.html#measures',
-  '/plan.html#measures=newjerusalem',
+  '/herod.html#measures',
+  '/new-jerusalem.html#measures',
+  '/plan.html#measures=second-temple',
 ];
 
 const measure = async (page) => page.evaluate(() => {

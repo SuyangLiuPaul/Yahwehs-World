@@ -26,16 +26,16 @@ python3 tools/scenes/gate_check.py video --all --summary
   - Flow 的「生成」由业主亲手点；
   - 剧照过了闸门，就做慢推慢移的动态剧照。
 
-## 现状（2026-11-14 12:57 AEDT 实测）
+## 现状（2026-11-14 16:17 AEDT 实测）
 | 线 | 过闸门 | 还差 | 备注 |
 |---|---|---|---|
-| 写实剧照 | **852** / 1,443 | 591 | **已达 59.0%（较 10:48 再增 +51 张）！** 当前 **581 张**待重画（`sync_reviews`：`rework` 482 + `escalated_3_strikes` 99；`codex-jobs/still-*.json` 共 493 个任务），**10 张**未开始（`not_started`）；`draw-loop.sh` 正在运行中（早前部分 Gemini 通道触发额度上限，每小时自动续画，`15:49 AEDT` 后满额恢复） |
+| 写实剧照 | **852** / 1,443 | 591 | **已达 59.0%！** 当前 **581 张**待重画（`rework` 581；`codex-jobs/still-*.json` 共 491 个任务），**10 张**未开始（`not_started`）；`draw-loop.sh` 自动按时续画 |
 | 方块可爱图 | **1,443** / 1,443 | 0 | 全部过闸门（`complete` 1,415 + `complete_owner_accepted` 28） |
 | 视频（原有 651 段） | **1** / 1,443 | 1,442 | `pass` 1 段（对应剧照已过闸门）、631 段弃用（`retired`）、19 段待 redo（`redo_pending`）、792 段未开始 |
-| 动态剧照（慢推慢移） | **852 段**在盘 | 跟着剧照走 | `motion_still.py render --all`：全部 852 张过闸门剧照已配齐（`unchanged 852`，`skipped_still_not_pass 591`） |
+| 动态剧照（慢推慢移） | **852 段**在盘 | 跟着剧照走 | 全部 852 张过闸门剧照已配齐（`skipped_still_not_pass 591`） |
 | 母本（角色/地点参考图） | **91** / 91 通过 | 0 | 角色 66 + 地点 25（`sync_reviews anchor: pass=91, rework=0, escalated_3_strikes=0`） |
 | 审查队列 | **2 份待审** | — | `review-queue/*.json` 当前剩余 2 份待交叉盲审；T7 磁盘剩余 **42 GiB**（98% 已用） |
-| 3D 实尺漫游与按经建形 | **全部完工过检** | 0 | **4 座实尺 3D 漫游**（摩西会幕 `/tabernacle.html`、所罗门圣殿 `/temple.html`、以西结书圣殿 `/ezekiel.html`、挪亚方舟 `/ark.html`）+ **19 件按经建形交互 3D 结构**（经文尺寸视窗 + 全景页 `/plan.html`）全部通过 `tsc --noEmit`、穿墙导览、行走物理、24 组面板状态、对比度、字体子集、`test:gallery`（110/110）、重定向（42/42）与全站生产构建 |
+| 3D 实尺漫游与按经建形 | **全部完工过检** | 0 | **7 座实尺 3D 漫游**（摩西会幕 `/tabernacle.html`、所罗门圣殿 `/temple.html`、所罗门王宫 `/palace.html`、以西结书圣殿 `/ezekiel.html`、希律圣殿 `/herod.html`、新耶路撒冷 `/new-jerusalem.html`、挪亚方舟 `/ark.html`）+ **23 件按经建形交互 3D 结构**（新增希律圣殿主殿、所罗巴伯第二圣殿、旷野十二支派安营图、以西结书第一章水苍玉套轮异象；经文尺寸视窗 + 全景页 `/plan.html`）全部通过 `tsc --noEmit`、`verify-shell`（126/126）、`audit-events`、穿墙导览（7 座全过）、行走物理（7 座全过）、36 组面板状态、对比度、繁简字典审计（12,737 条 0 残留）、字体子集、`test:gallery`（110/110）、`verify-gallery`（43/43，299.9 MB < 300 MB）、重定向（45/45）与全站生产构建 |
 
 ## 待办
 

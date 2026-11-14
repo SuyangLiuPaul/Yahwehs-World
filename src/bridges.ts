@@ -89,6 +89,18 @@ const EZEKIEL_WALK_ANCHORS = [
   'Ezekiel 40:5', 'Ezekiel 40:6', 'Ezekiel 41:2', 'Ezekiel 41:22', 'Ezekiel 43:13', 'Ezekiel 47:1',
 ].map(refKey).filter((k): k is number => k !== null);
 
+const PALACE_WALK_ANCHORS = [
+  '1 Kings 7:2', '1 Kings 7:6', '1 Kings 7:7', '1 Kings 10:18',
+].map(refKey).filter((k): k is number => k !== null);
+
+const HEROD_WALK_ANCHORS = [
+  'John 2:20', 'Mark 13:1', 'Luke 21:5', 'John 8:20', 'John 10:23', 'Acts 3:2', 'Acts 21:28',
+].map(refKey).filter((k): k is number => k !== null);
+
+const NEW_JERUSALEM_WALK_ANCHORS = [
+  'Revelation 21:10', 'Revelation 21:16', 'Revelation 21:21', 'Revelation 22:1',
+].map(refKey).filter((k): k is number => k !== null);
+
 const inEvent = (ev: TrackEvent, key: number) => ev.s <= key && key <= ev.e;
 
 /** Everywhere else in this app this event can take the reader. */
@@ -107,11 +119,20 @@ export function bridgesFor(ev: TrackEvent, journeys: readonly Journey[]): Bridge
   if (TEMPLE_WALK_ANCHORS.some((k) => inEvent(ev, k))) {
     out.push({ kind: 'walk', id: 'temple', zh: '走进圣殿', en: "Walk into Solomon's temple" });
   }
+  if (PALACE_WALK_ANCHORS.some((k) => inEvent(ev, k))) {
+    out.push({ kind: 'walk', id: 'palace', zh: '走进所罗门王宫', en: "Walk into Solomon's palace" });
+  }
   if (ARK_WALK_ANCHORS.some((k) => inEvent(ev, k))) {
     out.push({ kind: 'walk', id: 'ark', zh: '走进方舟', en: "Walk into Noah's ark" });
   }
   if (EZEKIEL_WALK_ANCHORS.some((k) => inEvent(ev, k))) {
     out.push({ kind: 'walk', id: 'ezekiel', zh: '走进以西结的殿', en: "Walk into Ezekiel's temple" });
+  }
+  if (HEROD_WALK_ANCHORS.some((k) => inEvent(ev, k))) {
+    out.push({ kind: 'walk', id: 'herod', zh: '走进希律圣殿', en: "Walk into Herod's temple" });
+  }
+  if (NEW_JERUSALEM_WALK_ANCHORS.some((k) => inEvent(ev, k))) {
+    out.push({ kind: 'walk', id: 'new-jerusalem', zh: '走进新耶路撒冷', en: 'Walk into the New Jerusalem' });
   }
   return out;
 }
@@ -135,7 +156,10 @@ export function structureForJourney(id: string): { id: string; zh: string; en: s
 const WALK_PAGES: Record<string, string> = {
   tabernacle: '/tabernacle.html',
   temple: '/temple.html',
+  palace: '/palace.html',
   ezekiel: '/ezekiel.html',
+  herod: '/herod.html',
+  'new-jerusalem': '/new-jerusalem.html',
   ark: '/ark.html',
 };
 

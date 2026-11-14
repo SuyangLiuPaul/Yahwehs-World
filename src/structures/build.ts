@@ -18,6 +18,12 @@ import {
   buildGoliath,
   buildTabernacleTent,
 } from './monuments.ts';
+import {
+  buildEzekielWheels,
+  buildHerodSanctuary,
+  buildSecondTemple,
+  buildWildernessCamp,
+} from './visions-and-temples.ts';
 
 interface BuildTex {
   gopherWood: THREE.CanvasTexture;
@@ -927,6 +933,18 @@ export function buildStructure(
 
     case 'duraImage':
       return buildDuraImage(C, v === 'daniel2-metals' ? 'daniel2-metals' : 'dura-gold');
+
+    case 'herodSanctuary':
+      return buildHerodSanctuary(C, v === 'cutaway' ? 'cutaway' : 'facade');
+
+    case 'secondTemple':
+      return buildSecondTemple(C, v === 'compare-solomon' ? 'compare-solomon' : 'cyrus-decree');
+
+    case 'wildernessCamp':
+      return buildWildernessCamp(C, v === 'compact' ? 'compact' : 'proportional');
+
+    case 'ezekielWheels':
+      return buildEzekielWheels(C, v === 'wheel-detail' ? 'wheel-detail' : 'full-vision');
 
     case 'cube':
       return buildNewJerusalem(s.unit?.m ?? 185);

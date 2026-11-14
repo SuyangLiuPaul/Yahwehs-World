@@ -100,13 +100,17 @@ export type StructureKind =
   | 'ezekielAltar'
   | 'goliath'
   | 'duraImage'
+  | 'herodSanctuary'
+  | 'secondTemple'
+  | 'wildernessCamp'
+  | 'ezekielWheels'
   | 'cube';
 
 /** The walk-in pages. A card lives on the page where the thing it measures
  *  physically stands, which is the one rule that never needs maintaining: the
  *  ark of the covenant is in the most holy place, so its measurements are in
  *  the tabernacle walk, and nobody has to remember that they are. */
-export type WalkHome = 'ark' | 'ezekiel' | 'tabernacle' | 'temple';
+export type WalkHome = 'ark' | 'ezekiel' | 'herod' | 'new-jerusalem' | 'palace' | 'tabernacle' | 'temple';
 
 export interface Structure {
   id: string;
@@ -652,6 +656,75 @@ export const STRUCTURES: Structure[] = [
     ],
   },
   {
+    id: 'wilderness-camp',
+    zh: '旷野十二支派安营图',
+    en: "Israel's 12-Tribe Wilderness Camp",
+    ref: 'Numbers 2:2',
+    refZh: '民数记 2:2',
+    textZh: '以色列人要各归自己的纛下，在本族的旗号那里，对着会幕的四围安营。',
+    textEn: 'The Israelites are to camp around the tent of meeting some distance from it, each of them under their standard and holding the banners of their family.',
+    dims: [
+      { key: 'courtL', zh: '中心会幕院子长', en: 'Central court length',      cubits: 100, ref: '出 27:18',     refEn: 'Exod 27:18' },
+      { key: 'courtW', zh: '中心会幕院子宽', en: 'Central court width',       cubits: 50,  ref: '出 27:18',     refEn: 'Exod 27:18' },
+      { key: 'tentL',  zh: '会幕帐幕长',     en: 'Tabernacle tent length',    cubits: 30,  ref: '出 26:18',     refEn: 'Exod 26:18' },
+      { key: 'tentW',  zh: '会幕帐幕宽与高', en: 'Tabernacle width & height', cubits: 10,  ref: '出 26:16, 22', refEn: 'Exod 26:16, 22' },
+      { key: 'courtH', zh: '细麻院帷高',     en: 'Court curtain height',      cubits: 5,   ref: '出 27:18',     refEn: 'Exod 27:18' },
+    ],
+    kind: 'wildernessCamp',
+    walk: 'tabernacle',
+    counts: [
+      { zh: '东营（日出之地）· 犹大纛下三支派', en: 'East · Camp of Judah (3 tribes)',   n: 186400, ref: '民 2:9',  refEn: 'Num 2:9' },
+      { zh: '北营 · 但纛下三支派',             en: 'North · Camp of Dan (3 tribes)',    n: 157600, ref: '民 2:31', refEn: 'Num 2:31' },
+      { zh: '南营 · 流便纛下三支派',           en: 'South · Camp of Reuben (3 tribes)', n: 151450, ref: '民 2:16', refEn: 'Num 2:16' },
+      { zh: '西营 · 以法莲纛下三支派',         en: 'West · Camp of Ephraim (3 tribes)', n: 108100, ref: '民 2:24', refEn: 'Num 2:24' },
+      { zh: '十二支派男丁总数（二十岁以上）',   en: 'Total census (12 tribes, 20+ yrs)', n: 603550, ref: '民 2:32', refEn: 'Num 2:32' },
+      { zh: '内圈利未人总数（一个月以上）',     en: 'Inner ring Levites (1 mo+)',        n: 22000,  ref: '民 3:39', refEn: 'Num 3:39' },
+    ],
+    variants: {
+      key: 'campLayout',
+      zh: '营距比例',
+      en: 'Camp spacing',
+      options: [
+        {
+          id: 'proportional',
+          zh: '严守人数面积比例 · 留出圣所缓冲带（民 2:2）',
+          en: 'Strictly census-proportional · open sacred buffer',
+          note: '外圈十二支派每一营区的占地面积与帐棚密度严格正比于民数记 2 章核点人数：东营犹大（**186,400**）比西营以法莲（**108,100**）宽出近七成，内圈由利未四营护卫会幕（民 1:53；3:21–38）。',
+          noteEn: 'Every tribal parcel is strictly proportional in footprint area to its Numbers 2 census count — Judah on the east (**186,400**) visibly outweighs Ephraim on the west (**108,100**) by 72% — ringed around the four Levite divisions and 100×50 cubit Tabernacle.',
+        },
+        {
+          id: 'compact',
+          zh: '紧凑鸟瞰阵型 · 近看会幕与利未四营',
+          en: 'Compact diagram spacing · close Tabernacle & Levite view',
+          note: '收窄营间旷野缓冲带，便于在同一视野内近距离审视 100×50 肘会幕院子、东门摩西亚伦营位与外圈十二支派旗号，同时完全保留各支派人数面积比。',
+          noteEn: 'Tightens the desert buffer so the 100×50 cubit Tabernacle courtyard, four Levite stations, and 12 tribal standards read up close while preserving exact census area ratios.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '「对着会幕的四围安营」的具体相隔肘数，民数记 2:2 没有写出（后世拉比传统据书 3:4 推算为二千肘安息日路程，若按真实二千肘留白，中心会幕在屏幕上将缩成一个小点）；模型用两种示意间距呈现，而中心会幕严格按 100×50 肘建模。',
+        en: 'Numbers 2:2 says "some distance" around the Tent of Meeting without stating a cubit gap (later tradition inferred 2,000 cubits from Josh 3:4, at which scale the Tabernacle would vanish to a speck); two schematic buffer spacings are provided around the exact 100×50 cubit court.',
+      },
+      {
+        zh: '各支派每户帐棚的尺寸与营区总长宽未见经文记载；模型令每一支派地块的宽度严格正比于民数记 2 章的人口数，以真实反映四方营阵的不对称体量。',
+        en: 'Individual family tent sizes and total camp perimeter are unstated; each tribe’s parcel width is scaled directly to its Numbers 2 census count to show the true asymmetry of the four quarters.',
+      },
+      {
+        zh: '各营「纛」（degel）与「旗号」（ot）上的图案经文只字未提（狮、人、牛、鹰之说出自后世拉比《民数记大传》，并非圣经文本）；模型仅以纯色织旗区分四营，绝不添画圣经未记的图像；会幕上方的云柱火柱亦严守无形像光云（出 40:38）。',
+        en: 'Scripture never describes emblems on the tribal standards (lion/man/ox/eagle come from late midrash, not Numbers 2); plain colored banners are used, and the pillar of cloud and fire above the Tabernacle is rendered strictly aniconically (Exod 40:38).',
+      },
+    ],
+    punchZh: '这不是一个四面均等的几何方阵：东边日出之地犹大三支派多达 **186,400 人**，西边以法莲三支派只有 **108,100 人**；中间由 **22,000 名利未人**四面环卫（摩西亚伦守东门，哥辖南、革顺西、米拉利北），正中锁着 **100 × 50 肘**的会幕与昼夜不离的云火光辉。',
+    punchEn: 'Not an equal geometric square, but a living census map: **186,400** camp on the east under Judah versus **108,100** on the west under Ephraim, buffering **22,000 Levites** in four inner divisions around the **100 × 50 cubit** Tabernacle.',
+    compare: [
+      { zh: '标准足球场（长）', en: 'Football pitch (length)', m: 105 },
+      { zh: '中心会幕院子（长 100 肘）', en: 'Central Tabernacle court (100 c)', m: 44.5 },
+      { zh: '会幕帐幕（长 30 肘）', en: 'Tabernacle tent (30 c)', m: 13.35 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
     id: 'temple',
     zh: '所罗门圣殿',
     en: "Solomon's Temple",
@@ -904,6 +977,7 @@ export const STRUCTURES: Structure[] = [
       { key: 'height', zh: '宫高', en: 'Height', cubits: 30,  ref: '王上 7:2', refEn: '1 Kgs 7:2' },
     ],
     kind: 'forestHouse',
+    walk: 'palace',
     counts: [
       { zh: '香柏木柱总数（每行 15 根）', en: 'Cedar pillars (15 per row, v. 3)', n: 45, ref: '王上 7:3', refEn: '1 Kgs 7:3' },
       { zh: '相对齐的方窗层数', en: 'Tiers of opposing square windows', n: 3, ref: '王上 7:4–5', refEn: '1 Kgs 7:4–5' },
@@ -1070,6 +1144,131 @@ export const STRUCTURES: Structure[] = [
     ],
   },
   {
+    id: 'ezekiel-wheels',
+    zh: '以西结书第一章水苍玉套轮异象',
+    en: "Ezekiel's Chariot-Wheels & Expanse",
+    ref: 'Ezekiel 1:16',
+    refZh: '以西结书 1:16',
+    textZh: '轮的形状和作法好像水苍玉。四轮都是一个样式，形状和作法好像轮中套轮。轮行走的时候，向四方都能直行，并不掉转。至于轮辋，高而可畏；四个轮辋周围满有眼睛。',
+    textEn: 'This was the appearance and structure of the wheels: They sparkled like beryl, and all four looked alike. Each appeared to be made like a wheel intersecting a wheel. As they moved, they would go in any one of the four directions without turning as they went. Their rims were high and awesome, and all four rims were full of eyes all around.',
+    dims: [],
+    counts: [
+      { zh: '四活物（结 10:20 明指基路伯）', en: 'Living creatures (cherubim, 10:20)', n: 4, ref: '结 1:5；10:20',    refEn: 'Ezek 1:5; 10:20' },
+      { zh: '每个活物的脸面（四向）',       en: 'Faces per creature',                 n: 4, ref: '结 1:6, 10',       refEn: 'Ezek 1:6, 10' },
+      { zh: '每个活物的翅膀（两上相连、两下遮体）', en: 'Wings per creature (2 up, 2 down)', n: 4, ref: '结 1:6, 11', refEn: 'Ezek 1:6, 11' },
+      { zh: '水苍玉轮中套轮（活物旁各一）', en: 'Beryl double-wheels (Ophannim)',     n: 4, ref: '结 1:15–16；10:9', refEn: 'Ezek 1:15–16; 10:9' },
+    ],
+    kind: 'ezekielWheels',
+    walk: 'ezekiel',
+    assumedHeight: 9.0,
+    variants: {
+      key: 'wheelsView',
+      zh: '异象视距',
+      en: 'Vision view',
+      options: [
+        {
+          id: 'full-vision',
+          zh: '迦巴鲁河畔全异象 · 四套轮、水晶穹苍、蓝宝石座与虹光',
+          en: 'Full vision · 4 double-wheels, crystal expanse, sapphire throne & rainbow',
+          note: '完整呈现结 1:4–28 的空间层级：底层四组正交水苍玉套轮与四翼擦亮铜色活物，中间碳火电光（1:13），头顶可畏的水晶穹苍（1:22），其上蓝宝石宝座纯以**精金琥珀火光（chashmal）与七彩虹弧**（1:27–28）显荣，绝不描绘人形轮廓。',
+          noteEn: 'Full spatial hierarchy of Ezek 1:4–28: four orthogonal beryl double-wheels, four-winged burnished-bronze cherubic forms, central coals of fire, crystal expanse (1:22), and sapphire throne crowned **strictly aniconically** with pure amber-fire radiance and overarching rainbow (1:27–28).',
+        },
+        {
+          id: 'wheel-detail',
+          zh: '单组正交「轮中套轮」特写 · 高而可畏的满眼轮辋',
+          en: 'Single orthogonal wheel-within-a-wheel detail · eye-studded rims',
+          note: '把一组高 3.6 米的正交双环套轮立在 **1.72 米**参照人物身旁，细看结 1:16–18 为何说「向四方都能直行，并不掉转」：东西向与南北向两道水苍玉高轮辋呈 90 度咬合，满镶晶莹眼饰。',
+          noteEn: 'Sets one 3.6 m orthogonal double-wheel beside a **1.72 m** human scale figure to show how two 90-degree intersecting beryl rims move straight toward any of the four compass points without pivoting (Ezek 1:16–18).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '以西结书第 1 章与第 40–48 章截然不同：第 1 章没有给出任何一个肘数，只说轮辋「高而可畏」（1:18），全靠「四活物、四脸、四翼、四套轮」的精确计数构建空间秩序。此处总高 9.0 米仅为展示参照高度，不是经文尺寸。',
+        en: 'Unlike Ezekiel 40–48, chapter 1 gives zero cubit measurements — stating only that the rims were "high and awesome" (1:18) while specifying exact counts of fours. The 9.0 m total height is a display convention, not a scriptural measure.',
+      },
+      {
+        zh: '「轮中套轮」（ophan b-tokh ha-ophan，结 1:16）古今主要有两种几何读法：正交九十度咬合双轮（无需转向即可向东南西北四方直行，1:17）或同平面同心套环。本模型采用最能解释「向四方直行并不掉转」的正交双环结构。',
+        en: '"A wheel within a wheel" (1:16) has two classic geometric readings: two vertical rings intersecting at 90 degrees (explaining straight motion in all four directions without turning, 1:17) or concentric coplanar rings; orthogonal rings are built here.',
+      },
+      {
+        zh: '结 1:26–28 连用三重谨慎限定语（「宝座的形像」「仿佛……的形状」「这就是雅伟荣耀的形像的样式」）。遵照申命记 4:12, 15 不可为雅伟造任何形像的诫命，蓝宝石宝座上方仅呈现纯粹的精金琥珀光辉（chashmal）与云中彩虹（1:27–28），绝不绘制任何人体轮廓。',
+        en: 'Ezekiel 1:26–28 stacks three layers of reverent indirection ("likeness of a throne... appearance of the likeness of the glory of Yahweh"). Honoring Deut 4:12, 15, only pure amber-electrum fire radiance (chashmal) and the overarching rainbow crown the sapphire throne — with zero human figure or silhouette.',
+      },
+    ],
+    punchZh: '以西结书 40 至 48 章量遍了每一道门槛的肘数，第 1 章在迦巴鲁河边却**一个尺寸也没给**——只记下**四活物、十六张脸、十六只翅膀、四组满布眼睛的水苍玉正交套轮**，托起水晶穹苍与蓝宝石座上的虹光荣耀。',
+    punchEn: 'Where chapters 40–48 measure every threshold in cubits, chapter 1 gives **zero linear dimensions** — building awe through pure geometry and count: **4 four-winged forms, 4 eye-studded orthogonal beryl double-wheels**, a **crystal expanse**, and **aniconic amber-fire glory** beneath a **rainbow**.',
+    compare: [
+      { zh: '异象总展示高度（传统参照）', en: 'Full vision display height (assumed)', m: 9.0 },
+      { zh: '单组水苍玉套轮高（特写参照）', en: 'Single beryl double-wheel (detail)', m: 3.6 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
+    id: 'second-temple',
+    zh: '所罗巴伯重建的第二圣殿',
+    en: "Zerubbabel's Second Temple",
+    ref: 'Ezra 6:3',
+    refZh: '以斯拉记 6:3',
+    textZh: '古列王元年，他降旨论到耶路撒冷神的殿，要建造这殿为献祭之处，坚立殿的根基。殿高六十肘，宽六十肘，用三层大石头，一层新木头，经费要出于王库。',
+    textEn: 'In the first year of King Cyrus, the king issued a decree concerning the temple of God in Jerusalem: Let the temple be rebuilt as a place to present sacrifices, and let its foundations be laid. It is to be sixty cubits high and sixty cubits wide, with three courses of large stones and one of timbers.',
+    dims: [
+      { key: 'decreeH',  zh: '古列诏书上限高',     en: 'Cyrus decree height',      cubits: 60, ref: '拉 6:3',   refEn: 'Ezra 6:3' },
+      { key: 'decreeW',  zh: '古列诏书上限宽',     en: 'Cyrus decree width',       cubits: 60, ref: '拉 6:3',   refEn: 'Ezra 6:3' },
+      { key: 'solomonL', zh: '对照：所罗门殿长',   en: "Compare: Solomon's length", cubits: 60, ref: '王上 6:2', refEn: '1 Kgs 6:2' },
+      { key: 'solomonH', zh: '对照：所罗门殿高',   en: "Compare: Solomon's height", cubits: 30, ref: '王上 6:2', refEn: '1 Kgs 6:2' },
+      { key: 'solomonW', zh: '对照：所罗门殿内宽', en: "Compare: Solomon's width",  cubits: 20, ref: '王上 6:2', refEn: '1 Kgs 6:2' },
+    ],
+    kind: 'secondTemple',
+    counts: [
+      { zh: '大石头层数（滚石筑墙）', en: 'Courses of great dressed stones', n: 3, ref: '拉 6:4；5:8', refEn: 'Ezra 6:4; 5:8' },
+      { zh: '新木头层数（黎巴嫩香柏木）', en: 'Top course of new timber', n: 1, ref: '拉 6:4；3:7', refEn: 'Ezra 6:4; 3:7' },
+    ],
+    variants: {
+      key: 'secondTempleView',
+      zh: '历史对照',
+      en: 'Historical comparison',
+      options: [
+        {
+          id: 'cyrus-decree',
+          zh: '古列王诏书规模（60×60 肘框 · 三石一木与燔祭坛）',
+          en: 'Cyrus decree volume (60×60 c frame · 3 stone + 1 timber)',
+          note: '呈现亚兰文诏书给定的高六十肘、宽六十肘皇家拨款外框（拉 6:3），墙体按「三层大石头、一层新木头」（6:4）砌筑，东院先立燔祭坛（拉 3:2–3）。',
+          noteEn: 'Shows the 60×60 cubit Achaemenid decree envelope (Ezra 6:3), built in three courses of heavy ashlar stone topped by one course of new cedar timber (6:4), fronted by the rebuilt altar (3:2–3).',
+        },
+        {
+          id: 'compare-solomon',
+          zh: '并排对照所罗门旧殿金影（拉 3:12；该 2:3）',
+          en: "Side-by-side ghost of Solomon's Temple (Ezra 3:12; Hag 2:3)",
+          note: '把被掳归回之民的朴素石木圣殿与所罗门 **60×20×30 肘纯金包覆、立有雅斤波阿斯双铜柱** 的旧殿金影并置，直观理解为何见过旧殿的老年人放声痛哭（拉 3:12）。',
+          noteEn: "Places Zerubbabel's austere stone-and-timber house beside a translucent golden ghost of Solomon's **60×20×30 cubit** gilded Temple and twin bronze pillars to visualize why elders wept in Ezra 3:12 and Haggai 2:3.",
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '以斯拉记 6:3 的波斯宫廷亚兰文档案只写了「高六十肘、宽六十肘」，未写东西长度！学者普遍认为这是王库拨款的最高建筑外廓上限（含两侧附属库房），殿基仍沿用所罗门旧址六十肘长。模型用金色线框标出 60×60 肘诏书包络，不把未记细节伪装成施工详图。',
+        en: 'The Aramaic archival decree in Ezra 6:3 specifies height (60 cubits) and width (60 cubits) without stating length — widely understood as a royal treasury maximum envelope (including side chambers) laid over the 60-cubit Solomonic foundation. A wireframe marks the 60×60 cubit decree boundary honestly.',
+      },
+      {
+        zh: '「三层大石头、一层新木头」（拉 6:4）既可指抗震石墙每三皮巨石嵌一道香柏木拉结梁（对照王上 6:36 内院做法），也可指下部石墙与上部木构层；模型兼顾两种读法的可视层次。',
+        en: '"Three courses of large stones and one of new timber" (Ezra 6:4; cf. 1 Kgs 6:36) may describe seismic cedar tie-beams set above every three courses of heavy stone or an upper timber storey; rendered clearly as three monumental stone tiers crowned by cedar.',
+      },
+      {
+        zh: '拉 3:2–3 记载归回百姓在立殿根基前先在旧基上筑起祭坛献燔祭，但经文未记此坛具体肘数。',
+        en: 'Ezra 3:2–3 records that the altar of burnt offering was rebuilt first upon its former site, without recording its exact post-exilic cubit dimensions.',
+      },
+    ],
+    punchZh: '诏书允许的包络宽达 **六十肘、高六十肘（约 26.7 米）**，外廓甚至大过所罗门内殿；但当你切到并排金影就会明白拉 3:12 与该 2:3 的眼泪——没有满殿精金、没有两根十八肘铜柱、没有约柜，只有被掳归回之民在废墟上垒起的**三层大石与一层新木**。',
+    punchEn: 'Cyrus’s decree permitted a **60 × 60 cubit (~26.7 m)** envelope, yet toggling Solomon’s golden ghost beside it explains the tears of Ezra 3:12 and Haggai 2:3: gone were the pure gold plates, Jachin and Boaz, and the Ark — replaced by austere **heavy stone and new timber**.',
+    compare: [
+      { zh: '古列诏书高与宽（60 肘）', en: 'Cyrus decree height & width (60 c)', m: 26.7 },
+      { zh: '所罗门圣殿高（30 肘）', en: "Solomon's Temple height (30 c)", m: 13.35 },
+      { zh: '所罗门圣殿内宽（20 肘）', en: "Solomon's Temple width (20 c)", m: 8.9 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
     id: 'goliath',
     zh: '歌利亚的身高与铜甲',
     en: "Goliath's Stature & Bronze Armour",
@@ -1177,6 +1376,75 @@ export const STRUCTURES: Structure[] = [
     ],
   },
   {
+    id: 'herod-sanctuary',
+    zh: '希律圣殿主殿',
+    en: "Herod's Temple Sanctuary",
+    ref: 'John 2:20',
+    refZh: '约翰福音 2:20',
+    textZh: '犹太人便说：「这殿是四十六年才造成的，你三日内就再建立起来吗？」',
+    textEn: 'The Jews replied, "It has taken forty-six years to build this temple, and you are going to raise it in three days?"',
+    dims: [
+      { key: 'facadeW', zh: '东向廊殿（乌兰）总宽', en: 'East facade (Ulam) width', cubits: 100, ref: '尺寸篇 4:6–7；战记 5.207', refEn: 'Middot 4:6–7; War 5.207' },
+      { key: 'height',  zh: '主殿总高（含上层楼）', en: 'Total height (incl. upper room)', cubits: 100, ref: '尺寸篇 4:6；战记 5.207', refEn: 'Middot 4:6; War 5.207' },
+      { key: 'length',  zh: '东西总纵深',           en: 'Total east-west length', cubits: 100, ref: '尺寸篇 4:7', refEn: 'Middot 4:7' },
+      { key: 'rearW',   zh: '后段殿身宽（T 形窄腰）', en: 'Rear sanctuary width (T-stem)', cubits: 70, ref: '尺寸篇 4:7；战记 5.207', refEn: 'Middot 4:7; War 5.207' },
+      { key: 'portalH', zh: '乌兰无扇东门高',       en: 'Open Ulam portal height', cubits: 40, ref: '尺寸篇 3:7', refEn: 'Middot 3:7' },
+      { key: 'portalW', zh: '乌兰无扇东门宽',       en: 'Open Ulam portal width', cubits: 20, ref: '尺寸篇 3:7', refEn: 'Middot 3:7' },
+      { key: 'hekhalL', zh: '圣所（外殿）内长',     en: 'Holy Place (Hekhal) length', cubits: 40, ref: '尺寸篇 4:7；战记 5.215', refEn: 'Middot 4:7; War 5.215' },
+      { key: 'debirL',  zh: '至圣所内长宽',         en: 'Most Holy Place square', cubits: 20, ref: '尺寸篇 4:7；战记 5.219', refEn: 'Middot 4:7; War 5.219' },
+    ],
+    kind: 'herodSanctuary',
+    walk: 'herod',
+    counts: [
+      { zh: '登乌兰前廊台阶', en: 'Steps up to the Ulam porch', n: 12, ref: '尺寸篇 3:6；战记 5.207', refEn: 'Middot 3:6; War 5.207' },
+      { zh: '环殿三层旁屋总数', en: 'Three-tier side chambers', n: 38, ref: '尺寸篇 4:3', refEn: 'Middot 4:3' },
+      { zh: '隔开至圣所的双层幔子', en: 'Twin sanctuary veils (1-cubit gap)', n: 2, ref: '尺寸篇 4:7；太 27:51', refEn: 'Middot 4:7; Matt 27:51' },
+    ],
+    variants: {
+      key: 'herodSanctuaryView',
+      zh: '展示视角',
+      en: 'Architectural view',
+      options: [
+        {
+          id: 'facade',
+          zh: '百肘白石金板立面 · 十二级台阶与金葡萄树',
+          en: '100-cubit white & gold T-facade · 12 steps & Golden Vine',
+          note: '按《密西拿·尺寸篇》4:6–7 与约瑟夫《犹太战记》5.207–224 复原：雪白琢石镶巨幅金板，前廊展宽百肘如雄狮宽肩，门楣悬垂一人高的纯金葡萄串。',
+          noteEn: 'Reconstructs the 100×100×100 cubit T-plan sanctuary of Mishnah Middot 4:6–7 and Josephus War 5.207–224: snow-white limestone, flashing gold plates, and the colossal Golden Vine.',
+        },
+        {
+          id: 'cutaway',
+          zh: '南翼剖面 · 圣所三器、双幔与空无一物的至圣所',
+          en: 'South cutaway · Hekhal vessels, twin veil & empty Most Holy Place',
+          note: '剖开南肩、三层旁屋与四十肘上层楼，显露四十肘圣所（灯台、陈设饼桌、香坛）、双层幔子，以及第二圣殿**空无约柜、唯露裸石根基石**的至圣所（战记 5.219）。',
+          noteEn: 'Slices away the south shoulder, 3-story chambers, and 40-cubit upper room to reveal the Hekhal vessels, twin veil, and **completely empty Most Holy Place** holding only the bare Foundation Stone (War 5.219).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '新约福音书（约 2:20；可 13:1；太 27:51）记载了四十六年工期、宏伟白石与殿里的幔子，但百肘 T 形平面与各段细数来自《密西拿·尺寸篇》（Middot）与亲历者约瑟夫《犹太战记》卷五，而非圣经经文直接开列。',
+        en: 'The Gospels record the 46-year construction (John 2:20), massive stones (Mark 13:1), and sanctuary veil (Matt 27:51), while the 100×100×100 cubit T-plan figures come from Mishnah Middot and eyewitness Josephus (War 5.207–224) rather than biblical verse.',
+      },
+      {
+        zh: '乌兰东门尺寸两处古籍略有差异：《密西拿·尺寸篇》3:7 记门高四十肘、宽二十肘；约瑟夫《犹太战记》5.208 记高七十肘、宽二十五肘。此处采用尺寸篇的 40×20 肘。',
+        en: 'Ulam portal opening differs between sources: Mishnah Middot 3:7 gives 40×20 cubits, whereas Josephus War 5.208 gives 70×25 cubits; Middot 40×20 cubits is built here.',
+      },
+      {
+        zh: '第二圣殿的至圣所内没有约柜（耶 3:16；约瑟夫《犹太战记》5.219 明言「里面空无一物」），仅有一块高出地面三指宽的天然磐石「根基石」（Even HaShetiyah，赎罪日篇 5:2）。模型严守历史与圣经实情，绝不虚添约柜或神像。',
+        en: 'The Second-Temple Most Holy Place contained no Ark of the Covenant (Josephus War 5.219: "nothing at all lay within it"), only the bare bedrock Foundation Stone rising three fingerbreadths above the floor (Mishnah Yoma 5:2).',
+      },
+    ],
+    punchZh: '百肘宽、百肘深、百肘高——相当于 **十五层现代高楼（约 45 至 52 米）** 的雪白巨石与纯金立面耸立在圣殿山巅，站在十二级台阶下的 **1.72 米**真人连基座一半都不到；而穿过重重金门与双幔之后，最核心的至圣所却是一间空荡荡的房间，只露出一块天然磐石。',
+    punchEn: '**100 × 100 × 100 cubits** (~44.5 to 51.8 m — fifteen storeys tall) of snow-white stone and blazing gold plates towering above a **1.72 m** visitor, yet behind the monumental twin veil the Most Holy Place stood **completely empty** save for bare bedrock.',
+    compare: [
+      { zh: '巴黎凯旋门（高）', en: 'Arc de Triomphe, Paris (height)', m: 50 },
+      { zh: '希律圣殿主殿高与宽（100 肘）', en: "Herod's Sanctuary height & width (100 c)", m: 44.5 },
+      { zh: '所罗门圣殿高（30 肘）', en: "Solomon's Temple height (30 c)", m: 13.35 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
     id: 'newjerusalem',
     zh: '新耶路撒冷',
     en: 'The New Jerusalem',
@@ -1190,6 +1458,7 @@ export const STRUCTURES: Structure[] = [
       { key: 'height', zh: '高', en: 'Height', cubits: 12000, ref: '启 21:16', refEn: 'Rev 21:16' },
     ],
     kind: 'cube',
+    walk: 'new-jerusalem',
     counts: [
       { zh: '城门（四面各三门）', en: 'Pearl gates (3 per side)', n: 12, ref: '启 21:12–13, 21', refEn: 'Rev 21:12–13, 21' },
       { zh: '城墙根基宝石', en: 'Gem foundation courses', n: 12, ref: '启 21:14, 19–20', refEn: 'Rev 21:14, 19–20' },
@@ -1235,6 +1504,9 @@ export const homelessStructures = () => STRUCTURES.filter((s) => !s.walk);
 const WALK_PAGE: Record<WalkHome, string> = {
   ark: '/ark.html',
   ezekiel: '/ezekiel.html',
+  herod: '/herod.html',
+  'new-jerusalem': '/new-jerusalem.html',
+  palace: '/palace.html',
   tabernacle: '/tabernacle.html',
   temple: '/temple.html',
 };

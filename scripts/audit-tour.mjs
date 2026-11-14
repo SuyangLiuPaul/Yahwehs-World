@@ -16,7 +16,10 @@ const URL = process.argv[2] ?? 'http://localhost:5175';
 const PAGES = [
   { path: '/tabernacle.html', handle: '__walk' },
   { path: '/temple.html', handle: '__temple' },
+  { path: '/palace.html', handle: '__palace' },
   { path: '/ezekiel.html', handle: '__ezekiel' },
+  { path: '/herod.html', handle: '__herod' },
+  { path: '/new-jerusalem.html', handle: '__newjerusalem' },
   { path: '/ark.html', handle: '__ark' },
 ];
 

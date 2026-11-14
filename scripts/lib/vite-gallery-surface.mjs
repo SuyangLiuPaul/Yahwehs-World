@@ -48,7 +48,7 @@ export const galleryInput = (root) => ({
 export const PUBLISH_EXCLUDE = [
   'models',                 // glb: the globe, the walks, the figures (56 MB)
   'figures', 'materials', 'film', 'scenes', 'studies', 'cutouts-webp',
-  'loading-globe.svg', 'loading-globe-sm.svg',
+  'loading-globe.svg', 'loading-globe-sm.svg', 'icon.svg', 'icon-192.png',
   'data/ne_110m_land.geojson', 'data/ne_50m_coastline.geojson', 'data/ne_50m_lakes.geojson',
   'data/ne_50m_land.geojson', 'data/ne_50m_rivers_lake_centerlines.geojson', 'data/terrain-color.webp',
   'data/places.json', 'data/journeys.json', 'data/inventory.json', 'data/scenes.json',
@@ -59,7 +59,7 @@ export const isExcluded = (rel) => PUBLISH_EXCLUDE.some((x) => rel === x || rel.
 
 /** Hidden pages: what a visitor with an old link lands on. */
 const HIDDEN = [
-  '/tabernacle.html', '/temple.html', '/ezekiel.html', '/ark.html', '/figures.html', '/figures-springs.html', '/plan.html',
+  '/tabernacle.html', '/temple.html', '/palace.html', '/ezekiel.html', '/herod.html', '/new-jerusalem.html', '/ark.html', '/figures.html', '/figures-springs.html', '/plan.html',
   '/video.html', '/scene-assembly.html', '/elephant-preview.html', '/previews/*',
 ];
 

@@ -120,6 +120,9 @@ function render() {
     if (r.unit.walk) {
       chips.push(chip('walk live', t('Walk in', '走进去'), t(r.unit.walk.en, r.unit.walk.zh), r.unit.walk.href));
     }
+    for (const ew of r.unit.extraWalks ?? []) {
+      chips.push(chip('walk live', t('Walk in', '走进去'), t(ew.en, ew.zh), ew.href));
+    }
     for (const p of r.unit.plan ?? []) {
       const depth = DEPTHS.find((d) => d.key === p.depth)!;
       chips.push(chip(p.status, `${t(depth.en, depth.zh)} · ${t(STATUS[p.status].en, STATUS[p.status].zh)}`,

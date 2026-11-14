@@ -197,6 +197,60 @@ const ezekiel = await report('/ezekiel.html', '__ezekiel', [
 ]);
 SHOW(ezekiel, '/ezekiel.html — five hundred cubits, four elevations');
 
+const palace = await report('/palace.html', '__palace', [
+  { name: 'crossing the great court, walking', from: [68, -40], face: Math.PI, keys: ['KeyW'],
+    seconds: 3, ceiling: 0.5, want: (r) => r.speed > 4.2 && r.speed < 5.2 },
+  { name: 'crossing the great court, running', from: [68, -40], face: Math.PI, keys: ['KeyW', 'ShiftLeft'],
+    seconds: 3, ceiling: 0.5, want: (r) => r.speed > 8.4 },
+  { name: 'up the cedar stair to the forest gallery', from: [-38.5, -90.5], face: -Math.PI / 2, keys: ['KeyW'],
+    seconds: 8, ceiling: 2, climb: true, target: 14, want: (r) => r.riseCubits >= 14 },
+  { name: 'up the porch steps into the hall', from: [0, -36], face: Math.PI, keys: ['KeyW'],
+    seconds: 5, ceiling: 1, climb: true, target: 1.7, want: (r) => r.riseCubits >= 1.7 && r.metres > 15 },
+  { name: 'up the 6 lion steps to the ivory throne', from: [0, 24], face: Math.PI, keys: ['KeyW'],
+    seconds: 4, ceiling: 2, climb: true, target: 2.0, want: (r) => r.riseCubits >= 2.0 },
+  { name: 'up the northern temple-vista terrace', from: [0, 88], face: Math.PI, keys: ['KeyW'],
+    seconds: 6, ceiling: 1, climb: true, target: 3.3, want: (r) => r.riseCubits >= 3.3 },
+]);
+SHOW(palace, '/palace.html — House of the Forest, Porch of Pillars & Ivory Throne');
+
+const herod = await report('/herod.html', '__herod', [
+  { name: 'crossing the gentiles court, walking', from: [220, -140], face: Math.PI, keys: ['KeyW'],
+    seconds: 3, ceiling: 0.5, want: (r) => r.speed > 4.2 && r.speed < 5.2 },
+  { name: 'crossing the gentiles court, running', from: [220, -140], face: Math.PI, keys: ['KeyW', 'ShiftLeft'],
+    seconds: 3, ceiling: 0.5, want: (r) => r.speed > 8.4 },
+  { name: 'southern hulda 20 steps into double gate', from: [-54, -378], face: Math.PI, keys: ['KeyW'],
+    seconds: 6, ceiling: 0, climb: true, target: 4.4, want: (r) => r.riseCubits >= 4.4 && r.metres > 16 },
+  { name: 'hulda tunnel exit steps onto esplanade', from: [-54, -286], face: Math.PI, keys: ['KeyW'],
+    seconds: 6, ceiling: 0, climb: true, target: 4.8, want: (r) => r.riseCubits >= 4.8 && r.metres > 14 },
+  { name: 'soreg & 14 chel steps through beautiful gate', from: [200, 0], face: Math.PI / 2, keys: ['KeyW'],
+    seconds: 7, ceiling: 3, climb: true, target: 3.5, want: (r) => r.riseCubits >= 3.5 && r.metres > 18 },
+  { name: '15 semicircular steps through nicanor gate', from: [50, 0], face: Math.PI / 2, keys: ['KeyW'],
+    seconds: 7, ceiling: 4, climb: true, target: 3.5, want: (r) => r.riseCubits >= 3.5 && r.metres > 15 },
+  { name: 'up the 32-cubit southern ramp to altar', from: [-13, -50], face: Math.PI, keys: ['KeyW'],
+    seconds: 8, ceiling: 6, climb: true, target: 8.5, want: (r) => r.riseCubits >= 8.5 && r.metres > 15 },
+  { name: '12 sanctuary steps through ulam into hekhal', from: [-35, 0], face: Math.PI / 2, keys: ['KeyW'],
+    seconds: 9, ceiling: 6, climb: true, target: 5.5, want: (r) => r.riseCubits >= 5.5 && r.metres > 20 },
+  { name: '32 antonia steps to tribune landing', from: [-185, 111], face: Math.PI, keys: ['KeyW'],
+    seconds: 8, ceiling: 3, climb: true, target: 7.5, want: (r) => r.riseCubits >= 7.5 && r.metres > 15 },
+]);
+SHOW(herod, '/herod.html — Hulda tunnels, Soreg, Nicanor, Altar ramp, Sanctuary & Antonia');
+
+const newJerusalem = await report('/new-jerusalem.html', '__newjerusalem', [
+  { name: 'down the golden street, walking', from: [-14, -20], face: Math.PI / 2, keys: ['KeyW'],
+    seconds: 3, ceiling: 1, want: (r) => r.speed > 4.2 && r.speed < 5.2 },
+  { name: 'down the golden street, running', from: [-14, -20], face: Math.PI / 2, keys: ['KeyW', 'ShiftLeft'],
+    seconds: 3, ceiling: 1, want: (r) => r.speed > 8.4 },
+  { name: 'up the 30 east steps through pearl gate', from: [60, 0], face: Math.PI / 2, keys: ['KeyW'],
+    seconds: 6, ceiling: 1, climb: true, target: 11.5, want: (r) => r.riseCubits >= 11.5 && r.metres > 20 },
+  { name: 'over the arched gold-glass footbridge', from: [-52, -10], face: Math.PI, keys: ['KeyW'],
+    seconds: 3, ceiling: 1, climb: true, target: 2.0, want: (r) => r.riseCubits >= 2.0 },
+  { name: 'up the sapphire stairs to throne forecourt', from: [-214, 17], face: Math.PI / 2, keys: ['KeyW'],
+    seconds: 5, ceiling: 1, climb: true, target: 7.5, want: (r) => r.riseCubits >= 7.5 },
+  { name: 'up the jasper ramp to 144c wall overlook', from: [-2.5, 16.5], face: Math.PI, keys: ['KeyW', 'ShiftLeft'],
+    seconds: 11, ceiling: 1, climb: true, target: 142, want: (r) => r.riseCubits >= 142 },
+]);
+SHOW(newJerusalem, '/new-jerusalem.html — Pearl Gate, Gold Street, Bridges, Throne Forecourt & 144c Wall');
+
 // A tour can end anywhere, including over the side of a mountain. Whatever
 // the last stop was, the visitor must be handed back standing on the summit:
 // the owner took control at the closing aerial and was set down on the north

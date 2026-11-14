@@ -150,8 +150,14 @@ export const BUILT: { href: string; en: string; zh: string; refEn: string; refZh
     refEn: 'Exodus 26–27 — the boards, the court, the hanging', refZh: '出埃及记 26–27 —— 竖板、院子、幔子' },
   { href: '/temple.html', en: "Solomon's temple", zh: '所罗门的圣殿',
     refEn: '1 Kings 6–7 — 60 × 20 × 30 cubits, and the two pillars', refZh: '列王纪上 6–7 —— 长六十肘，宽二十肘，高三十肘，并两根柱子' },
+  { href: '/palace.html', en: "Solomon's palace", zh: '所罗门的王宫与利巴嫩林宫',
+    refEn: '1 Kings 7:1–12; 10:16–20 — 100 × 50 × 30 cubits cedar hall & ivory throne', refZh: '列王纪上 7:1–12；10:16–20 —— 百肘香柏木林宫与象牙包金宝座' },
   { href: '/ezekiel.html', en: "Ezekiel's temple", zh: '以西结的殿',
     refEn: 'Ezekiel 40–47 — 500 × 500 cubits, three gates & the river', refZh: '以西结书 40–47 —— 五百见方、三座大门与门下活水' },
+  { href: '/herod.html', en: "Herod's temple", zh: '希律的圣殿',
+    refEn: 'John 2:20; Mishnah Middot & Josephus — 100 × 100 × 100 cubit sanctuary & courts', refZh: '约翰福音 2:20；尺寸篇与约瑟夫 —— 百肘主殿、外邦人院、妇人院与祭司院' },
+  { href: '/new-jerusalem.html', en: 'The New Jerusalem', zh: '新耶路撒冷',
+    refEn: 'Revelation 21–22 — 144-cubit jasper wall, 12 pearl gates & River of Life', refZh: '启示录 21–22 —— 一百四十四肘碧玉墙、十二珍珠门与生命水河' },
 ];
 
 export const KINDS: { key: Kind; en: string; zh: string; whatEn: string; whatZh: string }[] = [

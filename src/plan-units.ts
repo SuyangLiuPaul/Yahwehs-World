@@ -43,6 +43,8 @@ export interface Unit {
   from: number;
   /** Where this unit can be walked into today. */
   walk?: { href: string; zh: string; en: string };
+  /** Additional walks inside the same unit (e.g. Solomon's palace alongside his temple). */
+  extraWalks?: { href: string; zh: string; en: string }[];
   /** What is not built yet, and what it would be. */
   plan?: Planned[];
 }
@@ -113,7 +115,7 @@ export const UNITS: Unit[] = [
       wip('route', '约柜进耶路撒冷', 'The ark comes up to Jerusalem')] },
   { id: 'solomon', zh: '所罗门与圣殿', en: 'Solomon and the temple', from: k(11, 1, 1),
     walk: { href: '/temple.html', zh: '走进圣殿', en: 'Walk into the temple' },
-    plan: [wip('walk', '所罗门的宫、黎巴嫩林宫 · 王上七章有尺寸', 'Solomon\'s palace and the house of the forest — 1 Kgs 7 gives its measures')] },
+    extraWalks: [{ href: '/palace.html', zh: '走进所罗门王宫', en: "Walk into Solomon's palace" }] },
   { id: 'divided', zh: '国分为二', en: 'The kingdom divided', from: k(11, 12, 1),
     plan: [wip('scene', '伯特利与但的两只金牛犊（王上 12:28–29）', 'The two calves of gold, at Bethel and at Dan (1 Kgs 12:28–29)')] },
   { id: 'elijah', zh: '以利亚', en: 'Elijah', from: k(11, 17, 1),
@@ -168,9 +170,8 @@ export const UNITS: Unit[] = [
     plan: [wip('scene', '客店与马槽 · 经文只记了布、槽和没有地方（路 2:7）；牛和驴不在记载里',
           'The inn and the manger — the text gives swaddling clothes, a manger and no room (Luke 2:7); the ox and the ass are not in it')] },
   { id: 'john', zh: '约翰福音', en: 'John', from: k(43, 1, 1),
-    plan: [wip('walk', '希律的圣殿 · 只能按约瑟夫与米示拿做，并且要说明这一点',
-               'Herod\'s temple — buildable only from Josephus and the Mishnah, and must say so', 'building'),
-           wip('route', '受难周 · 耶路撒冷城内', 'The last week, inside the city')] },
+    walk: { href: '/herod.html', zh: '走进希律圣殿', en: "Walk into Herod's temple" },
+    plan: [wip('route', '受难周 · 耶路撒冷城内', 'The last week, inside the city')] },
   { id: 'acts-jerusalem', zh: '耶路撒冷的教会', en: 'The church at Jerusalem', from: k(44, 1, 1),
     plan: [wip('scene', '五旬节的楼房 · 舌头如火焰显现（徒 2:1–3）', 'The upper room at Pentecost — tongues like as of fire (Acts 2:1–3)')] },
   { id: 'acts-scattered', zh: '腓利、彼得与外邦人', en: 'Philip, Peter, and the nations', from: k(44, 8, 1),
@@ -201,8 +202,7 @@ export const UNITS: Unit[] = [
   { id: 'rev-visions', zh: '异象与审判', en: 'The visions', from: k(66, 4, 1),
     plan: [wip('scene', '宝座、二十四个座位、四活物与玻璃海（启 4）', 'The throne, the twenty-four seats, the living creatures and the sea of glass (Rev 4)')] },
   { id: 'new-jerusalem', zh: '新耶路撒冷', en: 'The new Jerusalem', from: k(66, 21, 1),
-    plan: [wip('walk', '走进新耶路撒冷 · 一万二千斯他丢见方，墙一百四十四肘',
-               'Walk into it — twelve thousand furlongs square, the wall a hundred and forty-four cubits')] },
+    walk: { href: '/new-jerusalem.html', zh: '走进新耶路撒冷', en: 'Walk into the New Jerusalem' } },
 ];
 
 /** The unit a verse key belongs to. Units are sorted and contiguous, so this

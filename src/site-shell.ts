@@ -51,7 +51,10 @@ const BUILT: { href: string; zh: string; en: string; noteZh: string; noteEn: str
   { href: '/scenes.html', zh: '🖼️ 圣经画卷全集 (1,443 幅)', en: '🖼️ Biblical Scenes Gallery (1,443)', noteZh: '创世记至启示录 1,443 幅中英双语事件插画，支持按书卷与单元检索', noteEn: 'All 1,443 canonical event illustrations across 66 books & 56 units' },
   { href: '/tabernacle.html', zh: '🏛️ 走进摩西会幕 (1:1 漫游)', en: '🏛️ Walk into the Tabernacle', noteZh: '出埃及记 26–27 · 第一人称实尺走进院落、圣所与至圣所', noteEn: 'Exodus 26–27 · First-person 1:1 walk through court & sanctuary' },
   { href: '/temple.html', zh: '🏛️ 走进所罗门圣殿 (1:1 漫游)', en: "🏛️ Walk into Solomon's Temple", noteZh: '列王纪上 6–7；历代志下 3–4 · 第一人称实尺走进圣殿与内院', noteEn: '1 Kings 6–7; 2 Chronicles 3–4 · First-person 1:1 walk' },
+  { href: '/palace.html', zh: '🏛️ 走进所罗门王宫与林宫 (1:1 漫游)', en: "🏛️ Walk into Solomon's Palace", noteZh: '列王纪上 7:1–12；10:16–21 · 第一人称实尺走进利巴嫩林宫、柱廊与象牙金宝座', noteEn: '1 Kings 7:1–12; 10:16–21 · First-person 1:1 walk through the House of the Forest & Ivory Throne' },
   { href: '/ezekiel.html', zh: '🏛️ 走进以西结圣殿 (1:1 漫游)', en: "🏛️ Walk into Ezekiel's Temple", noteZh: '以西结书 40–47 · 第一人称实尺走进五百肘圣区、阶梯祭坛与生命活水河', noteEn: "Ezekiel 40–47 · First-person 1:1 walk through 500-cubit precinct, stepped altar & river" },
+  { href: '/herod.html', zh: '🏛️ 走进希律圣殿 (1:1 漫游)', en: "🏛️ Walk into Herod's Temple", noteZh: '四福音与使徒行传 · 按约瑟夫与《密西拿·尺寸篇》实尺复原圣殿山各院与百肘主殿', noteEn: 'Gospels & Acts · First-person 1:1 walk reconstructed from Josephus & Mishnah Middot' },
+  { href: '/new-jerusalem.html', zh: '🏛️ 走进新耶路撒冷 (1:1 漫游)', en: '🏛️ Walk into the New Jerusalem', noteZh: '启示录 21–22 · 第一人称走进一百四十四肘碧玉城墙、十二宝石根基、精金街道与生命水河', noteEn: 'Revelation 21–22 · First-person 1:1 walk through the 144-cubit jasper wall, pearl gates & River of Life' },
   { href: '/ark.html', zh: '🚢 走进挪亚方舟 (1:1 漫游)', en: "🚢 Walk into Noah's Ark", noteZh: '创世记 6–8 · 第一人称走进三层甲板与方舟内部结构', noteEn: 'Genesis 6–8 · First-person walk inside the 3-deck Ark' },
   { href: '/figures.html', zh: '🧍 人物与活物库 (3D + 394 立绘)', en: '🧍 People, Creatures & 394 Cutouts', noteZh: '85+ 可交互骨骼动画 3D 模型、真实身高比例尺与 394 张透明立绘', noteEn: '85+ animated 3D models, scale comparisons & 394 transparent cutouts' },
   { href: '/plan.html', zh: '📜 圣经全景 (56 个叙事单元)', en: '📜 Bible Panorama (56 Units)', noteZh: '整本圣经划分为 56 个叙事单元，串联经文、画卷、地图、路线与 3D 空间', noteEn: 'All 56 narrative units connecting scripture, art, maps, routes & 3D' },
@@ -81,7 +84,7 @@ function render(menu: HTMLElement) {
     const s = stateOf(u);
     const href = u.walk ? u.walk.href : `/plan.html#u-${u.id}`;
     const what = u.walk
-      ? t(u.walk.en, u.walk.zh)
+      ? [t(u.walk.en, u.walk.zh), ...(u.extraWalks ?? []).map((w) => t(w.en, w.zh))].join(' · ')
       : t(u.plan?.[0]?.en ?? 'Illustrated unit', u.plan?.[0]?.zh ?? '含事件画卷与经文定位');
     return `<li class="am-row am-${s}"><a href="${href}">
       <span class="am-name">${idx + 1}. ${t(u.en, hant(u.zh))}</span>
