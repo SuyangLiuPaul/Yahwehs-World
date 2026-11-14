@@ -4,7 +4,7 @@ import { installUpdateChecker } from './updates.ts';
 import { installSiteMenu, loadingSteps, loadingStep, pageReady } from './site-shell.ts';
 import { UNITS, unitFor, type Depth, type Status, type Unit } from './plan-units.ts';
 import { journeySpan } from './bridges.ts';
-import { measuresHref, STRUCTURES } from './structures/specs.ts';
+import { measuresHref, STRUCTURES_LITE as STRUCTURES } from './structures/specs-lite.ts';
 import { refKey } from './books.ts';
 import type { Journey } from './routes.ts';
 
@@ -32,7 +32,7 @@ const DEPTHS: { key: Depth; zh: string; en: string; zhWhat: string; enWhat: stri
   { key: 'verse', zh: '经文', en: 'Passage', zhWhat: '记载、摘要，以及年代的依据。1,443 个事件全都有。', enWhat: 'The passage, its summary and the basis for its date. All 1,443 have it.' },
   { key: 'map', zh: '地图', en: 'On the map', zhWhat: '事件发生的地点，落在地球上。只在经文指明地点时才有。', enWhat: 'The place, on the globe — only where the text names one.' },
   { key: 'route', zh: '路线', en: 'Route', zhWhat: '一站一站画在地形上的行程，每站注明出处经文。', enWhat: 'A journey across the terrain, every stop citing its verse.' },
-  { key: 'measure', zh: '尺寸', en: 'Measures', zhWhat: '照经文所记的尺寸做的卡片。', enWhat: 'A card built to the measurements the text states.' },
+  { key: 'measure', zh: '三维模型', en: '3D model', zhWhat: '照经文尺寸、数目或实测地理建成的交互式三维模型与沙盘。', enWhat: 'An interactive 3D structure, counted scene or terrain relief built from the text.' },
   { key: 'scene', zh: '3D 场景', en: '3D scene', zhWhat: '事件本身的三维场景，站在事情发生的地方，按记载所描述的建。', enWhat: 'The event itself in three dimensions, standing where it happens, built from what the passage describes.' },
   { key: 'walk', zh: '走进去', en: 'Walk in', zhWhat: '可以自己走进去的建筑。', enWhat: 'A building you can walk into on your own feet.' },
 ];
@@ -81,25 +81,28 @@ function render() {
 
   // What fraction of the canon's events sit in a unit that has reached each
   // depth. Counted, never claimed.
-  const reach = { walk: 0, route: 0, map: 0, verse: 0 };
+  const reach = { walk: 0, measure: 0, route: 0, map: 0, verse: 0 };
   for (const r of rows) {
     // Exclusive buckets, counted per EVENT and not per unit: a unit with one
     // located place does not make all of its events mapped, and saying it did
     // turned 55% into 84% on the first draft of this bar.
     if (r.unit.walk) reach.walk += r.events;
+    else if (r.structures.length) reach.measure += r.events;
     else if (r.journeys.length) reach.route += r.events;
     else { reach.map += r.placed; reach.verse += r.events - r.placed; }
   }
   const pc = (n: number) => `${((n / Math.max(1, total)) * 100).toFixed(0)}%`;
-  $('bar').innerHTML = (['walk', 'route', 'map', 'verse'] as const)
+  $('bar').innerHTML = (['walk', 'measure', 'route', 'map', 'verse'] as const)
     .map((k2) => `<i class="b-${k2}" style="width:${pc(reach[k2])}"></i>`).join('');
-  // The target, counted: a unit has its own 3D when you can walk into it.
-  const own3d = rows.filter((r) => r.unit.walk).length;
-  const building = rows.filter((r) => (r.unit.plan ?? []).some((q) => q.status === 'building')).length;
+  // The target, counted: a unit has its own 3D when you can walk into it or open its measured/relief 3D view.
+  const own3d = rows.filter((r) => r.unit.walk || r.structures.length > 0).length;
+  const building = rows.filter(
+    (r) => !(r.unit.walk || r.structures.length > 0) && (r.unit.plan ?? []).some((q) => q.status === 'building'),
+  ).length;
   const planned = UNITS.length - own3d - building;
   $('tally-line').textContent = t(
-    `Target: all ${total.toLocaleString()} events in 3D. ${UNITS.length} units — ${own3d} have a 3D scene of their own, ${building} in development, ${planned} planned. Today: walk-in ${pc(reach.walk)} of events · route ${pc(reach.route)} · mapped ${pc(reach.map)} · passage only ${pc(reach.verse)}`,
-    `目标：${total.toLocaleString()} 个事件全部做成 3D。${UNITS.length} 个单元——${own3d} 个已有自己的 3D 场景，${building} 个开发中，${planned} 个计划中。目前：可走进的事件 ${pc(reach.walk)} · 有路线 ${pc(reach.route)} · 有地点 ${pc(reach.map)} · 只有经文 ${pc(reach.verse)}`);
+    `Target: all ${total.toLocaleString()} events in 3D. ${UNITS.length} units — ${own3d} have a 3D view of their own, ${building} in development, ${planned} planned. Today: walk-in ${pc(reach.walk)} of events · 3D model ${pc(reach.measure)} · route ${pc(reach.route)} · mapped ${pc(reach.map)} · passage only ${pc(reach.verse)}`,
+    `目标：${total.toLocaleString()} 个事件全部做成 3D。${UNITS.length} 个单元——${own3d} 个已有自己的 3D 视图，${building} 个开发中，${planned} 个计划中。目前：可走进 ${pc(reach.walk)} · 3D 模型 ${pc(reach.measure)} · 有路线 ${pc(reach.route)} · 有地点 ${pc(reach.map)} · 只有经文 ${pc(reach.verse)}`);
 
   $('units').innerHTML = rows.map((r) => {
     const chips: string[] = [];
@@ -115,7 +118,7 @@ function render() {
       chips.push(chip('live', t('Route', '路线'), t(jr.en, jr.zh), `/#journey=${jr.id}`));
     }
     for (const st of r.structures) {
-      chips.push(chip('live', t('Measures', '尺寸'), t(st.en, st.zh), measuresHref(st.id)));
+      chips.push(chip('live', t('3D model', '三维模型'), t(st.en, st.zh), measuresHref(st.id)));
     }
     if (r.unit.walk) {
       chips.push(chip('walk live', t('Walk in', '走进去'), t(r.unit.walk.en, r.unit.walk.zh), r.unit.walk.href));
@@ -138,8 +141,8 @@ function render() {
   }).join('');
 
   $('plan-note').innerHTML = t(
-    'The counts on this page are computed from the same payloads the rest of the site uses: each event is assigned to the unit its opening verse falls in, a route is listed under a unit when the verses its own stops cite fall inside it, and a measurement card when the verse it is built from does. Nothing here is a hand-kept list that can drift out of date — if a journey is added, it appears.',
-    '这一页的数字是从本站其它页面用的同一份数据算出来的：每个事件按它起始的经节归入所属单元；一条路线只有在它各站所引的经节落在该单元之内时才列在那里；尺寸卡同理。这里没有手工维护的清单，不会跟数据脱节——加一条路线，它就会出现。');
+    'The counts on this page are computed from the same payloads the rest of the site uses: each event is assigned to the unit its opening verse falls in, a route is listed under a unit when the verses its own stops cite fall inside it, and a 3D model or relief card when the verse it is built from does. Nothing here is a hand-kept list that can drift out of date — if a journey is added, it appears.',
+    '这一页的数字是从本站其它页面用的同一份数据算出来的：每个事件按它起始的经节归入所属单元；一条路线只有在它各站所引的经节落在该单元之内时才列在那里；三维模型或沙盘同理。这里没有手工维护的清单，不会跟数据脱节——加一条路线，它就会出现。');
   applyStatic();
 }
 

@@ -112,6 +112,14 @@ export type StructureKind =
   | 'rev4ThroneRoom'
   | 'sevenLampstands'
   | 'pentecostRoom'
+  | 'canaanAllotment'
+  | 'exodusRelief'
+  | 'gerizimEbalRelief'
+  | 'paulJourneysRelief'
+  | 'asiaChurchesRelief'
+  | 'jordanCrossing'
+  | 'gideonDiorama'
+  | 'arkToZion'
   | 'cube';
 
 /** The walk-in pages. A card lives on the page where the thing it measures
@@ -1932,6 +1940,502 @@ export const STRUCTURES: Structure[] = [
     compare: [
       { zh: '虹顶展示高度（参照）', en: 'Rainbow top display height (assumed)', m: 8.5 },
       { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
+    id: 'exodus-sinai-relief',
+    zh: '出埃及与西乃旷野地形沙盘',
+    en: 'Exodus & Wilderness Relief Sandbox',
+    ref: 'Numbers 33:2',
+    refZh: '民数记 33:2',
+    textZh: '摩西遵着雅伟的吩咐记载他们所行的路程，其路程乃是这样：',
+    textEn: 'Moses wrote their goings out according to their journeys by the commandment of Yahweh: and these are their journeys according to their goings out.',
+    dims: [
+      { key: 'ew-span', zh: '东西跨度（兰塞至以旬迦别）', en: 'East–west span (Rameses to Ezion-geber)', cubits: 280, ref: '出 12:37; 民 33:35', refEn: 'Exod 12:37; Num 33:35' },
+      { key: 'ns-span', zh: '南北跨度（歌珊至西乃南端）', en: 'North–south span (Goshen to Sinai)', cubits: 360, ref: '出 19:1; 民 33:15', refEn: 'Exod 19:1; Num 33:15' },
+    ],
+    counts: [
+      { zh: '民数记三十三章所记安营站数', en: 'Encampment stages listed in Num 33', n: 42, ref: '民 33:5–49', refEn: 'Num 33:5–49' },
+      { zh: '以琳的水泉', en: 'Springs of water at Elim', n: 12, ref: '出 15:27', refEn: 'Exod 15:27' },
+      { zh: '以琳的棕树', en: 'Palm trees at Elim', n: 70, ref: '出 15:27', refEn: 'Exod 15:27' },
+    ],
+    kind: 'exodusRelief',
+    unit: {
+      zh: '公里',
+      en: 'km',
+      m: 1000,
+      note: '区域地形跨度按经纬度折算公里；垂直高程放大以便辨识山谷与海沟。',
+      noteEn: 'Regional span in kilometres from georeferenced lat/lon; vertical relief exaggerated for legibility.',
+    },
+    variants: {
+      key: 'exodusView',
+      zh: '展示重点',
+      en: 'Focus',
+      options: [
+        {
+          id: 'full-itinerary',
+          zh: '兰塞至摩押平原全程 · 未考证站段虚线标示',
+          en: 'Full Rameses-to-Moab itinerary · unlocated stages dashed',
+          note: '从尼罗河三角洲东缘兰塞出发，绕行西乃半岛南端，穿过亚拉巴谷绕行以东、摩押至耶利哥对面；经文有站名而今址尚无定论的中途旷野段，用虚线连贯，不强行伪造准确坐标。',
+          noteEn: 'Runs from Rameses on the eastern Nile Delta around southern Sinai and up through the Arabah east of Edom and Moab to opposite Jericho; unlocated wilderness stations are bridged with an honest dashed track.',
+        },
+        {
+          id: 'red-sea-sinai',
+          zh: '过红海与西乃山密云烈火 · 山下设界限',
+          en: 'Red Sea crossing & Sinai in cloud and fire · boundary at the foot',
+          note: '聚焦苏伊士海湾过红海（左右分开的水墙）与西乃山山顶的密云、火柱，以及山下绕行警戒百姓不可擅近的界限（出 19:12–18）。',
+          noteEn: 'Focuses on the Red Sea crossing (parted water corridor) and Mount Sinai crowned in cloud and fire with the boundary ring fenced around its foot (Exod 19:12–18).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '比哈希录与过海的确切地点、西乃山地多座传统候选主峰中哪一座是何烈山，以及民数记三十三章约半数旷野小站（如利萨、基希拉他、哈拉大等）的今日坐标，经文未留足够地形数据来定案，沙盘只实线标出有历史地理依据的锚点，其余以虚线示意。',
+        en: 'The exact site of Pi-hahiroth and the sea crossing, which granite massif is Horeb/Sinai, and roughly half the wilderness stations in Numbers 33 (such as Rissah, Kehelathah and Haradah) remain debated; only grounded anchors are plotted solid, with debated spans dashed.',
+      },
+      {
+        zh: '沙盘垂直海拔与海墙、云火高度均为立体辨识而放大，非等比地形切片；依循经文严谨不塑任何神形，雅伟的显现仅以密云、火与界限表达（出 19:16–18）。',
+        en: 'Vertical elevation, parted sea walls and cloud/fire plumes are scaled for three-dimensional clarity. In keeping with Scripture, no bodily image is made of Yahweh — only thick cloud, fire and the foot-of-mountain boundary.',
+      },
+    ],
+    punchZh: '**四十二站旷野行记**不再只是地图上一条细线，而是尼罗河沃土、分岔红海、高原断崖与约但河东荒原之间的实景行军沙盘。',
+    punchEn: '**Forty-two recorded encampments** lifted off a flat map into a carved relief spanning the Nile delta, the forked Red Sea gulfs, Sinai highlands and the Transjordan plateau.',
+    compare: [
+      { zh: '尼罗河口至西乃南端跨度', en: 'Delta to southern Sinai span', m: 360_000 },
+      { zh: '兰塞至以旬迦别东西跨度', en: 'Rameses to Ezion-geber span', m: 280_000 },
+    ],
+  },
+  {
+    id: 'gerizim-ebal-valley',
+    zh: '基利心山与以巴路山谷地沙盘',
+    en: 'Mount Gerizim & Mount Ebal Relief',
+    ref: 'Deuteronomy 27:12',
+    refZh: '申命记 27:12',
+    textZh: '你们过了约但河，西缅、利未、犹大、以萨迦、约瑟、便雅悯六个支派的人都要站在基利心山上为百姓祝福。',
+    textEn: 'These shall stand upon mount Gerizim to bless the people, when ye are come over Jordan; Simeon, and Levi, and Judah, and Issachar, and Joseph, and Benjamin:',
+    dims: [
+      { key: 'ebal-h', zh: '以巴路山海拔（北峰）', en: 'Mount Ebal elevation (north)', cubits: 940, ref: '申 27:13; 书 8:30', refEn: 'Deut 27:13; Josh 8:30' },
+      { key: 'gerizim-h', zh: '基利心山海拔（南峰）', en: 'Mount Gerizim elevation (south)', cubits: 881, ref: '申 27:12; 书 8:33', refEn: 'Deut 27:12; Josh 8:33' },
+      { key: 'pass-w', zh: '两山之间示剑隘口谷底宽', en: 'Shechem valley floor width between slopes', cubits: 500, ref: '书 8:33', refEn: 'Josh 8:33' },
+    ],
+    counts: [
+      { zh: '站基利心山祝福的支派', en: 'Tribes facing Gerizim to bless', n: 6, ref: '申 27:12', refEn: 'Deut 27:12' },
+      { zh: '站以巴路山宣告咒诅的支派', en: 'Tribes facing Ebal for the curse', n: 6, ref: '申 27:13', refEn: 'Deut 27:13' },
+    ],
+    kind: 'gerizimEbalRelief',
+    unit: {
+      zh: '米',
+      en: 'm',
+      m: 1,
+      note: '示剑隘口实测海拔高度与谷宽，按米标示。',
+      noteEn: 'Measured elevations and pass width at the Shechem saddle, in metres.',
+    },
+    variants: {
+      key: 'shechemView',
+      zh: '场景视图',
+      en: 'Scene view',
+      options: [
+        {
+          id: 'covenant-assembly',
+          zh: '两山对立宣读祝福与咒诅 · 约柜与利未人在谷中',
+          en: 'Six tribes on each mount · Ark and Levites in the valley',
+          note: '南面青翠的基利心山坡列六支派、北面较陡峭裸露的以巴路山坡列六支派，金色约柜与抬柜的利未祭司立在两山夹峙的天然露天剧场谷底（书 8:33）。',
+          noteEn: 'Six tribes ranged along the gentler southern slope of Gerizim and six across the steeper northern slope of Ebal, with the Ark and Levites in the narrow natural amphitheatre between (Josh 8:33).',
+        },
+        {
+          id: 'ebal-altar',
+          zh: '以巴路山未凿整石祭坛与墁灰立石',
+          en: 'Uncut fieldstone altar & plastered law stones on Ebal',
+          note: '凸出以巴路山坡上不可动铁器的未凿整石祭坛（申 27:5–6；书 8:30–31），及旁边抹上石灰、写明律法的立石（申 27:2–4, 8）。',
+          noteEn: 'Highlights the altar of unhewn whole stones built without iron tool on Mount Ebal (Deut 27:5–6; Josh 8:30–31), beside the great stones plastered with lime bearing the words of the law (Deut 27:2–8).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '约书亚在以巴路山所筑未凿石坛的长宽高（申 27:5–6；书 8:30–31），以及抹灰大石的块数与高度（申 27:2–4），经文都没有写明；图中坛形与白灰碑石仅作示意。',
+        en: 'Scripture does not state the dimensions of the unhewn altar on Ebal (Deut 27:5–6; Josh 8:30–31) or the size and number of the plastered stones (Deut 27:2–4); their proportions and the tribal rank markers are schematic.',
+      },
+      {
+        zh: '两山高度 940 米、881 米取自现代撒玛利亚示剑（纳布卢斯）实测海拔；沙盘谷宽经比例收敛以便同框看清对山坡与谷底约柜。',
+        en: 'The 940 m and 881 m figures reflect the modern elevations at the Shechem pass; horizontal width and vertical rise in the tabletop relief are compressed into a single frame.',
+      },
+    ],
+    punchZh: '一面翠绿、一面荒峻，两座山挟着一道仅约 **500 米** 宽的天然回音谷——约柜立在正中，全以色列站上两坡彼此对答阿们。',
+    punchEn: 'Two opposing slopes pinching the **500 m** Shechem pass into a natural acoustic bowl — the Ark in the trough, six tribes answering six across the valley.',
+    compare: [
+      { zh: '以巴路山海拔（北）', en: 'Mount Ebal summit (north)', m: 940 },
+      { zh: '基利心山海拔（南）', en: 'Mount Gerizim summit (south)', m: 881 },
+      { zh: '两山之间谷底窄处', en: 'Shechem valley pass width', m: 500 },
+    ],
+  },
+  {
+    id: 'jordan-twelve-stones',
+    zh: '过约但河与十二块纪念石',
+    en: 'Jordan Crossing & Twelve Stones',
+    ref: 'Joshua 3:16',
+    refZh: '约书亚记 3:16',
+    textZh: '那从上往下流的水，便在极远之地、撒拉但旁的亚当城那里停住，立起成垒；那往亚拉巴的海，就是盐海，下流的水全然断绝。于是百姓在耶利哥的对面过去了。',
+    textEn: 'That the waters which came down from above stood and rose up upon an heap very far from the city Adam, that is beside Zaretan: and those that came down toward the sea of the plain, even the salt sea, failed, and were cut off: and the people passed over right against Jericho.',
+    dims: [
+      { key: 'gap', zh: '百姓离约柜当留的距离', en: 'Clearance kept behind the Ark', cubits: 2000, ref: '书 3:4', refEn: 'Josh 3:4' },
+      { key: 'ark-l', zh: '约柜长（标准 2.5 肘）', en: 'Ark length', cubits: 2.5, ref: '出 25:10; 书 3:6', refEn: 'Exod 25:10; Josh 3:6' },
+      { key: 'ark-w', zh: '约柜宽', en: 'Ark width', cubits: 1.5, ref: '出 25:10', refEn: 'Exod 25:10' },
+      { key: 'ark-h', zh: '约柜高', en: 'Ark height', cubits: 1.5, ref: '出 25:10', refEn: 'Exod 25:10' },
+    ],
+    counts: [
+      { zh: '从河中抬出立在吉甲的石头', en: 'Stones taken from Jordan to Gilgal', n: 12, ref: '书 4:3, 8, 20', refEn: 'Josh 4:3, 8, 20' },
+      { zh: '约书亚另立在祭司站脚之处的石头', en: 'Stones set up inside the riverbed', n: 12, ref: '书 4:9', refEn: 'Josh 4:9' },
+      { zh: '抬约柜的白衣祭司（短发）', en: 'Priests bearing the Ark', n: 4, ref: '书 3:6, 17', refEn: 'Josh 3:6, 17' },
+    ],
+    kind: 'jordanCrossing',
+    variants: {
+      key: 'jordanView',
+      zh: '叙事瞬间',
+      en: 'Moment shown',
+      options: [
+        {
+          id: 'riverbed-ark',
+          zh: '干河床 · 祭司抬约柜站立，上游水立起成垒',
+          en: 'Dry riverbed · priests bearing the Ark while waters stand upstream',
+          note: '呈现约书亚记三至四章的核心张力：四位穿白麻衣的祭司稳立在干涸的河床正中，上游收割时节涨溢的河水停住立起成垒，身旁另有十二块留在河心祭司脚立之处的大石（书 4:9）。',
+          noteEn: 'Four priests in white linen stand firm on dry river gravel bearing the Ark, upstream floodwaters banked up in a wall while the lower reach drains toward the Dead Sea; twelve boulders mark the inner riverbed memorial (Josh 4:9).',
+        },
+        {
+          id: 'gilgal-monument',
+          zh: '吉甲立十二块石头作纪念 · 书 4:20–24',
+          en: 'Twelve stones pitched at Gilgal · Josh 4:20–24',
+          note: '各支派一人从约但河祭司站立处扛出来的一十二块河卵大石，安放在吉甲阶地高台上，作日后子孙询问「这些石头是什么意思」的见证。',
+          noteEn: 'The twelve river boulders lifted onto twelve shoulders from the dry Jordan bed and erected at Gilgal as a perpetual witness when children ask, "What mean these stones?" (Josh 4:20–24).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '书 3:4 明确要求百姓与约柜之间相离 **两千肘**（约 890 米至 1,046 米）；为让祭司、河心石堆与对岸队伍同框，三维场景缩短了这一间距，而上方尺寸表会按你所选的肘尺实时换算真实米数。',
+        en: 'Joshua 3:4 specifies a separation of **2,000 cubits** (~890–1,046 m) between Ark and people. That gap is compressed in the 3D scene so all elements fit in one frame, while the dimension table computes the full real-world metres as you slide the cubit standard.',
+      },
+      {
+        zh: '亚当城上游距离、春汛收割期间约但河涨过两岸的实际宽度（书 3:15），以及十二人各扛在肩上的河石形状与重量（书 4:5），经文均未记载。',
+        en: 'The exact river width during the harvest flood (3:15), upstream distance to Adam near Zaretan (3:16), and exact weight/size of each shoulder-carried stone (4:5) are unstated.',
+      },
+    ],
+    punchZh: '经文不仅数出**十二块石头**，还数出**两套十二块**（河心一组、吉甲一组），并在河东与约柜之间划下**两千肘**不可逾越的间隔。',
+    punchEn: 'Not twelve stones only, but **two sets of twelve** (one buried in the riverbed, one pitched at Gilgal) — and a **2,000-cubit** clearance between the people and the Ark.',
+    compare: [
+      { zh: '百姓离约柜的距离（2,000 普通肘）', en: 'Ark clearance (2,000 common cubits)', m: 890 },
+      { zh: '约柜长（2.5 普通肘）', en: 'Ark length (2.5 cubits)', m: 1.11 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
+    id: 'canaan-allotment',
+    zh: '迦南十二支派分地与逃城沙盘',
+    en: 'Canaan Tribal Allotment & Refuge Relief',
+    ref: 'Joshua 18:10',
+    refZh: '约书亚记 18:10',
+    textZh: '约书亚就在示罗、雅伟面前，为他们拈阄。约书亚在那里，按着以色列人的支派，将地分给他们。',
+    textEn: 'And Joshua cast lots for them in Shiloh before Yahweh: and there Joshua divided the land unto the children of Israel according to their divisions.',
+    dims: [
+      { key: 'dan-beersheba', zh: '但至别是巴南北全长', en: 'Dan to Beersheba north–south span', cubits: 240, ref: '书 15–19', refEn: 'Josh 15–19' },
+      { key: 'coast-gilead', zh: '地中海至约但河东东西跨度', en: 'Mediterranean coast to Transjordan span', cubits: 145, ref: '书 13–19', refEn: 'Josh 13–19' },
+    ],
+    counts: [
+      { zh: '河西在示罗拈阄所得支派（九支派半）', en: 'Cisjordan lots cast at Shiloh (9.5 tribes)', n: 9.5, ref: '书 14:2; 18:10', refEn: 'Josh 14:2; 18:10' },
+      { zh: '河东已分给的支派（二支派半）', en: 'Transjordan allotments (2.5 tribes)', n: 2.5, ref: '书 13:8', refEn: 'Josh 13:8' },
+      { zh: '分定的逃城（河西三座、河东三座）', en: 'Cities of refuge (3 west, 3 east)', n: 6, ref: '书 20:7–8', refEn: 'Josh 20:7–8' },
+      { zh: '分给利未人的城邑总数（含六座逃城）', en: 'Levitical cities (including the 6 refuge cities)', n: 48, ref: '书 21:41', refEn: 'Josh 21:41' },
+    ],
+    kind: 'canaanAllotment',
+    unit: {
+      zh: '公里',
+      en: 'km',
+      m: 1000,
+      note: '但至别是巴、地中海至约但河东高原的实测地理跨度。',
+      noteEn: 'Georeferenced span from Dan to Beersheba and Mediterranean coast to Transjordan plateau.',
+    },
+    variants: {
+      key: 'canaanView',
+      zh: '分地层',
+      en: 'Layer shown',
+      options: [
+        {
+          id: 'tribes-west-east',
+          zh: '河西拈阄九支派半与河东二支派半 · 示罗立会幕',
+          en: 'Cisjordan & Transjordan tribal allotments · Tabernacle at Shiloh',
+          note: '按实测海岸线、加利利海、约但河谷大裂谷、低于海平面四百多米的死海深谷及东西高地绘出十二支派核心锚点，金色双环标出分地中心示罗。',
+          noteEn: 'Plots the attested heartlands of all twelve tribes across the Natural Earth coastline, central spine, sunken Jordan Rift and Transjordan plateau, anchored at Shiloh.',
+        },
+        {
+          id: 'refuge-levites',
+          zh: '六座逃城（河西三座、河东三座）与利未人四十八城纲要',
+          en: 'Six cities of refuge (three west, three east) & Shiloh center',
+          note: '聚焦书 20:7–8 河西、河东两列南北对称分布的六座逃城：基低斯、示剑、希伯仑（河西）与比悉、基列拉末、哥兰（河东），并以金环标出各城往返通道。',
+          noteEn: 'Isolates the six symmetrical cities of refuge appointed in Josh 20:7–8 — Kedesh, Shechem and Hebron west of Jordan; Bezer, Ramoth-gilead and Golan east of Jordan.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '书 15–19 章所列边界小城有相当一部分今日确址已失传；因此沙盘不擅自画出现代政区式硬边界线，只在经文与地理可考的支派中心与六座逃城插标定位。',
+        en: 'Many minor boundary towns in Joshua 15–19 have lost their ancient identifications; rather than fabricating hard modern border lines, the relief marks verified tribal heartlands, Shiloh and the six cities of refuge.',
+      },
+      {
+        zh: '垂直高程按沙盘展示需要适度放大，以清楚呈现沿海平原、中央山地、低于海平面约 430 米的死海裂谷与约但河东高原的阶梯落差。',
+        en: 'Vertical elevation is exaggerated on the relief slab so the coastal plain, central hill country, -430 m Dead Sea Rift and eastern tableland read clearly at a glance.',
+      },
+    ],
+    punchZh: '九支派半在示罗拈阄，两支派半守着约但河东高原，当中深陷一条大裂谷；**六座逃城**东西三对三分布其间，让误杀人的无论在何处总有路可达。',
+    punchEn: 'Nine and a half tribes west of the deep Rift, two and a half on the eastern plateau — flanked by **six symmetrical cities of refuge**, three west and three east.',
+    compare: [
+      { zh: '但至别是巴南北跨度', en: 'Dan to Beersheba length', m: 240_000 },
+      { zh: '海岸至约但河东东西跨度', en: 'Coast to Transjordan width', m: 145_000 },
+    ],
+  },
+  {
+    id: 'gideon-three-hundred',
+    zh: '基甸三百人与空瓶火把角',
+    en: "Gideon's Three Hundred",
+    ref: 'Judges 7:16',
+    refZh: '士师记 7:16',
+    textZh: '于是基甸将三百人分作三队，把角和空瓶交在各人手里，瓶内都藏着火把；',
+    textEn: "And he divided the three hundred men into three companies, and he put a trumpet in every man's hand, with empty pitchers, and lamps within the pitchers.",
+    dims: [],
+    counts: [
+      { zh: '用手捧着舔水的精简人数', en: 'Men chosen who lapped water', n: 300, ref: '士 7:6–7', refEn: 'Judg 7:6–7' },
+      { zh: '夜间合围米甸营的分队数', en: 'Attacking companies at night', n: 3, ref: '士 7:16', refEn: 'Judg 7:16' },
+      { zh: '空瓶与瓶内所藏火把', en: 'Empty pitchers with torches inside', n: 300, ref: '士 7:16, 20', refEn: 'Judg 7:16, 20' },
+      { zh: '左手所拿吹响的公羊角', en: "Rams'-horn trumpets blown together", n: 300, ref: '士 7:16, 20', refEn: 'Judg 7:16, 20' },
+    ],
+    kind: 'gideonDiorama',
+    assumedHeight: 1.6,
+    variants: {
+      key: 'gideonView',
+      zh: '展示视角',
+      en: 'View',
+      options: [
+        {
+          id: 'three-companies',
+          zh: '哈律泉与摩利冈谷地 · 三队各百人夜围米甸营',
+          en: 'Valley by Moreh · three companies of 100 ringing the Midianite camp',
+          note: '深蓝夜色沙盘实数绘出 **3 × 100 = 300** 点同时晃动亮起的火把光簇，分三队绕在哈律泉南侧坡壁与摩利冈山下四十八顶黑山羊毛米甸帐棚四周（士 7:1, 16）。',
+          noteEn: 'Night relief diorama rendering **3 × 100 = 300** individual torch points divided into three flanking companies above forty-eight black goat-hair Midianite tents in the valley below Moreh (Judg 7:1, 16).',
+        },
+        {
+          id: 'pitcher-torch-horn',
+          zh: '一比一器物细看 · 瓦瓶藏火把与公羊角（士 7:16, 20）',
+          en: '1:1 equipment study · clay pitcher, torch within & ram’s-horn trumpet',
+          note: '按 1:1 比例放在人物身旁展示这一夜每个人手中的三样兵器（竟无刀枪）：素陶双耳空瓶（一旁是击碎的瓦片）、渗脂松明火把，以及左手持吹的曲弯公羊角。',
+          noteEn: 'Sets beside the 1.72 m reference figure the exact three items carried by every soldier — no sword at all: the earthenware pitcher (with broken sherds), the burning pitch torch once hidden inside, and the curved shophar.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '米甸与亚玛力联营在谷中「多如蝗虫」（士 7:12），其实际帐棚数目与营地面积经文并未统计，沙盘以四十八顶黑色帐棚示意敌营规模。',
+        en: 'Scripture compares the Midianite host in the valley to "locusts for multitude" (Judg 7:12) without giving a tent count or acreage; the 48 dark tents are a schematic camp footprint.',
+      },
+      {
+        zh: '陶瓶高约 36 厘米与羊角长度依照铁器时代以色列民居日用器皿形制复原，经文只写明「空瓶、瓶内藏火把、角」与分作三队各百人。',
+        en: 'The ~36 cm clay pitcher and curved ram’s horn follow Iron Age I domestic pottery and shophar proportions; Judges gives the exact counts (300 men, 3 companies, 300 pitchers, torches and trumpets) without citing lengths.',
+      },
+    ],
+    punchZh: '零把刀剑，只靠 **三队 × 一百支骤然齐明、同时呐喊吹响的火把与公羊角** —— 经文在数字上写透了这场夜晚的以少胜多。',
+    punchEn: 'Not a drawn sword in hand — **three companies × 100 torches** suddenly unmasked with 300 trumpets in the dead of night.',
+    compare: [
+      { zh: '展示台跨度（谷地沙盘模式）', en: 'Valley diorama table span', m: 12.0 },
+      { zh: '一个成年人（器物模式参照身高）', en: 'Adult human (artifact mode height)', m: 1.72 },
+      { zh: '铁器时代日用素陶水瓶（约高）', en: 'Iron Age I clay pitcher (approx.)', m: 0.36 },
+    ],
+  },
+  {
+    id: 'ark-up-to-zion',
+    zh: '抬约柜走六步与大卫的帐幕',
+    en: 'The Ark Brought Up to Zion',
+    ref: '2 Samuel 6:13',
+    refZh: '撒母耳记下 6:13',
+    textZh: '抬雅伟约柜的人走了六步，大卫就献牛与肥羊为祭。',
+    textEn: 'And it was so, that when they that bare the ark of Yahweh had gone six paces, he sacrificed oxen and fatlings.',
+    dims: [
+      { key: 'ark-l', zh: '约柜长（出 25:10 同款按经建柜）', en: 'Ark length (same Exod 25:10 chest)', cubits: 2.5, ref: '出 25:10; 撒下 6:13', refEn: 'Exod 25:10; 2 Sam 6:13' },
+      { key: 'ark-w', zh: '约柜宽', en: 'Ark width', cubits: 1.5, ref: '出 25:10', refEn: 'Exod 25:10' },
+      { key: 'ark-h', zh: '约柜高', en: 'Ark height', cubits: 1.5, ref: '出 25:10', refEn: 'Exod 25:10' },
+    ],
+    counts: [
+      { zh: '每逢前进停下来献祭的步数', en: 'Paces walked before each sacrifice', n: 6, ref: '撒下 6:13', refEn: '2 Sam 6:13' },
+      { zh: '在祭坛献上的牺牲（一牛与一肥羊/肥牛）', en: 'Sacrifices offered (ox and fatling)', n: 2, ref: '撒下 6:13', refEn: '2 Sam 6:13' },
+      { zh: '用杠抬约柜的利未人（短发白麻衣）', en: 'Levitical bearers carrying poles', n: 4, ref: '代上 15:15; 撒下 6:13', refEn: '1 Chr 15:15; 2 Sam 6:13' },
+    ],
+    kind: 'arkToZion',
+    variants: {
+      key: 'zionArkView',
+      zh: '所见一幕',
+      en: 'Moment shown',
+      options: [
+        {
+          id: 'six-paces',
+          zh: '抬约柜走六步献牛与肥畜 · 撒下 6:13',
+          en: 'Six paces & sacrifice of ox and fatling · 2 Sam 6:13',
+          note: '不再用牛车（撒下 6:3–7），而是由四名利未人遵律法用肩扛杠；石灰石道上精确刻出六个步距标点，旁设现筑石坛献上一牛与一肥畜。',
+          noteEn: 'No longer placed on a new cart (2 Sam 6:3–7), the Ark rides on golden poles upon four Levites’ shoulders along six marked paces before an altar bearing the ox and fatling.',
+        },
+        {
+          id: 'tent-of-david',
+          zh: '安放在大卫所搭的帐幕里 · 撒下 6:17',
+          en: 'Set inside the tent David pitched · 2 Sam 6:17',
+          note: '呈现大卫城平台上的「大卫的帐幕」：幔子敞开，没有外院铜祭坛的隔断——因为摩西当年所造的会幕与铜坛此时仍留在基遍的高邱（代上 16:39）。',
+          noteEn: 'Shows the Ark enthroned beneath the open-curtained tent David pitched in the City of David — distinct from Moses’ Tabernacle and bronze altar still standing at Gibeon (1 Chr 16:39).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '大卫在耶路撒冷为约柜另外支搭的帐幕究竟有多大，经文没有记下一肘一寸；所呈帐蓬大小、一步步距（以约 0.75 米示意）以及献祭石坛的尺寸，均属于未记而标明之补充。',
+        en: 'Scripture records no dimensions for the tent David pitched for the Ark (2 Sam 6:17; 1 Chr 16:1); tent size, single pace stride (~0.75 m) and stone altar proportions are unstated display assumptions.',
+      },
+      {
+        zh: '「走了六步」是仅在起程时献一次，还是沿路每六步就停下献一次，历代解经皆有两解；三维场景突出这六个实步的节律。',
+        en: 'Whether David sacrificed once after the opening six paces proved safe or repeatedly every six paces along the climb is debated by commentators; the model highlights the measured six-pace interval itself.',
+      },
+    ],
+    punchZh: '牛车出了事，律法重新归位：**四个人扛起两肘半长的约柜，刚迈出六步**，就在路旁立刻筑坛献祭。',
+    punchEn: 'After the oxcart tragedy, the poles return to Levite shoulders: **four bearers carry the 2.5-cubit Ark six careful paces**, and halt for sacrifice.',
+    compare: [
+      { zh: '六步总长（按约 0.75 米/步示意）', en: 'Six-pace span (approx. 0.75 m/pace)', m: 4.5 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+      { zh: '约柜长（2.5 普通肘）', en: 'Ark length (2.5 cubits)', m: 1.11 },
+    ],
+  },
+  {
+    id: 'paul-journeys-relief',
+    zh: '保罗四次行程与地中海地形沙盘',
+    en: "Paul's Journeys Mediterranean Relief",
+    ref: 'Acts 13:4',
+    refZh: '使徒行传 13:4',
+    textZh: '他们既被圣灵差遣，就下到西流基，从那里坐船往居比路去。',
+    textEn: 'So they, being sent forth by the Holy Spirit, departed unto Seleucia; and from thence they sailed to Cyprus.',
+    dims: [
+      { key: 'med-ew', zh: '东西海陆跨度（安提阿至罗马）', en: 'East–west basin span (Antioch to Rome)', cubits: 2300, ref: '徒 13:4–28:16', refEn: 'Acts 13:4–28:16' },
+      { key: 'med-ns', zh: '南北跨度（马其顿至亚历山大港）', en: 'North–south span (Philippi to Alexandria)', cubits: 1250, ref: '徒 16:12; 27:6', refEn: 'Acts 16:12; 27:6' },
+    ],
+    counts: [
+      { zh: '使徒行传所记四次主要行程', en: 'Major journeys recorded in Acts', n: 4, ref: '徒 13–28', refEn: 'Acts 13–28' },
+      { zh: '押解船上总共的人数', en: 'Souls aboard the Rome grain ship', n: 276, ref: '徒 27:37', refEn: 'Acts 27:37' },
+      { zh: '亚得里亚海被风飘荡的夜数', en: 'Nights adrift on the Adriatic', n: 14, ref: '徒 27:27', refEn: 'Acts 27:27' },
+    ],
+    kind: 'paulJourneysRelief',
+    unit: {
+      zh: '公里',
+      en: 'km',
+      m: 1000,
+      note: '东地中海至意大利的实测经纬度跨度（安提阿至罗马）。',
+      noteEn: 'Georeferenced Mediterranean basin span from Antioch and Jerusalem to Rome.',
+    },
+    variants: {
+      key: 'paulReliefView',
+      zh: '筛选路线',
+      en: 'Routes shown',
+      options: [
+        {
+          id: 'all-four',
+          zh: '四段行程总览 · 宣教一至三次与押解往罗马',
+          en: 'All four routes · three missionary journeys & voyage to Rome',
+          note: '在同一块中地中海至黎凡特整版立体地形沙盘上，以四种色彩同时呈现第一次（金）、第二次（翠绿）、第三次（碧蓝）宣教路线与押解往罗马（朱红）海路。',
+          noteEn: 'Overlays all four Acts routes simultaneously across the Natural Earth relief of Italy, Greece, Anatolia, Cyprus, Crete, Malta and the Levant: 1st (gold), 2nd (emerald), 3rd (cerulean) and Rome voyage (crimson).',
+        },
+        {
+          id: 'aegean-galatia',
+          zh: '三次宣教行程 · 居比路、加拉太、马其顿、亚该亚与以弗所',
+          en: 'Three missionary journeys · Cyprus, Galatia, Macedonia, Achaia & Ephesus',
+          note: '收起罗马航线，清楚看见保罗反复横越安纳托利亚托鲁斯山脉、爱琴海群岛与哥林多地峡、马其顿海岸之间的陆路与航线交会枢纽——安提阿、以弗所、帖撒罗尼迦与哥林多。',
+          noteEn: 'Hides the Rome voyage so the three missionary circuits stand out across the Taurus passes, Pisidian plateau, Aegean crossings, Macedonia and the Isthmus of Corinth.',
+        },
+        {
+          id: 'rome-voyage',
+          zh: '押解往罗马航线 · 该撒利亚经革哩底、米利大至罗马（徒 27–28）',
+          en: 'Voyage to Rome · Caesarea via Crete and Malta to Rome (Acts 27–28)',
+          note: '单挑出使徒行传二十七至二十八章的冬航遇险线：从该撒利亚北绕居比路背风处至每拉换船，沿着革哩底南岸在佳澳避风，被「友拉革罗」东北狂风吹过开阔海面十四昼夜，在米利大搁浅，再北上叙拉古、部丢利沿阿庇乌大道入罗马。',
+          noteEn: 'Isolates Acts 27–28: sailing leeward of Cyprus to Myra, creeping under southern Crete to Fair Havens, driven 14 nights by Euroclydon to the wreck marker on Malta, then Syracuse, Puteoli and Rome.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '路加仔细记下港口、省分与主城次序，但内陆驿道的逐里拐弯与大风中船只飘移的精确经纬度轨迹，经文并未逐段实测；路线管线连接的是使徒行传指名经过的城邑与海岛。',
+        en: 'Luke carefully logs provinces, ports and sequential towns, but not road bends or open-sea drift telemetry; route arcs smoothly connect the named cities and islands of Acts.',
+      },
+      {
+        zh: '为使托鲁斯山脉、品都斯山脉、革哩底白山与亚平宁山脊在桌面沙盘中一眼可辨，地形高程相较 2,300 公里水平海陆跨度做了显著放大。',
+        en: 'Terrain elevation is markedly exaggerated relative to the 2,300 km horizontal sea-and-land basin so mountain barriers like the Taurus and Crete ridges remain tactile.',
+      },
+    ],
+    punchZh: '**两千三百公里**海岸与山口尽收一张桌子：保罗三次越过托鲁斯高岭、两渡爱琴海，又借一条载满二百七十六人的冬船，在米利大滩头以后走上罗马大道。',
+    punchEn: '**2,300 kilometres** of sea and mountain pass on one relief table — Taurus ridges crossed on foot, Aegean straits sailed twice, and a 276-soul winter wreck landing in Italy.',
+    compare: [
+      { zh: '安提阿至罗马东西直线跨度', en: 'Antioch to Rome east–west span', m: 2_300_000 },
+      { zh: '雅典至哥林多地峡短距（对照）', en: 'Athens to Corinth (reference)', m: 78_000 },
+    ],
+  },
+  {
+    id: 'seven-churches-circuit',
+    zh: '亚细亚七教会驿道与拔摩岛沙盘',
+    en: 'Seven Churches of Asia Relief',
+    ref: 'Revelation 1:11',
+    refZh: '启示录 1:11',
+    textZh: '你所看见的，当写在书上，达与以弗所、示每拿、别迦摩、推雅推喇、撒狄、非拉铁非、老底嘉，那七个教会。',
+    textEn: 'What thou seest, write in a book, and send it unto the seven churches which are in Asia; unto Ephesus, and unto Smyrna, and unto Pergamum, and unto Thyatira, and unto Sardis, and unto Philadelphia, and unto Laodicea.',
+    dims: [
+      { key: 'patmos-ephesus', zh: '拔摩岛渡海至以弗所港口距离', en: 'Patmos to Ephesus sea crossing', cubits: 90, ref: '启 1:9, 11', refEn: 'Rev 1:9, 11' },
+      { key: 'seven-loop', zh: '七城顺时针罗马驿道环线总长', en: 'Clockwise Roman road circuit through the 7 cities', cubits: 560, ref: '启 1:11', refEn: 'Rev 1:11' },
+    ],
+    counts: [
+      { zh: '按地理次序致书的亚细亚教会', en: 'Churches in Asia addressed in sequence', n: 7, ref: '启 1:11; 2–3', refEn: 'Rev 1:11; 2–3' },
+      { zh: '约翰被放逐所在的海岛（拔摩岛）', en: 'Island of exile — Patmos', n: 1, ref: '启 1:9', refEn: 'Rev 1:9' },
+    ],
+    kind: 'asiaChurchesRelief',
+    unit: {
+      zh: '公里',
+      en: 'km',
+      m: 1000,
+      note: '拔摩岛与亚细亚省七城之间的实测地理距离。',
+      noteEn: 'Georeferenced distances across Patmos and the seven cities of Roman Asia.',
+    },
+    variants: {
+      key: 'asiaCircuitView',
+      zh: '阅读焦点',
+      en: 'Focus',
+      options: [
+        {
+          id: 'postal-loop',
+          zh: '顺时针驿道环路 · 拔摩岛与以弗所至老底嘉七城次序',
+          en: 'Clockwise road circuit · Patmos & the sequence from Ephesus to Laodicea',
+          note: '按拔摩岛上岸以弗所港口后向北经示每拿、别迦摩，再折向东南循内陆河谷经推雅推喇、撒狄、非拉铁非直抵老底嘉的真实罗马驿道次序连出金色环路。',
+          noteEn: 'Traces the postal loop from Patmos ashore at Ephesus, north up the coast through Smyrna and Pergamum, then southeast down the valleys through Thyatira, Sardis and Philadelphia to Laodicea.',
+        },
+        {
+          id: 'valleys-acropoleis',
+          zh: '河谷与卫城地貌 · 推雅推喇平原通道至老底嘉吕科斯河谷',
+          en: 'River valleys & acropoleis · Hermus, Cayster & Lycus corridors',
+          note: '放大高差并高亮盖迪兹河（赫耳摩斯）、门德列斯河（迈安德尔）与吕科斯河谷走廊，看清老底嘉三岔谷地、撒狄险峻卫城台地与别迦摩高岗在地形上的天然位置。',
+          noteEn: 'Emphasizes the relief corridors of the Hermus, Cayster and Maeander–Lycus valleys, clarifying Pergamum’s citadel ridge, Sardis’ acropolis spur and Laodicea’s tri-city valley floor.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '启 1:11 将七个教会按绕行罗马亚细亚省的顺时针邮路精确排定次序，但书卷实际上由何人递送、是否在以弗所抄写分送各城，经文并未细述。',
+        en: 'Revelation 1:11 orders the seven cities in exact geographic sequence along the Asian Roman postal circuit, though Scripture does not specify the couriers or copying logistics from Patmos.',
+      },
+      {
+        zh: '小亚细亚西岸群岛、海湾与内陆河谷台地在桌面沙盘中经过垂直起伏加强，以便一眼读出海岸线与三条东西河谷走廊。',
+        en: 'Western Anatolian coastal bays, Aegean islands and inland river valleys are vertically exaggerated on the slab for clear visual contrast.',
+      },
+    ],
+    punchZh: '从爱琴海孤岛**拔摩岛**渡海九十公里登陆以弗所，再绕着亚细亚西岸走一圈约**五百六十公里**的顺时针大环路——启示录第一章十节的七城点名，原来就是这张地形图上的一条不回头驿道。',
+    punchEn: 'Cross **90 km** from Patmos to Ephesus, then follow a **560 km** clockwise road loop through all seven cities — the exact geographic order in Revelation 1:11.',
+    compare: [
+      { zh: '七城顺时针陆路环线全长', en: 'Clockwise seven-city postal loop', m: 560_000 },
+      { zh: '拔摩岛至以弗所海程', en: 'Patmos to Ephesus sea crossing', m: 90_000 },
     ],
   },
   {

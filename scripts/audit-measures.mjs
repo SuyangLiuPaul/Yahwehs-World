@@ -34,6 +34,14 @@ const PLAN_CARDS = [
   'paul-ship',
   'seven-lampstands',
   'rev4-throne-room',
+  'exodus-sinai-relief',
+  'gerizim-ebal-valley',
+  'jordan-twelve-stones',
+  'canaan-allotment',
+  'gideon-three-hundred',
+  'ark-up-to-zion',
+  'paul-journeys-relief',
+  'seven-churches-circuit',
 ];
 
 const PAGES = [
@@ -50,6 +58,9 @@ const PAGES = [
   { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'goliath', cubitMoves: true, open: '#measures=goliath' },
   { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'paul-ship', cubitMoves: false, open: '#measures=paul-ship' },
   { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'rev4-throne-room', cubitMoves: false, open: '#measures=rev4-throne-room' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'canaan-allotment', cubitMoves: false, open: '#measures=canaan-allotment' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'paul-journeys-relief', cubitMoves: false, open: '#measures=paul-journeys-relief' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'jordan-twelve-stones', cubitMoves: true, open: '#measures=jordan-twelve-stones' },
 ];
 const VIEWPORTS = [['desktop', 1280, 800], ['phone', 390, 844]];
 const LOCALES = [['hans', 'zh-Hans'], ['en', 'en']];

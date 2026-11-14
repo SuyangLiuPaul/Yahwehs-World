@@ -19,7 +19,7 @@
 // something the data states, so they are verse anchors written out in the
 // open rather than a rule pretending to derive them.
 import { refKey } from './books.ts';
-import { measuresHref, STRUCTURES } from './structures/specs.ts';
+import { measuresHref, STRUCTURES_LITE as STRUCTURES } from './structures/specs-lite.ts';
 import type { Journey } from './routes.ts';
 import type { TrackEvent } from './events-track.ts';
 

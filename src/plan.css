@@ -16,6 +16,7 @@ body { margin: 0; background: var(--ground); color: var(--ink); font: var(--fs-3
 #bar { height: 8px; border: 1px solid var(--line); display: flex; margin: 10px 0 26px; }
 #bar i { display: block; height: 100%; }
 #bar .b-walk { background: var(--gold-bright); }
+#bar .b-measure { background: #dfc05a; }
 #bar .b-route { background: var(--gold); }
 #bar .b-map { background: var(--gold-dim); }
 #bar .b-verse { background: #ffffff1f; }

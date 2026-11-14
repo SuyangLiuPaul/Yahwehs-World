@@ -13,14 +13,12 @@ import { PALACE_TOUR } from './palace-tour';
 import { desertSky } from './textures';
 import { materialsReady } from './materials';
 import { Tour } from './tour';
-import { installMeasures } from '../structures/panel';
-import { CUBITS, structuresFor } from '../structures/specs';
+import { installWalkMeasures } from '../structures/walk-measures';
+import { CUBITS } from '../structures/specs-lite';
 import { applyStatic, bindSwitch, hant, onLocale, t } from '../locale';
 import { installSiteMenu, loadingStep, loadingSteps, onJourneyPick, pageReady } from '../site-shell';
 
 const DEFAULT_CUBIT = 0.445; // Common cubit (1 Kings 7:1-12; 10:14-21)
-
-const PALACE_STRUCTURES = structuresFor('palace');
 
 interface Zone {
   id: string;
@@ -406,8 +404,8 @@ const rescaledToCubit = (newCubit: number) => {
   updateHud();
 };
 
-installMeasures({
-  cards: PALACE_STRUCTURES,
+installWalkMeasures({
+  walk: 'palace',
   dialog: measuresDialog,
   openers: [document.getElementById('measures'), document.getElementById('gate-measures')],
   beforeOpen: () => {

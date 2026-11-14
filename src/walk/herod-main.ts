@@ -13,14 +13,11 @@ import { HEROD_TOUR } from './herod-tour';
 import { desertSky } from './textures';
 import { materialsReady } from './materials';
 import { Tour } from './tour';
-import { installMeasures } from '../structures/panel';
-import { structuresFor } from '../structures/specs';
+import { installWalkMeasures } from '../structures/walk-measures';
 import { applyStatic, bindSwitch, hant, onLocale, t } from '../locale';
 import { installSiteMenu, loadingStep, loadingSteps, onJourneyPick, pageReady } from '../site-shell';
 
 const DEFAULT_CUBIT = 0.50; // Second-Temple standard cubit (~0.50 m; rescalable via Measures)
-
-const HEROD_STRUCTURES = structuresFor('herod');
 
 interface Zone {
   id: string;
@@ -461,8 +458,8 @@ const rescaledToCubit = (newCubit: number) => {
   updateHud();
 };
 
-installMeasures({
-  cards: HEROD_STRUCTURES,
+installWalkMeasures({
+  walk: 'herod',
   dialog: measuresDialog,
   openers: [document.getElementById('measures'), document.getElementById('gate-measures')],
   beforeOpen: () => {

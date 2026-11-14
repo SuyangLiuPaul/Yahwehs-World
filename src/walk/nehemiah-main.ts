@@ -13,14 +13,11 @@ import { NEHEMIAH_TOUR } from './nehemiah-tour';
 import { desertSky } from './textures';
 import { materialsReady } from './materials';
 import { Tour } from './tour';
-import { installMeasures } from '../structures/panel';
-import { structuresFor } from '../structures/specs';
+import { installWalkMeasures } from '../structures/walk-measures';
 import { applyStatic, bindSwitch, hant, onLocale, t } from '../locale';
 import { installSiteMenu, loadingStep, loadingSteps, onJourneyPick, pageReady } from '../site-shell';
 
 const DEFAULT_CUBIT = NEHEMIAH_DEFAULT_CUBIT; // 0.445 m standard cubit (rescalable across 0.445 / 0.518 / 0.525 m)
-
-const NEHEMIAH_STRUCTURES = structuresFor('nehemiah' as Parameters<typeof structuresFor>[0]);
 
 interface Zone {
   id: string;
@@ -489,8 +486,8 @@ const rescaledToCubit = (newCubit: number) => {
   updateHud();
 };
 
-installMeasures({
-  cards: NEHEMIAH_STRUCTURES,
+installWalkMeasures({
+  walk: 'nehemiah',
   dialog: measuresDialog,
   openers: [document.getElementById('measures'), document.getElementById('gate-measures')],
   beforeOpen: () => {

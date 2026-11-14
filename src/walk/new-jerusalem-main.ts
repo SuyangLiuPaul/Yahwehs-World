@@ -12,17 +12,11 @@ import { buildNewJerusalemCity } from './new-jerusalem';
 import { NEW_JERUSALEM_TOUR } from './new-jerusalem-tour';
 import { materialsReady } from './materials';
 import { Tour } from './tour';
-import { installMeasures } from '../structures/panel';
-import { STRUCTURES, structuresFor } from '../structures/specs';
+import { installWalkMeasures } from '../structures/walk-measures';
 import { applyStatic, bindSwitch, hant, onLocale, t } from '../locale';
 import { installSiteMenu, loadingStep, loadingSteps, onJourneyPick, pageReady } from '../site-shell';
 
 const DEFAULT_CUBIT = 0.445; // Rev 21:17: "according to human measurement, which is also an angel's"
-
-const rawStructures = structuresFor('new-jerusalem');
-const NEW_JERUSALEM_STRUCTURES = rawStructures.length
-  ? rawStructures
-  : STRUCTURES.filter((s) => s.id === 'newjerusalem');
 
 interface Zone {
   id: string;
@@ -444,10 +438,11 @@ const rescaledToCubit = (newCubit: number): void => {
   updateHud();
 };
 
-installMeasures({
-  cards: NEW_JERUSALEM_STRUCTURES,
+installWalkMeasures({
+  walk: 'new-jerusalem',
   dialog: measuresDialog,
   openers: [document.getElementById('measures'), document.getElementById('gate-measures')],
+  fallbackIds: ['newjerusalem'],
   beforeOpen: () => {
     if (tour.running) {
       tour.pause();

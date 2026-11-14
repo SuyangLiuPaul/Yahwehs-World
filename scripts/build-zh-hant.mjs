@@ -25,7 +25,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as OpenCC from 'opencc-js';
-import { HAS_CJK, collectStrings, isEventSource, walkJson } from './lib/zh-strings.mjs';
+import { CJK_RUN, HAS_CJK, collectStrings, walkJson } from './lib/zh-strings.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const convert = OpenCC.Converter({ from: 'cn', to: 'tw' });
@@ -45,8 +45,6 @@ void walkJson;
 /** Every Chinese string the app can put on screen, with where it came from. */
 const found = collectStrings(ROOT);
 const simplified = new Set(found.keys());
-/** The event text, i.e. the strings whose only source is events.json / the gallery payloads (scanned last). */
-const eventStrings = new Set([...found].filter(([, where]) => isEventSource(where)).map(([s]) => s));
 
 // One simplified character, several traditional ones, and only the
 // surrounding word decides which: 里面 is 裡面 but 公里 stays 公里; 后 is 後
@@ -76,21 +74,28 @@ let gazetteerRepaired = 0;
 const isTraditional = (v) => convert(v) === v || convert(v).replaceAll('裡', '裏') === v;
 let fromOpenCC = 0;
 let loadBearing = 0;
+const targets = new Map();
 for (const s of simplified) {
   let hant = authoritative.has(s) ? authoritative.get(s) : convert(s);
   // Counted rule: a gazetteer reading wins only while it is really Traditional. Some places.json zhHant values are the Simplified
   // name copied across (基比亚, 北门, 红海的路, 雅伟以勒): OpenCC's phrase conversion of the same string is then the better reading.
   // 裏 and 裡 are both Traditional (the CUV prints 底格裏斯), so that pair never counts as a difference.
   if (authoritative.has(s) && !isTraditional(hant)) { hant = convert(s); gazetteerRepaired++; }
-  // An entry earns its place if it changes the string, OR if leaving it out
-  // would let the character map reach a different answer. The second case is
-  // the one that matters for 公里: converting it is a no-op, but without the
-  // entry the fallback would have had a go at 里.
-  const needed = eventStrings.has(s) ? charFallback(s) !== hant : (hant !== s || charFallback(s) !== hant);
-  if (!needed) continue;
-  if (hant === s) loadBearing++;
-  phrases[s] = hant;
-  if (authoritative.has(s)) fromGazetteer++; else fromOpenCC++;
+  targets.set(s, hant);
+  // An entry earns its place only if leaving it out would let the character map (or CJK_RUN sub-phrases) reach a different answer.
+  if (charFallback(s) !== hant) {
+    if (hant === s) loadBearing++;
+    phrases[s] = hant;
+    if (authoritative.has(s)) fromGazetteer++; else fromOpenCC++;
+  }
+}
+const sim = (s) => phrases[s] !== undefined ? phrases[s] : s.replace(CJK_RUN, (run) => phrases[run] ?? charFallback(run));
+for (const [s, hant] of targets) {
+  if (phrases[s] === undefined && sim(s) !== hant) {
+    if (hant === s) loadBearing++;
+    phrases[s] = hant;
+    if (authoritative.has(s)) fromGazetteer++; else fromOpenCC++;
+  }
 }
 
 const out = join(ROOT, 'public/data/zh-hant.json');
@@ -101,4 +106,4 @@ console.log(`zh-hant.json: ${Object.keys(phrases).length} phrases ` +
   `(${fromGazetteer} from the gazetteer, ${fromOpenCC} from OpenCC), ` +
   `${gazetteerRepaired} gazetteer readings repaired, ${Object.keys(chars).length} character fallbacks, ` +
   `${loadBearing} load-bearing no-ops, ${(bytes / 1024).toFixed(1)} kB`);
-console.log(`  scanned ${simplified.size} Chinese strings (${eventStrings.size} of them event text)`);
+console.log(`  scanned ${simplified.size} Chinese strings`);

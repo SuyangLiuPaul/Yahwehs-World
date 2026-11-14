@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { buildMenorah } from '../structures/menorah.ts';
-import { buildStructure } from '../structures/build.ts';
-import { STRUCTURES } from '../structures/specs.ts';
+import { buildArkChest } from '../structures/ark-chest.ts';
 import { buildPillar, buildSea, buildLaver, buildStandingCherub } from '../structures/temple-parts.ts';
 import {
   ashlarStone, beatenGold, bronze as bronzeTex, cedarWood, oliveWood, embroidered,
@@ -651,9 +650,8 @@ export function buildTemple(cubit: number): Temple {
   // The ark set under their wings — 1 Kgs 8:6–8 — the same object the
   // measurement card builds, its poles toward the door so their ends could
   // be seen from the holy place (8:8).
-  const arkSpec = STRUCTURES.find((x) => x.id === 'ark');
-  if (arkSpec) {
-    const ark = buildStructure(arkSpec, cubit);
+  {
+    const ark = buildArkChest(cubit);
     ark.traverse((o) => { if (o instanceof THREE.Mesh) o.material = gold; });
     ark.position.set(debirMidX - C(2), 0, 0);
     g.add(ark);

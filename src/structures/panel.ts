@@ -63,6 +63,17 @@ function disposeGroup(obj: THREE.Object3D): void {
   });
 }
 
+function isReliefOrDiorama(s: Structure, varId?: string): boolean {
+  return (
+    s.kind === 'canaanAllotment' ||
+    s.kind === 'exodusRelief' ||
+    s.kind === 'gerizimEbalRelief' ||
+    s.kind === 'paulJourneysRelief' ||
+    s.kind === 'asiaChurchesRelief' ||
+    (s.kind === 'gideonDiorama' && varId !== 'pitcher-torch-horn')
+  );
+}
+
 function cardHTML(s: Structure, index: number, cubitM: number, selectedVariant?: string): string {
   const activeVarId = selectedVariant ?? s.variants?.options[0]?.id;
   const activeVarOpt = s.variants?.options.find((v) => v.id === activeVarId) ?? s.variants?.options[0];
@@ -282,11 +293,25 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
   function updateCaption(s: Structure): void {
     capName.textContent = `${tx(s.en, s.zh)} · ${tx(s.ref, s.refZh)}`;
     const cM = (CUBITS[cubitIdx] ?? CUBITS[0]!).m;
+    const varId = chosenVariants.get(s.id);
     if (s.kind === 'cube') {
       capMeta.textContent = t(
         'Earth horizon (R = 6,371 km) & 408 km orbital arc shown beneath',
         '下方参照：地球弧面（半径 6,371 公里）与 408 公里轨道弧',
       );
+    } else if (isReliefOrDiorama(s, varId)) {
+      if (s.dims.length) {
+        const span = Math.max(...s.dims.map((d) => metres(d.cubits, s, cM)));
+        capMeta.textContent = `${t('Terrain span', '沙盘跨度')} ${fmtSpan(span)} · ${t(
+          '3D topographic & route relief',
+          '三维地形与路线沙盘',
+        )}`;
+      } else {
+        capMeta.textContent = t(
+          '3 × 100 torches around the valley camp · 3D tactical diorama',
+          '三队各百支火把合围谷中营盘 · 三维叙事沙盘',
+        );
+      }
     } else if (s.dims.length) {
       const span = Math.max(...s.dims.map((d) => metres(d.cubits, s, cM)));
       capMeta.textContent = `${t('Primary span', '主尺度')} ${fmtSpan(span)} · ${t(
@@ -430,6 +455,13 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
         new THREE.Vector3(-cubeM * 0.62, -cubeM * 0.28, -cubeM * 0.62),
         new THREE.Vector3(cubeM * 0.62, cubeM * 1.06, cubeM * 0.62),
       );
+    } else if (isReliefOrDiorama(s, varId)) {
+      // Carved museum relief table / tactical diorama: centered directly on its plinth, no 1.72m companion figure
+      const rawCenter = new THREE.Vector3();
+      meshBox.getCenter(rawCenter);
+      mesh.position.set(-rawCenter.x, -meshBox.min.y, -rawCenter.z);
+      assembly.add(mesh);
+      focusBox = new THREE.Box3().setFromObject(assembly);
     } else {
       // Ground object at y=0, center its footprint, then place 1.72m short-haired companion figure alongside
       const rawCenter = new THREE.Vector3();
@@ -480,12 +512,14 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
     activeModel = assembly;
     pivot.add(activeModel);
 
-    // Choose readable camera elevation per structure type (higher for plan-dominated enclosures)
+    // Choose readable camera elevation per structure type (higher for plan-dominated enclosures & relief sandboxes)
+    const reliefView = isReliefOrDiorama(s, varId);
     const isPlanHeavy =
       s.kind === 'court' || s.kind === 'ezekielGate' || s.kind === 'tabernacleTent' || s.kind === 'ezekielAltar' ||
-      s.kind === 'wildernessCamp' || s.kind === 'rev4ThroneRoom' || s.kind === 'shushanCourt';
-    defaultYaw = s.kind === 'highpriest' || s.kind === 'goliath' ? 0.38 : 0.62;
-    defaultPitch = isPlanHeavy ? 0.48 : s.kind === 'cube' ? 0.28 : 0.34;
+      s.kind === 'wildernessCamp' || s.kind === 'rev4ThroneRoom' || s.kind === 'shushanCourt' ||
+      s.kind === 'jordanCrossing' || s.kind === 'arkToZion';
+    defaultYaw = reliefView ? 0.36 : s.kind === 'highpriest' || s.kind === 'goliath' ? 0.38 : 0.62;
+    defaultPitch = reliefView ? 0.56 : isPlanHeavy ? 0.48 : s.kind === 'cube' ? 0.28 : 0.34;
 
     resizeRenderer();
     const fit = computeFitDist(activeBounds, defaultYaw, defaultPitch);
@@ -742,7 +776,7 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
         const noteEl = wrap.querySelector<HTMLElement>('.mp-var-note');
         if (noteEl && opt) noteEl.innerHTML = richText(tx(opt.noteEn, opt.note));
       }
-      show(idx, true);
+      show(idx, s.kind !== 'gideonDiorama');
       return;
     }
 

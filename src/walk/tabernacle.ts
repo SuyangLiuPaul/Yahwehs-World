@@ -4,8 +4,7 @@ import {
   beatenGold, bronze as bronzeTex, goatHair, hide, linen as linenTex, sand as sandTex,
   veilCloth, embroidered,
 } from './textures.ts';
-import { buildStructure } from '../structures/build.ts';
-import { STRUCTURES } from '../structures/specs.ts';
+import { buildArkChest } from '../structures/ark-chest.ts';
 import { bevelBox, cord, hanging, batchStatic, altarHorn } from './craft.ts';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { detailedSurface } from './materials.ts';
@@ -854,9 +853,8 @@ export function buildTabernacle(cubit: number): Tabernacle {
   // Behind the veil. The same generator the measurement cards use, so it is
   // the same object: two and a half cubits by one and a half by one and a
   // half, with the mercy seat and the two cherubim.
-  const arkSpec = STRUCTURES.find((x) => x.id === 'ark');
-  if (arkSpec) {
-    const ark = buildStructure(arkSpec, cubit);
+  {
+    const ark = buildArkChest(cubit);
     ark.traverse(o=>{if(o instanceof THREE.Mesh)o.material=gold;});
     ark.position.set(tentX - tentL / 2 + C(5), 0, 0);
     // Length across the room, north–south, so that from the veil the two

@@ -9,8 +9,7 @@ import { ARK_TOUR } from './ark-tour.ts';
 import { applyStatic, bindSwitch, hant, onLocale, t } from '../locale.ts';
 import { installUpdateChecker } from '../updates.ts';
 import { installSiteMenu, loadingStep, loadingSteps, pageReady } from '../site-shell.ts';
-import { installMeasures } from '../structures/panel.ts';
-import { structuresFor } from '../structures/specs.ts';
+import { installWalkMeasures } from '../structures/walk-measures.ts';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
@@ -408,8 +407,8 @@ function setCubit(nextCubit: number) {
   });
 }
 
-installMeasures({
-  cards: structuresFor('ark'),
+installWalkMeasures({
+  walk: 'ark',
   dialog: document.getElementById('measures-panel') as HTMLDialogElement,
   openers: [document.getElementById('measures'), document.getElementById('gate-measures')],
   beforeOpen: () => {
