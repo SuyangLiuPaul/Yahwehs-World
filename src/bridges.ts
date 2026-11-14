@@ -101,6 +101,10 @@ const NEW_JERUSALEM_WALK_ANCHORS = [
   'Revelation 21:10', 'Revelation 21:16', 'Revelation 21:21', 'Revelation 22:1',
 ].map(refKey).filter((k): k is number => k !== null);
 
+const NEHEMIAH_WALK_ANCHORS = [
+  'Nehemiah 2:17', 'Nehemiah 3:1', 'Nehemiah 3:8', 'Nehemiah 3:15', 'Nehemiah 12:31',
+].map(refKey).filter((k): k is number => k !== null);
+
 const inEvent = (ev: TrackEvent, key: number) => ev.s <= key && key <= ev.e;
 
 /** Everywhere else in this app this event can take the reader. */
@@ -134,6 +138,9 @@ export function bridgesFor(ev: TrackEvent, journeys: readonly Journey[]): Bridge
   if (NEW_JERUSALEM_WALK_ANCHORS.some((k) => inEvent(ev, k))) {
     out.push({ kind: 'walk', id: 'new-jerusalem', zh: '走进新耶路撒冷', en: 'Walk into the New Jerusalem' });
   }
+  if (NEHEMIAH_WALK_ANCHORS.some((k) => inEvent(ev, k))) {
+    out.push({ kind: 'walk', id: 'nehemiah', zh: '巡行耶路撒冷城墙与十门', en: "Walk Nehemiah's wall & gates" });
+  }
   return out;
 }
 
@@ -158,6 +165,7 @@ const WALK_PAGES: Record<string, string> = {
   temple: '/temple.html',
   palace: '/palace.html',
   ezekiel: '/ezekiel.html',
+  nehemiah: '/nehemiah.html',
   herod: '/herod.html',
   'new-jerusalem': '/new-jerusalem.html',
   ark: '/ark.html',

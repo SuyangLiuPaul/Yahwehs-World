@@ -104,13 +104,21 @@ export type StructureKind =
   | 'secondTemple'
   | 'wildernessCamp'
   | 'ezekielWheels'
+  | 'nehemiahWall'
+  | 'carmelAltar'
+  | 'shunammiteChamber'
+  | 'shushanCourt'
+  | 'paulShip'
+  | 'rev4ThroneRoom'
+  | 'sevenLampstands'
+  | 'pentecostRoom'
   | 'cube';
 
 /** The walk-in pages. A card lives on the page where the thing it measures
  *  physically stands, which is the one rule that never needs maintaining: the
  *  ark of the covenant is in the most holy place, so its measurements are in
  *  the tabernacle walk, and nobody has to remember that they are. */
-export type WalkHome = 'ark' | 'ezekiel' | 'herod' | 'new-jerusalem' | 'palace' | 'tabernacle' | 'temple';
+export type WalkHome = 'ark' | 'ezekiel' | 'herod' | 'nehemiah' | 'new-jerusalem' | 'palace' | 'tabernacle' | 'temple';
 
 export interface Structure {
   id: string;
@@ -1269,6 +1277,250 @@ export const STRUCTURES: Structure[] = [
     ],
   },
   {
+    id: 'nehemiah-wall',
+    zh: '尼希米重修的耶路撒冷城墙',
+    en: "Nehemiah's Rebuilt Wall of Jerusalem",
+    ref: 'Nehemiah 3:8',
+    refZh: '尼希米记 3:8',
+    textZh: '其次是银匠哈海雅的儿子乌薛修造；其次是做香的哈拿尼雅修造。他们修坚耶路撒冷，直到宽墙。',
+    textEn: 'Uzziel son of Harhaiah, one of the goldsmiths, repaired the next section; and Hananiah, one of the perfume-makers, made repairs next to that. They restored Jerusalem as far as the Broad Wall.',
+    dims: [
+      { key: 'valleyToDung', zh: '谷门到粪厂门城墙段长', en: 'Valley Gate to Dung Gate span', cubits: 1000, ref: '尼 3:13', refEn: 'Neh 3:13' },
+    ],
+    kind: 'nehemiahWall',
+    walk: 'nehemiah',
+    counts: [
+      { zh: '尼希米记第三章点名的城门', en: 'Named gates in Nehemiah 3', n: 10, ref: '尼 3:1–32', refEn: 'Neh 3:1–32' },
+      { zh: '点名的城楼（哈米亚楼、哈楠业楼、炉楼、凸出来的楼）', en: 'Named towers (Meah, Hananel, Furnaces, Projecting)', n: 4, ref: '尼 3:1, 11, 25–27', refEn: 'Neh 3:1, 11, 25–27' },
+      { zh: '城墙完工所用日数', en: 'Days to finish the wall', n: 52, ref: '尼 6:15', refEn: 'Neh 6:15' },
+      { zh: '在城墙上行走称谢的大队', en: 'Wall-top thanksgiving choirs', n: 2, ref: '尼 12:31', refEn: 'Neh 12:31' },
+    ],
+    variants: {
+      key: 'nehemiahWallView',
+      zh: '展示视角',
+      en: 'Display view',
+      options: [
+        {
+          id: 'broad-wall',
+          zh: '宽墙 · 城门与城楼',
+          en: 'Broad Wall · gate & tower',
+          note: '呈现宽墙、凸出城楼与双扇木城门：外侧琢石面、城内粗石面与登墙石阶，门内安有包铁大木闩与守卫房（尼 3:3、6、13–15）。',
+          noteEn: 'Shows a monumental Broad Wall, projecting tower, and twin-leaf gate: dressed outer ashlar, rough fieldstone inner face with wall stairs, timber crossbar, and guardroom (Neh 3:3, 6, 13–15).',
+        },
+        {
+          id: 'gate-cutaway',
+          zh: '剖面 · 碎石墙心与木横梁',
+          en: 'Cutaway · rubble core & crossbars',
+          note: '揭开右侧外墙面与女墙，露出两层石面之间的碎石大石填心与纵横木拉梁；城门一扇向内推开、木闩抽出卯槽，另一扇切开显出双层厚木板结构。',
+          noteEn: 'Peels back the outer stone skin and parapet to expose the boulder-and-rubble core and timber crossbars; swings one gate leaf open with the bar drawn back, and slices the other leaf to reveal its two-ply plank core.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '经文给出的唯一尺寸是谷门到粪厂门「修城墙一千肘」（尼 3:13，约 445 至 523 米），并未记载城墙的高度与厚度。模型截取约 24 肘宽、18 肘高的城门与宽墙局部，而非拉出四百多米的细长石带，以便在 1.72 米参照人像旁看清城防构造。',
+        en: 'The sole explicit dimension in the text is the 1,000-cubit Valley-to-Dung Gate span (Neh 3:13; ~445–523 m); wall height and thickness are unstated. Rather than drawing a 445 m ribbon, the model cuts a ~24 × 16 × 18 cubit Broad Wall, gate, and tower section that reads clearly beside the 1.72 m human figure.',
+      },
+      {
+        zh: '约 7 米（约 15.5 肘）的「宽墙」厚度来自考古实测：20 世纪 70 年代在耶路撒冷犹太区发掘出一段约 7 米厚的铁器时代晚期石墙（多归入希西家加固工程，参赛 22:10），学界普遍认为即尼 3:8 与 12:38 所提的「宽墙」。这一厚度属于考古比定，而非经文数字。',
+        en: "The ~7 m (~15.5-cubit) Broad Wall thickness is archaeological, measured on the late Iron Age fortification excavated in Jerusalem's Jewish Quarter in the 1970s (widely linked to Hezekiah in Isa 22:10 and identified with the Broad Wall of Neh 3:8; 12:38), not a figure written in Scripture.",
+      },
+      {
+        zh: '门洞宽高、城楼高度、守卫房布局均参照铁器时代及波斯时期城门考古形制；经文只记各段「立起门扇，安上门闩和横木」。两队城上称谢的诗班仅列于计数，不在模型中塑人像。',
+        en: 'Gate dimensions, tower height, and guardroom layout follow Iron Age and Persian-period gate archaeology; the text records only setting up the doors, bolts, and bars. The two thanksgiving choirs are recorded in the counts rather than sculpted as figures.',
+      },
+    ],
+    punchZh: '单是谷门到粪厂门这一段就达 **一千肘（约 445 米）**，整圈十座城门、四座城楼却只用 **五十二天** 修完（尼 6:15）。站在约 **7 米厚** 的宽墙切面旁，四个 **1.72 米** 的成年人首尾相接躺下，才刚刚够横跨墙顶的步道——难怪两大队称谢诗班能在城墙顶上并肩游行（尼 12:31、38）。',
+    punchEn: '**1,000 cubits (~445 m)** between the Valley Gate and Dung Gate alone — yet all ten gates and the entire circuit were completed in **52 days** (Neh 6:15). Beside a **1.72 m** person, the **~7 m** Broad Wall is wide enough for four adults lying head-to-toe across the wall-walk where the two thanksgiving choirs marched (Neh 12:31, 38).',
+    compare: [
+      { zh: '谷门到粪厂门段长（1000 肘）', en: 'Valley Gate to Dung Gate span (1,000 c)', m: 445 },
+      { zh: '宽墙城楼参照高（18 肘）', en: 'Tower reference height (18 c)', m: 8.01 },
+      { zh: '宽墙厚度（考古实测约 7 米）', en: 'Broad Wall thickness (archaeological)', m: 7.0 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
+    id: 'carmel-altar',
+    zh: '以利亚在迦密山筑的十二石坛',
+    en: "Elijah's Twelve-Stone Altar on Mount Carmel",
+    ref: '1 Kings 18:31',
+    refZh: '列王纪上 18:31',
+    textZh: '以利亚照雅各子孙支派的数目，取了十二块石头（雅伟的话曾临到雅各说：「你的名要叫以色列。」），用这些石头为雅伟的名筑一座坛，在坛的四围挖沟，可容谷种二细亚。',
+    textEn: "Elijah took twelve stones, one for each of the tribes descended from Jacob, to whom the word of Yahweh had come, saying, 'Your name shall be Israel.' With the stones he built an altar in the name of Yahweh, and he dug a trench around it large enough to hold two seahs of seed.",
+    dims: [],
+    kind: 'carmelAltar',
+    assumedHeight: 1.8,
+    counts: [
+      { zh: '筑坛的石头（照雅各子孙十二支派）', en: "Stones (for Jacob's twelve tribes)", n: 12, ref: '王上 18:31', refEn: '1 Kgs 18:31' },
+      { zh: '坛四围水沟容量（谷种细亚数）', en: 'Perimeter trench capacity (seahs of seed)', n: 2, ref: '王上 18:32', refEn: '1 Kgs 18:32' },
+      { zh: '每次盛满水的桶/缸数', en: 'Water jars filled per pouring', n: 4, ref: '王上 18:33', refEn: '1 Kgs 18:33' },
+      { zh: '连倒三次的次数', en: 'Pourings over offering & wood', n: 3, ref: '王上 18:34', refEn: '1 Kgs 18:34' },
+      { zh: '倾倒的总缸数（4 缸 × 3 次）', en: 'Total jars of water poured (4 × 3)', n: 12, ref: '王上 18:33–34', refEn: '1 Kgs 18:33–34' },
+    ],
+    variants: {
+      key: 'carmelAltarView',
+      zh: '叙事时刻',
+      en: 'Narrative moment',
+      options: [
+        {
+          id: 'water-filled',
+          zh: '十二缸水倾注 · 沟里满了水',
+          en: 'Water-filled trench · four jars',
+          note: '外圈可逐一数出十二块天然大石，坛上摆好木柴与切块的燔祭公牛；四只双耳陶水缸连倒三次，水流在坛的四围，沟里也满了水（王上 18:33–35）。',
+          noteEn: 'Twelve countable unhewn fieldstones ring the hearth beneath stacked wood and the cut bullock; four amphora jars poured three times soak the stones and fill the perimeter trench with glistening water (1 Kgs 18:33–35).',
+        },
+        {
+          id: 'fire-from-heaven',
+          zh: '天火降临 · 烧干沟水',
+          en: 'Fire from heaven · consuming pillar',
+          note: '「于是雅伟降下火来，烧尽燔祭、木柴、石头、尘土，又烧干沟里的水」（王上 18:38）。降下的火严守无像原则，仅以纯粹的琥珀金光火焰柱呈现。',
+          noteEn: '"Then the fire of Yahweh fell and burned up the sacrifice, the wood, the stones and the soil, and also licked up the water in the trench" (1 Kgs 18:38) — rendered strictly aniconically as a pure amber-gold pillar of consuming fire.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '经文只记石头与水缸的数目，未给祭坛长宽高。模型取 1.8 米为至燔祭顶部的参照高度（契合出 20:25–26 不凿石、不设台阶就能在坛旁献祭的尺度），并将十二块原石排成一圈，方便读者逐块点数。',
+        en: 'Scripture specifies counts rather than linear dimensions. The 1.8 m reference height to the top of the offering fits an unhewn altar workable from ground level without steps (cf. Exod 20:25–26), with all twelve boulders arranged around the perimeter so each stone can be counted.',
+      },
+      {
+        zh: '「可容谷种二细亚」（王上 18:32）有两种解释：一指水沟本身的容积约合二细亚（约 15 至 24 升）；二指水沟围出的地面相当于撒二细亚谷种的面积。模型中的环沟宽深仅为示意。',
+        en: '"Large enough to hold two seahs of seed" (1 Kgs 18:32) is read either as trench volume (~15–24 litres) or as the ground area sown by two seahs of seed; the trench width and depth here are illustrative.',
+      },
+      {
+        zh: '陶水缸的具体容量与雅伟之火的视觉形态经文均未描述；火焰柱完全采用纯粹几何光柱与火舌，绝不附加任何人形或受造物形像。',
+        en: 'Jar capacity and the visual form of the fire are unstated; the consuming fire is built strictly from geometric light columns and flame cones with zero anthropomorphic form.',
+      },
+    ],
+    punchZh: '在南北分裂的时代，以利亚偏偏取了 **十二块石头**——照雅各十二支派的数目筑一座高不过胸口（参照高 **1.8 米**）的野石坛；再用四只水缸连倒三次、共 **十二缸水** 灌满四围的沟，直到天火降下，连石头、尘土与满沟的水一并烧尽（王上 18:31–38）。',
+    punchEn: 'In a divided kingdom, Elijah deliberately laid **12 fieldstones** for all twelve tribes of Jacob at chest-to-shoulder scale (**1.8 m** reference height), drenched them with **4 jars × 3 = 12 jarfuls** of water until the 2-seah trench overflowed, before fire fell and consumed offering, wood, stones, soil, and trench water alike (1 Kgs 18:31–38).',
+    compare: [
+      { zh: '会幕铜祭坛高（3 肘）', en: 'Tabernacle bronze altar height (3 c)', m: 1.34 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+      { zh: '迦密山石坛参照高度', en: 'Carmel altar reference height', m: 1.8 },
+    ],
+  },
+  {
+    id: 'shunammite-chamber',
+    zh: '书念妇人为以利沙盖的墙上小楼',
+    en: "The Shunammite's Upper Chamber for Elisha",
+    ref: '2 Kings 4:10',
+    refZh: '列王纪下 4:10',
+    textZh: '我们可以为他在墙上盖一间小楼，在其中安放床榻、桌子、椅子、灯台。他来到我们这里，就可以住在其中。',
+    textEn: "Let's make a small walled upper room and put in it a bed and a table, a chair and a lampstand for him. Then he can stay there whenever he comes to us.",
+    dims: [],
+    kind: 'shunammiteChamber',
+    assumedHeight: 5.2,
+    counts: [
+      { zh: '楼内点名安放的家具器物（床榻、桌子、椅子、灯台）', en: 'Named furnishings inside (bed, table, chair, lampstand)', n: 4, ref: '王下 4:10', refEn: '2 Kgs 4:10' },
+      { zh: '香柏木床榻', en: 'Bed (mittah)', n: 1, ref: '王下 4:10, 21', refEn: '2 Kgs 4:10, 21' },
+      { zh: '木桌与木椅（各一）', en: 'Table and chair/stool (1 each, 2 pieces)', n: 2, ref: '王下 4:10', refEn: '2 Kgs 4:10' },
+      { zh: '陶油灯台', en: 'Lampstand (menorah)', n: 1, ref: '王下 4:10', refEn: '2 Kgs 4:10' },
+    ],
+    variants: {
+      key: 'shunammiteView',
+      zh: '展示视角',
+      en: 'Display view',
+      options: [
+        {
+          id: 'cutaway',
+          zh: '剖面 · 小楼四器与四室石屋',
+          en: 'Cutaway · upper room & 4 furnishings',
+          note: '切开上层小楼近侧墙与屋顶，只陈列经文点名的四样器物——香柏木床榻、木桌、木椅与陶油灯台；下层展示典型铁器时代以色列四室柱院石屋与外侧登顶石阶。',
+          noteEn: 'Cuts open the upper guest room (aliyya) to show ONLY the four named items — cedar bed, wooden table, chair/stool, and terracotta oil lampstand — above an Israelite four-room pillared courtyard house with exterior stairs.',
+        },
+        {
+          id: 'rooftop',
+          zh: '合顶 · 泥砖墙与草席木梁顶',
+          en: 'Closed · mud-brick & reed-beam roof',
+          note: '四面泥砖灰泥墙砌齐，上铺圆木横梁、草席与压实泥顶（总高 5.2 米），侧面开木格小窗，平顶四围筑有护栏（申 22:8）。',
+          noteEn: 'Closes the plastered mud-brick walls under round ceiling beams, woven reed/grass matting, and packed clay roofing (5.2 m total height), surrounded by a rooftop parapet (Deut 22:8).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '经文只说「一间有墙的小楼」（עֲלִיַּת־קִיר，王下 4:10），未给长宽高。模型取总高 5.2 米（下层院屋高约 2.85 米，上层小楼高约 2.35 米）作为铁器时代两层民居的参照尺度。',
+        en: 'Scripture calls it "a small walled upper chamber" (aliyyat-qir, 2 Kgs 4:10) without dimensions. The 5.2 m reference height (~2.85 m ground storey plus ~2.35 m upper room) reflects typical Iron Age two-level domestic construction.',
+      },
+      {
+        zh: '下层的「四室柱院屋」及外侧露石阶梯依据铁器时代以色列民居考古复原（外梯使客旅出入不必穿过内室），经文并未描写书念妇人住宅的下层平面。',
+        en: 'The pillared four-room courtyard house below and the exterior stone staircase follow Iron Age Israelite domestic archaeology (allowing a guest to come and go straight from the street); the ground-floor layout is not described in the text.',
+      },
+      {
+        zh: '此处「灯台」希伯来文虽亦作 menorah（מְנוֹרָה），但在民居中指承托单盏捏嘴陶油灯的陶制或木制灯架，并非圣所七枝金灯台；床、桌、椅的具体木作造型亦按铁器时代日常家具复原。',
+        en: 'Although Hebrew uses menorah for the lampstand, in a private home this denotes a household stand holding a single pinched-spout clay oil lamp, not the seven-branched sanctuary lampstand; furniture joinery follows Iron Age domestic finds.',
+      },
+    ],
+    punchZh: '没有金银帷幔，只有经文逐一点名的 **四件日常家具：一张床、一张桌、一把椅、一座灯台**（王下 4:10）。正是这张安静摆在二楼泥砖小屋里的客床，后来承接了书念妇人死去的独生子，见证孩子在房里连打 **七次嚏**、重新睁开眼睛（王下 4:21、32–35）。',
+    punchEn: 'No gold or tapestries — only **four everyday furnishings** named one by one: **1 bed, 1 table, 1 chair, 1 lampstand** (2 Kgs 4:10). Yet on that very bed inside this modest **5.2 m**-high rooftop room the Shunammite laid her dead son, and there the child sneezed seven times and opened his eyes (2 Kgs 4:21, 32–35).',
+    compare: [
+      { zh: '现代两层住宅（约）', en: 'Modern two-storey house (approx.)', m: 6.0 },
+      { zh: '书念妇人院屋连小楼参照高', en: 'House & upper room reference height', m: 5.2 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
+    id: 'shushan-court',
+    zh: '书珊城王宫御园的院子',
+    en: 'The Palace Garden Court at Shushan (Susa)',
+    ref: 'Esther 1:6',
+    refZh: '以斯帖记 1:6',
+    textZh: '有白色、绿色、蓝色的帐子，用细麻绳、紫色绳从银环内系在白玉石柱上；有金银的床榻摆在红、白、黄、黑玉石铺的石地上。',
+    textEn: 'There were hangings of white, green and blue, fastened with cords of fine linen and purple to silver rings and pillars of marble; the couches were of gold and silver, on a pavement of porphyry, marble, mother-of-pearl and black stone.',
+    dims: [],
+    kind: 'shushanCourt',
+    assumedHeight: 7.2,
+    counts: [
+      { zh: '展示帝国荣耀财富的日数', en: 'Days displaying imperial riches', n: 180, ref: '斯 1:4', refEn: 'Esth 1:4' },
+      { zh: '王宫御园院子设摆筵席的日数', en: 'Days of court garden banquet', n: 7, ref: '斯 1:5', refEn: 'Esth 1:5' },
+      { zh: '天篷帐子的颜色（白、绿/棉、蓝）', en: 'Canopy hanging colours (white, green/cotton, blue)', n: 3, ref: '斯 1:6', refEn: 'Esth 1:6' },
+      { zh: '镶嵌铺地的名贵石材（红、白、云母/黄、黑）', en: 'Mosaic pavement stones (porphyry, alabaster, pearl, black marble)', n: 4, ref: '斯 1:6', refEn: 'Esth 1:6' },
+    ],
+    variants: {
+      key: 'shushanView',
+      zh: '展示视角',
+      en: 'Display view',
+      options: [
+        {
+          id: 'canopied',
+          zh: '三色天篷张开 · 银环与紫细麻绳',
+          en: 'Draped canopies · silver rings & cords',
+          note: '两排凹槽白玉石柱上架起香柏木贴金横梁，白、绿（棉）、蓝三色帐篷借细麻绳与紫色绳紧系在石柱的银环上（斯 1:6）。',
+          noteEn: 'Fluted white-marble columns with Persian double-volute capitals carry white, turquoise-cotton, and royal-blue canopies tensioned by fine-linen and purple cords to silver column rings (Esth 1:6).',
+        },
+        {
+          id: 'pavement-detail',
+          zh: '收起帐篷 · 四色镶嵌石地与各异金器',
+          en: 'Pavement detail · 4-stone inlay & gold vessels',
+          note: '将三色帐子收起束在石柱旁，完整显露红斑石、白玉、珍珠母、黑大理石四色拼花石地、金银卧榻，以及「器皿各有不同」的纯金酒器（斯 1:6–7）。',
+          noteEn: 'Draws back the canopies to reveal the four-stone mosaic floor (porphyry, white marble, mother-of-pearl, black marble), gold and silver couches, and golden drinking vessels "diverse one from another" (Esth 1:6–7).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '以斯帖记详列材质、颜色与日数，却未记一处长宽高尺寸。模型按高 7.2 米复原一座尺度亲人的御园凉亭柱廊（考古发掘的书珊百柱大殿石柱高达约 19 至 20 米，而斯 1:5 明言筵席设在「王宫御园的院子里」而非大殿内）。',
+        en: "Esther itemises materials, colours, and durations without giving linear dimensions. The 7.2 m reference height models an intimate garden-court pavilion rather than Susa's ~19–20 m Apadana hall columns, matching Esth 1:5 (\"in the court of the garden of the king's palace\").",
+      },
+      {
+        zh: '斯 1:6 四种铺地石材的希伯来文专名（bahat、shesh、dar、socheret）学界考证不一，通常比定为红斑石、雪花白玉、珍珠母（或黄玉）与黑石；「绿色」（karpas，波斯/梵语借词）原意为细棉布，模型取青绿细棉色调兼顾两种译法。',
+        en: 'Exact identifications of the four Hebrew stone terms (bahat, shesh, dar, socheret) vary among scholars — rendered here as red porphyry, white marble/alabaster, mother-of-pearl, and black marble — while karpas ("green" / fine cotton) is tinted turquoise-green.',
+      },
+      {
+        zh: '石柱根数、金银卧榻张数与金杯的具体器形经文均未规定；桌上六种金杯故意做成造型各异，以回应「用金器皿赐酒，器皿各有不同」（斯 1:7）。',
+        en: 'Column count, couch count, and individual cup profiles are unstated; six distinct golden vessel silhouettes are modelled specifically to reflect "vessels of gold, the vessels being diverse one from another" (Esth 1:7).',
+      },
+    ],
+    punchZh: '整整 **一百八十天** 的帝国炫富之后，又是 **七天** 御园豪宴：三色帐子、两色绳索、银环白玉柱、金银卧榻、四色拼花石地、**没有两只重样的金酒杯**（斯 1:4–7）。以斯帖记全卷未提一次神的名，开篇却把波斯王庭的排场细数到脚下每一块石头——为后文整场权势的忽然翻转埋下最强烈的反差。',
+    punchEn: "After **180 days** of imperial display came **7 days** in the garden court: **3** canopy colours, **2** cord dyes, silver rings on marble pillars, gold and silver couches on a **4-stone** mosaic floor, and golden cups **no two alike** (Esth 1:4–7) — itemised down to the pavement before the silent providence of Esther overturns the empire's schemes.",
+    compare: [
+      { zh: '波斯波利斯大殿石柱（约）', en: 'Persepolis Apadana column (approx.)', m: 19.0 },
+      { zh: '书珊御园柱廊参照高度', en: 'Shushan garden court reference height', m: 7.2 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
     id: 'goliath',
     zh: '歌利亚的身高与铜甲',
     en: "Goliath's Stature & Bronze Armour",
@@ -1445,6 +1697,244 @@ export const STRUCTURES: Structure[] = [
     ],
   },
   {
+    id: 'upper-room-pentecost',
+    zh: '五旬节的楼房',
+    en: 'The Upper Room at Pentecost',
+    ref: 'Acts 2:2',
+    refZh: '使徒行传 2:2',
+    textZh: '忽然，从天上有响声下来，好像一阵大风吹过，充满了他们所坐的屋子；',
+    textEn: 'Suddenly a sound like the blowing of a violent wind came from heaven and filled the whole house where they were sitting.',
+    dims: [],
+    counts: [
+      { zh: '聚会的人数', en: 'People gathered', n: 120, ref: '徒 1:15', refEn: 'Acts 1:15' },
+      { zh: '使徒（马提亚补上）', en: 'Apostles (with Matthias)', n: 12, ref: '徒 1:26', refEn: 'Acts 1:26' },
+    ],
+    kind: 'pentecostRoom',
+    assumedHeight: 6.2,
+    variants: {
+      key: 'roomView',
+      zh: '展示方式',
+      en: 'View',
+      options: [
+        {
+          id: 'cutaway-flames',
+          zh: '剖开墙与屋顶 · 看见楼房里分开的火舌',
+          en: 'Walls and roof cut away · divided tongues of fire inside',
+          note: '拿掉近侧的墙与大半屋顶，看见楼下的拱顶厅、楼上的拱廊与香柏木梁、墙边的陶油灯，以及「舌头如火焰显现出来，分开落在他们各人头上」（2:3）。不塑任何人物。',
+          noteEn: 'Near wall and most of the roof removed to show the vaulted ground hall, the arcaded upper hall under cedar beams, the clay lamps, and the "tongues of fire that separated and came to rest on each of them" (2:3). No persons are modelled.',
+        },
+        {
+          id: 'jerusalem-house',
+          zh: '完整的两层院落房屋',
+          en: 'Whole two-storey courtyard house',
+          note: '按一世纪耶路撒冷石造房屋展示：外墙石阶通往楼上，平顶四围有栏杆（申 22:8），前有院子和水池口。',
+          noteEn: 'A 1st-century Jerusalem stone house: an outer stair to the upper floor, a flat roof with a parapet (Deut 22:8), and a walled courtyard with a cistern mouth.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '**房子多大，经文没有说。** 这里约 12 x 9 米、6.2 米高，只够说明一百二十人（1:15）需要多大的地方。',
+        en: '**The size of the house is not stated.** About 12 x 9 m and 6.2 m high is shown only to suggest the room 120 people (1:15) would need.',
+      },
+      {
+        zh: '2:1–2 只说他们「都聚集在一处」、风声「充满了他们所坐的屋子」，并没有明说就是 1:13 的那间楼房；把两处连在一起是传统读法。今天锡安山上的「最后晚餐厅」是十字军时期的建筑，比使徒行传晚了一千多年。',
+        en: 'Acts 2:1–2 says only that they were all together in one place and the sound filled the house; it does not explicitly name the upper room of 1:13, which is a traditional link. The Cenacle on Mount Zion today is a Crusader-period building, over a thousand years later.',
+      },
+      {
+        zh: '火舌的数目经文没有给，只说落在「他们各人头上」（2:3）。这里的十二道只是展示数目。',
+        en: 'The number of tongues of fire is not given; they rested "on each of them" (2:3). The twelve shown are a display count.',
+      },
+    ],
+    punchZh: '**一百二十个人**聚在一处，忽然有响声像大风吹过，充满了整间屋子，火焰般的舌头分开落在各人头上（2:2–3）。',
+    punchEn: '**120 people** in one place, then a sound like a violent wind filling the whole house, and tongues of fire separating to rest on each of them (2:2–3).',
+    compare: [
+      { zh: '房屋展示高度（含栏杆）', en: 'House display height (to parapet)', m: 6.2 },
+      { zh: '楼上房间净高（展示参照）', en: 'Upper room clear height (display)', m: 2.55 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
+    id: 'paul-ship',
+    zh: '保罗所乘的亚历山大运粮船',
+    en: "Paul's Alexandrian Grain Ship",
+    ref: 'Acts 27:37',
+    refZh: '使徒行传 27:37',
+    textZh: '我们在船上的共有二百七十六个人。',
+    textEn: 'Altogether there were 276 of us on board.',
+    dims: [],
+    counts: [
+      { zh: '船上的人数', en: 'Souls on board', n: 276, ref: '徒 27:37', refEn: 'Acts 27:37' },
+      { zh: '从船尾抛下的锚', en: 'Anchors dropped from the stern', n: 4, ref: '徒 27:29', refEn: 'Acts 27:29' },
+      { zh: '第一次探深（寻）', en: 'First sounding (fathoms)', n: 20, ref: '徒 27:28', refEn: 'Acts 27:28' },
+      { zh: '第二次探深（寻）', en: 'Second sounding (fathoms)', n: 15, ref: '徒 27:28', refEn: 'Acts 27:28' },
+      { zh: '在亚得里亚海飘来飘去的夜数', en: 'Nights driven across the Adriatic', n: 14, ref: '徒 27:27', refEn: 'Acts 27:27' },
+    ],
+    kind: 'paulShip',
+    assumedHeight: 14.0,
+    variants: {
+      key: 'shipView',
+      zh: '展示时刻',
+      en: 'Moment shown',
+      options: [
+        {
+          id: 'hull-cutaway',
+          zh: '第十四夜抛锚 · 半边船体剖开',
+          en: 'Fourteenth night at anchor · half-hull cutaway',
+          note: '切开右舷，露出船舱里的麦袋与陶瓮（27:38 才把麦子抛在海里）、兜住船底的缆索（27:17）、收上船的小船（27:16），以及从船尾抛下的四个锚（27:29）。',
+          noteEn: 'Starboard half cut away to show the wheat sacks and jars still in the hold (not jettisoned until 27:38), the cables undergirding the hull (27:17), the boat hoisted aboard (27:16) and the four anchors let down from the stern (27:29).',
+        },
+        {
+          id: 'melita-reef',
+          zh: '米利大搁浅 · 船头胶住，船尾冲坏',
+          en: 'Aground at Malta · bow stuck fast, stern broken',
+          note: '砍断锚缆、把锚弃在海里，松开舵绳，拉起前帆（27:40）；遇着两水夹流的地方，船头胶住不动，船尾被浪的猛力冲坏（27:41）。',
+          noteEn: 'Anchors cut away and left in the sea, rudder ropes untied, foresail hoisted (27:40); striking a sandbar where two seas met, the bow stuck fast and the stern was broken by the pounding surf (27:41).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '**船有多长，经文一个数字都没有给。** 这里的 24 米甲板长、14 米桅顶只是展示用的参照高度。古代亚历山大运粮船大小悬殊：琉善笔下的「伊西斯号」约 55 米，约瑟夫说他坐过的船载了约六百人。能载 276 人的船，实际很可能比这个模型大。',
+        en: '**Acts gives no length, beam or tonnage.** The 24 m deck and 14 m masthead are display conventions. Alexandrian grain ships varied widely: Lucian describes the Isis at about 55 m, and Josephus sailed on one carrying about 600; a ship holding 276 may well have been larger than this model.',
+      },
+      {
+        zh: '「用缆索捆绑船底」（27:17）的具体做法有争议：横向兜住船身，还是纵向从船头拉到船尾，古代文献都有。这里按横向兜底处理。',
+        en: 'How the ship was undergirded (27:17) is debated: cables passed under the hull crosswise, or rigged lengthwise from bow to stern. Crosswise frapping is shown.',
+      },
+      {
+        zh: '一寻约 1.85 米，二十寻约 37 米，十五寻约 28 米。模型里的海水深度大幅压缩，不按比例。',
+        en: 'A fathom is about 1.85 m, so the soundings were about 37 m and 28 m. The sea in the model is heavily compressed, not to scale.',
+      },
+      {
+        zh: '搁浅的确切地点经文只说是「两水夹流的地方」（27:41），马耳他的圣保罗湾是传统说法。这条船的船名和船首标记都没有记载；28:11 的「丢斯古利」是另一条船。',
+        en: "The grounding site is described only as a place where two seas met (27:41); St Paul's Bay on Malta is the traditional identification. This ship's name and figurehead are not recorded; the Twin Brothers of 28:11 belong to a different ship.",
+      },
+    ],
+    punchZh: '**二百七十六个人**，十四夜不见日头星辰，四个锚抛在船尾等天亮……船头胶住，船尾冲坏，结果「众人都得了救，上了岸」（27:44）。',
+    punchEn: '**276 people**, fourteen nights without sun or stars, four anchors out astern waiting for daylight; then the bow stuck and the stern broke, "and in this way everyone reached land safely" (27:44).',
+    compare: [
+      { zh: '模型甲板长（展示参照）', en: 'Model deck length (display)', m: 24.0 },
+      { zh: '模型桅顶高（展示参照）', en: 'Model masthead height (display)', m: 14.0 },
+      { zh: '第一次探深：二十寻', en: 'First sounding: 20 fathoms', m: 37.0 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
+    id: 'seven-lampstands',
+    zh: '七个金灯台',
+    en: 'The Seven Golden Lampstands',
+    ref: 'Revelation 1:12',
+    refZh: '启示录 1:12',
+    textZh: '我转过身来，要看是谁发声与我说话；既转过来，就看见七个金灯台。',
+    textEn: 'I turned around to see the voice that was speaking to me. And when I turned I saw seven golden lampstands.',
+    dims: [],
+    counts: [
+      { zh: '金灯台（就是七个教会）', en: 'Golden lampstands (the seven churches)', n: 7, ref: '启 1:12, 20', refEn: 'Rev 1:12, 20' },
+      { zh: '星（就是七个教会的使者）', en: 'Stars (the messengers of the seven churches)', n: 7, ref: '启 1:16, 20', refEn: 'Rev 1:16, 20' },
+    ],
+    kind: 'sevenLampstands',
+    assumedHeight: 3.0,
+    variants: {
+      key: 'lampstandView',
+      zh: '展示方式',
+      en: 'View',
+      options: [
+        {
+          id: 'seven-churches',
+          zh: '七灯台围成弧形 · 当中只有光',
+          en: 'Seven lampstands in an arc · only light in their midst',
+          note: '七个各自独立的金灯台排成弧形，当中「面貌如同烈日放光」（1:16），所以这里看见的是光，不是脸；上方是七颗星。',
+          noteEn: 'Seven separate golden lampstands in an arc; in their midst a face "like the sun shining in all its brilliance" (1:16), so what is shown is the light, not a face. Seven stars hang above.',
+        },
+        {
+          id: 'compare-menorah',
+          zh: '对照出埃及记 25 章的灯台',
+          en: 'Beside the menorah of Exodus 25',
+          note: '同一平台上，左边是启示录的七个独立灯台，右边是出埃及记 25:31–37 那一个有七盏灯的金灯台。',
+          noteEn: "On one platform: Revelation's seven separate lampstands on the left, and the single seven-lamp menorah of Exodus 25:31–37 on the right.",
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '**灯台的高度与样式，经文都没有说。** 这里每座约 1.5 米、单盏灯，3.0 米是星顶的展示参照高度。灯台排成弧形也是展示安排，经文只说那一位在「灯台中间」（1:13）。',
+        en: '**Neither height nor form of the lampstands is given.** Each is shown about 1.5 m tall with a single lamp; 3.0 m is a display height for the stars. The arc is a display choice; the text says only "among the lampstands" (1:13).',
+      },
+      {
+        zh: '1:13–16 描写了「一位好像人子」的衣着、头发、眼目、脚和口中的利剑。模型一概不塑人形，只用光来表示。',
+        en: 'Revelation 1:13–16 describes one like a son of man, his robe, hair, eyes, feet and the sharp sword from his mouth. None of this is sculpted; the model shows only light.',
+      },
+    ],
+    punchZh: '出埃及记 25 章是**一个**灯台上点七盏灯；启示录 1 章是**七个**灯台，各是一个教会，各自可以「从原处挪去」（2:5）。',
+    punchEn: 'Exodus 25 is **one** lampstand bearing seven lamps; Revelation 1 is **seven** lampstands, each a church, each of which can be "removed from its place" (2:5).',
+    compare: [
+      { zh: '每座灯台（展示参照）', en: 'Each lampstand (display)', m: 1.5 },
+      { zh: '会幕金灯台（传统估算）', en: 'Tabernacle menorah (traditional)', m: 1.5 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
+    id: 'rev4-throne-room',
+    zh: '启示录第四章天上的宝座',
+    en: 'The Throne Room of Revelation 4',
+    ref: 'Revelation 4:4',
+    refZh: '启示录 4:4',
+    textZh: '宝座的周围又有二十四个座位，其上坐着二十四位长老，身穿白衣，头上戴着金冠冕。',
+    textEn: 'Surrounding the throne were twenty-four other thrones, and seated on them were twenty-four elders. They were dressed in white and had crowns of gold on their heads.',
+    dims: [],
+    counts: [
+      { zh: '宝座周围的座位', en: 'Thrones around the throne', n: 24, ref: '启 4:4', refEn: 'Rev 4:4' },
+      { zh: '金冠冕', en: 'Crowns of gold', n: 24, ref: '启 4:4, 10', refEn: 'Rev 4:4, 10' },
+      { zh: '宝座前点着的火灯', en: 'Lamps of fire before the throne', n: 7, ref: '启 4:5', refEn: 'Rev 4:5' },
+      { zh: '四活物', en: 'Living creatures', n: 4, ref: '启 4:6', refEn: 'Rev 4:6' },
+      { zh: '每个活物的翅膀', en: 'Wings per creature', n: 6, ref: '启 4:8', refEn: 'Rev 4:8' },
+    ],
+    kind: 'rev4ThroneRoom',
+    assumedHeight: 8.5,
+    variants: {
+      key: 'throneView',
+      zh: '展示范围',
+      en: 'View',
+      options: [
+        {
+          id: 'full-council',
+          zh: '全景 · 二十四座位、四活物、七灯与玻璃海',
+          en: 'Full council · 24 thrones, 4 living creatures, 7 lamps, sea of glass',
+          note: '中央宝座只用碧玉与红宝石的光彩呈现（4:3），座上不放任何人形；二十四个白色座位上只放金冠冕，不塑长老的身形；四活物以六翼与满身眼睛的徽记柱表示。',
+          noteEn: 'The central throne is shown only by the radiance of jasper and carnelian (4:3), with no figure upon it; the 24 white seats hold only their golden crowns, with no sculpted elders; the living creatures are six-winged emblem pillars full of eyes.',
+        },
+        {
+          id: 'throne-and-lamps',
+          zh: '近景 · 宝座、绿宝石虹、七灯与玻璃海',
+          en: 'Close view · throne, emerald rainbow, 7 lamps, sea of glass',
+          note: '只留宝座、围着宝座的绿宝石色的虹（4:3）、宝座前的七盏火灯（4:5）和宝座前如同水晶的玻璃海（4:6）。',
+          noteEn: 'Only the throne, the emerald rainbow encircling it (4:3), the seven lamps of fire before it (4:5) and the crystal-clear sea of glass (4:6).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '**整章没有一个尺寸。** 8.5 米只是虹顶的展示参照高度。约翰描述坐在宝座上的，只说「看那坐着的，好像碧玉和红宝石」（4:3），没有描述形貌；模型据此只用宝石的光，宝座上不放任何形象。',
+        en: '**The chapter gives no measurement at all.** 8.5 m is a display height for the top of the rainbow. John describes the one seated only as having "the appearance of jasper and ruby" (4:3), with no form described, so the model shows only the light of the stones and nothing on the throne.',
+      },
+      {
+        zh: '「有虹围着宝座，好像绿宝石」（4:3）：虹是竖立如拱，还是平放如环，经文没有说。这里两者都画：竖立的翠绿光环，加上宝座脚下的一道平环。',
+        en: 'Whether the emerald rainbow "encircling" the throne (4:3) stands upright or lies flat is not said; both are drawn, an upright emerald ring and a flat ring at the foot of the throne.',
+      },
+      {
+        zh: '四活物「头一个像狮子，第二个像牛犊，第三个脸面像人，第四个像飞鹰」（4:7），模型只用简化徽记表示，不塑形体。二十四个座位排成圆环、玻璃海的大小与位置，都是展示安排。',
+        en: 'The living creatures are like a lion, an ox, one with a face like a man, and a flying eagle (4:7); here they are reduced to emblems, not bodies. The circular ring of 24 seats and the size and placement of the sea of glass are display choices.',
+      },
+    ],
+    punchZh: '**二十四个座位、二十四顶金冠冕、七盏火灯、四活物各有六个翅膀** —— 全是数出来的，没有一个是量出来的。宝座上只有光。',
+    punchEn: '**24 thrones, 24 golden crowns, 7 lamps of fire, 4 living creatures with 6 wings each**: everything is counted and nothing is measured. On the throne there is only light.',
+    compare: [
+      { zh: '虹顶展示高度（参照）', en: 'Rainbow top display height (assumed)', m: 8.5 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
     id: 'newjerusalem',
     zh: '新耶路撒冷',
     en: 'The New Jerusalem',
@@ -1505,6 +1995,7 @@ const WALK_PAGE: Record<WalkHome, string> = {
   ark: '/ark.html',
   ezekiel: '/ezekiel.html',
   herod: '/herod.html',
+  nehemiah: '/nehemiah.html',
   'new-jerusalem': '/new-jerusalem.html',
   palace: '/palace.html',
   tabernacle: '/tabernacle.html',

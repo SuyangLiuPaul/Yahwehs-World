@@ -23,16 +23,33 @@ await mkdir(DIR, { recursive: true });
 // these cards. It is false for New Jerusalem alone, and that is not a defect:
 // Revelation 21:16 measures in stadia, not cubits (`unit` in specs.ts), so a
 // card that moved with the cubit would be the bug.
+const PLAN_CARDS = [
+  'second-temple',
+  'carmel-altar',
+  'shunammite-chamber',
+  'shushan-court',
+  'goliath',
+  'dura-image',
+  'upper-room-pentecost',
+  'paul-ship',
+  'seven-lampstands',
+  'rev4-throne-room',
+];
+
 const PAGES = [
   { path: '/ark.html', handle: '__ark', cards: ['noah'], cubitMoves: true },
   { path: '/tabernacle.html', handle: '__walk', cards: ['ark', 'court', 'menorah', 'tabernacle-tent', 'showbread-table', 'incense-altar', 'bronze-altar', 'highpriest', 'wilderness-camp'], cubitMoves: true },
   { path: '/temple.html', handle: '__temple', cards: ['temple', 'pillars', 'bronze-sea', 'wheeled-lavers'], cubitMoves: true },
   { path: '/palace.html', handle: '__palace', cards: ['forest-house'], cubitMoves: true },
   { path: '/ezekiel.html', handle: '__ezekiel', cards: ['ezekiel-gate', 'ezekiel-altar', 'ezekiel-wheels'], cubitMoves: true },
+  { path: '/nehemiah.html', handle: '__nehemiah', cards: ['nehemiah-wall'], cubitMoves: true },
   { path: '/herod.html', handle: '__herod', cards: ['herod-sanctuary'], cubitMoves: true },
   { path: '/new-jerusalem.html', handle: '__newjerusalem', cards: ['newjerusalem'], cubitMoves: false },
-  { path: '/plan.html', handle: null, cards: ['second-temple', 'goliath', 'dura-image'], activeCard: 'second-temple', cubitMoves: true, open: '#measures=second-temple' },
-  { path: '/plan.html', handle: null, cards: ['second-temple', 'goliath', 'dura-image'], activeCard: 'goliath', cubitMoves: true, open: '#measures=goliath' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'second-temple', cubitMoves: true, open: '#measures=second-temple' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'carmel-altar', cubitMoves: false, open: '#measures=carmel-altar' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'goliath', cubitMoves: true, open: '#measures=goliath' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'paul-ship', cubitMoves: false, open: '#measures=paul-ship' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'rev4-throne-room', cubitMoves: false, open: '#measures=rev4-throne-room' },
 ];
 const VIEWPORTS = [['desktop', 1280, 800], ['phone', 390, 844]];
 const LOCALES = [['hans', 'zh-Hans'], ['en', 'en']];

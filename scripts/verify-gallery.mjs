@@ -38,7 +38,7 @@ const files = [...walk(DIR)];
 const rel = (f) => f.slice(DIR.length);
 
 // ── 1 surface ──────────────────────────────────────────────────────────
-const HIDDEN_PAGES = ['tabernacle', 'temple', 'palace', 'ezekiel', 'herod', 'new-jerusalem', 'ark', 'figures', 'figures-springs', 'plan', 'video', 'scene-assembly', 'crowd-test', 'voxel', 'lowpoly', 'rig-test'];
+const HIDDEN_PAGES = ['tabernacle', 'temple', 'palace', 'ezekiel', 'nehemiah', 'herod', 'new-jerusalem', 'ark', 'figures', 'figures-springs', 'plan', 'video', 'scene-assembly', 'crowd-test', 'voxel', 'lowpoly', 'rig-test'];
 check(HIDDEN_PAGES.every((p) => !existsSync(join(DIR, `${p}.html`))), 'no hidden page is built', `hidden pages in dist: ${HIDDEN_PAGES.filter((p) => existsSync(join(DIR, `${p}.html`)))}`);
 check(!existsSync(join(DIR, 'previews')), 'no previews/ folder', 'previews/ is published');
 const HEAVY = ['models', 'figures', 'materials', 'film', 'scenes', 'cutouts-webp', 'studies'];
@@ -156,7 +156,7 @@ check(SITE_PAGES.every((u) => sm.includes(`<loc>https://world.yahwehword.com${u}
 check(!sm.includes('404.html'), 'the 404 page is not in the sitemap');
 
 // ── 5 links ────────────────────────────────────────────────────────────
-const HIDE = /["'`(](?:\/(?:tabernacle|temple|palace|ezekiel|herod|new-jerusalem|ark|figures|figures-springs|plan|video|scene-assembly)\.html|\/previews\/)/;
+const HIDE = /["'`(](?:\/(?:tabernacle|temple|palace|ezekiel|nehemiah|herod|new-jerusalem|ark|figures|figures-springs|plan|video|scene-assembly)\.html|\/previews\/)/;
 const gallery = jsAndHtml.filter((f) => /^\/(index|scenes|bible)\.html$|^\/assets\//.test(rel(f)));
 const linking = gallery.filter((f) => HIDE.test(readFileSync(f, 'utf8')));
 check(!linking.length, 'no gallery page or script links to a hidden page', `links to hidden pages in: ${linking.map(rel)}`);

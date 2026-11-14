@@ -482,7 +482,8 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
 
     // Choose readable camera elevation per structure type (higher for plan-dominated enclosures)
     const isPlanHeavy =
-      s.kind === 'court' || s.kind === 'ezekielGate' || s.kind === 'tabernacleTent' || s.kind === 'ezekielAltar';
+      s.kind === 'court' || s.kind === 'ezekielGate' || s.kind === 'tabernacleTent' || s.kind === 'ezekielAltar' ||
+      s.kind === 'wildernessCamp' || s.kind === 'rev4ThroneRoom' || s.kind === 'shushanCourt';
     defaultYaw = s.kind === 'highpriest' || s.kind === 'goliath' ? 0.38 : 0.62;
     defaultPitch = isPlanHeavy ? 0.48 : s.kind === 'cube' ? 0.28 : 0.34;
 

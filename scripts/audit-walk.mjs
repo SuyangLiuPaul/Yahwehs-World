@@ -251,6 +251,28 @@ const newJerusalem = await report('/new-jerusalem.html', '__newjerusalem', [
 ]);
 SHOW(newJerusalem, '/new-jerusalem.html — Pearl Gate, Gold Street, Bridges, Throne Forecourt & 144c Wall');
 
+const nehemiah = await report('/nehemiah.html', '__nehemiah', [
+  { name: 'water gate square, walking', from: [46, 16], face: Math.PI, keys: ['KeyW'],
+    seconds: 3, ceiling: 0, want: (r) => r.speed > 4.2 && r.speed < 5.2 },
+  { name: 'water gate square, running', from: [46, 16], face: Math.PI, keys: ['KeyW', 'ShiftLeft'],
+    seconds: 3, ceiling: 0, want: (r) => r.speed > 8.4 },
+  { name: 'in through valley gate threshold', from: [-228, 0], face: -Math.PI / 2, keys: ['KeyW'],
+    seconds: 4, ceiling: 0, want: (r) => r.metres > 16 && r.rise < 2.5 },
+  { name: 'up valley gate stair to wall-walk', from: [-201.8, -12.5], face: 0, keys: ['KeyW'],
+    seconds: 10, ceiling: 0, climb: true, target: 10, want: (r) => r.riseCubits >= 10 },
+  { name: 'along broad wall rampart, running', from: [-209.5, 136], face: Math.PI, keys: ['KeyW', 'ShiftLeft'],
+    seconds: 4, want: (r) => r.speed > 8.0 && r.metres > 32 },
+  { name: 'up sheep gate stair to north wall', from: [137.5, 331.8], face: Math.PI / 2, keys: ['KeyW'],
+    seconds: 10, ceiling: 0, climb: true, target: 11, want: (r) => r.riseCubits >= 11 },
+  { name: 'up city of david steps from siloam', from: [34, -267], face: Math.PI, keys: ['KeyW'],
+    seconds: 9, ceiling: 0, climb: true, target: 6.0, want: (r) => r.riseCubits >= 6.0 && r.metres > 32 },
+  { name: 'up ezra wooden podium steps', from: [44, 32], face: -Math.PI / 2, keys: ['KeyW'],
+    seconds: 4, ceiling: 0, climb: true, target: 3.0, want: (r) => r.riseCubits >= 3.0 },
+  { name: 'up zerubbabel temple steps into hekhal', from: [156, 250], face: Math.PI / 2, keys: ['KeyW'],
+    seconds: 6, ceiling: 0, climb: true, target: 3.2, want: (r) => r.riseCubits >= 3.2 && r.metres > 18 },
+]);
+SHOW(nehemiah, "/nehemiah.html — Valley Gate, Broad Wall, Sheep Gate, Siloam Steps, Ezra's Podium & Second Temple");
+
 // A tour can end anywhere, including over the side of a mountain. Whatever
 // the last stop was, the visitor must be handed back standing on the summit:
 // the owner took control at the closing aerial and was set down on the north

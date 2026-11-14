@@ -137,6 +137,7 @@ export const UNITS: Unit[] = [
   { id: 'return', zh: '归回与重建圣殿', en: 'The return, and the second house', from: k(15, 1, 1),
     plan: [wip('walk', '第二圣殿 · 以斯拉记六章给了高六十肘、宽六十肘', 'The second house — Ezra 6 gives sixty cubits high and sixty broad')] },
   { id: 'nehemiah', zh: '尼希米与城墙', en: 'Nehemiah and the wall', from: k(16, 1, 1),
+    walk: { href: '/nehemiah.html', zh: '巡行耶路撒冷城墙与十门', en: "Walk Nehemiah's wall & gates" },
     plan: [wip('map', '城墙与各门 · 尼希米记三章逐段所记', 'The wall and its gates, section by section from Nehemiah 3')] },
   { id: 'esther', zh: '以斯帖', en: 'Esther', from: k(17, 1, 1),
     plan: [wip('scene', '书珊宫院的筵席 · 白绿蓝的帐子、紫细麻绳、银环、白玉石柱（斯 1:6）', 'The feast at Shushan — white, green and blue hangings on silver rings and pillars of marble (Esth 1:6)')] },

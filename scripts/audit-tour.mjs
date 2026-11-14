@@ -18,6 +18,7 @@ const PAGES = [
   { path: '/temple.html', handle: '__temple' },
   { path: '/palace.html', handle: '__palace' },
   { path: '/ezekiel.html', handle: '__ezekiel' },
+  { path: '/nehemiah.html', handle: '__nehemiah' },
   { path: '/herod.html', handle: '__herod' },
   { path: '/new-jerusalem.html', handle: '__newjerusalem' },
   { path: '/ark.html', handle: '__ark' },

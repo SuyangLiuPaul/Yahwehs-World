@@ -121,6 +121,7 @@ const fullInput = (): Record<string, string> => existing({
   temple: resolve(__dirname, 'temple.html'),
   palace: resolve(__dirname, 'palace.html'),
   ezekiel: resolve(__dirname, 'ezekiel.html'),
+  nehemiah: resolve(__dirname, 'nehemiah.html'),
   herod: resolve(__dirname, 'herod.html'),
   newJerusalem: resolve(__dirname, 'new-jerusalem.html'),
   ark: resolve(__dirname, 'ark.html'),

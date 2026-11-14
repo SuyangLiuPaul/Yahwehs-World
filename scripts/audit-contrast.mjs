@@ -41,6 +41,7 @@ const PAGES = [
   '/temple.html#measures',
   '/palace.html#measures',
   '/ezekiel.html#measures',
+  '/nehemiah.html#measures',
   '/herod.html#measures',
   '/new-jerusalem.html#measures',
   '/plan.html#measures=second-temple',

@@ -59,7 +59,7 @@ export const isExcluded = (rel) => PUBLISH_EXCLUDE.some((x) => rel === x || rel.
 
 /** Hidden pages: what a visitor with an old link lands on. */
 const HIDDEN = [
-  '/tabernacle.html', '/temple.html', '/palace.html', '/ezekiel.html', '/herod.html', '/new-jerusalem.html', '/ark.html', '/figures.html', '/figures-springs.html', '/plan.html',
+  '/tabernacle.html', '/temple.html', '/palace.html', '/ezekiel.html', '/nehemiah.html', '/herod.html', '/new-jerusalem.html', '/ark.html', '/figures.html', '/figures-springs.html', '/plan.html',
   '/video.html', '/scene-assembly.html', '/elephant-preview.html', '/previews/*',
 ];
 

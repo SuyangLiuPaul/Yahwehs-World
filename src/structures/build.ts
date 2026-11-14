@@ -24,6 +24,18 @@ import {
   buildSecondTemple,
   buildWildernessCamp,
 } from './visions-and-temples.ts';
+import {
+  buildCarmelAltar,
+  buildNehemiahWall,
+  buildShunammiteChamber,
+  buildShushanCourt,
+} from './narrative-monuments.ts';
+import {
+  buildPaulShip,
+  buildPentecostRoom,
+  buildRev4ThroneRoom,
+  buildSevenLampstands,
+} from './apocalyptic-and-acts.ts';
 
 interface BuildTex {
   gopherWood: THREE.CanvasTexture;
@@ -945,6 +957,30 @@ export function buildStructure(
 
     case 'ezekielWheels':
       return buildEzekielWheels(C, v === 'wheel-detail' ? 'wheel-detail' : 'full-vision');
+
+    case 'nehemiahWall':
+      return buildNehemiahWall(C, v === 'gate-cutaway' ? 'gate-cutaway' : 'broad-wall');
+
+    case 'carmelAltar':
+      return buildCarmelAltar(C, v === 'fire-from-heaven' ? 'fire-from-heaven' : 'water-filled');
+
+    case 'shunammiteChamber':
+      return buildShunammiteChamber(C, v === 'rooftop' ? 'rooftop' : 'cutaway');
+
+    case 'shushanCourt':
+      return buildShushanCourt(C, v === 'pavement-detail' ? 'pavement-detail' : 'canopied');
+
+    case 'paulShip':
+      return buildPaulShip(C, v === 'melita-reef' ? 'melita-reef' : 'hull-cutaway');
+
+    case 'rev4ThroneRoom':
+      return buildRev4ThroneRoom(C, v === 'throne-and-lamps' ? 'throne-and-lamps' : 'full-council');
+
+    case 'sevenLampstands':
+      return buildSevenLampstands(C, v === 'compare-menorah' ? 'compare-menorah' : 'seven-churches');
+
+    case 'pentecostRoom':
+      return buildPentecostRoom(C, v === 'jerusalem-house' ? 'jerusalem-house' : 'cutaway-flames');
 
     case 'cube':
       return buildNewJerusalem(s.unit?.m ?? 185);

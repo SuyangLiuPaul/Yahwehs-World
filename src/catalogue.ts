@@ -154,6 +154,8 @@ export const BUILT: { href: string; en: string; zh: string; refEn: string; refZh
     refEn: '1 Kings 7:1–12; 10:16–20 — 100 × 50 × 30 cubits cedar hall & ivory throne', refZh: '列王纪上 7:1–12；10:16–20 —— 百肘香柏木林宫与象牙包金宝座' },
   { href: '/ezekiel.html', en: "Ezekiel's temple", zh: '以西结的殿',
     refEn: 'Ezekiel 40–47 — 500 × 500 cubits, three gates & the river', refZh: '以西结书 40–47 —— 五百见方、三座大门与门下活水' },
+  { href: '/nehemiah.html', en: "Nehemiah's wall & gates", zh: '尼希米重建的城墙与十门',
+    refEn: 'Nehemiah 3; 8; 12; Ezra 6 — 10 gates, 4 towers, the Broad Wall & 60 × 60 cubit Second Temple', refZh: '尼希米记 3；8；12；以斯拉记 6 —— 十座城门、四座城楼、宽墙与六十肘重建圣殿' },
   { href: '/herod.html', en: "Herod's temple", zh: '希律的圣殿',
     refEn: 'John 2:20; Mishnah Middot & Josephus — 100 × 100 × 100 cubit sanctuary & courts', refZh: '约翰福音 2:20；尺寸篇与约瑟夫 —— 百肘主殿、外邦人院、妇人院与祭司院' },
   { href: '/new-jerusalem.html', en: 'The New Jerusalem', zh: '新耶路撒冷',
