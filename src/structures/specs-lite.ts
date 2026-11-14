@@ -287,6 +287,66 @@ export const STRUCTURES_LITE: readonly StructureLite[] = [
     "ref": "Revelation 1:11"
   },
   {
+    "id": "red-sea-walls",
+    "zh": "过红海 · 水立为墙垣与云火柱",
+    "en": "Red Sea Crossing · Waters as Walls",
+    "ref": "Exodus 14:22"
+  },
+  {
+    "id": "sinai-covenant-pillars",
+    "zh": "西乃山界限 · 密云烈火与十二支派柱子",
+    "en": "Mount Sinai Bounds, Cloud & Twelve Pillars",
+    "ref": "Exodus 19:18"
+  },
+  {
+    "id": "songs-of-ascents-zion",
+    "zh": "上行之诗 · 登雅伟的山与十五级台阶",
+    "en": "Songs of Ascents · Going Up to Zion",
+    "ref": "Psalms 122:4"
+  },
+  {
+    "id": "isaiah-throne-vision",
+    "zh": "以赛亚书六章 · 高高宝座、衣裳与六翼撒拉弗",
+    "en": "Isaiah 6 Temple Vision & Seraphim",
+    "ref": "Isaiah 6:1"
+  },
+  {
+    "id": "nineveh-three-days",
+    "zh": "尼尼微大城三日路程与约拿城东的棚",
+    "en": "Nineveh & Jonah’s Eastward Booth",
+    "ref": "Jonah 3:3"
+  },
+  {
+    "id": "beatitudes-multitude",
+    "zh": "山上的宝训与五千人草地分坐沙盘",
+    "en": "Mount of Beatitudes Amphitheatre Relief",
+    "ref": "Matthew 5:1"
+  },
+  {
+    "id": "galilee-storm-boat",
+    "zh": "加利利海风浪中的渔船与船尾枕头",
+    "en": "Galilee Boat in Storm & Great Calm",
+    "ref": "Mark 4:37"
+  },
+  {
+    "id": "bethlehem-manger",
+    "zh": "伯利恒石屋与石灰石马槽（无牛驴臆测）",
+    "en": "Bethlehem Guest-Room House & Stone Manger",
+    "ref": "Luke 2:7"
+  },
+  {
+    "id": "paul-letters-network",
+    "zh": "保罗十三卷书信收信城邑与地中海地形沙盘",
+    "en": "Paul’s Letters & Recipient Cities Relief",
+    "ref": "Romans 1:7"
+  },
+  {
+    "id": "dispersion-provinces-relief",
+    "zh": "彼得前书五省分散寄居地形沙盘",
+    "en": "Five Provinces of 1 Peter 1:1 Relief",
+    "ref": "1 Peter 1:1"
+  },
+  {
     "id": "newjerusalem",
     "zh": "新耶路撒冷",
     "en": "The New Jerusalem",

@@ -120,6 +120,16 @@ export type StructureKind =
   | 'jordanCrossing'
   | 'gideonDiorama'
   | 'arkToZion'
+  | 'redSeaCrossing'
+  | 'sinaiBounds'
+  | 'zionAscent'
+  | 'isaiahThrone'
+  | 'ninevehRelief'
+  | 'beatitudesHillside'
+  | 'galileeBoat'
+  | 'bethlehemManger'
+  | 'paulLettersRelief'
+  | 'dispersionRelief'
   | 'cube';
 
 /** The walk-in pages. A card lives on the page where the thing it measures
@@ -2436,6 +2446,585 @@ export const STRUCTURES: Structure[] = [
     compare: [
       { zh: '七城顺时针陆路环线全长', en: 'Clockwise seven-city postal loop', m: 560_000 },
       { zh: '拔摩岛至以弗所海程', en: 'Patmos to Ephesus sea crossing', m: 90_000 },
+    ],
+  },
+  {
+    id: 'red-sea-walls',
+    zh: '过红海 · 水立为墙垣与云火柱',
+    en: 'Red Sea Crossing · Waters as Walls',
+    ref: 'Exodus 14:22',
+    refZh: '出埃及记 14:22',
+    textZh: '以色列人下海中走干地，水在他们的左右作了墙垣。',
+    textEn: 'And the children of Israel went into the midst of the sea upon the dry ground: and the waters were a wall unto them on their right hand, and on their left.',
+    dims: [],
+    kind: 'redSeaCrossing',
+    assumedHeight: 4.2,
+    counts: [
+      { zh: '左右分开立作墙垣的海水列墙', en: 'Parted water walls (left and right)', n: 2, ref: '出 14:22, 29', refEn: 'Exod 14:22, 29' },
+      { zh: '转到以色列营后分隔两营的云火柱', en: 'Pillar of cloud and fire between camps', n: 1, ref: '出 14:19–20, 24', refEn: 'Exod 14:19–20, 24' },
+      { zh: '法老所调动特选的战车', en: 'Pharaoh’s chosen chariots', n: 600, ref: '出 14:7', refEn: 'Exod 14:7' },
+    ],
+    variants: {
+      key: 'redSeaView',
+      zh: '展示视角',
+      en: 'View',
+      options: [
+        {
+          id: 'night-corridor',
+          zh: '夜间干道 · 左右水墙、云火柱与两岸军队',
+          en: 'Night dry-seabed corridor · water walls, cloud-fire pillar & both hosts',
+          note: '呈现整夜大东风吹干的干海床通道（出 14:21–22）：以色列人持火光行在左右水墙之间，雅伟使者所在的云柱火柱转到营后挡住埃及军，面朝西发黑阻隔追兵、面朝东发光照亮干道（14:19–20；仅以云与火表达，不塑神形）。',
+          noteEn: 'Models the dry seabed path opened by the strong east wind (Exod 14:21–22): Israel advances between vertical water walls while the aniconic Pillar of Cloud and Fire stands between camps — dark to Egypt and shining light toward Israel (14:19–20).',
+        },
+        {
+          id: 'seabed-and-wheels',
+          zh: '一比一海床细看 · 水墙、海底砂石与脱落战车轮（出 14:25）',
+          en: '1:1 seabed detail · 4.2 m water wall & chariot with detached wheels (Exod 14:25)',
+          note: '将视角降到干涸海床地面，在 **1.72 米**参照人旁展示高耸的透明蓝绿水墙，以及陷在泥沙中车轮脱落的晚青铜时代埃及双轮战车（出 14:25）。',
+          noteEn: 'Drops to ground level beside a **1.72 m** human figure: a sheer 4.2 m translucent water wall beside seabed cobbles and a mired Late Bronze Age Egyptian chariot with detached six-spoke wheels (Exod 14:25).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '水墙的实际高度、海底干道的长度与宽度，以及过海的确切海湾湾口位置，出埃及记均未给出尺码；沙盘中的水墙与 4.2 米地面示意均按经文记述的相对比例构建。',
+        en: 'Water-wall height, dry corridor breadth and length, and the exact crossing embayment are unstated in Exodus; both diorama proportions and the 4.2 m 1:1 wall study are schematic.',
+      },
+      {
+        zh: '经文记法老带了「六百辆特选的车和埃及所有的车」（出 14:7），未计全部兵员总数；模型在西岸摆出微缩战车列阵以表意，严格不作神明人形。',
+        en: 'Scripture counts 600 chosen chariots plus all the chariots of Egypt (Exod 14:7) without listing total cavalry numbers; only representative chariot silhouettes are placed, with zero anthropomorphic depiction of Yahweh.',
+      },
+    ],
+    punchZh: '一面吹起干地，一面把 **左右海水立作墙垣**——更在两营之间立起 **一面黑暗、一面发光的云火柱**，把追赶的 **六百辆特选战车** 拖到车轮脱落。',
+    punchEn: 'Not merely shallow water: **walls of sea to left and right**, a dry seabed lane, and an **aniconic pillar of dark cloud and bright fire** standing between Israel and Pharaoh’s **600 chosen chariots**.',
+    compare: [
+      { zh: '近景水墙参照高度', en: 'Close-up water wall reference height', m: 4.2 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
+    id: 'sinai-covenant-pillars',
+    zh: '西乃山界限 · 密云烈火与十二支派柱子',
+    en: 'Mount Sinai Bounds, Cloud & Twelve Pillars',
+    ref: 'Exodus 19:18',
+    refZh: '出埃及记 19:18',
+    textZh: '西乃全山冒烟，因为雅伟在火中降于山上。山的烟气上腾，如烧窑一般，遍山大大的震动。',
+    textEn: 'And mount Sinai was altogether on a smoke, because Yahweh descended upon it in fire: and the smoke thereof ascended as the smoke of a furnace, and the whole mount quaked greatly.',
+    dims: [],
+    kind: 'sinaiBounds',
+    assumedHeight: 1.85,
+    counts: [
+      { zh: '立约清早在山下所筑石坛', en: 'Uncut stone altar built below Sinai', n: 1, ref: '出 24:4; 20:25', refEn: 'Exod 24:4; 20:25' },
+      { zh: '按以色列十二支派立的柱子', en: 'Standing pillars for the 12 tribes', n: 12, ref: '出 24:4', refEn: 'Exod 24:4' },
+      { zh: '盛血洒向坛与百姓的盆（成对记述）', en: 'Basins for covenant blood', n: 2, ref: '出 24:6', refEn: 'Exod 24:6' },
+    ],
+    variants: {
+      key: 'sinaiView',
+      zh: '场景焦点',
+      en: 'Focus',
+      options: [
+        {
+          id: 'mountain-bounds',
+          zh: '西乃全山冒烟 · 密云、烈火、闪电与四围定界限（出 19）',
+          en: 'Sinai in smoke and fire · cloud, lightning & perimeter bounds (Exod 19)',
+          note: '红赭色花岗石峰顶笼罩浓密雷云、烧窑般的浓烟、火焰与闪电（全按圣经戒命只绘云与火，绝不塑任何神形），山脚四围沿平原铺开不可逾越的石头界线（出 19:12, 23）。',
+          noteEn: 'Shows the granite massif crowned in thick thunderclouds, furnace-like smoke, fire and lightning (strictly aniconic), encircled at its base by the inviolable stone boundary cordon (Exod 19:12, 23).',
+        },
+        {
+          id: 'altar-twelve-pillars',
+          zh: '一比一立约石坛与十二根石柱 · 约书与血盆（出 24:4–7）',
+          en: '1:1 covenant altar & 12 tribal pillars · Book of the Covenant (Exod 24:4–7)',
+          note: '按 **1.72 米**人身比例在山脚摆开出 24:4 场景：不动铁器（出 20:25）叠起的天然山石祭坛、代表以色列十二支派半圆排开的十二根粗琢石柱、两个铜血盆与摊开的约书。',
+          noteEn: 'At 1:1 scale beside a 1.72 m reference figure: the altar built of unhewn natural fieldstones (Exod 20:25), 12 granite pillars raised around it for the 12 tribes, blood basins, and the open Book of the Covenant (24:4–7).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '西乃山哪一座具体山峰对应出埃及记的何烈山、界限距山脚多少步、以及出 24:4 十二根柱子的高度（图中取约 1.5–1.85 米人高近尺）均未载明。',
+        en: 'Which southern Sinai massif corresponds to Mount Sinai, the boundary radius at its foot, and the exact height of the 12 standing pillars (shown near human stature ~1.5–1.85 m) are unstated in Exodus.',
+      },
+      {
+        zh: '申命记明确警告百姓在何烈山火中「没有看见什么形像」（申 4:15）；本模型严格不塑任何神明形象，只表现密云、浓烟、火焰、闪电与不可触摸的山界。',
+        en: 'Deuteronomy 4:15 explicitly stresses Israel "saw no manner of similitude" in the fire at Horeb; strictly no bodily form appears here — only cloud, smoke, fire, lightning and the mountain bounds.',
+      },
+    ],
+    punchZh: '一面是在山顶 **如烧窑冒烟的火与不可近前的界限**，一面是在山下清早 **一座未动铁器的石坛和十二根按支派立起的柱子**——律法与立约在同一座山脚同时立定。',
+    punchEn: 'Above: **aniconic cloud, furnace smoke, fire and strict mountain bounds**. Below at dawn: **one unhewn altar and twelve standing stone pillars**, one for each tribe of Israel.',
+    compare: [
+      { zh: '十二支派柱子参照高度', en: 'Twelve standing pillars (approx. height)', m: 1.85 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
+    id: 'songs-of-ascents-zion',
+    zh: '上行之诗 · 登雅伟的山与十五级台阶',
+    en: 'Songs of Ascents · Going Up to Zion',
+    ref: 'Psalms 122:4',
+    refZh: '诗篇 122:4',
+    textZh: '众支派，就是雅伟的支派，上那里去，按以色列的常例称赞雅伟的名。',
+    textEn: 'Whither the tribes go up, the tribes of Yahweh, unto the testimony of Israel, to give thanks unto the name of Yahweh.',
+    dims: [],
+    kind: 'zionAscent',
+    assumedHeight: 3.15,
+    counts: [
+      { zh: '上行之诗篇数（诗 120 至 134 篇）', en: 'Songs of Ascents (Pss 120–134)', n: 15, ref: '诗 120–134 题注', refEn: 'Pss 120–134 titles' },
+      { zh: '传统所记圣殿门前十五级台阶（密西拿）', en: 'Traditional 15 steps before sanctuary court (Mishnah)', n: 15, ref: '诗 122; 尺寸篇 2:5', refEn: 'Ps 122; Middot 2:5' },
+    ],
+    variants: {
+      key: 'zionAscentView',
+      zh: '展示视角',
+      en: 'View',
+      options: [
+        {
+          id: 'pilgrim-climb',
+          zh: '登锡安山地形沙盘 · 西罗亚池沿俄斐勒阶梯上圣殿山',
+          en: 'Topographic ascent relief · Siloam pool climbing Ophel spur to Temple gates',
+          note: '从南端低谷的西罗亚池出发，沿着俄斐勒山脊石灰石阶道一级级爬上北端的圣殿山门垣；沿路点亮十五座金色灯台标石，呼应诗篇 120–134 共十五篇「上行之诗」。',
+          noteEn: 'Follows the pilgrim climb from the lower Pool of Siloam up the stepped limestone Ophel ridge to the Temple gates at the crest, marked by 15 golden lamp markers matching the 15 Songs of Ascents (Pss 120–134).',
+        },
+        {
+          id: 'fifteen-steps',
+          zh: '一比一十五级半圆石阶 · 利未人在阶上歌颂（诗 134）',
+          en: '1:1 fifteen semicircular steps · Levites singing on the ascents (Ps 134)',
+          note: '按约 3.15 米总爬升呈现半圆扇形展铺的十五级耶路撒冷石灰石台阶与双扇铜金殿门（阶数见犹太传统口传对照，短发利未人站在不同石阶上持竖琴颂赞）。',
+          noteEn: 'At 1:1 scale beside a 1.72 m reference figure: 15 concentric limestone steps (~3.15 m total rise) rising to sanctuary portals, with four short-haired Levites playing lyres along the steps.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '诗篇 120–134 共有十五篇题记「上行之诗」，至于当时众支派朝圣是边走山路上耶路撒冷（诗 122:2–4），还是《密西拿·尺寸篇》2:5 与《圣殿节期篇》5:4 所记利未人在圣殿十五级半圆石阶上分班高唱这十五篇诗，经文本身没有注明；模型用两个视角同时说明。',
+        en: 'Psalms 120–134 bear 15 "Song of Ascents" headings, without specifying whether they were sung climbing the roads/Ophel ridge to Jerusalem (Ps 122:2–4) or by Levites on the 15 semicircular courtyard steps remembered in Mishnah Middot 2:5; both are shown.',
+      },
+      {
+        zh: '每级台阶踏步宽与踢面高（0.21 米 × 15 ≈ 3.15 米）属建筑参照尺度，人物发式一律短发（林前 11:14）。',
+        en: 'Step riser height (~0.21 m × 15 ≈ 3.15 m) is an architectural assumption; all male figures are rendered short-haired (1 Cor 11:14).',
+      },
+    ],
+    punchZh: '一共 **十五篇上行之诗**，一路从谷底水池爬上锡安门垣——每走一段路、每迈上一级台阶，诗行都把眼睛从四周高山再抬高一点，直到站在雅伟的殿门口（诗 121:1；122:1）。',
+    punchEn: 'Exact **15 Songs of Ascents**: a steady physical and spiritual climb up the limestone ridge toward the gates of Yahweh’s house — whether read on the **Ophel road** or across **15 semicircular steps**.',
+    compare: [
+      { zh: '十五级台阶总升高度（约）', en: 'Fifteen steps total rise (approx.)', m: 3.15 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
+    id: 'isaiah-throne-vision',
+    zh: '以赛亚书六章 · 高高宝座、衣裳与六翼撒拉弗',
+    en: "Isaiah 6 Temple Vision & Seraphim",
+    ref: 'Isaiah 6:1',
+    refZh: '以赛亚书 6:1',
+    textZh: '当乌西雅王崩的那年，我见主坐在高高的宝座上。他的衣裳垂下，遮满圣殿。',
+    textEn: 'In the year that king Uzziah died I saw also Yahweh sitting upon a throne, high and lifted up, and his train filled the temple.',
+    dims: [
+      { key: 'hekhal-w', zh: '圣殿内殿宽（参照王上 6:2）', en: 'Sanctuary inner breadth (ref. 1 Kgs 6:2)', cubits: 20, ref: '赛 6:1; 王上 6:2', refEn: 'Isa 6:1; 1 Kgs 6:2' },
+      { key: 'hekhal-h', zh: '圣殿高度参照（约 20–30 肘）', en: 'Sanctuary height frame', cubits: 20, ref: '赛 6:1, 4', refEn: 'Isa 6:1, 4' },
+    ],
+    kind: 'isaiahThrone',
+    counts: [
+      { zh: '每个撒拉弗身上的翅膀数（两遮脸、两遮脚、两飞翔）', en: 'Wings on each Seraph (2 face, 2 feet, 2 fly)', n: 6, ref: '赛 6:2', refEn: 'Isa 6:2' },
+      { zh: '从香坛取到以赛亚嘴边的红炭', en: 'Live coal lifted from altar with tongs', n: 1, ref: '赛 6:6–7', refEn: 'Isa 6:6–7' },
+    ],
+    variants: {
+      key: 'isaiahView',
+      zh: '展示范围',
+      en: 'View',
+      options: [
+        {
+          id: 'high-throne-train',
+          zh: '内殿剖面 · 高高宝座辉光、衣裳遮满殿地、浓烟门槛与六翼撒拉弗',
+          en: 'Cutaway sanctuary · aniconic glory above high throne, train filling floor & 6-winged Seraphim',
+          note: '按王上 6:2 二十肘宽圣殿比例切开东侧壁面：高耸台阶宝座上**绝不塑人形**，仅以纯白与精金圣光环表达荣光；深紫金边衣摆沿阶垂落遮满二十肘殿地；左右两位撒拉弗各按「两翼遮脸、两翼遮脚、两翼飞翔」（赛 6:2）建造，殿内香烟上升（6:4）。',
+          noteEn: 'Opens the 20-cubit sanctuary (1 Kgs 6:2): stepped high throne crowned strictly with aniconic radiance (no bodily form), purple-gold hem folds filling the golden floor, smoking incense altar and threshold posts (Isa 6:4), and two 6-winged Seraphim — upper pair crossed over face, lower pair covering feet, middle pair spread in flight (6:2).',
+        },
+        {
+          id: 'altar-live-coal',
+          zh: '圣所香坛与火剪 · 撒拉弗挟红炭飞来（赛 6:6）',
+          en: 'Smoking altar & bronze tongs · Seraph lifting live coal (Isa 6:6)',
+          note: '放大呈现正在冒烟的香坛与红炭火盘、伸出红炭的长铜火剪，以及一旁双翼遮脸、双翼遮脚、展翅凌空的六翼撒拉弗——随时响应滑块改变肘长标准。',
+          noteEn: 'Focuses on the smoking horned altar heaped with glowing coals, bronze tongs lifting one live coal, and a hovering six-winged Seraph; resizes dynamically with the cubit slider.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '以赛亚书六章没有开出宝座、撒拉弗或台阶的肘数；模型借用所罗门圣殿内殿二十肘宽的实地建筑背景（王上 6:2），把异象的宝座与「遮满圣殿」的衣裳摆进真实殿堂空间，故会随上方肘尺滑块缩放。',
+        en: 'Isaiah 6 states no cubit numbers for the throne or Seraphim; because the vision explicitly takes place inside the Jerusalem sanctuary threshold (Isa 6:1, 4), the 20-cubit temple hall of 1 Kgs 6:2 provides the cubit-reactive architectural frame.',
+      },
+      {
+        zh: '严守不以人形绘神的原则：高高宝座上只作圣洁光芒与光环；撒拉弗虽在异象中有手、面与脚的记述（6:2, 6），模型令其上两翼严实遮脸、下两翼严实遮脚，保持肃穆敬畏的徽记形态。',
+        en: 'Strictly aniconic regarding Yahweh: only pure radiance sits upon the elevated throne, while each Seraph keeps its upper pair of wings folded completely across its head/face and lower pair over its feet exactly as Isaiah 6:2 describes.',
+      },
+    ],
+    punchZh: '六章全章记下最精准的身体秩序：宝座只见至高荣光与 **垂下遮满圣殿的衣裳**；而在左右侍立的撒拉弗连六个翅膀都有严格分工——**两翼遮脸、两翼遮脚，只有两翼用来飞**。',
+    punchEn: 'Every detail follows the holiness of the room: an **aniconic throne** whose train fills the 20-cubit sanctuary floor, flanked by **Seraphim using 4 of their 6 wings for reverence** (covering face and feet) and only 2 to fly.',
+    compare: [
+      { zh: '圣殿内殿宽（20 普通肘）', en: 'Sanctuary inner width (20 cubits)', m: 8.9 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
+    id: 'nineveh-three-days',
+    zh: '尼尼微大城三日路程与约拿城东的棚',
+    en: 'Nineveh & Jonah’s Eastward Booth',
+    ref: 'Jonah 3:3',
+    refZh: '约拿书 3:3',
+    textZh: '约拿便照雅伟的话起来，往尼尼微去。这尼尼微是极大的城，有三日的路程。',
+    textEn: 'So Jonah arose, and went unto Nineveh, according to the word of Yahweh. Now Nineveh was an exceeding great city of three days’ journey.',
+    dims: [
+      { key: 'basin-w', zh: '沙盘底格里斯河谷东西跨度', en: 'Upper Tigris basin relief east–west span', cubits: 90, ref: '拿 3:3; 4:5', refEn: 'Jonah 3:3; 4:5' },
+      { key: 'basin-h', zh: '沙盘南北跨度（含东面丘陵）', en: 'North–south basin relief span', cubits: 88, ref: '拿 3:3–4', refEn: 'Jonah 3:3–4' },
+    ],
+    kind: 'ninevehRelief',
+    unit: {
+      zh: '公里',
+      en: 'km',
+      m: 1000,
+      note: '底格里斯河东岸尼尼微古城遗址至东部山丘的实测地理跨度。',
+      noteEn: 'Georeferenced span across the Upper Tigris river plain at Nineveh and its eastern hills.',
+    },
+    counts: [
+      { zh: '形容尼尼微极大的路程日数', en: 'Days’ journey across Nineveh', n: 3, ref: '拿 3:3', refEn: 'Jonah 3:3' },
+      { zh: '约拿初进城宣告的日数', en: 'Days’ journey Jonah walked in declaring judgement', n: 1, ref: '拿 3:4', refEn: 'Jonah 3:4' },
+      { zh: '城中不能分辨左手右手的人口下限', en: 'Population unable to tell right hand from left (minimum)', n: 120000, ref: '拿 4:11', refEn: 'Jonah 4:11' },
+      { zh: '全城闻警宣告禁食回转的限期天数', en: 'Days warned until overthrow ("yet 40 days")', n: 40, ref: '拿 3:4', refEn: 'Jonah 3:4' },
+    ],
+    variants: {
+      key: 'ninevehView',
+      zh: '展示视角',
+      en: 'View',
+      options: [
+        {
+          id: 'walled-metropolis',
+          zh: '尼尼微地形沙盘 · 底格里斯河、十五城门垣、一日入城路与城东山冈',
+          en: 'Tigris basin relief · walled city (15 gates), 1-day entry & east hill',
+          note: '按实测经纬度（43.15°E, 36.36°N）画出流经城西的底格里斯河、护城土墙与十五座大城门轮廓、古运吉克宫殿台地、入城走了一日的金色轴线（拿 3:4），以及约拿出城所坐的东面高坡（拿 4:5）。',
+          noteEn: 'Georeferenced Upper Tigris relief showing the river along Nineveh’s western wall, its walled enclosure with 15 historic gate towers, Kuyunjik and Nebi Yunus mounds, the 1-day proclamation path (Jonah 3:4) and Jonah’s eastern overlook hill (4:5).',
+        },
+        {
+          id: 'jonah-booth',
+          zh: '一比一城东的棚 · 蓖麻荫凉与黎明虫咬枯萎（拿 4:5–8）',
+          en: '1:1 booth east of Nineveh · gourd shade & withered base (Jonah 4:5–8)',
+          note: '把镜头拉进城东土台，并立在 **1.72 米**参照人旁：四根粗木搭起稀疏透光的枝条小棚、雅伟神安排迅速长起遮顶的一棵宽叶蓖麻（兼标茎基遭虫咬与迎向东风焦枯的边缘叶，拿 4:6–8），远眺西边低谷城墙线。',
+          noteEn: 'At 1:1 scale beside a 1.72 m reference figure on the eastern terrace: Jonah’s gappy 4-post branch booth (Jonah 4:5), the towering broad-leaved gourd overhead showing both cool shade and the worm-gnawed stem base / east-wind scorched edge (4:6–8), looking west toward the distant city wall.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '「三日的路程」究竟指绕城一圈或贯穿大尼尼微行政都会区的总步行距离（现代发掘尼尼微内城墙周长约 12 公里、十五座门，而包含周边附郭村镇的大尼尼微都区约合古代三日步行），学者向有两解；沙盘内墙框按地形放大以便看清城内丘阜与西岸大河。',
+        en: 'Whether "three days’ journey" denotes the greater Nineveh administrative triangle (~50–90 km, inside which >120,000 people dwelt) or ceremonial diplomatic inspection of the walled inner city (~12 km wall circuit with 15 gates) is debated; the inner rampart is enlarged relative to the basin relief for clarity.',
+      },
+      {
+        zh: '拿 4:5 所搭之棚与 4:6「蓖麻」（希伯来文 qiqayon，多考为高大宽叶蓖麻树）的具体尺寸经文未记；1:1 棚景高约 1.9–2.3 米属生活比例还原。',
+        en: 'Dimensions of the eastern booth (Jonah 4:5) and rapid gourd vine (Hebrew qiqayon, 4:6) are unstated; the 1:1 terrace model uses domestic human scale (~1.9–2.3 m).',
+      },
+    ],
+    punchZh: '一面是底格里斯河畔 **容纳超过十二万不能分辨左右手之人、三日路程方能走尽** 的亚述大城；另一面却是城东山坡上 **一间漏风草棚与一棵一夜长成又一夜枯干的蓖麻**——经文故意用两套极端大小对比出一先知的狭隘与神对全城的怜惜。',
+    punchEn: 'Side by side on one card: the **Tigris river metropolis** of **>120,000** souls on a **three days’ journey** scale, and **one fragile branch booth** shaded by a single gourd plant — setting Jonah’s smallness against Yahweh’s mercy.',
+    compare: [
+      { zh: '底格里斯河谷与东坡沙盘跨度', en: 'Nineveh basin relief span', m: 90_000 },
+      { zh: '尼尼微城东草棚与蓖麻（约高）', en: 'Jonah’s booth & gourd (1:1 approx.)', m: 2.3 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
+    id: 'beatitudes-multitude',
+    zh: '山上的宝训与五千人草地分坐沙盘',
+    en: 'Mount of Beatitudes Amphitheatre Relief',
+    ref: 'Matthew 5:1',
+    refZh: '马太福音 5:1',
+    textZh: '耶稣看见这许多的人，就上了山，既已坐下，门徒到他跟前来，',
+    textEn: 'And seeing the multitudes, he went up into a mountain: and when he was set, his disciples came unto him:',
+    dims: [],
+    kind: 'beatitudesHillside',
+    counts: [
+      { zh: '上山就近他的门徒', en: 'Disciples gathering beside him', n: 12, ref: '太 5:1; 10:1–4', refEn: 'Matt 5:1; 10:1–4' },
+      { zh: '马太五至七章登山宝训所记八福条目', en: 'Beatitudes opening the discourse', n: 8, ref: '太 5:3–10', refEn: 'Matt 5:3–10' },
+      { zh: '后来绿草地分坐的男人人数（另有妇女儿童）', en: 'Men later fed on the green grass (besides women & children)', n: 5000, ref: '太 14:21; 可 6:40', refEn: 'Matt 14:21; Mark 6:40' },
+      { zh: '收拾剩下零碎装满的篮子', en: 'Baskets full of gathered fragments', n: 12, ref: '太 14:20', refEn: 'Matt 14:20' },
+    ],
+    variants: {
+      key: 'beatitudesView',
+      zh: '山地视角',
+      en: 'Hillside view',
+      options: [
+        {
+          id: 'hillside-seat',
+          zh: '山上座位 · 从玄武石座向下俯瞰整片面向加利利海的听众',
+          en: 'Teacher’s basalt seat · looking down the natural amphitheatre toward Galilee',
+          note: '遵守设计原意（「你坐在他坐的地方，看见那群人」）：高处深灰玄武石座上只留一件叠放的麻布外衣（不塑耶稣面容），十二位短发门徒围坐近旁，顺着面向碧蓝加利利海的青草斜坡一层层坐满倾听的群众（太 5:1–2）。',
+          noteEn: 'Places the viewer at the crest basalt seat (bearing only a folded linen cloak — no facial sculpture of Jesus) encircled by 12 short-haired disciples, looking down the green grassy slope toward the Sea of Galilee and the gathered multitude (Matt 5:1–2).',
+        },
+        {
+          id: 'five-thousand-ranks',
+          zh: '青草地一排一排坐下 · 五饼二鱼、百人与五十人方阵及十二个篮子（太 14:19–21；可 6:40）',
+          en: 'Companies of 100s & 50s on green grass · 5 loaves, 2 fish & 12 baskets (Matt 14:19–21)',
+          note: '切换成五千人吃饱时刻：草坡上的群众按马可福音 6:40 整齐分成「一百的、五十的」一排一排方阵（每组队列清楚分明）；上方石盘放着五个大麦饼与两条鱼，左右摆开装满剩零碎的十二个提篮（太 14:17, 20）。',
+          noteEn: 'Re-arranges the hillside crowd into the ordered green-grass companies of 100s and 50s described in Mark 6:40 / Matt 14:19, placing 5 loaves, 2 fish and all 12 full baskets beside the crest seat (Matt 14:17, 20).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '太 5:1 与可 6:40 / 太 14:19 都记述了面对加利利海青草坡面的天然露天剧场式地形，但经文并未定出「那山」的海拔高度或斜坡面积；沙盘人群点位按比例示意「许多人 / 一排一排有一百的有五十的」，而非逐一摆出五千个独立模型。',
+        en: 'Neither the exact hill coordinates above Galilee nor slope area are stated in Matthew 5:1 or 14:19; crowd ranks are scaled schematically around the 12 disciples and ordered 50/100 groups.',
+      },
+      {
+        zh: '全场景不雕琢耶稣五官容貌：仅以山巅玄武石座与身旁十二短发门徒确定讲话人的视角位置，让读者自己站在山顶看见下方直到湖岸的人群。',
+        en: 'No procedural facial portrait of Jesus is sculpted; the upper basalt boulder and linen mantle establish the speaker’s vantage point looking out over disciples, hillside crowd and lake.',
+      },
+    ],
+    punchZh: '从山坡高处的玄武石座往下看，整面斜坡就是一座天然回音剧场：**背后是青草与风声，脚下一直延伸到加利利海面**；无论宝训还是分坐 **一百的、五十的**，都在这张山海坡地上发生。',
+    punchEn: 'From the speaker’s basalt boulder down to the blue Sea of Galilee, the grassy slope acts as one natural amphitheatre — both for **the Beatitudes** and for the ordered companies with **12 gathered baskets**.',
+    compare: [
+      { zh: '展示沙盘跨度（加利利山坡）', en: 'Galilee hillside diorama span', m: 12.2 },
+      { zh: '一个成年人（比例参照）', en: 'Adult human (scale reference)', m: 1.72 },
+    ],
+  },
+  {
+    id: 'galilee-storm-boat',
+    zh: '加利利海风浪中的渔船与船尾枕头',
+    en: 'Galilee Boat in Storm & Great Calm',
+    ref: 'Mark 4:37',
+    refZh: '马可福音 4:37',
+    textZh: '忽然起了暴风，波浪打入船内，甚至船要满了水。',
+    textEn: 'And there arose a great storm of wind, and the waves beat into the ship, so that it was now full.',
+    dims: [
+      { key: 'hull-l', zh: '一世纪加利利海木船参照船长（基诺萨遗址）', en: '1st-century Galilee boat length (Ginosar hull ref.)', cubits: 8.2, ref: '可 4:37（考古参照）', refEn: 'Mark 4:37 (arch. ref.)' },
+      { key: 'hull-w', zh: '船腹最大宽度', en: 'Beam width', cubits: 2.3, ref: '可 4:37（考古参照）', refEn: 'Mark 4:37 (arch. ref.)' },
+      { key: 'hull-h', zh: '船舷深', en: 'Hull depth', cubits: 1.2, ref: '可 4:37（考古参照）', refEn: 'Mark 4:37 (arch. ref.)' },
+    ],
+    kind: 'galileeBoat',
+    unit: {
+      zh: '米',
+      en: 'm',
+      m: 1,
+      note: '马可福音未给出船只尺寸；采用加利利湖西北岸（基诺萨 / Kinneret）出土的一世纪同年代渔船实测尺寸（约 8.2 × 2.3 × 1.2 米）作为物理尺度。',
+      noteEn: 'Mark gives no dimensions for the boat; this 1:1 model uses the real measurements of the excavated 1st-century Sea of Galilee boat from Ginosar (~8.2 × 2.3 × 1.2 m).',
+    },
+    counts: [
+      { zh: '可 4:37–38 记载在船尾睡觉所垫的物件（枕头）', en: 'Cushion in the stern (Mark 4:38)', n: 1, ref: '可 4:38', refEn: 'Mark 4:38' },
+      { zh: '船内可见的橡木肋骨框架（考古参照）', en: 'Oak hull frame ribs (Ginosar ref.)', n: 12, ref: '可 4:37（考古参照）', refEn: 'Mark 4:37 (arch. ref.)' },
+      { zh: '每侧划桨（配四支长木桨）', en: 'Wooden rowing oars', n: 4, ref: '可 4:37', refEn: 'Mark 4:37' },
+    ],
+    variants: {
+      key: 'galileeBoatView',
+      zh: '海况瞬间',
+      en: 'Sea state',
+      options: [
+        {
+          id: 'storm-waves',
+          zh: '暴风骇浪 · 浪头打过左舷、船舱积水与船尾枕头（可 4:37–38）',
+          en: 'Great squall · breaking waves over gunwale, flooded bilge & stern cushion (Mark 4:37–38)',
+          note: '木船仅 8.2 米长、舷高 1.2 米：迎着突然从戈兰山谷猛冲下来的狂风大浪剧烈倾斜，白沫浪头正翻过左船舷灌入敞开的腰舱（可 4:37），主桅已放倒缚在座板上，高起的船尾甲板下只见那个编织枕头（可 4:38，不塑耶稣面容）。',
+          noteEn: 'At full 1:1 scale (only 8.2 m long, 1.2 m hull depth!), the cedar hull heels in a steep Galilee trough as foam breaks over the port gunwale into the open bilge (Mark 4:37), the lowered mast lashed along the thwarts and the woven stern cushion resting under the raised stern deck (4:38 — zero figure of Jesus sculpted).',
+        },
+        {
+          id: 'great-calm',
+          zh: '风止大静 · 镜面湖水上静立，细看一世纪香柏橡木船体（可 4:39）',
+          en: 'Great calm · glass-smooth Galilee water & full timber frame inspection (Mark 4:39)',
+          note: '斥责风与海之后「大大地平静了」（可 4:39）：船身平正浮在如镜水面，桅杆重新立起，旁边立着 **1.72 米**普通人身高对照，能清楚感受一条能坐十几个渔夫的船实际有多浅多小。',
+          noteEn: 'After "Peace, be still!" comes "a great calm" (Mark 4:39): level on mirror-still water with stepped mast beside the 1.72 m figure — making clear just how shallow a 1.2 m open hull feels in a sudden squall.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '**马可福音本身没有记录船的长宽高尺寸**，只指明这是一只小渔船，有可放倒的帆具或桨、有水打入舱内、还有高出水面可供躺卧垫头的船尾（「船尾上，枕着枕头」，可 4:38）。上方 **8.2 × 2.3 × 1.2 米** 取自 1986 年在加利利湖边基诺萨出土的公元一世纪木船实物。',
+        en: '**Mark records no linear measurements** for the boat, stating only that it carried disciples across the lake, took waves into its open hull, and had a stern with a cushion (Mark 4:37–38). The **8.2 × 2.3 × 1.2 m** hull derives from the excavated 1st-century Kinneret/Ginosar boat.',
+      },
+      {
+        zh: '严守不轻率用低模雕出耶稣面像的原则，模型只实做船尾甲板下那一只「枕头」，让你站在 **1.72 米**高人的旁边亲眼测量船舷究竟离浪面有多近。',
+        en: 'Following the policy against low-poly facial depictions of Jesus, only the stern cushion beneath the raised stern deck is modelled, letting the 1.72 m reference figure reveal the exact freeboard height.',
+      },
+    ],
+    punchZh: '船身只有 **八米二长、一米二深**：在旁边站一个 **1.72 米** 的人就会立刻明白，为什么戈兰谷口突然吹下一阵狂风，浪头轻易就能直接漫过齐腰的船舷，让全船「就要满了水」。',
+    punchEn: 'Only **8.2 m long and 1.2 m deep** beside a **1.72 m** human — standing next to the real gunwale height immediately explains why a sudden downslope squall could fill an open boat in minutes.',
+    compare: [
+      { zh: '一世纪加利利渔船长（考古参照）', en: '1st-century Galilee boat length (arch. ref.)', m: 8.2 },
+      { zh: '木船船腹最大宽度', en: 'Boat beam width', m: 2.3 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+      { zh: '船舷总深（近齐人胸）', en: 'Hull depth (only chest-high)', m: 1.2 },
+    ],
+  },
+  {
+    id: 'bethlehem-manger',
+    zh: '伯利恒石屋与石灰石马槽（无牛驴臆测）',
+    en: 'Bethlehem Guest-Room House & Stone Manger',
+    ref: 'Luke 2:7',
+    refZh: '路加福音 2:7',
+    textZh: '就生了头胎的儿子，用布包起来，放在马槽里，因为客店里没有地方。',
+    textEn: 'And she brought forth her firstborn son, and wrapped him in swaddling clothes, and laid him in a manger; because there was no room for them in the inn.',
+    dims: [],
+    kind: 'bethlehemManger',
+    assumedHeight: 3.63,
+    counts: [
+      { zh: '路 2:7–12 实际点名的三件实在事物（婴孩所裹的布、马槽、已满的客店）', en: 'Three things actually named (swaddling cloth, manger, crowded guest room)', n: 3, ref: '路 2:7, 12', refEn: 'Luke 2:7, 12' },
+      { zh: '牛与驴在四卷福音书中的出现次数（零次）', en: 'Oxen and donkeys mentioned at the manger in Scripture (zero)', n: 0, ref: '路 2:7', refEn: 'Luke 2:7' },
+    ],
+    variants: {
+      key: 'mangerView',
+      zh: '建筑视角',
+      en: 'View',
+      options: [
+        {
+          id: 'cutaway-house',
+          zh: '伯利恒两层犹大山地石屋剖面 · 满挤的楼上客房（κατάλυμα）与下层石柱喂槽间',
+          en: 'Cutaway Judean limestone house · packed upper guest room & lower stone-trough bay',
+          note: '拆去后世欧式木棚、牛与驴的浪漫加添：呈现实地常见的一世纪犹大山地两层石屋剖面。高出一米多的上层客房（κατάλυμα）已铺满旅人的卷席、行囊与水罐（「客店里没有地方」）；下方依山石底层石柱之间凿有整块石灰石槽，中心石槽铺草放着白细麻包布襁褓（不塑脸部）。',
+          noteEn: 'Replaces later European wooden-barn and ox/ass traditions with an authentic two-level 1st-century Judean limestone house cutaway: the raised guest room (katalyma) packed with traveler mats and jars ("no room"), and the lower rock-backed pillar bay holding monolithic carved limestone feeding troughs with folded swaddling cloth inside (zero ox/ass, zero sculpted face).',
+        },
+        {
+          id: 'stone-manger-detail',
+          zh: '一比一整块凿空石灰石马槽与系绳石柱 · 包布与希律时期陶油灯',
+          en: '1:1 chiselled limestone manger & tie-pier · swaddling bands & oil lamp',
+          note: '按一比一放在 **1.72 米**人旁细看：一世纪犹大地一带马槽多整块从厚重石灰石中凿空（约 0.95 × 0.58 米），并非欧洲木架草槽；槽旁立着带穿孔系绳眼的门柱石墩，上面点着一盏单嘴陶油灯，照亮槽里洁净的细麻包布。',
+          noteEn: 'At 1:1 scale beside the 1.72 m companion figure: a monolithic hollowed Judean limestone manger (~0.95 × 0.58 m — unlike timber troughs of medieval Europe), flanked by a drilled tethering pier with a Herodian clay oil lamp illuminating the clean linen swaddling cloth inside.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '**路加福音只记了三件事：用布包起来、放在马槽里、因为客店（κατάλυμα，民居高起的客房/客堂）里没有地方。** 牛、驴、高顶木仓房在整卷新约全无根据，因此本模型一头牛、一头驴都没有画。',
+        en: '**Luke mentions only swaddling clothes, a manger, and no room in the katalyma (guest chamber).** Oxen, donkeys, and northern timber barns do not appear anywhere in the text and are deliberately omitted.',
+      },
+      {
+        zh: '马槽尺寸（约 0.95 × 0.56 × 0.58 米）、两层犹大山地灰石民居高低落差（上层客房高约 1 米）系依据伯利恒、巴勒斯坦山地一世纪民居与米吉多、贝尔谢巴一带凿石喂槽考古实例复原，经文本身未记寸尺；不塑婴孩面孔。',
+        en: 'Trough size (~0.95 × 0.56 × 0.58 m) and two-level stone house geometry come from 1st-century Judean hill-country domestic archaeology and ancient carved limestone troughs rather than explicit measurements in Luke; zero facial features are sculpted.',
+      },
+    ],
+    punchZh: '经文只记下 **洁净包布、石头马槽、挤满人的上层客房**——牛和驴一只都不在场。一世纪犹大地的马槽通常就是从整块白色石灰石凿出来、安在民居下层石柱之间的厚实石槽。',
+    punchEn: 'Only **linen swaddling bands, a hollowed limestone trough, and a packed upper guest room** appear in Luke 2:7 — zero oxen, zero donkeys, and zero medieval wooden stable.',
+    compare: [
+      { zh: '伯利恒石屋剖面参照总高', en: 'Bethlehem stone house cutaway height', m: 3.63 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+      { zh: '凿空整石马槽长（考古参照）', en: 'Carved limestone manger length (arch. ref.)', m: 0.95 },
+    ],
+  },
+  {
+    id: 'paul-letters-network',
+    zh: '保罗十三卷书信收信城邑与地中海地形沙盘',
+    en: 'Paul’s Letters & Recipient Cities Relief',
+    ref: 'Romans 1:7',
+    refZh: '罗马书 1:7',
+    textZh: '我写信给你们在罗马、为神所爱、奉召作圣徒的众人。愿恩惠、平安从我们的父神并主耶稣基督归与你们！',
+    textEn: 'To all that be in Rome, beloved of God, called to be saints: Grace to you and peace from God our Father, and the Lord Jesus Christ.',
+    dims: [
+      { key: 'basin-ew', zh: '收信城邑东西跨度（罗马至加拉太）', en: 'Recipient span (Rome to Galatia)', cubits: 1950, ref: '罗–门', refEn: 'Rom–Phlm' },
+      { key: 'basin-ns', zh: '南北跨度（帖撒罗尼迦至革哩底 / 耶路撒冷）', en: 'North–south span (Thessalonica to Crete / Jerusalem)', cubits: 1120, ref: '帖前–多; 罗 15:25', refEn: '1 Thess–Titus; Rom 15:25' },
+    ],
+    kind: 'paulLettersRelief',
+    unit: {
+      zh: '公里',
+      en: 'km',
+      m: 1000,
+      note: '罗马、马其顿、亚该亚、亚西亚、加拉太与革哩底各收信教会之间的实测地理跨度。',
+      noteEn: 'Georeferenced Mediterranean distances across every city and island addressed by Paul’s thirteen epistles.',
+    },
+    counts: [
+      { zh: '保罗书信正典卷数（九卷致教会/地区、四卷致同工个人）', en: 'Canonical epistles of Paul (9 church/regional, 4 personal/pastoral)', n: 13, ref: '罗 1–门 1', refEn: 'Rom–Phlm' },
+      { zh: '写信最常驻留的三大中心（哥林多、以弗所、罗马）', en: 'Three major writing hubs (Corinth, Ephesus, Rome)', n: 3, ref: '徒 18–28; 罗 16:1', refEn: 'Acts 18–28; Rom 16:1' },
+    ],
+    variants: {
+      key: 'paulLettersView',
+      zh: '书信网层',
+      en: 'Epistle layer',
+      options: [
+        {
+          id: 'all-epistles',
+          zh: '全部十三封书信递送弧线 · 从哥林多、以弗所、马其顿与罗马分送八方',
+          en: 'All 13 epistles · dispatch arcs from Corinth, Ephesus, Macedonia & Rome',
+          note: '按实际山川海陆高程在每座收信城邑垒起红蜡封印的羊皮书卷（例如罗马一卷、哥林多两卷、加拉太一卷、以弗所三卷含提摩太上下、腓立比一卷、歌罗西两卷含腓利门、帖撒罗尼迦两卷、革哩底提多书一卷），金色、翠绿与朱红弧线飞越海湾与托鲁斯山地标明去向。',
+          noteEn: 'Stacks the exact number of wax-sealed scrolls on each attested destination city (Rome 1, Corinth 2, Galatia 1, Ephesus 3 incl. 1–2 Tim, Philippi 1, Colossae 2 incl. Phlm, Thessalonica 2, Crete 1) with arched dispatch lines over sea and Taurus highlands.',
+        },
+        {
+          id: 'prison-and-pastoral',
+          zh: '聚焦罗马监狱书信弧线 · 腓立比、以弗所、歌罗西（带老底嘉互念）、腓利门与提后',
+          en: 'Focus · Rome imprisonment arcs (Eph, Phil, Col, Phlm, 2 Tim)',
+          note: '淡化早期宣教行程书信，凸显亚庇乌尽头的罗马如何以朱红跨海高弧把四封监狱书信与提摩太后书送回腓立比、以弗所与吕科斯河谷的歌罗西（并旁标西 4:16 要与老底嘉互换宣读）。',
+          noteEn: 'Highlights the Roman dispatch arcs sweeping back across the Adriatic and Aegean to Philippi, Ephesus and Colossae/Laodicea (Col 4:16), plus 2 Timothy back to Ephesus.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '十三卷书信绝大多数在经文中显明了收信城邑或地区，但发信地点有一半以上（如哥林多后书、以弗所写加拉太或哥林多前书等）需比对使徒行传行踪与信末问安（如林前 16:8；罗 16:1；西 4:9）推定；加拉太书系写给南加拉太（以哥念、路司得一带）或北加拉太，沙盘兼标省区与南城枢纽。',
+        en: 'Destination cities are named in the letters themselves, whereas several dispatch origins (e.g. Corinth/Cenchreae for Romans, Ephesus for 1 Corinthians, Macedonia for 2 Corinthians, and Rome vs. Ephesus/Caesarea for the Prison Epistles) are inferred from Acts and closing greetings; South Galatian cities and Galatia province are both marked.',
+      },
+      {
+        zh: '跨海弧线高起仅为跨过安纳托利亚与希腊高山起伏而作立体视觉抬升，不代表实际航线走直线不靠港。',
+        en: 'Elevated parabolic courier arcs rise over mountain terrain purely for visual legibility rather than implying non-stop direct flights.',
+      },
+    ],
+    punchZh: '保罗十三卷书信占尽新约一多半篇幅，但它们原不是抽象论文，而是 **十三封真正坐船过山、写给八处实打实城邑与同工、按邮路送上手的信**。',
+    punchEn: 'Paul’s **13 letters** were never floating essays — they travelled over real Aegean straits, Macedonian roads and Lycus valleys between **eight concrete cities and islands**.',
+    compare: [
+      { zh: '罗马至加拉太东西跨度', en: 'Rome to Galatia east–west span', m: 1_950_000 },
+      { zh: '歌罗西至老底嘉互换书信仅隔（西 4:16）', en: 'Colossae to Laodicea letter exchange (Col 4:16)', m: 17_000 },
+    ],
+  },
+  {
+    id: 'dispersion-provinces-relief',
+    zh: '彼得前书五省分散寄居地形沙盘',
+    en: 'Five Provinces of 1 Peter 1:1 Relief',
+    ref: '1 Peter 1:1',
+    refZh: '彼得前书 1:1',
+    textZh: '耶稣基督的使徒彼得写信给那分散在本都、加拉太、加帕多家、亚西亚、庇推尼寄居的，',
+    textEn: 'Peter, an apostle of Jesus Christ, to the strangers scattered throughout Pontus, Galatia, Cappadocia, Asia, and Bithynia,',
+    dims: [
+      { key: 'anatolia-ew', zh: '小亚细亚东西全宽（爱琴海至黑海东部本都）', en: 'Anatolian east–west span (Aegean to eastern Pontus)', cubits: 1280, ref: '彼前 1:1', refEn: '1 Pet 1:1' },
+      { key: 'anatolia-ns', zh: '黑海至托鲁斯山脉南北跨度', en: 'Black Sea to Taurus north–south span', cubits: 680, ref: '彼前 1:1', refEn: '1 Pet 1:1' },
+    ],
+    kind: 'dispersionRelief',
+    unit: {
+      zh: '公里',
+      en: 'km',
+      m: 1000,
+      note: '黑海沿岸本都、中央高原加拉太与火山高地加帕多家、爱琴海东岸亚西亚与西北庇推尼的实测地形跨度。',
+      noteEn: 'Georeferenced relief span across northern, central and western Asia Minor.',
+    },
+    counts: [
+      { zh: '彼得前书开篇依顺时针所列的罗马行省数', en: 'Roman provinces named in clockwise order', n: 5, ref: '彼前 1:1', refEn: '1 Pet 1:1' },
+      { zh: '递送此信的书信执笔者 / 携信人（西拉）', en: 'Bearer / amanuensis named (Silvanus)', n: 1, ref: '彼前 5:12', refEn: '1 Pet 5:12' },
+    ],
+    variants: {
+      key: 'dispersionView',
+      zh: '阅读焦点',
+      en: 'Focus',
+      options: [
+        {
+          id: 'five-provinces-loop',
+          zh: '黑海登岸顺时针大环路 · 本都（1）→ 加拉太（2）→ 加帕多家（3）→ 亚西亚（4）→ 庇推尼（5）',
+          en: 'Clockwise courier loop · 1 Pontus -> 2 Galatia -> 3 Cappadocia -> 4 Asia -> 5 Bithynia',
+          note: '按 1 Peter 1:1 经文的点名次序与底层金环圈数（1 至 5 圈）：先从黑海西诺普 / 阿米苏港口上岸进入**本都**，翻越高山南入**加拉太、加帕多家**，再顺河谷西行抵达**亚西亚**（以弗所），最后北上**庇推尼**归海。',
+          noteEn: 'Marks the exact order of 1 Peter 1:1 with 1–5 stacked gold rings at each province: landing from the Black Sea into Pontus (1), crossing highland Galatia (2) and volcanic Cappadocia (3), descending to Asia (4) and turning north through Bithynia (5).',
+        },
+        {
+          id: 'anatolian-highlands',
+          zh: '全区山脉与高原对照 · 庞廷海岸山脉、安纳托利亚大高原、艾尔吉耶斯火山与托鲁斯南墙',
+          en: 'Highland barriers · Pontic Alps, Galatian steppe, Mt. Argaeus & Taurus wall',
+          note: '放淡路线管线，直观辨认这五个广袤行省之间为什么难以一步跨过——北边是险峻多雨的庞廷海岸山脊、当中是严寒干旷的安纳托利亚高原与加帕多家高地、南边阻着高耸的托鲁斯雪山。',
+          noteEn: 'Recedes the road tube so the physical barriers dividing the five provinces stand clear: forested Pontic coastal ridges in the north, the central plateau, Cappadocia’s eastern massif and the southern Taurus range.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '彼前 1:1 点的是五个涵盖百万平方公里级的辽阔罗马省分而非单一城名；沙盘上的标桩落在各省的历史地理核心位置（加帕多家与加拉太边界随罗马时期略有调整），虚金线所连乃是从黑海入山区的顺时针合理驿道顺序。',
+        en: '1 Peter 1:1 names five huge Roman provinces rather than individual towns; pins sit at historic provincial heartlands (Pontus, Galatia, Cappadocia, Asia, Bithynia), and the loop traces the clockwise courier route explaining why Pontus opens and Bithynia closes the list.',
+      },
+      {
+        zh: '垂直高差相对 1,280 公里横宽显著放大，使黑海海岸山脉、中土高原与加帕多家火山群峰手感清晰。',
+        en: 'Vertical elevation is exaggerated against the 1,280 km span so Pontic ridges, Anatolian tableland and Cappadocian peaks read tactilely.',
+      },
+    ],
+    punchZh: '彼得前书开头一串地理名词并非乱排：**本都、加拉太、加帕多家、亚西亚、庇推尼**，顺着地形画出来，恰好是一条**从黑海港口登录，顺时针绕遍整个小亚细亚高地与河谷**的不折返送信环路。',
+    punchEn: 'The order of provinces in 1 Peter 1:1 is not random: plotted across real Anatolian relief, **Pontus -> Galatia -> Cappadocia -> Asia -> Bithynia** traces an exact clockwise mail loop entering from the Black Sea.',
+    compare: [
+      { zh: '小亚细亚五省东西宽', en: 'Five provinces east–west width', m: 1_280_000 },
+      { zh: '黑海至托鲁斯山脉南北跨度', en: 'Black Sea to Taurus span', m: 680_000 },
     ],
   },
   {

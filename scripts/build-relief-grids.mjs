@@ -307,6 +307,55 @@ const asiaElev = (lon, lat, m) => {
   return clamp(h, 15, 2250);
 };
 
+// ── 5. ANATOLIA FIVE PROVINCES GRID (1 Peter 1:1) ─────────────────────────────
+const anatoliaElev = (lon, lat, m) => {
+  if (m === 0) return -60;
+  // Base steppe rises eastward across Anatolia
+  let h = 140 + 820 * smoothstep(27.2, 31.2, lon);
+  // Western Aegean valleys (Hermus / Maeander) opening to coast
+  if (lon < 29.5) {
+    const valCut = clamp(
+      gauss(lat - 38.52, 0.14) * 0.72 + gauss(lat - 37.84, 0.12) * 0.75,
+      0,
+      0.85,
+    );
+    h = h * (1 - valCut) + 75 * valCut;
+  }
+  // Pontic mountain belt along southern Black Sea shore (Pontus & Bithynia)
+  const ponticLat = 40.78 - Math.max(0, 38.5 - lon) * 0.03;
+  h += (780 + 720 * smoothstep(32.5, 39.5, lon)) * gauss(lat - ponticLat, 0.42) * smoothstep(29.0, 30.8, lon);
+  // Uludag (Mysian Olympus) & NW Bithynian ridges
+  h += 1450 * gauss(Math.hypot((lon - 29.22) * 0.85, lat - 40.07), 0.34);
+  // Central Galatian gentle hills & Sakarya / Halys basins
+  h += 320 * gauss(Math.hypot(lon - 32.85, lat - 39.65), 0.75);
+  // Cappadocian volcanic massif & Mount Argaeus (Erciyes ~3,917 m)
+  h += 880 * smoothstep(33.5, 37.5, lon) * smoothstep(37.4, 39.6, lat);
+  h += 2450 * gauss(Math.hypot((lon - 35.45) * 0.85, lat - 38.53), 0.38);
+  // Southern Taurus alpine barrier separating Galatia/Cappadocia from Cilicia
+  const taurusLat = 37.08 + Math.max(0, lon - 34.5) * 0.18;
+  h += 1650 * gauss(lat - taurusLat, 0.44) * smoothstep(29.2, 31.0, lon);
+  return clamp(h, 20, 3920);
+};
+
+// ── 6. UPPER TIGRIS & NINEVEH BASIN GRID (Jonah 3–4) ──────────────────────────
+const tigrisElev = (lon, lat, m) => {
+  // Approximate NW->SE Tigris channel line through Mosul / Nineveh (43.13E, 36.35N)
+  const riverLon = 42.84 + (36.52 - lat) * 0.82;
+  const distRiver = Math.abs(lon - riverLon);
+  const floodPlain = smoothstep(0.02, 0.16, distRiver);
+  let h = 215 + 52 * floodPlain;
+  // Khosr stream valley entering from NE across Nineveh plain
+  const khosr = gauss((lat - (36.36 + (lon - 43.16) * 0.52)), 0.032) * smoothstep(43.12, 43.48, lon);
+  h -= khosr * 18;
+  // Eastern foothills: Jebel Maqlub & Zagros outliers NE of Nineveh
+  h += 680 * smoothstep(43.25, 43.58, lon) * smoothstep(36.22, 36.62, lat);
+  h += 240 * gauss(Math.hypot(lon - 43.46, lat - 36.44), 0.12);
+  // Gentle rolling Assyrian gypsum ridge west of the Tigris
+  h += 135 * smoothstep(43.02, 42.72, lon) * smoothstep(36.1, 36.55, lat);
+  if (m === 2) return 208;
+  return clamp(h, 210, 1120);
+};
+
 const grids = {
   canaan: buildGrid({
     id: 'canaan',
@@ -360,6 +409,32 @@ const grids = {
     elevFn: asiaElev,
     riverRadiusDeg: 0.0,
   }),
+  anatolia: buildGrid({
+    id: 'anatolia',
+    cols: 68,
+    rows: 48,
+    bounds: [25.8, 36.0, 40.2, 42.4],
+    minM: -120,
+    maxM: 3950,
+    extraIslands: [
+      [26.54, 37.32, 0.1], // Patmos
+      [26.93, 37.71, 0.12], // Samos
+      [26.06, 38.44, 0.14], // Chios
+      [26.3, 39.18, 0.16], // Lesbos
+    ],
+    elevFn: anatoliaElev,
+    riverRadiusDeg: 0.0,
+  }),
+  upperTigris: buildGrid({
+    id: 'upperTigris',
+    cols: 64,
+    rows: 56,
+    bounds: [42.65, 35.95, 43.65, 36.75],
+    minM: 180,
+    maxM: 1150,
+    elevFn: tigrisElev,
+    riverRadiusDeg: 0.022,
+  }),
 };
 
 // ── Extract places & routes from canonical project JSONs ─────────────────────
@@ -399,6 +474,39 @@ const ASIA_CHURCH_ORDER = [
   { key: 'Philadelphia', id: 'philadelphia', zh: '非拉铁非', en: 'Philadelphia' },
   { key: 'Laodicea', id: 'laodicea', zh: '老底嘉', en: 'Laodicea' },
 ].map((c) => pickPt(c.key, c.id, c.zh, c.en));
+
+const PAUL_EPISTLE_SITES = [
+  pickPt('Rome', 'rome', '罗马', 'Rome'),
+  pickPt('Corinth', 'corinth', '哥林多', 'Corinth'),
+  pickPt('Cenchreae', 'cenchreae', '坚革哩', 'Cenchreae'),
+  pickPt('Ephesus', 'ephesus', '以弗所', 'Ephesus'),
+  pickPt('Philippi', 'philippi', '腓立比', 'Philippi'),
+  pickPt('Thessalonica', 'thessalonica', '帖撒罗尼迦', 'Thessalonica'),
+  pickPt('Colossae', 'colossae', '歌罗西', 'Colossae'),
+  pickPt('Laodicea', 'laodicea', '老底嘉', 'Laodicea'),
+  pickPt('Galatia', 'galatia', '加拉太', 'Galatia'),
+  pickPt('Iconium', 'iconium', '以哥念', 'Iconium'),
+  pickPt('Crete', 'crete', '革哩底', 'Crete'),
+  pickPt('Troas', 'troas', '特罗亚', 'Troas'),
+  pickPt('Caesarea', 'caesarea', '该撒利亚', 'Caesarea'),
+  pickPt('Jerusalem', 'jerusalem', '耶路撒冷', 'Jerusalem'),
+];
+
+const DISPERSION_SITES = [
+  pickPt('Pontus', 'pontus', '本都（一）', 'Pontus (1)'),
+  pickPt('Galatia', 'galatia', '加拉太（二）', 'Galatia (2)'),
+  pickPt('Cappadocia', 'cappadocia', '加帕多家（三）', 'Cappadocia (3)'),
+  pickPt('Asia', 'asia', '亚西亚（四）', 'Asia (4)'),
+  pickPt('Bithynia', 'bithynia', '庇推尼（五）', 'Bithynia (5)'),
+  pickPt('Ephesus', 'ephesus', '以弗所', 'Ephesus'),
+  pickPt('Iconium', 'iconium', '以哥念', 'Iconium'),
+  pickPt('Troas', 'troas', '特罗亚', 'Troas'),
+  pickPt('Antioch 1', 'antioch', '安提阿', 'Antioch'),
+];
+
+const NINEVEH_SITES = [
+  pickPt('Nineveh', 'nineveh', '尼尼微大城', 'Nineveh'),
+];
 
 const extractJourney = (id) => {
   const j = journeysDoc.journeys.find((x) => x.id === id);
@@ -470,11 +578,17 @@ export interface ReliefJourneyData {
   markers: ReliefJourneyMarker[];
 }
 
-export const RELIEF_GRIDS: Record<'canaan' | 'exodus' | 'paul' | 'asia', ReliefGridData> = ${JSON.stringify(grids)};
+export const RELIEF_GRIDS: Record<'canaan' | 'exodus' | 'paul' | 'asia' | 'anatolia' | 'upperTigris', ReliefGridData> = ${JSON.stringify(grids)};
 
 export const CANAAN_SITES: readonly ReliefSite[] = ${JSON.stringify(CANAAN_SITES)};
 
 export const ASIA_CHURCH_SITES: readonly ReliefSite[] = ${JSON.stringify(ASIA_CHURCH_ORDER)};
+
+export const PAUL_EPISTLE_SITES: readonly ReliefSite[] = ${JSON.stringify(PAUL_EPISTLE_SITES)};
+
+export const DISPERSION_SITES: readonly ReliefSite[] = ${JSON.stringify(DISPERSION_SITES)};
+
+export const NINEVEH_SITES: readonly ReliefSite[] = ${JSON.stringify(NINEVEH_SITES)};
 
 export const RELIEF_JOURNEYS: Record<'exodus' | 'paul1' | 'paul2' | 'paul3' | 'paulRome', ReliefJourneyData> = ${JSON.stringify(JOURNEY_DATA)};
 `;

@@ -39,15 +39,27 @@ import {
 import {
   buildAsiaChurchesRelief,
   buildCanaanAllotment,
+  buildDispersionRelief,
   buildExodusRelief,
   buildGerizimEbalRelief,
+  buildNinevehRelief,
   buildPaulJourneysRelief,
+  buildPaulLettersRelief,
 } from './relief-sandboxes.ts';
 import {
   buildArkUpToZion,
   buildGideonThreeHundred,
   buildJordanTwelveStones,
 } from './counted-scenes.ts';
+import {
+  buildBeatitudesHillside,
+  buildBethlehemManger,
+  buildGalileeBoat,
+  buildIsaiahThrone,
+  buildRedSeaCrossing,
+  buildSinaiBounds,
+  buildZionAscent,
+} from './gospel-and-prophetic-scenes.ts';
 
 interface BuildTex {
   gopherWood: THREE.CanvasTexture;
@@ -950,6 +962,36 @@ export function buildStructure(
 
     case 'arkToZion':
       return buildArkUpToZion(C, v === 'tent-of-david' ? 'tent-of-david' : 'six-paces');
+
+    case 'redSeaCrossing':
+      return buildRedSeaCrossing(C, v === 'seabed-and-wheels' ? 'seabed-and-wheels' : 'night-corridor');
+
+    case 'sinaiBounds':
+      return buildSinaiBounds(C, v === 'altar-twelve-pillars' ? 'altar-twelve-pillars' : 'mountain-bounds');
+
+    case 'zionAscent':
+      return buildZionAscent(C, v === 'fifteen-steps' ? 'fifteen-steps' : 'pilgrim-climb');
+
+    case 'isaiahThrone':
+      return buildIsaiahThrone(C, v === 'altar-live-coal' ? 'altar-live-coal' : 'high-throne-train');
+
+    case 'ninevehRelief':
+      return buildNinevehRelief(C, v === 'jonah-booth' ? 'jonah-booth' : 'walled-metropolis');
+
+    case 'beatitudesHillside':
+      return buildBeatitudesHillside(C, v === 'five-thousand-ranks' ? 'five-thousand-ranks' : 'hillside-seat');
+
+    case 'galileeBoat':
+      return buildGalileeBoat(C, v === 'great-calm' ? 'great-calm' : 'storm-waves');
+
+    case 'bethlehemManger':
+      return buildBethlehemManger(C, v === 'stone-manger-detail' ? 'stone-manger-detail' : 'cutaway-house');
+
+    case 'paulLettersRelief':
+      return buildPaulLettersRelief(C, v === 'prison-and-pastoral' ? 'prison-and-pastoral' : 'all-epistles');
+
+    case 'dispersionRelief':
+      return buildDispersionRelief(C, v === 'anatolian-highlands' ? 'anatolian-highlands' : 'five-provinces-loop');
 
     case 'cube':
       return buildNewJerusalem(s.unit?.m ?? 185);

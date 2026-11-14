@@ -2,6 +2,9 @@ import * as THREE from 'three';
 import {
   ASIA_CHURCH_SITES,
   CANAAN_SITES,
+  DISPERSION_SITES,
+  NINEVEH_SITES,
+  PAUL_EPISTLE_SITES,
   RELIEF_GRIDS,
   RELIEF_JOURNEYS,
   type ReliefGridData,
@@ -1082,6 +1085,425 @@ export function buildAsiaChurchesRelief(_C: number, variant: string): THREE.Grou
       addRouteTube(group, layout, v, { color: 0x2e7e9c, radius: 0.025, lift: 0.032, opacity: 0.72 });
     }
   }
+
+  return group;
+}
+
+// ── Shared Helper for Elevated Letter-Courier Arcs & Rolled Scrolls ──────────
+function addCourierArc(
+  parent: THREE.Group,
+  layout: TableLayout,
+  from: { lon: number; lat: number },
+  to: { lon: number; lat: number },
+  opts: { color: number; arcPeak?: number; radius?: number; opacity?: number },
+): void {
+  const [ax, az] = layout.toXZ(from.lon, from.lat);
+  const [bx, bz] = layout.toXZ(to.lon, to.lat);
+  const ay = layout.toY(from.lon, from.lat, 0.12);
+  const by = layout.toY(to.lon, to.lat, 0.12);
+  const dist = Math.hypot(bx - ax, bz - az);
+  const peak = opts.arcPeak ?? Math.max(0.45, Math.min(2.15, dist * 0.24));
+
+  const pts: THREE.Vector3[] = [];
+  const steps = 20;
+  for (let i = 0; i <= steps; i++) {
+    const u = i / steps;
+    const x = ax + (bx - ax) * u;
+    const z = az + (bz - az) * u;
+    const baseLinearY = ay + (by - ay) * u;
+    // Also clear any mountain peak beneath the parabolic flight path
+    const terrainFloor = layout.toY(
+      from.lon + (to.lon - from.lon) * u,
+      from.lat + (to.lat - from.lat) * u,
+      0.16,
+    );
+    const arcY = Math.max(baseLinearY, terrainFloor) + Math.sin(u * Math.PI) * peak;
+    pts.push(new THREE.Vector3(x, arcY, z));
+  }
+  const curve = new THREE.CatmullRomCurve3(pts);
+  const mat = new THREE.MeshStandardMaterial({
+    color: opts.color,
+    emissive: opts.color,
+    emissiveIntensity: opts.opacity && opts.opacity < 0.5 ? 0.16 : 0.48,
+    roughness: 0.28,
+    metalness: 0.3,
+    transparent: opts.opacity !== undefined && opts.opacity < 1,
+    opacity: opts.opacity ?? 1,
+  });
+  parent.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 36, opts.radius ?? 0.036, 8, false), mat));
+}
+
+function addScrollStack(
+  parent: THREE.Group,
+  x: number,
+  y: number,
+  z: number,
+  count: number,
+  color: number,
+  emberId?: number,
+): void {
+  const stack = new THREE.Group();
+  const parchmentMat = new THREE.MeshStandardMaterial({ color: 0xf0e3c4, roughness: 0.72 });
+  const endWoodMat = new THREE.MeshStandardMaterial({ color: 0x5c3b1e, roughness: 0.78 });
+  const sealMat = new THREE.MeshStandardMaterial({
+    color,
+    emissive: color,
+    emissiveIntensity: 0.45,
+    roughness: 0.35,
+  });
+  const pedestal = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.18, 0.21, 0.06, 16),
+    new THREE.MeshStandardMaterial({ color: 0x262d3d, metalness: 0.25, roughness: 0.6 }),
+  );
+  pedestal.position.y = 0.03;
+  stack.add(pedestal);
+
+  for (let i = 0; i < count; i++) {
+    const layer = Math.floor(i / 2);
+    const side = count === 1 ? 0 : (i % 2 === 0 ? -0.055 : 0.055);
+    const scroll = new THREE.Group();
+    const body = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.042, 0.28, 12), parchmentMat);
+    body.rotation.z = Math.PI / 2;
+    scroll.add(body);
+    for (const ex of [-0.155, 0.155]) {
+      const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.04, 8), endWoodMat);
+      cap.rotation.z = Math.PI / 2;
+      cap.position.x = ex;
+      scroll.add(cap);
+    }
+    const ribbon = new THREE.Mesh(new THREE.CylinderGeometry(0.046, 0.046, 0.035, 12), sealMat);
+    ribbon.rotation.z = Math.PI / 2;
+    scroll.add(ribbon);
+    scroll.position.set(0, 0.1 + layer * 0.082, side);
+    scroll.rotation.y = 0.25 + layer * 0.18;
+    if (i === count - 1 && typeof emberId === 'number') ribbon.userData.ember = emberId;
+    stack.add(scroll);
+  }
+  stack.position.set(x, y, z);
+  parent.add(stack);
+}
+
+// ── 6. Pauline Epistles & Courier Cities Relief (Romans–Philemon) ────────────
+export function buildPaulLettersRelief(_C: number, variant: string): THREE.Group {
+  const { group, layout } = createReliefTable(RELIEF_GRIDS.paul, {
+    targetSpan: 12.6,
+    maxReliefH: 1.32,
+    rockTint: 'med',
+  });
+  const site = (id: string) => PAUL_EPISTLE_SITES.find((s) => s.id === id)!;
+  const prisonOnly = variant === 'prison-and-pastoral';
+
+  // Color key: gold = early/mid-50s church letters; crimson = Roman imprisonment & 2 Tim; emerald = pastoral/Corinth hub
+  const routes: { from: string; to: string; color: number; isPrison: boolean; arcPeak: number }[] = [
+    // From Corinth / Cenchreae (Rom 16:1) & Thessalonica axis
+    { from: 'corinth', to: 'rome', color: 0xebb944, isPrison: false, arcPeak: 1.35 },
+    { from: 'corinth', to: 'thessalonica', color: 0xebb944, isPrison: false, arcPeak: 0.68 },
+    // From Ephesus & Macedonia across Aegean / Anatolia
+    { from: 'ephesus', to: 'corinth', color: 0x45b88a, isPrison: false, arcPeak: 0.72 },
+    { from: 'ephesus', to: 'iconium', color: 0x45b88a, isPrison: false, arcPeak: 0.85 },
+    { from: 'ephesus', to: 'galatia', color: 0x45b88a, isPrison: false, arcPeak: 0.92 },
+    { from: 'philippi', to: 'corinth', color: 0x45b88a, isPrison: false, arcPeak: 0.65 },
+    { from: 'philippi', to: 'ephesus', color: 0x45b88a, isPrison: false, arcPeak: 0.78 },
+    { from: 'corinth', to: 'crete', color: 0x45b88a, isPrison: false, arcPeak: 0.64 },
+    // Prison epistles & 2 Timothy dispatched out of Rome
+    { from: 'rome', to: 'philippi', color: 0xe36252, isPrison: true, arcPeak: 1.48 },
+    { from: 'rome', to: 'ephesus', color: 0xe36252, isPrison: true, arcPeak: 1.78 },
+    { from: 'rome', to: 'colossae', color: 0xe36252, isPrison: true, arcPeak: 2.02 },
+    { from: 'colossae', to: 'laodicea', color: 0xe36252, isPrison: true, arcPeak: 0.35 },
+  ];
+
+  for (const rt of routes) {
+    const active = !prisonOnly || rt.isPrison;
+    addCourierArc(group, layout, site(rt.from), site(rt.to), {
+      color: rt.color,
+      arcPeak: rt.arcPeak,
+      radius: active ? 0.044 : 0.02,
+      opacity: active ? 1 : 0.24,
+    });
+  }
+
+  // Destination cities with exact counts of Paul's surviving canonical letters addressed there:
+  // Rome (Rom=1), Corinth (1-2 Cor=2), Galatia/Iconium (Gal=1), Ephesus (Eph + 1-2 Tim=3),
+  // Philippi (Phil=1), Colossae (Col + Phlm=2), Thessalonica (1-2 Thess=2), Crete (Titus=1) => 13 letters!
+  const destinations: { id: string; n: number; color: number; prison: boolean }[] = [
+    { id: 'rome', n: 1, color: 0xebb944, prison: true },
+    { id: 'corinth', n: 2, color: 0x45b88a, prison: false },
+    { id: 'galatia', n: 1, color: 0x45b88a, prison: false },
+    { id: 'ephesus', n: 3, color: 0xe36252, prison: true },
+    { id: 'philippi', n: 1, color: 0xe36252, prison: true },
+    { id: 'colossae', n: 2, color: 0xe36252, prison: true },
+    { id: 'thessalonica', n: 2, color: 0xebb944, prison: false },
+    { id: 'crete', n: 1, color: 0x45b88a, prison: false },
+  ];
+
+  let emberIdx = 1;
+  destinations.forEach((d) => {
+    const pt = site(d.id);
+    const [x, z] = layout.toXZ(pt.lon, pt.lat);
+    const y = layout.toY(pt.lon, pt.lat, 0.015);
+    addScrollStack(group, x, y, z, d.n, d.color, emberIdx++);
+  });
+
+  // Secondary hubs (Cenchreae port, Laodicea letter-exchange Col 4:16, Troas, Jerusalem collection goal)
+  for (const h of ['cenchreae', 'laodicea', 'troas', 'caesarea', 'jerusalem']) {
+    const pt = site(h);
+    const [x, z] = layout.toXZ(pt.lon, pt.lat);
+    addBeaconPin(group, x, layout.toY(pt.lon, pt.lat, 0.01), z, 0xcab070, {
+      stemH: h === 'jerusalem' ? 0.36 : 0.24,
+      headR: 0.068,
+      ring: h === 'jerusalem',
+    });
+  }
+
+  return group;
+}
+
+// ── 7. Five Provinces of 1 Peter 1:1 Anatolian Dispersion Relief ─────────────
+export function buildDispersionRelief(_C: number, variant: string): THREE.Group {
+  const { group, layout } = createReliefTable(RELIEF_GRIDS.anatolia, {
+    targetSpan: 12.4,
+    maxReliefH: 1.48,
+    rockTint: 'anatolia',
+  });
+  const site = (id: string) => DISPERSION_SITES.find((s) => s.id === id)!;
+  const routeLoop = variant !== 'anatolian-highlands';
+
+  // Exact clockwise Roman provincial mail circuit ordered by 1 Peter 1:1:
+  // Black Sea approach (Sinope/Amisus) -> 1. Pontus -> 2. Galatia -> 3. Cappadocia -> 4. Asia -> 5. Bithynia
+  const provinces: { id: string; order: number; color: number }[] = [
+    { id: 'pontus', order: 1, color: 0x5cc5e6 },
+    { id: 'galatia', order: 2, color: 0xebb944 },
+    { id: 'cappadocia', order: 3, color: 0xe38452 },
+    { id: 'asia', order: 4, color: 0x56c78d },
+    { id: 'bithynia', order: 5, color: 0x8db2f2 },
+  ];
+
+  // Coastal harbor approach from Sinope [35.15, 42.02] / Amisus -> inland circuit -> Bithynia -> Bosporus [29.05, 41.05]
+  addRouteTube(
+    group,
+    layout,
+    [
+      [35.15, 42.02],
+      [site('pontus').lon, site('pontus').lat],
+      [site('cappadocia').lon, site('cappadocia').lat],
+      [site('galatia').lon, site('galatia').lat],
+      [site('iconium').lon, site('iconium').lat],
+      [site('ephesus').lon, site('ephesus').lat],
+      [site('asia').lon, site('asia').lat],
+      [site('bithynia').lon, site('bithynia').lat],
+      [29.1, 41.02],
+    ],
+    {
+      color: 0xebbd4d,
+      radius: routeLoop ? 0.056 : 0.03,
+      lift: 0.095,
+      opacity: routeLoop ? 1 : 0.42,
+    },
+  );
+
+  // Ordinal province beacons (1..5 golden stacked rings indicating 1 Pet 1:1 order)
+  const ringMat = new THREE.MeshStandardMaterial({ color: 0xf2ca5e, metalness: 0.85, roughness: 0.24 });
+  provinces.forEach((p, idx) => {
+    const pt = site(p.id);
+    const [px, pz] = layout.toXZ(pt.lon, pt.lat);
+    const py = layout.toY(pt.lon, pt.lat, 0.015);
+    addBeaconPin(group, px, py, pz, p.color, { stemH: 0.42 + idx * 0.04, headR: 0.115, emberId: idx + 1 });
+    for (let k = 0; k < p.order; k++) {
+      const tierRing = new THREE.Mesh(new THREE.TorusGeometry(0.18 + k * 0.055, 0.016, 6, 20), ringMat);
+      tierRing.rotation.x = Math.PI / 2;
+      tierRing.position.set(px, py + 0.02 + k * 0.02, pz);
+      group.add(tierRing);
+    }
+  });
+
+  // Secondary hubs (Ephesus port, Troas harbor, Iconium crossroads, Syrian Antioch bridge to south)
+  for (const h of ['ephesus', 'troas', 'iconium']) {
+    const pt = site(h);
+    const [hx, hz] = layout.toXZ(pt.lon, pt.lat);
+    addBeaconPin(group, hx, layout.toY(pt.lon, pt.lat, 0.01), hz, 0xe8d9b5, {
+      stemH: 0.22,
+      headR: 0.065,
+      ring: false,
+    });
+  }
+
+  return group;
+}
+
+// ── 8. Nineveh Three Days' Journey & Jonah's Eastward Booth (Jonah 3–4) ──────
+export function buildNinevehRelief(_C: number, variant: string): THREE.Group {
+  if (variant === 'jonah-booth') {
+    // 1:1 human-scale booth & gourd plant scene on limestone terrace east of Nineveh (Jonah 4:5-8)
+    const g = new THREE.Group();
+    const terrMat = new THREE.MeshStandardMaterial({ color: 0xc2b08d, roughness: 0.92 });
+    const stoneMat = new THREE.MeshStandardMaterial({ color: 0xa69b86, roughness: 0.88 });
+    const timberMat = new THREE.MeshStandardMaterial({ color: 0x6b4728, roughness: 0.86 });
+    const foliageMat = new THREE.MeshStandardMaterial({ color: 0x3b7838, roughness: 0.65, side: THREE.DoubleSide });
+    const scorchedMat = new THREE.MeshStandardMaterial({ color: 0xb58d46, roughness: 0.78, side: THREE.DoubleSide });
+    const brickMat = new THREE.MeshStandardMaterial({ color: 0xc7a373, roughness: 0.9 });
+
+    // Eastern hill limestone shelf seated at y = 0
+    const hillPad = new THREE.Mesh(new THREE.BoxGeometry(4.8, 0.24, 3.8), terrMat);
+    hillPad.position.y = 0.12;
+    g.add(hillPad);
+
+    // Distant schematic miniature silhouette along far -Z edge indicating Nineveh's western plain below
+    const wallLine = new THREE.Mesh(new THREE.BoxGeometry(4.6, 0.22, 0.18), brickMat);
+    wallLine.position.set(0, 0.31, -1.72);
+    g.add(wallLine);
+    for (let i = -3; i <= 3; i++) {
+      const gateT = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.34, 0.24), brickMat);
+      gateT.position.set(i * 0.66, 0.37, -1.72);
+      g.add(gateT);
+    }
+
+    // Jonah's woven-branch shelter / booth (Jonah 4:5): 4 timber corner posts + slatted cross-rails (gappy sun!)
+    const bw = 1.65;
+    const bd = 1.45;
+    const bh = 1.92;
+    for (const sx of [-1, 1]) {
+      for (const sz of [-1, 1]) {
+        const post = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.068, bh, 8), timberMat);
+        post.position.set(sx * bw * 0.5, 0.24 + bh * 0.5, sz * bd * 0.5);
+        post.rotation.z = sx * 0.03;
+        g.add(post);
+      }
+    }
+    for (const sz of [-1, 1]) {
+      const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.042, bw + 0.24, 8), timberMat);
+      beam.rotation.z = Math.PI / 2;
+      beam.position.set(0, 0.24 + bh - 0.05, sz * bd * 0.5);
+      g.add(beam);
+    }
+    for (let i = 0; i < 6; i++) {
+      const slat = new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.032, bd + 0.32, 6), timberMat);
+      slat.rotation.x = Math.PI / 2;
+      slat.position.set(-bw * 0.45 + (bw * 0.9 * i) / 5, 0.24 + bh + 0.01, 0);
+      slat.rotation.y = (i % 2 === 0 ? 1 : -1) * 0.06;
+      g.add(slat);
+    }
+
+    // Low fieldstone sitting bench inside booth looking west (-Z) toward city
+    const seat = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.38, 0.44), stoneMat);
+    seat.position.set(0.15, 0.24 + 0.19, 0.1);
+    g.add(seat);
+
+    // Rapidly grown gourd / Ricinus broad-leaved plant climbing up to shade his head (Jonah 4:6-8)
+    const stalk = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.085, 2.25, 10), foliageMat);
+    stalk.position.set(-0.98, 0.24 + 1.12, -0.45);
+    stalk.rotation.z = -0.18;
+    g.add(stalk);
+
+    // Pale gnawed ring at base of gourd stem marking "a worm smote the gourd" at dawn (Jonah 4:7)
+    const wormRing = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.066, 0.072, 0.09, 10),
+      new THREE.MeshStandardMaterial({ color: 0xd9c28c, roughness: 0.92 }),
+    );
+    wormRing.position.set(-1.14, 0.46, -0.45);
+    g.add(wormRing);
+
+    // Broad palmate leaves overarching the booth roof — mostly cool green, 3 scorched amber on E sunward edge
+    for (let i = 0; i < 14; i++) {
+      const ang = (i / 14) * Math.PI * 1.45 - 0.55;
+      const rad = 0.52 + (i % 3) * 0.36;
+      const leaf = new THREE.Mesh(
+        new THREE.CircleGeometry(0.32 + (i % 2) * 0.1, 7),
+        i >= 11 ? scorchedMat : foliageMat,
+      );
+      leaf.scale.set(1.3, 0.85, 1);
+      leaf.position.set(-0.62 + Math.cos(ang) * rad, 2.15 + Math.sin(i * 1.1) * 0.22, -0.25 + Math.sin(ang) * rad * 0.72);
+      leaf.rotation.x = -Math.PI * 0.42 + (i % 3) * 0.12;
+      leaf.rotation.z = ang * 0.35;
+      g.add(leaf);
+    }
+
+    return g;
+  }
+
+  // Terrain relief view: Upper Tigris basin + great walled Nineveh with 15 gate towers (Jonah 3:3; 4:11)
+  const { group, layout } = createReliefTable(RELIEF_GRIDS.upperTigris, {
+    targetSpan: 11.8,
+    maxReliefH: 1.32,
+    rockTint: 'levant',
+  });
+  const nin = NINEVEH_SITES[0]!;
+  const [nx, nz] = layout.toXZ(nin.lon, nin.lat);
+  const ny = layout.toY(nin.lon, nin.lat, 0.02);
+
+  // Great Assyrian mudbrick/limestone rampart circuit (~3.8 × 1.8 km footprint scaled to be clearly legible on table)
+  const wallMat = new THREE.MeshStandardMaterial({ color: 0xd6b888, roughness: 0.85 });
+  const moundMat = new THREE.MeshStandardMaterial({ color: 0xc29e68, roughness: 0.88 });
+  const gateGold = new THREE.MeshStandardMaterial({
+    color: 0xe8b954,
+    emissive: 0x8f5d14,
+    emissiveIntensity: 0.35,
+    roughness: 0.35,
+  });
+
+  const city = new THREE.Group();
+  const cw = 2.15;
+  const cd = 3.15;
+  const wh = 0.22;
+  const wt = 0.11;
+
+  // Perimeter fortification walls & 15 gate towers (historic Nineveh famously pierced by 15 great gates)
+  const northWall = new THREE.Mesh(new THREE.BoxGeometry(cw, wh, wt), wallMat);
+  northWall.position.set(0, wh * 0.5, -cd * 0.5);
+  const southWall = new THREE.Mesh(new THREE.BoxGeometry(cw * 0.82, wh, wt), wallMat);
+  southWall.position.set(-0.08, wh * 0.5, cd * 0.5);
+  const westWall = new THREE.Mesh(new THREE.BoxGeometry(wt, wh, cd), wallMat);
+  westWall.position.set(-cw * 0.5 + 0.05, wh * 0.5, 0);
+  const eastWall = new THREE.Mesh(new THREE.BoxGeometry(wt, wh, cd * 1.02), wallMat);
+  eastWall.position.set(cw * 0.48, wh * 0.5, 0);
+  city.add(northWall, southWall, westWall, eastWall);
+
+  const gateCoords: [number, number][] = [
+    [-0.55, -cd * 0.5], [0, -cd * 0.5], [0.55, -cd * 0.5],
+    [-cw * 0.47, -1.05], [-cw * 0.47, -0.4], [-cw * 0.47, 0.25], [-cw * 0.47, 0.9],
+    [cw * 0.48, -1.1], [cw * 0.48, -0.45], [cw * 0.48, 0.2], [cw * 0.48, 0.85], [cw * 0.45, 1.3],
+    [-0.45, cd * 0.5], [0.05, cd * 0.5], [0.5, cd * 0.5],
+  ];
+  for (const [gx, gz] of gateCoords) {
+    const tower = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.32, 0.16), wallMat);
+    tower.position.set(gx, 0.16, gz);
+    city.add(tower);
+  }
+
+  // Kuyunjik north citadel mound & Nebi Yunus south arsenal mound + dense urban mudbrick blocks
+  const kuyunjik = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.48, 0.28, 8), moundMat);
+  kuyunjik.scale.set(0.95, 1, 1.35);
+  kuyunjik.position.set(-0.42, 0.14, -0.58);
+  const nebiYunus = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.34, 0.22, 8), moundMat);
+  nebiYunus.position.set(-0.36, 0.11, 0.58);
+  city.add(kuyunjik, nebiYunus);
+
+  for (let row = -4; row <= 4; row++) {
+    for (let col = -1; col <= 1; col++) {
+      if (col < 0 && Math.abs(row + 1) < 2) continue;
+      const blk = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.08 + ((Math.abs(row + col) % 3) * 0.03), 0.24), moundMat);
+      blk.position.set(0.18 + col * 0.36, 0.05, row * 0.29);
+      city.add(blk);
+    }
+  }
+
+  // One day's journey proclamation axis advancing from west Tigris gate toward center (Jonah 3:4)
+  const marchBar = new THREE.Mesh(new THREE.BoxGeometry(0.98, 0.055, 0.075), gateGold);
+  marchBar.position.set(-0.42, 0.08, 0.02);
+  city.add(marchBar);
+
+  city.position.set(nx, ny, nz);
+  city.rotation.y = 0.22;
+  group.add(city);
+
+  // Eastern overlook hill beacon showing Jonah sitting east of the city (Jonah 4:5)
+  const eastHillLon = 43.25;
+  const eastHillLat = 36.37;
+  const [ex, ez] = layout.toXZ(eastHillLon, eastHillLat);
+  addBeaconPin(group, ex, layout.toY(eastHillLon, eastHillLat, 0.02), ez, 0x56b86a, {
+    stemH: 0.44,
+    headR: 0.11,
+    emberId: 1,
+  });
 
   return group;
 }

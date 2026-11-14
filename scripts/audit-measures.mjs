@@ -42,6 +42,16 @@ const PLAN_CARDS = [
   'ark-up-to-zion',
   'paul-journeys-relief',
   'seven-churches-circuit',
+  'red-sea-walls',
+  'sinai-covenant-pillars',
+  'songs-of-ascents-zion',
+  'isaiah-throne-vision',
+  'nineveh-three-days',
+  'beatitudes-multitude',
+  'galilee-storm-boat',
+  'bethlehem-manger',
+  'paul-letters-network',
+  'dispersion-provinces-relief',
 ];
 
 const PAGES = [
@@ -61,6 +71,11 @@ const PAGES = [
   { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'canaan-allotment', cubitMoves: false, open: '#measures=canaan-allotment' },
   { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'paul-journeys-relief', cubitMoves: false, open: '#measures=paul-journeys-relief' },
   { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'jordan-twelve-stones', cubitMoves: true, open: '#measures=jordan-twelve-stones' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'isaiah-throne-vision', cubitMoves: true, open: '#measures=isaiah-throne-vision' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'galilee-storm-boat', cubitMoves: false, open: '#measures=galilee-storm-boat' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'bethlehem-manger', cubitMoves: false, open: '#measures=bethlehem-manger' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'paul-letters-network', cubitMoves: false, open: '#measures=paul-letters-network' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'dispersion-provinces-relief', cubitMoves: false, open: '#measures=dispersion-provinces-relief' },
 ];
 const VIEWPORTS = [['desktop', 1280, 800], ['phone', 390, 844]];
 const LOCALES = [['hans', 'zh-Hans'], ['en', 'en']];

@@ -70,7 +70,14 @@ function isReliefOrDiorama(s: Structure, varId?: string): boolean {
     s.kind === 'gerizimEbalRelief' ||
     s.kind === 'paulJourneysRelief' ||
     s.kind === 'asiaChurchesRelief' ||
-    (s.kind === 'gideonDiorama' && varId !== 'pitcher-torch-horn')
+    s.kind === 'paulLettersRelief' ||
+    s.kind === 'dispersionRelief' ||
+    s.kind === 'beatitudesHillside' ||
+    (s.kind === 'gideonDiorama' && varId !== 'pitcher-torch-horn') ||
+    (s.kind === 'ninevehRelief' && varId !== 'jonah-booth') ||
+    (s.kind === 'redSeaCrossing' && varId !== 'seabed-and-wheels') ||
+    (s.kind === 'sinaiBounds' && varId !== 'altar-twelve-pillars') ||
+    (s.kind === 'zionAscent' && varId !== 'fifteen-steps')
   );
 }
 
@@ -306,10 +313,15 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
           '3D topographic & route relief',
           '三维地形与路线沙盘',
         )}`;
-      } else {
+      } else if (s.kind === 'gideonDiorama') {
         capMeta.textContent = t(
           '3 × 100 torches around the valley camp · 3D tactical diorama',
           '三队各百支火把合围谷中营盘 · 三维叙事沙盘',
+        );
+      } else {
+        capMeta.textContent = t(
+          '3D topographic & narrative diorama · Drag to orbit',
+          '三维地形与叙事沙盘 · 可拖拽旋转',
         );
       }
     } else if (s.dims.length) {
@@ -517,7 +529,7 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
     const isPlanHeavy =
       s.kind === 'court' || s.kind === 'ezekielGate' || s.kind === 'tabernacleTent' || s.kind === 'ezekielAltar' ||
       s.kind === 'wildernessCamp' || s.kind === 'rev4ThroneRoom' || s.kind === 'shushanCourt' ||
-      s.kind === 'jordanCrossing' || s.kind === 'arkToZion';
+      s.kind === 'jordanCrossing' || s.kind === 'arkToZion' || s.kind === 'bethlehemManger' || s.kind === 'isaiahThrone';
     defaultYaw = reliefView ? 0.36 : s.kind === 'highpriest' || s.kind === 'goliath' ? 0.38 : 0.62;
     defaultPitch = reliefView ? 0.56 : isPlanHeavy ? 0.48 : s.kind === 'cube' ? 0.28 : 0.34;
 
@@ -764,6 +776,7 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
     if (btn && btn.dataset.opt) {
       const s = cards[idx];
       if (!s) return;
+      const prevVar = chosenVariants.get(s.id);
       chosenVariants.set(s.id, btn.dataset.opt);
 
       // Update variant UI in-place without jarring scroll jump
@@ -776,7 +789,11 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
         const noteEl = wrap.querySelector<HTMLElement>('.mp-var-note');
         if (noteEl && opt) noteEl.innerHTML = richText(tx(opt.noteEn, opt.note));
       }
-      show(idx, s.kind !== 'gideonDiorama');
+      const keepOrbit =
+        isReliefOrDiorama(s, prevVar) === isReliefOrDiorama(s, btn.dataset.opt) &&
+        s.kind !== 'isaiahThrone' &&
+        s.kind !== 'bethlehemManger';
+      show(idx, keepOrbit);
       return;
     }
 
