@@ -77,7 +77,13 @@ function isReliefOrDiorama(s: Structure, varId?: string): boolean {
     (s.kind === 'ninevehRelief' && varId !== 'jonah-booth') ||
     (s.kind === 'redSeaCrossing' && varId !== 'seabed-and-wheels') ||
     (s.kind === 'sinaiBounds' && varId !== 'altar-twelve-pillars') ||
-    (s.kind === 'zionAscent' && varId !== 'fifteen-steps')
+    (s.kind === 'zionAscent' && varId !== 'fifteen-steps') ||
+    (s.kind === 'mamreJordanRelief' && varId !== 'mamre-oaks-altar') ||
+    (s.kind === 'bethelPillar' && varId !== 'anointed-pillar') ||
+    (s.kind === 'josephGranaries' && varId === 'dothan-to-egypt') ||
+    (s.kind === 'actsCoastalRelief' && varId !== 'joppa-rooftop') ||
+    s.kind === 'jobWhirlwind' ||
+    (s.kind === 'caesareaHall' && varId === 'promontory-praetorium')
   );
 }
 
@@ -539,7 +545,8 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
     const isPlanHeavy =
       s.kind === 'court' || s.kind === 'ezekielGate' || s.kind === 'tabernacleTent' || s.kind === 'ezekielAltar' ||
       s.kind === 'wildernessCamp' || s.kind === 'rev4ThroneRoom' || s.kind === 'shushanCourt' ||
-      s.kind === 'jordanCrossing' || s.kind === 'arkToZion' || s.kind === 'bethlehemManger' || s.kind === 'isaiahThrone';
+      s.kind === 'jordanCrossing' || s.kind === 'arkToZion' || s.kind === 'bethlehemManger' || s.kind === 'isaiahThrone' ||
+      s.kind === 'davidPreparations' || s.kind === 'enclosedGarden' || s.kind === 'perpetualAltar' || s.kind === 'caesareaHall';
     defaultYaw = reliefView ? 0.36 : s.kind === 'highpriest' || s.kind === 'goliath' ? 0.38 : 0.62;
     defaultPitch = reliefView ? 0.56 : isPlanHeavy ? 0.48 : s.kind === 'cube' ? 0.28 : 0.34;
 

@@ -52,6 +52,16 @@ const PLAN_CARDS = [
   'bethlehem-manger',
   'paul-letters-network',
   'dispersion-provinces-relief',
+  'david-temple-preparations',
+  'enclosed-garden-seven-pillars',
+  'potters-house-two-wheels',
+  'mamre-altar-jordan-plain',
+  'bethel-ladder-pillar',
+  'joseph-granaries-and-road',
+  'altar-perpetual-fire-offerings',
+  'joppa-caesarea-coastal-vision',
+  'whirlwind-foundations-constellations',
+  'caesarea-audience-hall',
 ];
 
 const PAGES = [
@@ -76,6 +86,12 @@ const PAGES = [
   { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'bethlehem-manger', cubitMoves: false, open: '#measures=bethlehem-manger' },
   { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'paul-letters-network', cubitMoves: false, open: '#measures=paul-letters-network' },
   { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'dispersion-provinces-relief', cubitMoves: false, open: '#measures=dispersion-provinces-relief' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'david-temple-preparations', cubitMoves: true, open: '#measures=david-temple-preparations' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'mamre-altar-jordan-plain', cubitMoves: false, open: '#measures=mamre-altar-jordan-plain' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'joseph-granaries-and-road', cubitMoves: false, open: '#measures=joseph-granaries-and-road' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'altar-perpetual-fire-offerings', cubitMoves: true, open: '#measures=altar-perpetual-fire-offerings' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'joppa-caesarea-coastal-vision', cubitMoves: false, open: '#measures=joppa-caesarea-coastal-vision' },
+  { path: '/plan.html', handle: null, cards: PLAN_CARDS, activeCard: 'caesarea-audience-hall', cubitMoves: false, open: '#measures=caesarea-audience-hall' },
 ];
 const VIEWPORTS = [['desktop', 1280, 800], ['phone', 390, 844]];
 const LOCALES = [['hans', 'zh-Hans'], ['en', 'en']];

@@ -60,6 +60,20 @@ import {
   buildSinaiBounds,
   buildZionAscent,
 } from './gospel-and-prophetic-scenes.ts';
+import {
+  buildActsCoastalRelief,
+  buildJosephGranaries,
+  buildMamreJordanRelief,
+} from './relief-sandboxes.ts';
+import {
+  buildBethelPillar,
+  buildCaesareaHall,
+  buildDavidPreparations,
+  buildEnclosedGarden,
+  buildJobWhirlwind,
+  buildPerpetualAltar,
+  buildPottersHouse,
+} from './wisdom-and-exile-scenes.ts';
 
 interface BuildTex {
   gopherWood: THREE.CanvasTexture;
@@ -1023,6 +1037,36 @@ export function buildStructure(
 
     case 'dispersionRelief':
       return buildDispersionRelief(C, v === 'anatolian-highlands' ? 'anatolian-highlands' : 'five-provinces-loop');
+
+    case 'davidPreparations':
+      return buildDavidPreparations(C, v === 'blueprint-table' ? 'blueprint-table' : 'stockpile-yard');
+
+    case 'enclosedGarden':
+      return buildEnclosedGarden(C, v === 'seven-pillars-portico' ? 'seven-pillars-portico' : 'walled-spring-garden');
+
+    case 'pottersHouse':
+      return buildPottersHouse(C, v === 'earthen-jar-deeds' ? 'earthen-jar-deeds' : 'potter-wheels');
+
+    case 'mamreJordanRelief':
+      return buildMamreJordanRelief(C, v === 'mamre-oaks-altar' ? 'mamre-oaks-altar' : 'parting-overlook');
+
+    case 'bethelPillar':
+      return buildBethelPillar(C, v === 'anointed-pillar' ? 'anointed-pillar' : 'heavenward-steps');
+
+    case 'josephGranaries':
+      return buildJosephGranaries(C, v === 'dothan-to-egypt' ? 'dothan-to-egypt' : 'beehive-silos');
+
+    case 'perpetualAltar':
+      return buildPerpetualAltar(C, v === 'five-offerings-table' ? 'five-offerings-table' : 'ever-burning-hearth');
+
+    case 'actsCoastalRelief':
+      return buildActsCoastalRelief(C, v === 'joppa-rooftop' ? 'joppa-rooftop' : 'coastal-roads');
+
+    case 'jobWhirlwind':
+      return buildJobWhirlwind(C, v === 'pleiades-and-orion' ? 'pleiades-and-orion' : 'cornerstone-and-sea-doors');
+
+    case 'caesareaHall':
+      return buildCaesareaHall(C, v === 'promontory-praetorium' ? 'promontory-praetorium' : 'agrippa-hearing');
 
     case 'cube':
       return buildNewJerusalem(s.unit?.m ?? 185);

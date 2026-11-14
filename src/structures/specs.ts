@@ -130,6 +130,16 @@ export type StructureKind =
   | 'bethlehemManger'
   | 'paulLettersRelief'
   | 'dispersionRelief'
+  | 'davidPreparations'
+  | 'enclosedGarden'
+  | 'pottersHouse'
+  | 'mamreJordanRelief'
+  | 'bethelPillar'
+  | 'josephGranaries'
+  | 'perpetualAltar'
+  | 'actsCoastalRelief'
+  | 'jobWhirlwind'
+  | 'caesareaHall'
   | 'cube';
 
 /** The walk-in pages. A card lives on the page where the thing it measures
@@ -3025,6 +3035,577 @@ export const STRUCTURES: Structure[] = [
     compare: [
       { zh: '小亚细亚五省东西宽', en: 'Five provinces east–west width', m: 1_280_000 },
       { zh: '黑海至托鲁斯山脉南北跨度', en: 'Black Sea to Taurus span', m: 680_000 },
+    ],
+  },
+  {
+    id: 'david-temple-preparations',
+    zh: '大卫预备建殿的材料与样式桌',
+    en: 'David’s Temple Preparations & Pattern Table',
+    ref: '1 Chronicles 22:14',
+    refZh: '历代志上 22:14',
+    textZh: '我在困难之中为雅伟的殿预备了金子十万他连得，银子一百万他连得，铜和铁多得无法可称；我也预备了木头、石头，你还可以增添。',
+    textEn: 'Now, behold, in my affliction I have prepared for the house of Yahweh a hundred thousand talents of gold, and a thousand thousand talents of silver, and of brass and iron without weight; for it is in abundance: timber also and stone have I prepared; and thou mayest add thereto.',
+    dims: [
+      { key: 'beam-span', zh: '圣所参照横梁宽（所罗门殿内宽 20 肘）', en: 'Sanctuary reference beam (20 cubits breadth)', cubits: 20, ref: '代上 28:11; 王上 6:2', refEn: '1 Chr 28:11; 1 Kgs 6:2' },
+      { key: 'maquette-len', zh: '殿宇正身样式对照长', en: 'Pattern Temple main length reference', cubits: 60, ref: '王上 6:2; 代上 28:11', refEn: '1 Kgs 6:2; 1 Chr 28:11' },
+    ],
+    kind: 'davidPreparations',
+    counts: [
+      { zh: '预备金子（他连得）', en: 'Gold prepared (talents)', n: 100000, ref: '代上 22:14', refEn: '1 Chr 22:14' },
+      { zh: '预备银子（他连得）', en: 'Silver prepared (talents)', n: 1000000, ref: '代上 22:14', refEn: '1 Chr 22:14' },
+    ],
+    variants: {
+      key: 'davidPrepView',
+      zh: '场景视图',
+      en: 'Scene view',
+      options: [
+        {
+          id: 'stockpile-yard',
+          zh: '大卫预备料场 · 20 肘参照木梁旁金、银、铜、铁与香柏木凿石堆场',
+          en: 'Treasury stockpile yard beside 20-cubit sanctuary reference beam',
+          note: '以真实比例摆放十万他连得金锭叠堆、十倍体量的银锭叠堆、铜环铜柱、成捆熟铁、凿好方石与黎巴嫩香柏木；后方架设按所罗门圣所内宽 **20 肘** 实测的香柏参照横梁，可拖动**肘长滑块**观察基准尺度随肘长微调。',
+          noteEn: 'Displays gold and tenfold-larger silver ingot pyramids alongside bronze rings, forged iron bundles, dressed ashlar stone, cedar logs, and a rear cedar reference beam matching the **20-cubit** sanctuary breadth (live cubit-slider reactive).',
+        },
+        {
+          id: 'blueprint-table',
+          zh: '交与所罗门的样式桌 · 殿宇比例模型、写下样式的书卷与按分两称出的器皿坯料',
+          en: 'Pattern table · Temple maquette, written scrolls & weighed vessel blanks',
+          note: '呈现大卫将殿的廊子、旁屋、库房与施恩座的指示交与所罗门（代上 28:11–18）：桌面按 **60 × 20 肘** 等比缩放木与金的殿宇样式，旁列写有指示的羊皮卷轴与按分两秤好的金灯台、银器皿坯件。',
+          noteEn: 'Shows David handing Solomon the pattern of the porch, houses, treasuries and mercy seat (1 Chr 28:11–18): a **60 × 20 cubit** scaled Temple maquette beside written scrolls and weighed gold lampstand and silver vessel blanks.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '十万他连得金（约合三千余公吨）与一百万他连得银若全部实际堆放，体量远超单座庭院；本场景在保留 10:1 金银叠堆体量对比的前提下将其按可观览规模呈现，并以实测 20 肘香柏参照梁与 1.72 米人像锚定地面比例。',
+        en: 'Full physical stacking of 100,000 talents of gold and 1,000,000 talents of silver (~3,400 and ~34,000 metric tons) would dwarf a single courtyard; the stacks preserve a 10:1 visual mass ratio anchored against a true 20-cubit beam and 1.72 m figure.',
+      },
+    ],
+    punchZh: '大卫一生被雅伟告知不可亲手建殿（代上 22:8），却把**整座圣所的尺寸样式与金银铜铁木石全部预备齐整**，好叫儿子所罗门直接兴工。',
+    punchEn: 'Forbidden to build the Temple himself (1 Chr 22:8), David prepared every measure, written pattern and stockpile in advance so Solomon could begin immediately.',
+    compare: [
+      { zh: '参照圣所横梁宽（20 肘）', en: 'Reference sanctuary beam (20 cubits)', m: 10.5 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
+    id: 'enclosed-garden-seven-pillars',
+    zh: '关锁的园、封闭的井与智慧的七根柱子',
+    en: 'Enclosed Garden, Sealed Fountain & Wisdom’s Seven Pillars',
+    ref: 'Song of Songs 4:12',
+    refZh: '雅歌 4:12',
+    textZh: '我妹子，我新妇，乃是关锁的园，禁闭的井，封闭的泉源。',
+    textEn: 'A garden shut up is my sister, my bride; a spring shut up, a fountain sealed.',
+    dims: [
+      { key: 'garden-w', zh: '石砌果园东西围墙跨度', en: 'Walled garden east–west span', cubits: 7.2, ref: '歌 4:12', refEn: 'Song 4:12' },
+      { key: 'wall-h', zh: '园墙高度', en: 'Garden enclosure wall height', cubits: 2.05, ref: '歌 4:12', refEn: 'Song 4:12' },
+    ],
+    kind: 'enclosedGarden',
+    unit: {
+      zh: '米',
+      en: 'm',
+      m: 1,
+      note: '按古代以色列石砌庭园泉井与柱廊常见实尺呈现。',
+      noteEn: 'Illustrative metre scale matching ancient Israelite walled gardens, spring wells and pillared porticos.',
+    },
+    counts: [
+      { zh: '智慧房屋凿成的柱子（箴 9:1）', en: 'Carved pillars of Wisdom’s house (Prov 9:1)', n: 7, ref: '箴 9:1', refEn: 'Prov 9:1' },
+      { zh: '井泉四周结果子的石榴树（歌 4:13）', en: 'Fruiting pomegranate trees (Song 4:13)', n: 4, ref: '歌 4:13', refEn: 'Song 4:13' },
+    ],
+    variants: {
+      key: 'enclosedGardenView',
+      zh: '智慧诗歌场景',
+      en: 'Wisdom poetry view',
+      options: [
+        {
+          id: 'walled-spring-garden',
+          zh: '关锁的园与封闭的泉源 · 上闩香柏木门、铜印封盖的八角井与四棵石榴树（歌 4:12–15）',
+          en: 'Walled garden · barred cedar gate, sealed octagonal well & pomegranate orchard',
+          note: '四周高约 **2.05 米**的石砌园墙把果园围护起来，正中木门上着青铜门闩；园心是一座盖有封印铜盖的八角井与活水泉池，四围栽种结满红果的石榴树。',
+          noteEn: 'A **2.05 m** stone perimeter wall with a bronze-barred cedar gate encloses an octagonal sealed well, living water spring basin and four fruiting pomegranate trees.',
+        },
+        {
+          id: 'seven-pillars-portico',
+          zh: '智慧的七根柱子与筵席长桌 · 箴言九章凿成的石柱门廊、调和之酒与陈设饼（箴 9:1–5）',
+          en: 'Wisdom’s seven carved pillars & banquet table (Prov 9:1–5)',
+          note: '台基上矗立 **7 根**凿成的石灰石柱（后排四根、前排三根）托住香柏过梁，内中陈设长桌与陶制双耳酒坛，呼应“智慧建造房屋，凿成七根柱子，调和了酒，也摆设了筵席”。',
+          noteEn: 'Seven carved limestone pillars support cedar lintels over a courtyard dais holding a banquet table and wine amphorae (Prov 9:1–5).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '雅歌 4:12–15 与箴言 9:1–5 均未指定门墙或柱廊的精确肘数；所给米数仅据古近东宅院泉井与石柱廊考古尺度作可视比例参照。',
+        en: 'Neither Song of Songs 4:12–15 nor Proverbs 9:1–5 gives exact cubit measurements; the metre dimensions serve solely as realistic architectural proportion.',
+      },
+    ],
+    punchZh: '所罗门诗歌以两幅对映的空间意象起兴：一面是**关锁护持、唯有良人开启的活水园井**，一面是**七根石柱撑开、向外呼唤愚蒙人同席的智慧廊厅**。',
+    punchEn: 'Hebrew wisdom poetry contrasts two architectural spaces: an **inclosed garden and sealed spring** guarded within walls, and **Wisdom’s seven-pillared portico** thrown open with set wine and bread.',
+    compare: [
+      { zh: '关锁的园石墙跨度', en: 'Enclosed garden wall span', m: 7.2 },
+      { zh: '智慧柱廊石柱通高', en: 'Seven-pillar portico column height', m: 3.49 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
+    id: 'potters-house-two-wheels',
+    zh: '窑匠的家与藏在瓦器里的买地文契',
+    en: 'Potter’s House Wheels & Sealed Deeds in an Earthen Jar',
+    ref: 'Jeremiah 18:3',
+    refZh: '耶利米书 18:3',
+    textZh: '我就下到窑匠的家里去，正遇他转轮做器皿。',
+    textEn: 'Then I went down to the potter’s house, and, behold, he was making a work on the wheels.',
+    dims: [
+      { key: 'workshop-span', zh: '陶坊作坊台面跨度', en: 'Workshop floor span', cubits: 6.4, ref: '耶 18:2–3', refEn: 'Jer 18:2–3' },
+      { key: 'jar-h', zh: '双耳储藏大瓦罐参照高', en: 'Storage earthen jar reference height', cubits: 1.05, ref: '耶 32:14', refEn: 'Jer 32:14' },
+    ],
+    kind: 'pottersHouse',
+    unit: {
+      zh: '米',
+      en: 'm',
+      m: 1,
+      note: '依据犹大铁器时代双石快轮作坊与亚拿突买地文献（耶 18；32）按 1:1 人像尺度重建。',
+      noteEn: 'Reconstructed at 1:1 human scale from Iron Age Judean dual-stone potter’s wheels and storage amphorae (Jer 18; 32).',
+    },
+    counts: [
+      { zh: '“转轮”原文直译：上下两片轮石（ha-obnayim）', en: '“The wheels” (Heb. ha-obnayim: two discs)', n: 2, ref: '耶 18:3', refEn: 'Jer 18:3' },
+      { zh: '亚拿突田地银价（十七舍客勒，耶 32:9）', en: 'Silver weighed for Anathoth field (shekels, Jer 32:9)', n: 17, ref: '耶 32:9', refEn: 'Jer 32:9' },
+    ],
+    variants: {
+      key: 'pottersHouseView',
+      zh: '先知兆头视图',
+      en: 'Prophetic sign view',
+      options: [
+        {
+          id: 'potter-wheels',
+          zh: '窑匠的双石转轮作坊 · 上下两块轮盘、做坏坍塌的泥坯与烧窑红火（耶 18:2–4）',
+          en: 'Potter’s workshop · dual-stone wheels, marred wet pot & glowing kiln',
+          note: '希伯来文 **ha-obnayim** 用了双数词尾——古代犹大窑匠用脚踢动下层沉重石飞轮，带动上层工作石盘飞转。轮旁地上摆着刚在手里做坏的坍塌泥坯（耶 18:4），后架木棚晾干成品，右侧土砖升焰窑内炭火微明。',
+          noteEn: 'Hebrew **ha-obnayim** is literally dual ("the two stones"): a heavy foot-driven lower flywheel linked by vertical shaft to the upper throwing wheel. Beside the seated potter lies a slumped marred vessel (Jer 18:4) before a drying rack and glowing mudbrick updraft kiln.',
+        },
+        {
+          id: 'earthen-jar-deeds',
+          zh: '战火围城中的买地封契瓦器 · 平天平、十七舍客勒银、双份封存契约与大瓦罐（耶 32:9–14）',
+          en: 'Anathoth purchase deeds · bronze balance, 17 silver shekels & storage jar',
+          note: '耶路撒冷被围之际，耶利米在护卫兵院当众在平天平上称出 **十七舍客勒银子**，并照律例写好**封缄正本**与**敞开副本**两卷买地契约，一同交托巴录放入这只高挑的双耳大瓦罐中“可以存留多日”（耶 32:14）。',
+          noteEn: 'During the siege of Jerusalem, Jeremiah weighs **17 shekels of silver** on a balance, executes both a **sealed deed and open duplicate**, and places them inside a tall two-handled earthen jar to endure many days (Jer 32:9–14).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '耶利米书 18 章未写窑匠作坊大小，也未记 32 章瓦罐精确口径；模型按犹大地层出土的双轮陶车与铁器时代双耳贮藏罐形制呈现实尺比对。',
+        en: 'Jeremiah 18 and 32 specify neither workshop floor dimensions nor vessel height; proportions reflect excavated Iron Age Judean kick-wheels and storage jars.',
+      },
+    ],
+    punchZh: '“轮”（**ha-obnayim**）是两块石头连成一根轴：**泥在手中做坏了，窑匠只消一捏，便在同一个双轮上重造别器**——正如后来十七舍客勒契约封进瓦器，越过拆毁指向重回。',
+    punchEn: 'Hebrew calls the potter’s wheel **ha-obnayim** ("the two stones"): when clay mars in the potter’s hand, it is reshaped on the same spindle—echoed in Jeremiah’s **17-shekel deed sealed inside a clay jar** through the siege.',
+    compare: [
+      { zh: '窑匠泥砖烧窑高（约）', en: 'Mudbrick updraft kiln height (approx.)', m: 1.9 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+      { zh: '双耳契约大瓦罐高', en: 'Two-handled deed jar height', m: 1.05 },
+    ],
+  },
+  {
+    id: 'mamre-altar-jordan-plain',
+    zh: '约但全平原地形抉择与幔利橡树筑坛',
+    en: 'Jordan Plain Overlook & Abraham’s Altar at Mamre',
+    ref: 'Genesis 13:10',
+    refZh: '创世记 13:10',
+    textZh: '罗得举目看见约但河的全平原，直到琐珥，都是滋润的，那地在雅伟未灭所多玛、蛾摩拉以先，如同雅伟的园子，也像埃及地。',
+    textEn: 'And Lot lifted up his eyes, and beheld all the Plain of the Jordan, that it was well watered every where, before Yahweh destroyed Sodom and Gomorrah, like the garden of Yahweh, like the land of Egypt, as thou goest unto Zoar.',
+    dims: [
+      { key: 'ridge-to-plain', zh: '伯特利—艾城高地至约但平原东南缘跨度', en: 'Bethel–Ai ridge to south Jordan Plain span', cubits: 95, ref: '创 13:10–12', refEn: 'Gen 13:10–12' },
+      { key: 'mamre-route', zh: '伯特利沿中央山地南下希伯仑幔利距离', en: 'Bethel ridge southward to Hebron / Mamre', cubits: 52, ref: '创 13:18', refEn: 'Gen 13:18' },
+    ],
+    kind: 'mamreJordanRelief',
+    unit: {
+      zh: '公里',
+      en: 'km',
+      m: 1000,
+      note: '实测犹大山地、死海与约但谷地南段地形（东经 34.8°–35.75°，北纬 31.0°–32.1°）。',
+      noteEn: 'Georeferenced Judean highland and Jordan Valley / Dead Sea terrain relief.',
+    },
+    counts: [
+      { zh: '雅伟向亚伯兰指出的四方举目方位（东西南北）', en: 'Cardinal directions Abram was told to view', n: 4, ref: '创 13:14', refEn: 'Gen 13:14' },
+    ],
+    variants: {
+      key: 'mamreJordanView',
+      zh: '视图模式',
+      en: 'View mode',
+      options: [
+        {
+          id: 'parting-overlook',
+          zh: '伯特利—艾城高地俯瞰沙盘 · 罗得向东入繁茂约但平原，亚伯兰沿山脊南下幔利（创 13:10–18）',
+          en: 'Bethel–Ai overlook relief · Lot’s plainward choice vs. Abram’s ridge path',
+          note: '自**伯特利与艾城**之间的高岭东望，四枚方向指向标示“东西南北”（创 13:14）：金线示意罗得下到尚且青翠滋润的约但河全平原、直趋所多玛与琐珥；绿线示意亚伯兰搬帐棚南行山地、安居希伯仑的**幔利橡树**。',
+          noteEn: 'Looking east from the high ridge between **Bethel and Ai** with four cardinal sight-lines (Gen 13:14): Lot’s golden path descends into the well-watered Jordan Plain toward Sodom and Zoar, while Abram moves along the hill ridge south to **Hebron / Mamre**.',
+        },
+        {
+          id: 'mamre-oaks-altar',
+          zh: '幔利橡树下的帐棚与筑坛 · 1:1 黑毛帐棚、枝叶婆娑的橡树与未凿石祭坛（创 13:18; 18:1）',
+          en: '1:1 Oaks of Mamre · black goat-hair tent & unhewn stone altar',
+          note: '近景切回希伯仑幔利橡树下（创 13:18; 18:1）：宽阔浓荫的橡树旁支搭黑山羊毛帐棚，棚外立着一座以未凿原石垒成的祭坛，炭火与微烟缓缓升起。',
+          noteEn: 'Cuts to 1:1 scale beneath the spreading **oaks of Mamre** at Hebron (Gen 13:18; 18:1): Abram’s black goat-hair tent and unhewn fieldstone altar with glowing embers.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '创 13 章只点明“伯特利与艾的中间”、“约但河的全平原直直到琐珥”及“希伯仑幔利的橡树”；所多玛与琐珥在死海东南岸的标注系按圣经地理主流考据定位。',
+        en: 'Genesis 13 names Bethel–Ai, the Plain of the Jordan unto Zoar, and Mamre in Hebron; the southern Dead Sea basin positions for Sodom and Zoar follow standard historical-geography consensus.',
+      },
+      {
+        zh: '地形高度相对 95 公里跨度有立体放大，使中央分水岭高地与低于海平面的约但谷地落差一目了然。',
+        en: 'Vertical elevation is exaggerated over the horizontal span so the watershed ridge drop into the deep Jordan rift reads clearly.',
+      },
+    ],
+    punchZh: '站在伯特利高岭上，**东边下谷地水草丰美像雅伟的园子，南走山脊却是旱地石头**——地图把亚伯兰与罗得的分道扬镳一眼摆开。',
+    punchEn: 'From the ridge between Bethel and Ai, **Lot stepped down toward a lush valley garden** while **Abram kept the stony hill crest** south to the oaks of Mamre.',
+    compare: [
+      { zh: '伯特利至琐珥（约但平原南端）', en: 'Bethel ridge to Zoar (south plain)', m: 95_000 },
+      { zh: '伯特利至希伯仑幔利', en: 'Bethel to Hebron / Mamre', m: 52_000 },
+    ],
+  },
+  {
+    id: 'bethel-ladder-pillar',
+    zh: '伯特利天梯异象与膏油石柱',
+    en: 'Jacob’s Bethel Ladder & Anointed Pillar',
+    ref: 'Genesis 28:12',
+    refZh: '创世记 28:12',
+    textZh: '梦见一个梯子立在地上，梯子的头顶着天，有神的使者在梯子上，上去下来。',
+    textEn: 'And he dreamed; and behold, a ladder set up on the earth, and the top of it reached to heaven; and, behold, the angels of God ascending and descending on it.',
+    dims: [
+      { key: 'pillar-h', zh: '浇油立作记号的石柱参照高', en: 'Anointed limestone pillar height (approx.)', cubits: 1.38, ref: '创 28:18', refEn: 'Gen 28:18' },
+    ],
+    kind: 'bethelPillar',
+    unit: {
+      zh: '米',
+      en: 'm',
+      m: 1,
+      note: '“天梯”主景采用夜间博物馆基座微缩山丘呈现，切换视图则可 1:1 查看次晨立起浇油的枕头石柱（创 28:18）。',
+      noteEn: 'Museum-plinth diorama for the night vision; alternate view shows the ~1.38 m anointed standing stone (matzevah) at 1:1 scale.',
+    },
+    counts: [
+      { zh: '梦境所见的石阶梯数与次晨所立独石柱', en: 'Standing stone set as a pillar (matzevah)', n: 1, ref: '创 28:18', refEn: 'Gen 28:18' },
+    ],
+    variants: {
+      key: 'bethelPillarView',
+      zh: '创世记 28 章视角',
+      en: 'Genesis 28 view',
+      options: [
+        {
+          id: 'heavenward-steps',
+          zh: '夜间梦境微缩台座 · 石阶梯（sullam）立在山石上、顶端微光环晕与往来使者（创 28:11–13）',
+          en: 'Night vision diorama · stone ramp-stairway, ascending messengers & aniconic glory',
+          note: '希伯来文 **sullam** 本义接近层叠石阶坡道（犹似古代庙塔或高山天阶）。夜色伯特利山丘基座上，雅各头枕一块荒石睡卧，22 级光洁石阶从山石拔起直连天顶三圈光环——**天顶纯以无形光环示意雅伟同在**，绝不造任何人形偶像，阶上有使者往来上下。',
+          noteEn: 'Hebrew **sullam** denotes a stepped stone ramp-stairway. On a night Bethel hillside plinth, Jacob sleeps with his stone pillow while a 22-step stone ramp climbs toward pure **aniconic golden light rings** at the summit (strictly no bodily form of God) as luminous messengers ascend and descend.',
+        },
+        {
+          id: 'anointed-pillar',
+          zh: '次晨清早立柱浇油 · 1:1 石灰石立柱（matzevah）、倾注的橄榄油光泽与陶制油瓶（创 28:18）',
+          en: '1:1 Dawn anointed stone pillar (matzevah) & olive-oil flask (Gen 28:18)',
+          note: '雅各清早起来，把昨夜所枕的石头竖立成约 **1.38 米**高的立柱（**matzevah**），倒上橄榄油分别为圣，将“路斯”改名叫**伯特利**（“神的殿”）。',
+          noteEn: 'At dawn Jacob sets the pillow stone upright as an ~1.38 m limestone pillar (**matzevah**), pours golden olive oil over its crown, and names the place **Bethel** ("House of God").',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '创世记 28:11–18 未注明雅各石柱或梦中天梯的具体尺寸；立柱约 1.38 米参考伽南立石考古均值，微缩天梯坡道则为表达 **sullam**（石阶梯）与高空光环关系的博物馆示意模型。',
+        en: 'Genesis 28 gives no cubit or metre count for either the pillar or the stairway; the ~1.38 m matzevah follows Canaanite standing-stone averages and the ramp-stairway illustrates the Hebrew word sullam.',
+      },
+    ],
+    punchZh: '梦里“梯子（**sullam**）立在地上，头顶着天”，天明却只是**一块立起来、浇上橄榄油的荒山石柱**——这地方既非圣殿也无房顶，雅各却惊呼“这真不是别的，乃是神的殿、天的门”。',
+    punchEn: 'At night a **stepped stone ramp reached heaven**; by dawn only an **oil-anointed field stone** stood on the hill—yet Jacob called that open mountainside "the house of God, and the gate of heaven".',
+    compare: [
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+      { zh: '伯特利浇油石柱（参照高）', en: 'Anointed Bethel stone pillar (ref.)', m: 1.38 },
+    ],
+  },
+  {
+    id: 'joseph-granaries-and-road',
+    zh: '约瑟的蜂巢谷仓与从多坍到埃及歌珊路线沙盘',
+    en: 'Joseph’s Beehive Granaries & Dothan-to-Goshen Road',
+    ref: 'Genesis 41:49',
+    refZh: '创世记 41:49',
+    textZh: '约瑟积蓄五谷甚多，如同海边的沙，无法计算，因为谷不可胜数。',
+    textEn: 'And Joseph laid up grain as the sand of the sea, very much, until he left off numbering; for it was without number.',
+    dims: [
+      { key: 'yard-w', zh: '泥砖谷仓围院宽', en: 'Granary mudbrick court width', cubits: 9.6, ref: '创 41:48–49', refEn: 'Gen 41:48–49' },
+      { key: 'yard-d', zh: '泥砖谷仓围院深', en: 'Granary mudbrick court depth', cubits: 7.8, ref: '创 41:48–49', refEn: 'Gen 41:48–49' },
+    ],
+    kind: 'josephGranaries',
+    unit: {
+      zh: '米',
+      en: 'm',
+      m: 1,
+      note: '默认视图为按新/中王国泥砖蜂巢筒仓重建的 1:1 皇家积谷庭院；可切换为横跨 380 公里的多坍至歌珊地形沙盘。',
+      noteEn: 'Default view scales the 7-silo Egyptian mudbrick compound at 1:1; alternate view switches to the ~380 km Dothan-to-Goshen terrain corridor.',
+    },
+    counts: [
+      { zh: '丰年数 / 庭院内置泥砖圆顶蜂巢谷仓数', en: 'Abundant years / conical beehive grain silos', n: 7, ref: '创 41:47–49', refEn: 'Gen 41:47–49' },
+      { zh: '七个丰年每年征收储谷比例（五分之一）', en: 'Abundant-year grain levy fraction (one fifth)', n: 5, ref: '创 41:34', refEn: 'Gen 41:34' },
+    ],
+    variants: {
+      key: 'josephGranaryView',
+      zh: '视图模式',
+      en: 'View mode',
+      options: [
+        {
+          id: 'beehive-silos',
+          zh: '1:1 埃及官府七座蜂巢谷仓院落 · 顶部倒粮台阶、下部放粮木门、倾泻谷堆与书记量斗（创 41:34, 47–49）',
+          en: '1:1 Egyptian granary compound · 7 beehive silos, loading stair & scribe desk',
+          note: '切开正面泥砖围墙以供窥视院内：**7 座**锥顶泥砖蜂巢大仓对应七个大丰年，后沿外置阶梯让人扛袋登上高台从仓顶口倾入麦粒；下部各有放粮活门泄出金黄麦堆，院前设司秤登记量斗的木案。',
+          noteEn: 'Front cutaway exposes an Egyptian mudbrick granary courtyard containing **7 conical beehive silos** for the seven years of plenty: an exterior stair climbs to the top loading deck while lower front shutters spill golden grain heaps beside the scribe’s measuring table.',
+        },
+        {
+          id: 'dothan-to-egypt',
+          zh: '多坍—歌珊地形路线沙盘 · 希伯仑寻兄、基列米甸商队、沿海驿道直下歌珊与兰塞（创 37; 46）',
+          en: 'Canaan-to-Egypt terrain relief · Dothan spice caravan & Jacob’s migration to Goshen',
+          note: '跨 **约 380 公里**的实测西奈与迦南地形沙盘：绿线标明约瑟从**希伯仑**出发经**示剑**至**多坍**；琥珀线示出从**基列**越过河谷西行的香料商队把他带往埃及；红线再标明雅各全家经**别是巴**南下**歌珊与兰塞**。',
+          noteEn: 'Spans **~380 km** from **Hebron -> Shechem -> Dothan** (green), the **Gilead caravan** sweeping through Dothan down the coastal corridor into Egypt (amber), and **Jacob’s household** migrating via **Beersheba** to **Goshen & Rameses** (crimson).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '创世记 41 章没有记述谷仓的尺寸与圆仓数目；7 座蜂巢谷仓系据埃及中/新王国泥砖筒仓遗址与庭院模型复原，用来具体化“七个丰年积谷如沙”。',
+        en: 'Genesis 41 records no silo count or cubit dimensions; the 7-silo courtyard adapts excavated Egyptian New/Middle Kingdom beehive granary compounds.',
+      },
+    ],
+    punchZh: '“无法计算”并非只有一处大仓：埃及法老与约瑟用**一成排顶部进料、底门出粮的泥砖蜂巢筒仓**吞吐全地 **1/5 收成**——也是从多坍坑井沿西奈沙道一路走来的果效。',
+    punchEn: 'Joseph’s "grain like sea sand" moved through real infrastructure: **mudbrick beehive silos filled from roof stairs and drawn from floor shutters**, tying Dothan’s pit to Goshen’s store-cities.',
+    compare: [
+      { zh: '多坍至埃及歌珊陆路全长（约）', en: 'Dothan to Goshen caravan road (approx.)', m: 380_000 },
+      { zh: '埃及官府谷仓围院宽', en: 'Granary courtyard width', m: 9.6 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+    ],
+  },
+  {
+    id: 'altar-perpetual-fire-offerings',
+    zh: '坛上常常烧着的火与利未记五祭铜坛',
+    en: 'Perpetual Burnt-Offering Altar & Five Offerings',
+    ref: 'Leviticus 6:13',
+    refZh: '利未记 6:13',
+    textZh: '在坛上必有常常烧着的火，不可熄灭。”',
+    textEn: 'Fire shall be kept burning upon the altar continually; it shall not go out.',
+    dims: [
+      { key: 'altar-w', zh: '燔祭铜坛宽与长（正方四面）', en: 'Bronze altar width & length (square)', cubits: 5, ref: '出 27:1; 利 6:13', refEn: 'Exod 27:1; Lev 6:13' },
+      { key: 'altar-h', zh: '燔祭铜坛高', en: 'Bronze altar height', cubits: 3, ref: '出 27:1', refEn: 'Exod 27:1' },
+    ],
+    kind: 'perpetualAltar',
+    counts: [
+      { zh: '利未记 1–7 章五种献祭陈列台', en: 'Five ordered offering stations (Lev 1–7)', n: 5, ref: '利 1–7', refEn: 'Lev 1–7' },
+      { zh: '铜坛四角抹赎罪血的坛角', en: 'Four blood-touched altar horns', n: 4, ref: '出 27:2; 利 4:25', refEn: 'Exod 27:2; Lev 4:25' },
+    ],
+    variants: {
+      key: 'perpetualAltarView',
+      zh: '利未记坛火视图',
+      en: 'Altar view',
+      options: [
+        {
+          id: 'ever-burning-hearth',
+          zh: '1:1 五肘见方三肘高铜祭坛 · 抹血四角、无阶斜坡、常燃柴炭烈焰与收灰铲盆（出 27:1; 利 6:12–13）',
+          en: '1:1 5 × 5 × 3 cubit bronze altar · blood-touched horns, unstepped ramp & perpetual fire',
+          note: '严格按 **出 27:1 实测 5 肘 × 5 肘 × 3 肘高**（拖动肘长滑块即可实时伸缩铜坛全尺寸）：四角各起抹红铜角，南侧设**不造台阶的光面坡道**（出 20:26），坛心赤炭与摇曳火苗常燃不止，旁置穿杠与收灰盆。',
+          noteEn: 'Built to the exact **5 × 5 × 3 cubit** specification of Exodus 27:1 (live cubit-slider reactive): four blood-tipped horns, a step-free ramp (Exod 20:26), animated embers and continual flames (Lev 6:12–13), carrying poles and ash pan.',
+        },
+        {
+          id: 'five-offerings-table',
+          zh: '利未记一至七章五祭陈列台 · 燔祭、素祭、平安祭、赎罪祭、赎愆祭五大站位（利 1–7）',
+          en: 'Five offerings array before the altar · Burnt, Grain, Peace, Sin & Trespass',
+          note: '在常燃铜坛前方依次陈设利未记前七章的五祭要物：**燔祭**（柴与盆）、**素祭**（细面堆与油瓶）、**平安祭**（无酵饼与调油饼）、**赎罪祭**（铜盆血迹）与**赎愆祭**（天平与祭物），对照坛角抹血礼仪。',
+          noteEn: 'Sets five ordered stations in front of the perpetual altar summarizing Leviticus 1–7: **Burnt** (logs & basin), **Grain** (fine flour & oil), **Peace** (unleavened cakes), **Sin** (blood basin) and **Trespass** (balance scale & restitution).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '铜坛宽高（5×5×3 肘）来自出埃及记 27:1 明文；南侧斜坡宽斜度、收灰器具形制及“五祭陈列台”摆位皆为助读复原，利未记原文只在会幕外院设一总铜坛献五祭。',
+        en: 'The 5 × 5 × 3 cubit altar dimensions come verbatim from Exodus 27:1; ramp slope, ash pan geometry and the five-station display table are pedagogical staging rather than extra architectural furniture in the court.',
+      },
+    ],
+    punchZh: '整卷利未记的一切规矩都在同一件尺度严谨的铜器旁运行：**5 × 5 × 3 肘坛顶昼夜不息的火**（利 6:13），日日烧掉早晨添上的木柴并托住全部五种献祭。',
+    punchEn: 'All five offerings of Leviticus 1–7 turn around one precisely sized **5 × 5 × 3 cubit bronze hearth** whose wood fire “shall never go out” day or night (Lev 6:13).',
+    compare: [
+      { zh: '铜祭坛宽长（5 肘，长肘）', en: 'Bronze altar square side (5 cubits)', m: 2.625 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
+      { zh: '铜祭坛高（3 肘，长肘）', en: 'Bronze altar height (3 cubits)', m: 1.575 },
+    ],
+  },
+  {
+    id: 'joppa-caesarea-coastal-vision',
+    zh: '约帕房顶异象与犹太—沙仑沿海宣教沙盘',
+    en: 'Joppa Housetop Vision & Judea–Caesarea Coastal Relief',
+    ref: 'Acts 10:9',
+    refZh: '使徒行传 10:9',
+    textZh: '第二天，他们行路将近那城。彼得约在午正，上房顶去祷告，',
+    textEn: 'Now on the morrow, as they were on their journey, and drew nigh unto the city, Peter went up upon the housetop to pray, about the sixth hour:',
+    dims: [
+      { key: 'coast-ew', zh: '沿海（约帕/迦萨）至内陆耶路撒冷东西跨度', en: 'Coast (Joppa/Gaza) to Jerusalem east–west span', cubits: 95, ref: '徒 8–10', refEn: 'Acts 8–10' },
+      { key: 'coast-ns', zh: '迦萨旷野南端至该撒利亚南北全长', en: 'Gaza desert to Caesarea north–south span', cubits: 155, ref: '徒 8:26–40; 10:24', refEn: 'Acts 8:26–40; 10:24' },
+    ],
+    kind: 'actsCoastalRelief',
+    unit: {
+      zh: '公里',
+      en: 'km',
+      m: 1000,
+      note: '实测地中海东岸沙仑平原、非利士海岸、犹大与撒玛利亚山地地形。',
+      noteEn: 'Georeferenced terrain of the Sharon Plain, Philistine coast, Judea and Samaria.',
+    },
+    counts: [
+      { zh: '在约帕城外叩门的哥尼流差役（两人仆从+一兵丁）', en: 'Messengers sent from Cornelius to Joppa', n: 3, ref: '徒 10:7–8, 17', refEn: 'Acts 10:7–8, 17' },
+      { zh: '异象大布系住的四只角', en: 'Four corners holding the descending sheet', n: 4, ref: '徒 10:11', refEn: 'Acts 10:11' },
+    ],
+    variants: {
+      key: 'actsCoastalView',
+      zh: '视图模式',
+      en: 'View mode',
+      options: [
+        {
+          id: 'coastal-roads',
+          zh: '腓利与彼得沿海宣教沙盘 · 撒玛利亚、迦萨旷野至该撒利亚 + 吕大、约帕至该撒利亚（徒 8–10）',
+          en: 'Coastal terrain relief · Philip’s Gaza-to-Caesarea road & Peter’s Joppa circuit',
+          note: '按真实山海岸线标出两股向外推进的路：**腓利**先北上**撒玛利亚**（徒 8:5），再顺南路下**迦萨旷野**往北走**亚实突（亚锁都）—该撒利亚**（徒 8:26–40）；**彼得**则从耶路撒冷巡行**吕大、约帕**再北上**该撒利亚**哥尼流家（徒 9:32–10:24）。',
+          noteEn: 'Plots two interlocking coastal expansions across true topography: **Philip** north to **Samaria** (Acts 8:5) and down the **Gaza** desert road north through **Azotus (Ashdod) to Caesarea** (8:26–40), followed by **Peter** via **Lydda (Lod) and Joppa** to **Caesarea** (9:32–10:24).',
+        },
+        {
+          id: 'joppa-rooftop',
+          zh: '1:1 约帕海边硝皮匠西门房顶 · 外阶梯、硝皮石槽、门前三人与系着四角缒下的大布（徒 10:6–17）',
+          en: '1:1 Simon the tanner’s seaside rooftop · exterior stair, vats & 4-corner sheet vision',
+          note: '近海边石砌平顶宅院：海浪拍打石岸（徒 10:6 靠海而居好取水清洗皮料），院角凿有两只硝皮石槽；外墙石阶通往平屋顶，午正祷告的彼得跪在顶棚旁，头顶上方金色光环缓缓缒下**四角系着的大布**（10:11），同时门外已站着从该撒利亚赶来的三人。',
+          noteEn: 'At **Simon the tanner’s house by the sea** (Acts 10:6), stone tanning vats sit beside Mediterranean surf while an exterior stone stair climbs to the flat rooftop where Peter prays at noon beneath a descending **four-cornered sheet** suspended from an aniconic sky ring as three messengers arrive at the gate (10:7–17).',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '使徒行传第 8–10 章写明了每座城镇名与约帕海边房子方位，但未详述硝皮匠西门宅院尺寸与各城间小路拐点；沿海路线依据罗马帝国滨海驿道走势重建。',
+        en: 'Acts 8–10 names every city and Simon’s seaside house without giving house measurements; road tubes follow coastal Roman highway alignments between the attested stops.',
+      },
+    ],
+    punchZh: '福音跨入外邦并非发生在深山密林：**沿着沙仑平原地中海边一条平直大路**，约帕房顶午正一块缒下的四角大布，把门外的**三位该撒利亚来客**直领到港口大城。',
+    punchEn: 'Across the Sharon coast, a **four-cornered sheet lowered onto a Joppa rooftop by the sea** turned a single coastal road from **Gaza and Lydda straight to Caesarea**.',
+    compare: [
+      { zh: '约帕至该撒利亚沿海行程', en: 'Joppa to Caesarea coastal walk', m: 58_000 },
+      { zh: '迦萨旷野道至该撒利亚全程（约）', en: 'Gaza to Caesarea full road (approx.)', m: 145_000 },
+      { zh: '海边平顶石头屋总高（1:1）', en: 'Seaside flat-roof stone house height', m: 3.17 },
+    ],
+  },
+  {
+    id: 'whirlwind-foundations-constellations',
+    zh: '约伯记三十八章：大地根基、海门与星宿带',
+    en: 'Job 38 Out of the Whirlwind: Foundations, Sea Doors & Constellations',
+    ref: 'Job 38:4',
+    refZh: '约伯记 38:4',
+    textZh: '我立大地根基的时候，你在哪里呢？你若有聪明，只管说吧！',
+    textEn: 'Where wast thou when I laid the foundations of the earth? Declare, if thou hast understanding.',
+    dims: [
+      { key: 'diorama-span', zh: '宇宙论断面博物馆基座宽', en: 'Cosmological diorama museum plinth width', cubits: 10.2, ref: '伯 38:4–11', refEn: 'Job 38:4–11' },
+    ],
+    kind: 'jobWhirlwind',
+    unit: {
+      zh: '米',
+      en: 'm',
+      m: 1,
+      note: '双视图皆安放在博物馆展台基座上，将希伯来古宇宙观诗意意象（地脚底座、角石准绳、海的双门门闩与三大星群）具象并列。',
+      noteEn: 'Both views rest on museum plinths translating Job 38’s Hebrew poetic cosmology (earth sockets, cornerstone plumb line, bolted sea doors and star bands).',
+    },
+    counts: [
+      { zh: '约伯记 38:31–32 点名的三大北方星群（昴星、参星、北斗）', en: 'Star groups named in Job 38:31–32 (Pleiades, Orion, Bear)', n: 3, ref: '伯 38:31–32', refEn: 'Job 38:31–32' },
+    ],
+    variants: {
+      key: 'jobWhirlwindView',
+      zh: '天问断面视角',
+      en: 'Cosmological view',
+      options: [
+        {
+          id: 'cornerstone-and-sea-doors',
+          zh: '大地根基、准绳角石与双扇海门 · 安放底座、波涛止于门闩与旋风无形回环（伯 38:1–11）',
+          en: 'Earth foundation sockets, cornerstone line, bolted sea doors & aniconic whirlwind',
+          note: '左侧切开地壳深石，露出“根基的底座、安放的角石”（38:6）与拉在墩柱上的**黄铜准绳**（38:5）；右侧涌动深蓝海水撞在一对**装上门闩的巨型海门**前受阻停住（38:8–11）；中央坐着约伯，上方升起**纯以盘旋光环构成的旋风柱**（不作人形），体现雅伟“从旋风中回答”（38:1）。',
+          noteEn: 'A museum-plinth cutaway contrasts **sunken foundation sockets, cornerstone and brass measuring line** on the left (Job 38:4–6) with **twin bolted doors halting the surging ocean** on the right (38:8–11), crowned by a strictly **aniconic spiraling whirlwind** descending above seated Job (38:1).',
+        },
+        {
+          id: 'pleiades-and-orion',
+          zh: '昴星、参星与北斗（天球青铜子午环）· 紧系的昴星七星带与解开的参星腰带（伯 38:31–32）',
+          en: 'Celestial meridian arcs · bound Pleiades, Orion’s cords & the Bear',
+          note: '两道黄铜天体子午环托出约伯记 38:31–32 质问的三组星宿：**昴星（七星）**由金环紧系成团，**参星（猎户座）**列三腰星与四角外星却显松开铜索，北方高弧则悬起按时领出的**北斗七星**。',
+          noteEn: 'Twin brass meridian arcs frame the constellations asked of Job (38:31–32): **Pleiades** bound tightly in a golden 7-star cluster, **Orion’s** three-star belt and outer stars with loosened bronze cords, and the **Bear (Dipper)** circling the northern arc.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '约伯记第 38 章通篇使用建城筑房（底座、角石、准绳）与城门门闩（海的胎门与门闩）的宏大诗意隐喻来反衬人智有限，并非按科学地理刻度丈量地球。',
+        en: 'Job 38 casts creation in majestic architectural and coastal metaphors (sockets, cornerstone, measuring line, bolted doors) to humble human wisdom rather than specifying literal metres.',
+      },
+    ],
+    punchZh: '当人追问受苦理由时，神没有画一张哲学图，而是领他站到**地角石与拉起的准绳前、装上门闩的海涛前、连结昴星七星的天球前**问：“我立根基时你在哪里？”',
+    punchEn: 'Out of the whirlwind, Yahweh placed Job before **foundation sockets, a stretched plumb line, bolted sea doors and bound Pleiades**, asking not *why* but **where man stood when earth was founded**.',
+    compare: [
+      { zh: '宇宙断面陈列基座宽', en: 'Cosmological diorama plinth width', m: 10.2 },
+      { zh: '天球黄铜子午环基座宽', en: 'Celestial meridian plinth width', m: 9.6 },
+    ],
+  },
+  {
+    id: 'caesarea-audience-hall',
+    zh: '该撒利亚海角希律王宫与亚基帕公厅听审',
+    en: 'Caesarea Promontory Praetorium & Agrippa’s Audience Hall',
+    ref: 'Acts 25:23',
+    refZh: '使徒行传 25:23',
+    textZh: '第二天，亚基帕和百尼基大张威势而来，同着众千夫长和城里的尊贵人进了公厅。非斯都吩咐一声，就有人将保罗带进来。',
+    textEn: 'So on the morrow, when Agrippa was come, and Bernice, with great pomp, and they were entered into the place of hearing with the chief captains and principal men of the city, at the command of Festus Paul was brought in.',
+    dims: [
+      { key: 'hall-w', zh: '1:1 切开式公厅（akroaterion）东西宽', en: '1:1 Cutaway audience basilica width', cubits: 10.6, ref: '徒 25:23', refEn: 'Acts 25:23' },
+      { key: 'hall-d', zh: '公厅南北纵深（双排柱廊）', en: 'Audience hall depth (paired colonnades)', cubits: 8.0, ref: '徒 25:23', refEn: 'Acts 25:23' },
+    ],
+    kind: 'caesareaHall',
+    unit: {
+      zh: '米',
+      en: 'm',
+      m: 1,
+      note: '公厅主视图按 1:1 人像尺度剖开南墙呈现在堂辩论（徒 25:23–26:32），另一视图以博物馆缩尺展示伸入地中海的希律海角总督宫（徒 23:35）。',
+      noteEn: 'Primary view shows a 1:1 cutaway audience basilica; secondary view shows a museum model of Herod’s rock-cut Promontory Palace.',
+    },
+    counts: [
+      { zh: '听审公厅两侧整齐石柱（素柱廊，每排六根）', en: 'Clean fluted colonnade shafts (6 + 6)', n: 12, ref: '徒 25:23', refEn: 'Acts 25:23' },
+      { zh: '按五支驻屯营编制的众千夫长（Acts 25:23）', en: 'Tribunes / chiliarchs seated along north bench', n: 5, ref: '徒 25:23', refEn: 'Acts 25:23' },
+    ],
+    variants: {
+      key: 'caesareaHallView',
+      zh: '该撒利亚视角',
+      en: 'Caesarea view',
+      options: [
+        {
+          id: 'agrippa-hearing',
+          zh: '1:1 亚基帕与非斯都公厅听审 · 高台三席、五千夫长旁听、带锁链申诉的保罗与西侧海浪（徒 25:23; 26:1）',
+          en: '1:1 Audience basilica (akroaterion) · bema dais, 5 tribunes & chained Paul',
+          note: '切开希律海角王宫上层大厅（希腊原文 **akroaterion**“听审大厅”）：两排 **6+6** 洁净凹槽大理石柱廊外即地中海湛蓝波涛（徒 23:35 保罗曾被看守在此宫中）；西端石砌**审讯高台（bema）**并列**非斯都、亚基帕王与百尼基**三座，北席坐着**五位千夫长**，东侧中央站着带着手链却挺身申辩的保罗。',
+          noteEn: 'Cutaway of the upper audience basilica (**akroaterion**) overlooking Mediterranean surf outside its west colonnade: **6 + 6 clean fluted marble columns** frame a raised stone **bema** dais seating **Festus, Agrippa II and Bernice**, **five tribunes** along the north bench, and chained **Paul** standing in defense.',
+        },
+        {
+          id: 'promontory-praetorium',
+          zh: '海角希律王宫全区微缩模型 · 下层凿石海中淡水柱廊泳池 + 上层行政公厅与兵营翼楼（徒 23:35）',
+          en: 'Museum model of Herod’s Promontory Palace · lower sea-pool & upper praetorium',
+          note: '呈现海角考古发掘实景：前伸入地中海的礁石半岛上建起下层围有四面柱廊的凿石淡水宫池，后方地势抬升的上层官邸即是罗马巡抚驻节的“希律的衙门（praitorion）”，也是保罗羁押两年、面向君王作见证的所在。',
+          noteEn: 'Museum-plinth architectural massing of Caesarea Maritima’s excavated **Promontory Palace**: a rock-cut peristyle sea-pool projecting into Mediterranean surf below the elevated eastern governor’s praetorium where Paul was kept (Acts 23:35) before his hearing.',
+        },
+      ],
+    },
+    unstated: [
+      {
+        zh: '使徒行传未记录公厅内部开间尺数与千夫长确切人数（历史上驻扎该撒利亚及犹太省约有五营辅助步兵千夫长）；素柱廊按 1:12 柱列比例简化示意，不设多余徽章旗号。',
+        en: 'Acts neither specifies hall metre dimensions nor an exact count of tribunes (five cohort tribunes reflect Roman Judea’s auxiliary garrison history); the cutaway omits anachronistic heraldic eagles or banners.',
+      },
+    ],
+    punchZh: '保罗被囚两年“在希律的衙门”并非地牢黑屋，而是**三面环海、白石柱廊迎浪的希律海角宫殿上厅**——正因有这高台 **bema** 与公厅 **akroaterion**，他直面巡抚、王与众千夫长伸手分诉。',
+    punchEn: 'Paul’s two-year Caesarea custody lay inside **Herod’s sea-girt Promontory Palace**—so when Festus summoned Agrippa, Bernice and the tribunes into the **akroaterion**, a single chained prisoner addressed the coastal court overlooking the Mediterranean.',
+    compare: [
+      { zh: '海角希律王宫遗址长（约）', en: 'Excavated Promontory Palace full length', m: 110 },
+      { zh: '切开公厅内场东西跨度', en: 'Cutaway audience hall interior span', m: 10.6 },
+      { zh: '一个成年人（身高）', en: 'Adult human (height)', m: 1.72 },
     ],
   },
   {

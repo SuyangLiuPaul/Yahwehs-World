@@ -356,6 +356,38 @@ const tigrisElev = (lon, lat, m) => {
   return clamp(h, 210, 1120);
 };
 
+// ── 7. CANAAN-TO-GOSHEN CORRIDOR GRID (Gen 13, 37, 46) ────────────────────────
+const canaanEgyptElev = (lon, lat, m) => {
+  if (m === 0) return -35;
+  if (m === 2 && lon < 33.0) return 8;
+  if (m === 2 && lon > 35.0) return -420;
+  // Western alluvial Nile Delta (Goshen / Rameses)
+  if (lon < 32.5) return 14 + 28 * smoothstep(31.8, 32.5, lon);
+  // Northern Sinai coastal dunes vs southern highlands
+  const coastalStrip = smoothstep(32.5, 34.4, lon) * smoothstep(31.4, 30.2, lat);
+  let h = 45 + 140 * smoothstep(30.9, 30.0, lat) * coastalStrip;
+  // Central Sinai & Negev rise south of Beersheba
+  h += 580 * gauss(Math.hypot((lon - 34.3) * 0.7, lat - 30.05), 0.72);
+  // Cisjordan ridge from Hebron up through Bethel, Shechem, Dothan (32.4N)
+  if (lon >= 34.4 && lon < 35.58 && lat >= 31.1) {
+    const centralLon = 35.16 + (lat - 31.6) * 0.08;
+    const ridgeW = 0.25;
+    const spine = Math.exp(-Math.pow((lon - centralLon) / ridgeW, 2));
+    const jezreelCut = 1 - 0.78 * gauss(lat - 32.56, 0.1) * smoothstep(35.0, 35.45, lon);
+    h += spine * (760 + 180 * gauss(lat - 31.55, 0.22)) * jezreelCut;
+  }
+  // Gilead highlands east of Jordan rift
+  if (lon > 35.56) {
+    h += smoothstep(35.55, 35.75, lon) * (760 + 180 * gauss(lat - 32.15, 0.3));
+  }
+  // Deep Jordan & Dead Sea Rift valley
+  const riftLon = 35.54 - (32.6 - lat) * 0.03;
+  const riftTrough = gauss(Math.abs(lon - riftLon), 0.1) * smoothstep(30.7, 31.1, lat);
+  const riftFloor = lat > 31.8 ? -280 : -420;
+  h = h * (1 - riftTrough * 0.92) + riftFloor * (riftTrough * 0.92);
+  return h;
+};
+
 const grids = {
   canaan: buildGrid({
     id: 'canaan',
@@ -435,6 +467,16 @@ const grids = {
     elevFn: tigrisElev,
     riverRadiusDeg: 0.022,
   }),
+  canaanEgypt: buildGrid({
+    id: 'canaanEgypt',
+    cols: 68,
+    rows: 48,
+    bounds: [30.9, 29.9, 36.0, 32.65],
+    minM: -430,
+    maxM: 1200,
+    elevFn: canaanEgyptElev,
+    riverRadiusDeg: 0.045,
+  }),
 };
 
 // ── Extract places & routes from canonical project JSONs ─────────────────────
@@ -508,6 +550,36 @@ const NINEVEH_SITES = [
   pickPt('Nineveh', 'nineveh', '尼尼微大城', 'Nineveh'),
 ];
 
+const MAMRE_JORDAN_SITES = [
+  pickPt('Bethel 1', 'bethel', '伯特利（举目四望处）', 'Bethel (Overlook)'),
+  pickPt('Ai 1', 'ai', '艾', 'Ai'),
+  pickPt('Mamre', 'mamre', '希伯仑幔利橡树', 'Oaks of Mamre (Hebron)'),
+  pickPt('Hebron', 'hebron', '希伯仑', 'Hebron'),
+  pickPt('Sodom', 'sodom', '所多玛', 'Sodom'),
+  pickPt('Zoar', 'zoar', '琐珥', 'Zoar'),
+  pickPt('Jerusalem', 'jerusalem', '耶路撒冷（撒冷）', 'Jerusalem (Salem)'),
+];
+
+const JOSEPH_ROAD_SITES = [
+  pickPt('Hebron', 'hebron', '希伯仑谷（父家）', 'Valley of Hebron'),
+  pickPt('Shechem', 'shechem', '示剑', 'Shechem'),
+  pickPt('Dothan', 'dothan', '多坍（坑与商队）', 'Dothan'),
+  pickPt('Gilead 1', 'gilead', '基列（商队来处）', 'Gilead'),
+  pickPt('Beersheba 1', 'beersheba', '别是巴（雅各献祭处）', 'Beersheba'),
+  pickPt('Goshen 1', 'goshen', '歌珊地', 'Land of Goshen'),
+  pickPt('Rameses', 'rameses', '兰塞', 'Rameses'),
+];
+
+const ACTS_COASTAL_SITES = [
+  pickPt('Jerusalem', 'jerusalem', '耶路撒冷', 'Jerusalem'),
+  pickPt('Samaria 1', 'samaria', '撒玛利亚', 'Samaria'),
+  pickPt('Gaza', 'gaza', '迦萨（旷野路）', 'Gaza'),
+  pickPt('Ashdod', 'azotus', '亚锁都（亚实突）', 'Azotus (Ashdod)'),
+  pickPt('Lod', 'lydda', '吕大', 'Lydda'),
+  pickPt('Joppa', 'joppa', '约帕（海边硝皮匠家）', 'Joppa'),
+  pickPt('Caesarea', 'caesarea', '该撒利亚', 'Caesarea'),
+];
+
 const extractJourney = (id) => {
   const j = journeysDoc.journeys.find((x) => x.id === id);
   if (!j) throw new Error(`Missing journey "${id}" in journeys.json`);
@@ -578,7 +650,7 @@ export interface ReliefJourneyData {
   markers: ReliefJourneyMarker[];
 }
 
-export const RELIEF_GRIDS: Record<'canaan' | 'exodus' | 'paul' | 'asia' | 'anatolia' | 'upperTigris', ReliefGridData> = ${JSON.stringify(grids)};
+export const RELIEF_GRIDS: Record<'canaan' | 'exodus' | 'paul' | 'asia' | 'anatolia' | 'upperTigris' | 'canaanEgypt', ReliefGridData> = ${JSON.stringify(grids)};
 
 export const CANAAN_SITES: readonly ReliefSite[] = ${JSON.stringify(CANAAN_SITES)};
 
@@ -589,6 +661,12 @@ export const PAUL_EPISTLE_SITES: readonly ReliefSite[] = ${JSON.stringify(PAUL_E
 export const DISPERSION_SITES: readonly ReliefSite[] = ${JSON.stringify(DISPERSION_SITES)};
 
 export const NINEVEH_SITES: readonly ReliefSite[] = ${JSON.stringify(NINEVEH_SITES)};
+
+export const MAMRE_JORDAN_SITES: readonly ReliefSite[] = ${JSON.stringify(MAMRE_JORDAN_SITES)};
+
+export const JOSEPH_ROAD_SITES: readonly ReliefSite[] = ${JSON.stringify(JOSEPH_ROAD_SITES)};
+
+export const ACTS_COASTAL_SITES: readonly ReliefSite[] = ${JSON.stringify(ACTS_COASTAL_SITES)};
 
 export const RELIEF_JOURNEYS: Record<'exodus' | 'paul1' | 'paul2' | 'paul3' | 'paulRome', ReliefJourneyData> = ${JSON.stringify(JOURNEY_DATA)};
 `;

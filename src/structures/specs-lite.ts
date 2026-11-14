@@ -347,6 +347,66 @@ export const STRUCTURES_LITE: readonly StructureLite[] = [
     "ref": "1 Peter 1:1"
   },
   {
+    "id": "david-temple-preparations",
+    "zh": "大卫预备建殿的材料与样式桌",
+    "en": "David’s Temple Preparations & Pattern Table",
+    "ref": "1 Chronicles 22:14"
+  },
+  {
+    "id": "enclosed-garden-seven-pillars",
+    "zh": "关锁的园、封闭的井与智慧的七根柱子",
+    "en": "Enclosed Garden, Sealed Fountain & Wisdom’s Seven Pillars",
+    "ref": "Song of Songs 4:12"
+  },
+  {
+    "id": "potters-house-two-wheels",
+    "zh": "窑匠的家与藏在瓦器里的买地文契",
+    "en": "Potter’s House Wheels & Sealed Deeds in an Earthen Jar",
+    "ref": "Jeremiah 18:3"
+  },
+  {
+    "id": "mamre-altar-jordan-plain",
+    "zh": "约但全平原地形抉择与幔利橡树筑坛",
+    "en": "Jordan Plain Overlook & Abraham’s Altar at Mamre",
+    "ref": "Genesis 13:10"
+  },
+  {
+    "id": "bethel-ladder-pillar",
+    "zh": "伯特利天梯异象与膏油石柱",
+    "en": "Jacob’s Bethel Ladder & Anointed Pillar",
+    "ref": "Genesis 28:12"
+  },
+  {
+    "id": "joseph-granaries-and-road",
+    "zh": "约瑟的蜂巢谷仓与从多坍到埃及歌珊路线沙盘",
+    "en": "Joseph’s Beehive Granaries & Dothan-to-Goshen Road",
+    "ref": "Genesis 41:49"
+  },
+  {
+    "id": "altar-perpetual-fire-offerings",
+    "zh": "坛上常常烧着的火与利未记五祭铜坛",
+    "en": "Perpetual Burnt-Offering Altar & Five Offerings",
+    "ref": "Leviticus 6:13"
+  },
+  {
+    "id": "joppa-caesarea-coastal-vision",
+    "zh": "约帕房顶异象与犹太—沙仑沿海宣教沙盘",
+    "en": "Joppa Housetop Vision & Judea–Caesarea Coastal Relief",
+    "ref": "Acts 10:9"
+  },
+  {
+    "id": "whirlwind-foundations-constellations",
+    "zh": "约伯记三十八章：大地根基、海门与星宿带",
+    "en": "Job 38 Out of the Whirlwind: Foundations, Sea Doors & Constellations",
+    "ref": "Job 38:4"
+  },
+  {
+    "id": "caesarea-audience-hall",
+    "zh": "该撒利亚海角希律王宫与亚基帕公厅听审",
+    "en": "Caesarea Promontory Praetorium & Agrippa’s Audience Hall",
+    "ref": "Acts 25:23"
+  },
+  {
     "id": "newjerusalem",
     "zh": "新耶路撒冷",
     "en": "The New Jerusalem",

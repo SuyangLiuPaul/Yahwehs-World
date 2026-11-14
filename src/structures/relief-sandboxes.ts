@@ -1,8 +1,11 @@
 import * as THREE from 'three';
 import {
+  ACTS_COASTAL_SITES,
   ASIA_CHURCH_SITES,
   CANAAN_SITES,
   DISPERSION_SITES,
+  JOSEPH_ROAD_SITES,
+  MAMRE_JORDAN_SITES,
   NINEVEH_SITES,
   PAUL_EPISTLE_SITES,
   RELIEF_GRIDS,
@@ -1504,6 +1507,600 @@ export function buildNinevehRelief(_C: number, variant: string): THREE.Group {
     headR: 0.11,
     emberId: 1,
   });
+
+  return group;
+}
+
+function addLocalShortPerson(
+  parent: THREE.Group,
+  x: number,
+  y: number,
+  z: number,
+  tunicColor: number,
+  sashColor: number,
+  rotY = 0,
+  kneeling = false,
+): void {
+  const g = new THREE.Group();
+  const skin = new THREE.MeshStandardMaterial({ color: 0xc2926b, roughness: 0.74 });
+  const hair = new THREE.MeshStandardMaterial({ color: 0x261c17, roughness: 0.88 });
+  const tunic = new THREE.MeshStandardMaterial({ color: tunicColor, roughness: 0.85 });
+  const sash = new THREE.MeshStandardMaterial({ color: sashColor, roughness: 0.8 });
+
+  if (kneeling) {
+    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.24, 0.44, 12), tunic);
+    base.position.set(0, 0.22, 0.06);
+    const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.18, 0.56, 12), tunic);
+    torso.scale.set(1.04, 1, 0.72);
+    torso.position.set(0, 0.54, -0.02);
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.092, 12, 10), skin);
+    head.scale.set(0.88, 1.06, 0.92);
+    head.position.set(0, 0.94, -0.02);
+    const shortHair = new THREE.Mesh(
+      new THREE.SphereGeometry(0.096, 10, 8, 0, Math.PI * 2, 0, Math.PI * 0.54),
+      hair,
+    );
+    shortHair.scale.set(0.89, 0.95, 0.95);
+    shortHair.position.set(0, 0.955, -0.028);
+    shortHair.rotation.x = -0.18;
+    g.add(base, torso, head, shortHair);
+  } else {
+    const robe = new THREE.Mesh(new THREE.CylinderGeometry(0.145, 0.2, 1.18, 12), tunic);
+    robe.scale.set(1.04, 1, 0.72);
+    robe.position.y = 0.78;
+    const belt = new THREE.Mesh(new THREE.CylinderGeometry(0.165, 0.17, 0.068, 12), sash);
+    belt.scale.set(1.05, 1, 0.73);
+    belt.position.y = 0.96;
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.092, 12, 10), skin);
+    head.scale.set(0.88, 1.07, 0.94);
+    head.position.y = 1.54;
+    const shortHair = new THREE.Mesh(
+      new THREE.SphereGeometry(0.096, 10, 8, 0, Math.PI * 2, 0, Math.PI * 0.54),
+      hair,
+    );
+    shortHair.scale.set(0.89, 0.95, 0.95);
+    shortHair.position.set(0, 1.558, -0.008);
+    shortHair.rotation.x = -0.2;
+    g.add(robe, belt, head, shortHair);
+  }
+  g.position.set(x, y, z);
+  g.rotation.y = rotY;
+  parent.add(g);
+}
+
+// ── 9. Abraham's Oaks of Mamre & Lot's Jordan Plain Choice (Gen 13:10–18) ────
+export function buildMamreJordanRelief(_C: number, variant: string): THREE.Group {
+  if (variant === 'mamre-oaks-altar') {
+    const g = new THREE.Group();
+    const terrMat = new THREE.MeshStandardMaterial({ color: 0xcab998, roughness: 0.92 });
+    const stoneMat = new THREE.MeshStandardMaterial({ color: 0x9b907d, roughness: 0.88 });
+    const barkMat = new THREE.MeshStandardMaterial({ color: 0x5c3e26, roughness: 0.9 });
+    const leafMat = new THREE.MeshStandardMaterial({ color: 0x456b34, roughness: 0.78 });
+    const tentMat = new THREE.MeshStandardMaterial({ color: 0x262220, roughness: 0.92, side: THREE.DoubleSide });
+    const ropeMat = new THREE.MeshStandardMaterial({ color: 0xa6895a, roughness: 0.8 });
+    const poleMat = new THREE.MeshStandardMaterial({ color: 0x6d4a2b, roughness: 0.85 });
+    const flameMat = new THREE.MeshStandardMaterial({
+      color: 0xffaa33,
+      emissive: 0xff6214,
+      emissiveIntensity: 0.85,
+      transparent: true,
+      opacity: 0.9,
+    });
+    const coalMat = new THREE.MeshStandardMaterial({
+      color: 0xb83614,
+      emissive: 0xe84d1a,
+      emissiveIntensity: 0.72,
+      roughness: 0.6,
+    });
+
+    const ground = new THREE.Mesh(new THREE.BoxGeometry(6.4, 0.22, 5.4), terrMat);
+    ground.position.y = 0.11;
+    g.add(ground);
+
+    // Spreading oaks / terebinths of Mamre (Gen 13:18; 18:1)
+    const addOak = (ox: number, oz: number, scale: number) => {
+      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.18 * scale, 0.28 * scale, 1.9 * scale, 9), barkMat);
+      trunk.position.set(ox, 0.22 + 0.95 * scale, oz);
+      g.add(trunk);
+      const canopyOffsets: [number, number, number, number][] = [
+        [0, 2.25 * scale, 0, 1.35 * scale],
+        [-0.75 * scale, 2.05 * scale, 0.45 * scale, 0.98 * scale],
+        [0.82 * scale, 2.02 * scale, -0.35 * scale, 1.02 * scale],
+        [0.15 * scale, 2.52 * scale, -0.55 * scale, 0.9 * scale],
+      ];
+      for (const [dx, dy, dz, r] of canopyOffsets) {
+        const b = new THREE.Mesh(new THREE.DodecahedronGeometry(r, 1), leafMat);
+        b.scale.set(1.25, 0.72, 1.15);
+        b.position.set(ox + dx, 0.22 + dy, oz + dz);
+        g.add(b);
+      }
+    };
+    addOak(-1.75, -1.25, 1.08);
+    addOak(1.45, -1.65, 0.88);
+
+    // Black goat-hair patriarchal tent pitched under the oak shade
+    const tx = -1.25;
+    const tz = 0.95;
+    const ridgeY = 2.25;
+    const eaveY = 1.38;
+    for (const dx of [-1.45, 0, 1.45]) {
+      const p = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.048, ridgeY, 8), poleMat);
+      p.position.set(tx + dx, 0.22 + ridgeY * 0.5, tz);
+      g.add(p);
+    }
+    const roofGeo = new THREE.BoxGeometry(3.4, 0.05, 1.65);
+    const frontSlope = new THREE.Mesh(roofGeo, tentMat);
+    frontSlope.position.set(tx, 0.22 + (ridgeY + eaveY) * 0.5, tz + 0.72);
+    frontSlope.rotation.x = 0.52;
+    const backSlope = new THREE.Mesh(roofGeo, tentMat);
+    backSlope.position.set(tx, 0.22 + (ridgeY + eaveY) * 0.5, tz - 0.72);
+    backSlope.rotation.x = -0.52;
+    const backWall = new THREE.Mesh(new THREE.BoxGeometry(3.35, eaveY, 0.05), tentMat);
+    backWall.position.set(tx, 0.22 + eaveY * 0.5, tz - 1.38);
+    g.add(frontSlope, backSlope, backWall);
+
+    // Subtle hospitality rug & jars in the tent doorway (Gen 18:4-8)
+    const mat = new THREE.Mesh(
+      new THREE.BoxGeometry(1.45, 0.03, 0.95),
+      new THREE.MeshStandardMaterial({ color: 0x8f3328, roughness: 0.9 }),
+    );
+    mat.position.set(tx, 0.235, tz + 0.35);
+    g.add(mat);
+    const guy = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.85, 6), ropeMat);
+    guy.position.set(tx - 2.0, 0.9, tz);
+    guy.rotation.z = 0.58;
+    g.add(guy);
+
+    // Abram's unhewn fieldstone altar at Mamre (Gen 13:18)
+    const ax = 1.65;
+    const az = 0.55;
+    const baseStone = new THREE.Mesh(new THREE.BoxGeometry(1.55, 0.95, 1.55), stoneMat);
+    baseStone.position.set(ax, 0.22 + 0.475, az);
+    g.add(baseStone);
+    for (let i = 0; i < 8; i++) {
+      const ang = (i / 8) * Math.PI * 2;
+      const cobble = new THREE.Mesh(new THREE.DodecahedronGeometry(0.24, 0), stoneMat);
+      cobble.position.set(ax + Math.cos(ang) * 0.62, 0.22 + 0.92, az + Math.sin(ang) * 0.62);
+      g.add(cobble);
+    }
+    const embers = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.5, 0.1, 10), coalMat);
+    embers.position.set(ax, 0.22 + 1.0, az);
+    embers.userData.ember = 1;
+    g.add(embers);
+    const flame = new THREE.Mesh(new THREE.ConeGeometry(0.22, 0.52, 8), flameMat);
+    flame.position.set(ax, 0.22 + 1.28, az);
+    flame.userData.flame = 1;
+    g.add(flame);
+    const smokeMat = new THREE.MeshStandardMaterial({ color: 0xd9d4cc, transparent: true, opacity: 0.2, depthWrite: false });
+    for (let i = 0; i < 3; i++) {
+      const puff = new THREE.Mesh(new THREE.SphereGeometry(0.18 + i * 0.05, 8, 6), smokeMat);
+      puff.position.set(ax, 0.22 + 1.62 + i * 0.25, az);
+      puff.userData.smoke = { index: i + 1, baseY: 1.84 + i * 0.24, amplitude: 0.28 };
+      g.add(puff);
+    }
+
+    return g;
+  }
+
+  // Terrain relief view: Bethel–Ai overlook, fertile Jordan Plain (Gen 13:10-14) & Hebron/Mamre
+  const { group, layout } = createReliefTable(RELIEF_GRIDS.canaan, {
+    targetSpan: 12.0,
+    maxReliefH: 1.42,
+    rockTint: 'levant',
+  });
+  const site = (id: string) => MAMRE_JORDAN_SITES.find((s) => s.id === id)!;
+
+  // Lush well-watered Jordan Plain before Sodom & Gomorrah's overthrow (Gen 13:10)
+  const fertileMat = new THREE.MeshStandardMaterial({
+    color: 0x3b8c47,
+    emissive: 0x16401d,
+    emissiveIntensity: 0.28,
+    roughness: 0.72,
+    transparent: true,
+    opacity: 0.62,
+  });
+  const [jx, jz] = layout.toXZ(35.51, 31.42);
+  const plainStrip = new THREE.Mesh(new THREE.CylinderGeometry(0.68, 0.78, 0.04, 16), fertileMat);
+  plainStrip.scale.set(0.7, 1, 2.2);
+  plainStrip.position.set(jx, layout.toY(35.51, 31.42, 0.03), jz);
+  group.add(plainStrip);
+
+  const bethel = site('bethel');
+  const ai = site('ai');
+  const mamre = site('mamre');
+  const sodom = site('sodom');
+  const zoar = site('zoar');
+
+  // Four cardinal sight-line spokes radiating from Bethel-Ai ridge ("northward, southward, eastward, westward", Gen 13:14)
+  const sightMat = new THREE.MeshStandardMaterial({ color: 0xf4cf64, emissive: 0x996d12, emissiveIntensity: 0.5 });
+  const [bx, bz] = layout.toXZ(bethel.lon, bethel.lat);
+  const by = layout.toY(bethel.lon, bethel.lat, 0.24);
+  const nsBar = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.025, 1.3), sightMat);
+  nsBar.position.set(bx, by, bz);
+  const ewBar = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.025, 0.04), sightMat);
+  ewBar.position.set(bx, by, bz);
+  group.add(nsBar, ewBar);
+
+  // Lot's eastward choice into the Jordan Plain -> Sodom -> Zoar
+  addRouteTube(
+    group,
+    layout,
+    [
+      [bethel.lon, bethel.lat],
+      [35.42, 31.86],
+      [35.54, 31.78],
+      [sodom.lon, sodom.lat],
+      [zoar.lon, zoar.lat],
+    ],
+    { color: 0xe88943, radius: 0.05, lift: 0.09 },
+  );
+
+  // Abram's southward ridge relocation along central mountains -> Mamre in Hebron
+  addRouteTube(
+    group,
+    layout,
+    [
+      [bethel.lon, bethel.lat],
+      [site('jerusalem').lon, site('jerusalem').lat],
+      [35.19, 31.68],
+      [mamre.lon, mamre.lat],
+      [site('hebron').lon, site('hebron').lat],
+    ],
+    { color: 0x57c478, radius: 0.056, lift: 0.095 },
+  );
+
+  addBeaconPin(group, bx, layout.toY(bethel.lon, bethel.lat, 0.02), bz, 0xf5cd5b, { stemH: 0.48, headR: 0.125, emberId: 1 });
+  for (const [pt, col, h] of [
+    [ai, 0xe8d9b5, 0.26],
+    [mamre, 0x57c478, 0.44],
+    [sodom, 0xe88943, 0.36],
+    [zoar, 0xe88943, 0.3],
+  ] as const) {
+    const [px, pz] = layout.toXZ(pt.lon, pt.lat);
+    addBeaconPin(group, px, layout.toY(pt.lon, pt.lat, 0.02), pz, col, { stemH: h, headR: 0.095 });
+  }
+
+  return group;
+}
+
+// ── 10. Joseph's Beehive Granaries & Dothan-to-Goshen Road (Gen 37, 41, 46) ─
+export function buildJosephGranaries(_C: number, variant: string): THREE.Group {
+  if (variant === 'dothan-to-egypt') {
+    const { group, layout } = createReliefTable(RELIEF_GRIDS.canaanEgypt, {
+      targetSpan: 12.2,
+      maxReliefH: 1.35,
+      rockTint: 'sinai',
+    });
+    const site = (id: string) => JOSEPH_ROAD_SITES.find((s) => s.id === id)!;
+    const hebron = site('hebron');
+    const shechem = site('shechem');
+    const dothan = site('dothan');
+    const gilead = site('gilead');
+    const beersheba = site('beersheba');
+    const goshen = site('goshen');
+
+    // Gilead spice-caravan crossing into Dothan (Gen 37:25)
+    addRouteTube(
+      group,
+      layout,
+      [
+        [gilead.lon, gilead.lat],
+        [35.56, 32.35],
+        [dothan.lon, dothan.lat],
+      ],
+      { color: 0xe3a844, radius: 0.044, lift: 0.09, dashed: true },
+    );
+
+    // Joseph sent from Hebron -> Shechem -> Dothan -> coastal Way -> Egypt/Goshen
+    addRouteTube(
+      group,
+      layout,
+      [
+        [hebron.lon, hebron.lat],
+        [35.23, 31.85],
+        [shechem.lon, shechem.lat],
+        [dothan.lon, dothan.lat],
+        [34.85, 31.88],
+        [34.46, 31.5],
+        [33.42, 31.08],
+        [32.35, 30.88],
+        [goshen.lon, goshen.lat],
+      ],
+      { color: 0xe87b3c, radius: 0.056, lift: 0.095 },
+    );
+
+    // Jacob's household migration via Beersheba altar down to Goshen (Gen 46:1-7)
+    addRouteTube(
+      group,
+      layout,
+      [
+        [hebron.lon, hebron.lat],
+        [beersheba.lon, beersheba.lat],
+        [33.85, 30.92],
+        [32.65, 30.82],
+        [goshen.lon, goshen.lat],
+      ],
+      { color: 0x4fb3d9, radius: 0.046, lift: 0.088 },
+    );
+
+    const colors: [string, number, number][] = [
+      ['hebron', 0xf0c45a, 0.36],
+      ['shechem', 0xe87b3c, 0.3],
+      ['dothan', 0xe87b3c, 0.44],
+      ['gilead', 0xe3a844, 0.28],
+      ['beersheba', 0x4fb3d9, 0.34],
+      ['goshen', 0x56c47f, 0.46],
+    ];
+    for (const [id, col, h] of colors) {
+      const pt = site(id);
+      const [px, pz] = layout.toXZ(pt.lon, pt.lat);
+      addBeaconPin(group, px, layout.toY(pt.lon, pt.lat, 0.02), pz, col, { stemH: h, headR: 0.1 });
+    }
+    return group;
+  }
+
+  // 1:1 Ancient Egyptian state mudbrick granary compound with 7 beehive silos (Gen 41:47-49)
+  const g = new THREE.Group();
+  const yardMat = new THREE.MeshStandardMaterial({ color: 0xc9b38c, roughness: 0.92 });
+  const mudbrick = new THREE.MeshStandardMaterial({ color: 0xb08b5c, roughness: 0.88 });
+  const plaster = new THREE.MeshStandardMaterial({ color: 0xdccaa5, roughness: 0.84 });
+  const woodMat = new THREE.MeshStandardMaterial({ color: 0x6b4728, roughness: 0.82 });
+  const grainMat = new THREE.MeshStandardMaterial({ color: 0xe6be57, roughness: 0.72 });
+
+  const yard = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.18, 7.8), yardMat);
+  yard.position.y = 0.09;
+  g.add(yard);
+
+  // Cutaway mudbrick enclosure wall (rear + two flanking walls, front open for full inspection)
+  const backW = new THREE.Mesh(new THREE.BoxGeometry(9.4, 2.35, 0.38), mudbrick);
+  backW.position.set(0, 0.18 + 1.175, -3.65);
+  const leftW = new THREE.Mesh(new THREE.BoxGeometry(0.38, 2.35, 7.5), mudbrick);
+  leftW.position.set(-4.52, 0.18 + 1.175, -0.05);
+  const rightW = new THREE.Mesh(new THREE.BoxGeometry(0.38, 2.35, 7.5), mudbrick);
+  rightW.position.set(4.52, 0.18 + 1.175, -0.05);
+  g.add(backW, leftW, rightW);
+
+  // Seven conical-domed mudbrick beehive silos representing 7 years of abundance (Gen 41:47-49)
+  const siloCenters: [number, number][] = [
+    [-3.0, -2.0], [-1.0, -2.0], [1.0, -2.0], [3.0, -2.0],
+    [-2.0, 0.65], [0.0, 0.65], [2.0, 0.65],
+  ];
+  for (let i = 0; i < siloCenters.length; i++) {
+    const [sx, sz] = siloCenters[i]!;
+    const drum = new THREE.Mesh(new THREE.CylinderGeometry(0.84, 0.96, 2.35, 16), mudbrick);
+    drum.position.set(sx, 0.18 + 1.175, sz);
+    const dome = new THREE.Mesh(
+      new THREE.SphereGeometry(0.85, 16, 10, 0, Math.PI * 2, 0, Math.PI * 0.5),
+      plaster,
+    );
+    dome.scale.set(1, 1.48, 1);
+    dome.position.set(sx, 0.18 + 2.35, sz);
+    const hatch = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.12, 12), woodMat);
+    hatch.position.set(sx, 0.18 + 3.62, sz);
+    // Lower front grain discharge shutter + golden spilled heap
+    const chute = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.42, 0.16), woodMat);
+    chute.position.set(sx, 0.18 + 0.5, sz + 0.9);
+    const heap = new THREE.Mesh(new THREE.ConeGeometry(0.46, 0.28, 12), grainMat);
+    heap.position.set(sx, 0.18 + 0.14, sz + 1.18);
+    g.add(drum, dome, hatch, chute, heap);
+  }
+
+  // Mudbrick exterior loading stairs climbing up to the upper silo catwalk
+  for (let st = 0; st < 11; st++) {
+    const step = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.23, 0.42), mudbrick);
+    step.position.set(-4.0, 0.18 + 0.115 + st * 0.23, 2.4 - st * 0.4);
+    g.add(step);
+  }
+
+  // Vast loose golden grain mound & fifth-part measuring bushels / scribe table (Gen 41:34, 49)
+  const mainHeap = new THREE.Mesh(new THREE.ConeGeometry(1.15, 0.72, 16), grainMat);
+  mainHeap.position.set(-2.35, 0.18 + 0.36, 2.65);
+  const desk = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.58, 0.62), woodMat);
+  desk.position.set(2.35, 0.18 + 0.29, 2.65);
+  g.add(mainHeap, desk);
+  for (let b = 0; b < 3; b++) {
+    const bushel = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.17, 0.36, 10), woodMat);
+    bushel.position.set(0.15 + b * 0.52, 0.18 + 0.18, 2.75);
+    const topG = new THREE.Mesh(new THREE.ConeGeometry(0.19, 0.12, 10), grainMat);
+    topG.position.set(0.15 + b * 0.52, 0.18 + 0.41, 2.75);
+    g.add(bushel, topG);
+  }
+
+  return g;
+}
+
+// ── 11. Philip & Peter Coastal Routes + Joppa Rooftop Vision (Acts 8–10) ───
+export function buildActsCoastalRelief(_C: number, variant: string): THREE.Group {
+  if (variant === 'joppa-rooftop') {
+    // 1:1 Simon the tanner's coastal house by the sea + 4-corner sheet vision (Acts 10:6-17)
+    const g = new THREE.Group();
+    const stone = new THREE.MeshStandardMaterial({ color: 0xddd2bd, roughness: 0.88 });
+    const trim = new THREE.MeshStandardMaterial({ color: 0xb9aa90, roughness: 0.9 });
+    const wood = new THREE.MeshStandardMaterial({ color: 0x6f4a28, roughness: 0.82 });
+    const waterMat = new THREE.MeshStandardMaterial({
+      color: 0x176282,
+      emissive: 0x062030,
+      emissiveIntensity: 0.35,
+      roughness: 0.16,
+      metalness: 0.25,
+      transparent: true,
+      opacity: 0.84,
+    });
+    const linenMat = new THREE.MeshStandardMaterial({
+      color: 0xf7f2e8,
+      emissive: 0x5c4e32,
+      emissiveIntensity: 0.22,
+      roughness: 0.72,
+      side: THREE.DoubleSide,
+    });
+    const cordMat = new THREE.MeshStandardMaterial({
+      color: 0xf0c95e,
+      emissive: 0x996d14,
+      emissiveIntensity: 0.55,
+    });
+
+    // Shore cobble quay + Mediterranean water edge by Simon's house (Acts 10:6)
+    const quay = new THREE.Mesh(new THREE.BoxGeometry(6.8, 0.22, 5.4), stone);
+    quay.position.set(0, 0.11, 0);
+    const sea = new THREE.Mesh(new THREE.BoxGeometry(6.8, 0.12, 1.8), waterMat);
+    sea.position.set(0, 0.06, -3.45);
+    sea.userData.water = 1;
+    g.add(quay, sea);
+
+    // Lower house volume + tanning courtyard vats
+    const wallH = 2.75;
+    const house = new THREE.Mesh(new THREE.BoxGeometry(4.2, wallH, 3.6), stone);
+    house.position.set(-0.55, 0.22 + wallH * 0.5, -0.35);
+    const parapetN = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.42, 0.16), trim);
+    parapetN.position.set(-0.55, 0.22 + wallH + 0.21, -2.07);
+    const parapetS = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.42, 0.16), trim);
+    parapetS.position.set(-0.55, 0.22 + wallH + 0.21, 1.37);
+    const parapetW = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.42, 3.6), trim);
+    parapetW.position.set(-2.57, 0.22 + wallH + 0.21, -0.35);
+    g.add(house, parapetN, parapetS, parapetW);
+
+    // Exterior stone stair along east face rising to flat roof
+    for (let i = 0; i < 11; i++) {
+      const step = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.25, 0.34), trim);
+      step.position.set(1.92, 0.22 + 0.125 + i * 0.25, 1.35 - i * 0.28);
+      g.add(step);
+    }
+
+    // Two carved limestone tanning vats at the courtyard edge
+    for (let i = 0; i < 2; i++) {
+      const vat = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.4, 0.52, 12), trim);
+      vat.position.set(2.05, 0.22 + 0.26, -1.6 + i * 1.15);
+      const liquor = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.36, 0.36, 0.04, 12),
+        new THREE.MeshStandardMaterial({ color: 0x5c3b22, roughness: 0.3 }),
+      );
+      liquor.position.set(2.05, 0.22 + 0.49, -1.6 + i * 1.15);
+      g.add(vat, liquor);
+    }
+
+    // Short-haired Peter praying on the rooftop (Acts 10:9) + 3 Caesarea messengers at the street gate (10:7, 17)
+    addLocalShortPerson(g, -0.65, 0.22 + wallH, -0.25, 0x3b5978, 0xc7a354, 0.15, true);
+    for (let m = 0; m < 3; m++) {
+      addLocalShortPerson(g, -1.6 + m * 0.72, 0.22, 2.15, m === 0 ? 0x8f4338 : 0x6b5c49, 0xd1b36b, Math.PI);
+    }
+
+    // Descending four-cornered sheet held by 4 golden corner cords from a radiant aniconic sky ring (Acts 10:11)
+    const skyY = 0.22 + wallH + 2.45;
+    const sheetY = 0.22 + wallH + 1.45;
+    const haloMat = new THREE.MeshStandardMaterial({
+      color: 0xffeba8,
+      emissive: 0xe6a832,
+      emissiveIntensity: 0.75,
+      transparent: true,
+      opacity: 0.85,
+    });
+    const skyRing = new THREE.Mesh(new THREE.TorusGeometry(0.72, 0.05, 8, 24), haloMat);
+    skyRing.rotation.x = Math.PI / 2;
+    skyRing.position.set(-0.55, skyY, -0.35);
+    skyRing.userData.shimmer = 1;
+    g.add(skyRing);
+
+    const sheet = new THREE.Mesh(new THREE.PlaneGeometry(1.55, 1.35, 4, 4), linenMat);
+    sheet.rotation.x = -Math.PI / 2 + 0.14;
+    sheet.position.set(-0.55, sheetY, -0.35);
+    g.add(sheet);
+
+    const corners: [number, number][] = [
+      [-1.3, -1.0], [0.2, -1.0], [-1.3, 0.3], [0.2, 0.3],
+    ];
+    for (const [cx, cz] of corners) {
+      const topPt = new THREE.Vector3(-0.55, skyY, -0.35);
+      const botPt = new THREE.Vector3(cx, sheetY + 0.05, cz);
+      const mid = topPt.clone().add(botPt).multiplyScalar(0.5);
+      const len = topPt.distanceTo(botPt);
+      const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, len, 6), cordMat);
+      cord.position.copy(mid);
+      cord.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), topPt.clone().sub(botPt).normalize());
+      g.add(cord);
+    }
+
+    const pergola = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.06, 0.08), wood);
+    pergola.position.set(-1.55, 0.22 + wallH + 0.9, -1.55);
+    g.add(pergola);
+
+    return g;
+  }
+
+  // Terrain relief view: Philip's Judea/Samaria/coastal road & Peter's Lydda-Joppa-Caesarea circuit (Acts 8-10)
+  const { group, layout } = createReliefTable(RELIEF_GRIDS.canaan, {
+    targetSpan: 12.0,
+    maxReliefH: 1.38,
+    rockTint: 'levant',
+  });
+  const site = (id: string) => ACTS_COASTAL_SITES.find((s) => s.id === id)!;
+  const jer = site('jerusalem');
+  const sam = site('samaria');
+  const gaza = site('gaza');
+  const azo = site('azotus');
+  const lyd = site('lydda');
+  const jop = site('joppa');
+  const cae = site('caesarea');
+
+  // Philip's two routes: N to Samaria (Acts 8:5) and SW Gaza desert -> Azotus -> Caesarea (Acts 8:26-40)
+  addRouteTube(group, layout, [[jer.lon, jer.lat], [35.24, 32.02], [sam.lon, sam.lat]], {
+    color: 0xf0b24a,
+    radius: 0.048,
+    lift: 0.09,
+  });
+  addRouteTube(
+    group,
+    layout,
+    [
+      [jer.lon, jer.lat],
+      [34.85, 31.6],
+      [gaza.lon, gaza.lat],
+      [azo.lon, azo.lat],
+      [lyd.lon, lyd.lat],
+      [jop.lon, jop.lat],
+      [cae.lon, cae.lat],
+    ],
+    { color: 0xf0b24a, radius: 0.052, lift: 0.095 },
+  );
+
+  // Peter's Sharon coastal circuit: Jerusalem -> Lydda -> Joppa -> Caesarea (Acts 9:32-10:24)
+  addRouteTube(
+    group,
+    layout,
+    [
+      [jer.lon, jer.lat],
+      [35.02, 31.88],
+      [lyd.lon, lyd.lat],
+      [jop.lon, jop.lat],
+      [cae.lon, cae.lat],
+    ],
+    { color: 0x4ac6e8, radius: 0.044, lift: 0.11 },
+  );
+
+  // Herodian semicircular harbor mole beside Caesarea
+  const [hx, hz] = layout.toXZ(cae.lon - 0.03, cae.lat);
+  const mole = new THREE.Mesh(
+    new THREE.TorusGeometry(0.18, 0.038, 6, 14, Math.PI * 1.15),
+    new THREE.MeshStandardMaterial({ color: 0xd9cdb4, roughness: 0.78 }),
+  );
+  mole.rotation.x = Math.PI / 2;
+  mole.rotation.z = Math.PI * 0.45;
+  mole.position.set(hx, layout.seaY + 0.03, hz);
+  group.add(mole);
+
+  const pinColors: [string, number, number][] = [
+    ['jerusalem', 0xf2ca5e, 0.42],
+    ['samaria', 0xf0b24a, 0.34],
+    ['gaza', 0xf0b24a, 0.34],
+    ['azotus', 0xf0b24a, 0.3],
+    ['lydda', 0x4ac6e8, 0.34],
+    ['joppa', 0x4ac6e8, 0.46],
+    ['caesarea', 0x57c478, 0.48],
+  ];
+  for (const [id, col, h] of pinColors) {
+    const pt = site(id);
+    const [px, pz] = layout.toXZ(pt.lon, pt.lat);
+    addBeaconPin(group, px, layout.toY(pt.lon, pt.lat, 0.02), pz, col, { stemH: h, headR: 0.1 });
+  }
 
   return group;
 }
