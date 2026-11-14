@@ -52,6 +52,131 @@ export interface Tabernacle {
   /** The veil of 26:31 and the plane it hangs in, so the page can press the
    *  cloth as the camera goes through it — see pressCloth in craft.ts. */
   veil: { group: THREE.Group; x: number };
+  /** Advances subtle sanctuary lighting, flame flicker, incense wisps, and
+   *  laver water ripples without affecting static shadow caches. */
+  update?: (elapsed: number, dt: number) => void;
+}
+
+function makeGlowTex(inner: string, mid: string, outer = 'rgba(255,210,120,0)'): THREE.CanvasTexture {
+  const c = document.createElement('canvas'); c.width = c.height = 64;
+  const ctx = c.getContext('2d')!;
+  const g = ctx.createRadialGradient(32, 32, 1, 32, 32, 32);
+  g.addColorStop(0, inner);
+  g.addColorStop(0.35, mid);
+  g.addColorStop(1, outer);
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 64, 64);
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
+function makeEmberTex(): THREE.CanvasTexture {
+  const c = document.createElement('canvas'); c.width = c.height = 128;
+  const ctx = c.getContext('2d')!;
+  ctx.fillStyle = '#241c16';
+  ctx.fillRect(0, 0, 128, 128);
+  let seed = 17;
+  const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+  for (let i = 0; i < 65; i++) {
+    const x = rnd() * 128, y = rnd() * 128, r = 4 + rnd() * 10;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, 'rgba(84, 74, 65, 0.35)');
+    g.addColorStop(1, 'rgba(36, 28, 22, 0)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+  }
+  for (let i = 0; i < 95; i++) {
+    const x = rnd() * 128, y = rnd() * 128, r = 3 + rnd() * 10;
+    const edgeDist = Math.hypot((x - 64) / 64, (y - 64) / 64);
+    const heat = Math.max(0, 1 - edgeDist * 0.92) * (0.45 + rnd() * 0.55);
+    if (heat <= 0.05) continue;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, `rgba(255, ${Math.round(145 + 85 * heat)}, 48, ${(0.82 * heat).toFixed(2)})`);
+    g.addColorStop(0.45, `rgba(195, 68, 16, ${(0.38 * heat).toFixed(2)})`);
+    g.addColorStop(1, 'rgba(36, 24, 18, 0)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
+function makeBeamTex(): THREE.CanvasTexture {
+  const c = document.createElement('canvas'); c.width = 64; c.height = 128;
+  const ctx = c.getContext('2d')!;
+  const img = ctx.createImageData(64, 128);
+  for (let y = 0; y < 128; y++) {
+    const v = y / 127;
+    const vert = Math.sin(Math.pow(v, 0.78) * Math.PI);
+    for (let x = 0; x < 64; x++) {
+      const u = Math.sin((x / 63) * Math.PI);
+      const a = Math.round(255 * Math.pow(u, 1.4) * (0.25 + 0.75 * vert) * (1 - 0.35 * v));
+      const idx = (y * 64 + x) * 4;
+      img.data[idx] = 255; img.data[idx + 1] = 235; img.data[idx + 2] = 180;
+      img.data[idx + 3] = a;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
+function makeSmokeTex(): THREE.CanvasTexture {
+  const c = document.createElement('canvas'); c.width = 64; c.height = 128;
+  const ctx = c.getContext('2d')!;
+  const g = ctx.createLinearGradient(0, 128, 0, 0);
+  g.addColorStop(0, 'rgba(255,228,195,0)');
+  g.addColorStop(0.18, 'rgba(255,228,195,0.42)');
+  g.addColorStop(0.55, 'rgba(240,225,205,0.22)');
+  g.addColorStop(1, 'rgba(240,225,205,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 64, 128);
+  const mask = ctx.createLinearGradient(0, 0, 64, 0);
+  mask.addColorStop(0, 'rgba(0,0,0,1)');
+  mask.addColorStop(0.5, 'rgba(0,0,0,0)');
+  mask.addColorStop(1, 'rgba(0,0,0,1)');
+  ctx.globalCompositeOperation = 'destination-out';
+  ctx.fillStyle = mask;
+  ctx.fillRect(0, 0, 64, 128);
+  ctx.globalCompositeOperation = 'source-over';
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
+function makeWaterNormalTex(): THREE.CanvasTexture {
+  const s = 128;
+  const c = document.createElement('canvas'); c.width = c.height = s;
+  const ctx = c.getContext('2d')!;
+  const img = ctx.createImageData(s, s);
+  const TAU = Math.PI * 2;
+  const h = (u: number, v: number) =>
+    Math.sin(u * TAU * 3 + v * TAU * 2) * 0.45 +
+    Math.sin(u * TAU * 5 - v * TAU * 4 + 1.2) * 0.3 +
+    Math.cos(u * TAU * 2 + v * TAU * 6 + 0.5) * 0.25;
+  const eps = 1 / s;
+  for (let y = 0; y < s; y++) {
+    for (let x = 0; x < s; x++) {
+      const u = x / s, v = y / s;
+      const dx = (h(u + eps, v) - h(u - eps, v)) * 1.8;
+      const dy = (h(u, v + eps) - h(u, v - eps)) * 1.8;
+      const inv = 1 / Math.hypot(-dx, -dy, 1);
+      const idx = (y * s + x) * 4;
+      img.data[idx] = Math.round(((-dx * inv) * 0.5 + 0.5) * 255);
+      img.data[idx + 1] = Math.round(((-dy * inv) * 0.5 + 0.5) * 255);
+      img.data[idx + 2] = Math.round(((inv) * 0.5 + 0.5) * 255);
+      img.data[idx + 3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.repeat.set(2.5, 2.5);
+  t.colorSpace = THREE.NoColorSpace;
+  return t;
 }
 
 // Textures are generated once and shared: a hundred boards carrying a hundred
@@ -74,57 +199,59 @@ const M = {
   // emissive stands in for the light bleeding through, which is what the eye
   // is actually reading when it calls a fabric a fabric.
   linen: () => detailedSurface(new THREE.MeshPhysicalMaterial({
-    color: 0xf7f2e6, roughness: 0.96, side: THREE.DoubleSide,
+    color: 0xf9f3e5, roughness: 0.92, side: THREE.DoubleSide,
     map: TEX.linen.map, normalMap: TEX.linen.normalMap,
     normalScale: new THREE.Vector2(0.55, 0.55),
-    emissive: 0x655a42, emissiveIntensity: 0.08,
-    sheen: .65, sheenColor: 0xe6ddcc, sheenRoughness: .9,
+    emissive: 0x706147, emissiveIntensity: 0.11,
+    sheen: .78, sheenColor: 0xf2e7cf, sheenRoughness: .8,
   }), 'fine-linen', 18, .0012),
   acacia: () => new THREE.MeshStandardMaterial({ color: 0x6a4c28, roughness: 0.8 }),
   // Metals reflect more of the environment than everything else does. A metal
   // lit at the same envMapIntensity as cloth has nothing to shine with.
   gold: () => new THREE.MeshStandardMaterial({
-    name: 'Interior gold', color: 0xffffff, metalness: 1, roughness: 0.29, side:THREE.DoubleSide,
+    name: 'Interior gold', color: 0xffffff, metalness: 1, roughness: 0.24, side:THREE.DoubleSide,
     map: TEX.gold.map, normalMap: TEX.gold.normalMap,
     normalScale: new THREE.Vector2(0.25, 0.25),
     roughnessMap: TEX.gold.roughnessMap,
-    envMapIntensity: 1.1,
+    envMapIntensity: 1.32,
   }),
   silver: () => new THREE.MeshStandardMaterial({
-    color: 0xe4e6ea, metalness: 1, roughness: 0.3,
+    color: 0xe8eaef, metalness: 1, roughness: 0.24,
     normalMap: TEX.gold.normalMap, normalScale: new THREE.Vector2(0.35, 0.35),
-    envMapIntensity: 2.0,
+    envMapIntensity: 2.25,
   }),
   bronze: () => new THREE.MeshStandardMaterial({
-    color: 0xffffff, metalness: 1, roughness: 0.65,
+    color: 0xffffff, metalness: 1, roughness: 0.48,
     map: TEX.bronze.map, normalMap: TEX.bronze.normalMap,
     roughnessMap: TEX.bronze.roughnessMap,
-    normalScale: new THREE.Vector2(.25,.25),
-    envMapIntensity: 1.1,
+    normalScale: new THREE.Vector2(.28,.28),
+    envMapIntensity: 1.28,
   }),
-  hide: () => new THREE.MeshStandardMaterial({
-    color: 0xffffff, roughness: 0.92,
+  hide: () => new THREE.MeshPhysicalMaterial({
+    color: 0xffffff, roughness: 0.86,
     map: TEX.hide.map, normalMap: TEX.hide.normalMap,
     normalScale: new THREE.Vector2(0.8, 0.8),
+    sheen: 0.22, sheenColor: 0x9c7b5c, sheenRoughness: 0.9,
   }),
-  goat: () => new THREE.MeshStandardMaterial({
-    color: 0xffffff, roughness: 1, side: THREE.DoubleSide,
+  goat: () => new THREE.MeshPhysicalMaterial({
+    color: 0xffffff, roughness: 0.96, side: THREE.DoubleSide,
     map: TEX.goat.map, normalMap: TEX.goat.normalMap,
+    sheen: 0.28, sheenColor: 0x6e5948, sheenRoughness: 0.92,
   }),
   veil: (repeat:[number,number]=[1,1]) => detailedSurface(new THREE.MeshPhysicalMaterial({
-    color: 0xffffff, roughness: 0.9, side: THREE.DoubleSide,
+    color: 0xffffff, roughness: 0.88, side: THREE.DoubleSide,
     map: TEX.veilWork.map, normalMap: TEX.veilWork.normalMap,
-    emissive: 0x241c3a, emissiveIntensity: 0.08,
-    sheen:.5,sheenColor:0x7b84aa,sheenRoughness:.85,
+    emissive: 0x281e42, emissiveIntensity: 0.1,
+    sheen:.62,sheenColor:0x9aa4cf,sheenRoughness:.8,
   }), 'veil-embroidery', repeat, .003),
   screen: () => detailedSurface(new THREE.MeshPhysicalMaterial({
-    color: 0xffffff, roughness: 0.9, side: THREE.DoubleSide,
+    color: 0xffffff, roughness: 0.88, side: THREE.DoubleSide,
     map: TEX.screenWork.map, normalMap: TEX.screenWork.normalMap,
-    emissive: 0x241c3a, emissiveIntensity: 0.08,
-    sheen:.5,sheenColor:0x7b84aa,sheenRoughness:.85,
+    emissive: 0x281e42, emissiveIntensity: 0.1,
+    sheen:.62,sheenColor:0x9aa4cf,sheenRoughness:.8,
   }), 'screen-embroidery', 1, .003),
   ground: () => detailedSurface(new THREE.MeshStandardMaterial({
-    color: 0xffffff, roughness: 1,
+    color: 0xffffff, roughness: 0.98,
     map: TEX.sand.map, normalMap: TEX.sand.normalMap,
     normalScale: new THREE.Vector2(0.35, 0.35),
   }), 'desert-ground', 623 / 2, .018),
@@ -134,6 +261,13 @@ export function buildTabernacle(cubit: number): Tabernacle {
   const g = new THREE.Group();
   const colliders: THREE.Box3[] = [];
   const C = (n: number) => n * cubit;
+  const animators: ((elapsed: number, dt: number) => void)[] = [];
+  const reducedMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const glowTex = makeGlowTex('rgba(255,244,210,0.95)', 'rgba(255,195,90,0.38)');
+  const smokeTex = makeSmokeTex();
+  const emberTex = makeEmberTex();
+  const beamTex = makeBeamTex();
+  const waterNormalTex = makeWaterNormalTex();
 
   const counts: TabernacleCounts = {
     courtPillars: 0, boards: 0, sockets: 0, clasps: 0, bars: 0, curtains: 0,
@@ -146,7 +280,6 @@ export function buildTabernacle(cubit: number): Tabernacle {
 
   // ── the court, Exodus 27:9-18 ──────────────────────────────────────────
   const courtL = C(100), courtW = C(50), hangH = C(5);
-
   // A displaced floor. A perfectly flat plane reads as a table the building was
   // set on; the desert has drift in it, and the horizon needs something to
   // catch the light unevenly.
@@ -155,7 +288,6 @@ export function buildTabernacle(cubit: number): Tabernacle {
   for (let i = 0; i < gp.count; i++) {
     const x = gp.getX(i), y = gp.getY(i);
     const d = Math.hypot(x, y);
-    // Flat where the tabernacle stands; the ground was levelled for it.
     const away = Math.min(1, Math.max(0, (d - courtL * 0.75) / (courtL * 2)));
     const h = (Math.sin(x * 0.012) * Math.cos(y * 0.009) + Math.sin(x * 0.031 + y * 0.027) * 0.4);
     gp.setZ(i, h * cubit * 1.8 * away);
@@ -300,6 +432,49 @@ export function buildTabernacle(cubit: number): Tabernacle {
       ring.rotation.y=Math.PI/2;ring.position.set(hx-C(22)+sx*C(2.1),C(1.7),sz*C(2.7));g.add(ring);
     }
   }
+  // Glowing ember bed below the grating and subtle heat shimmer above (visual
+  // warmth on the bronze hearth; no extra collider added).
+  const altarX = hx - C(22);
+  const emberMat = new THREE.MeshStandardMaterial({
+    color: 0x261a14, roughness: 0.92,
+    map: emberTex, emissiveMap: emberTex,
+    emissive: new THREE.Color(0xff7629), emissiveIntensity: 1.35,
+  });
+  const emberBed = new THREE.Mesh(new THREE.PlaneGeometry(C(4.15), C(4.15)), emberMat);
+  emberBed.rotation.x = -Math.PI / 2;
+  emberBed.position.set(altarX, C(1.44), 0);
+  emberBed.userData.dynamic = true;
+  emberBed.userData.noCast = true;
+  g.add(emberBed);
+  const altarEmberLight = new THREE.PointLight(0xff7629, 1.85, 8.5, 2);
+  altarEmberLight.position.set(altarX, C(2.15), 0);
+  altarEmberLight.castShadow = false;
+  g.add(altarEmberLight);
+  const smokeMat = new THREE.MeshBasicMaterial({
+    map: smokeTex, color: 0xffdfc2, transparent: true, opacity: 0.14,
+    depthWrite: false, side: THREE.DoubleSide,
+  });
+  const altarWisps: { mesh: THREE.Mesh; baseY: number; phase: number; speed: number }[] = [];
+  for (let i = 0; i < 3; i++) {
+    const wisp = new THREE.Mesh(new THREE.PlaneGeometry(C(1.7 - i * 0.25), C(2.6)), smokeMat);
+    wisp.position.set(altarX + (i - 1) * C(0.45), C(2.85 + i * 0.45), (i === 1 ? 0.15 : -0.15));
+    wisp.rotation.y = (i * Math.PI) / 3;
+    wisp.userData.dynamic = true;
+    wisp.userData.noCast = true;
+    wisp.userData.noAO = true;
+    g.add(wisp);
+    altarWisps.push({ mesh: wisp, baseY: C(2.85 + i * 0.45), phase: i * 2.1, speed: 0.55 + i * 0.12 });
+  }
+  animators.push((t) => {
+    const pulse = 0.88 + Math.sin(t * 2.9) * 0.07 + Math.sin(t * 6.4 + 1.1) * 0.05;
+    emberMat.emissiveIntensity = 1.35 * pulse;
+    altarEmberLight.intensity = 1.85 * pulse;
+    for (const w of altarWisps) {
+      w.mesh.position.y = w.baseY + Math.sin(t * w.speed + w.phase) * C(0.24);
+      w.mesh.rotation.y += 0.0025;
+      w.mesh.scale.x = 1 + Math.sin(t * 0.8 + w.phase) * 0.08;
+    }
+  });
 
   // ── the laver, Exodus 30:18 ─────────────────────────────────────────
   // "A bronze basin with its bronze stand, for washing, between the tent of
@@ -325,6 +500,22 @@ export function buildTabernacle(cubit: number): Tabernacle {
   addCollider(laver);
   const laverColliderIndex=colliders.length-1;
   laver.traverse(o=>o.userData.dynamic=true);
+  const laverWaterMat = new THREE.MeshPhysicalMaterial({
+    color: 0x265260, metalness: 0.12, roughness: 0.05,
+    clearcoat: 1.0, clearcoatRoughness: 0.04,
+    normalMap: waterNormalTex, normalScale: new THREE.Vector2(0.18, 0.18),
+    envMapIntensity: 1.9, transparent: true, opacity: 0.94,
+  });
+  const laverWater = new THREE.Mesh(new THREE.CircleGeometry(1, 36), laverWaterMat);
+  laverWater.rotation.x = -Math.PI / 2;
+  laverWater.scale.setScalar(C(0.75));
+  laverWater.position.set(laver.position.x, C(1.48), laver.position.z);
+  laverWater.userData.dynamic = true;
+  laverWater.userData.noCast = true;
+  g.add(laverWater);
+  animators.push((t) => {
+    waterNormalTex.offset.set(t * 0.025, t * 0.018);
+  });
   const ready=new GLTFLoader().loadAsync('models/laver.glb').then(gltf=>{
     const asset=gltf.scene.getObjectByName('Laver_Exodus30_18');
     if(!asset)throw Error('Laver root missing');
@@ -335,7 +526,11 @@ export function buildTabernacle(cubit: number): Tabernacle {
     clean.position.copy(laver.position);
     clean.traverse(o=>{if(o instanceof THREE.Mesh){o.castShadow=true;o.receiveShadow=true;}});
     g.add(clean);clean.updateWorldMatrix(true,true);
-    colliders[laverColliderIndex]=new THREE.Box3().setFromObject(clean);
+    const cleanBox = new THREE.Box3().setFromObject(clean);
+    const span = Math.min(cleanBox.max.x - cleanBox.min.x, cleanBox.max.z - cleanBox.min.z);
+    laverWater.scale.setScalar(span * 0.34);
+    laverWater.position.set(laver.position.x, cleanBox.max.y - C(0.1), laver.position.z);
+    colliders[laverColliderIndex]=cleanBox;
     laver.visible=false;return true;
   }).catch(()=>false);
 
@@ -346,7 +541,7 @@ export function buildTabernacle(cubit: number): Tabernacle {
   const tentX = -hx + C(30);
   const gold = M.gold();
   const boardGold = gold.clone(); boardGold.name='Interior sheet gold';
-  boardGold.roughness=.72; boardGold.normalScale.set(.45,.45);
+  boardGold.roughness=.56; boardGold.normalScale.set(.4,.4);
 
   // `west` boards run along z and so turn ninety degrees. The old test rotated
   // only a board whose z happened to be zero, which left the whole west wall as
@@ -472,7 +667,7 @@ export function buildTabernacle(cubit: number): Tabernacle {
   // covering stops short of the east end, where the door screen hangs.
   const goat=M.goat(),outer=M.hide();
   for(let i=0;i<11;i++)g.add(drape(4,30,i*4,goat,.06));
-  const red=M.hide();red.color.set(0xa14b38);
+  const red=M.hide();red.color.set(0xae4632);
   g.add(drape(39,29,0,red,.095));
   // The outermost hide species and exact coverage are uncertain (26:14).
   // Open at the east end: no hidden box face for the camera to walk through.
@@ -555,20 +750,61 @@ export function buildTabernacle(cubit: number): Tabernacle {
   // in front of it" — 25:37. The lampstand was the only light inside; unlit,
   // the holy place is a dark box. Seven small flames, and one point light
   // standing in for all of them together.
-  const flameMat = new THREE.MeshBasicMaterial({ color: 0xffd27a });
+  const flameMat = new THREE.MeshBasicMaterial({ color: 0xffe8b0 });
+  const flameHaloMat = new THREE.SpriteMaterial({
+    map: glowTex, color: 0xffb347, transparent: true, opacity: 0.42,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  const flameGeo = new THREE.LatheGeometry([
+    new THREE.Vector2(0, 0),
+    new THREE.Vector2(0.015, 0.008),
+    new THREE.Vector2(0.018, 0.022),
+    new THREE.Vector2(0.011, 0.045),
+    new THREE.Vector2(0.004, 0.064),
+    new THREE.Vector2(0, 0.074),
+  ], 12);
   const unit = 1.5 / 8.6;
   const lampY = 7.5 * unit;
-  for (const u of [0, -2.15, 2.15, -2.93, 2.93, -3.71, 3.71]) {
-    const flame = new THREE.Mesh(new THREE.SphereGeometry(.018,10,8), flameMat);flame.scale.set(.7,2,1);
-    flame.position.set(holyMidX + u * unit+.045, lampY + .046, -tentW * 0.3);
+  const flames: { mesh: THREE.Mesh; halo: THREE.Sprite; baseY: number; phase: number }[] = [];
+  const oilMat = new THREE.MeshBasicMaterial({ color: 0xffc663 });
+  const oilGeo = new THREE.CircleGeometry(0.014, 10);
+  oilGeo.rotateX(-Math.PI / 2);
+  [0, -2.15, 2.15, -2.93, 2.93, -3.71, 3.71].forEach((u, idx) => {
+    const fx = holyMidX + u * unit + 0.045;
+    const fz = -tentW * 0.3;
+    const oil = new THREE.Mesh(oilGeo, oilMat);
+    oil.position.set(fx, lampY + 0.014, fz);
+    oil.userData.noCast = true;
+    oil.userData.noAO = true;
+    g.add(oil);
+    const flame = new THREE.Mesh(flameGeo, flameMat);
+    flame.position.set(fx, lampY + 0.015, fz);
+    flame.userData.dynamic = true;
+    flame.userData.noCast = true;
+    flame.userData.noAO = true;
     g.add(flame);
-  }
-  const glow = new THREE.PointLight(0xffc87e, .7, 12, 2);
+    const halo = new THREE.Sprite(flameHaloMat);
+    halo.position.set(fx, lampY + 0.052, fz);
+    halo.scale.setScalar(0.11);
+    halo.userData.dynamic = true;
+    halo.userData.noCast = true;
+    halo.userData.noAO = true;
+    g.add(halo);
+    flames.push({ mesh: flame, halo, baseY: lampY + 0.015, phase: idx * 1.37 });
+  });
+  const glow = new THREE.PointLight(0xffc97d, 0.92, 13.5, 1.85);
   glow.position.set(holyMidX, lampY + 0.3, -tentW * 0.3);
   glow.castShadow = false;
-  glow.shadow.mapSize.set(1024, 1024);
-  glow.shadow.bias = -0.002;
   g.add(glow);
+  animators.push((t) => {
+    glow.intensity = 0.88 + Math.sin(t * 4.3) * 0.045 + Math.sin(t * 9.7 + 0.6) * 0.025;
+    for (const f of flames) {
+      const sy = 0.94 + Math.sin(t * 5.8 + f.phase) * 0.08 + Math.sin(t * 11.3 + f.phase) * 0.04;
+      f.mesh.scale.set(1 - (sy - 1) * 0.25, sy, 1 - (sy - 1) * 0.25);
+      f.mesh.rotation.z = Math.sin(t * 4.1 + f.phase * 2) * 0.055;
+      f.halo.scale.setScalar(0.104 + sy * 0.012);
+    }
+  });
 
   // The table of the Presence: two cubits by one, a cubit and a half high —
   // Exodus 25:23, overlaid with gold and crowned with a moulding.
@@ -593,7 +829,7 @@ export function buildTabernacle(cubit: number): Tabernacle {
   }
   // "Put the bread of the Presence on this table" — 25:30; twelve loaves in
   // two rows of six — Leviticus 24:5-6.
-  const bread = new THREE.MeshStandardMaterial({ color: 0xbb854d, roughness: 0.94 });
+  const bread = new THREE.MeshStandardMaterial({ color: 0xc98f4d, roughness: 0.84 });
   for (let r = 0; r < 2; r++) {
     for (let i = 0; i < 6; i++) {
       // Two arrangements of six (Lev 24:6); stacking is interpretive.
@@ -630,15 +866,81 @@ export function buildTabernacle(cubit: number): Tabernacle {
     ark.rotation.y = Math.PI / 2;
     g.add(ark);
     addCollider(ark);
-    // Inspection illumination is a museum-display aid. Exodus 25:22 does not
-    // specify a visible light source here; do not call it divine radiance.
-    const presence = new THREE.SpotLight(0xffead0, 12, 12, .8, 1, 2);
-    presence.position.set(tentX - tentL / 2 + C(5), C(8.5), 0);
-    presence.target.position.set(tentX - tentL / 2 + C(5), 0, 0);
+    const arkX = tentX - tentL / 2 + C(5);
+    // Inspection illumination + pure aniconic Shekinah light beam above the
+    // Mercy Seat (no human form — pure radiant light, cf. Ex 25:22; Lev 16:2).
+    const presence = new THREE.SpotLight(0xffead0, 14, 12, .78, 1, 2);
+    presence.position.set(arkX, C(8.8), 0);
+    presence.target.position.set(arkX, 0, 0);
     g.add(presence, presence.target);
-    const glow = new THREE.PointLight(0xfff0c8, 0.35, 5, 1.8);
-    glow.position.set(tentX - tentL / 2 + C(5), C(2.2), 0);
-    g.add(glow);
+    const mercyGlow = new THREE.PointLight(0xffe7aa, 0.58, 6.2, 1.8);
+    mercyGlow.position.set(arkX, C(2.3), 0);
+    g.add(mercyGlow);
+
+    const beamOuterMat = new THREE.MeshBasicMaterial({
+      map: beamTex, color: 0xffdfa0, transparent: true, opacity: 0.14,
+      blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide,
+    });
+    const beamOuter = new THREE.Mesh(
+      new THREE.CylinderGeometry(C(0.55), C(1.65), C(7.2), 24, 1, true), beamOuterMat,
+    );
+    beamOuter.position.set(arkX, C(5.7), 0);
+    beamOuter.userData.dynamic = true;
+    beamOuter.userData.noCast = true;
+    beamOuter.userData.noAO = true;
+    g.add(beamOuter);
+
+    const beamInnerMat = new THREE.MeshBasicMaterial({
+      map: beamTex, color: 0xfff3d1, transparent: true, opacity: 0.12,
+      blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide,
+    });
+    const beamInner = new THREE.Mesh(
+      new THREE.CylinderGeometry(C(0.24), C(0.88), C(6.9), 20, 1, true), beamInnerMat,
+    );
+    beamInner.position.set(arkX, C(5.6), 0);
+    beamInner.userData.dynamic = true;
+    beamInner.userData.noCast = true;
+    beamInner.userData.noAO = true;
+    g.add(beamInner);
+
+    // Subtle ascending golden motes within the beam above the mercy seat.
+    const moteCount = 24;
+    const motePos = new Float32Array(moteCount * 3);
+    const moteBase: { r: number; a: number; y0: number; speed: number }[] = [];
+    for (let i = 0; i < moteCount; i++) {
+      const a = (i / moteCount) * Math.PI * 2 + i * 0.4;
+      const r = C(0.25 + ((i * 7) % 11) * 0.085);
+      const y0 = C(2.0 + ((i * 5) % 13) * 0.48);
+      motePos[i * 3] = arkX + Math.cos(a) * r;
+      motePos[i * 3 + 1] = y0;
+      motePos[i * 3 + 2] = Math.sin(a) * r;
+      moteBase.push({ r, a, y0, speed: 0.25 + (i % 5) * 0.06 });
+    }
+    const moteGeo = new THREE.BufferGeometry();
+    moteGeo.setAttribute('position', new THREE.BufferAttribute(motePos, 3));
+    const motePoints = new THREE.Points(moteGeo, new THREE.PointsMaterial({
+      map: glowTex, color: 0xffe7ab, size: C(0.18), transparent: true, opacity: 0.65,
+      blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true,
+    }));
+    motePoints.userData.dynamic = true;
+    motePoints.userData.noCast = true;
+    motePoints.userData.noAO = true;
+    g.add(motePoints);
+
+    animators.push((t) => {
+      const s = 1 + Math.sin(t * 1.15) * 0.08;
+      beamOuterMat.opacity = 0.135 * s;
+      beamInnerMat.opacity = 0.115 * s;
+      mercyGlow.intensity = 0.56 + Math.sin(t * 1.15) * 0.05;
+      const attr = moteGeo.attributes.position as THREE.BufferAttribute;
+      for (let i = 0; i < moteCount; i++) {
+        const m = moteBase[i]!;
+        const y = C(1.8) + ((m.y0 - C(1.8) + t * C(0.18) * m.speed) % C(6.4));
+        const ang = m.a + t * 0.14 * m.speed;
+        attr.setXYZ(i, arkX + Math.cos(ang) * m.r, y, Math.sin(ang) * m.r);
+      }
+      attr.needsUpdate = true;
+    });
   }
 
   // The altar of incense: a cubit square and two cubits high, with horns —
@@ -671,7 +973,52 @@ export function buildTabernacle(cubit: number): Tabernacle {
   g.add(incense);
   addCollider(incense);
 
+  // Subtle glowing incense coals and fragrant curls rising before the veil.
+  const incenseCoalsMat = new THREE.MeshStandardMaterial({
+    color: 0x2a140d, roughness: 0.9, map: emberTex, emissiveMap: emberTex,
+    emissive: new THREE.Color(0xff8438), emissiveIntensity: 1.5,
+  });
+  const incenseCoals = new THREE.Mesh(new THREE.PlaneGeometry(C(0.72), C(0.72)), incenseCoalsMat);
+  incenseCoals.rotation.x = -Math.PI / 2;
+  incenseCoals.position.set(veilX + C(2.2), C(2.01), 0);
+  incenseCoals.userData.dynamic = true;
+  incenseCoals.userData.noCast = true;
+  g.add(incenseCoals);
+  const incenseGlow = new THREE.PointLight(0xffa44a, 0.36, 4.5, 2);
+  incenseGlow.position.set(veilX + C(2.2), C(2.3), 0);
+  g.add(incenseGlow);
+  const incenseSmokeMat = new THREE.MeshBasicMaterial({
+    map: smokeTex, color: 0xf7e7cf, transparent: true, opacity: 0.16,
+    depthWrite: false, side: THREE.DoubleSide,
+  });
+  const incenseWisps: { mesh: THREE.Mesh; baseY: number; phase: number }[] = [];
+  for (let i = 0; i < 3; i++) {
+    const wisp = new THREE.Mesh(new THREE.PlaneGeometry(C(0.55 - i * 0.06), C(1.9)), incenseSmokeMat);
+    wisp.position.set(veilX + C(2.2), C(2.95 + i * 0.65), 0);
+    wisp.rotation.y = (i * Math.PI) / 3;
+    wisp.userData.dynamic = true;
+    wisp.userData.noCast = true;
+    wisp.userData.noAO = true;
+    g.add(wisp);
+    incenseWisps.push({ mesh: wisp, baseY: C(2.95 + i * 0.65), phase: i * 1.9 });
+  }
+  animators.push((t) => {
+    const pulse = 0.9 + Math.sin(t * 2.1 + 0.4) * 0.08;
+    incenseCoalsMat.emissiveIntensity = 1.45 * pulse;
+    incenseGlow.intensity = 0.35 * pulse;
+    for (const w of incenseWisps) {
+      w.mesh.position.y = w.baseY + Math.sin(t * 0.65 + w.phase) * C(0.18);
+      w.mesh.position.x = veilX + C(2.2) + Math.sin(t * 0.5 + w.phase) * C(0.08);
+      w.mesh.rotation.y += 0.002;
+    }
+  });
+
   g.add(buildDesert());
   batchStatic(g);
-  return { group: g, colliders, counts, ready, veil: { group: veil, x: veilX } };
+
+  const update = (elapsed: number, dt: number) => {
+    if (reducedMotion) return;
+    for (const fn of animators) fn(elapsed, dt);
+  };
+  return { group: g, colliders, counts, ready, veil: { group: veil, x: veilX }, update };
 }

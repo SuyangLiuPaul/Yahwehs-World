@@ -85,6 +85,10 @@ const ARK_WALK_ANCHORS = ['Genesis 6:14', 'Genesis 6:15', 'Genesis 6:16', 'Genes
   .map(refKey)
   .filter((k): k is number => k !== null);
 
+const EZEKIEL_WALK_ANCHORS = [
+  'Ezekiel 40:5', 'Ezekiel 40:6', 'Ezekiel 41:2', 'Ezekiel 41:22', 'Ezekiel 43:13', 'Ezekiel 47:1',
+].map(refKey).filter((k): k is number => k !== null);
+
 const inEvent = (ev: TrackEvent, key: number) => ev.s <= key && key <= ev.e;
 
 /** Everywhere else in this app this event can take the reader. */
@@ -105,6 +109,9 @@ export function bridgesFor(ev: TrackEvent, journeys: readonly Journey[]): Bridge
   }
   if (ARK_WALK_ANCHORS.some((k) => inEvent(ev, k))) {
     out.push({ kind: 'walk', id: 'ark', zh: '走进方舟', en: "Walk into Noah's ark" });
+  }
+  if (EZEKIEL_WALK_ANCHORS.some((k) => inEvent(ev, k))) {
+    out.push({ kind: 'walk', id: 'ezekiel', zh: '走进以西结的殿', en: "Walk into Ezekiel's temple" });
   }
   return out;
 }
@@ -128,6 +135,7 @@ export function structureForJourney(id: string): { id: string; zh: string; en: s
 const WALK_PAGES: Record<string, string> = {
   tabernacle: '/tabernacle.html',
   temple: '/temple.html',
+  ezekiel: '/ezekiel.html',
   ark: '/ark.html',
 };
 

@@ -19,7 +19,7 @@ import { chromium } from 'playwright';
 
 const URL = process.argv[2] ?? 'http://localhost:5175';
 
-const browser = await chromium.launch();
+const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
 let bad = 0;
 
@@ -184,6 +184,18 @@ const tent = await report('/tabernacle.html', '__walk', [
     seconds: 1.5, ceiling: 0.5, want: (r) => r.sank < 0.05 && r.rise < 0.05 },
 ]);
 SHOW(tent, '/tabernacle.html — the same controls, unchanged geometry');
+
+const ezekiel = await report('/ezekiel.html', '__ezekiel', [
+  { name: 'east outer gate & 7 steps', from: [262, 0], face: Math.PI / 2, keys: ['KeyW'],
+    seconds: 7, ceiling: 1, climb: true, target: 1.5, want: (r) => r.riseCubits >= 1.5 && r.metres > 12 },
+  { name: 'east inner gate & 8 steps', from: [114, 0], face: Math.PI / 2, keys: ['KeyW'],
+    seconds: 7, ceiling: 1, climb: true, target: 1.7, want: (r) => r.riseCubits >= 1.7 && r.metres > 12 },
+  { name: '10 temple steps through porch into hekhal', from: [-42, 0], face: Math.PI / 2, keys: ['KeyW'],
+    seconds: 12, ceiling: 2, climb: true, target: 2.2, want: (r) => r.riseCubits >= 2.2 && r.metres > 20 },
+  { name: 'past altar-table into most holy place', from: [-104, 2.0], face: Math.PI / 2, keys: ['KeyW'],
+    seconds: 6, ceiling: 4, want: (r) => r.metres > 9 && r.rise < 1 },
+]);
+SHOW(ezekiel, '/ezekiel.html — five hundred cubits, four elevations');
 
 // A tour can end anywhere, including over the side of a mountain. Whatever
 // the last stop was, the visitor must be handed back standing on the summit:

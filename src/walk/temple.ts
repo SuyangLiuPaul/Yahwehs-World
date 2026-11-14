@@ -148,61 +148,183 @@ for (const surface of Object.values(TEX)) {
   if (surface.normalMap) surface.normalMap.colorSpace = THREE.NoColorSpace;
 }
 
+function makeGlowTex(inner: string, mid: string, outer = 'rgba(255,210,120,0)'): THREE.CanvasTexture {
+  const c = document.createElement('canvas'); c.width = c.height = 64;
+  const ctx = c.getContext('2d')!;
+  const g = ctx.createRadialGradient(32, 32, 1, 32, 32, 32);
+  g.addColorStop(0, inner);
+  g.addColorStop(0.35, mid);
+  g.addColorStop(1, outer);
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 64, 64);
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
+function makeEmberTex(): THREE.CanvasTexture {
+  const c = document.createElement('canvas'); c.width = c.height = 128;
+  const ctx = c.getContext('2d')!;
+  ctx.fillStyle = '#28201a';
+  ctx.fillRect(0, 0, 128, 128);
+  let seed = 29;
+  const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+  for (let i = 0; i < 75; i++) {
+    const x = rnd() * 128, y = rnd() * 128, r = 4 + rnd() * 11;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, 'rgba(90, 80, 70, 0.36)');
+    g.addColorStop(1, 'rgba(40, 32, 26, 0)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+  }
+  for (let i = 0; i < 110; i++) {
+    const x = rnd() * 128, y = rnd() * 128, r = 3 + rnd() * 11;
+    const edgeDist = Math.hypot((x - 64) / 64, (y - 64) / 64);
+    const heat = Math.max(0, 1 - edgeDist * 0.96) * (0.42 + rnd() * 0.58);
+    if (heat <= 0.05) continue;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, `rgba(255, ${Math.round(148 + 82 * heat)}, 48, ${(0.8 * heat).toFixed(2)})`);
+    g.addColorStop(0.45, `rgba(195, 68, 18, ${(0.34 * heat).toFixed(2)})`);
+    g.addColorStop(1, 'rgba(38, 26, 20, 0)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
+function makeBeamTex(): THREE.CanvasTexture {
+  const c = document.createElement('canvas'); c.width = 64; c.height = 128;
+  const ctx = c.getContext('2d')!;
+  const img = ctx.createImageData(64, 128);
+  for (let y = 0; y < 128; y++) {
+    const v = y / 127;
+    const vert = Math.sin(Math.pow(v, 0.78) * Math.PI);
+    for (let x = 0; x < 64; x++) {
+      const u = Math.sin((x / 63) * Math.PI);
+      const a = Math.round(255 * Math.pow(u, 1.4) * (0.24 + 0.76 * vert) * (1 - 0.35 * v));
+      const idx = (y * 64 + x) * 4;
+      img.data[idx] = 255; img.data[idx + 1] = 236; img.data[idx + 2] = 178;
+      img.data[idx + 3] = a;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
+function makeSmokeTex(): THREE.CanvasTexture {
+  const c = document.createElement('canvas'); c.width = 64; c.height = 128;
+  const ctx = c.getContext('2d')!;
+  const g = ctx.createLinearGradient(0, 128, 0, 0);
+  g.addColorStop(0, 'rgba(255,228,195,0)');
+  g.addColorStop(0.18, 'rgba(255,228,195,0.4)');
+  g.addColorStop(0.55, 'rgba(240,225,205,0.2)');
+  g.addColorStop(1, 'rgba(240,225,205,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 64, 128);
+  const mask = ctx.createLinearGradient(0, 0, 64, 0);
+  mask.addColorStop(0, 'rgba(0,0,0,1)');
+  mask.addColorStop(0.5, 'rgba(0,0,0,0)');
+  mask.addColorStop(1, 'rgba(0,0,0,1)');
+  ctx.globalCompositeOperation = 'destination-out';
+  ctx.fillStyle = mask;
+  ctx.fillRect(0, 0, 64, 128);
+  ctx.globalCompositeOperation = 'source-over';
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
+function makeWaterNormalTex(): THREE.CanvasTexture {
+  const s = 128;
+  const c = document.createElement('canvas'); c.width = c.height = s;
+  const ctx = c.getContext('2d')!;
+  const img = ctx.createImageData(s, s);
+  const TAU = Math.PI * 2;
+  const h = (u: number, v: number) =>
+    Math.sin(u * TAU * 3 + v * TAU * 2) * 0.45 +
+    Math.sin(u * TAU * 5 - v * TAU * 4 + 1.2) * 0.3 +
+    Math.cos(u * TAU * 2 + v * TAU * 6 + 0.5) * 0.25;
+  const eps = 1 / s;
+  for (let y = 0; y < s; y++) {
+    for (let x = 0; x < s; x++) {
+      const u = x / s, v = y / s;
+      const dx = (h(u + eps, v) - h(u - eps, v)) * 1.9;
+      const dy = (h(u, v + eps) - h(u, v - eps)) * 1.9;
+      const inv = 1 / Math.hypot(-dx, -dy, 1);
+      const idx = (y * s + x) * 4;
+      img.data[idx] = Math.round(((-dx * inv) * 0.5 + 0.5) * 255);
+      img.data[idx + 1] = Math.round(((-dy * inv) * 0.5 + 0.5) * 255);
+      img.data[idx + 2] = Math.round((inv * 0.5 + 0.5) * 255);
+      img.data[idx + 3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.repeat.set(4, 4);
+  t.colorSpace = THREE.NoColorSpace;
+  return t;
+}
+
 const M = {
   // A touch under white: at full strength the sunlit faces blew out to a
   // flat sheet and the courses in the texture vanished with them.
   stone: () => new THREE.MeshStandardMaterial({
-    name: 'Temple ashlar', color: 0xe4d9c2, roughness: 0.92, metalness: 0,
+    name: 'Temple ashlar', color: 0xe8ddc6, roughness: 0.88, metalness: 0,
     map: TEX.stone.map, normalMap: TEX.stone.normalMap,
-    normalScale: new THREE.Vector2(0.7, 0.7), envMapIntensity: 0.55,
+    normalScale: new THREE.Vector2(0.75, 0.75), envMapIntensity: 0.62,
   }),
   cedar: () => new THREE.MeshStandardMaterial({
-    name: 'Cedar', color: 0xffffff, roughness: 0.78,
+    name: 'Cedar', color: 0xffffff, roughness: 0.72,
     map: TEX.cedar.map, normalMap: TEX.cedar.normalMap,
-    normalScale: new THREE.Vector2(0.55, 0.55),
+    normalScale: new THREE.Vector2(0.62, 0.62),
   }),
   // 6:29 on 6:22: the carving in the normal map, the gold in the colour.
   // Named "Interior …" so the page's reflection probe finds it.
   carvedGold: () => new THREE.MeshStandardMaterial({
-    name: 'Interior carved gold', color: 0xffffff, metalness: 1, roughness: 0.34,
+    name: 'Interior carved gold', color: 0xffffff, metalness: 1, roughness: 0.28,
     map: TEX.carved.map, normalMap: TEX.carved.normalMap, roughnessMap: TEX.carved.roughnessMap,
-    normalScale: new THREE.Vector2(0.9, 0.9), envMapIntensity: 1.15, side: THREE.DoubleSide,
+    normalScale: new THREE.Vector2(1.05, 1.05), envMapIntensity: 1.32, side: THREE.DoubleSide,
   }),
   floorGold: () => new THREE.MeshStandardMaterial({
-    name: 'Interior gold floor', color: 0xffffff, metalness: 1, roughness: 0.42,
+    name: 'Interior gold floor', color: 0xffffff, metalness: 1, roughness: 0.34,
     map: TEX.planks.map, normalMap: TEX.planks.normalMap, roughnessMap: TEX.planks.roughnessMap,
-    normalScale: new THREE.Vector2(0.6, 0.6), envMapIntensity: 1.0,
+    normalScale: new THREE.Vector2(0.65, 0.65), envMapIntensity: 1.15,
   }),
   gold: () => new THREE.MeshStandardMaterial({
-    name: 'Interior beaten gold', color: 0xffffff, metalness: 1, roughness: 0.28,
+    name: 'Interior beaten gold', color: 0xffffff, metalness: 1, roughness: 0.23,
     map: TEX.gold.map, normalMap: TEX.gold.normalMap, roughnessMap: TEX.gold.roughnessMap,
-    normalScale: new THREE.Vector2(0.28, 0.28), envMapIntensity: 1.2,
+    normalScale: new THREE.Vector2(0.28, 0.28), envMapIntensity: 1.35,
   }),
   bronze: () => new THREE.MeshStandardMaterial({
-    name: 'Molten bronze', color: 0xffffff, metalness: 1, roughness: 0.52,
+    name: 'Molten bronze', color: 0xffffff, metalness: 1, roughness: 0.42,
     map: TEX.bronze.map, normalMap: TEX.bronze.normalMap, roughnessMap: TEX.bronze.roughnessMap,
-    normalScale: new THREE.Vector2(0.3, 0.3), envMapIntensity: 1.05,
+    normalScale: new THREE.Vector2(0.32, 0.32), envMapIntensity: 1.32,
   }),
   panel: () => new THREE.MeshStandardMaterial({
-    name: 'Cast bronze panel', color: 0xffffff, metalness: 1, roughness: 0.5,
+    name: 'Cast bronze panel', color: 0xffffff, metalness: 1, roughness: 0.44,
     map: TEX.panel.map, normalMap: TEX.panel.normalMap,
-    normalScale: new THREE.Vector2(0.8, 0.8), envMapIntensity: 1.0,
+    normalScale: new THREE.Vector2(0.9, 0.9), envMapIntensity: 1.18,
   }),
   olive: () => new THREE.MeshStandardMaterial({
-    name: 'Olive wood', color: 0xffffff, roughness: 0.7,
+    name: 'Olive wood', color: 0xffffff, roughness: 0.66,
     map: TEX.olive.map, normalMap: TEX.olive.normalMap,
-    normalScale: new THREE.Vector2(0.5, 0.5),
+    normalScale: new THREE.Vector2(0.55, 0.55),
   }),
   veil: () => detailedSurface(new THREE.MeshPhysicalMaterial({
-    name: 'Veil', color: 0xffffff, roughness: 0.9, side: THREE.DoubleSide,
+    name: 'Veil', color: 0xffffff, roughness: 0.88, side: THREE.DoubleSide,
     map: TEX.veil.map, normalMap: TEX.veil.normalMap,
-    emissive: 0x1a1430, emissiveIntensity: 0.1,
-    sheen: 0.5, sheenColor: 0x7b84aa, sheenRoughness: 0.85,
+    emissive: 0x22193c, emissiveIntensity: 0.11,
+    sheen: 0.62, sheenColor: 0x9aa4cf, sheenRoughness: 0.8,
   }), 'veil-embroidery', 1, 0.003),
   paving: () => new THREE.MeshStandardMaterial({
-    name: 'Court paving', color: 0xd9ccb2, roughness: 0.96, metalness: 0,
+    name: 'Court paving', color: 0xe0d4ba, roughness: 0.84, metalness: 0,
     map: TEX.stone.map, normalMap: TEX.stone.normalMap,
-    normalScale: new THREE.Vector2(0.35, 0.35),
+    normalScale: new THREE.Vector2(0.38, 0.38), envMapIntensity: 0.58,
   }),
 };
 
@@ -264,6 +386,32 @@ export function buildTemple(cubit: number): Temple {
     o.updateWorldMatrix(true, false);
     colliders.push(new THREE.Box3().setFromObject(o));
   };
+
+  const animators: ((t: number) => void)[] = [];
+  const reducedMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const glowTex = makeGlowTex('rgba(255,244,210,0.95)', 'rgba(255,195,90,0.38)');
+  const emberTex = makeEmberTex();
+  const beamTex = makeBeamTex();
+  const smokeTex = makeSmokeTex();
+  const waterNormalTex = makeWaterNormalTex();
+  let prevAnimMs = -1;
+  const animDriver = new THREE.Mesh(
+    new THREE.PlaneGeometry(0.001, 0.001),
+    new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0, depthWrite: false }),
+  );
+  animDriver.position.set(0, -1, 0);
+  animDriver.frustumCulled = false;
+  animDriver.userData.dynamic = true;
+  animDriver.userData.noCast = true;
+  animDriver.onBeforeRender = () => {
+    if (reducedMotion) return;
+    const now = performance.now();
+    if (prevAnimMs >= 0 && now - prevAnimMs < 12) return;
+    prevAnimMs = now;
+    const t = now * 0.001;
+    for (const fn of animators) fn(t);
+  };
+  g.add(animDriver);
 
   const stone = M.stone();
   const cedar = M.cedar();
@@ -510,6 +658,74 @@ export function buildTemple(cubit: number): Temple {
     ark.position.set(debirMidX - C(2), 0, 0);
     g.add(ark);
     addCollider(ark);
+
+    // Pure aniconic glory shaft descending under the cherubim wing canopy onto
+    // the Mercy Seat (1 Kgs 6:23–28; 8:10–13; zero human form).
+    const gloryX = debirMidX - C(2);
+    const glorySpot = new THREE.SpotLight(0xffebb8, 22, C(21), 0.74, 1, 1.8);
+    glorySpot.position.set(gloryX, C(17.5), 0);
+    glorySpot.target.position.set(gloryX, C(1.2), 0);
+    g.add(glorySpot, glorySpot.target);
+
+    const beamOuterMat = new THREE.MeshBasicMaterial({
+      map: beamTex, color: 0xffdf9e, transparent: true, opacity: 0.13,
+      blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide,
+    });
+    const beamOuter = new THREE.Mesh(
+      new THREE.CylinderGeometry(C(0.85), C(2.45), C(16), 24, 1, true), beamOuterMat,
+    );
+    beamOuter.position.set(gloryX, C(10.0), 0);
+    beamOuter.userData.dynamic = true;
+    beamOuter.userData.noCast = true;
+    g.add(beamOuter);
+
+    const beamInnerMat = new THREE.MeshBasicMaterial({
+      map: beamTex, color: 0xfff4d4, transparent: true, opacity: 0.11,
+      blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide,
+    });
+    const beamInner = new THREE.Mesh(
+      new THREE.CylinderGeometry(C(0.36), C(1.25), C(15.5), 20, 1, true), beamInnerMat,
+    );
+    beamInner.position.set(gloryX, C(9.8), 0);
+    beamInner.userData.dynamic = true;
+    beamInner.userData.noCast = true;
+    g.add(beamInner);
+
+    const moteCount = 36;
+    const motePos = new Float32Array(moteCount * 3);
+    const moteBase: { r: number; a: number; y0: number; speed: number }[] = [];
+    for (let i = 0; i < moteCount; i++) {
+      const a = (i / moteCount) * Math.PI * 2 + i * 0.37;
+      const r = C(0.35 + ((i * 7) % 13) * 0.14);
+      const y0 = C(2.0 + ((i * 5) % 17) * 0.72);
+      motePos[i * 3] = gloryX + Math.cos(a) * r;
+      motePos[i * 3 + 1] = y0;
+      motePos[i * 3 + 2] = Math.sin(a) * r;
+      moteBase.push({ r, a, y0, speed: 0.22 + (i % 5) * 0.05 });
+    }
+    const moteGeo = new THREE.BufferGeometry();
+    moteGeo.setAttribute('position', new THREE.BufferAttribute(motePos, 3));
+    const motePoints = new THREE.Points(moteGeo, new THREE.PointsMaterial({
+      map: glowTex, color: 0xffe8b0, size: C(0.24), transparent: true, opacity: 0.62,
+      blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true,
+    }));
+    motePoints.userData.dynamic = true;
+    motePoints.userData.noCast = true;
+    g.add(motePoints);
+
+    animators.push((t) => {
+      const s = 1 + Math.sin(t * 1.05) * 0.08;
+      beamOuterMat.opacity = 0.125 * s;
+      beamInnerMat.opacity = 0.105 * s;
+      const attr = moteGeo.attributes.position as THREE.BufferAttribute;
+      for (let i = 0; i < moteCount; i++) {
+        const m = moteBase[i]!;
+        const y = C(1.8) + ((m.y0 - C(1.8) + t * C(0.22) * m.speed) % C(13.0));
+        const ang = m.a + t * 0.12 * m.speed;
+        attr.setXYZ(i, gloryX + Math.cos(ang) * m.r, y, Math.sin(ang) * m.r);
+      }
+      attr.needsUpdate = true;
+    });
   }
 
   // ── the holy place: lampstands, tables, the golden altar ──────────────
@@ -518,8 +734,26 @@ export function buildTemple(cubit: number): Temple {
   // 4:8) — Kings names one table of the bread (7:48), so one of the ten
   // carries the twelve loaves; the golden altar before the oracle (6:20–22,
   // 7:48). The Exodus dimensions are used for the furniture Exodus measures.
-  const flameMat = new THREE.MeshBasicMaterial({ color: 0xffd27a });
+  const flameMat = new THREE.MeshBasicMaterial({ color: 0xffe4a2 });
+  const flameHaloMat = new THREE.MeshBasicMaterial({
+    color: 0xffb347, transparent: true, opacity: 0.24,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  const flameGeo = new THREE.LatheGeometry([
+    new THREE.Vector2(0, 0),
+    new THREE.Vector2(0.015, 0.008),
+    new THREE.Vector2(0.018, 0.022),
+    new THREE.Vector2(0.011, 0.045),
+    new THREE.Vector2(0.004, 0.064),
+    new THREE.Vector2(0, 0.074),
+  ], 10);
+  const oilMat = new THREE.MeshBasicMaterial({ color: 0xffc663 });
+  const oilGeo = new THREE.CircleGeometry(0.014, 10);
+  oilGeo.rotateX(-Math.PI / 2);
+  const flameHaloGeo = new THREE.SphereGeometry(0.052, 8, 6);
+  const flamePositions: { x: number; y: number; z: number; phase: number }[] = [];
   const menorahUnit = 1.5 / 8.6;
+  const lampLights: { light: THREE.PointLight; phase: number }[] = [];
   for (const sz of [-1, 1]) {
     for (let i = 0; i < 5; i++) {
       const x = debirFrontX + C(3) + i * C(3);
@@ -535,18 +769,52 @@ export function buildTemple(cubit: number): Temple {
       g.add(lamp);
       addCollider(lamp);
       counts.lampstands++;
-      for (const u of [0, -2.15, 2.15, -2.93, 2.93, -3.71, 3.71]) {
-        const flame = new THREE.Mesh(new THREE.SphereGeometry(0.018, 8, 6), flameMat);
-        flame.scale.set(0.7, 2, 1);
-        flame.position.set(x + 0.045, 7.5 * menorahUnit + 0.046, z + u * menorahUnit);
-        g.add(flame);
-      }
+      [0, -2.15, 2.15, -2.93, 2.93, -3.71, 3.71].forEach((u, k) => {
+        flamePositions.push({
+          x: x + 0.045,
+          y: 7.5 * menorahUnit + 0.015,
+          z: z + u * menorahUnit,
+          phase: (counts.lampstands * 7 + k) * 0.91,
+        });
+      });
     }
     // The lamps' light, as one warm point per side rather than seventy.
-    const glow = new THREE.PointLight(0xffc87e, 2.2, 30, 2);
-    glow.position.set(debirFrontX + C(9), C(3), sz * C(6));
+    const glow = new THREE.PointLight(0xffc97d, 2.55, 34, 1.9);
+    glow.position.set(debirFrontX + C(9), C(3.2), sz * C(6));
     g.add(glow);
+    lampLights.push({ light: glow, phase: sz * 1.4 });
   }
+  const flameInst = new THREE.InstancedMesh(flameGeo, flameMat, flamePositions.length);
+  const oilInst = new THREE.InstancedMesh(oilGeo, oilMat, flamePositions.length);
+  const haloInst = new THREE.InstancedMesh(flameHaloGeo, flameHaloMat, flamePositions.length);
+  flameInst.userData.dynamic = oilInst.userData.dynamic = haloInst.userData.dynamic = true;
+  flameInst.userData.noCast = oilInst.userData.noCast = haloInst.userData.noCast = true;
+  const fDummy = new THREE.Object3D();
+  flamePositions.forEach((fp, idx) => {
+    fDummy.position.set(fp.x, fp.y - 0.001, fp.z); fDummy.rotation.set(0, 0, 0); fDummy.scale.setScalar(1);
+    fDummy.updateMatrix(); oilInst.setMatrixAt(idx, fDummy.matrix);
+    fDummy.position.set(fp.x, fp.y, fp.z); fDummy.updateMatrix();
+    flameInst.setMatrixAt(idx, fDummy.matrix);
+    fDummy.position.set(fp.x, fp.y + 0.036, fp.z); fDummy.updateMatrix();
+    haloInst.setMatrixAt(idx, fDummy.matrix);
+  });
+  g.add(oilInst, flameInst, haloInst);
+  animators.push((t) => {
+    for (const l of lampLights) {
+      l.light.intensity = 2.52 + Math.sin(t * 4.1 + l.phase) * 0.09 + Math.sin(t * 9.3) * 0.05;
+    }
+    for (let idx = 0; idx < flamePositions.length; idx++) {
+      const fp = flamePositions[idx]!;
+      const sy = 0.94 + Math.sin(t * 5.6 + fp.phase) * 0.09 + Math.sin(t * 11.1 + fp.phase) * 0.04;
+      fDummy.position.set(fp.x, fp.y, fp.z);
+      fDummy.rotation.set(0, 0, Math.sin(t * 4.2 + fp.phase) * 0.06);
+      fDummy.scale.set(1 - (sy - 1) * 0.25, sy, 1 - (sy - 1) * 0.25);
+      fDummy.updateMatrix();
+      flameInst.setMatrixAt(idx, fDummy.matrix);
+    }
+    flameInst.instanceMatrix.needsUpdate = true;
+  });
+
   for (const sz of [-1, 1]) {
     for (let i = 0; i < 5; i++) {
       const x = C(4) + i * C(4.5);
@@ -566,7 +834,7 @@ export function buildTemple(cubit: number): Temple {
       }
       if (sz > 0 && i === 0) {
         // The bread of the Presence: twelve loaves in two rows — Lev 24:5–6.
-        const bread = new THREE.MeshStandardMaterial({ color: 0xbb854d, roughness: 0.94 });
+        const bread = new THREE.MeshStandardMaterial({ color: 0xc98f4d, roughness: 0.84 });
         for (let r = 0; r < 2; r++) for (let k = 0; k < 6; k++) {
           const loaf = new THREE.Mesh(new THREE.SphereGeometry(C(0.24), 20, 10), bread);
           loaf.scale.set(1, 0.15, 1); loaf.position.set((r - 0.5) * C(0.85), C(1.53 + k * 0.065), 0);
@@ -598,10 +866,48 @@ export function buildTemple(cubit: number): Temple {
   incense.position.set(debirFrontX + C(2.6), 0, 0);
   g.add(incense);
   addCollider(incense);
+
+  const iCoalsMat = new THREE.MeshStandardMaterial({
+    color: 0x2a140d, roughness: 0.9, map: emberTex, emissiveMap: emberTex,
+    emissive: new THREE.Color(0xff8438), emissiveIntensity: 1.55,
+  });
+  const iCoals = new THREE.Mesh(new THREE.PlaneGeometry(C(0.72), C(0.72)), iCoalsMat);
+  iCoals.rotation.x = -Math.PI / 2;
+  iCoals.position.set(debirFrontX + C(2.6), C(2.01), 0);
+  iCoals.userData.dynamic = true;
+  iCoals.userData.noCast = true;
+  g.add(iCoals);
+  const iGlow = new THREE.PointLight(0xffa44a, 0.55, 6, 2);
+  iGlow.position.set(debirFrontX + C(2.6), C(2.35), 0);
+  g.add(iGlow);
+  const iSmokeMat = new THREE.MeshBasicMaterial({
+    map: smokeTex, color: 0xf8e7cf, transparent: true, opacity: 0.16,
+    depthWrite: false, side: THREE.DoubleSide,
+  });
+  const iWisps: { mesh: THREE.Mesh; baseY: number; phase: number }[] = [];
+  for (let i = 0; i < 3; i++) {
+    const wisp = new THREE.Mesh(new THREE.PlaneGeometry(C(0.62 - i * 0.08), C(2.4)), iSmokeMat);
+    wisp.position.set(debirFrontX + C(2.6), C(3.15 + i * 0.75), 0);
+    wisp.rotation.y = (i * Math.PI) / 3;
+    wisp.userData.dynamic = true;
+    wisp.userData.noCast = true;
+    g.add(wisp);
+    iWisps.push({ mesh: wisp, baseY: C(3.15 + i * 0.75), phase: i * 1.7 });
+  }
+  animators.push((t) => {
+    const pulse = 0.9 + Math.sin(t * 2.2) * 0.08;
+    iCoalsMat.emissiveIntensity = 1.55 * pulse;
+    iGlow.intensity = 0.55 * pulse;
+    for (const w of iWisps) {
+      w.mesh.position.y = w.baseY + Math.sin(t * 0.65 + w.phase) * C(0.2);
+      w.mesh.rotation.y += 0.002;
+    }
+  });
+
   // A warm fill in the oracle so the gold and the figures read. Disclosed
   // in the evidence dialog; not a claim about what lit that room.
-  const oracleFill = new THREE.PointLight(0xffe0a8, 1.6, 30, 2);
-  oracleFill.position.set(debirMidX + C(4), C(9), 0);
+  const oracleFill = new THREE.PointLight(0xffe1a4, 2.2, 34, 2);
+  oracleFill.position.set(debirMidX + C(4), C(9.5), 0);
   g.add(oracleFill);
 
   // ── the porch, 1 Kgs 6:3; 2 Chr 3:4 ───────────────────────────────────
@@ -661,6 +967,21 @@ export function buildTemple(cubit: number): Temple {
   addCollider(sea);
   counts.oxen += oxen; counts.gourds += gourds;
 
+  const waterMat = new THREE.MeshPhysicalMaterial({
+    color: 0x245668, metalness: 0.14, roughness: 0.04,
+    clearcoat: 1.0, clearcoatRoughness: 0.04,
+    normalMap: waterNormalTex, normalScale: new THREE.Vector2(0.22, 0.22),
+    envMapIntensity: 2.0, transparent: true, opacity: 0.94,
+  });
+  const seaWater = new THREE.Mesh(new THREE.CircleGeometry(C(4.65), 48).rotateX(-Math.PI / 2), waterMat);
+  seaWater.position.set(sea.position.x, C(1.283 + 4.25), sea.position.z);
+  seaWater.userData.dynamic = true;
+  seaWater.userData.noCast = true;
+  g.add(seaWater);
+  animators.push((t) => {
+    waterNormalTex.offset.set(t * 0.022, t * 0.016);
+  });
+
   // ── ten lavers on their bases, 1 Kgs 7:27–39 ──────────────────────────
   // Five on the south side of the house, five on the north. Where along the
   // side each one stands is not given. The north row is evenly spaced; the
@@ -672,6 +993,14 @@ export function buildTemple(cubit: number): Temple {
     north: [-18, -8, 2, 12, 22],
     south: [-26, -16, 6, 16, 26],
   };
+  const laverWaterInst = new THREE.InstancedMesh(
+    new THREE.CircleGeometry(C(1.74), 32).rotateX(-Math.PI / 2),
+    waterMat,
+    10,
+  );
+  laverWaterInst.userData.dynamic = true;
+  laverWaterInst.userData.noCast = true;
+  const laverWaterDummy = new THREE.Object3D();
   for (let i = 0; i < 5; i++) {
     for (const sz of [-1, 1]) {
       const stand = buildLaver(cubit, bronze, panel);
@@ -679,9 +1008,13 @@ export function buildTemple(cubit: number): Temple {
       stand.rotation.y = sz > 0 ? Math.PI : 0;
       g.add(stand);
       addCollider(stand);
+      laverWaterDummy.position.set(stand.position.x, C(4.79), stand.position.z);
+      laverWaterDummy.updateMatrix();
+      laverWaterInst.setMatrixAt(counts.lavers, laverWaterDummy.matrix);
       counts.lavers++;
     }
   }
+  g.add(laverWaterInst);
 
   // ── the bronze altar, 2 Chr 4:1 ───────────────────────────────────────
   // Twenty cubits square and ten high, before the house. Its construction
@@ -754,6 +1087,51 @@ export function buildTemple(cubit: number): Temple {
     const top = (altarH * (i + 1)) / RAMP_TREADS;
     addTread(altar.position.x - C(3), top - C(0.5), z0, altar.position.x + C(3), top, z1);
   }
+
+  // Glowing altar coal hearth & gentle rising heat shimmer added outside
+  // altarBody collider calculation so ramp/top footing stay unaltered.
+  const altarEmberMat = new THREE.MeshStandardMaterial({
+    color: 0x2a2018, roughness: 0.92, map: emberTex, emissiveMap: emberTex,
+    emissive: new THREE.Color(0xff7828), emissiveIntensity: 1.08,
+  });
+  const altarEmberBed = new THREE.Mesh(
+    new THREE.PlaneGeometry(altarL - C(1.5), altarL - C(1.5)).rotateX(-Math.PI / 2),
+    altarEmberMat,
+  );
+  altarEmberBed.position.set(altar.position.x, altarH - C(0.43), 0);
+  altarEmberBed.userData.dynamic = true;
+  altarEmberBed.userData.noCast = true;
+  g.add(altarEmberBed);
+  const altarEmberLight = new THREE.PointLight(0xff7426, 2.4, 18, 2);
+  altarEmberLight.position.set(altar.position.x, altarH + C(0.85), 0);
+  g.add(altarEmberLight);
+  const altarSmokeMat = new THREE.MeshBasicMaterial({
+    map: smokeTex, color: 0xffdfc2, transparent: true, opacity: 0.14,
+    depthWrite: false, side: THREE.DoubleSide,
+  });
+  const altarWisps: { mesh: THREE.Mesh; baseY: number; phase: number; speed: number }[] = [];
+  for (let i = 0; i < 4; i++) {
+    const wisp = new THREE.Mesh(new THREE.PlaneGeometry(C(4.5 - i * 0.4), C(5.5)), altarSmokeMat);
+    wisp.position.set(
+      altar.position.x + (i - 1.5) * C(1.4),
+      altarH + C(2.0 + i * 0.65),
+      (i % 2 === 0 ? 1 : -1) * C(0.9),
+    );
+    wisp.rotation.y = (i * Math.PI) / 4;
+    wisp.userData.dynamic = true;
+    wisp.userData.noCast = true;
+    g.add(wisp);
+    altarWisps.push({ mesh: wisp, baseY: wisp.position.y, phase: i * 1.6, speed: 0.52 + i * 0.1 });
+  }
+  animators.push((t) => {
+    const pulse = 0.9 + Math.sin(t * 2.8) * 0.06 + Math.sin(t * 6.3 + 0.9) * 0.04;
+    altarEmberMat.emissiveIntensity = 1.08 * pulse;
+    altarEmberLight.intensity = 2.4 * pulse;
+    for (const w of altarWisps) {
+      w.mesh.position.y = w.baseY + Math.sin(t * w.speed + w.phase) * C(0.32);
+      w.mesh.rotation.y += 0.002;
+    }
+  });
 
   // ── side chambers, 1 Kgs 6:5–10; the door and the winding stair, 6:8 ──
   // Three storeys round the north, south and west — not the front — five,

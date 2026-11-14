@@ -36,6 +36,9 @@ const PAGES = [
   { file: 'temple.html', href: '/temple.html', en: 'Temple', narrowEn: 'Temple', zh: '走进圣殿', narrowZh: '圣殿',
     walk: true, inEn: "Solomon's temple (1:1 Walk)", inZh: '所罗门圣殿（第一人称漫游）', ofEn: '1 Kings 6–7 · Measured 3D', ofZh: '列王纪上 6–7 · 实尺建造',
     loadEn: 'Building the house…', loadHans: '正在建造圣殿…', loadHant: '正在建造聖殿…' },
+  { file: 'ezekiel.html', href: '/ezekiel.html', en: "Ezekiel's", narrowEn: 'Ezekiel', zh: '以西结圣殿', narrowZh: '以西结',
+    walk: true, inEn: "Ezekiel's temple (1:1 Walk)", inZh: '以西结圣殿（第一人称漫游）', ofEn: 'Ezekiel 40–47 · Measured 3D', ofZh: '以西结书 40–47 · 实尺建造',
+    loadEn: "Measuring Ezekiel's temple…", loadHans: '正在丈量以西结圣殿…', loadHant: '正在丈量以西結聖殿…' },
   { file: 'ark.html', href: '/ark.html', en: 'Ark', narrowEn: 'Ark', zh: '走进方舟', narrowZh: '方舟',
     walk: true, inEn: "Noah's ark (1:1 Walk)", inZh: '挪亚方舟（第一人称漫游）', ofEn: 'Genesis 6–8 · Measured 3D', ofZh: '创世记 6–8 · 实尺建造',
     loadEn: 'Building the ark…', loadHans: '正在造方舟…', loadHant: '正在造方舟…' },
@@ -45,12 +48,7 @@ const PAGES = [
     loadEn: 'Laying out the plan…', loadHans: '正在整理全部计划…', loadHant: '正在整理全部計劃…' },
 ];
 
-const EXTRA_WALKS = [
-  { href: '/scene-assembly.html', inEn: "Noah's Ark Boarding Diorama", inZh: '方舟登船 3D 沙盘', ofEn: 'Genesis 7 · Animated 3D Cutouts', ofZh: '创世记 7 · 动态 3D 模型场景' },
-  { href: '/previews/noahs-ark-v01/index.html', inEn: "Noah's Ark 3-Deck Cutaway", inZh: '挪亚方舟三层剖面 3D', ofEn: 'Genesis 6–8 · 3-Deck Diorama', ofZh: '创世记 6–8 · 三层甲板动态展示' },
-  { href: '/previews/moses-tabernacle-v04/index.html', inEn: 'Tabernacle Wilderness Camp 3D', inZh: '摩西会幕旷野营地 3D', ofEn: 'Exodus 40 · Camp & Court 3D', ofZh: '出埃及记 40 · 营地与院落 3D' },
-  { href: '/previews/solomon-temple-v02/index.html', inEn: "Solomon's Temple Courtyard 3D", inZh: '所罗门圣殿献殿 3D', ofEn: '2 Chronicles 2–7 · Temple 3D', ofZh: '历代志下 2–7 · 圣殿建造与献殿' },
-];
+const EXTRA_WALKS = [];
 
 export const START = '  <!-- shell:start — written by scripts/build-shell.mjs. Edit that, not this. -->';
 export const END = '  <!-- shell:end -->';

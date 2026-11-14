@@ -9,9 +9,11 @@
 // whether a contested identification is one this project wants to endorse.
 //
 // Run from the repo root. Writes a report; changes nothing.
-import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 
-const A = '../SeekSparks/assets';
+const A = existsSync('../SeekSparks/assets/cuvs-yhwh.json')
+  ? '../SeekSparks/assets'
+  : '/Users/pliu0036/Documents/CodingProject/SeekSparks/assets';
 const verses = JSON.parse(readFileSync(`${A}/cuvs-yhwh.json`, 'utf8'));
 const places = JSON.parse(readFileSync(`${A}/bible_places.json`, 'utf8'));
 const doc = JSON.parse(readFileSync('data/events/all-events.json', 'utf8'));
@@ -261,6 +263,14 @@ if (!templeAnchors.length) corridors.push(['temple', 'no anchors found in src/br
 for (const a of templeAnchors) {
   const key = refToKey(a);
   if (key === null || !eventsAt(key)) corridors.push(['temple', `${a} falls in no event`]);
+}
+
+const ezekielAnchorsSrc = /const EZEKIEL_WALK_ANCHORS = \[([\s\S]*?)\]/.exec(readFileSync('src/bridges.ts', 'utf8'))?.[1] ?? '';
+const ezekielAnchors = [...ezekielAnchorsSrc.matchAll(/'([^']+)'/g)].map((m) => m[1]);
+if (!ezekielAnchors.length) corridors.push(['ezekiel', 'no anchors found in src/bridges.ts']);
+for (const a of ezekielAnchors) {
+  const key = refToKey(a);
+  if (key === null || !eventsAt(key)) corridors.push(['ezekiel', `${a} falls in no event`]);
 }
 
 // ── report ────────────────────────────────────────────────────────────────

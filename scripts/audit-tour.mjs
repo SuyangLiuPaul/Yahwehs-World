@@ -16,10 +16,11 @@ const URL = process.argv[2] ?? 'http://localhost:5175';
 const PAGES = [
   { path: '/tabernacle.html', handle: '__walk' },
   { path: '/temple.html', handle: '__temple' },
+  { path: '/ezekiel.html', handle: '__ezekiel' },
   { path: '/ark.html', handle: '__ark' },
 ];
 
-const browser = await chromium.launch();
+const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
 let bad = 0;
 for (const { path, handle } of PAGES) {

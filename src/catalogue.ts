@@ -150,6 +150,8 @@ export const BUILT: { href: string; en: string; zh: string; refEn: string; refZh
     refEn: 'Exodus 26–27 — the boards, the court, the hanging', refZh: '出埃及记 26–27 —— 竖板、院子、幔子' },
   { href: '/temple.html', en: "Solomon's temple", zh: '所罗门的圣殿',
     refEn: '1 Kings 6–7 — 60 × 20 × 30 cubits, and the two pillars', refZh: '列王纪上 6–7 —— 长六十肘，宽二十肘，高三十肘，并两根柱子' },
+  { href: '/ezekiel.html', en: "Ezekiel's temple", zh: '以西结的殿',
+    refEn: 'Ezekiel 40–47 — 500 × 500 cubits, three gates & the river', refZh: '以西结书 40–47 —— 五百见方、三座大门与门下活水' },
 ];
 
 export const KINDS: { key: Kind; en: string; zh: string; whatEn: string; whatZh: string }[] = [

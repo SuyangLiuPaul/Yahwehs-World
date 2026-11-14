@@ -27,7 +27,7 @@ const rules = [...parseRedirects(DIR), ...tomlRules];
 const redirects = rules.filter((r) => !r.rewrite);
 const follow = (path) => { const hops = []; for (let i = 0; i < 5; i++) { const r = matchRedirect(redirects, path); if (!r) break; hops.push(r); path = r.to.split('#')[0]; } return { hops, end: path }; };
 
-const HIDDEN = ['/tabernacle.html', '/temple.html', '/ark.html', '/figures.html', '/figures-springs.html', '/plan.html', '/video.html', '/previews/moses-tabernacle-v04/index.html', '/previews/solomon-temple-v02/index.html', '/previews/noahs-ark-v01/index.html', '/scene-assembly.html'];
+const HIDDEN = ['/tabernacle.html', '/temple.html', '/ezekiel.html', '/ark.html', '/figures.html', '/figures-springs.html', '/plan.html', '/video.html', '/previews/moses-tabernacle-v04/index.html', '/previews/solomon-temple-v02/index.html', '/previews/noahs-ark-v01/index.html', '/scene-assembly.html'];
 for (const p of HIDDEN) {
   const { hops, end } = follow(p);
   hops[0]?.status === 302 && end === '/' ? pass(`${p} -> 302 -> /`) : fail(`${p}: ${JSON.stringify(hops)} ends at ${end}`);

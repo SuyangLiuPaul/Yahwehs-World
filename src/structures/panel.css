@@ -1,185 +1,499 @@
-/* The measurement cards, as a panel inside a walk.
- *
- * They used to be a page of their own — a scroll-snapped feed over a full-bleed
- * canvas. They are now a dialog on the page that holds the thing each card
- * measures, so every rule here is scoped under `#measures-panel`: the card
- * markup keeps bare `h1`, `blockquote` and `table` selectors, and a walk page
- * has its own of all three.
- *
- * The one structural change from the page: there, the canvas was the whole
- * viewport and the card floated over it. Here the panel is a box, so the model
- * gets its own sticky area and the cards scroll past it — the verse and the
- * thing it describes still on screen at the same time, which was the point. */
-
 #measures-panel {
-  color: var(--ink); background: #101d27; border: 1px solid var(--line-gold);
-  width: min(1040px, calc(100% - 32px)); height: min(86dvh, 860px);
-  max-width: none; max-height: none;
-  padding: 0; overflow: hidden;
-  font: var(--fs-300)/1.65 var(--ui);
+  border: 1px solid rgba(217, 178, 82, 0.28);
+  border-radius: 14px;
+  background: #0b101b;
+  color: #e8e4da;
+  padding: 0;
+  margin: auto;
+  width: min(1200px, calc(100vw - 16px));
+  max-width: 1200px;
+  height: min(880px, 92dvh);
+  max-height: 92dvh;
+  overflow: hidden;
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.72);
+  font-family: var(--font-sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
 }
-#measures-panel::backdrop { background: #000a; backdrop-filter: blur(4px); }
 
-.mp-shell { display: grid; grid-template-rows: auto auto minmax(0, 1fr); height: 100%; }
-
-.mp-head {
-  display: flex; align-items: baseline; gap: var(--sp-3); flex-wrap: wrap;
-  padding: var(--sp-4) var(--sp-5) var(--sp-3);
-  border-bottom: 1px solid var(--line);
+#measures-panel:not([open]) {
+  display: none;
 }
-.mp-head h2 { margin: 0; font-family: var(--display); font-size: var(--fs-600); font-weight: 600; letter-spacing: .06em; }
-.mp-head .mp-lede { margin: 0; flex: 1 1 18rem; min-width: 0; font-size: var(--fs-200); color: var(--ink-3); }
-.mp-head .dialog-close { float: none; margin-left: auto; flex: none; }
 
-/* The cubit is the argument the cards are built on, so its control sits above
-   them rather than inside any one of them: one choice, every card resized. */
-.mp-cubit {
-  display: grid; gap: var(--sp-1); justify-items: start;
-  padding: var(--sp-3) var(--sp-5);
-  border-bottom: 1px solid var(--line); background: #0c1720;
+#measures-panel[open] {
+  display: flex;
+  flex-direction: column;
 }
-.mp-cubit[hidden] { display: none; }
-.mp-cubit label { font-size: var(--fs-300); letter-spacing: .06em; }
-.mp-cubit b { font-family: var(--mono); color: var(--gold-bright); font-weight: 500; }
-#mp-c-range { width: min(20rem, 100%); accent-color: var(--gold); cursor: pointer; }
-#mp-c-range:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-#mp-c-note { margin: 0; font-size: var(--fs-200); color: var(--ink-3); max-width: 46rem; }
 
-/* One scroll container. The model is sticky inside it, so it holds still while
-   the cards move past — the arrangement the page got from a fixed canvas. */
-.mp-body {
-  overflow-y: auto; overscroll-behavior: contain;
-  scroll-snap-type: y proximity;
-  display: grid; grid-template-columns: 1fr; align-content: start;
+#measures-panel::backdrop {
+  background: rgba(5, 8, 15, 0.78);
+  backdrop-filter: blur(5px);
 }
-.mp-stage {
-  position: sticky; top: 0; z-index: 1; height: 34svh; min-height: 180px;
-  background: radial-gradient(120% 90% at 50% 10%, #12202e 0%, #0a1420 100%);
-  border-bottom: 1px solid var(--line);
-}
-.mp-stage canvas { display: block; width: 100%; height: 100%; }
 
-.mp-feed { display: grid; align-content: start; }
-.mp-card { scroll-snap-align: start; padding: var(--sp-5) var(--sp-5) var(--sp-6); }
+#measures-panel .mp-chrome {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+#measures-panel .mp-head {
+  flex: 0 0 auto;
+  padding: 12px 16px;
+  background: linear-gradient(180deg, #131a29 0%, #0e1421 100%);
+  border-bottom: 1px solid rgba(217, 178, 82, 0.2);
+}
+
+#measures-panel .mp-head-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+#measures-panel .mp-title {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.5vw, 1.32rem);
+  font-weight: 700;
+  color: #f3d78a;
+  letter-spacing: 0.01em;
+}
+
+#measures-panel .mp-lede {
+  margin: 3px 0 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: #b2b8c4;
+}
+
+#measures-panel .dialog-close {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: #f0ece2;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.16s ease, border-color 0.16s ease;
+}
+
+#measures-panel .dialog-close:hover {
+  background: rgba(217, 178, 82, 0.18);
+  border-color: rgba(217, 178, 82, 0.5);
+}
+
+#measures-panel .mp-cubit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin-top: 10px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: rgba(217, 178, 82, 0.07);
+  border: 1px solid rgba(217, 178, 82, 0.18);
+  font-size: 0.78rem;
+}
+
+#measures-panel .mp-cubit[hidden] {
+  display: none !important;
+}
+
+#measures-panel .mp-c-lbl {
+  color: #e6c66e;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+#measures-panel #mp-c-range {
+  flex: 1 1 120px;
+  min-width: 100px;
+  max-width: 190px;
+  accent-color: #dfb655;
+  cursor: pointer;
+}
+
+#measures-panel #mp-c-val {
+  color: #f5efe2;
+  font-weight: 600;
+}
+
+#measures-panel .mp-c-note {
+  color: #9fa8b7;
+  font-size: 0.75rem;
+  flex: 1 1 180px;
+}
+
+#measures-panel .mp-body {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overflow-anchor: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+#measures-panel .mp-stage {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  width: 100%;
+  height: clamp(220px, 34dvh, 320px);
+  min-height: 220px;
+  background: radial-gradient(circle at 50% 42%, #172135 0%, #090e17 100%);
+  border-bottom: 1px solid rgba(217, 178, 82, 0.2);
+  overflow: hidden;
+}
+
+#measures-panel .mp-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: grab;
+  outline: none;
+}
+
+#measures-panel .mp-canvas.grabbing {
+  cursor: grabbing;
+}
+
+#measures-panel .mp-stage-hud {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  pointer-events: none;
+}
+
+#measures-panel .mp-hint {
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(9, 14, 24, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #c2c8d4;
+  font-size: 0.7rem;
+  backdrop-filter: blur(4px);
+}
+
+#measures-panel .mp-reset {
+  pointer-events: auto;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(217, 178, 82, 0.42);
+  background: rgba(15, 21, 34, 0.84);
+  color: #f2d586;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.16s ease;
+}
+
+#measures-panel .mp-reset:hover {
+  background: rgba(217, 178, 82, 0.24);
+}
+
+#measures-panel .mp-caption {
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+  padding: 6px 10px;
+  border-radius: 7px;
+  background: rgba(9, 14, 24, 0.76);
+  border: 1px solid rgba(217, 178, 82, 0.22);
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+
+#measures-panel .mp-cap-name {
+  font-size: 0.82rem;
+  color: #f4d88c;
+}
+
+#measures-panel .mp-cap-meta {
+  font-size: 0.73rem;
+  color: #b7c0ce;
+}
+
+#measures-panel .mp-feed {
+  padding: 12px 14px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  overflow-anchor: none;
+}
+
+#measures-panel .mp-card {
+  scroll-margin-top: clamp(230px, 35dvh, 330px);
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: rgba(20, 27, 42, 0.76);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  transition: border-color 0.18s ease, background 0.18s ease;
+  min-width: 0;
+  cursor: pointer;
+}
+
+#measures-panel .mp-card:hover {
+  border-color: rgba(217, 178, 82, 0.34);
+}
+
+#measures-panel .mp-card.on {
+  background: rgba(27, 36, 56, 0.95);
+  border-color: rgba(226, 186, 86, 0.72);
+  box-shadow: 0 0 0 1px rgba(226, 186, 86, 0.2);
+}
+
+#measures-panel .mp-card-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 12px;
+}
+
+#measures-panel .mp-card h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f3e9d2;
+}
+
+#measures-panel .mp-ref {
+  font-size: 0.76rem;
+  color: #e0ba5b;
+  font-weight: 600;
+}
+
+#measures-panel .mp-quote {
+  margin: 8px 0 10px;
+  padding: 6px 0 6px 11px;
+  border-left: 2px solid rgba(217, 178, 82, 0.45);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #c8cfd9;
+}
+
+#measures-panel table.mp-dims {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0 10px;
+  font-size: 0.81rem;
+}
+
+#measures-panel table.mp-dims th,
+#measures-panel table.mp-dims td {
+  padding: 5px 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: left;
+}
+
+#measures-panel table.mp-dims th {
+  color: #aeb7c6;
+  font-weight: 500;
+  width: 44%;
+}
+
+#measures-panel table.mp-dims td {
+  color: #e8e4da;
+}
+
+#measures-panel table.mp-dims td.m,
+#measures-panel table.mp-dims td.cnt {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: #f0cf79;
+  font-weight: 600;
+}
+
+#measures-panel .mp-var {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(12, 18, 29, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#measures-panel .mp-var-lbl {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #b7c1d1;
+}
+
+#measures-panel .mp-var-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+#measures-panel .mp-var-btns button {
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: #dce2ec;
+  font-size: 0.77rem;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+#measures-panel .mp-var-btns button.on {
+  background: rgba(217, 178, 82, 0.22);
+  border-color: rgba(226, 186, 86, 0.75);
+  color: #fbe5a4;
+  font-weight: 600;
+}
+
+#measures-panel .mp-var-note {
+  margin: 8px 0 0;
+  font-size: 0.78rem;
+  line-height: 1.48;
+  color: #b8c0ce;
+}
+
+#measures-panel .mp-punch {
+  margin: 10px 0;
+  padding: 9px 11px;
+  border-radius: 7px;
+  background: rgba(217, 178, 82, 0.1);
+  font-size: 0.82rem;
+  line-height: 1.52;
+  color: #f0eadc;
+}
+
+#measures-panel .mp-cmp {
+  margin: 10px 0 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#measures-panel .mp-cmp-row {
+  display: grid;
+  grid-template-columns: minmax(86px, 1.15fr) minmax(56px, 1.5fr) auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.76rem;
+}
+
+#measures-panel .mp-cmp-lbl {
+  color: #b9c1cf;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#measures-panel .mp-cmp-bar {
+  height: 7px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.09);
+  overflow: hidden;
+}
+
+#measures-panel .mp-cmp-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #c69636 0%, #f0cd6f 100%);
+}
+
+#measures-panel .mp-cmp-val {
+  color: #e6c66e;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+#measures-panel .mp-unstated {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: #aeb6c4;
+}
+
+#measures-panel .mp-unstated summary {
+  cursor: pointer;
+  color: #d0b26a;
+  font-weight: 600;
+  user-select: none;
+}
+
+#measures-panel .mp-unstated ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  line-height: 1.45;
+}
 
 @media (min-width: 900px) {
-  .mp-body { grid-template-columns: minmax(0, 1fr) minmax(0, 27rem); }
-  .mp-stage { grid-column: 1; grid-row: 1; height: min(60svh, 420px); border-bottom: 0; border-right: 1px solid var(--line); }
-  .mp-feed { grid-column: 2; grid-row: 1; }
+  #measures-panel .mp-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+    overflow: hidden;
+  }
+
+  #measures-panel .mp-stage {
+    position: relative;
+    height: 100%;
+    min-height: 280px;
+    border-bottom: none;
+    border-right: 1px solid rgba(217, 178, 82, 0.2);
+  }
+
+  #measures-panel .mp-feed {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 16px 20px 40px;
+    gap: 16px;
+  }
+
+  #measures-panel .mp-card {
+    scroll-margin-top: 16px;
+  }
 }
 
-/* ── the card, as it was ──────────────────────────────────────────────────
-   Everything below is the page's own card styling, scoped. */
-#measures-panel .inner {
-  background: var(--surface); border: 1px solid #c9a22733; border-radius: var(--radius);
-  padding: var(--sp-5); box-shadow: 0 20px 60px #0007;
-}
-#measures-panel .eyebrow {
-  font-family: var(--mono); font-size: var(--fs-100); letter-spacing: .26em;
-  text-transform: uppercase; color: var(--gold); margin: 0 0 var(--sp-2);
-}
-#measures-panel h1 { margin: 0 0 2px; font-size: var(--fs-700); font-weight: 600; letter-spacing: .05em; text-wrap: balance; }
-#measures-panel .en { font-family: var(--latin); font-size: var(--fs-200); color: var(--ink-3); margin: 0 0 var(--sp-4); letter-spacing: 0; }
-/* Back to the globe, at the verse this card cites (src/bridges.ts). */
-#measures-panel .s-back {
-  display: inline-block; margin: 0 0 var(--sp-4); color: var(--gold); text-decoration: none;
-  font: var(--fs-100) var(--ui); letter-spacing: var(--tr-cjk);
-}
-@media (hover: hover) { #measures-panel .s-back:hover { color: var(--gold-bright); text-decoration: underline; } }
-#measures-panel .s-back:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: var(--radius); }
-#measures-panel blockquote {
-  margin: 0 0 var(--sp-4); padding-left: var(--sp-3); border-left: 2px solid var(--gold);
-  font-size: var(--fs-500); line-height: 1.8;
-}
-#measures-panel blockquote cite {
-  display: block; margin-top: var(--sp-1); font-style: normal; font-family: var(--mono);
-  font-size: var(--fs-100); color: var(--ink-3); letter-spacing: .1em;
-}
+@media (max-width: 480px) {
+  #measures-panel {
+    width: calc(100vw - 8px);
+    height: 94dvh;
+    max-height: 94dvh;
+    border-radius: 10px;
+  }
 
-#measures-panel table { width: 100%; border-collapse: collapse; margin: 0 0 var(--sp-4); font-size: var(--fs-300); }
-#measures-panel th, #measures-panel td { text-align: left; padding: var(--sp-1) 0; border-bottom: 1px solid var(--line); }
-#measures-panel th { font-weight: 400; color: var(--ink-2); font-size: var(--fs-200); }
-#measures-panel td.n { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; }
-#measures-panel td.m { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; color: var(--gold-bright); }
-#measures-panel td.r { font-family: var(--mono); font-size: var(--fs-100); color: var(--ink-3); text-align: right; }
+  #measures-panel .mp-head {
+    padding: 10px 12px;
+  }
 
-#measures-panel .punch { font-size: var(--fs-400); line-height: 1.8; margin: 0 0 var(--sp-4); }
-#measures-panel .punch strong { color: var(--gold-bright); font-weight: 600; }
+  #measures-panel .mp-hint {
+    display: none;
+  }
 
-#measures-panel .compare { margin: 0 0 var(--sp-4); display: grid; gap: var(--sp-1); }
-#measures-panel .compare .row { display: grid; grid-template-columns: 1fr auto; gap: var(--sp-2); align-items: center; font-size: var(--fs-200); }
-#measures-panel .compare .label { color: var(--ink-2); display: flex; align-items: center; gap: var(--sp-2); min-width: 0; }
-#measures-panel .compare .track { flex: 1; height: 3px; background: #ffffff14; border-radius: var(--radius); overflow: hidden; min-width: 1.5rem; }
-#measures-panel .compare .track i { display: block; height: 100%; background: var(--ink-2); }
-#measures-panel .compare .row.self .track i { background: var(--gold-bright); }
-#measures-panel .compare .row.self .label { color: var(--gold-bright); }
-#measures-panel .compare .v { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink-3); white-space: nowrap; }
+  #measures-panel .mp-feed {
+    padding: 10px 10px 28px;
+  }
 
-#measures-panel details.unstated { border-top: 1px solid var(--line); padding-top: var(--sp-3); }
-#measures-panel details.unstated summary {
-  cursor: pointer; font-family: var(--mono); font-size: var(--fs-100); letter-spacing: .16em;
-  text-transform: uppercase; color: var(--ink-2); list-style: none;
+  #measures-panel .mp-card {
+    padding: 12px;
+  }
 }
-#measures-panel details.unstated summary::-webkit-details-marker { display: none; }
-@media (hover: hover) { #measures-panel details.unstated summary:hover { color: var(--gold); } }
-#measures-panel details.unstated ul { margin: var(--sp-2) 0 0; padding-left: var(--sp-4); font-size: var(--fs-300); color: var(--ink-2); line-height: 1.7; }
-#measures-panel details.unstated li { margin-bottom: var(--sp-1); }
-
-/* Where two reconstructions are both defensible, the switch is part of the
-   content, not a setting — so it reads as a pair of cited readings. */
-#measures-panel .variant { margin: 0 0 var(--sp-4); display: grid; gap: var(--sp-1); }
-#measures-panel .vlabel { margin: 0 0 2px; font-size: var(--fs-200); color: var(--ink-2); letter-spacing: .04em; }
-#measures-panel .vbtn {
-  display: grid; gap: 2px; text-align: left; cursor: pointer;
-  background: transparent; border: 1px solid var(--line); border-radius: var(--radius);
-  padding: var(--sp-2) var(--sp-3); color: var(--ink-2); font-family: var(--ui);
-  transition: border-color .18s, color .18s, background .18s;
-}
-#measures-panel .vbtn b { font-size: var(--fs-300); font-weight: 600; color: var(--ink); }
-#measures-panel .vbtn span { font-size: var(--fs-100); color: var(--ink-2); line-height: 1.5; }
-@media (hover: hover) { #measures-panel .vbtn:hover { border-color: #c9a22766; } }
-#measures-panel .vbtn.on { border-color: var(--gold); background: #c9a2271a; }
-#measures-panel .vbtn.on b { color: var(--gold-bright); }
-#measures-panel .vbtn:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
-
-/* ── the answer, first ───────────────────────────────────────────────────
-   The card exists to say how big the thing actually is, so that number leads
-   at a size nothing competes with, and the cubit figure sits under it: one is
-   what the text says, the other is what it means. */
-#measures-panel .lead {
-  display: grid; gap: 2px; margin: 0 0 var(--sp-4);
-  padding: var(--sp-3) 0; border-block: 1px solid var(--line);
-}
-#measures-panel .lead b {
-  font-family: var(--mono); font-size: 34px; font-weight: 500; line-height: 1;
-  color: var(--gold-bright); font-variant-numeric: tabular-nums; letter-spacing: -.02em;
-}
-#measures-panel .lead span { font-size: var(--fs-200); color: var(--ink-3); letter-spacing: var(--tr-cjk); }
-#measures-panel .lead.none b { font-size: var(--fs-600); font-family: var(--display); color: var(--ink-2); }
-
-#measures-panel .sec {
-  margin: var(--sp-4) 0 var(--sp-2);
-  font-family: var(--mono); font-size: var(--fs-100); font-weight: 500;
-  letter-spacing: var(--tr-caps); text-transform: uppercase; color: var(--ink-3);
-}
-
-@media (max-width: 640px) {
-  #measures-panel { width: 100%; height: 100dvh; border: 0; }
-  .mp-head { padding: var(--sp-4) var(--sp-4) var(--sp-3); }
-  .mp-cubit { padding: var(--sp-3) var(--sp-4); }
-  .mp-card { padding: var(--sp-4) var(--sp-4) var(--sp-5); }
-  #measures-panel .inner { padding: var(--sp-4); }
-  #measures-panel h1 { font-size: var(--fs-600); }
-}
-
-/* The opener, on the gate: quieter than the two ways into the walk, because it
-   is a reference rather than a way in. Matches .gate-back, which is an <a>. */
-#gate-measures {
-  background: transparent; border: 0; cursor: pointer;
-  color: var(--gold); padding: var(--sp-2);
-  font: var(--fs-100) var(--ui); letter-spacing: var(--tr-cjk); white-space: nowrap;
-}
-@media (hover: hover) { #gate-measures:hover { color: var(--gold-bright); text-decoration: underline; } }
-#gate-measures:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: var(--radius); }
-
-@media (prefers-reduced-motion: reduce) { #measures-panel * { transition: none !important; } }

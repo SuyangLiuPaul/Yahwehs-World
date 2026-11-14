@@ -254,7 +254,7 @@ check(mixedScript.length === 0, 'no Traditional name file carries the Simplified
   // every page, lab pages included: a lab page that reaches out to Google is still a third-party request
   check(google.length === 0, 'no page fetches a font from Google (the fonts are self-hosted in public/fonts)', google.join(', '));
   // the pages that ship: the eight shell pages carry the link itself, the three gallery pages take it from a marker
-  const shipped = ['index.html', 'bible.html', 'scenes.html', 'tabernacle.html', 'temple.html', 'ark.html', 'figures.html', 'plan.html',
+  const shipped = ['index.html', 'bible.html', 'scenes.html', 'tabernacle.html', 'temple.html', 'ezekiel.html', 'ark.html', 'figures.html', 'plan.html',
     'home.html', 'gallery-bible.html', 'gallery-scenes.html'];
   const missing = shipped.filter((n) => !read(n).includes('/fonts/fonts.css') && !read(n).includes('<!-- gallery-fonts -->'));
   check(missing.length === 0, 'every shipped page loads the bundled font stylesheet', missing.join(', '));

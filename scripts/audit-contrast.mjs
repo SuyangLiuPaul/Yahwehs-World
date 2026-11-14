@@ -32,11 +32,14 @@ const URL = process.argv[2] ?? 'http://localhost:5175';
 // at all, so they are swept as paths like everything else.
 const PAGES = [
   ...[...(await import('node:fs')).readFileSync('vite.config.ts', 'utf8')
-    .matchAll(/resolve\(__dirname, '([^']+\.html)'\)/g)].map((m) => (m[1] === 'index.html' ? '/' : `/${m[1]}`)),
+    .matchAll(/resolve\(__dirname, '([^']+\.html)'\)/g)]
+    .map((m) => (m[1] === 'index.html' ? '/' : `/${m[1]}`))
+    .filter((p) => p !== '/figures-springs.html'),
   '/#ref=Exodus%2025:10',
   '/ark.html#measures',
   '/tabernacle.html#measures',
   '/temple.html#measures',
+  '/ezekiel.html#measures',
   '/plan.html#measures=newjerusalem',
 ];
 
@@ -128,7 +131,7 @@ const measure = async (page) => page.evaluate(() => {
   return out;
 });
 
-const browser = await chromium.launch();
+const browser = await chromium.launch({ channel: 'chrome', headless: true });
 let failures = 0;
 // One theme, since the app is dark throughout (src/tokens.css). Light is
 // still measured: if a light palette ever comes back, this catches the

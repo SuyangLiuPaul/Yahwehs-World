@@ -2,45 +2,46 @@
 @import '../nav.css';
 
 * { box-sizing: border-box; }
-body { margin: 0; background: #060d16; color: var(--ink); font-family: var(--ui); overflow: hidden; }
-#stage { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; cursor: pointer; }
+html, body { max-width: 100%; overflow: hidden; }
+body { margin: 0; background: #060d16; color: var(--ink); font-family: var(--ui); }
+#stage { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; cursor: pointer; touch-action: none; }
 
 /* ── the gate ────────────────────────────────────────────────────────────
    A title card, not a wall of text. The tally is the hook — the passage
    numbers everything it builds, and seeing 96 sockets before entering is what
    makes the room mean something once you are in it. */
-/* The credit bar is fixed to the bottom and 40 px tall, so the gate's own
-   controls must clear it. In a 600 px-tall window the "walk me through"
-   button sat underneath it and could not be clicked at all — found by a
-   screenshot script that could not start the tour. The panel scrolls when
-   the window is too short for it rather than hiding what is below. */
 #gate {
-  position: fixed; inset: 0; z-index: 10; display: grid; align-content: center;
-  padding: var(--sp-7) clamp(var(--sp-5), 7vw, 96px) 56px;
-  overflow-y: auto; overscroll-behavior: contain;
-  background: linear-gradient(100deg, #060d16f5 0%, #060d16e0 46%, #060d1633 100%);
-  backdrop-filter: blur(3px);
+  position: fixed; inset: 0; z-index: 10; display: flex; flex-direction: column;
+  padding: calc(72px + var(--safe-top)) clamp(var(--sp-4), 7vw, 96px) calc(56px + var(--safe-bottom));
+  max-width: 100%; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain;
+  background: linear-gradient(102deg, rgba(6, 13, 22, 0.96) 0%, rgba(10, 26, 46, 0.86) 46%, rgba(6, 13, 22, 0.24) 100%);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
 }
 #gate.hidden { display: none; }
-.gate-inner { display: grid; gap: var(--sp-4); max-width: 520px; }
+.gate-inner { display: grid; gap: var(--sp-4); width: 100%; max-width: 640px; min-width: 0; margin-block: auto; flex-shrink: 0; }
 #gate h1 {
   margin: 0; font-family: var(--display);
   font-size: clamp(26px, 4.4vw, 40px); font-weight: 600;
   letter-spacing: .1em; line-height: var(--lh-tight);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+}
+.eyebrow {
+  font-family: var(--mono); font-size: var(--fs-100); font-weight: 500;
+  letter-spacing: var(--tr-caps); text-transform: uppercase; color: var(--gold); margin: 0;
 }
 .lede {
-  margin: 0; max-width: 460px; color: var(--ink-2);
+  margin: 0; max-width: 58ch; color: var(--ink-2);
   font-size: var(--fs-300); line-height: var(--lh-normal);
 }
 
 /* Numbers first, name under, verse last — the reader is meant to be struck by
    the count and then find that it is cited. */
 .tally {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
   gap: var(--sp-3) var(--sp-4);
-  border-block: 1px solid var(--line); padding: var(--sp-4) 0;
+  border-block: 1px solid var(--line-gold); padding: var(--sp-4) 0;
 }
-.tally div { display: grid; gap: 2px; }
+.tally div { display: grid; gap: 3px; min-width: 0; }
 .tally b {
   font-family: var(--mono); font-size: 26px; font-weight: 500; line-height: 1;
   color: var(--gold-bright); font-variant-numeric: tabular-nums; letter-spacing: -.02em;
@@ -54,39 +55,56 @@ body { margin: 0; background: #060d16; color: var(--ink); font-family: var(--ui)
 .gate-go { display: flex; gap: var(--sp-2); align-items: center; flex-wrap: wrap; }
 /* Quieter than the two ways in — it is the way back out. */
 .gate-back {
-  color: var(--gold); text-decoration: none; padding: var(--sp-2);
+  color: var(--gold); text-decoration: none;
+  min-height: 44px; display: inline-flex; align-items: center; padding: 0 var(--sp-2);
   font: var(--fs-100) var(--ui); letter-spacing: var(--tr-cjk); white-space: nowrap;
 }
 .gate-back:hover { color: var(--gold-bright); text-decoration: underline; }
 .gate-back:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: var(--radius); }
-.gate-go + .keys { margin-top: var(--sp-3); }
-#enter, #tour {
-  background: transparent; border: 1px solid var(--line); color: var(--ink-2);
-  padding: var(--sp-3) var(--sp-4); border-radius: var(--radius);
+.gate-go .keys, .gate-go + .keys { flex-basis: 100%; margin-top: var(--sp-2); }
+#enter, #tour, #gate-measures {
+  min-height: 44px; display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(12, 26, 44, 0.62); border: 1px solid var(--line); color: var(--ink-2);
+  padding: var(--sp-2) var(--sp-4); border-radius: var(--radius);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   font-family: var(--ui); font-size: var(--fs-300); letter-spacing: .06em;
-  cursor: pointer; transition: background .2s, color .2s, border-color .2s;
+  cursor: pointer; transition: background .2s, color .2s, border-color .2s, transform .12s;
 }
 /* The guided walk is the recommended way in, so it carries the emphasis and
    driving yourself sits beside it as the alternative. */
-#tour.primary { border-color: var(--gold); color: var(--gold-bright); }
-#enter:hover, #tour:hover { background: #c9a2271f; color: var(--gold-bright); border-color: var(--gold); }
-#enter:focus-visible, #tour:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+#tour.primary {
+  background: rgba(230, 172, 50, 0.14);
+  border-color: var(--gold); color: var(--gold-bright);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+}
+@media (hover: hover) {
+  #enter:hover, #tour:hover, #gate-measures:hover { background: rgba(230, 172, 50, 0.2); color: var(--gold-bright); border-color: var(--gold); }
+}
+#enter:active, #tour:active, #gate-measures:active { transform: translateY(1px); }
+#enter:focus-visible, #tour:focus-visible, #gate-measures:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 /* A thin progress rule across the top of the HUD — how far through the walk. */
 #tour-bar {
-  position: absolute; left: 0; right: 0; top: 0; height: 2px; background: #ffffff14;
+  position: absolute; left: 0; right: 0; top: 0; height: 2px; background: rgba(255, 255, 255, 0.1);
 }
 #tour-bar[hidden] { display: none; }
-#tour-bar i { display: block; height: 100%; width: 0; background: var(--gold); transition: width .4s linear; }
+#tour-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--gold), var(--gold-bright)); transition: width .4s linear; }
 
-.hud-side { display: flex; gap: var(--sp-1); justify-content: end; align-self: end; }
+.hud-side {
+  display: flex; gap: var(--sp-1); justify-content: flex-end; align-items: center;
+  align-self: end; flex-wrap: wrap; min-width: 0;
+}
 #tour-toggle {
-  pointer-events: auto; background: transparent; border: 1px solid var(--line-gold);
-  color: var(--gold); border-radius: 50%; width: 44px; height: 44px; padding: 0;
+  pointer-events: auto; background: rgba(12, 23, 38, 0.84); border: 1px solid var(--line-gold);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  color: var(--gold-bright); border-radius: 50%; width: 44px; height: 44px; padding: 0;
   font-size: var(--fs-100); cursor: pointer; display: grid; place-content: center;
+  transition: background .18s, border-color .18s, color .18s;
 }
 #tour-toggle[hidden] { display: none; }
-#tour-toggle:hover { color: var(--gold-bright); background: #c9a2271a; }
+@media (hover: hover) {
+  #tour-toggle:hover { color: var(--gold-bright); background: rgba(230, 172, 50, 0.16); border-color: var(--gold); }
+}
 #tour-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .keys, .hud-keys {
   margin: 0; display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap;
@@ -95,96 +113,167 @@ body { margin: 0; background: #060d16; color: var(--ink); font-family: var(--ui)
 kbd {
   font-family: var(--mono); font-size: var(--fs-100); color: var(--ink-2);
   border: 1px solid var(--line); border-bottom-width: 2px; border-radius: var(--radius);
-  padding: 1px 5px; line-height: 1.5;
+  background: rgba(12, 23, 38, 0.55); padding: 1px 5px; line-height: 1.5;
 }
 
 /* ── the head-up display ─────────────────────────────────────────────────
    Where you are, in a space built of nested rectangles: the plan answers that
    faster than any label, and the label says which verse defines the place. */
 #hud {
-  position: fixed; left: 0; right: 0; bottom: 40px; z-index: 5; pointer-events: none;
-  padding: var(--sp-4) var(--sp-5);
-  background: linear-gradient(180deg, transparent, #050b13e6 58%);
-  display: grid; grid-template-columns: auto 1fr auto; align-items: end; gap: var(--sp-4);
+  position: fixed; left: 0; right: 0; bottom: calc(40px + var(--safe-bottom)); z-index: 5;
+  pointer-events: none;
+  padding: var(--sp-4) max(var(--sp-5), var(--safe-right)) var(--sp-3) max(var(--sp-5), var(--safe-left));
+  background: linear-gradient(180deg, transparent 0%, rgba(5, 11, 19, 0.58) 28%, rgba(5, 11, 19, 0.92) 100%);
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: end; gap: var(--sp-3) var(--sp-4);
 }
 #hud[hidden] { display: none; }
-#tour-stop {max-width:100%;width:100%;min-height:44px;background:#0c1720e8;color:var(--ink-2);border:1px solid var(--line);font:var(--fs-200) var(--ui);padding:0 8px;pointer-events:auto;}
-.hud-side button{min-height:44px;min-width:44px;border:1px solid var(--line);background:#0c1720d9;color:var(--ink);font:var(--fs-200) var(--ui);pointer-events:auto;cursor:pointer;padding:0 10px;}
-.hud-side button:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
-.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);}
+#tour-stop {
+  width: min(100%, 420px); max-width: 100%; min-width: 0; min-height: 44px;
+  border-radius: var(--radius); background: rgba(12, 23, 38, 0.86);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  color: var(--ink); border: 1px solid var(--line-gold);
+  font: var(--fs-200) var(--ui); padding: 0 var(--sp-3);
+  pointer-events: auto; cursor: pointer;
+}
+.hud-side button {
+  min-height: 44px; min-width: 44px; border-radius: var(--radius);
+  border: 1px solid var(--line); background: rgba(12, 23, 38, 0.84);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  color: var(--ink); font: var(--fs-200)/1 var(--ui); letter-spacing: var(--tr-cjk);
+  pointer-events: auto; cursor: pointer; padding: 0 11px; white-space: nowrap;
+  transition: background .18s, border-color .18s, color .18s, transform .12s;
+}
+@media (hover: hover) {
+  .hud-side button:hover { background: rgba(26, 64, 107, 0.72); border-color: var(--line-gold); color: var(--gold-bright); }
+}
+.hud-side button:active { transform: translateY(1px); }
+.hud-side button:focus-visible, select:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
 /* The on-screen stick: a ring where the thumb landed and a knob that follows
-   it. Drawn rather than implied — the two-thumb layout was invisible, and an
-   invisible control is one most visitors never find. */
-#stick{position:fixed;width:108px;height:108px;margin:-54px 0 0 -54px;border:1px solid var(--line-gold);border-radius:50%;background:#0b131c55;pointer-events:none;z-index:6;}
-#stick i{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:var(--gold-dim);opacity:.8;}
-#walk-run.on{background:var(--gold-dim);color:#0b131c;}
-#view-transition{position:fixed;inset:0;background:#090b0e;pointer-events:none;opacity:0;z-index:4;}
-#assumptions{color:var(--ink);background:#101d27;border:1px solid var(--line-gold);width:min(620px,calc(100% - 32px));max-height:80dvh;padding:24px;font:var(--fs-300)/1.65 var(--ui);}
-#assumptions::backdrop{background:#000a;backdrop-filter:blur(4px);}
-#assumptions h2{font-family:var(--display);font-size:var(--fs-500);}
-#assumptions a{color:var(--gold-bright);}
-.dialog-close{min-width:72px;min-height:44px;background:transparent;color:var(--ink);border:1px solid var(--line);float:right;cursor:pointer;}
-#plan { width: 116px; height: 66px; overflow: visible; }
+   it. Drawn rather than implied. */
+#stick {
+  position: fixed; width: 108px; height: 108px; margin: -54px 0 0 -54px;
+  border: 1.5px solid var(--line-gold); border-radius: 50%;
+  background: rgba(10, 22, 36, 0.48); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  pointer-events: none; z-index: 6;
+}
+#stick i {
+  position: absolute; left: 50%; top: 50%; width: 46px; height: 46px; margin: -23px 0 0 -23px;
+  border-radius: 50%; background: radial-gradient(circle at 35% 35%, var(--gold-bright), var(--gold-dim));
+  box-shadow: 0 2px 10px rgba(230, 172, 50, 0.42); opacity: .88;
+}
+#walk-run.on {
+  background: var(--gold); border-color: var(--gold-bright); color: #09131f; font-weight: 600;
+}
+#view-transition { position: fixed; inset: 0; background: #090b0e; pointer-events: none; opacity: 0; z-index: 4; }
+#assumptions {
+  color: var(--ink); background: rgba(14, 28, 44, 0.96);
+  border: 1px solid var(--line-gold); border-radius: calc(var(--radius) * 1.5);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65);
+  width: min(620px, calc(100% - 32px)); max-height: 82dvh; overflow-y: auto;
+  padding: 24px; font: var(--fs-300)/1.65 var(--ui);
+}
+#assumptions::backdrop { background: rgba(3, 8, 15, 0.72); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+#assumptions h2 { font-family: var(--display); font-size: var(--fs-500); margin-top: var(--sp-2); }
+#assumptions a { color: var(--gold-bright); }
+.dialog-close {
+  min-width: 72px; min-height: 44px; border-radius: var(--radius);
+  background: rgba(18, 48, 82, 0.55); color: var(--ink);
+  border: 1px solid var(--line); float: right; cursor: pointer; padding: 0 var(--sp-3);
+}
+.dialog-close:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+#plan {
+  width: 116px; height: 66px; overflow: visible; flex: none;
+  background: rgba(8, 17, 29, 0.68); border: 1px solid var(--line-gold);
+  border-radius: var(--radius);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+#plan [data-jump] { pointer-events: auto; cursor: pointer; }
 #plan rect, #plan line { fill: none; stroke-width: 1.1; vector-effect: non-scaling-stroke; }
-.p-court { stroke: #ffffff2e; }
-.p-tent  { stroke: var(--gold-dim); fill: #c9a2271a; }
+.p-court { stroke: rgba(255, 255, 255, 0.24); }
+.p-tent  { stroke: var(--gold-dim); fill: rgba(201, 162, 39, 0.12); }
 .p-veil  { stroke: var(--gold); stroke-dasharray: 3 2; }
-.p-altar { stroke: #8c6a3a; fill: #8c6a3a2e; }
-.p-porch { stroke: var(--gold-dim); fill: #c9a2270f; }
+.p-altar { stroke: #9c7640; fill: rgba(156, 118, 64, 0.22); }
+.p-porch { stroke: var(--gold-dim); fill: rgba(201, 162, 39, 0.08); }
 .p-you   { fill: var(--gold-bright); stroke: #060d16; stroke-width: 1.4; }
 
-.hud-text { display: grid; gap: 2px; min-width: 0; }
+.hud-text { display: grid; gap: 3px; min-width: 0; }
 #where {
   font-family: var(--display); font-size: var(--fs-500); font-weight: 600;
-  letter-spacing: .08em; line-height: var(--lh-tight);
+  letter-spacing: .06em; line-height: var(--lh-tight);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.65); overflow-wrap: break-word;
 }
 #verse {
   font-family: var(--mono); font-size: var(--fs-100); color: var(--gold);
-  letter-spacing: var(--tr-caps);
+  letter-spacing: var(--tr-caps); overflow-wrap: break-word;
 }
 .hud-keys { align-self: end; }
-/* The canvas must own the gestures, or the page pans under the walker. */
-#stage { touch-action: none; }
 
 /* A crosshair, so the centre of the view is findable inside a linen court. */
 #hud::after {
   content: ''; position: fixed; left: 50%; top: 50%; width: 3px; height: 3px;
-  margin: -1.5px 0 0 -1.5px; border-radius: 50%; background: #ece2cd66;
+  margin: -1.5px 0 0 -1.5px; border-radius: 50%; background: rgba(236, 226, 205, 0.42);
 }
 
-@media (max-width: 640px) {
-  #hud { grid-template-columns: auto 1fr; padding: var(--sp-3) var(--sp-4); }
-  .hud-side{grid-column:1/-1;justify-content:flex-start;}
-  #where{font-size:var(--fs-300);letter-spacing:.015em;}
-  #verse{font-size:var(--fs-100);letter-spacing:0;}
-  #plan{align-self:center;}
-  #gate{overflow-y:auto;align-content:start;padding-top:76px;padding-bottom:60px;}
+/* Tablet & narrow desktop: keep #plan + text on the upper track and wrap the
+   action row cleanly below so 768×1024 never crushes captions or controls. */
+@media (max-width: 960px) {
+  #hud { grid-template-columns: auto minmax(0, 1fr); gap: var(--sp-2) var(--sp-3); }
+  .hud-side { grid-column: 1 / -1; justify-content: flex-start; }
   .hud-keys { display: none; }
-  #plan { width: 88px; height: 50px; }
-  /* The gate's scrim runs left-to-right for a wide screen; on a phone the card
-     fills the width and the wash has to run top-to-bottom instead. */
-  #gate {
-    background: linear-gradient(180deg, #060d16fa 0%, #060d16f0 62%, #060d16b8 100%);
-    padding: var(--sp-5) var(--sp-4);
+}
+
+/* Phone (< 768 px): bottom tab bar + wrapped 2-line source-credit occupy ~104 px;
+   lift #hud and #gate clearance cleanly above them with zero overlap. */
+@media (max-width: 767px) {
+  #hud {
+    bottom: calc(var(--tabbar-h, 49px) + 56px);
+    padding: var(--sp-2) max(var(--sp-3), var(--safe-right)) var(--sp-2) max(var(--sp-3), var(--safe-left));
+    gap: var(--sp-2);
   }
-  .keys { gap: var(--sp-3); }
-  /* Touch has no Esc; a control has to be on screen. */
-  #hud { pointer-events: none; }
+  #tour-stop { width: 100%; padding: 0 var(--sp-2); }
+  .hud-side button { padding: 0 9px; }
+  #where { font-size: var(--fs-300); letter-spacing: .015em; }
+  #verse { font-size: var(--fs-100); letter-spacing: 0; }
+  #plan { width: 88px; height: 50px; align-self: center; }
+  #gate {
+    padding: calc(58px + var(--safe-top)) max(var(--sp-4), var(--safe-right)) calc(var(--tabbar-h, 49px) + 64px) max(var(--sp-4), var(--safe-left));
+    background: linear-gradient(180deg, rgba(6, 13, 22, 0.98) 0%, rgba(10, 26, 46, 0.94) 62%, rgba(6, 13, 22, 0.72) 100%);
+  }
+  .gate-inner { gap: var(--sp-3); margin-block: 0; }
+  .lede { line-height: var(--lh-snug); }
+  .tally { grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); gap: var(--sp-2) var(--sp-3); padding: var(--sp-3) 0; }
+  .tally b { font-size: 22px; }
+  .keys { gap: var(--sp-2); }
+}
+
+@media (min-width: 768px) and (max-height: 960px) {
+  #gate {
+    padding-top: calc(60px + var(--safe-top));
+    padding-bottom: calc(44px + var(--safe-bottom));
+  }
+  .gate-inner { gap: var(--sp-3); }
+  #gate h1 { font-size: clamp(24px, 3.6vw, 34px); }
+  .lede { line-height: var(--lh-snug); }
+  .tally {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: var(--sp-2) var(--sp-3);
+    padding: var(--sp-3) 0;
+  }
+  .tally b { font-size: 22px; }
+  .gate-go .keys, .gate-go + .keys { margin-top: var(--sp-1); }
 }
 
 /* ── the restyled pass ────────────────────────────────────────────────────
    A short clip of this same model, re-rendered by a video model with the
-   camera and every structure held fixed. It belongs beside the tour, not
-   instead of it: what the reader walks is the model built from the counts in
-   Exodus, and this says where the picture came from rather than letting it
-   pass for a photograph of something that survives. */
+   camera and every structure held fixed. */
 #gate-film {
-  margin: 0 0 var(--sp-3); position: relative; overflow: hidden;
+  margin: 0 0 var(--sp-2); position: relative; overflow: hidden;
   border: 1px solid var(--line-gold); border-radius: var(--radius);
   background: var(--sea); aspect-ratio: 16 / 9; max-height: 22vh;
-  /* The panel has to stay whole: the two buttons under it are the point of the
-     page, and a clip that pushes them off the bottom has cost more than it
-     gave. Cropped to 16:9 and capped, so it yields height before they do. */
   margin-inline: auto; width: 100%;
 }
 #gate-film video { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -194,7 +283,19 @@ kbd {
   padding: var(--sp-3) var(--sp-2) var(--sp-1);
   font-family: var(--ui); font-size: var(--fs-100); line-height: var(--lh-snug);
   color: var(--ink); text-shadow: 0 1px 3px #000c;
-  background: linear-gradient(to top, #000000b8, #00000000);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
 }
 .film-credit { flex: none; color: var(--ink-3); font-variant: small-caps; letter-spacing: .04em; }
-@media (max-height: 760px) { #gate-film { display: none; } }
+@media (max-height: 760px), (max-width: 767px) and (max-height: 850px) { #gate-film { display: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  #enter, #tour, #gate-measures, .hud-side button, #tour-toggle, #tour-bar i { transition: none !important; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  #gate, #enter, #tour, #gate-measures, #tour-stop, .hud-side button, #tour-toggle, #plan, #assumptions, #stick {
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+  }
+  #gate { background: #060d16; }
+  #tour-stop, .hud-side button, #tour-toggle { background: #0c1726; }
+  #plan { background: #08111d; }
+}

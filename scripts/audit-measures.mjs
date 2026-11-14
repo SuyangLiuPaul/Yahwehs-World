@@ -25,9 +25,11 @@ await mkdir(DIR, { recursive: true });
 // card that moved with the cubit would be the bug.
 const PAGES = [
   { path: '/ark.html', handle: '__ark', cards: ['noah'], cubitMoves: true },
-  { path: '/tabernacle.html', handle: '__walk', cards: ['ark', 'court', 'menorah'], cubitMoves: true },
-  { path: '/temple.html', handle: '__temple', cards: ['temple', 'pillars', 'bronze-sea'], cubitMoves: true },
-  { path: '/plan.html', handle: null, cards: ['newjerusalem'], cubitMoves: false, open: '#measures=newjerusalem' },
+  { path: '/tabernacle.html', handle: '__walk', cards: ['ark', 'court', 'menorah', 'tabernacle-tent', 'showbread-table', 'incense-altar', 'bronze-altar', 'highpriest'], cubitMoves: true },
+  { path: '/temple.html', handle: '__temple', cards: ['temple', 'pillars', 'bronze-sea', 'wheeled-lavers'], cubitMoves: true },
+  { path: '/ezekiel.html', handle: '__ezekiel', cards: ['ezekiel-gate', 'ezekiel-altar'], cubitMoves: true },
+  { path: '/plan.html', handle: null, cards: ['forest-house', 'goliath', 'dura-image', 'newjerusalem'], activeCard: 'goliath', cubitMoves: true, open: '#measures=goliath' },
+  { path: '/plan.html', handle: null, cards: ['forest-house', 'goliath', 'dura-image', 'newjerusalem'], activeCard: 'newjerusalem', cubitMoves: false, open: '#measures=newjerusalem' },
 ];
 const VIEWPORTS = [['desktop', 1280, 800], ['phone', 390, 844]];
 const LOCALES = [['hans', 'zh-Hans'], ['en', 'en']];
@@ -54,7 +56,7 @@ for (const [vname, width, height] of VIEWPORTS) {
       const page = await ctx.newPage();
       const errors = [];
       page.on('pageerror', (e) => errors.push(e.message));
-      const label = `${vname}-${lname}${p.path.replace('.html', '').replace('/', '-')}`;
+      const label = `${vname}-${lname}${p.path.replace('.html', '').replace('/', '-')}${p.activeCard ? '-' + p.activeCard : ''}`;
 
       await page.goto(URL + p.path + (p.open ?? ''), { waitUntil: 'networkidle' });
       if (p.handle) await page.waitForFunction((h) => !!globalThis[h], p.handle, { timeout: 40_000 });
@@ -88,13 +90,14 @@ for (const [vname, width, height] of VIEWPORTS) {
 
       // The cubit is the argument these cards exist to carry: moving it has to
       // move every metre figure on the card in front of the reader.
-      const before = await page.$$eval('#measures-panel .mp-card td.m', (t) => t.map((e) => e.textContent));
+      const sel = p.activeCard ? `#measures-panel .mp-card[data-id="${p.activeCard}"] td.m` : '#measures-panel .mp-card td.m';
+      const before = await page.$$eval(sel, (t) => t.map((e) => e.textContent));
       await page.$eval('#mp-c-range', (r) => {
         r.value = '1';
         r.dispatchEvent(new Event('input', { bubbles: true }));
       });
       await page.waitForTimeout(300);
-      const after = await page.$$eval('#measures-panel .mp-card td.m', (t) => t.map((e) => e.textContent));
+      const after = await page.$$eval(sel, (t) => t.map((e) => e.textContent));
       const moved = before.filter((v, i) => v !== after[i] && /\d/.test(v ?? '')).length;
       const numeric = before.filter((v) => /\d/.test(v ?? '')).length;
       if (p.cubitMoves && numeric && moved < numeric) {

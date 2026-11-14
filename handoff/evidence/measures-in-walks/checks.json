@@ -6,7 +6,7 @@
     "cards": [
       "noah"
     ],
-    "stage": "605×420",
+    "stage": "646×615",
     "cubitControl": "shown",
     "cubitCellsMoved": "3/3",
     "sidewaysOverflowPx": 0,
@@ -19,11 +19,16 @@
     "cards": [
       "ark",
       "court",
-      "menorah"
+      "menorah",
+      "tabernacle-tent",
+      "showbread-table",
+      "incense-altar",
+      "bronze-altar",
+      "highpriest"
     ],
-    "stage": "605×420",
+    "stage": "646×615",
     "cubitControl": "shown",
-    "cubitCellsMoved": "6/6",
+    "cubitCellsMoved": "23/23",
     "sidewaysOverflowPx": 0,
     "errors": []
   },
@@ -34,9 +39,24 @@
     "cards": [
       "temple",
       "pillars",
-      "bronze-sea"
+      "bronze-sea",
+      "wheeled-lavers"
     ],
-    "stage": "605×420",
+    "stage": "646×615",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "20/20",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/ezekiel.html",
+    "viewport": "desktop",
+    "locale": "zh-Hans",
+    "cards": [
+      "ezekiel-gate",
+      "ezekiel-altar"
+    ],
+    "stage": "646×615",
     "cubitControl": "shown",
     "cubitCellsMoved": "12/12",
     "sidewaysOverflowPx": 0,
@@ -47,9 +67,28 @@
     "viewport": "desktop",
     "locale": "zh-Hans",
     "cards": [
+      "forest-house",
+      "goliath",
+      "dura-image",
       "newjerusalem"
     ],
-    "stage": "607×420",
+    "stage": "648×610",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "1/1",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/plan.html",
+    "viewport": "desktop",
+    "locale": "zh-Hans",
+    "cards": [
+      "forest-house",
+      "goliath",
+      "dura-image",
+      "newjerusalem"
+    ],
+    "stage": "648×657",
     "cubitControl": "hidden",
     "cubitCellsMoved": "0/3",
     "sidewaysOverflowPx": 0,
@@ -62,7 +101,7 @@
     "cards": [
       "noah"
     ],
-    "stage": "605×420",
+    "stage": "646×619",
     "cubitControl": "shown",
     "cubitCellsMoved": "3/3",
     "sidewaysOverflowPx": 0,
@@ -75,11 +114,16 @@
     "cards": [
       "ark",
       "court",
-      "menorah"
+      "menorah",
+      "tabernacle-tent",
+      "showbread-table",
+      "incense-altar",
+      "bronze-altar",
+      "highpriest"
     ],
-    "stage": "605×420",
+    "stage": "646×619",
     "cubitControl": "shown",
-    "cubitCellsMoved": "6/6",
+    "cubitCellsMoved": "23/23",
     "sidewaysOverflowPx": 0,
     "errors": []
   },
@@ -90,9 +134,24 @@
     "cards": [
       "temple",
       "pillars",
-      "bronze-sea"
+      "bronze-sea",
+      "wheeled-lavers"
     ],
-    "stage": "605×420",
+    "stage": "646×619",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "20/20",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/ezekiel.html",
+    "viewport": "desktop",
+    "locale": "en",
+    "cards": [
+      "ezekiel-gate",
+      "ezekiel-altar"
+    ],
+    "stage": "646×619",
     "cubitControl": "shown",
     "cubitCellsMoved": "12/12",
     "sidewaysOverflowPx": 0,
@@ -103,9 +162,28 @@
     "viewport": "desktop",
     "locale": "en",
     "cards": [
+      "forest-house",
+      "goliath",
+      "dura-image",
       "newjerusalem"
     ],
-    "stage": "607×420",
+    "stage": "648×610",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "1/1",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/plan.html",
+    "viewport": "desktop",
+    "locale": "en",
+    "cards": [
+      "forest-house",
+      "goliath",
+      "dura-image",
+      "newjerusalem"
+    ],
+    "stage": "648×657",
     "cubitControl": "hidden",
     "cubitCellsMoved": "0/3",
     "sidewaysOverflowPx": 0,
@@ -118,7 +196,7 @@
     "cards": [
       "noah"
     ],
-    "stage": "390×286",
+    "stage": "380×286",
     "cubitControl": "shown",
     "cubitCellsMoved": "3/3",
     "sidewaysOverflowPx": 0,
@@ -131,11 +209,16 @@
     "cards": [
       "ark",
       "court",
-      "menorah"
+      "menorah",
+      "tabernacle-tent",
+      "showbread-table",
+      "incense-altar",
+      "bronze-altar",
+      "highpriest"
     ],
-    "stage": "390×286",
+    "stage": "380×286",
     "cubitControl": "shown",
-    "cubitCellsMoved": "6/6",
+    "cubitCellsMoved": "23/23",
     "sidewaysOverflowPx": 0,
     "errors": []
   },
@@ -146,9 +229,24 @@
     "cards": [
       "temple",
       "pillars",
-      "bronze-sea"
+      "bronze-sea",
+      "wheeled-lavers"
     ],
-    "stage": "390×286",
+    "stage": "380×286",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "20/20",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/ezekiel.html",
+    "viewport": "phone",
+    "locale": "zh-Hans",
+    "cards": [
+      "ezekiel-gate",
+      "ezekiel-altar"
+    ],
+    "stage": "380×286",
     "cubitControl": "shown",
     "cubitCellsMoved": "12/12",
     "sidewaysOverflowPx": 0,
@@ -159,9 +257,28 @@
     "viewport": "phone",
     "locale": "zh-Hans",
     "cards": [
+      "forest-house",
+      "goliath",
+      "dura-image",
       "newjerusalem"
     ],
-    "stage": "390×287",
+    "stage": "382×287",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "1/1",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/plan.html",
+    "viewport": "phone",
+    "locale": "zh-Hans",
+    "cards": [
+      "forest-house",
+      "goliath",
+      "dura-image",
+      "newjerusalem"
+    ],
+    "stage": "382×287",
     "cubitControl": "hidden",
     "cubitCellsMoved": "0/3",
     "sidewaysOverflowPx": 0,
@@ -174,7 +291,7 @@
     "cards": [
       "noah"
     ],
-    "stage": "390×286",
+    "stage": "380×286",
     "cubitControl": "shown",
     "cubitCellsMoved": "3/3",
     "sidewaysOverflowPx": 0,
@@ -187,11 +304,16 @@
     "cards": [
       "ark",
       "court",
-      "menorah"
+      "menorah",
+      "tabernacle-tent",
+      "showbread-table",
+      "incense-altar",
+      "bronze-altar",
+      "highpriest"
     ],
-    "stage": "390×286",
+    "stage": "380×286",
     "cubitControl": "shown",
-    "cubitCellsMoved": "6/6",
+    "cubitCellsMoved": "23/23",
     "sidewaysOverflowPx": 0,
     "errors": []
   },
@@ -202,9 +324,24 @@
     "cards": [
       "temple",
       "pillars",
-      "bronze-sea"
+      "bronze-sea",
+      "wheeled-lavers"
     ],
-    "stage": "390×286",
+    "stage": "380×286",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "20/20",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/ezekiel.html",
+    "viewport": "phone",
+    "locale": "en",
+    "cards": [
+      "ezekiel-gate",
+      "ezekiel-altar"
+    ],
+    "stage": "380×286",
     "cubitControl": "shown",
     "cubitCellsMoved": "12/12",
     "sidewaysOverflowPx": 0,
@@ -215,9 +352,28 @@
     "viewport": "phone",
     "locale": "en",
     "cards": [
+      "forest-house",
+      "goliath",
+      "dura-image",
       "newjerusalem"
     ],
-    "stage": "390×287",
+    "stage": "382×287",
+    "cubitControl": "shown",
+    "cubitCellsMoved": "1/1",
+    "sidewaysOverflowPx": 0,
+    "errors": []
+  },
+  {
+    "page": "/plan.html",
+    "viewport": "phone",
+    "locale": "en",
+    "cards": [
+      "forest-house",
+      "goliath",
+      "dura-image",
+      "newjerusalem"
+    ],
+    "stage": "382×287",
     "cubitControl": "hidden",
     "cubitCellsMoved": "0/3",
     "sidewaysOverflowPx": 0,

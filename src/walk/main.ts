@@ -26,7 +26,7 @@ renderer.info.autoReset=false;
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.05;
+renderer.toneMappingExposure = 1.08;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -43,21 +43,21 @@ scene.environment = pmrem.fromEquirectangular(sky).texture;
 // The sky is bright, and at full strength it washed the sand to concrete and
 // flattened every form: ambient light from all directions is exactly the light
 // that removes shading. It fills; the sun models.
-scene.environmentIntensity = 0.65;
+scene.environmentIntensity = 0.72;
 // Haze thickens toward the horizon so distance reads as distance.
 // Far enough out that the court itself stays crisp; haze belongs to the
 // desert beyond it, not to a wall forty metres away.
-scene.fog = new THREE.Fog(0xcbd1cd, 190, 740);
+scene.fog = new THREE.Fog(0xd8cbb8, 150, 680);
 
 const camera = new THREE.PerspectiveCamera(
   65, Math.max(1, innerWidth) / Math.max(1, innerHeight), 0.04, 900);
 
-// Mid-morning rather than noon: a sun overhead casts no shadows worth having,
-// and shadow is most of what makes a shape read as solid.
-const sun = new THREE.DirectionalLight(0xfff0d6, 2.6);
+// Warm afternoon Sinai sun rather than overhead noon: long sculptural shadows
+// across the white linen court and bronze vessels without peter-panning.
+const sun = new THREE.DirectionalLight(0xffe6c0, 2.85);
 // East at +x, north at +z — so the sun belongs at −z. See the same note in
 // src/walk/temple-main.ts.
-sun.position.set(50, 34, -26);
+sun.position.set(52, 27, -30);
 sun.castShadow = true;
 sun.shadow.mapSize.set(4096, 4096);
 // Sized to the built area rather than the terrain: the court is 100x50 cubits,
@@ -65,20 +65,20 @@ sun.shadow.mapSize.set(4096, 4096);
 sun.shadow.camera.left = -30; sun.shadow.camera.right = 30;
 sun.shadow.camera.top = 30; sun.shadow.camera.bottom = -30;
 sun.shadow.camera.near = 20;
-sun.shadow.camera.far = 130;
+sun.shadow.camera.far = 135;
 // Without a bias, a shadow map at this scale stripes every lit surface.
-sun.shadow.bias = -0.0004;
-sun.shadow.normalBias = 0.006;
-sun.shadow.radius = 3;
+sun.shadow.bias = -0.00035;
+sun.shadow.normalBias = 0.004;
+sun.shadow.radius = 2.8;
 scene.add(sun);
-// Sky above, sand below — the bounce off a desert floor is warm and strong,
-// and it is what keeps the shaded sides of the boards from going black.
-// The environment already supplies sky and bounce, so the hemisphere is only
-// a floor under the shadows to keep them from going black.
-scene.add(new THREE.HemisphereLight(0x9fc2e0, 0xb9a377, 0.25));
+// Sky above, desert sand below — the bounce off Sinai sand is warm and luminous,
+// keeping shaded curtains, woodwork, and linen folds from going flat grey.
+scene.add(new THREE.HemisphereLight(0x9bc0e2, 0xc9a36f, 0.34));
 
-const { group, colliders, counts, ready, veil } = buildTabernacle(CUBIT);
+const { group, colliders, counts, ready, veil, update } = buildTabernacle(CUBIT);
+const noAo: THREE.Object3D[] = [];
 group.traverse((o) => {
+  if (o.userData.noAO) noAo.push(o);
   if (!(o as THREE.Mesh).isMesh) return;
   o.receiveShadow = true;
   o.castShadow = o.userData.noCast !== true;
@@ -87,7 +87,7 @@ scene.add(group);
 // Broad educational fill, not a pinprick reflected as a white disc in the
 // boards. The oil lamps remain visible; this fill is disclosed in Evidence.
 RectAreaLightUniformsLib.init();
-const roomFill=new THREE.RectAreaLight(0xffe6c4,2.2,3,1.8);
+const roomFill=new THREE.RectAreaLight(0xffdca8,2.55,3.2,1.9);
 roomFill.position.set(-8,3.65,0);roomFill.lookAt(-8,0,0);scene.add(roomFill);
 
 // A single static local reflection probe stops indoor gold reflecting the
@@ -109,7 +109,7 @@ const sceneReady=Promise.all([materialsReady,ready]).then(([ok])=>{
       }
     }
   });
-  materials.forEach(m=>{m.envMap=room.texture;m.envMapIntensity=1.3;m.needsUpdate=true;});
+  materials.forEach(m=>{m.envMap=room.texture;m.envMapIntensity=1.45;m.needsUpdate=true;});
   target.dispose();bake.dispose();document.body.dataset.reflections='ready';
   return ok;
 });
@@ -135,6 +135,14 @@ const ao=new GTAOPass(scene,camera,1,1);
 ao.updateGtaoMaterial({radius:.7,distanceExponent:1.3,thickness:.15,distanceFallOff:1,samples:8});
 ao.updatePdMaterial({radius:4,rings:2,samples:8});
 ao.blendIntensity=.9;
+if (noAo.length) {
+  const origAoRender = ao.render.bind(ao);
+  ao.render = (ren, writeBuf, readBuf, delta, maskActive) => {
+    for (const o of noAo) o.visible = false;
+    origAoRender(ren, writeBuf, readBuf, delta, maskActive);
+    for (const o of noAo) o.visible = true;
+  };
+}
 composer.addPass(ao);composer.addPass(new OutputPass());
 // Standing outside the eastern gate, looking in — the way anyone approaching
 // the tabernacle would have come to it. A yaw of +PI/2 turns the camera's own
@@ -298,6 +306,7 @@ tourToggle.addEventListener('click', () => {
   else startTour();
 });
 function inspectStop(index:number){
+  setGate(false);hud.hidden=false;tourBar.hidden=false;
   tour.pause();walker.setPose(tour.goTo(index));tourToggle.hidden=false;
   tourToggle.textContent='▶';tourToggle.setAttribute('aria-label',t('Resume tour','继续导览'));
 }
@@ -391,13 +400,16 @@ onLocale(applyLocale);
 applyLocale();
 
 const clock = new THREE.Clock();
+let elapsed = 0;
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.1);
+  elapsed += dt;
   const pose = tour.update(dt);
   // The tour owns the camera while it runs; otherwise the walker does.
   if (pose) walker.setPose(pose); else if (!tour.paused) walker.update(dt);
   if (tour.crossing === 'veil') crossVeil(tour.fade);
   else { veilFade.style.opacity = String(tour.fade); releaseVeil(); }
+  update?.(elapsed, dt);
   updateHud();
   renderer.info.reset();composer.render();
   // The loading screen comes off when there is something behind it: after the
