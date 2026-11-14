@@ -1,7 +1,7 @@
 import './scenes-gallery.css';
 import { BOOKS } from './books.ts';
 import { UNITS } from './plan-units.ts';
-import { applyStatic, bindSwitch, brand, hant, locale as currentLocale, onLocale, t } from './locale.ts';
+import { applyStatic, bindSwitch, brand, fullLocale as rawLocale, hant, locale as currentLocale, onLocale, t } from './locale.ts';
 import { installSiteMenu, loadingStep, loadingSteps, pageReady } from './site-shell.ts';
 import type { TrackEvent } from './events-track.ts';
 import { eventRawThumbUrl, eventThumbUrl, openEventLightbox } from './event-media.ts';
@@ -47,17 +47,43 @@ let rawOnlyMode = false;
 let visibleLimit = 60;
 const BATCH_SIZE = 60;
 
-// Precompute unit ranges [from, to)
+// Precompute unit ranges [from, to) & unit counts + static scope counts once
 const unitRanges = new Map<string, [number, number]>();
+const unitCounts = new Map<string, number>();
 UNITS.forEach((u, i) => {
   const next = UNITS[i + 1]?.from ?? Infinity;
   unitRanges.set(u.id, [u.from, next]);
+  unitCounts.set(u.id, 0);
 });
 
-// Precompute book counts
 const bookCounts = new Map<number, number>();
+let otCount = 0;
+let ntCount = 0;
+let mappedCount = 0;
 for (const ev of allEvents) {
   bookCounts.set(ev.b, (bookCounts.get(ev.b) ?? 0) + 1);
+  if (ev.b <= 39) otCount++;
+  else ntCount++;
+  if (ev.p && ev.p.length > 0) mappedCount++;
+  for (const [id, r] of unitRanges) {
+    if (ev.s >= r[0] && ev.s < r[1]) {
+      unitCounts.set(id, (unitCounts.get(id) ?? 0) + 1);
+      break;
+    }
+  }
+}
+
+const searchIndexByScript = new Map<string, string[]>();
+function getSearchHaystacks(): string[] {
+  const key = rawLocale();
+  let list = searchIndexByScript.get(key);
+  if (!list) {
+    list = allEvents.map((ev) =>
+      `${ev.id} ${ev.zh} ${hant(ev.zh)} ${ev.en} ${ev.ref} ${ev.refZh} ${hant(ev.refZh)} ${ev.sum} ${ev.sumEn ?? ''}`.toLowerCase(),
+    );
+    searchIndexByScript.set(key, list);
+  }
+  return list;
 }
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -79,19 +105,20 @@ let currentFiltered: TrackEvent[] = [];
 function getFilteredEvents(): TrackEvent[] {
   const q = searchQuery.trim().toLowerCase();
   const uRange = currentUnit ? unitRanges.get(currentUnit) : null;
+  const haystacks = q ? getSearchHaystacks() : null;
 
-  return allEvents.filter((ev) => {
-    if (currentScope === 'ot' && ev.b > 39) return false;
-    if (currentScope === 'nt' && ev.b < 40) return false;
-    if (currentScope === 'mapped' && (!ev.p || ev.p.length === 0)) return false;
-    if (uRange && !(ev.s >= uRange[0] && ev.s < uRange[1])) return false;
-    if (currentBook > 0 && ev.b !== currentBook) return false;
-    if (q) {
-      const hay = `${ev.id} ${ev.zh} ${ hant(ev.zh)} ${ev.en} ${ev.ref} ${ev.refZh} ${hant(ev.refZh)} ${ev.sum} ${ev.sumEn ?? ''}`.toLowerCase();
-      if (!hay.includes(q)) return false;
-    }
-    return true;
-  });
+  const out: TrackEvent[] = [];
+  for (let i = 0; i < allEvents.length; i++) {
+    const ev = allEvents[i]!;
+    if (currentScope === 'ot' && ev.b > 39) continue;
+    if (currentScope === 'nt' && ev.b < 40) continue;
+    if (currentScope === 'mapped' && (!ev.p || ev.p.length === 0)) continue;
+    if (uRange && !(ev.s >= uRange[0] && ev.s < uRange[1])) continue;
+    if (currentBook > 0 && ev.b !== currentBook) continue;
+    if (haystacks && !haystacks[i]!.includes(q)) continue;
+    out.push(ev);
+  }
+  return out;
 }
 
 function renderHeaderAndControls() {
@@ -117,10 +144,6 @@ function renderHeaderAndControls() {
     <a class="sg-quick-link" href="/plan.html">${zh ? hant('📜 按 56 个叙事单元导览') : '📜 56 Narrative Units'}</a>
     <a class="sg-quick-link" href="/figures.html">${zh ? hant('🧍 3D 人物与 394 立绘库') : '🧍 3D Figures & 394 Cutouts'}</a>
   `;
-
-  const otCount = allEvents.filter((e) => e.b <= 39).length;
-  const ntCount = allEvents.filter((e) => e.b >= 40).length;
-  const mappedCount = allEvents.filter((e) => e.p && e.p.length > 0).length;
 
   const statItems: { id: ScopeFilter; num: number; label: string }[] = [
     { id: 'all', num: allEvents.length, label: t('All Biblical Events (66 Books)', '全部正典事件画卷（66 卷书）') },
@@ -153,8 +176,7 @@ function renderHeaderAndControls() {
   const prevUnit = currentUnit;
   unitSelect.innerHTML = `<option value="">${t('All 56 Narrative Units', '全部 56 个圣经叙事单元')}</option>` +
     UNITS.map((u, idx) => {
-      const r = unitRanges.get(u.id)!;
-      const cnt = allEvents.filter((e) => e.s >= r[0] && e.s < r[1]).length;
+      const cnt = unitCounts.get(u.id) ?? 0;
       const name = zh ? hant(u.zh) : u.en;
       return `<option value="${u.id}">${idx + 1}. ${name} (${cnt})</option>`;
     }).join('');
@@ -302,10 +324,15 @@ function updateGrid() {
   }
 }
 
+let searchTimer: number | null = null;
 searchInput.addEventListener('input', () => {
   searchQuery = searchInput.value;
   visibleLimit = BATCH_SIZE;
-  updateGrid();
+  if (searchTimer !== null) clearTimeout(searchTimer);
+  searchTimer = window.setTimeout(() => {
+    searchTimer = null;
+    updateGrid();
+  }, 60);
 });
 
 unitSelect.addEventListener('change', () => {
@@ -328,6 +355,10 @@ modeBtn.addEventListener('click', () => {
 });
 
 resetBtn.addEventListener('click', () => {
+  if (searchTimer !== null) {
+    clearTimeout(searchTimer);
+    searchTimer = null;
+  }
   currentScope = 'all';
   currentUnit = '';
   currentBook = 0;
@@ -390,6 +421,7 @@ function handleHash() {
 }
 
 onLocale(() => {
+  if (rawLocale() === 'zh-Hant') searchIndexByScript.delete('zh-Hant');
   applyStatic();
   renderHeaderAndControls();
   updateGrid();

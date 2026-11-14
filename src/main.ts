@@ -29,7 +29,7 @@ import { EventsTrack, type TrackEvent } from './events-track.ts';
 import { installEventsMenu, type EventsMenu } from './events-menu.ts';
 import { eventThumbUrl, eventRawThumbUrl, openEventLightbox } from './event-media.ts';
 import { bridgesFor, eventsInJourney, href as bridgeHref, structureForJourney } from './bridges.ts';
-import { measuresHref } from './structures/specs.ts';
+import { measuresHref } from './structures/specs-lite.ts';
 import type { Place, PlacesBundle } from './types.ts';
 
 type Locale = 'zh' | 'en';
@@ -1242,14 +1242,31 @@ onLocale((l) => {
   }
   if (selected) renderPanel();
   updateLayout();
+  wakeGlobe();
 });
 
 // ── loop ──────────────────────────────────────────────────────────────────
+let awakeUntil = performance.now() + 3000;
+let renderedOnce = false;
+function wakeGlobe(ms = 1800) {
+  awakeUntil = Math.max(awakeUntil, performance.now() + ms);
+}
+controls.addEventListener('change', () => wakeGlobe());
+controls.addEventListener('start', () => wakeGlobe());
+for (const ev of ['pointerdown', 'pointermove', 'wheel', 'keydown', 'touchstart', 'click'] as const) {
+  addEventListener(ev, () => wakeGlobe(ev === 'pointermove' ? 600 : 1800), { passive: true });
+}
+addEventListener('hashchange', () => wakeGlobe(2500));
+document.addEventListener('visibilitychange', () => { if (!document.hidden) wakeGlobe(2000); });
+void terrain.ready.then(() => wakeGlobe(2000));
+
 function fitToViewport() {
   const { w, h } = viewport();
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
   renderer.setSize(w, h, false);
+  renderedOnce = false;
+  wakeGlobe();
 }
 addEventListener('resize', () => {
   fitToViewport();
@@ -1265,17 +1282,34 @@ new ResizeObserver(()=>{fitToViewport();updateLayout();}).observe(document.body)
 let cardHeight=0;
 const chromeObserver=new ResizeObserver(()=>{
   updateLayout();
+  wakeGlobe();
   const h=rCard.hidden?0:rCard.getBoundingClientRect().height;
   if(Math.abs(h-cardHeight)>24){cardHeight=h;if(route&&h>0)frameRoute(route.journey);}
 });
 chromeObserver.observe($('timeline'));chromeObserver.observe(rCard);
 
 const clock = new THREE.Clock();
+const lastCamPos = new THREE.Vector3();
+const lastCamQuat = new THREE.Quaternion();
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.1);
-  const t = clock.getElapsedTime();
+  if (document.hidden && renderedOnce) return;
   advanceRoute(dt);
   controls.update();
+  const camMoved =
+    !renderedOnce ||
+    lastCamPos.distanceToSquared(camera.position) > 1e-10 ||
+    (1 - Math.abs(lastCamQuat.dot(camera.quaternion))) > 1e-10;
+  if (camMoved || routePlaying || selectionRing.visible || (campPlayback !== null && campPlayback.phase !== 'rest')) {
+    wakeGlobe(1800);
+  }
+  if (performance.now() > awakeUntil && !routePlaying && !selectionRing.visible) return;
+
+  lastCamPos.copy(camera.position);
+  lastCamQuat.copy(camera.quaternion);
+  renderedOnce = true;
+
+  const t = clock.getElapsedTime();
   camera.updateMatrixWorld(true); globe.updateMatrixWorld(true);
   if (route) {
     route.faceCamera(camera.position.length(), GLOBE_RADIUS, innerHeight, camera.fov);

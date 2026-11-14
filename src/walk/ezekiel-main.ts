@@ -532,9 +532,15 @@ const readyPromise = (async () => {
   pageReady();
 })();
 
+let firstFrameDrawn = false;
 let lastT = performance.now();
 let elapsed = 0;
 function tick(now: number): void {
+  if (firstFrameDrawn && (document.hidden || Boolean(measuresDialog?.open))) {
+    lastT = now;
+    requestAnimationFrame(tick);
+    return;
+  }
   const dt = Math.min(0.05, Math.max(0.001, (now - lastT) / 1000));
   lastT = now;
   elapsed += dt;
@@ -551,6 +557,7 @@ function tick(now: number): void {
 
   updateHud();
   composer.render();
+  firstFrameDrawn = true;
   requestAnimationFrame(tick);
 }
 requestAnimationFrame(tick);

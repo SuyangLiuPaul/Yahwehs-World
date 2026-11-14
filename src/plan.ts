@@ -214,6 +214,28 @@ installSiteMenu();
 loadingSteps(2);
 loadingStep();
 onLocale(() => { if (rows.length) render(); });
+
+let measuresModulesPromise: Promise<[typeof import('./structures/panel.ts'), typeof import('./structures/specs.ts')]> | null = null;
+const warmMeasuresModules = () => {
+  measuresModulesPromise ??= Promise.all([
+    import('./structures/panel.ts'),
+    import('./structures/specs.ts'),
+  ]);
+  return measuresModulesPromise;
+};
+const wantsMeasures = () => /^#measures(?:=|$)/.test(location.hash);
+if (wantsMeasures()) void warmMeasuresModules();
+
+const unitsEl = $('units');
+const warmOnChip = (e: Event) => {
+  if ((e.target as HTMLElement | null)?.closest('a.chip[href^="#measures="]')) {
+    void warmMeasuresModules();
+  }
+};
+unitsEl.addEventListener('pointerover', warmOnChip, { passive: true });
+unitsEl.addEventListener('focusin', warmOnChip);
+unitsEl.addEventListener('touchstart', warmOnChip, { passive: true });
+
 void load();
 
 // The cards no walk holds yet — New Jerusalem, measured in Revelation 21:16
@@ -226,14 +248,10 @@ void load();
 // not open is a cost with nothing on the other side of it.
 {
   let installed = false;
-  const wantsMeasures = () => /^#measures(=|$)/.test(location.hash);
   const install = async () => {
     if (installed) return;
     installed = true;
-    const [{ installMeasures }, { homelessStructures }] = await Promise.all([
-      import('./structures/panel.ts'),
-      import('./structures/specs.ts'),
-    ]);
+    const [{ installMeasures }, { homelessStructures }] = await warmMeasuresModules();
     // installMeasures reads the hash itself, so the card asked for opens as
     // soon as the module lands — whether the reader arrived on that link or
     // clicked the chip a moment ago.

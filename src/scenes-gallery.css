@@ -258,6 +258,8 @@ html, body {
   border-radius: 12px;
   background: var(--surface);
   overflow: hidden;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 420px;
   transition: border-color 160ms, transform 160ms, box-shadow 160ms;
 }
 

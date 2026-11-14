@@ -399,9 +399,11 @@ onLocale(applyLocale);
 applyLocale();
 
 const clock = new THREE.Clock();
+const measuresDialog = document.getElementById('measures-panel') as HTMLDialogElement | null;
 let elapsed = 0;
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.1);
+  if (handover === 'done' && (document.hidden || Boolean(measuresDialog?.open))) return;
   elapsed += dt;
   const pose = tour.update(dt);
   // The tour owns the camera while it runs; otherwise the walker does.

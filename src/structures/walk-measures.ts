@@ -21,14 +21,20 @@ export function installWalkMeasures({
   fallbackIds,
 }: WalkMeasuresOptions): void {
   let installed: Promise<{ open: (id?: string) => void }> | null = null;
+  let modulesPromise: Promise<[typeof import('./panel.ts'), typeof import('./specs.ts')]> | null = null;
   let loaded = false;
+
+  const warmModules = () => {
+    modulesPromise ??= Promise.all([
+      import('./panel.ts'),
+      import('./specs.ts'),
+    ]);
+    return modulesPromise;
+  };
 
   const ensureInstalled = () => {
     if (!installed) {
-      installed = Promise.all([
-        import('./panel.ts'),
-        import('./specs.ts'),
-      ]).then(([{ installMeasures }, { STRUCTURES, structuresFor }]) => {
+      installed = warmModules().then(([{ installMeasures }, { STRUCTURES, structuresFor }]) => {
         const direct = structuresFor(walk);
         const cards = direct.length || !fallbackIds?.length
           ? direct
@@ -57,7 +63,11 @@ export function installWalkMeasures({
   };
 
   for (const el of openers) {
-    el?.addEventListener('click', () => openLazy());
+    if (!el) continue;
+    el.addEventListener('pointerenter', () => { void warmModules(); }, { once: true, passive: true });
+    el.addEventListener('focus', () => { void warmModules(); }, { once: true });
+    el.addEventListener('touchstart', () => { void warmModules(); }, { once: true, passive: true });
+    el.addEventListener('click', () => openLazy());
   }
 
   const checkHash = () => {

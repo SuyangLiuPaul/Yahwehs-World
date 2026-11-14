@@ -414,8 +414,10 @@ onLocale(applyLocale);
 applyLocale();
 
 const clock = new THREE.Clock();
+const measuresDialog = document.getElementById('measures-panel') as HTMLDialogElement | null;
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.1);
+  if (handover === 'done' && (document.hidden || Boolean(measuresDialog?.open))) return;
   const pose = tour.update(dt);
   // A paused tour still owns the camera. Without this the walker's own
   // physics ran under a posed camera, and every stop above head height fell

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { CUBITS, metres, type Structure } from './specs.ts';
-import { animateStructure, buildStructure, humanFigure } from './build.ts';
+import { animateStructureNodes, buildStructure, collectAnimatedNodes, humanFigure } from './build.ts';
 import { fullLocale, hant, onLocale, t } from '../locale.ts';
 import './panel.css';
 
@@ -230,9 +230,12 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
   let camera: THREE.PerspectiveCamera | null = null;
   let pivot: THREE.Group | null = null;
   let activeModel: THREE.Group | null = null;
+  let activeAnimatedNodes: THREE.Object3D[] = [];
   let activeBounds = new THREE.Box3();
   let rafId = 0;
+  let scrollModelTimer: number | null = null;
   let clockStart = performance.now();
+  let stageDirty = true;
   let ignoreScrollUntil = 0;
 
   // Camera orbit & smooth damping state
@@ -389,10 +392,13 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
     if (!renderer || !camera) return;
     const w = Math.max(80, Math.floor(stageEl.clientWidth));
     const h = Math.max(80, Math.floor(stageEl.clientHeight));
-    if (canvas.width !== Math.floor(w * Math.min(2, window.devicePixelRatio || 1)) ||
-        canvas.height !== Math.floor(h * Math.min(2, window.devicePixelRatio || 1))) {
-      renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const targetW = Math.floor(w * dpr);
+    const targetH = Math.floor(h * dpr);
+    if (canvas.width !== targetW || canvas.height !== targetH) {
+      renderer.setPixelRatio(dpr);
       renderer.setSize(w, h, false);
+      stageDirty = true;
     }
     const nextAspect = w / h;
     if (Math.abs(camera.aspect - nextAspect) > 0.002) {
@@ -404,6 +410,7 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
         targetDist = fit.dist;
         curDist = fit.dist;
       }
+      stageDirty = true;
     }
   }
 
@@ -450,6 +457,7 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
       pivot.remove(activeModel);
       disposeGroup(activeModel);
       activeModel = null;
+      activeAnimatedNodes = [];
     }
 
     const assembly = new THREE.Group();
@@ -522,7 +530,9 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
       focusBox.max.clone().multiplyScalar(normScale),
     );
     activeModel = assembly;
+    activeAnimatedNodes = collectAnimatedNodes(activeModel);
     pivot.add(activeModel);
+    stageDirty = true;
 
     // Choose readable camera elevation per structure type (higher for plan-dominated enclosures & relief sandboxes)
     const reliefView = isReliefOrDiorama(s, varId);
@@ -549,12 +559,17 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
     }
   }
 
-  function show(idx: number, preserveOrbit = false): void {
+  function show(idx: number, preserveOrbit = false, deferModel = false): void {
     const clamped = Math.max(0, Math.min(cards.length - 1, idx));
     const changedCard = clamped !== activeIdx;
     activeIdx = clamped;
     const s = cards[activeIdx];
     if (!s) return;
+
+    if (scrollModelTimer !== null) {
+      clearTimeout(scrollModelTimer);
+      scrollModelTimer = null;
+    }
 
     // Bug B24 fix: toggle .mp-cubit visibility dynamically per active card
     const showCubit = !s.unit && s.dims.length > 0;
@@ -566,20 +581,39 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
 
     markActiveCard(activeIdx);
     updateCaption(s);
-    buildStageModel(activeIdx, preserveOrbit && !changedCard);
+
+    if (deferModel) {
+      const targetIdx = activeIdx;
+      scrollModelTimer = window.setTimeout(() => {
+        scrollModelTimer = null;
+        if (dialog.open && activeIdx === targetIdx) {
+          buildStageModel(targetIdx, false);
+        }
+      }, 90);
+    } else {
+      buildStageModel(activeIdx, preserveOrbit && !changedCard);
+    }
   }
 
   function stepAnimation(): void {
     rafId = requestAnimationFrame(stepAnimation);
-    if (!dialog.open || !renderer || !scene || !camera) return;
+    if (!dialog.open || !renderer || !scene || !camera || document.hidden) return;
 
     const now = performance.now();
     const elapsed = (now - clockStart) * 0.001;
+    const orbiting = Boolean(activeModel && !dragging && pointers.size === 0 && !hasOrbited);
+    const hasAnim = activeAnimatedNodes.length > 0;
+    const damping =
+      Math.abs(targetYaw - curYaw) > 1e-4 ||
+      Math.abs(targetPitch - curPitch) > 1e-4 ||
+      Math.abs(targetDist - curDist) > Math.max(1e-4, curDist * 1e-4);
 
-    if (activeModel) animateStructure(activeModel, elapsed);
+    if (!stageDirty && !orbiting && !hasAnim && !damping) return;
+
+    if (hasAnim) animateStructureNodes(activeAnimatedNodes, elapsed);
 
     // Slow idle turntable spin unless user is dragging or manually orbited
-    if (!dragging && pointers.size === 0 && !hasOrbited) {
+    if (orbiting) {
       targetYaw += 0.0022;
     }
 
@@ -596,26 +630,37 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
     );
     camera.lookAt(targetCenter);
     renderer.render(scene, camera);
+    stageDirty = false;
   }
 
   function startLoop(): void {
     if (!rafId) {
       clockStart = performance.now();
+      stageDirty = true;
       rafId = requestAnimationFrame(stepAnimation);
     }
   }
 
   function stopLoop(): void {
+    if (scrollModelTimer !== null) {
+      clearTimeout(scrollModelTimer);
+      scrollModelTimer = null;
+    }
     if (rafId) {
       cancelAnimationFrame(rafId);
       rafId = 0;
     }
   }
 
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && dialog.open) stageDirty = true;
+  });
+
   // Pointer drag-orbit + 2-finger pinch + wheel zoom + double-click / reset button
   canvas.addEventListener('pointerdown', (e) => {
     canvas.setPointerCapture(e.pointerId);
     pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    stageDirty = true;
     if (pointers.size === 1) {
       dragging = true;
       canvas.classList.add('grabbing');
@@ -634,6 +679,7 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
     const dx = e.clientX - prev.x;
     const dy = e.clientY - prev.y;
     pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    stageDirty = true;
 
     if (pointers.size === 1 && dragging) {
       hasOrbited = true;
@@ -661,6 +707,7 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
       dragging = false;
       canvas.classList.remove('grabbing');
     }
+    stageDirty = true;
   };
   canvas.addEventListener('pointerup', endPointer);
   canvas.addEventListener('pointercancel', endPointer);
@@ -670,6 +717,7 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
     (e) => {
       e.preventDefault();
       hasOrbited = true;
+      stageDirty = true;
       const factor = Math.exp(e.deltaY * 0.0012);
       targetDist = Math.max(defaultDist * 0.25, Math.min(defaultDist * 3.5, targetDist * factor));
     },
@@ -678,6 +726,7 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
 
   function resetView(): void {
     hasOrbited = false;
+    stageDirty = true;
     targetYaw = defaultYaw;
     targetPitch = defaultPitch;
     targetDist = defaultDist;
@@ -689,21 +738,27 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
   canvas.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') {
       hasOrbited = true;
+      stageDirty = true;
       targetYaw += 0.16;
     } else if (e.key === 'ArrowRight') {
       hasOrbited = true;
+      stageDirty = true;
       targetYaw -= 0.16;
     } else if (e.key === 'ArrowUp') {
       hasOrbited = true;
+      stageDirty = true;
       targetPitch = Math.min(1.42, targetPitch + 0.12);
     } else if (e.key === 'ArrowDown') {
       hasOrbited = true;
+      stageDirty = true;
       targetPitch = Math.max(-0.18, targetPitch - 0.12);
     } else if (e.key === '+' || e.key === '=') {
       hasOrbited = true;
+      stageDirty = true;
       targetDist = Math.max(defaultDist * 0.25, targetDist * 0.86);
     } else if (e.key === '-' || e.key === '_') {
       hasOrbited = true;
+      stageDirty = true;
       targetDist = Math.min(defaultDist * 3.5, targetDist * 1.16);
     } else if (e.key === '0') {
       resetView();
@@ -730,7 +785,7 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
 
     // If scrolled right to the bottom, activate last card cleanly
     if (scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 64) {
-      if (activeIdx !== cardEls.length - 1) show(cardEls.length - 1);
+      if (activeIdx !== cardEls.length - 1) show(cardEls.length - 1, false, true);
       return;
     }
 
@@ -752,7 +807,7 @@ export function installMeasures({ cards, dialog, openers, beforeOpen }: PanelOpt
         bestIdx = i;
       }
     }
-    if (bestIdx !== activeIdx) show(bestIdx);
+    if (bestIdx !== activeIdx) show(bestIdx, false, true);
   }
 
   const onScroll = () => {

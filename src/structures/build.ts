@@ -231,59 +231,90 @@ export function humanFigure(heightM = 1.72): THREE.Group {
   return g;
 }
 
+function isAnimatedNode(obj: THREE.Object3D): boolean {
+  const ud = obj.userData;
+  if (!ud) return false;
+  return (
+    typeof ud.flame === 'number' ||
+    typeof ud.water === 'number' ||
+    typeof ud.ember === 'number' ||
+    Boolean(ud.smoke && typeof ud.smoke === 'object') ||
+    typeof ud.orbitGlow === 'number' ||
+    typeof ud.shimmer === 'number'
+  );
+}
+
+function animateNode(obj: THREE.Object3D, elapsed: number): void {
+  const ud = obj.userData;
+  if (!ud) return;
+
+  if (typeof ud.flame === 'number') {
+    const f = ud.flame;
+    const flicker = Math.sin(elapsed * 7.2 + f * 1.9) * 0.08 + Math.cos(elapsed * 11.4 + f * 3.1) * 0.05;
+    obj.scale.set(1 - flicker * 0.35, 1 + flicker, 1 - flicker * 0.35);
+    obj.rotation.z = Math.sin(elapsed * 5.3 + f * 2.4) * 0.06;
+  }
+
+  if (typeof ud.water === 'number') {
+    const w = ud.water;
+    if (typeof ud.waterBaseY !== 'number') ud.waterBaseY = obj.position.y;
+    obj.rotation.z = Math.sin(elapsed * 1.1 + w) * 0.008;
+    obj.position.y = (ud.waterBaseY as number) + Math.sin(elapsed * 2.1 + w * 1.7) * 0.004;
+  }
+
+  if (typeof ud.ember === 'number' && obj instanceof THREE.Mesh) {
+    const m = obj.material;
+    if (m instanceof THREE.MeshStandardMaterial) {
+      m.emissiveIntensity = 0.65 + Math.sin(elapsed * 3.1 + ud.ember) * 0.2;
+    }
+  }
+
+  if (ud.smoke && typeof ud.smoke === 'object') {
+    const s = ud.smoke as { index: number; baseY: number; amplitude: number };
+    const phase = (elapsed * 0.65 + s.index * 0.48) % 1;
+    obj.position.y = s.baseY + phase * s.amplitude * 2.2;
+    obj.position.x = Math.sin(elapsed * 1.8 + s.index * 1.3) * s.amplitude * 0.45;
+    if (obj instanceof THREE.Mesh && obj.material instanceof THREE.MeshStandardMaterial) {
+      obj.material.opacity = Math.max(0.03, (1 - phase) * 0.24);
+    }
+  }
+
+  if (typeof ud.orbitGlow === 'number') {
+    obj.rotation.z = elapsed * (0.08 * (ud.orbitGlow % 2 === 0 ? 1 : -1));
+    if (obj instanceof THREE.Mesh && obj.material instanceof THREE.MeshStandardMaterial) {
+      obj.material.emissiveIntensity = 0.45 + Math.sin(elapsed * 1.6 + ud.orbitGlow) * 0.18;
+    }
+  }
+
+  if (typeof ud.shimmer === 'number' && obj instanceof THREE.Mesh) {
+    const m = obj.material;
+    if (m instanceof THREE.MeshStandardMaterial) {
+      m.emissiveIntensity = 0.08 + Math.max(0, Math.sin(elapsed * 2.2 + ud.shimmer * 0.9)) * 0.16;
+    }
+  }
+}
+
+/** Collects animated child nodes once after building so per-frame animation avoids full-tree traversal. */
+export function collectAnimatedNodes(root: THREE.Object3D): THREE.Object3D[] {
+  const nodes: THREE.Object3D[] = [];
+  root.traverse((obj) => {
+    if (isAnimatedNode(obj)) nodes.push(obj);
+  });
+  return nodes;
+}
+
+/** Drives ambient motion across pre-collected animated structure nodes. */
+export function animateStructureNodes(nodes: readonly THREE.Object3D[], elapsed: number): void {
+  for (let i = 0; i < nodes.length; i++) {
+    animateNode(nodes[i]!, elapsed);
+  }
+}
+
 /**
  * Drives subtle ambient motion across structure meshes (flames, water, embers, smoke, orbit, gold shimmer).
  */
 export function animateStructure(root: THREE.Object3D, elapsed: number): void {
-  root.traverse((obj) => {
-    const ud = obj.userData;
-    if (!ud) return;
-
-    if (typeof ud.flame === 'number') {
-      const f = ud.flame;
-      const flicker = Math.sin(elapsed * 7.2 + f * 1.9) * 0.08 + Math.cos(elapsed * 11.4 + f * 3.1) * 0.05;
-      obj.scale.set(1 - flicker * 0.35, 1 + flicker, 1 - flicker * 0.35);
-      obj.rotation.z = Math.sin(elapsed * 5.3 + f * 2.4) * 0.06;
-    }
-
-    if (typeof ud.water === 'number') {
-      const w = ud.water;
-      if (typeof ud.waterBaseY !== 'number') ud.waterBaseY = obj.position.y;
-      obj.rotation.z = Math.sin(elapsed * 1.1 + w) * 0.008;
-      obj.position.y = (ud.waterBaseY as number) + Math.sin(elapsed * 2.1 + w * 1.7) * 0.004;
-    }
-
-    if (typeof ud.ember === 'number' && obj instanceof THREE.Mesh) {
-      const m = obj.material;
-      if (m instanceof THREE.MeshStandardMaterial) {
-        m.emissiveIntensity = 0.65 + Math.sin(elapsed * 3.1 + ud.ember) * 0.2;
-      }
-    }
-
-    if (ud.smoke && typeof ud.smoke === 'object') {
-      const s = ud.smoke as { index: number; baseY: number; amplitude: number };
-      const phase = (elapsed * 0.65 + s.index * 0.48) % 1;
-      obj.position.y = s.baseY + phase * s.amplitude * 2.2;
-      obj.position.x = Math.sin(elapsed * 1.8 + s.index * 1.3) * s.amplitude * 0.45;
-      if (obj instanceof THREE.Mesh && obj.material instanceof THREE.MeshStandardMaterial) {
-        obj.material.opacity = Math.max(0.03, (1 - phase) * 0.24);
-      }
-    }
-
-    if (typeof ud.orbitGlow === 'number') {
-      obj.rotation.z = elapsed * (0.08 * (ud.orbitGlow % 2 === 0 ? 1 : -1));
-      if (obj instanceof THREE.Mesh && obj.material instanceof THREE.MeshStandardMaterial) {
-        obj.material.emissiveIntensity = 0.45 + Math.sin(elapsed * 1.6 + ud.orbitGlow) * 0.18;
-      }
-    }
-
-    if (typeof ud.shimmer === 'number' && obj instanceof THREE.Mesh) {
-      const m = obj.material;
-      if (m instanceof THREE.MeshStandardMaterial) {
-        m.emissiveIntensity = 0.08 + Math.max(0, Math.sin(elapsed * 2.2 + ud.shimmer * 0.9)) * 0.16;
-      }
-    }
-  });
+  root.traverse((obj) => animateNode(obj, elapsed));
 }
 
 function buildNoahArk(C: number, variant: string): THREE.Group {
